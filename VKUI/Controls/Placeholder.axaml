@@ -1,0 +1,33 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:VKUI.Controls">
+  <Design.PreviewWith>
+    <controls:Placeholder Width="320" Header="Lorem ipsum dolor sit amet" Text="The quick brown fox jumps over the lazy dog">
+      <controls:Placeholder.Icon>
+        <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon56InfoOutline}"/>
+      </controls:Placeholder.Icon>
+      <controls:Placeholder.Action>
+        <Button Classes="Primary" Content="Done"/>
+      </controls:Placeholder.Action>
+    </controls:Placeholder>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|Placeholder">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <StackPanel x:Name="Root" Margin="32,48">
+          <ContentPresenter x:Name="IconTB" Classes="PlaceholderIcon" Margin="0,0,0,12" HorizontalAlignment="Center" Content="{TemplateBinding Icon}" IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+          <TextBlock x:Name="HeaderTB" TextAlignment="Center" TextWrapping="Wrap" MaxLines="3" Classes="Title2 SemiBold" Text="{TemplateBinding Header}"/>
+          <TextBlock x:Name="TextTB" Margin="0,8,0,0" TextAlignment="Center" TextWrapping="Wrap" Classes="Headline" Foreground="{DynamicResource VKTextPlaceholderBrush}" Text="{TemplateBinding Text}"/>
+          <ContentPresenter x:Name="ActionTB" Margin="0,32,0,0" HorizontalAlignment="Center" Content="{TemplateBinding Action}" IsVisible="{TemplateBinding Action, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="ContentPresenter.PlaceholderIcon controls|VKIcon">
+    <Setter Property="Foreground" Value="{DynamicResource VKPlaceholderIconForegroundSecondaryBrush}"/>
+    <Setter Property="Width" Value="56"/>
+    <Setter Property="Height" Value="56"/>
+  </Style>
+</Styles>

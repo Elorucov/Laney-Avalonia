@@ -1,0 +1,42 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Шаблон для элементов списка бесед -->
+  <DataTemplate x:Key="ChatItemTemplate">
+    <Grid Height="72" ColumnDefinitions="Auto * Auto">
+      <vkui:Avatar Width="56" Height="56" Margin="12,8,0,8" VerticalAlignment="Center" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" ImageUri="{Binding Avatar}"/>
+      <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,6"/>
+      <StackPanel x:Name="Info" Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
+        <DockPanel x:Name="FirstLine" HorizontalAlignment="Left" Height="22">
+          <TextBlock x:Name="ConvName" Margin="0,0,22,0" Classes="Title3 SemiBold" Text="{Binding Title}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="-16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        </DockPanel>
+        <Grid x:Name="SecondLine" Margin="0,4,0,0" ColumnDefinitions="Auto * Auto" HorizontalAlignment="Left" Height="20">
+          <TextBlock x:Name="LastMessageSender" Grid.Column="0" Foreground="{DynamicResource VKTextTertiaryBrush}" Text="{Binding LastMessage, Converter={StaticResource msnc}}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+          <TextBlock x:Name="LastMessageText" Grid.Column="1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding LastMessage}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+          <TextBlock x:Name="LastMessageTime" Grid.Column="2" Foreground="{DynamicResource VKTextTertiaryBrush}" MaxLines="1" Text="{Binding LastMessage.SentTime, Converter={StaticResource dtdc}}"/>
+        </Grid>
+      </StackPanel>
+      <Path x:Name="PinIndicator" Grid.Column="2" IsVisible="{Binding IsPinned}" VerticalAlignment="Center" Margin="8,0,12,0" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
+      <StackPanel x:Name="Indicators" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
+        <Grid x:Name="MentionIndicatorContainer" IsVisible="{Binding Mentions, Converter={x:Static ObjectConverters.IsNotNull}}" Margin="8,0,0,0">
+          <Border x:Name="MentionIndicator" IsVisible="{Binding !IsMuted}" Width="24" Height="24" CornerRadius="12" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
+            <vkui:VKIcon Margin="2" Id="{x:Static vkui:VKIconNames.Icon20MentionOutline}" Foreground="{DynamicResource VKCounterPrimaryTextBrush}"/>
+          </Border>
+          <Border x:Name="MentionIndicatorMuted" IsVisible="{Binding IsMuted}" Width="24" Height="24" CornerRadius="12" Background="{DynamicResource VKCounterSecondaryBackgroundBrush}">
+            <vkui:VKIcon Margin="2" Id="{x:Static vkui:VKIconNames.Icon20MentionOutline}" Foreground="{DynamicResource VKCounterSecondaryTextBrush}"/>
+          </Border>
+        </Grid>
+        <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}" Margin="8,0,0,0">
+          <Border x:Name="UnreadMessagesIndicator" IsVisible="{Binding !IsMuted}" MinWidth="24" Height="24" CornerRadius="12" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
+            <TextBlock Classes="SemiBold" Margin="6,3,6,0" HorizontalAlignment="Center" Foreground="{DynamicResource VKCounterPrimaryTextBrush}" Text="{Binding UnreadMessagesCount}"/>
+          </Border>
+          <Border x:Name="UnreadMessagesIndicatorMuted" IsVisible="{Binding IsMuted}" MinWidth="24" Height="24" CornerRadius="12" Background="{DynamicResource VKCounterSecondaryBackgroundBrush}">
+            <TextBlock Classes="SemiBold" Margin="6,3,6,0" HorizontalAlignment="Center" Foreground="{DynamicResource VKCounterSecondaryTextBrush}" Text="{Binding UnreadMessagesCount}"/>
+          </Border>
+        </Grid>
+        <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="8,0,0,0" Width="24" Height="24" CornerRadius="12" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}"/>
+      </StackPanel>
+    </Grid>
+  </DataTemplate>
+</ResourceDictionary>

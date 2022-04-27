@@ -1,0 +1,56 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="clr-namespace:VKUI;assembly=VKUI"
+             xmlns:conv="using:ELOR.Laney.Converters"
+             xmlns:logo="using:ELOR.Laney.Assets.Logo"
+             x:Class="ELOR.Laney.App">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://VKUI/Icons.axaml"/>
+        <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+
+    <conv:AvatarGradientConverter x:Key="agc"/>
+    <conv:DateTimeDiffConverter x:Key="dtdc"/>
+    <conv:MessageSenderNameConverter x:Key="msnc"/>
+    <conv:OnlineIconConverter x:Key="oic"/>
+
+    <DataTemplate x:Key="OnlineIcon">
+      <Ellipse Width="12" Height="12" Fill="#8AC176" Stroke="{DynamicResource VKBackgroundContentBrush}" StrokeThickness="2"/>
+    </DataTemplate>
+    <DataTemplate x:Key="OnlineMobileIcon">
+      <Border Width="11" Height="15" Background="{DynamicResource VKBackgroundContentBrush}" BorderBrush="{DynamicResource VKBackgroundContentBrush}" CornerRadius="3">
+        <PathIcon Width="7" Height="11" Foreground="#8AC176" Data="M0 1.5C0 .7.7 0 1.5 0h4C6.3 0 7 .7 7 1.5v8c0 .8-.7 1.5-1.5 1.5h-4A1.5 1.5 0 010 9.5v-8zM1 2h5v6H1V2z"/>
+      </Border>
+    </DataTemplate>
+  </Application.Resources>
+  <Application.Styles>
+    <FluentTheme Mode="Light"/>
+    <ui:VKUITheme Scheme="BrightLight"/>
+    
+    <Style Selector="Button.Hyperlink">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="FontSize" Value="15"/>
+      <Setter Property="MinHeight" Value="0"/>
+    </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem">
+      <Setter Property="Padding" Value="0"/>
+    </Style>
+    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}"/>
+    </Style>
+    <Style Selector="ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource VKBackgroundHighlightedBrush}"/>
+    </Style>
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource VKBackgroundHighlightedBrush}"/>
+    </Style>
+  </Application.Styles>
+</Application>

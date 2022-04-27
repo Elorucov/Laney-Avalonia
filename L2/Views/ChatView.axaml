@@ -1,0 +1,72 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="480"
+             x:Class="ELOR.Laney.Views.ChatView">
+  <Grid x:Name="Root" RowDefinitions="Auto Auto * Auto">
+    <vkui:PanelHeader VerticalAlignment="Top" IsSeparatorVisible="False" Background="{DynamicResource VKBackgroundContentBrush}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
+      <vkui:PanelHeader.LeftButtons>
+        <Button x:Name="BackButton">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}"/>
+        </Button>
+      </vkui:PanelHeader.LeftButtons>
+      <vkui:PanelHeader.Content>
+        <Grid ColumnDefinitions="Auto *" Margin="2,0,0,0">
+          <vkui:Avatar x:Name="ConvAvatar" Width="36" Height="36" Margin="0,0,8,0" VerticalAlignment="Center" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" ImageUri="{Binding Avatar}"/>
+          <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <DockPanel HorizontalAlignment="Left">
+              <TextBlock Classes="Headline SemiBold" Margin="0,0,22,0" Text="{Binding Title}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" Margin="-16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding IsVerified}"/>
+            </DockPanel>
+            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Subtitle}"/>
+          </StackPanel>
+        </Grid>
+      </vkui:PanelHeader.Content>
+      <vkui:PanelHeader.RightButtons>
+        <Button x:Name="ContextMenuButton">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28MoreHorizontal}"/>
+        </Button>
+      </vkui:PanelHeader.RightButtons>
+    </vkui:PanelHeader>
+    
+    <Border x:Name="PinnedMessageContainer" Grid.Row="1" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding PinnedMessage, Converter={x:Static ObjectConverters.IsNotNull}}" Padding="12" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
+      <Grid ColumnDefinitions="Auto *">
+        <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20PinOutline}" Foreground="{DynamicResource VKIconSecondaryBrush}"/>
+        <!-- TODO: отдельный контрол для компактных сообщений (pin, reply) -->
+        <StackPanel Grid.Column="1" Height="36" Margin="12,0">
+          <DockPanel>
+            <TextBlock Classes="Caption2 SemiBold" Foreground="{DynamicResource VKAccentBrush}" Text="Sender name"/>
+            <TextBlock Classes="Caption2" Margin="8,0,0,0" Foreground="{DynamicResource VKHeaderTextSecondaryBrush}" Text="sent time"/>
+          </DockPanel>
+          <TextBlock Margin="0,2,0,0" Text="Text message"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <StackPanel x:Name="WriteBarContainer" Grid.Row="3" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+      <Grid MinHeight="52" ColumnDefinitions="Auto * Auto">
+        <Button Classes="PanelIcon" VerticalAlignment="Bottom" Margin="4" Width="44">
+          <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28AddCircleOutline}"/>
+        </Button>
+        <TextBox Grid.Column="1" Classes="WriteBar" VerticalAlignment="Center" Margin="0,8" TextWrapping="Wrap" MaxLength="2048" MaxHeight="136" Watermark="Message"/>
+        <StackPanel x:Name="WriteBarRightButtons" Grid.Column="2" VerticalAlignment="Bottom" Margin="4" Orientation="Horizontal" MinWidth="8">
+          <Button x:Name="EmojiStickerButton" Classes="PanelIcon" Width="44">
+            <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28SmileOutline}"/>
+          </Button>
+          <Button x:Name="SendButton" Classes="PanelIcon" Width="44">
+            <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28Send}"/>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+    
+    <Border x:Name="RestrictionInfoContainer" Grid.Row="3" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
+      <DockPanel MinHeight="52" HorizontalAlignment="Center">
+        <vkui:VKIcon Margin="12,12,0,12" Foreground="{DynamicResource VKDestructiveBrush}" Id="{x:Static vkui:VKIconNames.Icon28ErrorOutline}"/>
+        <TextBlock x:Name="RestrictionReason" Margin="12" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
+      </DockPanel>
+    </Border>  
+  </Grid>
+</UserControl>

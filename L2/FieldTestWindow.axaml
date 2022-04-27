@@ -1,0 +1,124 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="clr-namespace:VKUI.Controls;assembly=VKUI"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="900"
+        x:Class="ELOR.Laney.FieldTestWindow" WindowState="Maximized"
+        Title="Field test" Background="{DynamicResource VKBackgroundContentBrush}">
+  <ScrollViewer>
+    <StackPanel Margin="8">
+      <TextBlock x:Name="buildInfo" Margin="8" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+      <TextBlock x:Name="test" Margin="8" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+      <TextBlock x:Name="test2" Margin="8" Foreground="{DynamicResource VKTextPrimaryBrush}" Classes="DisplayBold Title1" Text="{i18n:Localize human}"/>
+      <StackPanel Orientation="Horizontal">
+        <Button x:Name="ben" Margin="8" Content="Switch lang to EN"/>
+        <Button x:Name="bru" Margin="8" Content="Switch lang to RU"/>
+        <Button x:Name="buk" Margin="8" Content="Switch lang to UK"/>
+      </StackPanel>
+
+      <StackPanel Orientation="Horizontal">
+        <Button x:Name="btl" Margin="8" Classes="Primary" Content="Switch theme to light"/>
+        <Button x:Name="btd" Margin="8" Classes="Primary" Content="Switch theme to dark"/>
+      </StackPanel>
+
+      <TextBox Width="320" Margin="8" HorizontalAlignment="Left" Watermark="TextBox" TextWrapping="Wrap"/>
+      <TextBox Width="320" Margin="8" HorizontalAlignment="Left" Classes="Search" Watermark="Search"/>
+
+      <Grid ColumnDefinitions="128 128">
+        <StackPanel Grid.Column="0">
+          <CheckBox Margin="8,0" Content="Default"/>
+          <CheckBox Margin="8,0" Content="Disabled" IsEnabled="False"/>
+          <CheckBox Margin="8,0" Content="Checked" IsChecked="True"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+          <RadioButton Margin="8,0" GroupName="TestBest" Content="Default"/>
+          <RadioButton Margin="8,0" GroupName="TestBest" Content="Disabled" IsEnabled="False"/>
+          <RadioButton Margin="8,0" GroupName="TestBest" Content="Checked" IsChecked="True"/>
+        </StackPanel>
+      </Grid>
+
+      <StackPanel Margin="0,8,0,0">
+        <WrapPanel Width="392" HorizontalAlignment="Left">
+          <StackPanel Margin="8">
+            <TextBlock Classes="Title1 Bold" Text="Title1"/>
+            <TextBlock Classes="Title1 SemiBold" Text="Title1"/>
+            <TextBlock Classes="Title1" Text="Title1"/>
+            <TextBlock Classes="Title1 Light" Text="Title1"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Title2 Bold" Text="Title2"/>
+            <TextBlock Classes="Title2 SemiBold" Text="Title2"/>
+            <TextBlock Classes="Title2" Text="Title2"/>
+            <TextBlock Classes="Title2 Light" Text="Title2"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Title3 Bold" Text="Title3"/>
+            <TextBlock Classes="Title3 SemiBold" Text="Title3"/>
+            <TextBlock Classes="Title3" Text="Title3"/>
+            <TextBlock Classes="Title3 Light" Text="Title3"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Headline Bold" Text="Headline"/>
+            <TextBlock Classes="Headline SemiBold" Text="Headline"/>
+            <TextBlock Classes="Headline" Text="Headline"/>
+            <TextBlock Classes="Headline Light" Text="Headline"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Bold" Text="Bold"/>
+            <TextBlock Classes="SemiBold" Text="SemiBold"/>
+            <TextBlock Classes="Headline" Text="Regular"/>
+            <TextBlock Classes="Light" Text="Light"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Subhead Bold" Text="Subhead"/>
+            <TextBlock Classes="Subhead SemiBold" Text="Subhead"/>
+            <TextBlock Classes="Subhead" Text="Subhead"/>
+            <TextBlock Classes="Subhead Light" Text="Subhead"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Caption1 Bold" Text="Caption1"/>
+            <TextBlock Classes="Caption1 SemiBold" Text="Caption1"/>
+            <TextBlock Classes="Caption1" Text="Caption1"/>
+            <TextBlock Classes="Caption1 Light" Text="Caption1"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Caption2 Bold" Text="Caption2"/>
+            <TextBlock Classes="Caption2 SemiBold" Text="Caption2"/>
+            <TextBlock Classes="Caption2" Text="Caption2"/>
+            <TextBlock Classes="Caption2 Light" Text="Caption2"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Caption3 Bold" Text="Caption3"/>
+            <TextBlock Classes="Caption3 SemiBold" Text="Caption3"/>
+            <TextBlock Classes="Caption3" Text="Caption3"/>
+            <TextBlock Classes="Caption3 Light" Text="Caption3"/>
+          </StackPanel>
+          <StackPanel Margin="8">
+            <TextBlock Classes="Caption4 Bold" Text="Caption4"/>
+            <TextBlock Classes="Caption4 SemiBold" Text="Caption4"/>
+            <TextBlock Classes="Caption4" Text="Caption4"/>
+            <TextBlock Classes="Caption4 Light" Text="Caption4"/>
+          </StackPanel>
+        </WrapPanel>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0">
+        <TextBlock Margin="8" Classes="Title2 Bold" Text="Window test"/>
+        <Button x:Name="w1" Margin="8" Content="Resize 360x640"/>
+      </StackPanel>
+      
+      <StackPanel Margin="0,8,0,0">
+        <TextBlock Margin="8" Classes="Title2 Bold" Text="Settings test"/>
+        <StackPanel Orientation="Horizontal">
+          <TextBox x:Name="settingDemo" Width="240" Margin="8"/>
+          <Button x:Name="setBtn" Width="64" Margin="8" Classes="Large Commerce" HorizontalContentAlignment="Center" Content="Set"/>
+        </StackPanel>
+        <Button x:Name="getBtn" Margin="8" Classes="Outline" HorizontalContentAlignment="Center" Content="Get"/>
+        <TextBlock x:Name="setResult" Margin="8" Text="Press 'Get' to get result here..."/>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

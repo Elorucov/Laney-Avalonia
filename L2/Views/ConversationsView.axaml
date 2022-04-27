@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ELOR.Laney.Views.ConversationsView">
+  <Grid RowDefinitions="Auto *">
+    <vkui:PanelHeader VerticalAlignment="Top" Content="Chats">
+      <vkui:PanelHeader.LeftButtons>
+        <Button x:Name="AvatarButton" Command="{Binding ShowSessionPopup}" CommandParameter="{Binding ElementName=AvatarButton}">
+          <vkui:Avatar Width="32" Height="32" ImageUri="{Binding Avatar}"/>
+        </Button>
+      </vkui:PanelHeader.LeftButtons>
+      <vkui:PanelHeader.RightButtons>
+        <Button x:Name="SearchButton">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28SearchOutline}"/>
+        </Button>
+        <Button x:Name="NewConvButton">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28WriteSquareOutline}"/>
+        </Button>
+      </vkui:PanelHeader.RightButtons>
+    </vkui:PanelHeader>
+
+    <Grid Grid.Row="1">
+      <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizationMode="None" Items="{Binding ConversationsViewModel.SortedChats}" SelectedItem="{Binding CurrentOpenedChat}" Background="Transparent" ItemTemplate="{StaticResource ChatItemTemplate}" Tapped="ListBoxItemTapped"/>
+
+      <Grid Grid.Row="1" x:Name="EmptyListContainer" DataContext="{Binding ConversationsViewModel}" IsVisible="{Binding IsEmpty, Mode=OneWay}">
+        <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
+        <vkui:Placeholder VerticalAlignment="Center"
+                              IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                              Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                              Header="{Binding Placeholder.Header, Mode=OneWay}"
+                              Text="{Binding Placeholder.Text, Mode=OneWay}">
+          <vkui:Placeholder.Action>
+            <Button Classes="Primary" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+          </vkui:Placeholder.Action>
+        </vkui:Placeholder>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>

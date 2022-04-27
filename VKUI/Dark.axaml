@@ -1,0 +1,11 @@
+﻿<Style xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Style.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://VKUI/Appearance/Palette.axaml" />
+        <ResourceInclude Source="avares://VKUI/Appearance/SchemeSpaceGray.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Style.Resources>
+</Style>

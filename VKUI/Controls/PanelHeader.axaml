@@ -1,0 +1,64 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:VKUI.Controls">
+  <Design.PreviewWith>
+    <controls:PanelHeader Width="480" Content="Test!">
+      <controls:PanelHeader.LeftButtons>
+        <Button>
+          <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon28ArrowLeftOutline}"/>
+        </Button>
+      </controls:PanelHeader.LeftButtons>
+      <controls:PanelHeader.RightButtons>
+        <Button>
+          <PathIcon Data="{StaticResource Icon28SearchOutline}"/>
+        </Button>
+        <Button>
+          <PathIcon Data="{StaticResource Icon28WriteSquareOutline}"/>
+        </Button>
+      </controls:PanelHeader.RightButtons>
+    </controls:PanelHeader>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|PanelHeader">
+    <Setter Property="Height" Value="52"/>
+    <Setter Property="IsSeparatorVisible" Value="true"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+          <Grid ColumnDefinitions="Auto * Auto" Height="52">
+            <StackPanel x:Name="LeftButtonsEl" Margin="4,0,0,0" MinWidth="8" Orientation="Horizontal" VerticalAlignment="Center"/>
+            <ContentPresenter x:Name="HeaderContentArea" Grid.Column="1" VerticalContentAlignment="Center"/>
+            <StackPanel x:Name="RightButtonsEl" Grid.Column="2" Margin="0,0,4,0" MinWidth="8" Orientation="Horizontal" VerticalAlignment="Center"/>
+            <Rectangle x:Name="Separator" Grid.ColumnSpan="3" Height="1" Margin="12,0" VerticalAlignment="Bottom" Fill="{DynamicResource VKSeparatorAlphaBrush}" IsVisible="{TemplateBinding IsSeparatorVisible}"/>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="Button.PanelHeaderButtonStyle">
+    <Setter Property="Width" Value="48"/>
+    <Setter Property="Height" Value="44"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKHeaderTintBrush}"/>
+    <Setter Property="Padding" Value="0"/>
+  </Style>
+
+  <Style Selector="Button.PanelHeaderButtonStyle > PathIcon">
+    <Setter Property="Foreground" Value="{DynamicResource VKHeaderTintBrush}"/>
+  </Style>
+
+  <Style Selector="Button.PanelHeaderButtonStyle > controls|VKIcon">
+    <Setter Property="Foreground" Value="{DynamicResource VKHeaderTintBrush}"/>
+  </Style>
+  
+  <Style Selector="TextBlock.PanelHeaderTextStyle">
+    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    <Setter Property="FontSize" Value="21"/>
+    <Setter Property="LineHeight" Value="28"/>
+    <Setter Property="Margin" Value="4,0,4,0"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKHeaderTextBrush}"/>
+  </Style>
+</Styles>

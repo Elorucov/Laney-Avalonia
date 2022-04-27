@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <AssemblyName>Laney</AssemblyName>
+    <RootNamespace>ELOR.Laney</RootNamespace>
+    <AssemblyVersion>2.0.96</AssemblyVersion>
+    <FileVersion>2.0.96</FileVersion>
+    <Version>2.0.96-devplat-anycpu-devuser.devpc-220427-1927</Version>
+    <Platforms>AnyCPU</Platforms>
+    <DefineConstants>WIN</DefineConstants>
+    <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
+    <TrimMode>copyused</TrimMode>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CFBundleName>Laney</CFBundleName>
+    <CFBundleDisplayName>Laney</CFBundleDisplayName>
+    <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
+    <CFBundleVersion>2.0.96</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.96</CFBundleShortVersionString>
+    <CFBundlePackageType>APPL</CFBundlePackageType>
+    <CFBundleSignature>????</CFBundleSignature>
+    <CFBundleExecutable>Laney</CFBundleExecutable>
+    <CFBundleIconFile>Assets\Logo\Laney.icns</CFBundleIconFile>
+    <NSPrincipalClass>NSApplication</NSPrincipalClass>
+    <NSHighResolutionCapable>true</NSHighResolutionCapable>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>8632</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>8632</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="Assets\i18n\en-US.json" />
+    <None Remove="Assets\i18n\ru-RU.json" />
+    <None Remove="Assets\i18n\uk-UA.json" />
+    <None Remove="Assets\Logo\FullShadow.svg" />
+    <None Remove="Assets\Logo\Tray\t16cb.png" />
+    <None Remove="Assets\Logo\Tray\t16cw.png" />
+    <None Remove="Assets\Logo\Tray\t16mb.png" />
+    <None Remove="Assets\Logo\Tray\t16mw.png" />
+    <None Remove="Assets\Logo\Tray\t32cb.png" />
+    <None Remove="Assets\Logo\Tray\t32cw.png" />
+    <None Remove="Assets\Logo\Tray\t32mb.png" />
+    <None Remove="Assets\Logo\Tray\t32mw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\i18n\en-US.json" />
+    <AvaloniaResource Include="Assets\i18n\ru-RU.json" />
+    <AvaloniaResource Include="Assets\i18n\uk-UA.json" />
+    <AvaloniaResource Include="Assets\Logo\FullShadow.svg" NamespaceName="ELOR.Laney.Assets.Logo" ClassName="FullShadow" />
+    <AvaloniaResource Include="Assets\Logo\Tray\t16cb.png" />
+    <AvaloniaResource Include="Assets\Logo\Tray\t16cw.png" />
+    <AvaloniaResource Include="Assets\Logo\Tray\t16mb.png" />
+    <AvaloniaResource Include="Assets\Logo\Tray\t16mw.png" />
+    <AvaloniaResource Include="Assets\Logo\Tray\t32cb.png" />
+    <AvaloniaResource Include="Assets\Logo\Tray\t32cw.png" />
+    <AvaloniaResource Include="Assets\Logo\Tray\t32mb.png" />
+    <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.13" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.13" />
+    <PackageReference Include="DynamicData" Version="7.6.7" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.5.12" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="0.10.12" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="Dotnet.Bundle" Version="*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="FieldTestWindow.axaml.cs">
+      <DependentUpon>FieldTestWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SignInWindow.axaml.cs">
+      <DependentUpon>Views\SignInWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ELOR.VKAPILib\ELOR.VKAPILib.csproj" />
+    <ProjectReference Include="..\VKUI\VKUI.csproj" />
+  </ItemGroup>
+</Project>

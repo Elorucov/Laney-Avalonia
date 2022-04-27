@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="320"
+        x:Class="ELOR.Laney.Views.Modals.VKUIDialog"
+        Width="480" SizeToContent="Height" WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource VKModalCardBackgroundBrush}"
+        Title="VKUIDialog" CanResize="False" ShowInTaskbar="False">
+  <Grid RowDefinitions="Auto Auto">
+    <StackPanel Margin="24">
+      <TextBlock x:Name="DlgHeader" TextWrapping="Wrap" Classes="Headline Bold" Margin="0,0,0,8"/>
+      <TextBlock x:Name="DlgText" IsVisible="False" TextWrapping="Wrap" Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
+      <ContentPresenter x:Name="ContentArea" Margin="0,8,0,0" IsVisible="False"/>
+    </StackPanel>
+    <StackPanel x:Name="Buttons" Grid.Row="1" Margin="24,0,24,16" Orientation="Horizontal" HorizontalAlignment="Right"/>
+  </Grid>
+</Window>
