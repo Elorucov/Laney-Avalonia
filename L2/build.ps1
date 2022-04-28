@@ -132,5 +132,5 @@ if ($IsWindows) {
     echo "All done! Check $($location)\win-<arch>\publish folder.";
 }
 if (!$IsWindows) {
-    echo "All done! Check $($location)/<platform>/publish folder. For macOS, check $($location)/publish/Laney_<osver>_<arch>.app file.";
+    echo "All done! Check $($location)/<platform>/publish folder. For macOS, check $($location)/MacOS_Bundles/Laney_<osver>_<arch>.app file.";
 }
