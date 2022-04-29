@@ -37,7 +37,6 @@ namespace ELOR.Laney.Core.Network {
 
     public class LNet {
         static HttpClient client;
-        static HttpClient nocookieclient;
         static HttpClient tclient;
 
         static string pingUrl = "https://vk.com/ping.txt";

@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
@@ -73,7 +74,8 @@ namespace ELOR.Laney.Core {
             if (id == 1) {
                 if (String.IsNullOrEmpty(tokenBox.Text)) return await AuthWithTokenAsync(parentWindow, "Enter token!");
                 try {
-                    VKAPI api = new VKAPI(0, tokenBox.Text, "ru");
+                    VKAPI api = new VKAPI(0, tokenBox.Text, "ru", App.UserAgent);
+                    api.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
                     var app = await api.Apps.GetAsync();
                     int appId = app.Items[0].Id;
                     if (appId != APP_ID) return await AuthWithTokenAsync(parentWindow, $"Wrong token! Required token from app{APP_ID}, but this is from app{appId}");

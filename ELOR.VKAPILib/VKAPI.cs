@@ -31,6 +31,7 @@ namespace ELOR.VKAPILib {
 
         #region Funcs
 
+        public Func<Uri, Dictionary<string, string>, Dictionary<string, string>, Task<HttpResponseMessage>> WebRequestCallback { get; set; }
         public Func<CaptchaHandlerData, Task<string>> CaptchaHandler { get; set; }
         public Func<string, Task<bool>> ActionConfirmationHandler { get; set; }
 
@@ -49,8 +50,7 @@ namespace ELOR.VKAPILib {
         public string Language { get { return _language; } }
         public string Domain { get { return _domain; } }
         public int LongPollVersion { get; set; } = 11;
-
-        public static string UserAgent { get; set; }
+        public static string UserAgent { get; private set; }
         public static string Version { get { return _version; } }
 
         private HttpClient HttpClient;
@@ -65,16 +65,20 @@ namespace ELOR.VKAPILib {
 
         #endregion
 
-        public VKAPI(int userId, string accessToken, string language, string domain = "api.vk.com") {
+        public VKAPI(int userId, string accessToken, string language, string userAgent, string domain = "api.vk.com") {
             _userId = userId;
             _accessToken = accessToken;
             _language = language;
+            UserAgent = userAgent;
             _domain = domain;
 
             HttpClientHandler handler = new HttpClientHandler() {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
             HttpClient = new HttpClient(handler);
+            HttpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+            HttpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate");
+            if (!String.IsNullOrEmpty(userAgent)) HttpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
 
             Account = new AccountMethods(this);
             Apps = new AppsMethods(this);
@@ -106,16 +110,21 @@ namespace ELOR.VKAPILib {
         public async Task<string> SendRequestAsync(string method, Dictionary<string, string> parameters = null) {
             string requestUri = $@"https://{Domain}/method/{method}";
 
-            HttpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+            if (WebRequestCallback != null) {
+                Dictionary<string, string> headers = new Dictionary<string, string>();
+                headers.Add("Accept-Encoding", "gzip,deflate");
+                if (!String.IsNullOrEmpty(UserAgent)) headers.Add("User-Agent", UserAgent);
 
-            HttpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate");
-            if (!String.IsNullOrEmpty(UserAgent)) HttpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
-
-            using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, new Uri(requestUri))) {
-                hmsg.Content = new FormUrlEncodedContent(parameters);
-                using (var resp = await HttpClient.SendAsync(hmsg)) {
-                    resp.EnsureSuccessStatusCode();
-                    return await resp.Content.ReadAsStringAsync();
+                var resp = await WebRequestCallback.Invoke(new Uri(requestUri), parameters, headers);
+                resp.EnsureSuccessStatusCode();
+                return await resp.Content.ReadAsStringAsync();
+            } else {
+                using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, new Uri(requestUri))) {
+                    hmsg.Content = new FormUrlEncodedContent(parameters);
+                    using (var resp = await HttpClient.SendAsync(hmsg)) {
+                        resp.EnsureSuccessStatusCode();
+                        return await resp.Content.ReadAsStringAsync();
+                    }
                 }
             }
         }

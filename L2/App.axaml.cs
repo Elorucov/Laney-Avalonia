@@ -6,11 +6,14 @@ using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Themes.Fluent;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Core.Network;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using VKUI;
 
 namespace ELOR.Laney {
@@ -55,6 +58,9 @@ namespace ELOR.Laney {
                 DesktopLifetime = desktop;
                 if (Platform == OSPlatform.FreeBSD) desktop.Shutdown();
 
+                // Settings up web request callbacks
+                VKUITheme.Current.WebRequestCallback = WebRequestCallback;
+
                 int uid = Settings.Get<int>(Settings.VK_USER_ID);
                 string token = Settings.Get<string>(Settings.VK_TOKEN);
                 if (uid > 0 && !String.IsNullOrEmpty(token)) {
@@ -68,14 +74,17 @@ namespace ELOR.Laney {
             base.OnFrameworkInitializationCompleted();
         }
 
+        private async Task<HttpResponseMessage> WebRequestCallback(Uri arg) {
+            return await LNet.GetAsync(arg);
+        }
+
         public VKUIScheme CurrentScheme { get; private set; }
 
         public static void SwitchTheme(VKUIScheme scheme) {
             FluentTheme fluent = (FluentTheme)_current.Styles[0]!;
             fluent.Mode = scheme == VKUIScheme.BrightLight ? FluentThemeMode.Light : FluentThemeMode.Dark;
 
-            VKUITheme vkui = (VKUITheme)_current.Styles[1]!;
-            vkui.Scheme = scheme;
+            VKUITheme.Current.Scheme = scheme;
 
             _current.CurrentScheme = scheme;
         }

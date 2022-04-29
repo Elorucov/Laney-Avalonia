@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Extensions {
@@ -20,6 +21,10 @@ namespace ELOR.Laney.Extensions {
             } else {
                 return cachedImages[url];
             }
+        }
+
+        public static async Task<HttpResponseMessage> SendRequestToAPIViaLNetAsync(Uri uri, Dictionary<string, string> parameters, Dictionary<string, string> headers) {
+            return await LNet.PostAsync(uri, parameters, headers);
         }
     }
 }

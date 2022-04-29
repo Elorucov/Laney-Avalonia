@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
+using ELOR.Laney.Core.Network;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -134,6 +136,8 @@ namespace ELOR.Laney.Core {
                 Log.Information("Init session ({0})", Id);
                 SetUpTrayMenu(); // Чтобы можно было закрыть приложение, если будут проблемы с загрузкой
 
+                if (API.WebRequestCallback == null) API.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
+
                 List<VKSession> sessions = new List<VKSession>();
                 StartSessionResponse info = await API.StartSessionAsync();
 
@@ -150,7 +154,7 @@ namespace ELOR.Laney.Core {
                             GroupId = group.Id,
                             Name = group.Name,
                             Avatar = new Uri(group.Photo100),
-                            API = new VKAPI(info.User.Id, API.AccessToken, Localizer.Instance["lang"])
+                            API = new VKAPI(info.User.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent)
                         });
                     }
 
@@ -184,7 +188,6 @@ namespace ELOR.Laney.Core {
 
         private void TryOpenSessionWindow(int sessionId) {
             VKSession session = _sessions.Where(s => s.Id == sessionId).FirstOrDefault();
-            // int index = _sessions.IndexOf(session);
 
             if (session.Window == null) {
                 Log.Information("Creating and showing new window for session {0}", Id);
@@ -197,8 +200,6 @@ namespace ELOR.Laney.Core {
                 if (!session.Window.IsVisible) session.Window.Show();
                 if (!session.Window.IsActive) session.Window.Activate();
             }
-
-            // _sessions[index] = session;
         }
 
         #endregion
@@ -231,7 +232,7 @@ namespace ELOR.Laney.Core {
             VKSession session = new VKSession {
                 UserId = userId,
                 Name = "...",
-                API = new VKAPI(userId, accessToken, Localizer.Instance["lang"]),
+                API = new VKAPI(userId, accessToken, Localizer.Instance["lang"], App.UserAgent),
                 Window = new MainWindow()
             };
             _sessions.Add(session);

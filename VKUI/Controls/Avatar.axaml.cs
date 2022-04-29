@@ -79,10 +79,10 @@ namespace VKUI.Controls {
             // (например, Laney через LNet) и отдавало Avatar-у
             // только саму картинку.
             try {
-                var response = await httpClient.GetAsync(currentImageUri);
+                var response = await VKUITheme.Current.WebRequestCallback?.Invoke(currentImageUri);
                 imageBytes = await response.Content.ReadAsByteArrayAsync();
             } catch (Exception ex) {
-                Debug.WriteLine($"Cannot get an image!");
+                Debug.WriteLine($"Cannot get an image! 0x{ex.HResult.ToString("x8")}: {ex.Message}");
             }
             Draw();
         }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
-using Avalonia.Platform;
 using Avalonia.Styling;
 
 #nullable enable
@@ -25,6 +26,11 @@ namespace VKUI {
         private bool _isLoading;
         private IStyle? _loaded;
 
+        public static VKUITheme Current { get; private set; }
+
+        // Необходимо, чтобы для загрузки из веба либа юзала реализацию программы, использующая эту либу 
+        public Func<Uri, Task<HttpResponseMessage>> WebRequestCallback { get; set; }
+
         public static IResourceDictionary Icons {
             get => (Application.Current.Resources.MergedDictionaries[0] as ResourceInclude).Loaded;
         }
@@ -34,6 +40,8 @@ namespace VKUI {
     /// </summary>
     /// <param name="baseUri">The base URL for the XAML context.</param>
     public VKUITheme(Uri baseUri) {
+            if (Current != null) throw new Exception($"{nameof(VKUITheme)} already initialized!");
+            Current = this;
             _baseUri = baseUri;
             InitStyles(baseUri);
         }
@@ -43,6 +51,8 @@ namespace VKUI {
         /// </summary>
         /// <param name="serviceProvider">The XAML service provider.</param>
         public VKUITheme(IServiceProvider serviceProvider) {
+            if (Current != null) throw new Exception($"{nameof(VKUITheme)} already initialized!");
+            Current = this;
             _baseUri = ((IUriContext)serviceProvider.GetService(typeof(IUriContext))).BaseUri;
             InitStyles(_baseUri);
         }
