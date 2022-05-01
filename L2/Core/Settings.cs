@@ -16,7 +16,9 @@ namespace ELOR.Laney.Core {
         public static void Initialize() {
             FilePath = Path.Combine(App.LocalDataPath, "settings.json");
             _file = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 4096);
+#if WIN;LINUX
             _file.Lock(0, 0);
+#endif
             byte[] fileBytes = new byte[_file.Length];
             _file.Read(fileBytes, 0, fileBytes.Length);
 

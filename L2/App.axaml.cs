@@ -28,6 +28,10 @@ namespace ELOR.Laney {
             AvaloniaXamlLoader.Load(this);
             SwitchTheme(VKUIScheme.BrightLight);
 
+#if MAC
+            Settings.Initialize();
+#endif
+
             if (!Design.IsDesignMode && IsAlreadyRunning()) Process.GetCurrentProcess().Kill();
         }
 
@@ -93,7 +97,7 @@ namespace ELOR.Laney {
             SwitchTheme(_current.CurrentScheme == VKUIScheme.BrightLight ? VKUIScheme.SpaceGray : VKUIScheme.BrightLight);
         }
 
-        #region Platform
+#region Platform
 
         public static OSPlatform Platform => GetCurrentPlatform();
 
@@ -131,9 +135,9 @@ namespace ELOR.Laney {
             return $"LaneyMessenger (2; {sections[0]}; {sections[1]}; {sections[2]})";
         }
 
-        #endregion
+#endregion
 
-        #region Paths
+#region Paths
 
         public static string LocalDataPath { get => GetLocalDataPath(); }
 
@@ -147,6 +151,6 @@ namespace ELOR.Laney {
             }
         }
 
-        #endregion
+#endregion
     }
 }
