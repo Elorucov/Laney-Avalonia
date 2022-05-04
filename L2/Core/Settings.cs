@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ELOR.Laney.Core {
@@ -16,9 +17,11 @@ namespace ELOR.Laney.Core {
         public static void Initialize() {
             FilePath = Path.Combine(App.LocalDataPath, "settings.json");
             _file = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 4096);
-#if WIN;LINUX
-            _file.Lock(0, 0);
-#endif
+            
+            if (App.Platform != OSPlatform.OSX) {
+                _file.Lock(0, 0);
+            }
+
             byte[] fileBytes = new byte[_file.Length];
             _file.Read(fileBytes, 0, fileBytes.Length);
 

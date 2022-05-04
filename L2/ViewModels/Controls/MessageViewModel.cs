@@ -15,7 +15,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         Unknown, User, Group
     }
 
-    public sealed class MessageViewModel : ViewModelBase {
+    public sealed class MessageViewModel : ViewModelBase, IComparable {
         private int _id;
         private int _peerId;
         private int _randomId;
@@ -41,6 +41,9 @@ namespace ELOR.Laney.ViewModels.Controls {
         private bool _isExpired;
         private MessageVMState _state;
 
+        private bool _isSenderNameVisible;
+        private bool _isSenderAvatarVisible;
+
         public int Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
         public int RandomId { get { return _randomId; } private set { _randomId = value; OnPropertyChanged(); } }
@@ -65,6 +68,9 @@ namespace ELOR.Laney.ViewModels.Controls {
         public int TTL { get { return _ttl; } private set { _ttl = value; OnPropertyChanged(); } }
         public bool IsExpired { get { return _isExpired; } private set { _isExpired = value; OnPropertyChanged(); } }
         public MessageVMState State { get { return _state; } private set { _state = value; OnPropertyChanged(); } }
+
+        public bool IsSenderNameVisible { get { return _isSenderNameVisible; } private set { _isSenderNameVisible = value; OnPropertyChanged(); } }
+        public bool IsSenderAvatarVisible { get { return _isSenderAvatarVisible; } private set { _isSenderAvatarVisible = value; OnPropertyChanged(); } }
 
         public MessageViewModel(Message msg) {
             Setup(msg);
@@ -116,6 +122,17 @@ namespace ELOR.Laney.ViewModels.Controls {
                     if (g != null) SenderAvatar = g.Photo;
                 }
             }
+        }
+
+        public int CompareTo(object obj) {
+            MessageViewModel mvm = obj as MessageViewModel;
+            return Id.CompareTo(mvm.Id);
+        }
+
+        public void UpdateSenderInfoView(bool? isPrevFromSameSender, bool? isNextFromSameSender) {
+            if (PeerId < 2000000000 || SenderId == VKSession.Main.Id) return;
+            if (isPrevFromSameSender.HasValue) IsSenderNameVisible = !isPrevFromSameSender.Value;
+            if (isNextFromSameSender.HasValue) IsSenderAvatarVisible = !isNextFromSameSender.Value;
         }
 
         public override string ToString() {

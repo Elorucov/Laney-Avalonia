@@ -23,7 +23,7 @@
     </vkui:PanelHeader>
 
     <Grid Grid.Row="1">
-      <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizationMode="None" Items="{Binding ConversationsViewModel.SortedChats}" SelectedItem="{Binding CurrentOpenedChat}" Background="Transparent" ItemTemplate="{StaticResource ChatItemTemplate}" Tapped="ListBoxItemTapped"/>
+      <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizationMode="None" Items="{Binding ConversationsViewModel.SortedChats}" SelectedItem="{Binding ConversationsViewModel.VisualSelectedChat}" Background="Transparent" ItemTemplate="{StaticResource ChatItemTemplate}" Tapped="ListBoxItemTapped"/>
 
       <Grid Grid.Row="1" x:Name="EmptyListContainer" DataContext="{Binding ConversationsViewModel}" IsVisible="{Binding IsEmpty, Mode=OneWay}">
         <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>

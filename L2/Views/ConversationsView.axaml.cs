@@ -10,14 +10,15 @@ using VKUI.Popups;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ConversationsView : UserControl {
+        private VKSession Session { get { return VKSession.GetByDataContext(this); } }
+
         public ConversationsView() {
             InitializeComponent();
             NewConvButton.Click += (a, b) => {
                 App.ToggleTheme();
             };
             SearchButton.Click += (a, b) => {
-                object x = "a";
-                int i = 1 + (int)x;
+                throw new System.Exception("This is a crash. Not bandicoot, but a crash.");
             };
         }
 
@@ -25,9 +26,7 @@ namespace ELOR.Laney.Views {
             ListBox listBox = sender as ListBox;
             ChatViewModel cvm = listBox.SelectedItem as ChatViewModel;
             if (cvm == null) return;
-            VKSession session = VKSession.GetByDataContext(this);
-            session.GetToChat(cvm.PeerId);
-            session.Window.SwitchToSide(true);
+            Session.GetToChat(cvm.PeerId);
         }
     }
 }

@@ -213,10 +213,11 @@ namespace ELOR.Laney.Core {
         public void GetToChat(int peerId) {
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
             if (chat == null) {
-                chat = new ChatViewModel(peerId);
+                chat = new ChatViewModel(this, peerId);
                 CacheManager.Add(Id, chat);
             }
             CurrentOpenedChat = chat;
+            chat.OnDisplayed();
             Window.SwitchToSide(true);
         }
 

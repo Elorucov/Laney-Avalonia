@@ -1,9 +1,13 @@
-﻿using ELOR.Laney.Core;
+﻿using ELOR.Laney.Collections;
+using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Execute;
+using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +17,8 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
     public sealed class ChatViewModel : CommonViewModel {
+        private VKSession session;
+
         private PeerType _peerType;
         private int _peerId;
         private string _title;
@@ -24,6 +30,7 @@ namespace ELOR.Laney.ViewModels {
         private SortId _sortId;
         private int _unreadMessagesCount;
         private ObservableCollection<MessageViewModel> _receivedMessages = new ObservableCollection<MessageViewModel>();
+        private MessagesCollection _displayedMessages;
         private MessageViewModel _pinnedMessage;
         private bool _isMuted;
         private int _inread;
@@ -49,6 +56,7 @@ namespace ELOR.Laney.ViewModels {
         public ulong SortIndex { get { return GetSortIndex(); } }
         public int UnreadMessagesCount { get { return _unreadMessagesCount; } private set { _unreadMessagesCount = value; OnPropertyChanged(); } }
         public ObservableCollection<MessageViewModel> ReceivedMessages { get { return _receivedMessages; } }
+        public MessagesCollection DisplayedMessages { get { return _displayedMessages; } private set { _displayedMessages = value; OnPropertyChanged(); } }
         public MessageViewModel LastMessage { get { return ReceivedMessages.LastOrDefault(); } }
         public MessageViewModel PinnedMessage { get { return _pinnedMessage; } private set { _pinnedMessage = value; OnPropertyChanged(); } }
         public bool IsMuted { get { return _isMuted; } private set { _isMuted = value; OnPropertyChanged(); } }
@@ -62,19 +70,35 @@ namespace ELOR.Laney.ViewModels {
         public ObservableCollection<int> Mentions { get { return _mentions; } private set { _mentions = value; OnPropertyChanged(); } }
         public string RestrictionReason { get { return _restrictionReason; } private set { _restrictionReason = value; OnPropertyChanged(); } }
 
+        public List<User> MembersUsers { get; private set; } = new List<User>();
+        public List<Group> MembersGroups { get; private set; } = new List<Group>();
+
         private User PeerUser;
         private Group PeerGroup;
 
-        public ChatViewModel(int peerId) {
+        public ChatViewModel(VKSession session, int peerId) {
+            this.session = session;
             SetUpEvents();
             PeerId = peerId;
             Title = peerId.ToString();
         }
 
-        public ChatViewModel(Conversation c, Message lastMessage = null) {
+        public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
+            this.session = session;
             SetUpEvents();
             Setup(c);
             if (lastMessage != null) ReceivedMessages.Add(new MessageViewModel(lastMessage));
+        }
+
+        // Вызывается при отображении беседы на окне
+        public void OnDisplayed() {
+            bool isDisplayedMessagesEmpty = DisplayedMessages == null || DisplayedMessages.Count == 0;
+            Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}", PeerId, isDisplayedMessagesEmpty);
+            if (isDisplayedMessagesEmpty) {
+                LoadMessages();
+            } else {
+                // TODO: scroll to in_read message
+            }
         }
 
         private void Setup(Conversation c) {
@@ -163,7 +187,6 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-
         private void SetUpEvents() {
             // При приёме сообщения обновляем последнее сообщение.
             ReceivedMessages.CollectionChanged += (a, b) => OnPropertyChanged(nameof(LastMessage));
@@ -173,6 +196,47 @@ namespace ELOR.Laney.ViewModels {
                     Subtitle = VKAPIHelper.GetOnlineInfo(Online, PeerUser.Sex).ToLowerInvariant();
             };
         }
+
+        #region Loading messages
+
+        public async void LoadMessages(int startMessageId = -1) {
+            if (IsLoading) return;
+            Placeholder = null;
+            DisplayedMessages?.Clear();
+
+            int count = Constants.MessagesCount;
+            try {
+                Log.Information("LoadMessages peer: {0}, count: {1}", PeerId, count);
+                IsLoading = true;
+                int offset = -count / 2;
+                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, offset, count, startMessageId, false, VKAPIHelper.Fields);
+                CacheManager.Add(mhr.Profiles);
+                CacheManager.Add(mhr.Groups);
+                CacheManager.Add(mhr.MentionedProfiles);
+                CacheManager.Add(mhr.MentionedGroups);
+                MembersUsers = mhr.Profiles;
+                MembersGroups = mhr.Groups;
+                Setup(mhr.Conversation);
+                mhr.Messages.Reverse();
+                DisplayedMessages = new MessagesCollection(mhr.Messages);
+
+                //foreach (MessageViewModel msg in DisplayedMessages) {
+                //    FixState(msg);
+                //}
+
+                //if (startMessageId > 0) ScrollToMessageCallback?.Invoke(startMessageId, true, true);
+                //if (startMessageId == -1) {
+                //    ScrollToMessageCallback?.Invoke(Math.Min(InRead, OutRead), false, false);
+                //}
+            } catch (Exception ex) {
+                Placeholder = PlaceholderViewModel.GetForException(ex, () => { LoadMessages(startMessageId); });
+            } finally {
+                IsLoading = false;
+                // SetPlaceholder();
+            }
+        }
+
+        #endregion
 
         private ulong GetSortIndex() {
             if (SortId.MajorId == 0) return (ulong)SortId.MinorId;

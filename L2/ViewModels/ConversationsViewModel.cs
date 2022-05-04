@@ -16,13 +16,20 @@ namespace ELOR.Laney.ViewModels {
 
         private SourceList<ChatViewModel> _chats = new SourceList<ChatViewModel>();
         private ReadOnlyObservableCollection<ChatViewModel> _sortedChats;
+        private ChatViewModel _visualSelectedChat;
         private bool _isEmpty = true;
 
         public ReadOnlyObservableCollection<ChatViewModel> SortedChats { get { return _sortedChats; } }
+        public ChatViewModel VisualSelectedChat { get { return _visualSelectedChat; } private set { _visualSelectedChat = value; OnPropertyChanged(); } }
         public bool IsEmpty { get { return _isEmpty; } private set { _isEmpty = value; OnPropertyChanged(); } }
 
         public ConversationsViewModel(VKSession session) {
             this.session = session;
+
+            session.PropertyChanged += (a, b) => {
+                if (b.PropertyName == nameof(VKSession.CurrentOpenedChat))
+                    VisualSelectedChat = session.CurrentOpenedChat;
+            };
 
             var observableChats = _chats.Connect();
             var loader = observableChats
@@ -31,7 +38,7 @@ namespace ELOR.Laney.ViewModels {
                 .Bind(out _sortedChats)
                 .Subscribe(t => {
                     IsEmpty = _chats.Count == 0;
-                    session.TriggerPropertyChangedEvent(nameof(VKSession.CurrentOpenedChat)); // чтобы listbox в conversationsview правильно выделял элемент
+                    VisualSelectedChat = session.CurrentOpenedChat;
                     Debug.WriteLine($"Chats count: {_chats.Count}; sorted count: {_sortedChats.Count}");
                 });
 
@@ -50,7 +57,7 @@ namespace ELOR.Laney.ViewModels {
                 foreach (var conv in response.Items) {
                     ChatViewModel chat = CacheManager.GetChat(session.Id, conv.Conversation.Peer.Id);
                     if (chat == null) {
-                        chat = new ChatViewModel(conv.Conversation, conv.LastMessage);
+                        chat = new ChatViewModel(session, conv.Conversation, conv.LastMessage);
                         CacheManager.Add(session.Id, chat);
                     }
                     loadedChats.Add(chat);
