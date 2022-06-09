@@ -21,6 +21,21 @@ namespace ELOR.Laney.Collections {
             }
         }
 
+        // Получает MessagesCollectionGroupItem, в котором содержится сообщение с id-ом messageId
+        public MessagesCollectionGroupItem GetGroupThatHasContainsMessage(int messageId, out int indexInGroup) {
+            foreach (var group in Items) {
+                for (int i = 0; i < group.Count; i++) {
+                    var message = group[i];
+                    if (message.Id == messageId) {
+                        indexInGroup = i;
+                        return group;
+                    }
+                }
+            }
+            indexInGroup = -1;
+            return null;
+        }
+
         public void Insert(MessageViewModel message) {
             var q = from g in Items where g.Key == message.SentTime.Date select g;
             if (q.Count() == 1) {
@@ -155,6 +170,10 @@ namespace ELOR.Laney.Collections {
             }
 
             if (GroupedMessages != null) GroupedMessages.Remove(message);
+        }
+
+        public MessageViewModel GetById(int messageId) {
+            return Items.Where(m => m.Id == messageId).FirstOrDefault();
         }
 
         public void RemoveById(int messageId) {

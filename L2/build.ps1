@@ -31,17 +31,17 @@ if ($IsWindows) {
 if ($IsWindows) {
     $btagw1 = "$($currentversion)-win-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw1;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-x64 --self-contained false -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:Version=$($btagw1) -p:DefineConstants=WIN";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-x64 --self-contained false -p:PublishSingleFile=true -p:Version=$($btagw1) -p:DefineConstants=WIN";
     echo "Win x86-64 is done.$([Environment]::NewLine)";
 
     $btagw2 = "$($currentversion)-win-x86-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw2;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-x86 --self-contained false -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:Version=$($btagw2) -p:DefineConstants=WIN";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-x86 --self-contained false -p:PublishSingleFile=true -p:Version=$($btagw2) -p:DefineConstants=WIN";
     echo "Win x86 is done.$([Environment]::NewLine)";
 
     $btagw3 = "$($currentversion)-win-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw3;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-arm64 --self-contained false -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:Version=$($btagw3) -p:DefineConstants=WIN";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-arm64 --self-contained false -p:PublishSingleFile=true -p:Version=$($btagw3) -p:DefineConstants=WIN";
     echo "Win arm64 is done.$([Environment]::NewLine)";
 }
 
@@ -92,7 +92,6 @@ if ($IsMacOS) {
     echo "Deleting publish folder...";
     Remove-Item -Path "$($location)/publish" -Recurse;
     echo "macOS 12 arm64 is done.$([Environment]::NewLine)";
-}
 }
 
 Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "build-server shutdown";

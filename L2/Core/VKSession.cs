@@ -246,8 +246,18 @@ namespace ELOR.Laney.Core {
         // мы можем получить текущий инстанс VKSession,
         // проверив свойство DataContext у окна или user control
         public static VKSession GetByDataContext(Avalonia.Controls.Control control) {
-            if (control != null && control.DataContext is VKSession session) return session;
-            return null;
+            VKSession session = null;
+            do {
+                if (control.DataContext is VKSession s) {
+                    session = s;
+                } else {
+                    control = (Control)control.Parent;
+                }
+            } while (session == null && control.GetType() != typeof(Window));
+            return session;
+
+            //if (control != null && control.DataContext is VKSession session) return session;
+            //return null;
         }
 
         #endregion

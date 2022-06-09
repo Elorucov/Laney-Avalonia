@@ -56,13 +56,10 @@
               <Border Background="#2f7f7f7f" HorizontalAlignment="Center" Margin="0,4,0,8">
                 <TextBlock Text="{Binding Key}"/>
               </Border>
-              <ItemsRepeater Items="{Binding}">
-                <ItemsRepeater.Layout>
-                  <StackLayout Spacing="4"/>
-                </ItemsRepeater.Layout>
-                <ItemsRepeater.ItemTemplate>
+              <ListBox Background="Transparent" Items="{Binding}" SelectionMode="Multiple,Toggle" VirtualizationMode="None">
+                <ListBox.ItemTemplate>
                   <DataTemplate>
-                    <Grid ColumnDefinitions="44 Auto">
+                    <Grid Margin="0,4" ColumnDefinitions="44 Auto">
                       <vkui:Avatar Margin="12,0,0,0" ImageUri="{Binding SenderAvatar}" Initials="{Binding SenderName}" Width="32" Height="32" VerticalAlignment="Bottom" IsVisible="{Binding IsSenderAvatarVisible}"/>
                       <Border Grid.Column="1" Background="#7f7f7f7f" Margin="12,0,0,0">
                         <StackPanel Margin="12" MaxWidth="308">
@@ -72,8 +69,8 @@
                       </Border>
                     </Grid>
                   </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
-              </ItemsRepeater>
+                </ListBox.ItemTemplate>
+              </ListBox>
             </StackPanel>
           </DataTemplate>
         </ItemsRepeater.ItemTemplate>

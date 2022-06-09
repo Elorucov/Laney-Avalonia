@@ -12,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
     public sealed class ChatViewModel : CommonViewModel {
@@ -75,6 +73,9 @@ namespace ELOR.Laney.ViewModels {
 
         private User PeerUser;
         private Group PeerGroup;
+
+        public Action<int> ScrollToMessageCallback;
+        public Action<MessageViewModel> MessageAddedToLastCallback;
 
         public ChatViewModel(VKSession session, int peerId) {
             this.session = session;
@@ -224,10 +225,10 @@ namespace ELOR.Laney.ViewModels {
                 //    FixState(msg);
                 //}
 
-                //if (startMessageId > 0) ScrollToMessageCallback?.Invoke(startMessageId, true, true);
-                //if (startMessageId == -1) {
-                //    ScrollToMessageCallback?.Invoke(Math.Min(InRead, OutRead), false, false);
-                //}
+                if (startMessageId > 0) ScrollToMessageCallback?.Invoke(startMessageId);
+                if (startMessageId == -1) {
+                    ScrollToMessageCallback?.Invoke(Math.Min(InRead, OutRead));
+                }
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, () => { LoadMessages(startMessageId); });
             } finally {

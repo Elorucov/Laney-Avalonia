@@ -8,7 +8,7 @@
     <RootNamespace>ELOR.Laney</RootNamespace>
     <AssemblyVersion>2.0.96</AssemblyVersion>
     <FileVersion>2.0.96</FileVersion>
-    <Version>2.0.96-devplat-anycpu-devuser.devpc-220428-1950</Version>
+    <Version>2.0.96-devplat-anycpu-devuser.devpc-220609-1912</Version>
     <Platforms>AnyCPU</Platforms>
     <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -64,15 +64,15 @@
     <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.13" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+    <PackageReference Include="Avalonia" Version="0.10.15" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.13" />
-    <PackageReference Include="DynamicData" Version="7.6.7" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.15" />
+    <PackageReference Include="DynamicData" Version="7.8.6" />
     <PackageReference Include="Serilog" Version="2.11.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.5.12" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="0.10.12" />
+    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.5.14" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="0.10.14" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
