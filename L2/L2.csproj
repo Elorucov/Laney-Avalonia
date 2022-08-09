@@ -35,6 +35,13 @@
     <NoWarn>8632</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <AvaloniaXaml Remove="Controls\ChatListView.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Collections\MessagesCollection.cs" />
+    <Compile Remove="Controls\ChatListView.axaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="Assets\i18n\en-US.json" />
     <None Remove="Assets\i18n\ru-RU.json" />
@@ -64,15 +71,15 @@
     <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.15" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
+    <PackageReference Include="Avalonia" Version="0.10.17" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.17" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.15" />
-    <PackageReference Include="DynamicData" Version="7.8.6" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.17" />
+    <PackageReference Include="DynamicData" Version="7.9.7" />
     <PackageReference Include="Serilog" Version="2.11.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.5.14" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="0.10.14" />
+    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.5.16" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="0.10.16" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
@@ -91,5 +98,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ELOR.VKAPILib\ELOR.VKAPILib.csproj" />
     <ProjectReference Include="..\VKUI\VKUI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\MessageBubble.axaml" />
   </ItemGroup>
 </Project>

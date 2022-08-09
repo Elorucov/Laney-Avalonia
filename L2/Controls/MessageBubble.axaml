@@ -1,0 +1,38 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:controls="using:ELOR.Laney.Controls">
+  <Design.PreviewWith>
+    <StackPanel Width="432">
+      <controls:MessageBubble />
+    </StackPanel>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|MessageBubble">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid x:Name="Root" ColumnDefinitions="Auto *" Margin="12,4">
+          <vkui:Avatar x:Name="SenderAvatar" VerticalAlignment="Bottom" Margin="0,0,8,2" Width="32" Height="32"
+                       Initials="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}"
+                       ImageUri="{Binding Message.SenderAvatar, RelativeSource={RelativeSource TemplatedParent}}"/>
+          <Grid x:Name="BubbleRoot" RowDefinitions="* Auto" Grid.Column="1" MinHeight="40" MinWidth="48" MaxWidth="420" HorizontalAlignment="Left">
+            <Border x:Name="BubbleBackground" Grid.RowSpan="2" CornerRadius="18"/>
+            <StackPanel x:Name="MessageContent">
+              <TextBlock x:Name="SenderName" Margin="12,7,12,0" Classes="Caption1" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.IsSenderNameVisible, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock x:Name="MessageText" Margin="12,0,12,9" TextWrapping="Wrap" Classes="Title3" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </StackPanel>
+          </Grid>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="Border.IncomingMessageBackground">
+    <Setter Property="Background" Value="{DynamicResource VKImBubbleIncomingBrush}"/>
+  </Style>
+  
+  <Style Selector="Border.OutgoingMessageBackground">
+    <Setter Property="Background" Value="{DynamicResource VKImBubbleOutgoingBrush}"/>
+  </Style>
+</Styles>

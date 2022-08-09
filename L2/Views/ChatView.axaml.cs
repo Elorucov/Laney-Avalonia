@@ -17,7 +17,8 @@ namespace ELOR.Laney.Views {
         public ChatView() {
             InitializeComponent();
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
-            this.DataContextChanged += ChatView_DataContextChanged;
+            DataContextChanged += ChatView_DataContextChanged;
+            // scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
         }
 
         public event EventHandler BackButtonClick;
@@ -29,28 +30,37 @@ namespace ELOR.Laney.Views {
             Chat.ScrollToMessageCallback = ScrollToMessage;
         }
 
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
+            //double trigger = 40;
+            //double h = scrollViewer.Extent.Height;
+            //double y = scrollViewer.Offset.Y;
+            //if (y < trigger) {
+            //    Chat.LoadPreviousMessages();
+            //} else if (y > h - trigger) {
+            //    Chat.LoadNextMessages();
+            //}
+        }
+
         private async void ScrollToMessage(int messageId) {
-            await Task.Delay(100);
+            //int indexInGroup = -1;
+            //var group = Chat.DisplayedMessages.GroupedMessages.GetGroupThatHasContainsMessage(messageId, out indexInGroup);
 
-            int indexInGroup = -1;
-            var group = Chat.DisplayedMessages.GroupedMessages.GetGroupThatHasContainsMessage(messageId, out indexInGroup);
+            //if (group == null) {
+            //    Log.Warning($"Cannot scroll to message {messageId}: group that contains this message is not found!");
+            //    return;
+            //}
 
-            if (group == null) {
-                Log.Warning($"Cannot scroll to message {messageId}: group that contains this message is not found!");
-                return;
-            }
+            //int groupIndex = Chat.DisplayedMessages.GroupedMessages.IndexOf(group);
+            //var element = itemsRepeater.GetOrCreateElement(groupIndex);
 
-            int groupIndex = Chat.DisplayedMessages.GroupedMessages.IndexOf(group);
-            var element = itemsRepeater.GetOrCreateElement(groupIndex);
-
-            // чекайте xaml datatemplate, это stackpanel
-            // первый элемент внутри — дата, а второй — ListBox с сообщениями (с ItemsRepeater есть проблемы!)
-            if (element is StackPanel sp) {
-                ListBox lb = sp.Children[1] as ListBox;
-                lb.ScrollIntoView(indexInGroup);
-            } else {
-                Log.Warning($"Cannot scroll to message {messageId}: group UI is wrong type!");
-            }
+            //// чекайте xaml datatemplate, это stackpanel
+            //// первый элемент внутри — дата, а второй — ListBox с сообщениями (с ItemsRepeater есть проблемы!)
+            //if (element is StackPanel sp) {
+            //    ListBox lb = sp.Children[1] as ListBox;
+            //    lb.ScrollIntoView(indexInGroup);
+            //} else {
+            //    Log.Warning($"Cannot scroll to message {messageId}: group UI is wrong type!");
+            //}
         }
     }
 }

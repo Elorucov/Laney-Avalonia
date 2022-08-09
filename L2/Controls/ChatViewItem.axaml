@@ -1,0 +1,16 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ELOR.Laney.Controls">
+  <Design.PreviewWith>
+    <controls:ChatViewItem />
+  </Design.PreviewWith>
+
+  <Style Selector="controls|ChatViewItem">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="ChatViewItemRoot"/>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

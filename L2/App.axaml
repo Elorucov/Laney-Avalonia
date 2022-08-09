@@ -30,6 +30,10 @@
     <FluentTheme Mode="Light"/>
     <ui:VKUITheme Scheme="BrightLight"/>
     
+    <!--<StyleInclude Source="avares://Laney/Controls/ChatListView.axaml"/>-->
+    <StyleInclude Source="avares://Laney/Controls/ChatViewItem.axaml"/>
+    <StyleInclude Source="avares://Laney/Controls/MessageBubble.axaml"/>
+      
     <Style Selector="Button.Hyperlink">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Padding" Value="0"/>

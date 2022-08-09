@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="using:ELOR.Laney.Controls"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="480"
              x:Class="ELOR.Laney.Views.ChatView">
   <Grid x:Name="Root" RowDefinitions="Auto Auto * Auto">
@@ -46,36 +47,40 @@
     </Border>
 
     <ScrollViewer x:Name="scrollViewer" Grid.Row="2">
-      <ItemsRepeater x:Name="itemsRepeater" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages.GroupedMessages}">
+      <ItemsRepeater x:Name="itemsRepeater" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages.DisplayableElements}">
         <ItemsRepeater.Layout>
           <StackLayout/>
         </ItemsRepeater.Layout>
         <ItemsRepeater.ItemTemplate>
           <DataTemplate>
-            <StackPanel>
-              <Border Background="#2f7f7f7f" HorizontalAlignment="Center" Margin="0,4,0,8">
-                <TextBlock Text="{Binding Key}"/>
-              </Border>
-              <ListBox Background="Transparent" Items="{Binding}" SelectionMode="Multiple,Toggle" VirtualizationMode="None">
-                <ListBox.ItemTemplate>
-                  <DataTemplate>
-                    <Grid Margin="0,4" ColumnDefinitions="44 Auto">
-                      <vkui:Avatar Margin="12,0,0,0" ImageUri="{Binding SenderAvatar}" Initials="{Binding SenderName}" Width="32" Height="32" VerticalAlignment="Bottom" IsVisible="{Binding IsSenderAvatarVisible}"/>
-                      <Border Grid.Column="1" Background="#7f7f7f7f" Margin="12,0,0,0">
-                        <StackPanel Margin="12" MaxWidth="308">
-                          <TextBlock Text="{Binding SenderName}" IsVisible="{Binding IsSenderNameVisible}" Foreground="Blue"/>
-                          <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
-                        </StackPanel>
-                      </Border>
-                    </Grid>
-                  </DataTemplate>
-                </ListBox.ItemTemplate>
-              </ListBox>
-            </StackPanel>
+            <controls:ChatViewItem Element="{Binding}"/>
           </DataTemplate>
         </ItemsRepeater.ItemTemplate>
       </ItemsRepeater>
     </ScrollViewer>
+
+    <!--<controls:ChatListView Grid.Row="2" Items="{Binding DisplayedMessages}">
+      <controls:ChatListView.ItemTemplate>
+        <DataTemplate>
+          <Grid Margin="0,4" ColumnDefinitions="44 Auto">
+            <vkui:Avatar Margin="12,0,0,0" ImageUri="{Binding SenderAvatar}" Initials="{Binding SenderName}" Width="32" Height="32" VerticalAlignment="Bottom" IsVisible="{Binding IsSenderAvatarVisible}"/>
+            <Border Grid.Column="1" Background="#7f7f7f7f" Margin="12,0,0,0">
+              <StackPanel Margin="12" MaxWidth="308">
+                <TextBlock Text="{Binding SenderName}" IsVisible="{Binding IsSenderNameVisible}" Foreground="Blue"/>
+                <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+              </StackPanel>
+            </Border>
+          </Grid>
+        </DataTemplate>
+      </controls:ChatListView.ItemTemplate>
+      <controls:ChatListView.GroupHeaderTemplate>
+        <DataTemplate>
+          <Border Background="#2f7f7f7f" HorizontalAlignment="Center" Margin="0,4,0,8">
+            <TextBlock Text="{Binding}"/>
+          </Border>
+        </DataTemplate>
+      </controls:ChatListView.GroupHeaderTemplate>
+    </controls:ChatListView>-->
     
     <Grid Grid.Row="2" x:Name="EmptyListContainer" IsVisible="{Binding !DisplayedMessages.Count}">
       <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>

@@ -5,6 +5,7 @@ using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public enum MessageVMState {
@@ -181,6 +182,14 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (_forwardedMessages.Count > 0) return Localizer.Instance.GetDeclensionFormatted2(_forwardedMessages.Count, "forwarded_message");
 
             return Localizer.Instance["empty_message"];
+        }
+
+        public static List<MessageViewModel> BuildFromAPI(List<Message> messages) {
+            List<MessageViewModel> vms = new List<MessageViewModel>();
+            foreach (var message in CollectionsMarshal.AsSpan<Message>(messages)) {
+                vms.Add(new MessageViewModel(message));
+            }
+            return vms;
         }
     }
 }

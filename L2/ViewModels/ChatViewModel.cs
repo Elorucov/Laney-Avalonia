@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
     public sealed class ChatViewModel : CommonViewModel {
@@ -28,7 +29,7 @@ namespace ELOR.Laney.ViewModels {
         private SortId _sortId;
         private int _unreadMessagesCount;
         private ObservableCollection<MessageViewModel> _receivedMessages = new ObservableCollection<MessageViewModel>();
-        private MessagesCollection _displayedMessages;
+        private MessagesCollection2 _displayedMessages;
         private MessageViewModel _pinnedMessage;
         private bool _isMuted;
         private int _inread;
@@ -54,7 +55,7 @@ namespace ELOR.Laney.ViewModels {
         public ulong SortIndex { get { return GetSortIndex(); } }
         public int UnreadMessagesCount { get { return _unreadMessagesCount; } private set { _unreadMessagesCount = value; OnPropertyChanged(); } }
         public ObservableCollection<MessageViewModel> ReceivedMessages { get { return _receivedMessages; } }
-        public MessagesCollection DisplayedMessages { get { return _displayedMessages; } private set { _displayedMessages = value; OnPropertyChanged(); } }
+        public MessagesCollection2 DisplayedMessages { get { return _displayedMessages; } private set { _displayedMessages = value; OnPropertyChanged(); } }
         public MessageViewModel LastMessage { get { return ReceivedMessages.LastOrDefault(); } }
         public MessageViewModel PinnedMessage { get { return _pinnedMessage; } private set { _pinnedMessage = value; OnPropertyChanged(); } }
         public bool IsMuted { get { return _isMuted; } private set { _isMuted = value; OnPropertyChanged(); } }
@@ -219,12 +220,13 @@ namespace ELOR.Laney.ViewModels {
                 MembersGroups = mhr.Groups;
                 Setup(mhr.Conversation);
                 mhr.Messages.Reverse();
-                DisplayedMessages = new MessagesCollection(mhr.Messages);
+                DisplayedMessages = new MessagesCollection2(MessageViewModel.BuildFromAPI(mhr.Messages));
 
                 //foreach (MessageViewModel msg in DisplayedMessages) {
                 //    FixState(msg);
                 //}
 
+                await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
                 if (startMessageId > 0) ScrollToMessageCallback?.Invoke(startMessageId);
                 if (startMessageId == -1) {
                     ScrollToMessageCallback?.Invoke(Math.Min(InRead, OutRead));
@@ -237,17 +239,68 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
+        public async void LoadPreviousMessages() {
+            if (DisplayedMessages?.Count == 0 || IsLoading) return;
+            int count = Constants.MessagesCount;
+
+            try {
+                Log.Information("LoadPreviousMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages.Count);
+                IsLoading = true;
+                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.Id, false, VKAPIHelper.Fields, true);
+                CacheManager.Add(mhr.MentionedProfiles);
+                CacheManager.Add(mhr.MentionedGroups);
+                mhr.Messages.Reverse();
+                DisplayedMessages.InsertRange(mhr.Messages.Select(m => new MessageViewModel(m)).ToList());
+                //foreach (Message msg in mhr.Messages) {
+                //    MessageViewModel mvm = new MessageViewModel(msg);
+                //    FixState(mvm);
+                //    Messages.Insert(mvm);
+                //    await Task.Yield();
+                //}
+                await Task.Delay(200); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
+            } catch (Exception ex) {
+                //if (await ExceptionHelper.ShowErrorDialogAsync(ex)) {
+                //    LoadPreviousMessages();
+                //}
+            } finally {
+                IsLoading = false;
+            }
+        }
+
+        public async void LoadNextMessages() {
+            if (DisplayedMessages?.Count == 0 || IsLoading) return;
+            int count = Constants.MessagesCount;
+
+            try {
+                Log.Information("LoadNextMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages.Count);
+                IsLoading = true;
+                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.Id, false, VKAPIHelper.Fields, false);
+                CacheManager.Add(mhr.MentionedProfiles);
+                CacheManager.Add(mhr.MentionedGroups);
+                mhr.Messages.Reverse();
+                DisplayedMessages.InsertRange(mhr.Messages.Select(m => new MessageViewModel(m)).ToList());
+                //foreach (Message msg in mhr.Messages) {
+                //    MessageViewModel mvm = new MessageViewModel(msg);
+                //    FixState(mvm);
+                //    Messages.Insert(mvm);
+                //    await Task.Yield();
+                //}
+                await Task.Delay(200); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
+            } catch (Exception ex) {
+                //if (await ExceptionHelper.ShowErrorDialogAsync(ex)) {
+                //    LoadNextMessages();
+                //}
+            } finally {
+                IsLoading = false;
+            }
+        }
+
         #endregion
 
         private ulong GetSortIndex() {
             if (SortId.MajorId == 0) return (ulong)SortId.MinorId;
             ulong index = ((ulong)SortId.MajorId * 100000000) + (ulong)SortId.MinorId;
             return index;
-        }
-
-        public void TestSetSortId(int num) {
-            SortId.MinorId = num;
-            OnPropertyChanged(nameof(SortIndex));
         }
     }
 }
