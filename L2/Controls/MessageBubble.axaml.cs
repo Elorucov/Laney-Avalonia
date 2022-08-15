@@ -66,6 +66,11 @@ namespace ELOR.Laney.Controls {
                 if (change.OldValue.HasValue && change.OldValue.Value is MessageViewModel oldm) {
                     oldm.PropertyChanged -= Message_PropertyChanged;
                 }
+                if (Message == null) {
+                    IsVisible = false;
+                    return;
+                }
+                IsVisible = true;
                 Message.PropertyChanged += Message_PropertyChanged;
                 RenderElement();
             }

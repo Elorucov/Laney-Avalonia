@@ -29,7 +29,7 @@ namespace ELOR.Laney.ViewModels {
         private SortId _sortId;
         private int _unreadMessagesCount;
         private ObservableCollection<MessageViewModel> _receivedMessages = new ObservableCollection<MessageViewModel>();
-        private MessagesCollection2 _displayedMessages;
+        private MessagesCollection _displayedMessages;
         private MessageViewModel _pinnedMessage;
         private bool _isMuted;
         private int _inread;
@@ -55,7 +55,7 @@ namespace ELOR.Laney.ViewModels {
         public ulong SortIndex { get { return GetSortIndex(); } }
         public int UnreadMessagesCount { get { return _unreadMessagesCount; } private set { _unreadMessagesCount = value; OnPropertyChanged(); } }
         public ObservableCollection<MessageViewModel> ReceivedMessages { get { return _receivedMessages; } }
-        public MessagesCollection2 DisplayedMessages { get { return _displayedMessages; } private set { _displayedMessages = value; OnPropertyChanged(); } }
+        public MessagesCollection DisplayedMessages { get { return _displayedMessages; } private set { _displayedMessages = value; OnPropertyChanged(); } }
         public MessageViewModel LastMessage { get { return ReceivedMessages.LastOrDefault(); } }
         public MessageViewModel PinnedMessage { get { return _pinnedMessage; } private set { _pinnedMessage = value; OnPropertyChanged(); } }
         public bool IsMuted { get { return _isMuted; } private set { _isMuted = value; OnPropertyChanged(); } }
@@ -75,8 +75,9 @@ namespace ELOR.Laney.ViewModels {
         private User PeerUser;
         private Group PeerGroup;
 
-        public Action<int> ScrollToMessageCallback;
-        public Action<MessageViewModel> MessageAddedToLastCallback;
+        public event EventHandler<int> ScrollToMessageRequested;
+        public event EventHandler<bool> MessagesChunkLoaded; // получение сообщений (false - предыдущих, true - следующих)
+        public EventHandler<MessageViewModel> MessageAddedToLast;
 
         public ChatViewModel(VKSession session, int peerId) {
             this.session = session;
@@ -105,7 +106,7 @@ namespace ELOR.Laney.ViewModels {
 
         private void Setup(Conversation c) {
             PeerId = c.Peer.Id;
-            SortId = c.SortId;
+            if (SortId?.MajorId != c.SortId.MajorId || SortId?.MinorId != c.SortId.MinorId) SortId = c.SortId; // чтобы не дёргался listbox.
             UnreadMessagesCount = c.UnreadCount;
             CanWrite = c.CanWrite;
             InRead = c.InRead;
@@ -220,16 +221,16 @@ namespace ELOR.Laney.ViewModels {
                 MembersGroups = mhr.Groups;
                 Setup(mhr.Conversation);
                 mhr.Messages.Reverse();
-                DisplayedMessages = new MessagesCollection2(MessageViewModel.BuildFromAPI(mhr.Messages));
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages));
 
                 //foreach (MessageViewModel msg in DisplayedMessages) {
                 //    FixState(msg);
                 //}
 
                 await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
-                if (startMessageId > 0) ScrollToMessageCallback?.Invoke(startMessageId);
+                if (startMessageId > 0) ScrollToMessageRequested?.Invoke(this, startMessageId);
                 if (startMessageId == -1) {
-                    ScrollToMessageCallback?.Invoke(Math.Min(InRead, OutRead));
+                    ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
                 }
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, () => { LoadMessages(startMessageId); });
@@ -250,6 +251,7 @@ namespace ELOR.Laney.ViewModels {
                 CacheManager.Add(mhr.MentionedProfiles);
                 CacheManager.Add(mhr.MentionedGroups);
                 mhr.Messages.Reverse();
+                MessagesChunkLoaded?.Invoke(this, false);
                 DisplayedMessages.InsertRange(mhr.Messages.Select(m => new MessageViewModel(m)).ToList());
                 //foreach (Message msg in mhr.Messages) {
                 //    MessageViewModel mvm = new MessageViewModel(msg);
@@ -278,6 +280,7 @@ namespace ELOR.Laney.ViewModels {
                 CacheManager.Add(mhr.MentionedProfiles);
                 CacheManager.Add(mhr.MentionedGroups);
                 mhr.Messages.Reverse();
+                MessagesChunkLoaded?.Invoke(this, true);
                 DisplayedMessages.InsertRange(mhr.Messages.Select(m => new MessageViewModel(m)).ToList());
                 //foreach (Message msg in mhr.Messages) {
                 //    MessageViewModel mvm = new MessageViewModel(msg);

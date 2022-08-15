@@ -1,35 +1,26 @@
-﻿using ELOR.Laney.ViewModels.Controls;
-using ELOR.VKAPILib.Objects;
+﻿using DynamicData;
+using ELOR.Laney.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.Collections {
-    public class MessagesCollection2 {
-        public ObservableCollection<object> DisplayableElements { get; private set; } = new ObservableCollection<object>();
-        public List<MessageViewModel> Messages => 
-            DisplayableElements.Where(de => de.GetType() == typeof(MessageViewModel)).Cast<MessageViewModel>().ToList();
+    public class MessagesCollection : ObservableCollection<MessageViewModel> {
+        public MessageViewModel First => this.FirstOrDefault();
+        public MessageViewModel Last => this.LastOrDefault();
 
-        public int Count => DisplayableElements.Count;
-        public int MessagesCount => Messages.Count;
-        public MessageViewModel First => Messages?.FirstOrDefault();
-        public MessageViewModel Last => Messages?.LastOrDefault();
-
-        public MessagesCollection2(List<MessageViewModel> messages) {
+        public MessagesCollection(List<MessageViewModel> messages) {
             for (int i = 0; i < messages.Count; i++) {
                 MessageViewModel message = messages[i];
 
                 bool isPrevFromSameSender = false;
                 if (i == 0) {
-                    DisplayableElements.Add(message.SentTime.Date);
+                    isPrevFromSameSender = false;
                 } else {
                     var prev = messages[i - 1];
                     isPrevFromSameSender = prev.SenderId == message.SenderId && prev.SentTime.Date == message.SentTime.Date;
-                    if (prev.SentTime.Date != message.SentTime.Date) DisplayableElements.Add(message.SentTime.Date);
                 }
 
 
@@ -42,40 +33,24 @@ namespace ELOR.Laney.Collections {
                 }
 
                 message.UpdateSenderInfoView(isPrevFromSameSender, isNextFromSameSender);
-                DisplayableElements.Add(message);
+                Items.Add(message);
             }
         }
 
         public void Insert(MessageViewModel message) {
             int idx = 0;
-            var q = DisplayableElements.Where(obj => obj is MessageViewModel msg && msg.Id == message.Id).FirstOrDefault();
+
+            var q = Items.Where(obj => obj is MessageViewModel msg && msg.Id == message.Id).FirstOrDefault();
             if (q != null && q is MessageViewModel old) {
-                idx = DisplayableElements.IndexOf(old);
-                Remove(old);
+                idx = Items.IndexOf(old);
+                RemoveAt(idx);
             } else {
-                idx = DisplayableElements.ToList().BinarySearch(message);
+                idx = Items.ToList().BinarySearch(message);
                 if (idx < 0) idx = ~idx;
             }
 
-            if (idx == 1) {
-                //
-            } else {
-                var prev = DisplayableElements[idx - 1];
-                if (prev is MessageViewModel prevmsg) {
-                    bool isPrevFromSameSender = prevmsg.SenderId == message.SenderId && prevmsg.SentTime.Date == message.SentTime.Date;
-                    prevmsg.UpdateSenderInfoView(null, isPrevFromSameSender);
-                }
-            }
-
-            if (idx == DisplayableElements.Count - 1) {
-                //
-            } else {
-                var next = DisplayableElements[idx + 1];
-                if (next is MessageViewModel nextmsg) {
-                    bool isNextFromSameSender = nextmsg.SenderId == message.SenderId && nextmsg.SentTime.Date == message.SentTime.Date;
-                    nextmsg.UpdateSenderInfoView(isNextFromSameSender, null);
-                }
-            }
+            Insert(idx, message);
+            UpdateSenderInfoView(message);
         }
 
         public void InsertRange(List<MessageViewModel> messages) {
@@ -85,41 +60,42 @@ namespace ELOR.Laney.Collections {
         }
 
         public void Remove(MessageViewModel message) {
-            int index = DisplayableElements.IndexOf(message);
+            int index = Items.IndexOf(message);
             if (index == -1) return;
-            DisplayableElements.Remove(message);
-            
-            if (index == DisplayableElements.Count) {
-                var prev = DisplayableElements[index - 1];
-                if (prev is MessageViewModel prevmsg) prevmsg.UpdateSenderInfoView(null, false);
-            } else if (index == 1) {
-                var next = DisplayableElements[1];
-                if (next is MessageViewModel nextmsg) nextmsg.UpdateSenderInfoView(false, null);
-            } else if (index > 1 && index < DisplayableElements.Count) {
-                var prev = DisplayableElements[index - 1];
-                var repl = DisplayableElements[index];
-                if (prev is DateTime) prev = DisplayableElements[index - 2];
-                if (repl is DateTime) prev = DisplayableElements[index + 1];
+            RemoveAt(index);
+            UpdateSenderInfoView(this.ElementAt(index));
+        }
 
-                MessageViewModel prevmsg = prev as MessageViewModel;
-                MessageViewModel replmsg = repl as MessageViewModel;
-                bool isMessagesFromSameSender = prevmsg.SenderId == replmsg.SenderId && prevmsg.SentTime.Date == replmsg.SentTime.Date;
-                prevmsg.UpdateSenderInfoView(null, isMessagesFromSameSender);
-                replmsg.UpdateSenderInfoView(isMessagesFromSameSender, null);
+        private void UpdateSenderInfoView(MessageViewModel msg) {
+            int index = IndexOf(msg);
+
+            if (Count == 1) {
+                msg.UpdateSenderInfoView(false, false);
+            } else if (Count > 1) {
+                bool isPrevFromSameSender = false;
+                bool isNextFromSameSender = false;
+
+                if (index > 0) {
+                    var prev = this[index - 1];
+                    isPrevFromSameSender = msg.SenderId == prev.SenderId && msg.SentTime.Date == prev.SentTime.Date;
+                    prev.UpdateSenderInfoView(null, isPrevFromSameSender);
+                }
+                if (index < Count - 1) {
+                    var next = this[index + 1];
+                    isNextFromSameSender = msg.SenderId == next.SenderId && msg.SentTime.Date == next.SentTime.Date;
+                    next.UpdateSenderInfoView(isNextFromSameSender, null);
+                }
+                msg.UpdateSenderInfoView(isPrevFromSameSender, isNextFromSameSender);
             }
         }
 
         public MessageViewModel GetById(int messageId) {
-            return Messages.Where(m => m.Id == messageId).FirstOrDefault();
+            return this.Where(m => m.Id == messageId).FirstOrDefault();
         }
 
         public void RemoveById(int messageId) {
             var message = GetById(messageId);
             if (message != null) Remove(message);
-        }
-
-        public void Clear() {
-            DisplayableElements.Clear();
         }
     }
 }

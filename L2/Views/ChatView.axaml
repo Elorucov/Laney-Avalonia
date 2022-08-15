@@ -47,40 +47,18 @@
     </Border>
 
     <ScrollViewer x:Name="scrollViewer" Grid.Row="2">
-      <ItemsRepeater x:Name="itemsRepeater" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages.DisplayableElements}">
+      <ItemsRepeater x:Name="itemsRepeater" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages}" VerticalCacheLength="999">
         <ItemsRepeater.Layout>
-          <StackLayout/>
+          <StackLayout DisableVirtualization="True"/>
         </ItemsRepeater.Layout>
         <ItemsRepeater.ItemTemplate>
           <DataTemplate>
-            <controls:ChatViewItem Element="{Binding}"/>
+            <!--<controls:MessageBubble Message="{Binding}"/>-->
+            <Border x:Name="MessageUIRoot" DataContextChanged="MessageUIRoot_DataContextChanged"/>
           </DataTemplate>
         </ItemsRepeater.ItemTemplate>
       </ItemsRepeater>
     </ScrollViewer>
-
-    <!--<controls:ChatListView Grid.Row="2" Items="{Binding DisplayedMessages}">
-      <controls:ChatListView.ItemTemplate>
-        <DataTemplate>
-          <Grid Margin="0,4" ColumnDefinitions="44 Auto">
-            <vkui:Avatar Margin="12,0,0,0" ImageUri="{Binding SenderAvatar}" Initials="{Binding SenderName}" Width="32" Height="32" VerticalAlignment="Bottom" IsVisible="{Binding IsSenderAvatarVisible}"/>
-            <Border Grid.Column="1" Background="#7f7f7f7f" Margin="12,0,0,0">
-              <StackPanel Margin="12" MaxWidth="308">
-                <TextBlock Text="{Binding SenderName}" IsVisible="{Binding IsSenderNameVisible}" Foreground="Blue"/>
-                <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
-              </StackPanel>
-            </Border>
-          </Grid>
-        </DataTemplate>
-      </controls:ChatListView.ItemTemplate>
-      <controls:ChatListView.GroupHeaderTemplate>
-        <DataTemplate>
-          <Border Background="#2f7f7f7f" HorizontalAlignment="Center" Margin="0,4,0,8">
-            <TextBlock Text="{Binding}"/>
-          </Border>
-        </DataTemplate>
-      </controls:ChatListView.GroupHeaderTemplate>
-    </controls:ChatListView>-->
     
     <Grid Grid.Row="2" x:Name="EmptyListContainer" IsVisible="{Binding !DisplayedMessages.Count}">
       <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
@@ -94,6 +72,8 @@
         </vkui:Placeholder.Action>
       </vkui:Placeholder>
     </Grid>
+    
+    <TextBlock x:Name="dbgScrollInfo" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
     
     <StackPanel x:Name="WriteBarContainer" Grid.Row="3" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNullOrEmpty}}">
       <Grid MinHeight="52" ColumnDefinitions="Auto * Auto">

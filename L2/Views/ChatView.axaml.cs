@@ -9,16 +9,18 @@ using Serilog;
 using Avalonia.VisualTree;
 using System.Threading.Tasks;
 using System.Linq;
+using ELOR.Laney.Controls;
+using ELOR.Laney.ViewModels.Controls;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
-        ChatViewModel Chat { get { return DataContext as ChatViewModel; } }
+        ChatViewModel Chat { get; set; }
 
         public ChatView() {
             InitializeComponent();
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
             DataContextChanged += ChatView_DataContextChanged;
-            // scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+            scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
         }
 
         public event EventHandler BackButtonClick;
@@ -27,40 +29,63 @@ namespace ELOR.Laney.Views {
         }
 
         private void ChatView_DataContextChanged(object sender, EventArgs e) {
-            Chat.ScrollToMessageCallback = ScrollToMessage;
+            if (Chat != null) {
+                Chat.ScrollToMessageRequested -= ScrollToMessage;
+                Chat.MessagesChunkLoaded -= TrySaveScroll;
+            }
+
+            Chat = DataContext as ChatViewModel;
+            Chat.ScrollToMessageRequested += ScrollToMessage;
+            Chat.MessagesChunkLoaded += TrySaveScroll;
         }
 
-        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
-            //double trigger = 40;
-            //double h = scrollViewer.Extent.Height;
-            //double y = scrollViewer.Offset.Y;
-            //if (y < trigger) {
-            //    Chat.LoadPreviousMessages();
-            //} else if (y > h - trigger) {
-            //    Chat.LoadNextMessages();
-            //}
+        double oldScrollViewerHeight = 0;
+        bool needToSaveScroll = false;
+        private async void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
+            double trigger = 40;
+            double h = scrollViewer.Extent.Height;
+            double y = scrollViewer.Offset.Y;
+            dbgScrollInfo.Text = $"{Math.Round(y)}/{h}";
+
+            if (needToSaveScroll && oldScrollViewerHeight != h) {
+                double diff = h - oldScrollViewerHeight;
+                double newpos = y + diff;
+
+                scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
+                while (scrollViewer.Offset.Y != newpos) {
+                    scrollViewer.Offset = new Vector(scrollViewer.Offset.X, newpos);
+                    await Task.Delay(32).ConfigureAwait(false);
+                }
+                scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+
+                needToSaveScroll = false;
+                oldScrollViewerHeight = h;
+                return;
+            }
+
+            oldScrollViewerHeight = h;
+            if (y < trigger) {
+                Chat.LoadPreviousMessages();
+            } else if (y > h - trigger) {
+                Chat.LoadNextMessages();
+            }
         }
 
-        private async void ScrollToMessage(int messageId) {
-            //int indexInGroup = -1;
-            //var group = Chat.DisplayedMessages.GroupedMessages.GetGroupThatHasContainsMessage(messageId, out indexInGroup);
+        private void TrySaveScroll(object sender, bool e) {
+            if (e) return; // нужно "сохранить" скролл при прогрузке предыдущих сообщений.
+            needToSaveScroll = true;
+        }
 
-            //if (group == null) {
-            //    Log.Warning($"Cannot scroll to message {messageId}: group that contains this message is not found!");
-            //    return;
-            //}
+        private void ScrollToMessage(object sender, int messageId) {
+            var element = itemsRepeater.GetOrCreateElement(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
+            element.BringIntoView();
+        }
 
-            //int groupIndex = Chat.DisplayedMessages.GroupedMessages.IndexOf(group);
-            //var element = itemsRepeater.GetOrCreateElement(groupIndex);
-
-            //// чекайте xaml datatemplate, это stackpanel
-            //// первый элемент внутри — дата, а второй — ListBox с сообщениями (с ItemsRepeater есть проблемы!)
-            //if (element is StackPanel sp) {
-            //    ListBox lb = sp.Children[1] as ListBox;
-            //    lb.ScrollIntoView(indexInGroup);
-            //} else {
-            //    Log.Warning($"Cannot scroll to message {messageId}: group UI is wrong type!");
-            //}
+        private void MessageUIRoot_DataContextChanged(object sender, EventArgs e) {
+            Border root = sender as Border;
+            if (root.DataContext == null) return;
+            MessageViewModel msg = root.DataContext as MessageViewModel;
+            root.Child = new MessageBubble { Message = msg };
         }
     }
 }

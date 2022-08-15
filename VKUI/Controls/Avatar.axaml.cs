@@ -56,7 +56,6 @@ namespace VKUI.Controls {
 
         byte[] imageBytes;
         Uri currentImageUri;
-        HttpClient httpClient = new HttpClient();
 
         private async void SetImage() {
             if (ImageEllipse == null) return;
@@ -88,10 +87,14 @@ namespace VKUI.Controls {
         }
 
         private void Draw() {
-            if (imageBytes == null) return;
-            Stream stream = new MemoryStream(imageBytes);
-            Bitmap bitmap = new Bitmap(stream);
-            ImageEllipse.Fill = new ImageBrush(bitmap) { BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+            try {
+                if (imageBytes == null) return;
+                Stream stream = new MemoryStream(imageBytes);
+                Bitmap bitmap = new Bitmap(stream);
+                ImageEllipse.Fill = new ImageBrush(bitmap) { BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+            } catch (Exception ex) {
+                Debug.WriteLine($"Error while drawing an Avatar! 0x{ex.HResult.ToString("x8")}");
+            }
         }
     }
 }
