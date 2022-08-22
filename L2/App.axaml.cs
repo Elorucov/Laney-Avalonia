@@ -2,8 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.MarkupExtensions;
-using Avalonia.Themes.Fluent;
+using Avalonia.Themes.Simple;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
@@ -85,11 +84,10 @@ namespace ELOR.Laney {
         public VKUIScheme CurrentScheme { get; private set; }
 
         public static void SwitchTheme(VKUIScheme scheme) {
-            FluentTheme fluent = (FluentTheme)_current.Styles[0]!;
-            fluent.Mode = scheme == VKUIScheme.BrightLight ? FluentThemeMode.Light : FluentThemeMode.Dark;
+            SimpleTheme simple = (SimpleTheme)_current.Styles[0]!;
+            simple.Mode = scheme == VKUIScheme.BrightLight ? SimpleThemeMode.Light : SimpleThemeMode.Dark;
 
             VKUITheme.Current.Scheme = scheme;
-
             _current.CurrentScheme = scheme;
         }
 

@@ -4,7 +4,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Visuals.Media.Imaging;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -46,7 +45,7 @@ namespace VKUI.Controls {
             SetImage();
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change) {
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
             base.OnPropertyChanged(change);
 
             if (change.Property == ImageUriProperty || change.Property == BoundsProperty) {

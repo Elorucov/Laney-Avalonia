@@ -1,13 +1,19 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:theme="using:Avalonia.Themes.Simple"
              xmlns:ui="clr-namespace:VKUI;assembly=VKUI"
              xmlns:conv="using:ELOR.Laney.Converters"
              xmlns:logo="using:ELOR.Laney.Assets.Logo"
              x:Class="ELOR.Laney.App">
   <Application.Resources>
     <ResourceDictionary>
+      <SolidColorBrush x:Key="SystemControlTransparentBrush" Color="Transparent"/>
+      
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://VKUI/Icons.axaml"/>
+        <ResourceInclude Source="/Styles/FluentScrollBar.axaml"/>
+        <ResourceInclude Source="/Styles/FluentScrollViewer.axaml"/>
+        <ResourceInclude Source="/Styles/FluentListBox.axaml"/>
         <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
@@ -27,7 +33,7 @@
     </DataTemplate>
   </Application.Resources>
   <Application.Styles>
-    <FluentTheme Mode="Light"/>
+    <theme:SimpleTheme Mode="Light"/>
     <ui:VKUITheme Scheme="BrightLight"/>
     
     <!--<StyleInclude Source="avares://Laney/Controls/ChatListView.axaml"/>-->
@@ -44,6 +50,9 @@
       <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
     </Style>
     
+    <Style Selector="ListBox">
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
     <Style Selector="ListBoxItem">
       <Setter Property="Padding" Value="0"/>
     </Style>
@@ -56,5 +65,6 @@
     <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource VKBackgroundHighlightedBrush}"/>
     </Style>
+  
   </Application.Styles>
 </Application>

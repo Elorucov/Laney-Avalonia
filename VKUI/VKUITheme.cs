@@ -67,7 +67,7 @@ namespace VKUI {
             get => GetValue(SchemeProperty);
             set => SetValue(SchemeProperty, value);
         }
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change) {
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
             base.OnPropertyChanged(change);
             if (change.Property == SchemeProperty) {
                 if (Scheme == VKUIScheme.SpaceGray) {
@@ -104,7 +104,7 @@ namespace VKUI {
 
         IReadOnlyList<IStyle> IStyle.Children => _loaded?.Children ?? Array.Empty<IStyle>();
 
-        public event EventHandler OwnerChanged {
+        public event EventHandler? OwnerChanged {
             add {
                 if (Loaded is IResourceProvider rp) {
                     rp.OwnerChanged += value;
@@ -178,5 +178,7 @@ namespace VKUI {
             _brightLight = (Style)AvaloniaXamlLoader.Load(new Uri("avares://VKUI/Light.axaml"));
             _spaceGray = (Style)AvaloniaXamlLoader.Load(new Uri("avares://VKUI/Dark.axaml"));
         }
+
+        public SelectorMatchResult TryAttach(IStyleable target, object? host) => Loaded.TryAttach(target, host);
     }
 }

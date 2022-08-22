@@ -8,7 +8,7 @@
     <RootNamespace>ELOR.Laney</RootNamespace>
     <AssemblyVersion>2.0.96</AssemblyVersion>
     <FileVersion>2.0.96</FileVersion>
-    <Version>2.0.96-devplat-anycpu-devuser.devpc-220814-1119</Version>
+    <Version>2.0.96-devplat-anycpu-devuser.devpc-220820-1144</Version>
     <Platforms>AnyCPU</Platforms>
     <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -71,18 +71,20 @@
     <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.17" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.17" />
+    <PackageReference Include="Avalonia" Version="11.0.0-preview1" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview1" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.17" />
-    <PackageReference Include="DynamicData" Version="7.9.7" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview1" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview1" />
+    <PackageReference Include="DynamicData" Version="7.9.14" />
     <PackageReference Include="Serilog" Version="2.11.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.5.16" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="0.10.16" />
+    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.6.0-preview1" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0-preview1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
+    <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="FieldTestWindow.axaml.cs">

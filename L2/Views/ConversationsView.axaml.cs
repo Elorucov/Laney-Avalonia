@@ -1,12 +1,7 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using Avalonia.Media;
+using Avalonia.Input;
 using ELOR.Laney.Core;
-using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
-using VKUI.Controls;
-using VKUI.Popups;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ConversationsView : UserControl {
@@ -22,7 +17,7 @@ namespace ELOR.Laney.Views {
             };
         }
 
-        private void ListBoxItemTapped(object sender, RoutedEventArgs args) {
+        private void ListBoxItemTapped(object sender, TappedEventArgs args) {
             ListBox listBox = sender as ListBox;
             ChatViewModel cvm = listBox.SelectedItem as ChatViewModel;
             if (cvm == null) return;

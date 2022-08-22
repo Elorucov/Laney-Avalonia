@@ -47,17 +47,14 @@
     </Border>
 
     <ScrollViewer x:Name="scrollViewer" Grid.Row="2">
-      <ItemsRepeater x:Name="itemsRepeater" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages}" VerticalCacheLength="999">
-        <ItemsRepeater.Layout>
-          <StackLayout DisableVirtualization="True"/>
-        </ItemsRepeater.Layout>
-        <ItemsRepeater.ItemTemplate>
+      <ItemsPresenter x:Name="itemsPresenter" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages}" VirtualizationMode="None">
+        <ItemsPresenter.ItemTemplate>
           <DataTemplate>
             <!--<controls:MessageBubble Message="{Binding}"/>-->
             <Border x:Name="MessageUIRoot" DataContextChanged="MessageUIRoot_DataContextChanged"/>
           </DataTemplate>
-        </ItemsRepeater.ItemTemplate>
-      </ItemsRepeater>
+        </ItemsPresenter.ItemTemplate>
+      </ItemsPresenter>
     </ScrollViewer>
     
     <Grid Grid.Row="2" x:Name="EmptyListContainer" IsVisible="{Binding !DisplayedMessages.Count}">

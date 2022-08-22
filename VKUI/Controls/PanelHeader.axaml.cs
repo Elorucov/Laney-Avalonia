@@ -82,7 +82,7 @@ namespace VKUI.Controls {
             DetachedFromVisualTree -= PanelHeader_DetachedFromVisualTree;
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change) {
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
             base.OnPropertyChanged(change);
             if (!isTemplateLoaded) return;
 

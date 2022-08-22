@@ -1,14 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using VKUI.Controls;
 using System;
 using ELOR.Laney.ViewModels;
-using ELOR.Laney.Core;
-using Serilog;
-using Avalonia.VisualTree;
 using System.Threading.Tasks;
-using System.Linq;
 using ELOR.Laney.Controls;
 using ELOR.Laney.ViewModels.Controls;
 
@@ -43,7 +37,7 @@ namespace ELOR.Laney.Views {
         bool needToSaveScroll = false;
         private async void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
             double trigger = 40;
-            double h = scrollViewer.Extent.Height;
+            double h = scrollViewer.Extent.Height - scrollViewer.DesiredSize.Height;
             double y = scrollViewer.Offset.Y;
             dbgScrollInfo.Text = $"{Math.Round(y)}/{h}";
 
@@ -77,8 +71,9 @@ namespace ELOR.Laney.Views {
         }
 
         private void ScrollToMessage(object sender, int messageId) {
-            var element = itemsRepeater.GetOrCreateElement(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
-            element.BringIntoView();
+            //var element = itemsRepeater.GetOrCreateElement(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
+            //element.BringIntoView();
+            itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
         }
 
         private void MessageUIRoot_DataContextChanged(object sender, EventArgs e) {

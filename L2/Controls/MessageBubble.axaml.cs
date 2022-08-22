@@ -59,11 +59,11 @@ namespace ELOR.Laney.Controls {
             RenderElement();
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change) {
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
             base.OnPropertyChanged(change);
 
             if (change.Property == MessageProperty) {
-                if (change.OldValue.HasValue && change.OldValue.Value is MessageViewModel oldm) {
+                if (change.OldValue is MessageViewModel oldm) {
                     oldm.PropertyChanged -= Message_PropertyChanged;
                 }
                 if (Message == null) {
