@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using System;
 
@@ -10,13 +11,13 @@ namespace VKUI.Controls {
 
         #region Template elements
 
-        PathIcon Icon;
+        Path Icon;
 
         #endregion
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
             base.OnApplyTemplate(e);
-            Icon = e.NameScope.Find<PathIcon>(nameof(Icon));
+            Icon = e.NameScope.Find<Path>(nameof(Icon));
 
             SetupSpinner(Math.Min(DesiredSize.Width, DesiredSize.Height));
 

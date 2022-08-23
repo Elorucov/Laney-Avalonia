@@ -13,7 +13,6 @@
         <ResourceInclude Source="avares://VKUI/Icons.axaml"/>
         <ResourceInclude Source="/Styles/FluentScrollBar.axaml"/>
         <ResourceInclude Source="/Styles/FluentScrollViewer.axaml"/>
-        <ResourceInclude Source="/Styles/FluentListBox.axaml"/>
         <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>

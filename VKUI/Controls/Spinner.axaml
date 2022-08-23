@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
-    <controls:Spinner Width="24" Height="24"/>
+    <controls:Spinner Width="44" Height="44"/>
   </Design.PreviewWith>
 
   <Style Selector="controls|Spinner">
@@ -11,12 +11,14 @@
     <Setter Property="Height" Value="16"/>
     <Setter Property="RenderTransform">
       <Setter.Value>
-        <RotateTransform />
+        <RotateTransform/>
       </Setter.Value>
     </Setter>
     <Setter Property="Template">
       <ControlTemplate>
-        <PathIcon x:Name="Icon" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}"/>
+        <Viewbox x:Name="viewBox" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Stretch="Uniform">
+          <Path x:Name="Icon" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}"/>
+        </Viewbox>
       </ControlTemplate>
     </Setter>
     <Style.Animations>
