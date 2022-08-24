@@ -19,7 +19,7 @@ $ver = $version.Split(".");
 $currentbuild = [int]$ver[2];
 $nextbuild = $currentbuild + 1;
 $currentversion = "$($ver[0]).$($ver[1]).$($currentbuild)";
-$newversion = "$($ver[0]).$($ver[1]).$($currentbuild)";
+$newversion = "$($ver[0]).$($ver[1]).$($nextbuild)";
 
 echo "Current build: $($currentbuild)";
 

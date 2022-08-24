@@ -10,7 +10,7 @@ namespace ELOR.Laney.Views {
 
         public MainWindow() {
             InitializeComponent();
-            Log.Information($"{nameof(SignInWindow)} initialized.");
+            Log.Information($"{nameof(MainWindow)} initialized.");
 
             Activated += MainWindow_Activated;
             EffectiveViewportChanged += MainWindow_EffectiveViewportChanged;
@@ -26,7 +26,7 @@ namespace ELOR.Laney.Views {
         }
 
         private void MainWindow_Activated(object? sender, EventArgs e) {
-            Log.Information($"{nameof(SignInWindow)} activated.");
+            Log.Information($"{nameof(MainWindow)} activated.");
             this.Activated -= MainWindow_Activated;
             Closing += MainWindow_Closing;
             VKSession.GetByDataContext(this).PropertyChanged += SessionPropertyChanged;
