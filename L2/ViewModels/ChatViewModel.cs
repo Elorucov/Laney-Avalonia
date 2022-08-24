@@ -259,7 +259,7 @@ namespace ELOR.Laney.ViewModels {
                 //    Messages.Insert(mvm);
                 //    await Task.Yield();
                 //}
-                await Task.Delay(200); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
+                await Task.Delay(800); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
                 //if (await ExceptionHelper.ShowErrorDialogAsync(ex)) {
                 //    LoadPreviousMessages();

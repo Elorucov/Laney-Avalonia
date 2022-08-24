@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using ELOR.Laney.ViewModels.Controls;
+using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,11 +17,14 @@ namespace ELOR.Laney.Collections {
                 MessageViewModel message = messages[i];
 
                 bool isPrevFromSameSender = false;
+                bool isDateBetweenVisible = false;
                 if (i == 0) {
                     isPrevFromSameSender = false;
+                    isDateBetweenVisible = true;
                 } else {
                     var prev = messages[i - 1];
                     isPrevFromSameSender = prev.SenderId == message.SenderId && prev.SentTime.Date == message.SentTime.Date;
+                    isDateBetweenVisible = prev.SentTime.Date != message.SentTime.Date;
                 }
 
 
@@ -33,6 +37,7 @@ namespace ELOR.Laney.Collections {
                 }
 
                 message.UpdateSenderInfoView(isPrevFromSameSender, isNextFromSameSender);
+                message.UpdateDateBetweenVisibility(isDateBetweenVisible);
                 Items.Add(message);
             }
         }
@@ -71,6 +76,7 @@ namespace ELOR.Laney.Collections {
 
             if (Count == 1) {
                 msg.UpdateSenderInfoView(false, false);
+                msg.UpdateDateBetweenVisibility(true);
             } else if (Count > 1) {
                 bool isPrevFromSameSender = false;
                 bool isNextFromSameSender = false;
@@ -79,11 +85,13 @@ namespace ELOR.Laney.Collections {
                     var prev = this[index - 1];
                     isPrevFromSameSender = msg.SenderId == prev.SenderId && msg.SentTime.Date == prev.SentTime.Date;
                     prev.UpdateSenderInfoView(null, isPrevFromSameSender);
+                    msg.UpdateDateBetweenVisibility(prev.SentTime.Date != msg.SentTime.Date);
                 }
                 if (index < Count - 1) {
                     var next = this[index + 1];
                     isNextFromSameSender = msg.SenderId == next.SenderId && msg.SentTime.Date == next.SentTime.Date;
                     next.UpdateSenderInfoView(isNextFromSameSender, null);
+                    next.UpdateDateBetweenVisibility(next.SentTime.Date != msg.SentTime.Date);
                 }
                 msg.UpdateSenderInfoView(isPrevFromSameSender, isNextFromSameSender);
             }

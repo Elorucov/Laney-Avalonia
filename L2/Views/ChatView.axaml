@@ -51,7 +51,8 @@
         <ItemsPresenter.ItemTemplate>
           <DataTemplate>
             <!--<controls:MessageBubble Message="{Binding}"/>-->
-            <Border x:Name="MessageUIRoot" DataContextChanged="MessageUIRoot_DataContextChanged"/>
+            <!--<Border x:Name="MessageUIRoot" DataContextChanged="MessageUIRoot_DataContextChanged"/>-->
+            <controls:ChatViewItem Message="{Binding}"/>
           </DataTemplate>
         </ItemsPresenter.ItemTemplate>
       </ItemsPresenter>

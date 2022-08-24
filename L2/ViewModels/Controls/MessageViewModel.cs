@@ -44,6 +44,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private bool _isSenderNameVisible;
         private bool _isSenderAvatarVisible;
+        private bool _isDateBetweenVisible;
 
         public int Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -72,6 +73,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         public bool IsSenderNameVisible { get { return _isSenderNameVisible; } private set { _isSenderNameVisible = value; OnPropertyChanged(); } }
         public bool IsSenderAvatarVisible { get { return _isSenderAvatarVisible; } private set { _isSenderAvatarVisible = value; OnPropertyChanged(); } }
+        public bool IsDateBetweenVisible { get { return _isDateBetweenVisible; } private set { _isDateBetweenVisible = value; OnPropertyChanged(); } }
 
         public MessageViewModel(Message msg) {
             Setup(msg);
@@ -134,6 +136,10 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (PeerId < 2000000000 || SenderId == VKSession.Main.Id) return;
             if (isPrevFromSameSender.HasValue) IsSenderNameVisible = !isPrevFromSameSender.Value;
             if (isNextFromSameSender.HasValue) IsSenderAvatarVisible = !isNextFromSameSender.Value;
+        }
+
+        public void UpdateDateBetweenVisibility(bool visible) {
+            IsDateBetweenVisible = visible;
         }
 
         public override string ToString() {
