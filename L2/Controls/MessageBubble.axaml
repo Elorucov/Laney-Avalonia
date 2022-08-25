@@ -20,6 +20,12 @@
             <Border x:Name="BubbleBackground" Grid.RowSpan="2" CornerRadius="18"/>
             <StackPanel x:Name="MessageContent">
               <TextBlock x:Name="SenderName" Margin="12,7,12,0" Classes="Caption1" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.IsSenderNameVisible, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <Button x:Name="ReplyMessageButton" Classes="Tertiary" Margin="12,6,12,0" Padding="0" CornerRadius="0" IsVisible="{Binding Message.ReplyMessage, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <DockPanel>
+                  <Rectangle Fill="{DynamicResource VKImTextNameBrush}" Width="2" RadiusX="1" RadiusY="1" Margin="0,0,6,0" VerticalAlignment="Stretch"/>
+                  <controls:CompactMessage Message="{Binding Message.ReplyMessage, RelativeSource={RelativeSource TemplatedParent}}"/>
+                </DockPanel>
+              </Button>
               <TextBlock x:Name="MessageText" Margin="12,0,12,9" TextWrapping="Wrap" Classes="Title3" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
             </StackPanel>
           </Grid>

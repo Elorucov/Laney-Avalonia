@@ -36,13 +36,9 @@
       <Grid ColumnDefinitions="Auto *">
         <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20PinOutline}" Foreground="{DynamicResource VKIconSecondaryBrush}"/>
         <!-- TODO: отдельный контрол для компактных сообщений (pin, reply) -->
-        <StackPanel Grid.Column="1" Height="36" Margin="12,0">
-          <DockPanel>
-            <TextBlock Classes="Caption2 SemiBold" Foreground="{DynamicResource VKAccentBrush}" Text="Sender name"/>
-            <TextBlock Classes="Caption2" Margin="8,0,0,0" Foreground="{DynamicResource VKHeaderTextSecondaryBrush}" Text="sent time"/>
-          </DockPanel>
-          <TextBlock Margin="0,2,0,0" Text="Text message"/>
-        </StackPanel>
+        <Button Grid.Column="1" Classes="Tertiary" Margin="12,0" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+          <controls:CompactMessage Message="{Binding PinnedMessage}" IsSentTimeVisible="True"/>
+        </Button>
       </Grid>
     </Border>
 
@@ -50,8 +46,6 @@
       <ItemsPresenter x:Name="itemsPresenter" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages}" VirtualizationMode="None">
         <ItemsPresenter.ItemTemplate>
           <DataTemplate>
-            <!--<controls:MessageBubble Message="{Binding}"/>-->
-            <!--<Border x:Name="MessageUIRoot" DataContextChanged="MessageUIRoot_DataContextChanged"/>-->
             <controls:ChatViewItem Message="{Binding}"/>
           </DataTemplate>
         </ItemsPresenter.ItemTemplate>

@@ -1,0 +1,59 @@
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using ELOR.Laney.ViewModels.Controls;
+using System;
+using VKUI.Controls;
+
+namespace ELOR.Laney.Controls {
+    public class CompactMessage : TemplatedControl {
+        #region Properties
+
+        public static readonly StyledProperty<MessageViewModel> MessageProperty =
+            AvaloniaProperty.Register<CompactMessage, MessageViewModel>(nameof(Message));
+
+        public MessageViewModel Message {
+            get => GetValue(MessageProperty);
+            set => SetValue(MessageProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> IsSentTimeVisibleProperty =
+            AvaloniaProperty.Register<CompactMessage, bool>(nameof(IsSentTimeVisible));
+
+        public bool IsSentTimeVisible {
+            get => GetValue(IsSentTimeVisibleProperty);
+            set => SetValue(IsSentTimeVisibleProperty, value);
+        }
+
+        #endregion
+
+        #region Template elements
+
+        Border ImagePreview;
+
+        #endregion
+
+        bool isUILoaded = false;
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
+            base.OnApplyTemplate(e);
+            ImagePreview = e.NameScope.Find<Border>(nameof(ImagePreview));
+            isUILoaded = true;
+            CheckImages();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == MessageProperty) {
+                if (Message == null) return;
+                CheckImages();
+            }
+        }
+
+        private void CheckImages() {
+            if (!isUILoaded || Message == null || Message.Attachments.Count == 0) return;
+            // TODO: В самом MessageViewModel сделать поле, которое отдаст превью фотки/видео/файла или стикера.
+            
+        }
+    }
+}

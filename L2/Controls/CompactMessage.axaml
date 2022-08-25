@@ -1,0 +1,26 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ELOR.Laney.Controls">
+  <Design.PreviewWith>
+    <controls:CompactMessage BorderBrush="#007acc" Margin="12" Padding="6,0,0,0" BorderThickness="2,0,0,0"/>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|CompactMessage">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Height="36" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+          <DockPanel Margin="{TemplateBinding Padding}">
+            <Border x:Name="ImagePreview" IsVisible="False" Width="36" Height="36" CornerRadius="2" Margin="0,0,8,0"/>
+            <StackPanel>
+              <DockPanel>
+                <TextBlock x:Name="SenderName" Classes="Caption2 SemiBold" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}"/>
+                <TextBlock x:Name="SentTime" Classes="Caption2" IsVisible="{Binding IsSentTimeVisible, RelativeSource={RelativeSource TemplatedParent}}" Margin="8,0,0,0" Foreground="{DynamicResource VKHeaderTextSecondaryBrush}" Text="{Binding Message.SentTime, RelativeSource={RelativeSource TemplatedParent}}"/>
+              </DockPanel>
+              <TextBlock x:Name="MessagePreview" Margin="0,2,0,0" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </StackPanel>
+          </DockPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

@@ -73,16 +73,7 @@ namespace ELOR.Laney.Views {
         }
 
         private void ScrollToMessage(object sender, int messageId) {
-            //var element = itemsRepeater.GetOrCreateElement(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
-            //element.BringIntoView();
             itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
-        }
-
-        private void MessageUIRoot_DataContextChanged(object sender, EventArgs e) {
-            Border root = sender as Border;
-            if (root.DataContext == null) return;
-            MessageViewModel msg = root.DataContext as MessageViewModel;
-            root.Child = new MessageBubble { Message = msg };
         }
     }
 }
