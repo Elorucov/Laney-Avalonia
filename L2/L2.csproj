@@ -104,7 +104,4 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Controls\MessageBubble.axaml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\Attachments\" />
-  </ItemGroup>
 </Project>

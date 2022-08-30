@@ -71,6 +71,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public bool IsExpired { get { return _isExpired; } private set { _isExpired = value; OnPropertyChanged(); } }
         public MessageVMState State { get { return _state; } private set { _state = value; OnPropertyChanged(); } }
 
+        // UI specific
+
         public bool IsSenderNameVisible { get { return _isSenderNameVisible; } private set { _isSenderNameVisible = value; OnPropertyChanged(); } }
         public bool IsSenderAvatarVisible { get { return _isSenderAvatarVisible; } private set { _isSenderAvatarVisible = value; OnPropertyChanged(); } }
         public bool IsDateBetweenVisible { get { return _isDateBetweenVisible; } private set { _isDateBetweenVisible = value; OnPropertyChanged(); } }

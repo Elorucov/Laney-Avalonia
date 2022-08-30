@@ -43,7 +43,7 @@
     </Border>
 
     <ScrollViewer x:Name="scrollViewer" Grid.Row="2">
-      <ItemsPresenter x:Name="itemsPresenter" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages}" VirtualizationMode="None">
+      <ItemsPresenter x:Name="itemsPresenter" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages, Mode=OneWay}" VirtualizationMode="None">
         <ItemsPresenter.ItemTemplate>
           <DataTemplate>
             <controls:ChatViewItem Message="{Binding}"/>
