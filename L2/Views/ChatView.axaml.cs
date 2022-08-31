@@ -46,8 +46,8 @@ namespace ELOR.Laney.Views {
                 double newpos = y + diff;
 
                 scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
-                if (scrollViewer.CheckAccess()) {
-                    while (scrollViewer.Offset.Y != newpos) {
+                if (scrollViewer.CheckAccess() && y > 0 && newpos >= 0) {
+                    while (y != newpos) {
                         scrollViewer.Offset = new Vector(scrollViewer.Offset.X, newpos);
                         await Task.Delay(16).ConfigureAwait(false);
                     }

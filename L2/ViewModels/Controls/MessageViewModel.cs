@@ -16,6 +16,10 @@ namespace ELOR.Laney.ViewModels.Controls {
         Unknown, User, Group
     }
 
+    public enum MessageUIType {
+        Empty, Standart, Heavy, SingleImage, Story, Sticker, StoryWithSticker, Graffiti
+    }
+
     public sealed class MessageViewModel : ViewModelBase, IComparable {
         private int _id;
         private int _peerId;
@@ -45,6 +49,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private bool _isSenderNameVisible;
         private bool _isSenderAvatarVisible;
         private bool _isDateBetweenVisible;
+        private MessageUIType _uiType;
 
         public int Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -72,13 +77,14 @@ namespace ELOR.Laney.ViewModels.Controls {
         public MessageVMState State { get { return _state; } private set { _state = value; OnPropertyChanged(); } }
 
         // UI specific
-
         public bool IsSenderNameVisible { get { return _isSenderNameVisible; } private set { _isSenderNameVisible = value; OnPropertyChanged(); } }
         public bool IsSenderAvatarVisible { get { return _isSenderAvatarVisible; } private set { _isSenderAvatarVisible = value; OnPropertyChanged(); } }
         public bool IsDateBetweenVisible { get { return _isDateBetweenVisible; } private set { _isDateBetweenVisible = value; OnPropertyChanged(); } }
+        public MessageUIType UIType { get { return _uiType; } private set { _uiType = value; OnPropertyChanged(); } }
 
         public MessageViewModel(Message msg) {
             Setup(msg);
+            PropertyChanged += MessageViewModel_PropertyChanged;
         }
 
         private void Setup(Message msg) {
@@ -110,6 +116,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             }
 
             SetSenderNameAndAvatar();
+            UpdateUIType();
         }
 
         private void SetSenderNameAndAvatar() {
@@ -126,6 +133,47 @@ namespace ELOR.Laney.ViewModels.Controls {
                     SenderName = g == null ? $"club{SenderId}" : g.Name;
                     if (g != null) SenderAvatar = g.Photo;
                 }
+            }
+        }
+
+        private void MessageViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (e.PropertyName == nameof(Attachments) || e.PropertyName == nameof(Text)
+                 || e.PropertyName == nameof(ReplyMessage) || e.PropertyName == nameof(ForwardedMessages)
+                  || e.PropertyName == nameof(Geo) || e.PropertyName == nameof(Keyboard)) {
+                UpdateUIType();
+            }
+        }
+
+        private void UpdateUIType() {
+            if (Attachments.Count == 1) {
+                var a = Attachments[0];
+                if ((a.Type == AttachmentType.Photo || a.Type == AttachmentType.Video
+                    || (a.Type == AttachmentType.Document && a.Document.Preview != null))
+                    && String.IsNullOrEmpty(Text) && ReplyMessage == null
+                    && ForwardedMessages.Count == 0 && Location == null && Keyboard == null) {
+                    UIType = MessageUIType.SingleImage;
+                } else if (a.Type == AttachmentType.Sticker && String.IsNullOrEmpty(Text)) {
+                    UIType = MessageUIType.Sticker;
+                } else if (a.Type == AttachmentType.Graffiti && String.IsNullOrEmpty(Text)) {
+                    UIType = MessageUIType.Graffiti;
+                } else if (a.Type == AttachmentType.Story && String.IsNullOrEmpty(Text) && ReplyMessage == null
+                    && ForwardedMessages == null && Location == null && Keyboard == null) {
+                    UIType = MessageUIType.Story;
+                } else {
+                    UIType = MessageUIType.Heavy;
+                }
+            } else if (Attachments.Count == 2) {
+                bool hasSticker = Attachments[0].Type == AttachmentType.Sticker || Attachments[1].Type == AttachmentType.Sticker;
+                bool hasStory = Attachments[0].Type == AttachmentType.Story || Attachments[1].Type == AttachmentType.Story;
+                if (hasSticker && hasStory) {
+                    UIType = MessageUIType.StoryWithSticker;
+                } else {
+                    UIType = MessageUIType.Heavy;
+                }
+            } else if (Attachments.Count == 0 && ForwardedMessages.Count == 0 && Location == null && Keyboard == null) {
+                UIType = !String.IsNullOrEmpty(Text) || ReplyMessage != null ? MessageUIType.Standart : MessageUIType.Empty;
+            } else {
+                UIType = MessageUIType.Heavy;
             }
         }
 

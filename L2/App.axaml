@@ -35,6 +35,7 @@
     <theme:SimpleTheme Mode="Light"/>
     <ui:VKUITheme Scheme="BrightLight"/>
     
+    <StyleInclude Source="avares://Laney/Controls/Attachments/AttachmentsContainer.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/Attachments/BasicAttachment.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/ChatViewItem.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/CompactMessage.axaml"/>

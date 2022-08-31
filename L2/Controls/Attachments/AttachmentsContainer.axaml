@@ -1,0 +1,19 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ELOR.Laney.Controls.Attachments">
+  <Design.PreviewWith>
+    <controls:AttachmentsContainer />
+  </Design.PreviewWith>
+
+  <Style Selector="controls|AttachmentsContainer">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+        <StackPanel>
+          <Canvas x:Name="ImagesGrid" IsVisible="False"/>
+          <StackPanel x:Name="BasicAttachments" IsVisible="False"/>
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

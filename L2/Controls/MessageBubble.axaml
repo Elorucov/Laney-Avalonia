@@ -16,7 +16,7 @@
           <vkui:Avatar x:Name="SenderAvatar" VerticalAlignment="Bottom" Margin="0,0,8,2" Width="32" Height="32"
                        Initials="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}"
                        ImageUri="{Binding Message.SenderAvatar, RelativeSource={RelativeSource TemplatedParent}}"/>
-          <Grid x:Name="BubbleRoot" RowDefinitions="* Auto" Grid.Column="1" MinHeight="36" MinWidth="48" MaxWidth="420" HorizontalAlignment="Left">
+          <Grid x:Name="BubbleRoot" RowDefinitions="* Auto" Grid.Column="1" MinHeight="36" MinWidth="48" MaxWidth="420" HorizontalAlignment="Left" ToolTip.Tip="{Binding Message.UIType, RelativeSource={RelativeSource TemplatedParent}}">
             <Border x:Name="BubbleBackground" Grid.RowSpan="2" CornerRadius="18"/>
             <StackPanel x:Name="MessageContent">
               <Border x:Name="SenderNameWrap">
@@ -28,7 +28,7 @@
                   <controls:CompactMessage Message="{Binding Message.ReplyMessage, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </DockPanel>
               </Button>
-              <TextBlock x:Name="MessageText" Margin="12,0,12,7" TextWrapping="Wrap" Classes="Title3" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock x:Name="MessageText" Margin="12,0,12,8" TextWrapping="Wrap" Classes="Headline" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}}"/>
               <StackPanel x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
             </StackPanel>
           </Grid>
@@ -46,6 +46,7 @@
   </Style>
 
   <Style Selector="Border.StickerMessageBackground">
+    <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderBrush" Value="{DynamicResource VKImBubbleBorderAlternateBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
   </Style>

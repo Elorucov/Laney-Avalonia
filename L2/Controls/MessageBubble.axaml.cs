@@ -173,18 +173,20 @@ namespace ELOR.Laney.Controls {
 
             // Reply msg button margin-top
             double replyTopMargin = Message.IsSenderNameVisible ? 6 : 10;
-            var rmm = MessageText.Margin;
+            var rmm = ReplyMessageButton.Margin;
             ReplyMessageButton.Margin = new Thickness(rmm.Left, replyTopMargin, rmm.Right, rmm.Bottom);
 
             // Text margin-top
-            double textTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null ? 0 : 7; // или 2 : 7 
+            double textTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null ? 0 : 8; // или 2 : 8 
             var mtm = MessageText.Margin;
             MessageText.Margin = new Thickness(mtm.Left, textTopMargin, mtm.Right, mtm.Bottom);
         }
 
         private void AddAttachments(List<Attachment> attachments) {
+            MessageAttachments.Children.Clear();
+
             foreach (Attachment atch in attachments) {
-                MessageAttachments.Children.Add(new BasicAttachment { 
+                MessageAttachments.Children.Add(new BasicAttachment {
                     Title = atch.TypeString,
                     Subtitle = atch.TypeString,
                     Margin = new Thickness(8, 0, 8, 8),
