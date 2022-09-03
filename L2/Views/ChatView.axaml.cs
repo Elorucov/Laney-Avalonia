@@ -5,6 +5,7 @@ using ELOR.Laney.ViewModels;
 using System.Threading.Tasks;
 using ELOR.Laney.Controls;
 using ELOR.Laney.ViewModels.Controls;
+using Serilog;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
@@ -46,11 +47,15 @@ namespace ELOR.Laney.Views {
                 double newpos = y + diff;
 
                 scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
-                if (scrollViewer.CheckAccess() && y > 0 && newpos >= 0) {
-                    while (y != newpos) {
-                        scrollViewer.Offset = new Vector(scrollViewer.Offset.X, newpos);
-                        await Task.Delay(16).ConfigureAwait(false);
+                try {
+                    if (scrollViewer.CheckAccess()) {
+                        while (scrollViewer.Offset.Y != newpos) {
+                            scrollViewer.Offset = new Vector(scrollViewer.Offset.X, newpos);
+                            await Task.Delay(32).ConfigureAwait(false);
+                        }
                     }
+                } catch (Exception ex) {
+                    Log.Error(ex, "Unable to save scroll position after old messages are loaded!");
                 }
                 scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
 

@@ -17,7 +17,7 @@ namespace ELOR.Laney.ViewModels.Controls {
     }
 
     public enum MessageUIType {
-        Empty, Standart, Heavy, SingleImage, Story, Sticker, StoryWithSticker, Graffiti
+        Empty, Standart, Complex, SingleImage, Story, Sticker, StoryWithSticker, Graffiti, Gift
     }
 
     public sealed class MessageViewModel : ViewModelBase, IComparable {
@@ -50,6 +50,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private bool _isSenderAvatarVisible;
         private bool _isDateBetweenVisible;
         private MessageUIType _uiType;
+        private bool _containsMultipleImages;
 
         public int Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -81,6 +82,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public bool IsSenderAvatarVisible { get { return _isSenderAvatarVisible; } private set { _isSenderAvatarVisible = value; OnPropertyChanged(); } }
         public bool IsDateBetweenVisible { get { return _isDateBetweenVisible; } private set { _isDateBetweenVisible = value; OnPropertyChanged(); } }
         public MessageUIType UIType { get { return _uiType; } private set { _uiType = value; OnPropertyChanged(); } }
+
+        public bool ContainsMultipleImages { get { return _containsMultipleImages; } private set { _containsMultipleImages = value; OnPropertyChanged(); } }
 
         public MessageViewModel(Message msg) {
             Setup(msg);
@@ -159,21 +162,32 @@ namespace ELOR.Laney.ViewModels.Controls {
                 } else if (a.Type == AttachmentType.Story && String.IsNullOrEmpty(Text) && ReplyMessage == null
                     && ForwardedMessages == null && Location == null && Keyboard == null) {
                     UIType = MessageUIType.Story;
+                } else if (a.Type == AttachmentType.Gift) {
+                    UIType = MessageUIType.Gift;
                 } else {
-                    UIType = MessageUIType.Heavy;
+                    UIType = MessageUIType.Complex;
                 }
             } else if (Attachments.Count == 2) {
-                bool hasSticker = Attachments[0].Type == AttachmentType.Sticker || Attachments[1].Type == AttachmentType.Sticker;
-                bool hasStory = Attachments[0].Type == AttachmentType.Story || Attachments[1].Type == AttachmentType.Story;
+                Attachment a1 = Attachments[0];
+                Attachment a2 = Attachments[1];
+
+                bool hasSticker = a1.Type == AttachmentType.Sticker || a2.Type == AttachmentType.Sticker;
+                bool hasStory = a1.Type == AttachmentType.Story || a2.Type == AttachmentType.Story;
                 if (hasSticker && hasStory) {
                     UIType = MessageUIType.StoryWithSticker;
                 } else {
-                    UIType = MessageUIType.Heavy;
+                    UIType = MessageUIType.Complex;
                 }
+
+                bool firstImage = a1.Type == AttachmentType.Photo || a1.Type == AttachmentType.Video 
+                    || (a1.Type == AttachmentType.Document && a1.Document.Preview != null);
+                bool secondImage = a2.Type == AttachmentType.Photo || a2.Type == AttachmentType.Video
+                    || (a2.Type == AttachmentType.Document && a2.Document.Preview != null);
+                ContainsMultipleImages = firstImage && secondImage;
             } else if (Attachments.Count == 0 && ForwardedMessages.Count == 0 && Location == null && Keyboard == null) {
                 UIType = !String.IsNullOrEmpty(Text) || ReplyMessage != null ? MessageUIType.Standart : MessageUIType.Empty;
             } else {
-                UIType = MessageUIType.Heavy;
+                UIType = MessageUIType.Complex;
             }
         }
 

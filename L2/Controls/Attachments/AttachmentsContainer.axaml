@@ -9,10 +9,7 @@
     <!-- Set Defaults -->
     <Setter Property="Template">
       <ControlTemplate>
-        <StackPanel>
-          <Canvas x:Name="ImagesGrid" IsVisible="False"/>
-          <StackPanel x:Name="BasicAttachments" IsVisible="False"/>
-        </StackPanel>
+        <StackPanel x:Name="StandartAttachments" Margin="8,0" IsVisible="False"/>
       </ControlTemplate>
     </Setter>
   </Style>

@@ -48,13 +48,10 @@ namespace ELOR.VKAPILib.Objects
         public List<PhotoSizes> Image { get; set; }
 
         [JsonIgnore]
-        public Uri Photo { get { return Image.Last().Uri; } } // Deprecated
+        public Uri PreviewImageUri { get { return FirstFrame[0].Uri; } }
 
         [JsonIgnore]
-        public Uri PreviewImageUri { get { return Image.First().Uri; } }
-
-        [JsonIgnore]
-        public Size PreviewImageSize { get { return Image.First().Size; } }
+        public Size PreviewImageSize { get { return FirstFrame[0].Size; } }
 
         [JsonProperty("width")]
         public double Width { get; set; }

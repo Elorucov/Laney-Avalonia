@@ -1,7 +1,8 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vkui="using:VKUI.Controls"
-        xmlns:controls="using:ELOR.Laney.Controls">
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:atch="using:ELOR.Laney.Controls.Attachments">
   <Design.PreviewWith>
     <StackPanel Width="432">
       <controls:MessageBubble />
@@ -29,7 +30,7 @@
                 </DockPanel>
               </Button>
               <TextBlock x:Name="MessageText" Margin="12,0,12,8" TextWrapping="Wrap" Classes="Headline" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}}"/>
-              <StackPanel x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <atch:AttachmentsContainer x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
             </StackPanel>
           </Grid>
         </Grid>
@@ -44,8 +45,12 @@
   <Style Selector="Border.OutgoingMessageBackground">
     <Setter Property="Background" Value="{DynamicResource VKImBubbleOutgoingBrush}"/>
   </Style>
+  
+  <Style Selector="Border.GiftMessageBackground">
+    <Setter Property="Background" Value="{DynamicResource VKImBubbleGiftBackgroundBrush}"/>
+  </Style>
 
-  <Style Selector="Border.StickerMessageBackground">
+  <Style Selector="Border.BorderMessageBackground">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderBrush" Value="{DynamicResource VKImBubbleBorderAlternateBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>

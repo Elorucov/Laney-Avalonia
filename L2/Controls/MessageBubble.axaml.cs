@@ -10,6 +10,7 @@ using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Printing;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
@@ -38,7 +39,12 @@ namespace ELOR.Laney.Controls {
 
         const string BACKGROUND_INCOMING = "IncomingMessageBackground";
         const string BACKGROUND_OUTGOING = "OutgoingMessageBackground";
-        const string BACKGROUND_STICKER = "StickerMessageBackground";
+        const string BACKGROUND_GIFT = "GiftMessageBackground";
+        const string BACKGROUND_BORDER = "BorderMessageBackground";
+        const string BACKGROUND_TRANSPARENT = "TransparentMessageBackground";
+
+        public const double BUBBLE_FIXED_WIDTH = 320;
+        public const double STICKER_WIDTH = 168;
 
         #endregion
 
@@ -51,7 +57,7 @@ namespace ELOR.Laney.Controls {
         TextBlock SenderName;
         Button ReplyMessageButton;
         TextBlock MessageText;
-        StackPanel MessageAttachments;
+        AttachmentsContainer MessageAttachments;
 
         bool isUILoaded = false;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
@@ -63,7 +69,7 @@ namespace ELOR.Laney.Controls {
             SenderName = e.NameScope.Find<TextBlock>(nameof(SenderName));
             ReplyMessageButton = e.NameScope.Find<Button>(nameof(ReplyMessageButton));
             MessageText = e.NameScope.Find<TextBlock>(nameof(MessageText));
-            MessageAttachments = e.NameScope.Find<StackPanel>(nameof(MessageAttachments));
+            MessageAttachments = e.NameScope.Find<AttachmentsContainer>(nameof(MessageAttachments));
             isUILoaded = true;
             RenderElement();
         }
@@ -94,72 +100,63 @@ namespace ELOR.Laney.Controls {
         private void RenderElement() {
             if (!isUILoaded) return;
 
-            // Checking message content
-            bool isSticker = false;
-            bool isGraffiti = false;
-            bool isImage = false;
-
-            // 0 — по умолчанию, 1 — рамка, 2 — прозрачное
-            byte backgroundType = 0;
-
-            if (Message.Attachments.Count == 1) {
-                switch (Message.Attachments[0].Type) {
-                    case AttachmentType.Sticker:
-                        isSticker = true;
-                        break;
-                    case AttachmentType.Graffiti:
-                        isGraffiti = true;
-                        break;
-                    case AttachmentType.Photo:
-                    case AttachmentType.Video:
-                        isImage = true;
-                        break;
-                    case AttachmentType.Document:
-                        isImage = Message.Attachments[0].Document?.Preview != null;
-                        break;
-                }
-            }
-
-            if (String.IsNullOrEmpty(Message.Text) && Message.ReplyMessage == null &&
-                Message.ForwardedMessages.Count == 0 && Message.Location == null &&
-                Message.Keyboard == null && (isSticker || isGraffiti || isImage)) {
-                backgroundType = 2;
-            } else if (String.IsNullOrEmpty(Message.Text) && Message.ForwardedMessages.Count == 0 &&
-                Message.Location == null && Message.Keyboard == null && (isSticker || isGraffiti)) {
-                backgroundType = 1;
-            }
-
             // Outgoing
             BubbleRoot.HorizontalAlignment = IsOutgoing ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+
+            MessageUIType uiType = Message.UIType;
+            bool hasReply = Message.ReplyMessage != null;
+            bool singleImage = uiType == MessageUIType.SingleImage
+                || (uiType == MessageUIType.Sticker && !hasReply)
+                || (uiType == MessageUIType.Graffiti && !hasReply);
 
             // Bubble background
             var bbc = BubbleBackground.Classes;
             bbc.Clear();
-            if (backgroundType == 0) {
+            if (singleImage) {
+                bbc.Add(BACKGROUND_TRANSPARENT);
+            } else if ((uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) && hasReply) {
+                bbc.Add(BACKGROUND_BORDER);
+            } else if (uiType == MessageUIType.Gift) {
+                bbc.Add(BACKGROUND_GIFT);
+            } else {
                 bbc.Add(IsOutgoing ? BACKGROUND_OUTGOING : BACKGROUND_INCOMING);
-            } else if (backgroundType == 1) {
-                bbc.Add(BACKGROUND_STICKER);
             }
 
             // Avatar
             SenderAvatar.IsVisible = IsChat && !IsOutgoing;
 
             // Sender name
-            SenderNameWrap.IsVisible = backgroundType != 2;
+            SenderNameWrap.IsVisible = !singleImage;
 
             // Message bubble width
-            if (isSticker) {
-                BubbleRoot.Width = 168;
-            } else if (Message.Attachments.Count > 1 || Message.ForwardedMessages.Count > 1 ||
-                Message.Location != null || Message.Keyboard != null) {
-                BubbleRoot.Width = 320;
+            if (uiType == MessageUIType.Sticker) {
+                // при BACKGROUND_BORDER у стикера будет отступ в 8px по сторонам.
+                BubbleRoot.Width = hasReply ? STICKER_WIDTH + 16 : STICKER_WIDTH;
+            } else if (uiType == MessageUIType.Graffiti) {
+                // при BACKGROUND_BORDER у граффити будет отступ в 8px по сторонам.
+                BubbleRoot.Width = hasReply ? BUBBLE_FIXED_WIDTH : BUBBLE_FIXED_WIDTH - 8;
+                
+            } else if (uiType == MessageUIType.Complex) {
+                BubbleRoot.Width = BUBBLE_FIXED_WIDTH;
             } else {
                 BubbleRoot.Width = Double.NaN;
             }
 
-            // Attachments
-            AddAttachments(Message.Attachments);
+            // Attachments margin
+            double amargin = 0;
+            if (!hasReply) {
+                if (uiType == MessageUIType.Sticker) {
+                    amargin = -8;
+                } else if (uiType == MessageUIType.SingleImage || uiType == MessageUIType.Graffiti) {
+                    amargin = -4;
+                }
+            }
+            MessageAttachments.Margin = new Thickness(amargin, 0, amargin, amargin);
 
+            // Attachments
+            MessageAttachments.Attachments = Message.Attachments;
+
+            // UI
             ChangeUI();
         }
 
@@ -180,19 +177,15 @@ namespace ELOR.Laney.Controls {
             double textTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null ? 0 : 8; // или 2 : 8 
             var mtm = MessageText.Margin;
             MessageText.Margin = new Thickness(mtm.Left, textTopMargin, mtm.Right, mtm.Bottom);
-        }
 
-        private void AddAttachments(List<Attachment> attachments) {
-            MessageAttachments.Children.Clear();
+            // Attachments margin-top
+            double atchTopMargin = 0;
 
-            foreach (Attachment atch in attachments) {
-                MessageAttachments.Children.Add(new BasicAttachment {
-                    Title = atch.TypeString,
-                    Subtitle = atch.TypeString,
-                    Margin = new Thickness(8, 0, 8, 8),
-                    Icon = (StreamGeometry)VKUI.VKUITheme.Icons["Icon24Done"]
-                });
+            if (Message.UIType == MessageUIType.Complex && !Message.IsSenderNameVisible && Message.ReplyMessage == null && String.IsNullOrEmpty(Message.Text)) {
+                atchTopMargin = Message.ContainsMultipleImages ? 4 : 8;
             }
+            var mam = MessageAttachments.Margin;
+            MessageAttachments.Margin = new Thickness(mam.Left, atchTopMargin, mam.Right, mam.Bottom);
         }
     }
 }

@@ -1,11 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using DynamicData;
+using Avalonia.Controls.Shapes;
+using Avalonia.Media;
+using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
-using VKUI.Controls;
 
 namespace ELOR.Laney.Controls.Attachments {
     public class AttachmentsContainer : TemplatedControl {
@@ -23,14 +24,12 @@ namespace ELOR.Laney.Controls.Attachments {
 
         #region Template elements
 
-        Canvas ImagesGrid;
-        StackPanel BasicAttachments;
+        StackPanel StandartAttachments;
 
         bool isUILoaded = false;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
             base.OnApplyTemplate(e);
-            ImagesGrid = e.NameScope.Find<Canvas>(nameof(ImagesGrid));
-            BasicAttachments = e.NameScope.Find<StackPanel>(nameof(BasicAttachments));
+            StandartAttachments = e.NameScope.Find<StackPanel>(nameof(StandartAttachments));
             isUILoaded = true;
             RenderAttachments();
         }
@@ -50,7 +49,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             Sticker sticker = null;
             Gift gift = null;
-            List<Graffiti> graffities = new List<Graffiti>();
+            Graffiti graffiti = null;
             List<IPreview> previews = new List<IPreview>();
             WallPost wp = null;
             WallReply wr = null;
@@ -78,7 +77,7 @@ namespace ELOR.Laney.Controls.Attachments {
             foreach (Attachment a in Attachments) {
                 switch (a.Type) {
                     case AttachmentType.Sticker: sticker = a.Sticker; break;
-                    case AttachmentType.Graffiti: graffities.Add(a.Graffiti); break;
+                    case AttachmentType.Graffiti: graffiti = a.Graffiti; break;
                     case AttachmentType.Gift: gift = a.Gift; break;
                     case AttachmentType.Photo: previews.Add(a.Photo); break;
                     case AttachmentType.Video: previews.Add(a.Video); break;
@@ -107,6 +106,79 @@ namespace ELOR.Laney.Controls.Attachments {
                     default: unknown.Add(a); break;
                 }
             }
+
+            StandartAttachments.Children.Clear();
+
+            // Images
+            double iwidth = MessageBubble.BUBBLE_FIXED_WIDTH - 8;
+            if (previews.Count == 1) {
+                var preview = previews[0];
+                var size = preview.PreviewImageSize;
+                var uri = preview.PreviewImageUri;
+
+                Rectangle rect = new Rectangle {
+                    Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
+                    RadiusX = 13, RadiusY = 13,
+                    Width = iwidth,
+                    Height = Math.Min(iwidth / (double)size.Width * (double)size.Height, iwidth / 9 * 16),
+                    Margin = new Thickness(-4, 0, -4, 4)
+                };
+                rect.SetImageFillAsync(uri);
+                StandartAttachments.Children.Add(rect);
+            } else if (previews.Count > 1) {
+                Border temp = new Border {
+                    Background = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
+                    CornerRadius = new CornerRadius(13),
+                    Width = iwidth,
+                    Height = iwidth,
+                    Margin = new Thickness(-4, 0, -4, 4),
+                    Child = new TextBlock {
+                        Margin = new Thickness(8),
+                        Text = "Photos grid WIP",
+                        FontStyle = FontStyle.Italic
+                    }
+                };
+                StandartAttachments.Children.Add(temp);
+            }
+
+            // Sticker
+            if (sticker != null) {
+                Image stickerImage = new Image() {
+                    Width = MessageBubble.STICKER_WIDTH,
+                    Height = MessageBubble.STICKER_WIDTH,
+                    Margin = new Thickness(0, 0, 0, 8)
+                };
+                stickerImage.SetUriSourceAsync(sticker.Images[sticker.Images.Count - 2].Uri);
+                StandartAttachments.Children.Add(stickerImage);
+            }
+
+            // Graffiti
+            if (graffiti != null) {
+                double gwidth = MessageBubble.BUBBLE_FIXED_WIDTH - 8;
+                Rectangle grImage = new Rectangle() {
+                    Width = gwidth,
+                    Height = gwidth / (double)graffiti.Width * (double)graffiti.Height,
+                    Margin = new Thickness(-4, 0, -4, 4),
+                    RadiusX = 13, RadiusY = 13,
+                };
+                grImage.SetImageFillAsync(graffiti.Uri);
+                StandartAttachments.Children.Add(grImage);
+            }
+
+            // Other placeholder
+            foreach (Attachment a in Attachments) {
+                if (a.Type == AttachmentType.Photo || a.Type == AttachmentType.Video
+                    || a.Type == AttachmentType.Gift || a.Type == AttachmentType.Sticker || a.Type == AttachmentType.Graffiti
+                    || (a.Type == AttachmentType.Document && a.Document.Preview != null)) continue;
+                StandartAttachments.Children.Add(new BasicAttachment {
+                    Title = a.TypeString,
+                    Subtitle = a.TypeString,
+                    Margin = new Thickness(0, 0, 0, 8),
+                    Icon = (StreamGeometry)VKUI.VKUITheme.Icons["Icon24Done"]
+                });
+            }
+
+            StandartAttachments.IsVisible = StandartAttachments.Children.Count > 0;
         }
     }
 }
