@@ -171,9 +171,9 @@ namespace ELOR.Laney.ViewModels.Controls {
                 Attachment a1 = Attachments[0];
                 Attachment a2 = Attachments[1];
 
-                bool hasSticker = a1.Type == AttachmentType.Sticker || a2.Type == AttachmentType.Sticker;
-                bool hasStory = a1.Type == AttachmentType.Story || a2.Type == AttachmentType.Story;
-                if (hasSticker && hasStory) {
+                bool ss1 = a1.Type == AttachmentType.Sticker && a2.Type == AttachmentType.Story;
+                bool ss2 = a1.Type == AttachmentType.Story && a2.Type == AttachmentType.Sticker;
+                if (ss1 || ss2) {
                     UIType = MessageUIType.StoryWithSticker;
                 } else {
                     UIType = MessageUIType.Complex;
@@ -188,6 +188,10 @@ namespace ELOR.Laney.ViewModels.Controls {
                 UIType = !String.IsNullOrEmpty(Text) || ReplyMessage != null ? MessageUIType.Standart : MessageUIType.Empty;
             } else {
                 UIType = MessageUIType.Complex;
+
+                ContainsMultipleImages = Attachments
+                    .Any(a => a.Type == AttachmentType.Photo || a.Type == AttachmentType.Video
+                    || (a.Type == AttachmentType.Document && a.Document.Preview != null));
             }
         }
 

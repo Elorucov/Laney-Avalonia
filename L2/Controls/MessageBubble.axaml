@@ -51,8 +51,8 @@
   </Style>
 
   <Style Selector="Border.BorderMessageBackground">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource VKImBubbleBorderAlternateBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundContentBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource VKImageBorderBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
   </Style>
 </Styles>
