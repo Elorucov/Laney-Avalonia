@@ -44,7 +44,7 @@ namespace ELOR.Laney.Controls {
         const string BACKGROUND_TRANSPARENT = "TransparentMessageBackground";
 
         public const double BUBBLE_FIXED_WIDTH = 320;
-        public const double STICKER_WIDTH = 168;
+        public const double STICKER_WIDTH = 176;
 
         #endregion
 
@@ -181,7 +181,7 @@ namespace ELOR.Laney.Controls {
             // Attachments margin-top
             double atchTopMargin = 0;
 
-            if (Message.UIType == MessageUIType.Complex && !Message.IsSenderNameVisible && Message.ReplyMessage == null && String.IsNullOrEmpty(Message.Text)) {
+            if (Message.UIType == MessageUIType.Complex && Message.ReplyMessage == null && String.IsNullOrEmpty(Message.Text)) {
                 atchTopMargin = Message.ContainsMultipleImages ? 4 : 8;
             }
             var mam = MessageAttachments.Margin;

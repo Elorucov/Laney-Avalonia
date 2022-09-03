@@ -148,7 +148,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Height = MessageBubble.STICKER_WIDTH,
                     Margin = new Thickness(0, 0, 0, 8)
                 };
-                stickerImage.SetUriSourceAsync(sticker.Images[sticker.Images.Count - 2].Uri);
+                stickerImage.SetUriSourceAsync(sticker.Images[sticker.Images.Count - 1].Uri);
                 StandartAttachments.Children.Add(stickerImage);
             }
 
