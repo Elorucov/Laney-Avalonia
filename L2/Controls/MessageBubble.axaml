@@ -29,7 +29,7 @@
                   <controls:CompactMessage Message="{Binding Message.ReplyMessage, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </DockPanel>
               </Button>
-              <TextBlock x:Name="MessageText" Margin="12,0,12,8" TextWrapping="Wrap" Classes="Headline" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <RichTextBlock x:Name="MessageText" Margin="12,0,12,8" Classes="Headline" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
               <atch:AttachmentsContainer x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
             </StackPanel>
           </Grid>

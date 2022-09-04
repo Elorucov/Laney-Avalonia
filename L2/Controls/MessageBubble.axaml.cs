@@ -1,16 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Layout;
 using Avalonia.Media;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
 using ELOR.Laney.ViewModels.Controls;
-using ELOR.VKAPILib.Objects;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Printing;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
@@ -44,7 +42,8 @@ namespace ELOR.Laney.Controls {
         const string BACKGROUND_TRANSPARENT = "TransparentMessageBackground";
 
         public const double BUBBLE_FIXED_WIDTH = 320;
-        public const double STICKER_WIDTH = 176;
+        public const double STICKER_WIDTH = 168; // 168 в макете figma vk ipad, 176 — в vk ios, 
+                                                 // 184 — android, 148 — android with reply
 
         #endregion
 
@@ -56,7 +55,7 @@ namespace ELOR.Laney.Controls {
         Border SenderNameWrap;
         TextBlock SenderName;
         Button ReplyMessageButton;
-        TextBlock MessageText;
+        RichTextBlock MessageText;
         AttachmentsContainer MessageAttachments;
 
         bool isUILoaded = false;
@@ -68,7 +67,7 @@ namespace ELOR.Laney.Controls {
             SenderNameWrap = e.NameScope.Find<Border>(nameof(SenderNameWrap));
             SenderName = e.NameScope.Find<TextBlock>(nameof(SenderName));
             ReplyMessageButton = e.NameScope.Find<Button>(nameof(ReplyMessageButton));
-            MessageText = e.NameScope.Find<TextBlock>(nameof(MessageText));
+            MessageText = e.NameScope.Find<RichTextBlock>(nameof(MessageText));
             MessageAttachments = e.NameScope.Find<AttachmentsContainer>(nameof(MessageAttachments));
             isUILoaded = true;
             RenderElement();
@@ -94,7 +93,22 @@ namespace ELOR.Laney.Controls {
         }
 
         private void Message_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+            if (e.PropertyName == nameof(MessageViewModel.Text)) {
+                SetText(Message.Text);
+            }
             ChangeUI();
+
+            switch (e.PropertyName) {
+                case nameof(MessageViewModel.Text):
+                    SetText(Message.Text);
+                    break;
+                case nameof(MessageViewModel.State):
+                case nameof(MessageViewModel.IsImportant):
+                case nameof(MessageViewModel.EditTime):
+                case nameof(MessageViewModel.IsSenderNameVisible):
+                    ChangeUI();
+                    break;
+            }
         }
 
         private void RenderElement() {
@@ -156,8 +170,38 @@ namespace ELOR.Laney.Controls {
             // Attachments
             MessageAttachments.Attachments = Message.Attachments;
 
+            // Text
+            SetText(Message.Text);
+
             // UI
             ChangeUI();
+        }
+
+        private void SetText(string text) {
+            MessageText.Inlines.Clear();
+            if (String.IsNullOrEmpty(text)) return;
+
+            string[] t = text.Split('\n');
+            for (int i = 0; i < t.Length; i++) {
+                MessageText.Inlines.Add(new Run {
+                    Text = t[i], 
+                    // Почему-то игнорируются размер и шрифт из самого MessageText.
+                    FontSize = MessageText.FontSize,
+                    FontFamily = MessageText.FontFamily
+                });
+                if (i < t.Length - 1) MessageText.Inlines.Add(new LineBreak());
+            }
+
+            // Empty space for sent time/status
+            if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0) {
+                MessageText.Inlines.Add(new InlineUIContainer {
+                    Child = new Border {
+                        Background = new SolidColorBrush(Color.FromArgb(0, 0, 122, 204)),
+                        Width = 72,
+                        Height = MessageText.LineHeight
+                    }
+                });
+            }
         }
 
         // Смена некоторых частей UI сообщения, которые не влияют

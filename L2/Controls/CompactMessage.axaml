@@ -16,7 +16,7 @@
                 <TextBlock x:Name="SenderName" Classes="Caption2 SemiBold" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}"/>
                 <TextBlock x:Name="SentTime" Classes="Caption2" IsVisible="{Binding IsSentTimeVisible, RelativeSource={RelativeSource TemplatedParent}}" Margin="8,0,0,0" Foreground="{DynamicResource VKHeaderTextSecondaryBrush}" Text="{Binding Message.SentTime, RelativeSource={RelativeSource TemplatedParent}}"/>
               </DockPanel>
-              <TextBlock x:Name="MessagePreview" Margin="0,2,0,0" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock x:Name="MessagePreview" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
             </StackPanel>
           </DockPanel>
         </Border>
