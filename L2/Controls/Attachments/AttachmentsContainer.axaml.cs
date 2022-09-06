@@ -3,10 +3,13 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using VKUI.Utils;
 
 namespace ELOR.Laney.Controls.Attachments {
     public class AttachmentsContainer : TemplatedControl {
@@ -120,25 +123,65 @@ namespace ELOR.Laney.Controls.Attachments {
                     Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
                     RadiusX = 13, RadiusY = 13,
                     Width = iwidth,
-                    Height = Math.Min(iwidth / (double)size.Width * (double)size.Height, iwidth / 9 * 16),
+                    Height = size.Width == 0 || size.Height == 0 ? iwidth :
+                        Math.Min(iwidth / (double)size.Width * (double)size.Height, iwidth / 9 * 16),
                     Margin = new Thickness(-4, 0, -4, 4)
                 };
                 rect.SetImageFillAsync(uri);
                 StandartAttachments.Children.Add(rect);
             } else if (previews.Count > 1) {
-                Border temp = new Border {
-                    Background = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
-                    CornerRadius = new CornerRadius(13),
-                    Width = iwidth,
-                    Height = iwidth,
-                    Margin = new Thickness(-4, 0, -4, 4),
-                    Child = new TextBlock {
-                        Margin = new Thickness(8),
-                        Text = "Photos grid WIP",
-                        FontStyle = FontStyle.Italic
-                    }
+                //Border temp = new Border {
+                //    Background = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
+                //    CornerRadius = new CornerRadius(13),
+                //    Width = iwidth,
+                //    Height = iwidth,
+                //    Margin = new Thickness(-4, 0, -4, 4),
+                //    Child = new TextBlock {
+                //        Margin = new Thickness(8),
+                //        Text = "Photos grid WIP",
+                //        FontStyle = FontStyle.Italic
+                //    }
+                //};
+                //StandartAttachments.Children.Add(temp);
+
+                List<Size> sizes = new List<Size>();
+                foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
+                    sizes.Add(preview.PreviewImageSize.ToAvaloniaSize());
+                }
+
+                var layout = PhotoLayout.Create(new Size(iwidth, iwidth), sizes, 4);
+                List<Rect> thumbRects = layout.Item1;
+                Size layoutSize = layout.Item2;
+
+                Canvas canvas = new Canvas {
+                    Width = layoutSize.Width,
+                    Height = layoutSize.Height
                 };
-                StandartAttachments.Children.Add(temp);
+
+                int i = 0;
+                foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
+                    Rect rect = thumbRects[i];
+                    Rectangle rectangle = new Rectangle {
+                        Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
+                        RadiusX = 4, RadiusY = 4,
+                        Width = rect.Width,
+                        Height = rect.Height
+                    };
+                    Canvas.SetLeft(rectangle, rect.Left);
+                    Canvas.SetTop(rectangle, rect.Top);
+                    rectangle.SetImageFillAsync(preview.PreviewImageUri);
+                    canvas.Children.Add(rectangle);
+                    i++;
+                }
+
+                Border layoutRoot = new Border { 
+                    CornerRadius = new CornerRadius(13),
+                    Width = layoutSize.Width,
+                    Height = layoutSize.Height,
+                    Margin = new Thickness(-4, 0, -4, 4),
+                    Child = canvas
+                };
+                StandartAttachments.Children.Add(layoutRoot);
             }
 
             // Sticker
