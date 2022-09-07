@@ -87,10 +87,10 @@ namespace ELOR.VKAPILib.Objects
         public Uri Photo200 { get { return new Uri(Photo200Url); } }
 
         [JsonIgnore]
-        public Uri PreviewImageUri { get { return GetSizedPhotoForThumbnail().Uri; } }
+        public Uri PreviewImageUri { get { return GetMaximalSizedPhoto().Uri; } }
 
         [JsonIgnore]
-        public Size PreviewImageSize { get { return GetSizedPhotoForThumbnail().Size; } }
+        public Size PreviewImageSize { get { return GetMaximalSizedPhoto().Size; } }
 
         //
 

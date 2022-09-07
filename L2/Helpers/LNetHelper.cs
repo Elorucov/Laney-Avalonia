@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ELOR.Laney.Core.Network;
@@ -38,6 +39,24 @@ namespace ELOR.Laney.Helpers {
                 };
             } catch (Exception ex) {
                 Log.Error(ex, "SetImageFillAsync error!");
+            }
+        }
+
+        public static async void SetImageBackgroundAsync(this Border control, Uri source) {
+            try {
+                // TODO: cache!
+                HttpResponseMessage response = await LNet.GetAsync(source);
+                var bytes = await response.Content.ReadAsByteArrayAsync();
+                Stream stream = new MemoryStream(bytes);
+                Bitmap bitmap = new Bitmap(stream);
+                control.Background = new ImageBrush(bitmap) {
+                    BitmapInterpolationMode = BitmapInterpolationMode.HighQuality,
+                    AlignmentX = AlignmentX.Center,
+                    AlignmentY = AlignmentY.Center,
+                    Stretch = Stretch.UniformToFill
+                };
+            } catch (Exception ex) {
+                Log.Error(ex, "SetImageBackgroundAsync error!");
             }
         }
     }

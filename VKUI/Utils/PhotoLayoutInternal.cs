@@ -157,18 +157,16 @@ namespace VKUI.Utils {
                         PLThumbList2.Add(PLThumbList1[0]);
                         PLThumbList1.RemoveAt(0);
                     }
-                    double num8 = rowHeights[photoIndex];
+                    double rowHeight = rowHeights[photoIndex];
                     ++photoIndex;
-                    int num9 = PLThumbList2.Count - 1;
-                    for (int index2 = 0; index2 < PLThumbList2.Count; ++index2) {
-                        PLThumb PLThumb = PLThumbList2[index2];
+                    int j = PLThumbList2.Count - 1;
+                    for (int i = 0; i < PLThumbList2.Count; ++i) {
+                        PLThumb thumb = PLThumbList2[i];
                         double ratio = photoRatios2[0];
                         photoRatios2.RemoveAt(0);
-                        double width = ratio * num8;
-                        double height = num8;
-                        int num11 = index2 == num9 ? 1 : 0;
-                        int num12 = 0;
-                        PLThumb.SetViewSize(width, height, num11 != 0, num12 != 0);
+                        double width = ratio * rowHeight;
+                        double height = rowHeight;
+                        thumb.SetViewSize(width, height, i == j, false);
                     }
                 }
 

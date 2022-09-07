@@ -121,7 +121,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
                 Rectangle rect = new Rectangle {
                     Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
-                    RadiusX = 13, RadiusY = 13,
+                    RadiusX = 14, RadiusY = 14,
                     Width = iwidth,
                     Height = size.Width == 0 || size.Height == 0 ? iwidth :
                         Math.Min(iwidth / (double)size.Width * (double)size.Height, iwidth / 9 * 16),
@@ -130,20 +130,6 @@ namespace ELOR.Laney.Controls.Attachments {
                 rect.SetImageFillAsync(uri);
                 StandartAttachments.Children.Add(rect);
             } else if (previews.Count > 1) {
-                //Border temp = new Border {
-                //    Background = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
-                //    CornerRadius = new CornerRadius(13),
-                //    Width = iwidth,
-                //    Height = iwidth,
-                //    Margin = new Thickness(-4, 0, -4, 4),
-                //    Child = new TextBlock {
-                //        Margin = new Thickness(8),
-                //        Text = "Photos grid WIP",
-                //        FontStyle = FontStyle.Italic
-                //    }
-                //};
-                //StandartAttachments.Children.Add(temp);
-
                 List<Size> sizes = new List<Size>();
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
                     sizes.Add(preview.PreviewImageSize.ToAvaloniaSize());
@@ -152,36 +138,41 @@ namespace ELOR.Laney.Controls.Attachments {
                 var layout = PhotoLayout.Create(new Size(iwidth, iwidth), sizes, 4);
                 List<Rect> thumbRects = layout.Item1;
                 Size layoutSize = layout.Item2;
+                List<bool[]> corners = layout.Item3; // top left, top right, bottom right, bottom left
+                // corners появился из-за того, что в авалонии
+                // контент не обрезается под скруглённым родителем.
+                // https://github.com/AvaloniaUI/Avalonia/issues/2105
 
                 Canvas canvas = new Canvas {
                     Width = layoutSize.Width,
-                    Height = layoutSize.Height
+                    Height = layoutSize.Height,
+                    Margin = new Thickness(-4, 0, -4, 4),
+                    ClipToBounds = true,
                 };
 
                 int i = 0;
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
                     Rect rect = thumbRects[i];
-                    Rectangle rectangle = new Rectangle {
-                        Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
-                        RadiusX = 4, RadiusY = 4,
+                    bool[] corner = corners[i];
+
+                    double tl = corner[0] ? 14 : 4;
+                    double tr = corner[1] ? 14 : 4;
+                    double br = corner[2] ? 14 : 4;
+                    double bl = corner[3] ? 14 : 4;
+
+                    Border border = new Border {
+                        Background = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
+                        CornerRadius = new CornerRadius(tl, tr, br, bl),
                         Width = rect.Width,
                         Height = rect.Height
                     };
-                    Canvas.SetLeft(rectangle, rect.Left);
-                    Canvas.SetTop(rectangle, rect.Top);
-                    rectangle.SetImageFillAsync(preview.PreviewImageUri);
-                    canvas.Children.Add(rectangle);
+                    Canvas.SetLeft(border, rect.Left);
+                    Canvas.SetTop(border, rect.Top);
+                    border.SetImageBackgroundAsync(preview.PreviewImageUri);
+                    canvas.Children.Add(border);
                     i++;
                 }
-
-                Border layoutRoot = new Border { 
-                    CornerRadius = new CornerRadius(13),
-                    Width = layoutSize.Width,
-                    Height = layoutSize.Height,
-                    Margin = new Thickness(-4, 0, -4, 4),
-                    Child = canvas
-                };
-                StandartAttachments.Children.Add(layoutRoot);
+                StandartAttachments.Children.Add(canvas);
             }
 
             // Sticker
@@ -202,7 +193,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Width = gwidth,
                     Height = gwidth / (double)graffiti.Width * (double)graffiti.Height,
                     Margin = new Thickness(-4, 0, -4, 4),
-                    RadiusX = 13, RadiusY = 13,
+                    RadiusX = 14, RadiusY = 14,
                 };
                 grImage.SetImageFillAsync(graffiti.Uri);
                 StandartAttachments.Children.Add(grImage);
