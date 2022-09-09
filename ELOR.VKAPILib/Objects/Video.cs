@@ -47,12 +47,6 @@ namespace ELOR.VKAPILib.Objects
         [JsonProperty("image")]
         public List<PhotoSizes> Image { get; set; }
 
-        [JsonIgnore]
-        public Uri PreviewImageUri { get { return FirstFrame[0].Uri; } }
-
-        [JsonIgnore]
-        public Size PreviewImageSize { get { return FirstFrame[0].Size; } }
-
         [JsonProperty("width")]
         public double Width { get; set; }
 

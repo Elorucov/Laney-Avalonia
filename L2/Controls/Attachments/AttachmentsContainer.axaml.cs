@@ -115,9 +115,9 @@ namespace ELOR.Laney.Controls.Attachments {
             // Images
             double iwidth = MessageBubble.BUBBLE_FIXED_WIDTH - 8;
             if (previews.Count == 1) {
-                var preview = previews[0];
-                var size = preview.PreviewImageSize;
-                var uri = preview.PreviewImageUri;
+                var preview = previews[0].GetSizeAndUriForThumbnail();
+                var size = preview.Size;
+                var uri = preview.Uri;
 
                 Rectangle rect = new Rectangle {
                     Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
@@ -132,7 +132,7 @@ namespace ELOR.Laney.Controls.Attachments {
             } else if (previews.Count > 1) {
                 List<Size> sizes = new List<Size>();
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
-                    sizes.Add(preview.PreviewImageSize.ToAvaloniaSize());
+                    sizes.Add(preview.GetSizeAndUriForThumbnail().Size.ToAvaloniaSize());
                 }
 
                 var layout = PhotoLayout.Create(new Size(iwidth, iwidth), sizes, 4);
@@ -168,7 +168,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     };
                     Canvas.SetLeft(border, rect.Left);
                     Canvas.SetTop(border, rect.Top);
-                    border.SetImageBackgroundAsync(preview.PreviewImageUri);
+                    border.SetImageBackgroundAsync(preview.GetSizeAndUriForThumbnail().Uri);
                     canvas.Children.Add(border);
                     i++;
                 }

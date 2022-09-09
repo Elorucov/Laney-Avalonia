@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -86,12 +87,6 @@ namespace ELOR.VKAPILib.Objects
         [JsonIgnore]
         public Uri Photo200 { get { return new Uri(Photo200Url); } }
 
-        [JsonIgnore]
-        public Uri PreviewImageUri { get { return GetMaximalSizedPhoto().Uri; } }
-
-        [JsonIgnore]
-        public Size PreviewImageSize { get { return GetMaximalSizedPhoto().Size; } }
-
         //
 
         private PhotoSizes GetMaximalSizedPhoto() {
@@ -123,15 +118,9 @@ namespace ELOR.VKAPILib.Objects
 
         private PhotoSizes GetSizedPhotoForThumbnail() {
             PhotoSizes ps = null;
-            foreach (PhotoSizes s in Sizes) {
-                switch (s.Type) {
-                    case "y": ps = s; break;
-                    case "x": ps = s; break;
-                    case "r": ps = s; break;
-                    case "q": ps = s; break;
-                    case "m": ps = s; break;
-                    case "s": ps = s; break;
-                }
+            foreach (PhotoSizes s in CollectionsMarshal.AsSpan(Sizes)) {
+                if (ps != null && s.Width > 360) break;
+                ps = s;
             }
             return ps;
         }

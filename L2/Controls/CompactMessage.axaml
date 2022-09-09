@@ -10,7 +10,7 @@
       <ControlTemplate>
         <Border Height="36" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
           <DockPanel Margin="{TemplateBinding Padding}">
-            <Border x:Name="ImagePreview" IsVisible="False" Width="36" Height="36" CornerRadius="2" Margin="0,0,8,0"/>
+            <Border x:Name="ImagePreview" Width="36" Height="36" CornerRadius="2" Margin="0,0,8,0" IsVisible="{Binding Message.PreviewImageUri, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
             <StackPanel>
               <DockPanel>
                 <TextBlock x:Name="SenderName" Classes="Caption2 SemiBold" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}"/>

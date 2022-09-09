@@ -57,6 +57,9 @@ namespace ELOR.Laney.Controls {
         Button ReplyMessageButton;
         RichTextBlock MessageText;
         AttachmentsContainer MessageAttachments;
+        Border Map;
+        Border ForwardedMessagesContainer;
+        StackPanel ForwardedMessagesStack;
 
         bool isUILoaded = false;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
@@ -69,6 +72,14 @@ namespace ELOR.Laney.Controls {
             ReplyMessageButton = e.NameScope.Find<Button>(nameof(ReplyMessageButton));
             MessageText = e.NameScope.Find<RichTextBlock>(nameof(MessageText));
             MessageAttachments = e.NameScope.Find<AttachmentsContainer>(nameof(MessageAttachments));
+            Map = e.NameScope.Find<Border>(nameof(Map));
+            ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
+            ForwardedMessagesStack = e.NameScope.Find<StackPanel>(nameof(ForwardedMessagesStack));
+
+            double mapWidth = BUBBLE_FIXED_WIDTH - 8;
+            Map.Width = mapWidth;
+            Map.Height = mapWidth / 2;
+
             isUILoaded = true;
             RenderElement();
         }
@@ -226,10 +237,21 @@ namespace ELOR.Laney.Controls {
             double atchTopMargin = 0;
 
             if (Message.UIType == MessageUIType.Complex && Message.ReplyMessage == null && String.IsNullOrEmpty(Message.Text)) {
-                atchTopMargin = Message.ContainsMultipleImages ? 4 : 8;
+                atchTopMargin = Message.ImagesCount > 0 ? 4 : 8;
             }
             var mam = MessageAttachments.Margin;
             MessageAttachments.Margin = new Thickness(mam.Left, atchTopMargin, mam.Right, mam.Bottom);
+
+            // Forwarded messages margin-top
+            double mapTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null || 
+                !String.IsNullOrEmpty(Message.Text) || Message.Attachments.Count > 0 ? 0 : 4;
+            var mapm = Map.Margin;
+            Map.Margin = new Thickness(mapm.Left, mapTopMargin, mapm.Right, mapm.Bottom);
+
+            // Forwarded messages margin-top
+            double fwdTopMargin = !String.IsNullOrEmpty(Message.Text) || Message.Attachments.Count > 0 ? 0 : 8;
+            var fwm = ForwardedMessagesContainer.Margin;
+            ForwardedMessagesContainer.Margin = new Thickness(fwm.Left, fwdTopMargin, fwm.Right, fwm.Bottom);
         }
     }
 }

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using System;
 using VKUI.Controls;
@@ -51,9 +52,8 @@ namespace ELOR.Laney.Controls {
         }
 
         private void CheckImages() {
-            if (!isUILoaded || Message == null || Message.Attachments.Count == 0) return;
-            // TODO: В самом MessageViewModel сделать поле, которое отдаст превью фотки/видео/файла или стикера.
-            
+            if (!isUILoaded || Message == null || Message.PreviewImageUri == null) return;
+            ImagePreview.SetImageBackgroundAsync(Message.PreviewImageUri);
         }
     }
 }

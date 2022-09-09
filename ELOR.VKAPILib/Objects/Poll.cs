@@ -22,7 +22,7 @@ namespace ELOR.VKAPILib.Objects
 
     public class PollAnswer {
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public ulong Id { get; set; }
 
         [JsonProperty("text")]
         public string Text { get; set; }
@@ -99,7 +99,7 @@ namespace ELOR.VKAPILib.Objects
         public List<PollAnswer> Answers { get; set; }
 
         [JsonProperty("answer_ids")]
-        public List<int> AnswerIds { get; set; }
+        public List<ulong> AnswerIds { get; set; }
 
         [JsonProperty("anonymous")]
         public bool Anonymous { get; set; }

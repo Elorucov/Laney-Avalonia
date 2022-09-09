@@ -62,10 +62,10 @@ namespace ELOR.VKAPILib.Objects
         [JsonProperty("preview")]
         public DocumentPreview Preview { get; set; }
 
-        [JsonIgnore]
-        public Uri PreviewImageUri { get { return Preview.Photo.PreviewImageUri; } }
+        //[JsonIgnore]
+        //public Uri PreviewImageUri { get { return Preview.Photo.PreviewImageUri; } }
 
-        [JsonIgnore]
-        public Size PreviewImageSize { get { return Preview.Photo.PreviewImageSize; } }
+        //[JsonIgnore]
+        //public Size PreviewImageSize { get { return Preview.Photo.PreviewImageSize; } }
     }
 }

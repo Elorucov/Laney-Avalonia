@@ -31,6 +31,14 @@
               </Button>
               <RichTextBlock x:Name="MessageText" Margin="12,0,12,8" Classes="Headline" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
               <atch:AttachmentsContainer x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <Border x:Name="Map" Margin="4,0,4,4" IsVisible="{Binding Message.Location, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" Background="#3f7f7f7f" CornerRadius="14">
+                <TextBlock Margin="8" FontStyle="Italic" Text="Map"/>
+              </Border>
+              <Border x:Name="ForwardedMessagesContainer" Margin="12,8,12,22" IsVisible="{Binding Message.ForwardedMessages.Count, RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{DynamicResource VKImForwardLineTintBrush}" BorderThickness="2,0,0,0">
+                <StackPanel x:Name="ForwardedMessagesStack" Margin="8,0,0,0">
+                  <TextBlock FontStyle="Italic" Text="Forwarded messages temporary"/>
+                </StackPanel>
+              </Border>
             </StackPanel>
           </Grid>
         </Grid>

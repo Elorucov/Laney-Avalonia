@@ -1,6 +1,7 @@
 ﻿using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
+using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         private bool _isSenderAvatarVisible;
         private bool _isDateBetweenVisible;
         private MessageUIType _uiType;
-        private bool _containsMultipleImages;
+        private int _imagesCount;
+        private Uri _previewImageUri;
 
         public int Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -82,8 +84,9 @@ namespace ELOR.Laney.ViewModels.Controls {
         public bool IsSenderAvatarVisible { get { return _isSenderAvatarVisible; } private set { _isSenderAvatarVisible = value; OnPropertyChanged(); } }
         public bool IsDateBetweenVisible { get { return _isDateBetweenVisible; } private set { _isDateBetweenVisible = value; OnPropertyChanged(); } }
         public MessageUIType UIType { get { return _uiType; } private set { _uiType = value; OnPropertyChanged(); } }
+        public int ImagesCount { get { return _imagesCount; } private set { _imagesCount = value; OnPropertyChanged(); } }
+        public Uri PreviewImageUri { get { return _previewImageUri; } private set { _previewImageUri = value; OnPropertyChanged(); } }
 
-        public bool ContainsMultipleImages { get { return _containsMultipleImages; } private set { _containsMultipleImages = value; OnPropertyChanged(); } }
 
         public MessageViewModel(Message msg) {
             Setup(msg);
@@ -183,15 +186,25 @@ namespace ELOR.Laney.ViewModels.Controls {
                     || (a1.Type == AttachmentType.Document && a1.Document.Preview != null);
                 bool secondImage = a2.Type == AttachmentType.Photo || a2.Type == AttachmentType.Video
                     || (a2.Type == AttachmentType.Document && a2.Document.Preview != null);
-                ContainsMultipleImages = firstImage && secondImage;
             } else if (Attachments.Count == 0 && ForwardedMessages.Count == 0 && Location == null && Keyboard == null) {
                 UIType = !String.IsNullOrEmpty(Text) || ReplyMessage != null ? MessageUIType.Standart : MessageUIType.Empty;
             } else {
                 UIType = MessageUIType.Complex;
+            }
 
-                ContainsMultipleImages = Attachments
-                    .Any(a => a.Type == AttachmentType.Photo || a.Type == AttachmentType.Video
-                    || (a.Type == AttachmentType.Document && a.Document.Preview != null));
+            var images = Attachments
+                .Where(a => a.Type == AttachmentType.Photo || a.Type == AttachmentType.Video
+                || (a.Type == AttachmentType.Document && a.Document.Preview != null));
+            ImagesCount = images.Count();
+            if (_imagesCount > 0) {
+                Attachment a = images.FirstOrDefault();
+                if (a.Photo != null) {
+                    PreviewImageUri = a.Photo.GetSizeAndUriForThumbnail().Uri;
+                } else if (a.Video != null) {
+                    PreviewImageUri = a.Video.GetSizeAndUriForThumbnail().Uri;
+                } else if (a.Photo != null) {
+                    PreviewImageUri = a.Document.Preview?.Photo?.GetSizeAndUriForThumbnail().Uri;
+                }
             }
         }
 
