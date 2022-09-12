@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public enum MessageVMState {
-        Sending, Unread, Read, Deleted, Failed
+        Loading, Unread, Read, Deleted, Failed
     }
 
     public enum MessageVMSenderType {
@@ -77,7 +77,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         public string Payload { get { return _payload; } private set { _payload = value; OnPropertyChanged(); } }
         public int TTL { get { return _ttl; } private set { _ttl = value; OnPropertyChanged(); } }
         public bool IsExpired { get { return _isExpired; } private set { _isExpired = value; OnPropertyChanged(); } }
-        public MessageVMState State { get { return _state; } private set { _state = value; OnPropertyChanged(); } }
+        public MessageVMState State { get { return _state; } set { _state = value; OnPropertyChanged(); } }
 
         // UI specific
         public bool IsSenderNameVisible { get { return _isSenderNameVisible; } private set { _isSenderNameVisible = value; OnPropertyChanged(); } }
@@ -271,10 +271,12 @@ namespace ELOR.Laney.ViewModels.Controls {
             return Localizer.Instance["empty_message"];
         }
 
-        public static List<MessageViewModel> BuildFromAPI(List<Message> messages) {
+        public static List<MessageViewModel> BuildFromAPI(List<Message> messages, System.Action<MessageViewModel> afterBuild = null) {
             List<MessageViewModel> vms = new List<MessageViewModel>();
             foreach (var message in CollectionsMarshal.AsSpan<Message>(messages)) {
-                vms.Add(new MessageViewModel(message));
+                MessageViewModel mvm = new MessageViewModel(message);
+                afterBuild?.Invoke(mvm);
+                vms.Add(mvm);
             }
             return vms;
         }

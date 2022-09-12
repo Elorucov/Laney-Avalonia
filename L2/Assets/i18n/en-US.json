@@ -120,6 +120,7 @@
 
   "empty_message": "Empty message",
   "message": "Message",
+  "edited_indicator": "edited",
 
   "msg_action_create_m": "created the group chat",
   "msg_action_create_f": "created the group chat",

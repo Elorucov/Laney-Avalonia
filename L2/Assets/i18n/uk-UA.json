@@ -120,6 +120,7 @@
 
   "empty_message": "Пусте повiдомлення",
   "message": "Повiдомлення",
+  "edited_indicator": "ред.",
 
   "msg_action_create_m": "створив бесіду",
   "msg_action_create_f": "створила бесіду",

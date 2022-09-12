@@ -7,6 +7,7 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -221,13 +222,9 @@ namespace ELOR.Laney.ViewModels {
                 MembersGroups = mhr.Groups;
                 Setup(mhr.Conversation);
                 mhr.Messages.Reverse();
-                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages));
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, FixState));
 
-                //foreach (MessageViewModel msg in DisplayedMessages) {
-                //    FixState(msg);
-                //}
-
-                await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
+                await Task.Delay(100);
                 if (startMessageId > 0) ScrollToMessageRequested?.Invoke(this, startMessageId);
                 if (startMessageId == -1) {
                     ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
@@ -252,14 +249,12 @@ namespace ELOR.Laney.ViewModels {
                 CacheManager.Add(mhr.MentionedGroups);
                 mhr.Messages.Reverse();
                 MessagesChunkLoaded?.Invoke(this, false);
-                DisplayedMessages.InsertRange(mhr.Messages.Select(m => new MessageViewModel(m)).ToList());
-                //foreach (Message msg in mhr.Messages) {
-                //    MessageViewModel mvm = new MessageViewModel(msg);
-                //    FixState(mvm);
-                //    Messages.Insert(mvm);
-                //    await Task.Yield();
-                //}
-                await Task.Delay(800); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
+                DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
+                    var msg = new MessageViewModel(m);
+                    FixState(msg);
+                    return msg;
+                }).ToList());
+                await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
                 //if (await ExceptionHelper.ShowErrorDialogAsync(ex)) {
                 //    LoadPreviousMessages();
@@ -281,20 +276,28 @@ namespace ELOR.Laney.ViewModels {
                 CacheManager.Add(mhr.MentionedGroups);
                 mhr.Messages.Reverse();
                 MessagesChunkLoaded?.Invoke(this, true);
-                DisplayedMessages.InsertRange(mhr.Messages.Select(m => new MessageViewModel(m)).ToList());
-                //foreach (Message msg in mhr.Messages) {
-                //    MessageViewModel mvm = new MessageViewModel(msg);
-                //    FixState(mvm);
-                //    Messages.Insert(mvm);
-                //    await Task.Yield();
-                //}
-                await Task.Delay(200); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
+                DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
+                    var msg = new MessageViewModel(m);
+                    FixState(msg);
+                    return msg;
+                }).ToList());
+                await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
                 //if (await ExceptionHelper.ShowErrorDialogAsync(ex)) {
                 //    LoadNextMessages();
                 //}
             } finally {
                 IsLoading = false;
+            }
+        }
+
+        private void FixState(MessageViewModel msg) {
+            int senderId = session.Id;
+            bool isOutgoing = msg.SenderId == senderId;
+            if (isOutgoing) {
+                msg.State = msg.Id > OutRead ? MessageVMState.Unread : MessageVMState.Read;
+            } else {
+                msg.State = msg.Id > InRead ? MessageVMState.Unread : MessageVMState.Read;
             }
         }
 

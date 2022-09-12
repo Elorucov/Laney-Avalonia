@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vkui="using:VKUI.Controls"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:atch="using:ELOR.Laney.Controls.Attachments">
   <Design.PreviewWith>
@@ -40,6 +41,13 @@
                 </StackPanel>
               </Border>
             </StackPanel>
+            <Border x:Name="IndicatorContainer" Height="20" CornerRadius="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Classes="DefaultIndicator">
+              <StackPanel x:Name="IndicatorStack" Orientation="Horizontal" Margin="6,4,6,2">
+                <TextBlock x:Name="EditedIndicator" Classes="Caption3" Text="{i18n:Localize edited_indicator}" Margin="0,0,4,0" IsVisible="{Binding Message.EditTime, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                <TextBlock x:Name="TimeIndicator" Classes="Caption3"/>
+                <vkui:VKIcon x:Name="StateIndicator" Id="Icon16CheckDoubleOutline" Width="12" Height="12" Margin="4,-1,0,0"/>
+              </StackPanel>
+            </Border>
           </Grid>
         </Grid>
       </ControlTemplate>
@@ -63,4 +71,39 @@
     <Setter Property="BorderBrush" Value="{DynamicResource VKImageBorderBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
   </Style>
+
+  <!-- Time & indicators -->
+  
+  <Style Selector="Border.DefaultIndicator">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Margin" Value="0,0,5,0"/>
+  </Style>
+
+  <Style Selector="Border.DefaultIndicator > StackPanel#IndicatorStack > TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
+  </Style>
+
+  <Style Selector="Border.DefaultIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
+    <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
+  </Style>
+
+  
+  <Style Selector="Border.ImageIndicator">
+    <Setter Property="Background" Value="#59000000"/>
+    <Setter Property="Margin" Value="0,0,5,5"/>
+  </Style>
+
+  <Style Selector="Border.ComplexImageIndicator">
+    <Setter Property="Background" Value="#59000000"/>
+    <Setter Property="Margin" Value="0,0,9,9"/>
+  </Style>
+  
+  <Style Selector="Border.ImageIndicator > StackPanel#IndicatorStack > TextBlock, Border.ComplexImageIndicator > StackPanel#IndicatorStack > TextBlock">
+    <Setter Property="Foreground" Value="White"/>
+  </Style>
+
+  <Style Selector="Border.ImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon, Border.ComplexImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
+    <Setter Property="Foreground" Value="White"/>
+  </Style>
+
 </Styles>

@@ -77,7 +77,7 @@ namespace ELOR.Laney.Controls.Attachments {
             // TextpostPublish tpb = null;
             List<Attachment> unknown = new List<Attachment>();
 
-            foreach (Attachment a in Attachments) {
+            foreach (Attachment a in CollectionsMarshal.AsSpan(Attachments)) {
                 switch (a.Type) {
                     case AttachmentType.Sticker: sticker = a.Sticker; break;
                     case AttachmentType.Graffiti: graffiti = a.Graffiti; break;
@@ -127,7 +127,7 @@ namespace ELOR.Laney.Controls.Attachments {
                         Math.Min(iwidth / (double)size.Width * (double)size.Height, iwidth / 9 * 16),
                     Margin = new Thickness(-4, 0, -4, 4)
                 };
-                rect.SetImageFillAsync(uri);
+                if (uri != null) rect.SetImageFillAsync(uri);
                 StandartAttachments.Children.Add(rect);
             } else if (previews.Count > 1) {
                 List<Size> sizes = new List<Size>();

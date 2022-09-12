@@ -120,6 +120,7 @@
 
   "empty_message": "Пустое сообщение",
   "message": "Сообщение",
+  "edited_indicator": "ред.",
 
   "msg_action_create_m": "создал беседу",
   "msg_action_create_f": "создала беседу",

@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Layout;
 using Avalonia.Media;
 using ELOR.Laney.Controls.Attachments;
@@ -41,6 +42,10 @@ namespace ELOR.Laney.Controls {
         const string BACKGROUND_BORDER = "BorderMessageBackground";
         const string BACKGROUND_TRANSPARENT = "TransparentMessageBackground";
 
+        const string INDICATOR_DEFAULT = "DefaultIndicator";
+        const string INDICATOR_IMAGE = "ImageIndicator";
+        const string INDICATOR_COMPLEX_IMAGE = "ComplexImageIndicator";
+
         public const double BUBBLE_FIXED_WIDTH = 320;
         public const double STICKER_WIDTH = 168; // 168 в макете figma vk ipad, 176 — в vk ios, 
                                                  // 184 — android, 148 — android with reply
@@ -60,6 +65,9 @@ namespace ELOR.Laney.Controls {
         Border Map;
         Border ForwardedMessagesContainer;
         StackPanel ForwardedMessagesStack;
+        Border IndicatorContainer;
+        TextBlock TimeIndicator;
+        VKIcon StateIndicator;
 
         bool isUILoaded = false;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
@@ -75,6 +83,9 @@ namespace ELOR.Laney.Controls {
             Map = e.NameScope.Find<Border>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
             ForwardedMessagesStack = e.NameScope.Find<StackPanel>(nameof(ForwardedMessagesStack));
+            IndicatorContainer = e.NameScope.Find<Border>(nameof(IndicatorContainer));
+            TimeIndicator = e.NameScope.Find<TextBlock>(nameof(TimeIndicator));
+            StateIndicator = e.NameScope.Find<VKIcon>(nameof(StateIndicator));
 
             double mapWidth = BUBBLE_FIXED_WIDTH - 8;
             Map.Width = mapWidth;
@@ -184,6 +195,20 @@ namespace ELOR.Laney.Controls {
             // Text
             SetText(Message.Text);
 
+            // Time & indicator class
+            IndicatorContainer.Classes.RemoveAll(new string[3] { INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE });
+            if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
+                IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
+            } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
+                IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
+            } else if (uiType == MessageUIType.Complex &&
+                (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
+                Message.ForwardedMessages.Count == 0) {
+                IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+            } else {
+                IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+            }
+
             // UI
             ChangeUI();
         }
@@ -208,7 +233,7 @@ namespace ELOR.Laney.Controls {
                 MessageText.Inlines.Add(new InlineUIContainer {
                     Child = new Border {
                         Background = new SolidColorBrush(Color.FromArgb(0, 0, 122, 204)),
-                        Width = 72,
+                        Width = Message.EditTime != null ? 90 : 52,
                         Height = MessageText.LineHeight
                     }
                 });
@@ -222,6 +247,34 @@ namespace ELOR.Laney.Controls {
         private void ChangeUI() {
             // Avatar visibility
             SenderAvatar.Opacity = Message.IsSenderAvatarVisible ? 1 : 0;
+
+            // Message state
+            var state = Message.State;
+            switch (state) {
+                case MessageVMState.Unread:
+                    StateIndicator.IsVisible = IsOutgoing;
+                    StateIndicator.Width = StateIndicator.Height = 16; // ¯\_(ツ)_/¯
+                    StateIndicator.Id = VKIconNames.Icon16CheckOutline;
+                    break;
+                case MessageVMState.Read:
+                    StateIndicator.IsVisible = IsOutgoing;
+                    StateIndicator.Width = StateIndicator.Height = 16;
+                    StateIndicator.Id = VKIconNames.Icon16CheckDoubleOutline;
+                    break;
+                case MessageVMState.Loading:
+                    StateIndicator.IsVisible = true;
+                    StateIndicator.Width = StateIndicator.Height = 12; // ¯\_(ツ)_/¯
+                    StateIndicator.Id = VKIconNames.Icon16ClockOutline;
+                    break;
+                case MessageVMState.Deleted:
+                    StateIndicator.IsVisible = true;
+                    StateIndicator.Width = StateIndicator.Height = 12;
+                    StateIndicator.Id = VKIconNames.Icon16DeleteOutline;
+                    break;
+            }
+
+            // Time & is edited
+            TimeIndicator.Text = Message.SentTime.ToString("H:mm");
 
             // Reply msg button margin-top
             double replyTopMargin = Message.IsSenderNameVisible ? 6 : 10;

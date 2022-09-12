@@ -21,7 +21,13 @@ namespace ELOR.VKAPILib.Objects
         public string Src { get; set; }
 
         [JsonIgnore]
-        public Uri Uri { get { return String.IsNullOrEmpty(Url) ? new Uri(Src) : new Uri(Url); } }
+        public Uri Uri { 
+            get {
+                if (!String.IsNullOrEmpty(Url)) return new Uri(Url);
+                if (!String.IsNullOrEmpty(Src)) return new Uri(Src);
+                return null;
+            }
+        }
 
         [JsonProperty("width")]
         public int Width { get; set; }
