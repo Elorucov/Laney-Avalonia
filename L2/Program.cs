@@ -43,6 +43,8 @@ namespace ELOR.Laney {
             AppBuilder.Configure<App>().UseAvaloniaNative().UsePlatformDetect().With(new Win32PlatformOptions {
                 UseWgl = true,
                 UseWindowsUIComposition = false
+            }).With(new X11PlatformOptions { 
+                UseEGL = true,
             });
 
         //public static AppBuilder BuildAvaloniaApp() {

@@ -48,6 +48,8 @@
                 <vkui:VKIcon x:Name="StateIndicator" Id="Icon16CheckDoubleOutline" Width="12" Height="12" Margin="4,-1,0,0"/>
               </StackPanel>
             </Border>
+            <!-- Inline keyboard here! -->
+            <Ellipse x:Name="ReadIndicator" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,1" Width="8" Height="8" Fill="{DynamicResource VKAccentBrush}" Stroke="{DynamicResource VKBackgroundContentBrush}" StrokeThickness="1"/>
           </Grid>
         </Grid>
       </ControlTemplate>

@@ -48,7 +48,7 @@ namespace ELOR.Laney.Controls.Attachments {
         }
 
         private void RenderAttachments() {
-            if (!isUILoaded) return;
+            if (!isUILoaded || Attachments == null) return;
 
             Sticker sticker = null;
             Gift gift = null;
@@ -153,6 +153,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 int i = 0;
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
                     Rect rect = thumbRects[i];
+                    var p = preview.GetSizeAndUriForThumbnail();
                     bool[] corner = corners[i];
 
                     double tl = corner[0] ? 14 : 4;
@@ -168,7 +169,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     };
                     Canvas.SetLeft(border, rect.Left);
                     Canvas.SetTop(border, rect.Top);
-                    border.SetImageBackgroundAsync(preview.GetSizeAndUriForThumbnail().Uri);
+                    if (p.Uri != null) border.SetImageBackgroundAsync(p.Uri);
                     canvas.Children.Add(border);
                     i++;
                 }

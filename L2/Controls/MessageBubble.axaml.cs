@@ -68,6 +68,7 @@ namespace ELOR.Laney.Controls {
         Border IndicatorContainer;
         TextBlock TimeIndicator;
         VKIcon StateIndicator;
+        Ellipse ReadIndicator;
 
         bool isUILoaded = false;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
@@ -86,6 +87,7 @@ namespace ELOR.Laney.Controls {
             IndicatorContainer = e.NameScope.Find<Border>(nameof(IndicatorContainer));
             TimeIndicator = e.NameScope.Find<TextBlock>(nameof(TimeIndicator));
             StateIndicator = e.NameScope.Find<VKIcon>(nameof(StateIndicator));
+            ReadIndicator = e.NameScope.Find<Ellipse>(nameof(ReadIndicator));
 
             double mapWidth = BUBBLE_FIXED_WIDTH - 8;
             Map.Width = mapWidth;
@@ -250,6 +252,7 @@ namespace ELOR.Laney.Controls {
 
             // Message state
             var state = Message.State;
+            ReadIndicator.IsVisible = !IsOutgoing && state == MessageVMState.Unread;
             switch (state) {
                 case MessageVMState.Unread:
                     StateIndicator.IsVisible = IsOutgoing;

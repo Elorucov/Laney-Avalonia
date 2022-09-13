@@ -13,9 +13,6 @@
           <Border x:Name="DateContainer" Background="#7f7f7f7f" IsVisible="{Binding Message.IsDateBetweenVisible, RelativeSource={RelativeSource TemplatedParent}}">
             <TextBlock Text="{Binding Message.SentTime.Date, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
-          <Border x:Name="UnreadMessageDivider" IsVisible="False">
-
-          </Border>
           <Border x:Name="ServiceMessageUI" Background="#3f7f7f7f" IsVisible="{Binding Message.Action, Converter={x:Static ObjectConverters.IsNotNull} RelativeSource={RelativeSource TemplatedParent}}">
             <TextBlock Text="{Binding Message.Action.Type, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
