@@ -30,6 +30,7 @@ namespace ELOR.Laney.Helpers {
                 HttpResponseMessage response = await LNet.GetAsync(source);
                 var bytes = await response.Content.ReadAsByteArrayAsync();
                 Stream stream = new MemoryStream(bytes);
+                if (bytes.Length == 0) return;
                 Bitmap bitmap = new Bitmap(stream);
                 shape.Fill = new ImageBrush(bitmap) { 
                     BitmapInterpolationMode = BitmapInterpolationMode.HighQuality,
