@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using System;
 
 namespace ELOR.Laney.Controls.Attachments {
@@ -26,10 +25,10 @@ namespace ELOR.Laney.Controls.Attachments {
             set => SetValue(SubtitleProperty, value);
         }
 
-        public static readonly StyledProperty<Geometry> IconProperty =
-            AvaloniaProperty.Register<BasicAttachment, Geometry>(nameof(Icon));
+        public static readonly StyledProperty<string> IconProperty =
+            AvaloniaProperty.Register<BasicAttachment, string>(nameof(Icon));
 
-        public Geometry Icon {
+        public string Icon {
             get => GetValue(IconProperty);
             set => SetValue(IconProperty, value);
         }

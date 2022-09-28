@@ -186,7 +186,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     || (a1.Type == AttachmentType.Document && a1.Document.Preview != null);
                 bool secondImage = a2.Type == AttachmentType.Photo || a2.Type == AttachmentType.Video
                     || (a2.Type == AttachmentType.Document && a2.Document.Preview != null);
-            } else if (Attachments.Count == 0 && ForwardedMessages.Count == 0 && Location == null && Keyboard == null) {
+            } else if (Attachments.Count == 0 && ForwardedMessages.Count == 0 && Location == null) {
                 UIType = !String.IsNullOrEmpty(Text) || ReplyMessage != null ? MessageUIType.Standart : MessageUIType.Empty;
             } else {
                 UIType = MessageUIType.Complex;

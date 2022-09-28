@@ -9,6 +9,7 @@ using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using VKUI.Controls;
 using VKUI.Utils;
 
 namespace ELOR.Laney.Controls.Attachments {
@@ -209,7 +210,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Title = a.TypeString,
                     Subtitle = a.TypeString,
                     Margin = new Thickness(0, 0, 0, 8),
-                    Icon = (StreamGeometry)VKUI.VKUITheme.Icons["Icon24Done"]
+                    Icon = VKIconNames.Icon24DoneOutline
                 });
             }
 

@@ -1,5 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vkui="using:VKUI.Controls"
         xmlns:controls="using:ELOR.Laney.Controls.Attachments">
   <Design.PreviewWith>
     <controls:BasicAttachment Margin="8" Title="Крутой проект" Subtitle="ZIP • 75 МБ" Icon="{StaticResource Icon24Done}"/>
@@ -12,7 +13,7 @@
         <Button x:Name="BAButton" Classes="Tertiary" Padding="0">
           <Grid ColumnDefinitions="Auto *">
             <Border Width="40" Height="40" CornerRadius="20" Margin="0,0,8,0" IsVisible="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKButtonPrimaryBackgroundBrush}">
-              <Path x:Name="BAIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Fill="{DynamicResource VKButtonPrimaryForegroundBrush}" Data="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <vkui:VKIcon x:Name="BAIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Foreground="{DynamicResource VKButtonPrimaryForegroundBrush}" Id="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
             </Border>
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
               <TextBlock x:Name="BATitle" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
