@@ -7,7 +7,6 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Serilog;
 using System;
 using System.Collections.Generic;
