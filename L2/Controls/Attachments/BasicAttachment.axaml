@@ -7,17 +7,17 @@
   </Design.PreviewWith>
 
   <Style Selector="controls|BasicAttachment">
-    <!-- Set Defaults -->
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Button x:Name="BAButton" Classes="Tertiary" Padding="0">
+        <Button x:Name="BAButton" Classes="Tertiary" Padding="0" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" HorizontalContentAlignment="Stretch">
           <Grid ColumnDefinitions="Auto *">
             <Border Width="40" Height="40" CornerRadius="20" Margin="0,0,8,0" IsVisible="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKButtonPrimaryBackgroundBrush}">
               <vkui:VKIcon x:Name="BAIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Foreground="{DynamicResource VKButtonPrimaryForegroundBrush}" Id="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
             </Border>
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
               <TextBlock x:Name="BATitle" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
-              <TextBlock x:Name="BASub" Classes="Caption1" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Subtitle, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock x:Name="BASub" Classes="Caption1" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Subtitle, RelativeSource={RelativeSource TemplatedParent}}" MaxLines="1"/>
             </StackPanel>
           </Grid>
         </Button>

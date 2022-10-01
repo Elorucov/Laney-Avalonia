@@ -2,9 +2,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
+using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
+using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
@@ -163,7 +167,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     double bl = corner[3] ? 14 : 4;
 
                     Border border = new Border {
-                        Background = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
+                        Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
                         CornerRadius = new CornerRadius(tl, tr, br, bl),
                         Width = rect.Width,
                         Height = rect.Height
@@ -202,19 +206,91 @@ namespace ELOR.Laney.Controls.Attachments {
             }
 
             // Other placeholder
-            foreach (Attachment a in Attachments) {
-                if (a.Type == AttachmentType.Photo || a.Type == AttachmentType.Video
-                    || a.Type == AttachmentType.Gift || a.Type == AttachmentType.Sticker || a.Type == AttachmentType.Graffiti
-                    || (a.Type == AttachmentType.Document && a.Document.Preview != null)) continue;
-                StandartAttachments.Children.Add(new BasicAttachment {
-                    Title = a.TypeString,
-                    Subtitle = a.TypeString,
+            //foreach (Attachment a in Attachments) {
+            //    if (a.Type == AttachmentType.Photo || a.Type == AttachmentType.Video
+            //        || a.Type == AttachmentType.Gift || a.Type == AttachmentType.Sticker || a.Type == AttachmentType.Graffiti
+            //        || (a.Type == AttachmentType.Document && a.Document.Preview != null)) continue;
+            //    StandartAttachments.Children.Add(new BasicAttachment {
+            //        Title = a.TypeString,
+            //        Subtitle = a.TypeString,
+            //        Margin = new Thickness(0, 0, 0, 8),
+            //        Icon = VKIconNames.Icon24DoneOutline
+            //    });
+            //}
+
+            // Wall post
+            if (wp != null) {
+                // string def = GetNameOrDefaultString(wp.OwnerOrToId, VKTextParser.GetParsedText(wp.Text));
+                string def = GetNameOrDefaultString(wp.OwnerOrToId, wp.Text);
+                BasicAttachment ba = new BasicAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
-                    Icon = VKIconNames.Icon24DoneOutline
-                });
+                    Icon = VKIconNames.Icon24ArticleOutline,
+                    Title = Localizer.Instance["wall"],
+                    Subtitle = def,
+                    Name = "WallPost"
+                };
+                ba.Click += (a, b) => Launcher.LaunchUrl($"https://vk.com/wall{wp.OwnerId}_{wp.Id}");
+                StandartAttachments.Children.Add(ba);
+            }
+
+            // Wall reply
+            if (wr != null) {
+                // string def = GetNameOrDefaultString(wr.OwnerId, VKTextParser.GetParsedText(wr.Text));
+                string def = GetNameOrDefaultString(wr.OwnerId, wr.Text);
+                BasicAttachment ba = new BasicAttachment {
+                    Margin = new Thickness(0, 0, 0, 8),
+                    Icon = VKIconNames.Icon24CommentOutline,
+                    Title = Localizer.Instance["wall_reply"],
+                    Subtitle = def,
+                    Name = "WallReply"
+                };
+                ba.Click += (a, b) => Launcher.LaunchUrl($"https://vk.com/wall{wr.OwnerId}_{wr.PostId}?reply={wr.Id}");
+                StandartAttachments.Children.Add(ba);
+            }
+
+            // Link
+            foreach (Link link in CollectionsMarshal.AsSpan<Link>(links)) {
+                if (link.Button != null || link.Photo != null) {
+                    ExtendedAttachment ea = new ExtendedAttachment {
+                        Margin = new Thickness(0, 0, 0, 8),
+                        Title = link.Title,
+                        Subtitle = link.Caption,
+                        Name = "Link"
+                    };
+                    if (link.Button != null) {
+                        ea.ActionButtonText = link.Button.Title;
+                        ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link.Button.Action.Url);
+                    }
+                    if (link.Photo != null) ea.Preview = link.Photo.GetSizeAndUriForThumbnail().Uri;
+                    ea.Click += (a, b) => Launcher.LaunchUrl(link.Url);
+                    StandartAttachments.Children.Add(ea);
+                } else {
+                    BasicAttachment ba = new BasicAttachment {
+                        Margin = new Thickness(0, 0, 0, 8),
+                        Icon = VKIconNames.Icon24Link,
+                        Title = link.Title,
+                        Subtitle = link.Caption,
+                        Name = "Link"
+                    };
+                    ba.Click += (a, b) => Launcher.LaunchUrl(link.Url);
+                    StandartAttachments.Children.Add(ba);
+                }
             }
 
             StandartAttachments.IsVisible = StandartAttachments.Children.Count > 0;
+        }
+
+        private string GetNameOrDefaultString(int ownerId, string defaultStr = null) {
+            if (!String.IsNullOrEmpty(defaultStr)) return defaultStr;
+            string from = "";
+            if (ownerId > 0) {
+                User u = CacheManager.GetUser(ownerId);
+                from = u != null ? $"{Localizer.Instance["from"]} {u.FirstNameGen} {u.LastNameGen}" : "";
+            } else if (ownerId < 0) {
+                Group u = CacheManager.GetGroup(ownerId);
+                from = u != null ? $"{Localizer.Instance["from"]} \"{u.Name}\"" : "";
+            }
+            return from;
         }
     }
 }

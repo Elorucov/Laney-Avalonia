@@ -63,10 +63,16 @@ namespace ELOR.VKAPILib.Objects
 
     public class WallPost : AttachmentBase {
         [JsonIgnore]
-        public new string ObjectType { get { return "wall"; } }
+        public override string ObjectType { get { return "wall"; } }
 
         [JsonProperty("from_id")]
         public int FromId { get; set; }
+
+        [JsonProperty("to_id")]
+        public int ToId { get; set; }
+
+        [JsonIgnore]
+        public int OwnerOrToId { get { return OwnerId != 0 ? OwnerId : ToId; } } // #лучшееапивинтернете
 
         [JsonProperty("created_by")]
         public int CreatedBy { get; set; }
@@ -137,6 +143,9 @@ namespace ELOR.VKAPILib.Objects
 
         [JsonProperty("owner_id")]
         public int OwnerId { get; set; }
+
+        [JsonProperty("text")]
+        public string Text { get; set; }
 
         [JsonProperty("date")]
         public int DateUnix { get; set; }

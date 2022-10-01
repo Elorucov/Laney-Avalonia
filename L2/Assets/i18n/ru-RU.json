@@ -156,5 +156,7 @@
   "msg_action_style_reset_m": "изменил оформление чата на",
   "msg_action_style_reset_f": "изменила оформление чата на",
   "msg_action_style_update_m": "сбросил оформление чата",
-  "msg_action_style_update_f": "сбросила оформление чата"
+  "msg_action_style_update_f": "сбросила оформление чата",
+
+  "from": "от"
 }

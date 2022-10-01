@@ -6,6 +6,7 @@ using Avalonia.Themes.Simple;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
+using Serilog;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -93,6 +94,20 @@ namespace ELOR.Laney {
 
         public static void ToggleTheme() {
             SwitchTheme(_current.CurrentScheme == VKUIScheme.BrightLight ? VKUIScheme.SpaceGray : VKUIScheme.BrightLight);
+        }
+
+        public static T GetResource<T>(string key) {
+            object resource = null;
+            if (App.Current.TryFindResource(key, out resource) && resource is T) {
+                return (T)resource;
+            } else {
+                if (resource == null) {
+                    Log.Error("Resource \"{0}\" is not found!", key);
+                } else {
+                    Log.Error("Resource \"{0}\" is not {1}, but {2}", key, typeof(T), resource.GetType());
+                }
+                return default(T);
+            }
         }
 
 #region Platform

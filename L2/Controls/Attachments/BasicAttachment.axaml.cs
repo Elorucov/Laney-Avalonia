@@ -52,6 +52,8 @@ namespace ELOR.Laney.Controls.Attachments {
             Unloaded += BasicAttachment_Unloaded;
         }
 
+        #endregion
+
         private void BAButton_Click(object sender, RoutedEventArgs e) {
             Click?.Invoke(this, e);
         }
@@ -60,7 +62,5 @@ namespace ELOR.Laney.Controls.Attachments {
             BAButton.Click -= BAButton_Click;
             Unloaded -= BasicAttachment_Unloaded;
         }
-
-        #endregion
     }
 }

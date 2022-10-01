@@ -12,11 +12,14 @@
         public const string Icon20MentionOutline = "Icon20MentionOutline";
         public const string Icon20PinOutline = "Icon20PinOutline";
 
+        public const string Icon24ArticleOutline = "Icon24ArticleOutline";
         public const string Icon24CheckBoxOff = "Icon24CheckBoxOff";
         public const string Icon24CheckBoxOn = "Icon24CheckBoxOn";
+        public const string Icon24CommentOutline = "Icon24CommentOutline";
         public const string Icon24Dismiss = "Icon24Dismiss";
         public const string Icon24Done = "Icon24Done";
         public const string Icon24DoneOutline = "Icon24DoneOutline";
+        public const string Icon24Link = "Icon24Link";
         public const string Icon24Spinner = "Icon24Spinner";
 
         public const string Icon28AddCircleOutline = "Icon28AddCircleOutline";
