@@ -18,6 +18,7 @@
   "yes": "Да",
   "no": "Нет",
   "retry": "Повторить попытку",
+  "open": "Открыть",
   "sign_in": "Войти",
 
   "landing_title": "Это Laney",
@@ -111,12 +112,14 @@
   "group_call_in_progress": "Групповой звонок",
   "link": "Ссылка",
   "market": "Товар",
+  "narrative": "Сюжет",
   "podcast": "Подкаст",
   "poll": "Опрос",
   "sticker": "Стикер",
   "story": "История",
   "wall": "Запись на стене",
   "wall_reply": "Комментарий со стены",
+  "not_supported": "Не поддерживается",
 
   "empty_message": "Пустое сообщение",
   "message": "Сообщение",
@@ -158,5 +161,18 @@
   "msg_action_style_update_m": "сбросил оформление чата",
   "msg_action_style_update_f": "сбросила оформление чата",
 
-  "from": "от"
+  "member": "Участник",
+  "member_nom": "{0} участник",
+  "member_gen": "{0} участника",
+  "member_plu": "{0} участников",
+
+  "incoming_call": "Входящий звонок",
+  "outgoing_call": "Исходящий звонок",
+  "call_cancelled": "Отменён",
+  "call_declined": "Отклонён",
+  "call_missed": "Пропущен",
+
+  "from": "от",
+  "watch": "Посмотреть",
+  "play": "Слушать"
 }

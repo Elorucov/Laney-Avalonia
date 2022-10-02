@@ -252,7 +252,9 @@ namespace ELOR.Laney.ViewModels.Controls {
                         case AttachmentType.Sticker:
                         case AttachmentType.Story:
                         case AttachmentType.Wall:
-                        case AttachmentType.WallReply: return Localizer.Instance[type];
+                        case AttachmentType.WallReply:
+                        case AttachmentType.Narrative: return Localizer.Instance[type];
+                        // case AttachmentType.TextpostPublish: return Localizer.Instance[type];
                         default: return Localizer.Instance.GetDeclensionFormatted2(count, "attachment");
                     }
                 } else {

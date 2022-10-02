@@ -14,10 +14,11 @@
   "tomorrow": "tomorrow",
   "time_at": "at",
 
-  "you":  "You",
+  "you": "You",
   "yes": "Yes",
   "no": "No",
   "retry": "Try again",
+  "open": "Open",
   "sign_in": "Sign in",
 
   "landing_title": "This is Laney",
@@ -111,12 +112,14 @@
   "group_call_in_progress": "Group call",
   "link": "Link",
   "market": "Product",
+  "narrative": "Narrative",
   "podcast": "Podcast",
   "poll": "Poll",
   "sticker": "Sticker",
   "story": "Story",
   "wall": "Wall post",
   "wall_reply": "Wall comment",
+  "not_supported": "Not supported",
 
   "empty_message": "Empty message",
   "message": "Message",
@@ -158,5 +161,18 @@
   "msg_action_style_update_m": "reset the chat theme",
   "msg_action_style_update_f": "reset the chat theme",
 
-  "from": "from"
+  "member": "Member",
+  "member_nom": "{0} member",
+  "member_gen": "{0} members",
+  "member_plu": "{0} members",
+
+  "incoming_call": "Incoming call",
+  "outgoing_call": "Outgoing call",
+  "call_cancelled": "Cancelled",
+  "call_declined": "Declined",
+  "call_missed": "Missed",
+
+  "from": "from",
+  "watch": "Watch",
+  "play": "Play"
 }

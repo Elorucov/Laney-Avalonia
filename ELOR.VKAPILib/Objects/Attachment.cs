@@ -72,7 +72,13 @@ namespace ELOR.VKAPILib.Objects {
         Event,
 
         [EnumMember(Value = "curator")]
-        Curator
+        Curator,
+
+        [EnumMember(Value = "narrative")]
+        Narrative,
+
+        [EnumMember(Value = "textpost_publish")]
+        TextpostPublish,
     }
 
     public class AttachmentBase {
@@ -158,6 +164,12 @@ namespace ELOR.VKAPILib.Objects {
         [JsonProperty("curator")]
         public Curator Curator { get; set; }
 
+        [JsonProperty("narrative")]
+        public Narrative Narrative { get; set; }
+
+        [JsonProperty("textpost_publish")]
+        public TextpostPublish TextpostPublish { get; set; }
+
         private AttachmentType GetAttachmentEnum() {
             switch(TypeString) {
                 case "photo": return AttachmentType.Photo;
@@ -181,6 +193,8 @@ namespace ELOR.VKAPILib.Objects {
                 case "call": return AttachmentType.Call;
                 case "group_call_in_progress": return AttachmentType.GroupCallInProgress;
                 case "curator": return AttachmentType.Curator;
+                case "narrative": return AttachmentType.Narrative;
+                case "textpost_publish": return AttachmentType.TextpostPublish;
                 default: return AttachmentType.Unknown;
             }
         }

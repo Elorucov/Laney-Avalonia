@@ -18,6 +18,7 @@
   "yes": "Так",
   "no": "Нi",
   "retry": "Повторити спробу",
+  "open": "Вiдкрити",
   "sign_in": "Увійти",
 
   "landing_title": "Це Laney",
@@ -108,15 +109,17 @@
   "geo": "Мiсце",
   "gift": "Подарунок",
   "graffiti": "Графіті",
-  "group_call_in_progress": "Груповий дзвінок", //
+  "group_call_in_progress": "Груповий дзвінок",
   "link": "Посилання",
   "market": "Товар",
+  "narrative": "Сюжет",
   "podcast": "Подкаст",
   "poll": "Опитування",
   "sticker": "Стікер",
   "story": "Iсторія",
   "wall": "Запис зі стіни",
   "wall_reply": "Коментар зі стіни",
+  "not_supported": "Не підтримується",
 
   "empty_message": "Пусте повiдомлення",
   "message": "Повiдомлення",
@@ -158,5 +161,18 @@
   "msg_action_style_update_m": "скинув оформлення чата",
   "msg_action_style_update_f": "скинула оформлення чата",
 
-  "from": "вiд"
+  "member": "Учасник",
+  "member_nom": "{0} учасник",
+  "member_gen": "{0} учасники",
+  "member_plu": "{0} учасникiв",
+
+  "incoming_call": "Вхідний дзвінок",
+  "outgoing_call": "Вихідний дзвінок",
+  "call_cancelled": "Скасований",
+  "call_declined": "Відхилений",
+  "call_missed": "Пропущений",
+
+  "from": "вiд",
+  "watch": "Переглянути",
+  "play": "Слухати"
 }

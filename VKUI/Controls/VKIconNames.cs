@@ -17,10 +17,18 @@
         public const string Icon24CheckBoxOn = "Icon24CheckBoxOn";
         public const string Icon24CommentOutline = "Icon24CommentOutline";
         public const string Icon24Dismiss = "Icon24Dismiss";
+        public const string Icon24Document = "Icon24Document";
         public const string Icon24Done = "Icon24Done";
         public const string Icon24DoneOutline = "Icon24DoneOutline";
         public const string Icon24Link = "Icon24Link";
+        public const string Icon24Phone = "Icon24Phone";
+        public const string Icon24Poll = "Icon24Poll";
+        public const string Icon24Question = "Icon24Question";
+        public const string Icon24Song = "Icon24Song";
         public const string Icon24Spinner = "Icon24Spinner";
+        public const string Icon24Story = "Icon24Story";
+        public const string Icon24TextLiveOutline = "Icon24TextLiveOutline";
+        public const string Icon24Videocam = "Icon24Videocam";
 
         public const string Icon28AddCircleOutline = "Icon28AddCircleOutline";
         public const string Icon28ArrowLeftOutline = "Icon28ArrowLeftOutline";

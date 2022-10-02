@@ -147,6 +147,9 @@ namespace ELOR.VKAPILib.Objects {
         [JsonProperty("text")]
         public string Text { get; set; }
 
+        [JsonProperty("button_text")]
+        public string ButtonText { get; set; }
+
         [JsonProperty("address")]
         public string Address { get; set; }
 

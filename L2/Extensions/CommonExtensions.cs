@@ -14,6 +14,19 @@ namespace ELOR.Laney.Extensions {
             return new Avalonia.Size(size.Width, size.Height);
         }
 
+        public static string ToFileSize(this long b) {
+            if (b < 1024) {
+                return $"{b} B";
+            }
+            if (b < 1048576) {
+                return $"{Math.Round((double)b / 1024, 1)} Kb";
+            }
+            if (b < 1073741824) {
+                return $"{Math.Round((double)b / 1048576, 1)} Mb";
+            }
+            return $"{Math.Round((double)b / 1073741824, 1)} Gb";
+        }
+
         public static PhotoSizes GetSizeAndUriForThumbnail(this IPreview preview) {
             int maxWidth = 360; // TODO: учитывать системное масштабирование, но оно прописано у окна,
                                 // коих может быть несколько в разных мониторах с разным масштабированием.
