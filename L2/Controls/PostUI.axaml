@@ -1,0 +1,34 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:atch="using:ELOR.Laney.Controls.Attachments"
+        xmlns:vkui="using:VKUI.Controls">
+  <Design.PreviewWith>
+    <controls:PostUI Width="286"/>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|PostUI">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+        <StackPanel>
+          <Grid ColumnDefinitions="Auto *" Margin="4">
+            <vkui:Avatar x:Name="Avatar" Width="40" Height="40" Margin="0,0,10,0" Foreground="White"/>
+            <StackPanel Grid.Column="1">
+              <TextBlock x:Name="Author" Classes="Subhead SemiBold" Foreground="{DynamicResource VKImTextNameBrush}"/>
+              <TextBlock x:Name="PostInfo" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
+            </StackPanel>
+          </Grid>
+          <RichTextBlock x:Name="PostText" IsVisible="False" Classes="Headline" Margin="8,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+          <atch:AttachmentsContainer x:Name="Attachments" NoMargins="True" Margin="4,8,0,0" IsVisible="False"/>
+          <Border x:Name="Map" Margin="4,8,0,0" IsVisible="False" Background="#3f7f7f7f" CornerRadius="4">
+            <TextBlock Margin="8" FontStyle="Italic" Text="Map"/>
+          </Border>
+          <Border x:Name="ForwardedMessagesContainer" Margin="0,8,0,0" IsVisible="False" BorderBrush="{DynamicResource VKImForwardLineTintBrush}" BorderThickness="2,0,0,0">
+            <StackPanel x:Name="ForwardedMessagesStack" Margin="4,0,0,0"/>
+          </Border>
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

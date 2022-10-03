@@ -2,10 +2,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using Avalonia.Media;
-using ELOR.Laney.Helpers;
+using ELOR.Laney.Extensions;
 using System;
-using System.Threading.Tasks.Dataflow;
 
 namespace ELOR.Laney.Controls.Attachments {
     public class ExtendedAttachment : TemplatedControl {

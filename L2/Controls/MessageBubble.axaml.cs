@@ -8,6 +8,7 @@ using Avalonia.Media;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
 using ELOR.Laney.ViewModels.Controls;
+using ELOR.VKAPILib.Objects;
 using System;
 using System.ComponentModel;
 using VKUI.Controls;
@@ -60,6 +61,7 @@ namespace ELOR.Laney.Controls {
         Border SenderNameWrap;
         TextBlock SenderName;
         Button ReplyMessageButton;
+        GiftUI Gift;
         RichTextBlock MessageText;
         AttachmentsContainer MessageAttachments;
         Border Map;
@@ -79,6 +81,7 @@ namespace ELOR.Laney.Controls {
             SenderNameWrap = e.NameScope.Find<Border>(nameof(SenderNameWrap));
             SenderName = e.NameScope.Find<TextBlock>(nameof(SenderName));
             ReplyMessageButton = e.NameScope.Find<Button>(nameof(ReplyMessageButton));
+            Gift = e.NameScope.Find<GiftUI>(nameof(Gift));
             MessageText = e.NameScope.Find<RichTextBlock>(nameof(MessageText));
             MessageAttachments = e.NameScope.Find<AttachmentsContainer>(nameof(MessageAttachments));
             Map = e.NameScope.Find<Border>(nameof(Map));
@@ -194,6 +197,34 @@ namespace ELOR.Laney.Controls {
             // Attachments
             MessageAttachments.Attachments = Message.Attachments;
 
+            // Forwarded messages
+            ForwardedMessagesStack.Children.Clear();
+            var fmcmargin = ForwardedMessagesContainer.Margin;
+            var fmcborder = ForwardedMessagesContainer.BorderThickness;
+            var fmsmargin = ForwardedMessagesStack.Margin;
+            double fmwidth = fmcmargin.Left + fmcmargin.Right + fmcborder.Left + fmsmargin.Left;
+            foreach (var message in Message.ForwardedMessages) {
+                ForwardedMessagesStack.Children.Add(new PostUI {
+                    Width = BubbleRoot.Width - fmwidth,
+                    Post = message
+                });
+            }
+
+            // Gift
+            var mtm = MessageText.Margin;
+            if (Message.Gift != null) {
+                Gift.Gift = Message.Gift;
+                Gift.HorizontalAlignment = String.IsNullOrEmpty(Message.Text) ? HorizontalAlignment.Left : HorizontalAlignment.Stretch;
+                Gift.Margin = new Thickness(4, 4, 4, String.IsNullOrEmpty(Message.Text) ? 12 : 0); 
+                Gift.IsVisible = true;
+                MessageText.TextAlignment = TextAlignment.Center;
+                MessageText.Margin = new Thickness(mtm.Left, mtm.Top, mtm.Right, 12);
+            } else {
+                Gift.IsVisible = false;
+                MessageText.TextAlignment = TextAlignment.Left;
+                MessageText.Margin = new Thickness(mtm.Left, mtm.Top, mtm.Right, 8);
+            }
+
             // Text
             SetText(Message.Text);
 
@@ -285,7 +316,7 @@ namespace ELOR.Laney.Controls {
             ReplyMessageButton.Margin = new Thickness(rmm.Left, replyTopMargin, rmm.Right, rmm.Bottom);
 
             // Text margin-top
-            double textTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null ? 0 : 8; // или 2 : 8 
+            double textTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null || Message.Gift != null ? 0 : 8;
             var mtm = MessageText.Margin;
             MessageText.Margin = new Thickness(mtm.Left, textTopMargin, mtm.Right, mtm.Bottom);
 

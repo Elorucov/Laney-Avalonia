@@ -50,6 +50,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private bool _isSenderNameVisible;
         private bool _isSenderAvatarVisible;
         private bool _isDateBetweenVisible;
+        private Gift _gift;
         private MessageUIType _uiType;
         private int _imagesCount;
         private Uri _previewImageUri;
@@ -83,6 +84,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         public bool IsSenderNameVisible { get { return _isSenderNameVisible; } private set { _isSenderNameVisible = value; OnPropertyChanged(); } }
         public bool IsSenderAvatarVisible { get { return _isSenderAvatarVisible; } private set { _isSenderAvatarVisible = value; OnPropertyChanged(); } }
         public bool IsDateBetweenVisible { get { return _isDateBetweenVisible; } private set { _isDateBetweenVisible = value; OnPropertyChanged(); } }
+        public Gift Gift { get { return _gift; } private set { _gift = value; OnPropertyChanged(); } }
         public MessageUIType UIType { get { return _uiType; } private set { _uiType = value; OnPropertyChanged(); } }
         public int ImagesCount { get { return _imagesCount; } private set { _imagesCount = value; OnPropertyChanged(); } }
         public Uri PreviewImageUri { get { return _previewImageUri; } private set { _previewImageUri = value; OnPropertyChanged(); } }
@@ -160,13 +162,20 @@ namespace ELOR.Laney.ViewModels.Controls {
                     UIType = MessageUIType.SingleImage;
                 } else if (a.Type == AttachmentType.Sticker && String.IsNullOrEmpty(Text)) {
                     UIType = MessageUIType.Sticker;
+                    PreviewImageUri = a.Sticker.Images[1].Uri;
+                    return;
                 } else if (a.Type == AttachmentType.Graffiti && String.IsNullOrEmpty(Text)) {
                     UIType = MessageUIType.Graffiti;
+                    PreviewImageUri = a.Graffiti.Uri;
+                    return;
                 } else if (a.Type == AttachmentType.Story && String.IsNullOrEmpty(Text) && ReplyMessage == null
                     && ForwardedMessages == null && Location == null && Keyboard == null) {
                     UIType = MessageUIType.Story;
                 } else if (a.Type == AttachmentType.Gift) {
                     UIType = MessageUIType.Gift;
+                    Gift = a.Gift;
+                    PreviewImageUri = a.Gift.ThumbUri;
+                    return;
                 } else {
                     UIType = MessageUIType.Complex;
                 }
@@ -191,6 +200,8 @@ namespace ELOR.Laney.ViewModels.Controls {
             } else {
                 UIType = MessageUIType.Complex;
             }
+
+            Gift = Attachments.Where(a => a.Type == AttachmentType.Gift).FirstOrDefault()?.Gift;
 
             var images = Attachments
                 .Where(a => a.Type == AttachmentType.Photo || a.Type == AttachmentType.Video

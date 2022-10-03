@@ -1,0 +1,28 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:controls="using:ELOR.Laney.Controls.Attachments">
+  <Design.PreviewWith>
+    <Border CornerRadius="18" Margin="8" Background="{DynamicResource VKImBubbleGiftBackgroundBrush}">
+      <controls:GiftUI Margin="4"/>
+    </Border>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|GiftUI">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+        <StackPanel>
+          <Border Background="White" CornerRadius="14" MinWidth="180" Height="180">
+            <Rectangle x:Name="GiftImage" RadiusX="14" RadiusY="14" HorizontalAlignment="Center" Width="180" Height="180"/>
+          </Border>
+          <DockPanel HorizontalAlignment="Center" Height="20" Margin="3,10,3,9">
+            <vkui:VKIcon Id="Icon16Gift" Margin="3,0" Width="16" Height="16" Foreground="{DynamicResource VKImBubbleGiftTextBrush}"/>
+            <TextBlock Classes="Caption1" Margin="3,0" VerticalAlignment="Center" Foreground="{DynamicResource VKImBubbleGiftTextBrush}" Text="{i18n:Localize gift}"/>
+          </DockPanel>
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

@@ -2,19 +2,16 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
-using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Layout;
 using Avalonia.Media;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
-using ELOR.Laney.Helpers;
-using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using VKUI.Controls;
 using VKUI.Utils;
 
@@ -29,6 +26,16 @@ namespace ELOR.Laney.Controls.Attachments {
             get => GetValue(AttachmentsProperty);
             set => SetValue(AttachmentsProperty, value);
         }
+
+        public static readonly StyledProperty<Gift> GiftProperty =
+            AvaloniaProperty.Register<AttachmentsContainer, Gift>(nameof(Gift));
+
+        public Gift Gift {
+            get => GetValue(GiftProperty);
+            set => SetValue(GiftProperty, value);
+        }
+
+        public bool NoMargins { get; set; } = false; // отступы по бокам. true нужно для PostUI.
 
         #endregion
 
@@ -56,6 +63,10 @@ namespace ELOR.Laney.Controls.Attachments {
 
         private void RenderAttachments() {
             if (!isUILoaded || Attachments == null) return;
+            StandartAttachments.Margin = NoMargins ? new Thickness(0) : new Thickness(8, 0, 8, 0);
+
+            double imageFixedWidth = MessageBubble.BUBBLE_FIXED_WIDTH - 8;
+            if (!Double.IsNaN(Width)) imageFixedWidth = Width;
 
             Sticker sticker = null;
             Gift gift = null;
@@ -78,7 +89,7 @@ namespace ELOR.Laney.Controls.Attachments {
             List<AudioMessage> ams = new List<AudioMessage>();
             // WikiPage page = null;
             // Note note = null;
-            Album album = null;
+            // Album album = null;
             // SituationalTheme sth = null;
             // Textlive tl = null;
             TextpostPublish tpb = null;
@@ -120,7 +131,6 @@ namespace ELOR.Laney.Controls.Attachments {
             StandartAttachments.Children.Clear();
 
             // Images
-            double iwidth = MessageBubble.BUBBLE_FIXED_WIDTH - 8;
             if (previews.Count == 1) {
                 var preview = previews[0].GetSizeAndUriForThumbnail();
                 var size = preview.Size;
@@ -128,11 +138,12 @@ namespace ELOR.Laney.Controls.Attachments {
 
                 Rectangle rect = new Rectangle {
                     Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
-                    RadiusX = 14, RadiusY = 14,
-                    Width = iwidth,
-                    Height = size.Width == 0 || size.Height == 0 ? iwidth :
-                        Math.Min(iwidth / (double)size.Width * (double)size.Height, iwidth / 9 * 16),
-                    Margin = new Thickness(-4, 0, -4, 4)
+                    RadiusX = NoMargins ? 4 : 14, 
+                    RadiusY = NoMargins ? 4 : 14,
+                    Width = imageFixedWidth,
+                    Height = size.Width == 0 || size.Height == 0 ? imageFixedWidth :
+                        Math.Min(imageFixedWidth / (double)size.Width * (double)size.Height, imageFixedWidth / 9 * 16),
+                    Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4)
                 };
                 if (uri != null) rect.SetImageFillAsync(uri);
                 StandartAttachments.Children.Add(rect);
@@ -142,10 +153,11 @@ namespace ELOR.Laney.Controls.Attachments {
                     sizes.Add(preview.GetSizeAndUriForThumbnail().Size.ToAvaloniaSize());
                 }
 
-                var layout = PhotoLayout.Create(new Size(iwidth, iwidth), sizes, 4);
+                var layout = PhotoLayout.Create(new Size(imageFixedWidth, imageFixedWidth), sizes, 4);
                 List<Rect> thumbRects = layout.Item1;
                 Size layoutSize = layout.Item2;
-                List<bool[]> corners = layout.Item3; // top left, top right, bottom right, bottom left
+                List<bool[]> corners = layout.Item3; 
+                // top left, top right, bottom right, bottom left
                 // corners появился из-за того, что в авалонии
                 // контент не обрезается под скруглённым родителем.
                 // https://github.com/AvaloniaUI/Avalonia/issues/2105
@@ -153,7 +165,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 Canvas canvas = new Canvas {
                     Width = layoutSize.Width,
                     Height = layoutSize.Height,
-                    Margin = new Thickness(-4, 0, -4, 4),
+                    Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4),
                     ClipToBounds = true,
                 };
 
@@ -163,10 +175,10 @@ namespace ELOR.Laney.Controls.Attachments {
                     var p = preview.GetSizeAndUriForThumbnail();
                     bool[] corner = corners[i];
 
-                    double tl = corner[0] ? 14 : 4;
-                    double tr = corner[1] ? 14 : 4;
-                    double br = corner[2] ? 14 : 4;
-                    double bl = corner[3] ? 14 : 4;
+                    double tl = !NoMargins && corner[0] ? 14 : 4;
+                    double tr = !NoMargins && corner[1] ? 14 : 4;
+                    double br = !NoMargins && corner[2] ? 14 : 4;
+                    double bl = !NoMargins && corner[3] ? 14 : 4;
 
                     Border border = new Border {
                         Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
@@ -189,6 +201,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Width = MessageBubble.STICKER_WIDTH,
                     Height = MessageBubble.STICKER_WIDTH,
                     Margin = new Thickness(0, 0, 0, 8),
+                    HorizontalAlignment = HorizontalAlignment.Left,
                     Name = "Sticker"
                 };
                 stickerImage.SetUriSourceAsync(sticker.Images[sticker.Images.Count - 1].Uri);
@@ -197,11 +210,10 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Graffiti
             if (graffiti != null) {
-                double gwidth = MessageBubble.BUBBLE_FIXED_WIDTH - 8;
                 Rectangle grImage = new Rectangle() {
-                    Width = gwidth,
-                    Height = gwidth / (double)graffiti.Width * (double)graffiti.Height,
-                    Margin = new Thickness(-4, 0, -4, 4),
+                    Width = imageFixedWidth,
+                    Height = imageFixedWidth / graffiti.Width * graffiti.Height,
+                    Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4),
                     RadiusX = 14, RadiusY = 14,
                     Name = graffiti.ObjectType
                 };
@@ -393,7 +405,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24Song,
                     Title = a.Title,
-                    Subtitle = a.Subtitle,
+                    Subtitle = a.Artist,
                     Name = a.ObjectType
                 };
                 StandartAttachments.Children.Add(ba);
@@ -461,6 +473,15 @@ namespace ELOR.Laney.Controls.Attachments {
                     Subtitle = a.TypeString,
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24Question
+                });
+            }
+
+            // Gift 
+            if (Gift != null) {
+                StandartAttachments.Children.Add(new GiftUI { 
+                    Gift = Gift,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Margin = new Thickness(0, 0, 0, 8),
                 });
             }
 

@@ -58,11 +58,12 @@ namespace ELOR.Laney.Extensions {
             return text;
         }
 
-        public static string ToHumanizedString(this DateTime target) {
+        public static string ToHumanizedString(this DateTime target, bool noAt = false) {
             DateTime current = DateTime.Now;
             string text = String.Empty;
             if (current.Date != target.Date) text = target.ToHumanizedDateString() + " ";
-            text += $"{Localizer.Instance["time_at"]} {target.ToString("H:mm")}";
+            string at = noAt && text.Length == 0 ? "" : $"{Localizer.Instance["time_at"]} ";
+            text += $"{at}{target.ToString("H:mm")}";
             return text;
         }
     }

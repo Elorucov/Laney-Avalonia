@@ -87,6 +87,9 @@
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controls\Attachments\GiftUI.axaml.cs">
+      <DependentUpon>GiftUI.axaml</DependentUpon>
+    </Compile>
     <Compile Update="FieldTestWindow.axaml.cs">
       <DependentUpon>FieldTestWindow.axaml</DependentUpon>
     </Compile>

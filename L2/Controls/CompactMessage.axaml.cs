@@ -1,10 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using ELOR.Laney.Helpers;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Controls;
-using System;
-using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
     public class CompactMessage : TemplatedControl {

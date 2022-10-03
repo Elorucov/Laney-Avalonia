@@ -4,6 +4,7 @@
         public const string Icon16CheckOutline = "Icon16CheckOutline";
         public const string Icon16ClockOutline = "Icon16ClockOutline";
         public const string Icon16DeleteOutline = "Icon16DeleteOutline";
+        public const string Icon16Gift = "Icon16Gift";
         public const string Icon16Pin = "Icon16Pin";
         public const string Icon16SearchOutline = "Icon16SearchOutline";
         public const string Icon16Spinner = "Icon16Spinner";
