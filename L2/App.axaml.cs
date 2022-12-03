@@ -2,12 +2,14 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Themes.Simple;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
@@ -83,6 +85,7 @@ namespace ELOR.Laney {
         }
 
         public VKUIScheme CurrentScheme { get; private set; }
+        public List<Action<VKUIScheme>> ThemeChanged = new List<Action<VKUIScheme>>();
 
         public static void SwitchTheme(VKUIScheme scheme) {
             SimpleTheme simple = (SimpleTheme)_current.Styles[0]!;
@@ -90,6 +93,9 @@ namespace ELOR.Laney {
 
             VKUITheme.Current.Scheme = scheme;
             _current.CurrentScheme = scheme;
+            foreach (Action<VKUIScheme> action in CollectionsMarshal.AsSpan(_current.ThemeChanged)) {
+                action.Invoke(scheme);
+            }
         }
 
         public static void ToggleTheme() {

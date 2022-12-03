@@ -6,9 +6,9 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.135</AssemblyVersion>
-    <FileVersion>2.0.135</FileVersion>
-    <Version>2.0.135-devplat-anycpu-devuser.devpc-220913-0739</Version>
+    <AssemblyVersion>2.0.136</AssemblyVersion>
+    <FileVersion>2.0.136</FileVersion>
+    <Version>2.0.136-devplat-anycpu-devuser.devpc-221005-1753</Version>
     <Platforms>AnyCPU</Platforms>
     <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -18,8 +18,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.135</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.135</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.136</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.136</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -89,6 +89,9 @@
   <ItemGroup>
     <Compile Update="Controls\Attachments\GiftUI.axaml.cs">
       <DependentUpon>GiftUI.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\BotKeyboardUI.axaml.cs">
+      <DependentUpon>BotKeyboardUI.axaml</DependentUpon>
     </Compile>
     <Compile Update="FieldTestWindow.axaml.cs">
       <DependentUpon>FieldTestWindow.axaml</DependentUpon>

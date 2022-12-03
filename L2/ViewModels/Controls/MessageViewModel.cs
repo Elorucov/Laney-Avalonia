@@ -269,16 +269,11 @@ namespace ELOR.Laney.ViewModels.Controls {
                         default: return Localizer.Instance.GetDeclensionFormatted2(count, "attachment");
                     }
                 } else {
-                    if (Location != null) {
-                        if (count == 0) {
-                            return Localizer.Instance["geo"];
-                        } else {
-                            count++;
-                        }
-                    }
+                    if (Location != null && count > 0) count++;
                     return Localizer.Instance.GetDeclensionFormatted2(count, "attachment");
                 }
             }
+            if (Location != null) return Localizer.Instance["geo"];
             if (_forwardedMessages.Count > 0) return Localizer.Instance.GetDeclensionFormatted2(_forwardedMessages.Count, "forwarded_message");
 
             return Localizer.Instance["empty_message"];

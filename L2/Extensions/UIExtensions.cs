@@ -5,6 +5,7 @@ using Avalonia.Platform;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using VKUI;
 
 namespace ELOR.Laney.Extensions {
     public static class UIExtensions {
@@ -47,6 +48,18 @@ namespace ELOR.Laney.Extensions {
             if (id < 0) id = id * -1;
             int index = id % 6;
             return gradients[index];
+        }
+
+        public static void RegisterThemeResource(this Control control, StyledProperty<IBrush> property, string resourceKey) {
+            IBrush newBrush = App.GetResource<IBrush>(resourceKey);
+            control.SetValue(property, newBrush);
+
+            Action<VKUIScheme> themeChangedAction = new Action<VKUIScheme>((t) => {
+                IBrush newBrush = App.GetResource<IBrush>(resourceKey);
+                control.SetValue(property, newBrush);
+            });
+            App.Current.ThemeChanged.Add(themeChangedAction);
+            control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChanged.Remove(themeChangedAction);
         }
     }
 }

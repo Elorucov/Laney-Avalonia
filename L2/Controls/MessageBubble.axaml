@@ -42,14 +42,13 @@
             </StackPanel>
             <Border x:Name="IndicatorContainer" Height="20" CornerRadius="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Classes="DefaultIndicator">
               <StackPanel x:Name="IndicatorStack" Orientation="Horizontal" Margin="6,4,6,2">
+                <vkui:VKIcon x:Name="ImportantIndicator" Id="Icon12Star" Width="12" Height="12" Margin="0,-1,4,0" IsVisible="{Binding Message.IsImportant, RelativeSource={RelativeSource TemplatedParent}}"/>
                 <TextBlock x:Name="EditedIndicator" Classes="Caption3" Text="{i18n:Localize edited_indicator}" Margin="0,0,4,0" IsVisible="{Binding Message.EditTime, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                 <TextBlock x:Name="TimeIndicator" Classes="Caption3"/>
                 <vkui:VKIcon x:Name="StateIndicator" Id="Icon16CheckDoubleOutline" Width="12" Height="12" Margin="4,-1,0,0"/>
               </StackPanel>
             </Border>
-            <Border x:Name="BotKeyboard" Grid.Row="1" IsVisible="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}">
-              <TextBlock Margin="8" FontStyle="Italic" Text="Bot keyboard"/>
-            </Border>
+            <controls:BotKeyboardUI x:Name="BotKeyboard" Grid.Row="1" Margin="12,4,12,12" MinWidth="296" Keyboard="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
             <Ellipse x:Name="ReadIndicator" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,1" Width="8" Height="8" Fill="{DynamicResource VKAccentBrush}" Stroke="{DynamicResource VKBackgroundContentBrush}" StrokeThickness="1"/>
           </Grid>
         </Grid>

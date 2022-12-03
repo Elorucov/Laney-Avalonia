@@ -77,11 +77,19 @@
           <Button x:Name="EmojiStickerButton" Classes="PanelIcon" Width="44">
             <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28SmileOutline}"/>
           </Button>
+          <ToggleButton x:Name="BotKbdButton" IsVisible="{Binding CurrentKeyboard, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="PanelIcon" Width="44">
+            <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28KeyboardBotsOutline}"/>
+          </ToggleButton>
           <Button x:Name="SendButton" Classes="PanelIcon" Width="44">
             <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28Send}"/>
           </Button>
         </StackPanel>
       </Grid>
+      <Border x:Name="BotKeyboardContainer" IsVisible="{Binding CurrentKeyboard, Converter={x:Static ObjectConverters.IsNotNull}}" MaxHeight="194">
+        <ScrollViewer IsVisible="{Binding IsChecked, ElementName=BotKbdButton}">
+          <controls:BotKeyboardUI Keyboard="{Binding CurrentKeyboard}" Margin="8,0,8,8" MaxWidth="656"/>
+        </ScrollViewer>
+      </Border>
     </StackPanel>
     
     <Border x:Name="RestrictionInfoContainer" Grid.Row="3" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">

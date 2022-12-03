@@ -137,7 +137,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 var uri = preview.Uri;
 
                 Rectangle rect = new Rectangle {
-                    Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
+                    Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
                     RadiusX = NoMargins ? 4 : 14, 
                     RadiusY = NoMargins ? 4 : 14,
                     Width = imageFixedWidth,
@@ -342,7 +342,7 @@ namespace ELOR.Laney.Controls.Attachments {
             // Story
             foreach (Story st in stories) {
                 string def = GetNameOrDefaultString(st.OwnerId);
-                if (st.IsExpired || st.IsDeleted || st.IsRestricted) {
+                if (st.IsExpired || st.IsDeleted || st.IsRestricted || st.CanSee == 0) {
                     BasicAttachment ba = new BasicAttachment {
                         Margin = new Thickness(0, 0, 0, 8),
                         Icon = VKIconNames.Icon24Story,

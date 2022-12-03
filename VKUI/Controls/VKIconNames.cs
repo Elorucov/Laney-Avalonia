@@ -1,5 +1,8 @@
 ﻿namespace VKUI.Controls {
     public static class VKIconNames {
+        public const string Icon12ArrowUpRight = "Icon12ArrowUpRight";
+        public const string Icon12Star = "Icon12Star";
+
         public const string Icon16CheckDoubleOutline = "Icon16CheckDoubleOutline";
         public const string Icon16CheckOutline = "Icon16CheckOutline";
         public const string Icon16ClockOutline = "Icon16ClockOutline";
@@ -12,6 +15,8 @@
 
         public const string Icon20MentionOutline = "Icon20MentionOutline";
         public const string Icon20PinOutline = "Icon20PinOutline";
+        public const string Icon20PlaceOutline = "Icon20PlaceOutline";
+        public const string Icon20ServicesOutline = "Icon20ServicesOutline";
 
         public const string Icon24ArticleOutline = "Icon24ArticleOutline";
         public const string Icon24CheckBoxOff = "Icon24CheckBoxOff";
@@ -36,6 +41,7 @@
         public const string Icon28DoorArrowRightOutline = "Icon28DoorArrowRightOutline";
         public const string Icon28ErrorOutline = "Icon28ErrorOutline";
         public const string Icon28InfoOutline = "Icon28InfoOutline";
+        public const string Icon28KeyboardBotsOutline = "Icon28KeyboardBotsOutline";
         public const string Icon28MoreHorizontal = "Icon28MoreHorizontal";
         public const string Icon28SearchOutline = "Icon28SearchOutline";
         public const string Icon28SettingsOutline = "Icon28SettingsOutline";

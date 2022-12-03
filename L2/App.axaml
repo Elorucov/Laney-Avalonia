@@ -39,6 +39,7 @@
     <StyleInclude Source="avares://Laney/Controls/Attachments/BasicAttachment.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/Attachments/ExtendedAttachment.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/Attachments/GiftUI.axaml"/>
+    <StyleInclude Source="avares://Laney/Controls/BotKeyboardUI.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/ChatViewItem.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/CompactMessage.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/MessageBubble.axaml"/>
