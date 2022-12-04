@@ -8,8 +8,9 @@ using Avalonia.Media;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
 using ELOR.Laney.ViewModels.Controls;
-using ELOR.VKAPILib.Objects;
+using ELOR.Laney.Views.Modals;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using VKUI.Controls;
 
@@ -96,8 +97,15 @@ namespace ELOR.Laney.Controls {
             Map.Width = mapWidth;
             Map.Height = mapWidth / 2;
 
+            ReplyMessageButton.Click += ReplyMessageButton_Click;
+
             isUILoaded = true;
             RenderElement();
+        }
+
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e) {
+            base.OnDetachedFromVisualTree(e);
+            ReplyMessageButton.Click -= ReplyMessageButton_Click;
         }
 
         #endregion
@@ -340,5 +348,13 @@ namespace ELOR.Laney.Controls {
             var fwm = ForwardedMessagesContainer.Margin;
             ForwardedMessagesContainer.Margin = new Thickness(fwm.Left, fwdTopMargin, fwm.Right, fwm.Bottom);
         }
+
+        #region Template events
+
+        private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            VKSession.Main.CurrentOpenedChat.GoToMessage(Message.ReplyMessage);
+        }
+
+        #endregion
     }
 }

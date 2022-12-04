@@ -3,8 +3,6 @@ using Avalonia.Controls;
 using System;
 using ELOR.Laney.ViewModels;
 using System.Threading.Tasks;
-using ELOR.Laney.Controls;
-using ELOR.Laney.ViewModels.Controls;
 using Serilog;
 
 namespace ELOR.Laney.Views {
@@ -16,6 +14,7 @@ namespace ELOR.Laney.Views {
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
             DataContextChanged += ChatView_DataContextChanged;
             scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+            PinnedMessageButton.Click += PinnedMessageButton_Click;
         }
 
         public event EventHandler BackButtonClick;
@@ -79,6 +78,10 @@ namespace ELOR.Laney.Views {
 
         private void ScrollToMessage(object sender, int messageId) {
             itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
+        }
+
+        private void PinnedMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            Chat.GoToMessage(Chat.PinnedMessage);
         }
     }
 }

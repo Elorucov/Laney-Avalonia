@@ -6,6 +6,7 @@ using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
+using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
@@ -202,7 +203,22 @@ namespace ELOR.Laney.ViewModels {
 
         #region Loading messages
 
-        public async void LoadMessages(int startMessageId = -1) {
+        public async void GoToMessage(MessageViewModel message) {
+            if (message.Id > 0) {
+                MessageViewModel msg = (from m in DisplayedMessages where m.Id == message.Id select m).FirstOrDefault();
+                // TODO: искать ещё и в received messages.
+                if (msg != null) {
+                    ScrollToMessageRequested?.Invoke(this, message.Id);
+                } else {
+                    LoadMessages(message.Id);
+                }
+            } else {
+                VKUIDialog dlg = new VKUIDialog("Showing message in window is not ready yet!", message.ToString(), VKUIDialog.OkButton, 1);
+                await dlg.ShowDialog<short>(VKSession.Main.Window);
+            }
+        }
+
+        private async void LoadMessages(int startMessageId = -1) {
             if (IsLoading) return;
             Placeholder = null;
             DisplayedMessages?.Clear();

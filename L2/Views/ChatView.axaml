@@ -32,12 +32,11 @@
       </vkui:PanelHeader.RightButtons>
     </vkui:PanelHeader>
     
-    <Border x:Name="PinnedMessageContainer" Grid.Row="1" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding PinnedMessage, Converter={x:Static ObjectConverters.IsNotNull}}" Padding="12" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
+    <Border x:Name="PinnedMessageContainer" Grid.Row="1" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding PinnedMessage, Converter={x:Static ObjectConverters.IsNotNull}}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
       <Grid ColumnDefinitions="Auto *">
-        <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20PinOutline}" Foreground="{DynamicResource VKIconSecondaryBrush}"/>
-        <!-- TODO: отдельный контрол для компактных сообщений (pin, reply) -->
-        <Button Grid.Column="1" Classes="Tertiary" Margin="12,0" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-          <controls:CompactMessage Message="{Binding PinnedMessage}" IsSentTimeVisible="True"/>
+        <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20PinOutline}" Margin="12,0,0,0" Foreground="{DynamicResource VKIconSecondaryBrush}"/>
+        <Button x:Name="PinnedMessageButton" Grid.Column="1" Padding="0" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+          <controls:CompactMessage Margin="12" Message="{Binding PinnedMessage}" IsSentTimeVisible="True"/>
         </Button>
       </Grid>
     </Border>

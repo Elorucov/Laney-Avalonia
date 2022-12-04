@@ -75,5 +75,17 @@ namespace ELOR.Laney.Views.Modals {
             short id = (short)button.Tag;
             Close(id);
         }
+
+        #region Static
+
+        public static Dictionary<short, string> OkButton {
+            get {
+                return new Dictionary<short, string> {
+                    { 1, "Ok" }
+                };
+            }
+        }
+
+        #endregion
     }
 }
