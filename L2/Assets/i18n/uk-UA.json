@@ -160,6 +160,7 @@
   "msg_action_style_reset_f": "змінила оформлення чату на",
   "msg_action_style_update_m": "скинув оформлення чата",
   "msg_action_style_update_f": "скинула оформлення чата",
+  "msg_expired": "Повідомлення щезло",
 
   "member": "Учасник",
   "member_nom": "{0} учасник",

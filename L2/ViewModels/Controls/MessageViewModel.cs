@@ -88,7 +88,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         public MessageUIType UIType { get { return _uiType; } private set { _uiType = value; OnPropertyChanged(); } }
         public int ImagesCount { get { return _imagesCount; } private set { _imagesCount = value; OnPropertyChanged(); } }
         public Uri PreviewImageUri { get { return _previewImageUri; } private set { _previewImageUri = value; OnPropertyChanged(); } }
-
+        public bool CanShowInUI { get { return Action == null && !IsExpired; } }
 
         public MessageViewModel(Message msg) {
             Setup(msg);
@@ -149,6 +149,8 @@ namespace ELOR.Laney.ViewModels.Controls {
                  || e.PropertyName == nameof(ReplyMessage) || e.PropertyName == nameof(ForwardedMessages)
                   || e.PropertyName == nameof(Geo) || e.PropertyName == nameof(Keyboard)) {
                 UpdateUIType();
+            } else if (e.PropertyName == nameof(IsExpired) || e.PropertyName == nameof(Action)) {
+                OnPropertyChanged(nameof(CanShowInUI));
             }
         }
 

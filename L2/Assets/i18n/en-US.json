@@ -160,6 +160,7 @@
   "msg_action_style_reset_f": "changed the chat theme to",
   "msg_action_style_update_m": "reset the chat theme",
   "msg_action_style_update_f": "reset the chat theme",
+  "msg_expired": "Message self-destructed",
 
   "member": "Member",
   "member_nom": "{0} member",

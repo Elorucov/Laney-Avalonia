@@ -19,6 +19,7 @@
 
     <conv:AvatarGradientConverter x:Key="agc"/>
     <conv:DateTimeDiffConverter x:Key="dtdc"/>
+    <conv:DateConverter x:Key="dc"/>
     <conv:MessageSenderNameConverter x:Key="msnc"/>
     <conv:OnlineIconConverter x:Key="oic"/>
 

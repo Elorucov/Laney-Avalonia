@@ -1,6 +1,8 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:ELOR.Laney.Controls">
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vkui="using:VKUI.Controls">
   <Design.PreviewWith>
     <controls:ChatViewItem />
   </Design.PreviewWith>
@@ -10,13 +12,20 @@
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel>
-          <Border x:Name="DateContainer" Background="#7f7f7f7f" IsVisible="{Binding Message.IsDateBetweenVisible, RelativeSource={RelativeSource TemplatedParent}}">
-            <TextBlock Text="{Binding Message.SentTime.Date, RelativeSource={RelativeSource TemplatedParent}}"/>
+          <Border x:Name="DateContainer" HorizontalAlignment="Center" CornerRadius="12" IsVisible="{Binding Message.IsDateBetweenVisible, RelativeSource={RelativeSource TemplatedParent}}">
+            <TextBlock Classes="Caption1" Margin="6,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Message.SentTime.Date, Converter={StaticResource dc} RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
-          <Border x:Name="ServiceMessageUI" Background="#3f7f7f7f" IsVisible="{Binding Message.Action, Converter={x:Static ObjectConverters.IsNotNull} RelativeSource={RelativeSource TemplatedParent}}">
-            <TextBlock Text="{Binding Message.Action.Type, RelativeSource={RelativeSource TemplatedParent}}"/>
+          <!-- TODO: кликабельные имена -->
+          <Border x:Name="ServiceMessageUI" Margin="0,4" HorizontalAlignment="Center" CornerRadius="12" IsVisible="{Binding Message.Action, Converter={x:Static ObjectConverters.IsNotNull} RelativeSource={RelativeSource TemplatedParent}}">
+            <TextBlock Classes="Caption1" Margin="6,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
-          <Border x:Name="MessageUIWrapper" IsVisible="{Binding Message.Action, Converter={x:Static ObjectConverters.IsNull}, RelativeSource={RelativeSource TemplatedParent}}">
+          <Border x:Name="ExpiredMessageUI" HorizontalAlignment="Center" Height="40" CornerRadius="20" Background="{DynamicResource VKModalCardBackgroundBrush}" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}" BorderThickness="1" IsVisible="{Binding Message.IsExpired, RelativeSource={RelativeSource TemplatedParent}}">
+            <StackPanel Orientation="Horizontal">
+              <vkui:VKIcon Margin="10,0,0,0" Id="{x:Static vkui:VKIconNames.Icon24BombOutline}" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
+              <TextBlock Classes="Caption1" Margin="6,0,12,0" VerticalAlignment="Center" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{i18n:Localize msg_expired}"/>
+            </StackPanel>
+          </Border>
+          <Border x:Name="MessageUIWrapper" IsVisible="{Binding Message.CanShowInUI, RelativeSource={RelativeSource TemplatedParent}}">
             <controls:MessageBubble x:Name="MessageUI" Message="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
         </StackPanel>

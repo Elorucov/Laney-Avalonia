@@ -19,6 +19,7 @@
         public const string Icon20ServicesOutline = "Icon20ServicesOutline";
 
         public const string Icon24ArticleOutline = "Icon24ArticleOutline";
+        public const string Icon24BombOutline = "Icon24BombOutline";
         public const string Icon24CheckBoxOff = "Icon24CheckBoxOff";
         public const string Icon24CheckBoxOn = "Icon24CheckBoxOn";
         public const string Icon24CommentOutline = "Icon24CommentOutline";
