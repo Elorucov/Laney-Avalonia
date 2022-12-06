@@ -103,11 +103,6 @@ namespace ELOR.Laney.Controls {
             RenderElement();
         }
 
-        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e) {
-            base.OnDetachedFromVisualTree(e);
-            ReplyMessageButton.Click -= ReplyMessageButton_Click;
-        }
-
         #endregion
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {

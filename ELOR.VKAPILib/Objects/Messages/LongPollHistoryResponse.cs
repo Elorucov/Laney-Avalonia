@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,5 +23,8 @@ namespace ELOR.VKAPILib.Objects.Messages {
 
         [JsonProperty("credentials")]
         public LongPollServerInfo Credentials { get; internal set; }
+
+        [JsonProperty("history")]
+        public JArray History { get; internal set; }
     }
 }

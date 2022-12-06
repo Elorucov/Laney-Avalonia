@@ -16,10 +16,10 @@ namespace ELOR.VKAPILib.Objects
         public string Server { get; set; }
 
         [JsonProperty("ts")]
-        public string TS { get; set; }
+        public int TS { get; set; }
 
         [JsonProperty("pts")]
-        public string PTS { get; set; }
+        public int PTS { get; set; }
     }
 
     public class LongPollFail

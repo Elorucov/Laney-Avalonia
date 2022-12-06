@@ -37,6 +37,7 @@ namespace ELOR.Laney.Core {
 
         public bool IsGroup { get => GroupId > 0; }
         public VKAPI API { get; private set; }
+        public LongPoll LongPoll { get; private set; }
         public MainWindow Window { get; private set; }
 
         #region Binded from UI and tray menu
@@ -165,11 +166,15 @@ namespace ELOR.Laney.Core {
                     var currentUser = info.User;
                     Name = currentUser.FullName;
                     Avatar = new Uri(currentUser.Photo100);
+                    LongPoll = new LongPoll(info.LongPoll, API, GroupId);
+                    LongPoll.Run();
                 } else {
                     var currentGroup = _sessions.Where(s => s.Id == Id).FirstOrDefault();
                     Name = currentGroup.Name;
                     Avatar = currentGroup.Avatar;
                 }
+
+
                 SetUpTrayMenu(); // обновляем tray menu, отображая уже все загружнные сессии
             } catch (Exception ex) {
                 Log.Error(ex, "Init failed. Waiting 3 sec. before trying again...");
