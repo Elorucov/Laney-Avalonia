@@ -42,6 +42,7 @@
   
   <Style Selector="CheckBox">
     <Setter Property="Padding" Value="12,1,0,0" />
+    <Setter Property="BorderThickness" Value="0" />
     <Setter Property="HorizontalAlignment" Value="Left" />
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -112,6 +113,7 @@
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}" />
     <Setter Property="Padding" Value="10,0,0,0" />
+    <Setter Property="BorderThickness" Value="0" />
     <Setter Property="HorizontalAlignment" Value="Left" />
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />

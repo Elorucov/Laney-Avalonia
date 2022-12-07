@@ -43,6 +43,7 @@
   <SolidColorBrush x:Key="VKContentTintBackgroundBrush" Color="{StaticResource VKGrayA40Color}"/>
   <SolidColorBrush x:Key="VKContentTintForegroundBrush" Color="{StaticResource VKGray450Color}"/>
   <SolidColorBrush x:Key="VKControlBackgroundBrush" Color="{StaticResource VKGray50Color}"/>
+  <SolidColorBrush x:Key="VKControlBackgroundSecondaryBrush" Color="{StaticResource VKWhiteColor}"/>
   <SolidColorBrush x:Key="VKControlForegroundBrush" Color="{StaticResource VKBlue400Color}"/>
   <SolidColorBrush x:Key="VKControlTintBrush" Color="{StaticResource VKWhiteColor}"/>
   <SolidColorBrush x:Key="VKControlTintMutedBrush" Color="{StaticResource VKGray500Color}"/>

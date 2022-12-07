@@ -43,6 +43,7 @@
   <SolidColorBrush x:Key="VKContentTintBackgroundBrush" Color="{StaticResource VKGray850Color}"/>
   <SolidColorBrush x:Key="VKContentTintForegroundBrush" Color="{StaticResource VKGray400Color}"/>
   <SolidColorBrush x:Key="VKControlBackgroundBrush" Color="{StaticResource VKGray700Color}"/>
+  <SolidColorBrush x:Key="VKControlBackgroundSecondaryBrush" Color="{StaticResource VKGray500Color}"/>
   <SolidColorBrush x:Key="VKControlForegroundBrush" Color="{StaticResource VKGray100Color}"/>
   <SolidColorBrush x:Key="VKControlTintBrush" Color="{StaticResource VKGray900Color}"/>
   <SolidColorBrush x:Key="VKControlTintMutedBrush" Color="{StaticResource VKGray400Color}"/>
@@ -153,7 +154,7 @@
   <SolidColorBrush x:Key="VKLoaderTrackValueFillBrush" Color="{StaticResource VKWhiteColor}"/>
   <SolidColorBrush x:Key="VKMediaOverlayButtonBackgroundBrush" Color="{StaticResource VKWhiteColor}"/>
   <SolidColorBrush x:Key="VKMediaOverlayButtonForegroundBrush" Color="{StaticResource VKGray800Color}"/>
-  <SolidColorBrush x:Key="VKModalCardBackgroundBrush" Color="{StaticResource VKGray800Color}"/>
+  <SolidColorBrush x:Key="VKModalCardBackgroundBrush" Color="{StaticResource VKGray850Color}"/>
   <SolidColorBrush x:Key="VKModalCardBorderBrush" Color="{StaticResource VKWhiteAlpha12Color}"/>
   <SolidColorBrush x:Key="VKModalCardHeaderCloseBrush" Color="{StaticResource VKWhiteColor}"/>
   <SolidColorBrush x:Key="VKMusicPlaybackIconBrush" Color="{StaticResource VKWhiteColor}"/>
