@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Shapes;
-using Avalonia.Media;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Controls;
@@ -29,7 +27,7 @@ namespace ELOR.Laney.Controls {
         Avatar Avatar;
         TextBlock Author;
         TextBlock PostInfo;
-        RichTextBlock PostText;
+        SelectableTextBlock PostText;
         AttachmentsContainer Attachments;
         Border Map;
         Border ForwardedMessagesContainer;
@@ -41,7 +39,7 @@ namespace ELOR.Laney.Controls {
             Avatar = e.NameScope.Find<Avatar>(nameof(Avatar));
             Author = e.NameScope.Find<TextBlock>(nameof(Author));
             PostInfo = e.NameScope.Find<TextBlock>(nameof(PostInfo));
-            PostText = e.NameScope.Find<RichTextBlock>(nameof(PostText));
+            PostText = e.NameScope.Find<SelectableTextBlock>(nameof(PostText));
             Attachments = e.NameScope.Find<AttachmentsContainer>(nameof(Attachments));
             Map = e.NameScope.Find<Border>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));

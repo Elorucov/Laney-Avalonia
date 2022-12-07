@@ -6,9 +6,9 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.136</AssemblyVersion>
-    <FileVersion>2.0.136</FileVersion>
-    <Version>2.0.136-devplat-anycpu-devuser.devpc-221005-1753</Version>
+    <AssemblyVersion>2.0.152</AssemblyVersion>
+    <FileVersion>2.0.152</FileVersion>
+    <Version>2.0.152-devplat-anycpu-devuser.devpc-221207-0813</Version>
     <Platforms>AnyCPU</Platforms>
     <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -18,8 +18,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.136</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.136</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.152</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.152</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -71,20 +71,20 @@
     <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview1" />
+    <PackageReference Include="Avalonia" Version="11.0.0-preview4" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview4" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview1" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview1" />
-    <PackageReference Include="DynamicData" Version="7.10.2" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview4" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview4" />
+    <PackageReference Include="DynamicData" Version="7.12.11" />
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.6.0-preview1" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0-preview1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.6.0-preview4" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0-preview4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
-    <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
+    <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Controls\Attachments\GiftUI.axaml.cs">

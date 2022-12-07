@@ -66,69 +66,69 @@
     <Setter Property="FontFamily" Value="{StaticResource VKSansDisplayBold}"/>
   </Style>
 
-  <Style Selector="RichTextBlock.Title1">
+  <Style Selector="SelectableTextBlock.Title1">
     <Setter Property="FontSize" Value="24"/>
     <Setter Property="LineHeight" Value="28"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.Title2">
+  <Style Selector="SelectableTextBlock.Title2">
     <Setter Property="FontSize" Value="20"/>
     <Setter Property="LineHeight" Value="24"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.Title3">
+  <Style Selector="SelectableTextBlock.Title3">
     <Setter Property="FontSize" Value="17"/>
     <Setter Property="LineHeight" Value="22"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.Headline">
+  <Style Selector="SelectableTextBlock.Headline">
     <Setter Property="FontSize" Value="16"/>
     <Setter Property="LineHeight" Value="20"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock">
+  <Style Selector="SelectableTextBlock">
     <Setter Property="FontSize" Value="15"/>
     <Setter Property="LineHeight" Value="20"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.Subhead">
+  <Style Selector="SelectableTextBlock.Subhead">
     <Setter Property="FontSize" Value="14"/>
     <Setter Property="LineHeight" Value="18"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.Caption1">
+  <Style Selector="SelectableTextBlock.Caption1">
     <Setter Property="FontSize" Value="13"/>
     <Setter Property="LineHeight" Value="16"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.Caption2">
+  <Style Selector="SelectableTextBlock.Caption2">
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="LineHeight" Value="14"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.Caption3">
+  <Style Selector="SelectableTextBlock.Caption3">
     <Setter Property="FontSize" Value="11"/>
     <Setter Property="LineHeight" Value="14"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.Caption4">
+  <Style Selector="SelectableTextBlock.Caption4">
     <Setter Property="FontSize" Value="9"/>
     <Setter Property="LineHeight" Value="12"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.SemiBold">
+  <Style Selector="SelectableTextBlock.SemiBold">
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
   </Style>
-  <Style Selector="RichTextBlock.Bold">
+  <Style Selector="SelectableTextBlock.Bold">
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextBold}"/>
   </Style>
-  <Style Selector="RichTextBlock.Light">
+  <Style Selector="SelectableTextBlock.Light">
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextLight}"/>
   </Style>
-  <Style Selector="RichTextBlock.Display">
+  <Style Selector="SelectableTextBlock.Display">
     <Setter Property="FontFamily" Value="{StaticResource VKSansDisplayRegular}"/>
   </Style>
-  <Style Selector="RichTextBlock.DisplayBold">
+  <Style Selector="SelectableTextBlock.DisplayBold">
     <Setter Property="FontFamily" Value="{StaticResource VKSansDisplayBold}"/>
   </Style>
 </Styles>

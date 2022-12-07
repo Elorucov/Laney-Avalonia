@@ -19,7 +19,7 @@
               <TextBlock x:Name="PostInfo" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
             </StackPanel>
           </Grid>
-          <RichTextBlock x:Name="PostText" IsVisible="False" Classes="Headline" Margin="8,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+          <SelectableTextBlock x:Name="PostText" IsVisible="False" Classes="Headline" Margin="8,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
           <atch:AttachmentsContainer x:Name="Attachments" NoMargins="True" Margin="4,8,0,0" IsVisible="False"/>
           <Border x:Name="Map" Margin="4,8,0,0" IsVisible="False" Background="#3f7f7f7f" CornerRadius="4">
             <TextBlock Margin="8" FontStyle="Italic" Text="Map"/>

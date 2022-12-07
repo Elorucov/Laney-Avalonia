@@ -31,7 +31,7 @@
                 </DockPanel>
               </Button>
               <atch:GiftUI x:Name="Gift" Margin="4,4,4,0"/>
-              <RichTextBlock x:Name="MessageText" Margin="12,0,12,8" Classes="Headline" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+              <SelectableTextBlock x:Name="MessageText" Margin="12,0,12,8" Classes="Headline" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
               <atch:AttachmentsContainer x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
               <Border x:Name="Map" Margin="4,0,4,4" IsVisible="{Binding Message.Location, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" Background="#3f7f7f7f" CornerRadius="14">
                 <TextBlock Margin="8" FontStyle="Italic" Text="Map"/>

@@ -1,6 +1,10 @@
 ﻿using Newtonsoft.Json;
 
 namespace ELOR.Laney.DataModels {
+    public enum LongPollState {
+        Connecting, Updating, Working, Failed
+    }
+
     public enum LongPollActivityType {
         Typing, RecordingAudioMessage, UploadingPhoto, UploadingVideo, UploadingFile
     }

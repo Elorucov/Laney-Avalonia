@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using ELOR.Laney.Core.Network;
+using Avalonia.Threading;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -166,7 +167,8 @@ namespace ELOR.Laney.Core {
                     var currentUser = info.User;
                     Name = currentUser.FullName;
                     Avatar = new Uri(currentUser.Photo100);
-                    LongPoll = new LongPoll(info.LongPoll, API, GroupId);
+                    LongPoll = new LongPoll(info.LongPoll, API, Id, GroupId);
+                    LongPoll.StateChanged += LongPoll_StateChanged;
                     LongPoll.Run();
                 } else {
                     var currentGroup = _sessions.Where(s => s.Id == Id).FirstOrDefault();
@@ -205,6 +207,20 @@ namespace ELOR.Laney.Core {
                 if (!session.Window.IsVisible) session.Window.Show();
                 if (!session.Window.IsActive) session.Window.Activate();
             }
+        }
+
+        #endregion
+
+        #region Events
+
+        private void LongPoll_StateChanged(object sender, DataModels.LongPollState e) {
+            Dispatcher.UIThread.InvokeAsync(() => {
+                if (e == DataModels.LongPollState.Working) {
+                    Name = Name; // заставит триггерить PropertyChanged в главном окне.
+                } else {
+                    Window.Title = e.ToString();
+                }
+            });
         }
 
         #endregion

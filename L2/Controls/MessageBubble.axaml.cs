@@ -63,7 +63,7 @@ namespace ELOR.Laney.Controls {
         TextBlock SenderName;
         Button ReplyMessageButton;
         GiftUI Gift;
-        RichTextBlock MessageText;
+        SelectableTextBlock MessageText;
         AttachmentsContainer MessageAttachments;
         Border Map;
         Border ForwardedMessagesContainer;
@@ -83,7 +83,7 @@ namespace ELOR.Laney.Controls {
             SenderName = e.NameScope.Find<TextBlock>(nameof(SenderName));
             ReplyMessageButton = e.NameScope.Find<Button>(nameof(ReplyMessageButton));
             Gift = e.NameScope.Find<GiftUI>(nameof(Gift));
-            MessageText = e.NameScope.Find<RichTextBlock>(nameof(MessageText));
+            MessageText = e.NameScope.Find<SelectableTextBlock>(nameof(MessageText));
             MessageAttachments = e.NameScope.Find<AttachmentsContainer>(nameof(MessageAttachments));
             Map = e.NameScope.Find<Border>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
