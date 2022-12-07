@@ -9,6 +9,9 @@ namespace ELOR.Laney.Views {
 
         public ConversationsView() {
             InitializeComponent();
+            AvatarButton.Click += (a, b) => {
+                Session.ShowSessionPopup(AvatarButton);
+            };
             NewConvButton.Click += (a, b) => {
                 App.ToggleTheme();
             };

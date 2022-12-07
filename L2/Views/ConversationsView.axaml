@@ -8,7 +8,7 @@
   <Grid RowDefinitions="Auto *">
     <vkui:PanelHeader VerticalAlignment="Top" Content="Chats">
       <vkui:PanelHeader.LeftButtons>
-        <Button x:Name="AvatarButton" Command="{Binding ShowSessionPopup}" CommandParameter="{Binding ElementName=AvatarButton}">
+        <Button x:Name="AvatarButton">
           <vkui:Avatar Width="32" Height="32" ImageUri="{Binding Avatar}"/>
         </Button>
       </vkui:PanelHeader.LeftButtons>
