@@ -1,10 +1,12 @@
-﻿using ELOR.Laney.Core;
+﻿using Avalonia.Threading;
+using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -22,6 +24,8 @@ namespace ELOR.Laney.ViewModels.Controls {
     }
 
     public sealed class MessageViewModel : ViewModelBase, IComparable {
+        private VKSession session;
+
         private int _id;
         private int _peerId;
         private int _randomId;
@@ -90,7 +94,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public Uri PreviewImageUri { get { return _previewImageUri; } private set { _previewImageUri = value; OnPropertyChanged(); } }
         public bool CanShowInUI { get { return Action == null && !IsExpired; } }
 
-        public MessageViewModel(Message msg) {
+        public MessageViewModel(Message msg, VKSession session = null) {
+            this.session = session;
             Setup(msg);
             PropertyChanged += MessageViewModel_PropertyChanged;
         }
@@ -106,7 +111,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             AdminAuthorId = msg.AdminAuthorId;
             SenderId = msg.FromId;
             Text = msg.Text;
-            Attachments = msg.Attachments;
+            if (msg.Attachments != null) Attachments = msg.Attachments;
             Location = msg.Geo;
             if (msg.ReplyMessage != null) ReplyMessage = new MessageViewModel(msg.ReplyMessage);
             Action = msg.Action;
@@ -125,6 +130,16 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             SetSenderNameAndAvatar();
             UpdateUIType();
+            if (msg.IsPartial || State != MessageVMState.Read) State = MessageVMState.Loading;
+
+            if (session != null) {
+                session.LongPoll.MessageEdited += LongPoll_MessageEdited;
+                session.LongPoll.MessageFlagSet += LongPoll_MessageFlagSet;
+                session.LongPoll.MessageFlagRemove += LongPoll_MessageFlagRemove;
+                if (session.Id != SenderId) session.LongPoll.IncomingMessagesRead += LongPoll_MessagesRead;
+                if (session.Id == SenderId) session.LongPoll.OutgoingMessagesRead += LongPoll_MessagesRead;
+            }
+
         }
 
         private void SetSenderNameAndAvatar() {
@@ -236,6 +251,44 @@ namespace ELOR.Laney.ViewModels.Controls {
             IsDateBetweenVisible = visible;
         }
 
+        #region LongPoll events
+
+        private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
+            if (message.Id != Id) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                Setup(message);
+                bool isUnread = flags.HasFlag(1);
+                State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
+            });
+        }
+
+        private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, int peerId) {
+            if (messageId != Id) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                if (flags.HasFlag(8)) { // Marked as important
+                    IsImportant = true;
+                }
+            });
+        }
+
+        private async void LongPoll_MessageFlagRemove(LongPoll longPoll, int messageId, int flags, int peerId) {
+            if (messageId != Id) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                if (flags.HasFlag(8)) { // Unmarked as important
+                    IsImportant = false;
+                }
+            });
+        }
+
+        private async void LongPoll_MessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                if (Id <= messageId) State = MessageVMState.Read;
+            });
+        }
+
+        #endregion
+
         public override string ToString() {
             if (Action != null) {
                 return new VKActionMessage(Action, SenderId).ToString();
@@ -281,10 +334,10 @@ namespace ELOR.Laney.ViewModels.Controls {
             return Localizer.Instance["empty_message"];
         }
 
-        public static List<MessageViewModel> BuildFromAPI(List<Message> messages, System.Action<MessageViewModel> afterBuild = null) {
+        public static List<MessageViewModel> BuildFromAPI(List<Message> messages, VKSession session, System.Action<MessageViewModel> afterBuild = null) {
             List<MessageViewModel> vms = new List<MessageViewModel>();
-            foreach (var message in CollectionsMarshal.AsSpan<Message>(messages)) {
-                MessageViewModel mvm = new MessageViewModel(message);
+            foreach (var message in CollectionsMarshal.AsSpan(messages)) {
+                MessageViewModel mvm = new MessageViewModel(message, session);
                 afterBuild?.Invoke(mvm);
                 vms.Add(mvm);
             }

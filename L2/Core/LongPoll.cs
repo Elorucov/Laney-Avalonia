@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -55,6 +54,7 @@ namespace ELOR.Laney.Core {
         #region Events
 
         public delegate void MessageFlagsDelegate(LongPoll longPoll, int messageId, int flags, int peerId);
+        public delegate void MessageReceivedDelegate(LongPoll longPoll, Message message, int flags);
         public delegate void ConversationFlagsDelegate(LongPoll longPoll, int peerId, int flags);
         public delegate void ReadInfoDelegate(LongPoll longPoll, int peerId, int messageId, int count);
         public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, int peerId, int extra);
@@ -62,8 +62,8 @@ namespace ELOR.Laney.Core {
 
         public event MessageFlagsDelegate MessageFlagSet; // 2
         public event MessageFlagsDelegate MessageFlagRemove; // 3
-        public event EventHandler<Message> MessageReceived; // 4
-        public event EventHandler<Message> MessageEdited; // 5, 18
+        public event MessageReceivedDelegate MessageReceived; // 4
+        public event MessageReceivedDelegate MessageEdited; // 5, 18
         public event ReadInfoDelegate IncomingMessagesRead; // 6
         public event ReadInfoDelegate OutgoingMessagesRead; // 7
         public event ConversationFlagsDelegate ConversationFlagReset; // 10
@@ -108,6 +108,7 @@ namespace ELOR.Laney.Core {
                         TimeStamp = jr["ts"].Value<int>();
                         PTS = jr["pts"].Value<int>();
                         ParseUpdates(jr["updates"].Value<JArray>());
+                        await Task.Delay(500).ConfigureAwait(false);
                     } else if (jr["failed"] != null) {
                         int errCode = jr["failed"].Value<int>();
                         string errText = jr["error"].Value<string>();
@@ -163,6 +164,7 @@ namespace ELOR.Laney.Core {
         private void ParseUpdates(JArray updates, List<Message> messages = null) {
             // Message id, is edited.
             Dictionary<int, bool> MessagesFromAPI = new Dictionary<int, bool>();
+            Dictionary<int, int> MessagesFromAPIFlags = new Dictionary<int, int>();
 
             foreach (JArray u in updates) {
                 int eventId = u[0].Value<int>();
@@ -181,31 +183,34 @@ namespace ELOR.Laney.Core {
                         Log.Information($"EVENT {eventId}: msg={receivedMsgId}");
                         Message msgFromHistory = messages?.Where(m => m.Id == receivedMsgId).FirstOrDefault();
                         if (msgFromHistory != null) {
-                            MessageReceived?.Invoke(this, msgFromHistory);
+                            MessageReceived?.Invoke(this, msgFromHistory, u[2].Value<int>());
                         } else {
                             bool isPartial = false;
                             Exception ex = null;
                             Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
-                                MessageReceived?.Invoke(this, rmsg);
+                                MessageReceived?.Invoke(this, rmsg, u[2].Value<int>());
                                 if (isPartial) {
                                     MessagesFromAPI.Add(u[1].Value<int>(), true);
+                                    MessagesFromAPIFlags.Add(u[1].Value<int>(), u[2].Value<int>());
                                 }
                             } else {
                                 Log.Error(ex, $"An error occured while building message from LP! Message ID: {u[1].Value<int>()}");
                                 MessagesFromAPI.Add(u[1].Value<int>(), false);
+                                MessagesFromAPIFlags.Add(u[1].Value<int>(), u[2].Value<int>());
                             }
                         }
                         break;
                     case 5:
                     case 18:
                         int editedMsgId = u[1].Value<int>();
-                        Message editMsgFromHistory = messages.Where(m => m.Id == editedMsgId).FirstOrDefault();
+                        Message editMsgFromHistory = messages?.Where(m => m.Id == editedMsgId).FirstOrDefault();
                         Log.Information($"EVENT {eventId}: msg={editedMsgId}");
                         if (editMsgFromHistory != null) {
-                            MessageEdited?.Invoke(this, editMsgFromHistory);
+                            MessageEdited?.Invoke(this, editMsgFromHistory, u[2].Value<int>());
                         } else {
                             MessagesFromAPI.Add(u[1].Value<int>(), true);
+                            MessagesFromAPIFlags.Add(u[1].Value<int>(), u[2].Value<int>());
                         }
                         break;
                     case 6:
@@ -281,7 +286,7 @@ namespace ELOR.Laney.Core {
             }
 
             if (MessagesFromAPI.Count > 0) {
-                GetMessagesFromAPI(MessagesFromAPI);
+                GetMessagesFromAPI(MessagesFromAPI, MessagesFromAPIFlags);
             }
         }
 
@@ -295,7 +300,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        private async void GetMessagesFromAPI(Dictionary<int, bool> messagesFromAPI) {
+        private async void GetMessagesFromAPI(Dictionary<int, bool> messagesFromAPI, Dictionary<int, int> flags) {
             try {
                 var msgIds = messagesFromAPI.Keys.ToList();
                 Log.Information($"Need to get this messages from API: {String.Join(", ", msgIds)}.");
@@ -304,10 +309,11 @@ namespace ELOR.Laney.Core {
                     CacheManager.Add(response.Profiles);
                     CacheManager.Add(response.Groups);
                     foreach (Message msg in response.Items) {
+                        int flag = flags[msg.Id];
                         if (messagesFromAPI[msg.Id]) {
-                            MessageEdited?.Invoke(this, msg);
+                            MessageEdited?.Invoke(this, msg, flag);
                         } else {
-                            MessageReceived?.Invoke(this, msg);
+                            MessageReceived?.Invoke(this, msg, flag);
                         }
                     }
                 }

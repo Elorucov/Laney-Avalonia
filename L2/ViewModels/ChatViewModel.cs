@@ -1,4 +1,5 @@
-﻿using ELOR.Laney.Collections;
+﻿using Avalonia.Threading;
+using ELOR.Laney.Collections;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Execute;
@@ -12,6 +13,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -91,7 +93,7 @@ namespace ELOR.Laney.ViewModels {
             this.session = session;
             SetUpEvents();
             Setup(c);
-            if (lastMessage != null) ReceivedMessages.Add(new MessageViewModel(lastMessage));
+            if (lastMessage != null) ReceivedMessages.Add(new MessageViewModel(lastMessage, session));
         }
 
         // Вызывается при отображении беседы на окне
@@ -138,7 +140,8 @@ namespace ELOR.Laney.ViewModels {
                 ChatSettings = c.ChatSettings;
                 Title = ChatSettings.Title;
                 Avatar = ChatSettings?.Photo?.Uri;
-                if (ChatSettings.PinnedMessage != null) PinnedMessage = new MessageViewModel(ChatSettings.PinnedMessage);
+                if (ChatSettings.PinnedMessage != null) 
+                    PinnedMessage = new MessageViewModel(ChatSettings.PinnedMessage, session);
                 UpdateSubtitleForChat();
             } else if (PeerId > 1900000000 && PeerId <= 2000000000) { // Contact?
                 PeerType = PeerType.Contact;
@@ -199,6 +202,14 @@ namespace ELOR.Laney.ViewModels {
                 if (b.PropertyName == nameof(Online)) 
                     Subtitle = VKAPIHelper.GetOnlineInfo(Online, PeerUser.Sex).ToLowerInvariant();
             };
+
+            session.LongPoll.MessageReceived += LongPoll_MessageReceived;
+            session.LongPoll.IncomingMessagesRead += LongPoll_MessagesRead;
+            session.LongPoll.OutgoingMessagesRead += LongPoll_MessagesRead;
+            session.LongPoll.ConversationFlagReset += LongPoll_ConversationFlagReset;
+            session.LongPoll.ConversationFlagSet += LongPoll_ConversationFlagSet;
+            session.LongPoll.MajorIdChanged += LongPoll_MajorIdChanged;
+            session.LongPoll.MinorIdChanged += LongPoll_MinorIdChanged;
         }
 
         #region Loading messages
@@ -237,7 +248,7 @@ namespace ELOR.Laney.ViewModels {
                 MembersGroups = mhr.Groups;
                 Setup(mhr.Conversation);
                 mhr.Messages.Reverse();
-                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, FixState));
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
 
                 await Task.Delay(100);
                 if (startMessageId > 0) ScrollToMessageRequested?.Invoke(this, startMessageId);
@@ -265,7 +276,7 @@ namespace ELOR.Laney.ViewModels {
                 mhr.Messages.Reverse();
                 MessagesChunkLoaded?.Invoke(this, false);
                 DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
-                    var msg = new MessageViewModel(m);
+                    var msg = new MessageViewModel(m, session);
                     FixState(msg);
                     return msg;
                 }).ToList());
@@ -292,7 +303,7 @@ namespace ELOR.Laney.ViewModels {
                 mhr.Messages.Reverse();
                 MessagesChunkLoaded?.Invoke(this, true);
                 DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
-                    var msg = new MessageViewModel(m);
+                    var msg = new MessageViewModel(m, session);
                     FixState(msg);
                     return msg;
                 }).ToList());
@@ -314,6 +325,83 @@ namespace ELOR.Laney.ViewModels {
             } else {
                 msg.State = msg.Id > InRead ? MessageVMState.Unread : MessageVMState.Read;
             }
+        }
+
+        #endregion
+
+        #region LongPoll events
+
+        private async void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
+            if (message.PeerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                MessageViewModel msg = new MessageViewModel(message, session);
+                
+                if (!message.IsPartial) {
+                    bool isUnread = flags.HasFlag(1) && !flags.HasFlag(8388608);
+                    msg.State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
+                } else {
+                    msg.PropertyChanged += MessagePropertyChanged;
+                }
+
+                bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.Id == LastMessage.Id;
+                ReceivedMessages.Add(msg);
+                if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
+                if (msg.SenderId != session.Id) UnreadMessagesCount++;
+                if (canAddToDisplayedMessages) DisplayedMessages.Insert(msg);
+            });
+        }
+
+        private void MessagePropertyChanged(object sender, PropertyChangedEventArgs e) {
+            MessageViewModel msg = sender as MessageViewModel;
+            if (e.PropertyName == nameof(MessageViewModel.State)) {
+                msg.PropertyChanged -= MessagePropertyChanged;
+                OnPropertyChanged(nameof(LastMessage));
+            }
+        }
+
+        private void LongPoll_MessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+            if (PeerId != peerId) return;
+            UnreadMessagesCount = count;
+
+            // Чтобы индикаторы прочитанности в списке чатов обновились.
+            // if (LastMessage?.Id == messageId) OnPropertyChanged(nameof(LastMessage));
+        }
+
+        private async void LongPoll_ConversationFlagReset(LongPoll longPoll, int peerId, int flags) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                
+            });
+        }
+
+        private async void LongPoll_ConversationFlagSet(LongPoll longPoll, int peerId, int flags) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                
+            });
+        }
+
+        // Если что, flags и есть major/minor_id.
+        private async void LongPoll_MajorIdChanged(LongPoll longPoll, int peerId, int flags) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                UpdateSortId(flags, SortId.MinorId);
+            });
+        }
+
+        private async void LongPoll_MinorIdChanged(LongPoll longPoll, int peerId, int flags) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                UpdateSortId(SortId.MajorId, flags);
+            });
+        }
+
+        // Надо задать новый объект SortId, чтобы сработало событие OnPropertyChanged для SortIndex.
+        private void UpdateSortId(int major, int minor) {
+            SortId = new SortId { 
+                MajorId = major,
+                MinorId = minor
+            };
         }
 
         #endregion

@@ -213,8 +213,8 @@ namespace ELOR.Laney.Core {
 
         #region Events
 
-        private void LongPoll_StateChanged(object sender, DataModels.LongPollState e) {
-            Dispatcher.UIThread.InvokeAsync(() => {
+        private async void LongPoll_StateChanged(object sender, DataModels.LongPollState e) {
+            await Dispatcher.UIThread.InvokeAsync(() => {
                 if (e == DataModels.LongPollState.Working) {
                     Name = Name; // заставит триггерить PropertyChanged в главном окне.
                 } else {

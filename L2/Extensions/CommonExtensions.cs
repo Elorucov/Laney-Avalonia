@@ -10,6 +10,10 @@ namespace ELOR.Laney.Extensions {
             return $"0x{ex.HResult.ToString("x8")}";
         }
 
+        public static bool HasFlag(this int num, int flag) {
+            return (flag & num) != 0;
+        }
+
         public static Avalonia.Size ToAvaloniaSize(this System.Drawing.Size size) {
             return new Avalonia.Size(size.Width, size.Height);
         }
