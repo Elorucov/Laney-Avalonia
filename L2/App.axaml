@@ -22,6 +22,8 @@
     <conv:DateConverter x:Key="dc"/>
     <conv:MessageSenderNameConverter x:Key="msnc"/>
     <conv:OnlineIconConverter x:Key="oic"/>
+    <conv:ReadIndicatorConverter x:Key="ric"/>
+    <conv:ReadIndicatorVisibilityConverter x:Key="rivc"/>
 
     <DataTemplate x:Key="OnlineIcon">
       <Ellipse Width="12" Height="12" Fill="#8AC176" Stroke="{DynamicResource VKBackgroundContentBrush}" StrokeThickness="2"/>

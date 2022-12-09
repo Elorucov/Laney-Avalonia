@@ -93,7 +93,11 @@ namespace ELOR.Laney.ViewModels {
             this.session = session;
             SetUpEvents();
             Setup(c);
-            if (lastMessage != null) ReceivedMessages.Add(new MessageViewModel(lastMessage, session));
+            if (lastMessage != null) {
+                MessageViewModel msg = new MessageViewModel(lastMessage, session);
+                FixState(msg);
+                ReceivedMessages.Add(msg);
+            }
         }
 
         // Вызывается при отображении беседы на окне

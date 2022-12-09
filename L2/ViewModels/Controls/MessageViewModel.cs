@@ -83,6 +83,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         public int TTL { get { return _ttl; } private set { _ttl = value; OnPropertyChanged(); } }
         public bool IsExpired { get { return _isExpired; } private set { _isExpired = value; OnPropertyChanged(); } }
         public MessageVMState State { get { return _state; } set { _state = value; OnPropertyChanged(); } }
+        public bool IsOutgoing { get { return session.Id == SenderId; } }
 
         // UI specific
         public bool IsSenderNameVisible { get { return _isSenderNameVisible; } private set { _isSenderNameVisible = value; OnPropertyChanged(); } }
