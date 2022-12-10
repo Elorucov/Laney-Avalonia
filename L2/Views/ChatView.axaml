@@ -21,7 +21,8 @@
               <TextBlock Classes="Headline SemiBold" Margin="0,0,22,0" Text="{Binding Title}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" Margin="-16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding IsVerified}"/>
             </DockPanel>
-            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Subtitle}"/>
+            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Text="{Binding Subtitle}"/>
+            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding ActivityStatus}"/>
           </StackPanel>
         </Grid>
       </vkui:PanelHeader.Content>

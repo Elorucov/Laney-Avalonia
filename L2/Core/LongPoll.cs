@@ -6,6 +6,7 @@ using ELOR.VKAPILib.Objects;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using Serilog.Core;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,7 +59,7 @@ namespace ELOR.Laney.Core {
         public delegate void MentionDelegate(LongPoll longPoll, int peerId, int messageId, bool isSelfDestruct);
         public delegate void ReadInfoDelegate(LongPoll longPoll, int peerId, int messageId, int count);
         public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, int peerId, int extra);
-        public delegate void ActivityStatusDelegate(LongPoll longPoll, LongPollActivityType type, int peerId, int[] userIds, int totalCount);
+        public delegate void ActivityStatusDelegate(LongPoll longPoll, int peerId, List<LongPollActivityInfo> infos);
 
         public event MessageFlagsDelegate MessageFlagSet; // 2
         public event MessageFlagsDelegate MessageFlagRemove; // 3
@@ -271,7 +272,13 @@ namespace ELOR.Laney.Core {
                         int[] userIds = u[2].Value<JArray>().ToObject<int[]>();
                         int totalCount = u[3].Value<int>();
                         Log.Information($"EVENT {eventId}: peer={peerId63}, users={String.Join(", ", userIds)}, count={totalCount}");
-                        ActivityStatusChanged?.Invoke(this, type, peerId63, userIds, totalCount);
+
+                        List<LongPollActivityInfo> acts = new List<LongPollActivityInfo>();
+                        foreach (var userId in userIds) {
+                            acts.Add(new LongPollActivityInfo(userId, type));
+                        }
+
+                        ActivityStatusChanged?.Invoke(this, peerId63, acts);
                         break;
                     case 80:
                         int unreadCount = u[1].Value<int>();

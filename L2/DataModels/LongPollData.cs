@@ -9,6 +9,21 @@ namespace ELOR.Laney.DataModels {
         Typing, RecordingAudioMessage, UploadingPhoto, UploadingVideo, UploadingFile
     }
 
+    public class LongPollActivityInfo {
+        internal LongPollActivityInfo(int id, LongPollActivityType status) {
+            MemberId = id;
+            Status = status;
+        }
+
+        public int MemberId { get; private set; }
+
+        public LongPollActivityType Status { get; private set; }
+
+        public override string ToString() {
+            return $"{MemberId}={Status}";
+        }
+    }
+
     public class LongPollPushNotificationData {
         [JsonProperty("peer_id")]
         public int PeerId { get; private set; }

@@ -2,6 +2,7 @@
 using ELOR.Laney.Collections;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.DataModels;
 using ELOR.Laney.Execute;
 using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Extensions;
@@ -16,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKUI.Controls;
 
@@ -89,6 +91,8 @@ namespace ELOR.Laney.ViewModels {
         public event EventHandler<bool> MessagesChunkLoaded; // получение сообщений (false - предыдущих, true - следующих)
         public EventHandler<MessageViewModel> MessageAddedToLast;
 
+        Elapser<LongPollActivityInfo> ActivityStatusUsers = new Elapser<LongPollActivityInfo>();
+
         public ChatViewModel(VKSession session, int peerId) {
             this.session = session;
             SetUpEvents();
@@ -114,7 +118,7 @@ namespace ELOR.Laney.ViewModels {
             if (isDisplayedMessagesEmpty) {
                 LoadMessages();
             } else {
-                // TODO: scroll to in_read message
+                ScrollToMessageRequested?.Invoke(this, InRead);
             }
         }
 
@@ -232,12 +236,15 @@ namespace ELOR.Laney.ViewModels {
             session.LongPoll.MessageReceived += LongPoll_MessageReceived;
             session.LongPoll.MessageEdited += LongPoll_MessageEdited;
             session.LongPoll.MentionReceived += LongPoll_MentionReceived;
-            session.LongPoll.IncomingMessagesRead += LongPoll_MessagesRead;
-            session.LongPoll.OutgoingMessagesRead += LongPoll_MessagesRead;
+            session.LongPoll.IncomingMessagesRead += LongPoll_IncomingMessagesRead;
+            session.LongPoll.OutgoingMessagesRead += LongPoll_OutgoingMessagesRead;
             session.LongPoll.ConversationFlagReset += LongPoll_ConversationFlagReset;
             session.LongPoll.ConversationFlagSet += LongPoll_ConversationFlagSet;
             session.LongPoll.MajorIdChanged += LongPoll_MajorIdChanged;
             session.LongPoll.MinorIdChanged += LongPoll_MinorIdChanged;
+            session.LongPoll.ActivityStatusChanged += LongPoll_ActivityStatusChanged;
+
+            ActivityStatusUsers.Elapsed += (a, b) => UpdateActivityStatus();
         }
 
         #region Loading messages
@@ -400,19 +407,32 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private async void LongPoll_MessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+        private async void LongPoll_IncomingMessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
             if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                UnreadMessagesCount = count;
-
-                if (Mentions != null && Mentions.Count > 0) {
-                    var mentions = Mentions.ToList();
-                    foreach (int id in mentions) {
-                        if (id <= messageId) Mentions.Remove(id);
-                    }
-                    if (Mentions.Count == 0) Mentions = null;
-                }
+                InRead = messageId;
+                LongPoll_MessagesRead(longPoll, peerId, messageId, count);
             });
+        }
+
+        private async void LongPoll_OutgoingMessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+            if (PeerId != peerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                OutRead = messageId;
+                LongPoll_MessagesRead(longPoll, peerId, messageId, count);
+            });
+        }
+
+        private void LongPoll_MessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+            UnreadMessagesCount = count;
+
+            if (Mentions != null && Mentions.Count > 0) {
+                var mentions = Mentions.ToList();
+                foreach (int id in mentions) {
+                    if (id <= messageId) Mentions.Remove(id);
+                }
+                if (Mentions.Count == 0) Mentions = null;
+            }
         }
 
         private async void LongPoll_ConversationFlagReset(LongPoll longPoll, int peerId, int flags) {
@@ -476,6 +496,115 @@ namespace ELOR.Laney.ViewModels {
                 MajorId = major,
                 MinorId = minor
             };
+        }
+
+        private async void LongPoll_ActivityStatusChanged(LongPoll longPoll, int peerId, List<LongPollActivityInfo> infos) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                double timeout = 7000;
+                try {
+                    foreach (LongPollActivityInfo info in infos) {
+                        if (info.MemberId == session.Id) continue;
+                        var exist = ActivityStatusUsers.RegisteredObjects.Where(u => u.MemberId == info.MemberId).FirstOrDefault();
+                        if (exist != null) ActivityStatusUsers.Remove(exist);
+                        ActivityStatusUsers.Add(info, timeout);
+                    }
+                    UpdateActivityStatus();
+                } catch (Exception ex) {
+                    ActivityStatusUsers.Clear();
+                    ActivityStatus = String.Empty;
+                    Log.Error(ex, $"Error while parsing user activity status!");
+                }
+            });
+        }
+
+        private void UpdateActivityStatus() {
+            try {
+                var acts = ActivityStatusUsers.RegisteredObjects;
+                int count = acts.Count();
+
+                Debug.WriteLine($"UpdateActivityStatus: {String.Join(";", acts)}");
+
+                if (count == 0) {
+                    ActivityStatus = String.Empty;
+                    return;
+                }
+
+                if (PeerType != PeerType.Chat) {
+                    if (count == 1) {
+                        ActivityStatus = GetLocalizedActivityStatus(acts.FirstOrDefault().Status, 1);
+                    }
+                } else {
+                    var typing = acts.Where(a => a?.Status == LongPollActivityType.Typing).ToList();
+                    var voice = acts.Where(a => a?.Status == LongPollActivityType.RecordingAudioMessage).ToList();
+                    var photo = acts.Where(a => a?.Status == LongPollActivityType.UploadingPhoto).ToList();
+                    var video = acts.Where(a => a?.Status == LongPollActivityType.UploadingVideo).ToList();
+                    var file = acts.Where(a => a?.Status == LongPollActivityType.UploadingFile).ToList();
+                    List<List<LongPollActivityInfo>> groupedActivities = new List<List<LongPollActivityInfo>> {
+                        typing, voice, photo, video, file
+                    };
+
+                    bool has3AndMoreDifferentTypes = groupedActivities.Where(a => a.Count > 0).Count() >= 3;
+
+                    string status = String.Empty;
+                    foreach (var act in groupedActivities) {
+                        if (act.Count == 0) continue;
+                        var type = act[0].Status;
+                        string actstr = GetLocalizedActivityStatus(type, act.Count);
+
+                        if (has3AndMoreDifferentTypes) {
+                            if (status.Length != 0) status += ", ";
+                            status += $"{act.Count} {actstr}";
+                        } else {
+                            if (status.Length != 0) status += ", ";
+                            List<int> ids = act.Select(s => s.MemberId).ToList();
+                            status += $"{GetNamesForActivityStatus(ids, act.Count, act.Count == 1)} {actstr}";
+                        }
+                    }
+
+                    ActivityStatus = status.Trim() + "...";
+                }
+            } catch (Exception ex) {
+                ActivityStatus = String.Empty;
+                string count = ActivityStatusUsers.RegisteredObjects == null ? "null" : ActivityStatusUsers.RegisteredObjects.Count.ToString();
+                Log.Error(ex, $"Exception in UpdateActivityStatus (0x{ex.HResult.ToString("x8")}), current au count: {count}");
+            }
+        }
+
+        private string GetLocalizedActivityStatus(LongPollActivityType status, int count) {
+            string suffix = count == 1 ? "_single" : "_multi";
+            switch (status) {
+                case LongPollActivityType.Typing: return Localizer.Instance[$"lp_act_typing{suffix}"];
+                case LongPollActivityType.RecordingAudioMessage: return Localizer.Instance[$"lp_act_voice{suffix}"];
+                case LongPollActivityType.UploadingPhoto: return Localizer.Instance[$"lp_act_photo{suffix}"];
+                case LongPollActivityType.UploadingVideo: return Localizer.Instance[$"lp_act_video{suffix}"];
+                case LongPollActivityType.UploadingFile: return Localizer.Instance[$"lp_act_file{suffix}"];
+            }
+            return String.Empty;
+        }
+
+        private string GetNamesForActivityStatus(IReadOnlyList<int> ids, int count, bool showFullLastName) {
+            string r = String.Empty;
+            foreach (int id in ids) {
+                if (id > 0) {
+                    User u = CacheManager.GetUser(id);
+                    if (u != null) {
+                        string lastName = showFullLastName ? u.LastName : u.LastName[0] + ".";
+                        r = $"{u.FirstName} {lastName}";
+                    }
+                } else if (id < 0) {
+                    var g = CacheManager.GetGroup(id);
+                    if (g != null) {
+                        r = $"\"{g.Name}\"";
+                    }
+                }
+            }
+            if (!String.IsNullOrEmpty(r)) {
+                if (count > 1) {
+                    r += $" {String.Format(Localizer.Instance.GetFormatted("im_status_more"), count - 1)}";
+                }
+            }
+            return r;
         }
 
         #endregion

@@ -11,11 +11,14 @@
           <TextBlock x:Name="ConvName" Margin="0,2,22,0" Classes="SemiBold" Text="{Binding Title}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="-16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         </DockPanel>
-        <Grid x:Name="SecondLine" ColumnDefinitions="Auto * Auto" HorizontalAlignment="Left" Height="22">
+        <Grid x:Name="SecondLineMessage" ColumnDefinitions="Auto * Auto" HorizontalAlignment="Left" Height="22" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}">
           <TextBlock x:Name="LastMessageSender" Grid.Column="0" FontSize="14" LineHeight="20" Margin="0,1" Foreground="{DynamicResource VKTextTertiaryBrush}" Text="{Binding LastMessage, Converter={StaticResource msnc}}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
           <TextBlock x:Name="LastMessageText" Grid.Column="1" FontSize="14" LineHeight="20" Margin="0,1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding LastMessage}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
           <TextBlock x:Name="LastMessageTime" Grid.Column="2" FontSize="14" LineHeight="20" Margin="0,1" Foreground="{DynamicResource VKTextTertiaryBrush}" MaxLines="1" Text="{Binding LastMessage.SentTime, Converter={StaticResource dtdc}}"/>
         </Grid>
+        <StackPanel x:Name="SecondLineActivityStatus" Orientation="Horizontal" HorizontalAlignment="Left" Height="22" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+          <TextBlock x:Name="ActivityStatusText" Grid.Column="1" FontSize="14" LineHeight="20" Margin="0,1" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding ActivityStatus}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+        </StackPanel>
       </StackPanel>
 
       <!-- TODO: убрать фон у ReadIndicator и сделать нормальный способ скрыть иконку закрепа при исходящем сообщении -->

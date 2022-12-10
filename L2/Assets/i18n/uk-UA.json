@@ -175,5 +175,17 @@
 
   "from": "вiд",
   "watch": "Переглянути",
-  "play": "Слухати"
+  "play": "Слухати",
+
+  "lp_act_typing_multi": "друкують",
+  "lp_act_typing_single": "друкує",
+  "lp_act_voice_multi": "записують аудiо",
+  "lp_act_voice_single": "записує аудiо",
+  "lp_act_photo_multi": "надсилають фото",
+  "lp_act_photo_single": "надсилає фото",
+  "lp_act_video_multi": "надсилають відео",
+  "lp_act_video_single": "надсилає відео",
+  "lp_act_file_multi": "надсилають файл",
+  "lp_act_file_single": "надсилає файл",
+  "im_status_more": "і ще {0}"
 }

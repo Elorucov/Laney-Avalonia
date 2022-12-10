@@ -175,5 +175,17 @@
 
   "from": "от",
   "watch": "Посмотреть",
-  "play": "Слушать"
+  "play": "Слушать",
+
+  "lp_act_typing_multi": "печатают",
+  "lp_act_typing_single": "печатает",
+  "lp_act_voice_multi": "записывают аудио",
+  "lp_act_voice_single": "записывает аудио",
+  "lp_act_photo_multi": "отправляют фото",
+  "lp_act_photo_single": "отправляет фото",
+  "lp_act_video_multi": "отправляют видео",
+  "lp_act_video_single": "отправляет видео",
+  "lp_act_file_multi": "отправляют файл",
+  "lp_act_file_single": "отправляет файл",
+  "im_status_more": "и ещё {0}"
 }

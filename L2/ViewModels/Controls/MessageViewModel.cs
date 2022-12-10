@@ -6,7 +6,6 @@ using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -265,7 +264,6 @@ namespace ELOR.Laney.ViewModels.Controls {
         private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
             if (message.Id != Id) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                if (message.Id == 6826653) Debugger.Break();
                 Setup(message);
                 // OnPropertyChanged(nameof(IsExpired)); // чтобы корректно рендерился UI expired-сообщения.
                 bool isUnread = flags.HasFlag(1);

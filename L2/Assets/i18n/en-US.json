@@ -175,5 +175,17 @@
 
   "from": "from",
   "watch": "Watch",
-  "play": "Play"
+  "play": "Play",
+
+  "lp_act_typing_multi": "is typing",
+  "lp_act_typing_single": "is typing",
+  "lp_act_voice_multi": "recording audio",
+  "lp_act_voice_single": "recording audio",
+  "lp_act_photo_multi": "is sending a photo",
+  "lp_act_photo_single": "is sending a photo",
+  "lp_act_video_multi": "is sending a video",
+  "lp_act_video_single": "is sending a video",
+  "lp_act_file_multi": "is sending a file",
+  "lp_act_file_single": "is sending a file",
+  "im_status_more": "and {0} more"
 }
