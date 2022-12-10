@@ -239,6 +239,12 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonProperty("mentions")]
         public List<int> Mentions { get; set; }
+
+        [JsonProperty("expire_messages")]
+        public List<int> ExpireMessages { get; set; }
+
+        [JsonProperty("expire_cmids")]
+        public List<int> ExpireConvMessageIds { get; set; }
     }
 
     // Chat

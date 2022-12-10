@@ -14,8 +14,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using VKUI.Controls;
 
 namespace ELOR.Laney.ViewModels {
     public sealed class ChatViewModel : CommonViewModel {
@@ -43,6 +45,8 @@ namespace ELOR.Laney.ViewModels {
         private bool _isMarkedAsUnread;
         private bool _isPinned;
         private ObservableCollection<int> _mentions;
+        private bool _hasMention;
+        private bool _hasSelfDestructMessage;
         private string _restrictionReason;
 
         public PeerType PeerType { get { return _peerType; } private set { _peerType = value; OnPropertyChanged(); } }
@@ -70,6 +74,9 @@ namespace ELOR.Laney.ViewModels {
         public bool IsMarkedAsUnread { get { return _isMarkedAsUnread; } private set { _isMarkedAsUnread = value; OnPropertyChanged(); } }
         public bool IsPinned { get { return _isPinned; } private set { _isPinned = value; OnPropertyChanged(); } }
         public ObservableCollection<int> Mentions { get { return _mentions; } private set { _mentions = value; OnPropertyChanged(); } }
+        public bool HasMention { get { return _hasMention; } private set { _hasMention = value; OnPropertyChanged(); } }
+        public bool HasSelfDestructMessage { get { return _hasSelfDestructMessage; } private set { _hasSelfDestructMessage = value; OnPropertyChanged(); } }
+        public string MentionIconId { get { return GetMentionIcon(); } }
         public string RestrictionReason { get { return _restrictionReason; } private set { _restrictionReason = value; OnPropertyChanged(); } }
 
         public List<User> MembersUsers { get; private set; } = new List<User>();
@@ -122,7 +129,13 @@ namespace ELOR.Laney.ViewModels {
             IsMarkedAsUnread = c.IsMarkedUnread;
             IsPinned = SortId.MajorId > 0 && SortId.MajorId % 16 == 0;
 
-            if (c.Mentions != null) Mentions = new ObservableCollection<int>(c.Mentions);
+            if (c.Mentions != null && c.Mentions.Count > 0) {
+                Mentions = new ObservableCollection<int>(c.Mentions);
+                HasMention = true;
+            }
+            if (c.ExpireConvMessageIds != null && c.ExpireConvMessageIds.Count > 0) {
+                HasSelfDestructMessage = true;
+            }
             if (c.CurrentKeyboard != null && c.CurrentKeyboard.Buttons.Count > 0) CurrentKeyboard = c.CurrentKeyboard;
 
             if (PeerId > 0 && PeerId < 1000000000) { // User
@@ -198,6 +211,12 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
+        private string GetMentionIcon() {
+            if (HasSelfDestructMessage) return VKIconNames.Icon12Bomb;
+            if (HasMention) return VKIconNames.Icon12Mention;
+            return null;
+        }
+
         private void SetUpEvents() {
             // При приёме сообщения обновляем последнее сообщение.
             ReceivedMessages.CollectionChanged += (a, b) => OnPropertyChanged(nameof(LastMessage));
@@ -205,9 +224,14 @@ namespace ELOR.Laney.ViewModels {
             PropertyChanged += (a, b) => { 
                 if (b.PropertyName == nameof(Online)) 
                     Subtitle = VKAPIHelper.GetOnlineInfo(Online, PeerUser.Sex).ToLowerInvariant();
+
+                if (b.PropertyName == nameof(HasMention) || b.PropertyName == nameof(HasSelfDestructMessage))
+                    OnPropertyChanged(nameof(MentionIconId));
             };
 
             session.LongPoll.MessageReceived += LongPoll_MessageReceived;
+            session.LongPoll.MessageEdited += LongPoll_MessageEdited;
+            session.LongPoll.MentionReceived += LongPoll_MentionReceived;
             session.LongPoll.IncomingMessagesRead += LongPoll_MessagesRead;
             session.LongPoll.OutgoingMessagesRead += LongPoll_MessagesRead;
             session.LongPoll.ConversationFlagReset += LongPoll_ConversationFlagReset;
@@ -343,8 +367,6 @@ namespace ELOR.Laney.ViewModels {
                 if (!message.IsPartial) {
                     bool isUnread = flags.HasFlag(1) && !flags.HasFlag(8388608);
                     msg.State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
-                } else {
-                    msg.PropertyChanged += MessagePropertyChanged;
                 }
 
                 bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.Id == LastMessage.Id;
@@ -355,33 +377,81 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private void MessagePropertyChanged(object sender, PropertyChangedEventArgs e) {
-            MessageViewModel msg = sender as MessageViewModel;
-            if (e.PropertyName == nameof(MessageViewModel.State)) {
-                msg.PropertyChanged -= MessagePropertyChanged;
-                OnPropertyChanged(nameof(LastMessage));
-            }
+        private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
+            if (PeerId != message.PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(async () => {
+                if (LastMessage?.Id == message.Id) {
+                    await Task.Delay(16); // ибо первым выполняется событие в объекте сообщения, и только потом тут.
+                    OnPropertyChanged(nameof(LastMessage));
+                }
+            });
         }
 
-        private void LongPoll_MessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+        private async void LongPoll_MentionReceived(LongPoll longPoll, int peerId, int messageId, bool isSelfDestruct) {
             if (PeerId != peerId) return;
-            UnreadMessagesCount = count;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                if (!isSelfDestruct) {
+                    if (Mentions == null) {
+                        Mentions = new ObservableCollection<int>() { messageId };
+                    } else {
+                        Mentions.Add(messageId);
+                    }
+                }
+            });
+        }
 
-            // Чтобы индикаторы прочитанности в списке чатов обновились.
-            // if (LastMessage?.Id == messageId) OnPropertyChanged(nameof(LastMessage));
+        private async void LongPoll_MessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+            if (PeerId != peerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                UnreadMessagesCount = count;
+
+                if (Mentions != null && Mentions.Count > 0) {
+                    var mentions = Mentions.ToList();
+                    foreach (int id in mentions) {
+                        if (id <= messageId) Mentions.Remove(id);
+                    }
+                    if (Mentions.Count == 0) Mentions = null;
+                }
+            });
         }
 
         private async void LongPoll_ConversationFlagReset(LongPoll longPoll, int peerId, int flags) {
-            if (peerId != PeerId) return;
+            if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                
+                if (flags.HasFlag(16)) { // Включено уведомление
+                    IsMuted = false;
+                }
+
+                bool mention = flags.HasFlag(1024); // Упоминаний больше нет
+                bool mark = flags.HasFlag(16384); // Маркированного сообщения больше нет
+                if (mark) {
+                    HasMention = false;
+                    HasSelfDestructMessage = false;
+                    //if (mention) {
+                    //    HasMention = false;
+                    //} else {
+                    //    HasSelfDestructMessage = false;
+                    //}
+                }
             });
         }
 
         private async void LongPoll_ConversationFlagSet(LongPoll longPoll, int peerId, int flags) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                
+                if (flags.HasFlag(16)) { // Отключено уведомление
+                    IsMuted = true;
+                }
+
+                bool mention = flags.HasFlag(1024); // Наличие упоминания
+                bool mark = flags.HasFlag(16384); // Наличие маркированного сообщения
+                if (mark) {
+                    if (mention) {
+                        HasMention = true;
+                    } else {
+                        HasSelfDestructMessage = true;
+                    }
+                }
             });
         }
 

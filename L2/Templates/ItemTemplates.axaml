@@ -25,13 +25,13 @@
       </Border>
       
       <StackPanel x:Name="Indicators" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
-        <Grid x:Name="MentionIndicatorContainer" IsVisible="{Binding Mentions, Converter={x:Static ObjectConverters.IsNotNull}}" Margin="8,0,0,0">
-          <Border x:Name="MentionIndicator" IsVisible="{Binding !IsMuted}" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
-            <vkui:VKIcon Margin="3" Id="{x:Static vkui:VKIconNames.Icon12Mention}" Foreground="{DynamicResource VKCounterPrimaryTextBrush}"/>
+        <Grid x:Name="MentionIndicatorContainer" IsVisible="{Binding MentionIconId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="8,0,0,0">
+          <Border x:Name="MentionIndicator" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
+            <vkui:VKIcon Margin="3" Id="{Binding MentionIconId}" Foreground="{DynamicResource VKCounterPrimaryTextBrush}"/>
           </Border>
-          <Border x:Name="MentionIndicatorMuted" IsVisible="{Binding IsMuted}" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterSecondaryBackgroundBrush}">
-            <vkui:VKIcon Margin="3" Id="{x:Static vkui:VKIconNames.Icon12Mention}" Foreground="{DynamicResource VKCounterSecondaryTextBrush}"/>
-          </Border>
+          <!--<Border x:Name="MentionIndicatorMuted" IsVisible="{Binding IsMuted}" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterSecondaryBackgroundBrush}">
+            <vkui:VKIcon Margin="3" Id="{Binding MentionIconId}" Foreground="{DynamicResource VKCounterSecondaryTextBrush}"/>
+          </Border>-->
         </Grid>
         <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}" Margin="8,0,0,0">
           <Border x:Name="UnreadMessagesIndicator" IsVisible="{Binding !IsMuted}" MinWidth="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">

@@ -95,6 +95,12 @@ namespace ELOR.Laney.ViewModels.Controls {
         public Uri PreviewImageUri { get { return _previewImageUri; } private set { _previewImageUri = value; OnPropertyChanged(); } }
         public bool CanShowInUI { get { return Action == null && !IsExpired; } }
 
+        #region Events
+
+        public event EventHandler MessageEdited;
+
+        #endregion
+
         public MessageViewModel(Message msg, VKSession session = null) {
             this.session = session;
             Setup(msg);
@@ -145,6 +151,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private void SetSenderNameAndAvatar() {
             if (SenderId > 0) {
+                SenderType = MessageVMSenderType.User;
                 User u = CacheManager.GetUser(SenderId);
                 SenderName = u == null ? $"id{SenderId}" : u.FullName;
                 if (u != null) SenderAvatar = u.Photo;
@@ -153,6 +160,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     SenderName = "E-Mail";
                     SenderAvatar = null;
                 } else {
+                    SenderType = MessageVMSenderType.Group;
                     Group g = CacheManager.GetGroup(SenderId);
                     SenderName = g == null ? $"club{SenderId}" : g.Name;
                     if (g != null) SenderAvatar = g.Photo;
@@ -257,9 +265,12 @@ namespace ELOR.Laney.ViewModels.Controls {
         private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
             if (message.Id != Id) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
+                if (message.Id == 6826653) Debugger.Break();
                 Setup(message);
+                // OnPropertyChanged(nameof(IsExpired)); // чтобы корректно рендерился UI expired-сообщения.
                 bool isUnread = flags.HasFlag(1);
                 State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
+                MessageEdited?.Invoke(this, null);
             });
         }
 
@@ -332,7 +343,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (Location != null) return Localizer.Instance["geo"];
             if (_forwardedMessages.Count > 0) return Localizer.Instance.GetDeclensionFormatted2(_forwardedMessages.Count, "forwarded_message");
 
-            return Localizer.Instance["empty_message"];
+            return Localizer.Instance[IsExpired? "msg_expired" : "empty_message"];
         }
 
         public static List<MessageViewModel> BuildFromAPI(List<Message> messages, VKSession session, System.Action<MessageViewModel> afterBuild = null) {

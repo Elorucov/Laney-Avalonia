@@ -1,6 +1,7 @@
 ﻿namespace VKUI.Controls {
     public static class VKIconNames {
         public const string Icon12ArrowUpRight = "Icon12ArrowUpRight";
+        public const string Icon12Bomb = "Icon12Bomb";
         public const string Icon12Mention = "Icon12Mention";
         public const string Icon12Star = "Icon12Star";
 

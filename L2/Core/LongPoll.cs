@@ -1,5 +1,4 @@
-﻿using DynamicData;
-using ELOR.Laney.Core.Network;
+﻿using ELOR.Laney.Core.Network;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
@@ -56,6 +55,7 @@ namespace ELOR.Laney.Core {
         public delegate void MessageFlagsDelegate(LongPoll longPoll, int messageId, int flags, int peerId);
         public delegate void MessageReceivedDelegate(LongPoll longPoll, Message message, int flags);
         public delegate void ConversationFlagsDelegate(LongPoll longPoll, int peerId, int flags);
+        public delegate void MentionDelegate(LongPoll longPoll, int peerId, int messageId, bool isSelfDestruct);
         public delegate void ReadInfoDelegate(LongPoll longPoll, int peerId, int messageId, int count);
         public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, int peerId, int extra);
         public delegate void ActivityStatusDelegate(LongPoll longPoll, LongPollActivityType type, int peerId, int[] userIds, int totalCount);
@@ -64,6 +64,7 @@ namespace ELOR.Laney.Core {
         public event MessageFlagsDelegate MessageFlagRemove; // 3
         public event MessageReceivedDelegate MessageReceived; // 4
         public event MessageReceivedDelegate MessageEdited; // 5, 18
+        public event MentionDelegate MentionReceived; // 5, 18
         public event ReadInfoDelegate IncomingMessagesRead; // 6
         public event ReadInfoDelegate OutgoingMessagesRead; // 7
         public event ConversationFlagsDelegate ConversationFlagReset; // 10
@@ -108,7 +109,7 @@ namespace ELOR.Laney.Core {
                         TimeStamp = jr["ts"].Value<int>();
                         PTS = jr["pts"].Value<int>();
                         ParseUpdates(jr["updates"].Value<JArray>());
-                        await Task.Delay(500).ConfigureAwait(false);
+                        await Task.Delay(1000).ConfigureAwait(false);
                     } else if (jr["failed"] != null) {
                         int errCode = jr["failed"].Value<int>();
                         string errText = jr["error"].Value<string>();
@@ -184,20 +185,22 @@ namespace ELOR.Laney.Core {
                         Message msgFromHistory = messages?.Where(m => m.Id == receivedMsgId).FirstOrDefault();
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, u[2].Value<int>());
+                            CheckMentions(u[6], receivedMsgId, u[3].Value<int>());
                         } else {
                             bool isPartial = false;
                             Exception ex = null;
                             Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
                                 MessageReceived?.Invoke(this, rmsg, u[2].Value<int>());
+                                CheckMentions(u[6], receivedMsgId, u[3].Value<int>());
                                 if (isPartial) {
-                                    MessagesFromAPI.Add(u[1].Value<int>(), true);
-                                    MessagesFromAPIFlags.Add(u[1].Value<int>(), u[2].Value<int>());
+                                    MessagesFromAPI.Add(receivedMsgId, true);
+                                    MessagesFromAPIFlags.Add(receivedMsgId, u[2].Value<int>());
                                 }
                             } else {
                                 Log.Error(ex, $"An error occured while building message from LP! Message ID: {u[1].Value<int>()}");
-                                MessagesFromAPI.Add(u[1].Value<int>(), false);
-                                MessagesFromAPIFlags.Add(u[1].Value<int>(), u[2].Value<int>());
+                                MessagesFromAPI.Add(receivedMsgId, false);
+                                MessagesFromAPIFlags.Add(receivedMsgId, u[2].Value<int>());
                             }
                         }
                         break;
@@ -208,9 +211,12 @@ namespace ELOR.Laney.Core {
                         Log.Information($"EVENT {eventId}: msg={editedMsgId}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, u[2].Value<int>());
+                            CheckMentions(u[6], editedMsgId, u[3].Value<int>());
                         } else {
-                            MessagesFromAPI.Add(u[1].Value<int>(), true);
-                            MessagesFromAPIFlags.Add(u[1].Value<int>(), u[2].Value<int>());
+                            if (!MessagesFromAPI.ContainsKey(editedMsgId)) {
+                                MessagesFromAPI.Add(editedMsgId, true);
+                                MessagesFromAPIFlags.Add(editedMsgId, u[2].Value<int>());
+                            }
                         }
                         break;
                     case 6:
@@ -287,6 +293,27 @@ namespace ELOR.Laney.Core {
 
             if (MessagesFromAPI.Count > 0) {
                 GetMessagesFromAPI(MessagesFromAPI, MessagesFromAPIFlags);
+            }
+        }
+
+        private void CheckMentions(JToken additional, int messageId, int peerId) {
+            try { 
+                JToken t = additional["marked_users"];
+                if (t != null) {
+                    foreach (JArray o in (JArray)t) {
+                        int flag = Int32.Parse(o[0].ToString());
+                        bool isBomb = flag == 2;
+
+                        if (o[1].ToString() == "all") {
+                            MentionReceived?.Invoke(this, peerId, messageId, isBomb);
+                        } else {
+                            JArray u1 = (JArray)o[1];
+                            if (Int32.Parse(u1.First.ToString()) == sessionId) MentionReceived?.Invoke(this, peerId, messageId, isBomb);
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Log.Error(ex, $"Cannot check mentions, \"marked_users\" parsing error!");
             }
         }
 

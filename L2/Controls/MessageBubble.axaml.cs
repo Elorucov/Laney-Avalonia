@@ -12,6 +12,7 @@ using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
@@ -31,7 +32,7 @@ namespace ELOR.Laney.Controls {
 
         #region Internal
 
-        bool IsOutgoing => Message.SenderId == VKSession.GetByDataContext(this).Id;
+        bool IsOutgoing => Message.IsOutgoing;
         bool IsChat => Message.PeerId > 2000000000;
 
         #endregion
@@ -111,6 +112,7 @@ namespace ELOR.Laney.Controls {
             if (change.Property == MessageProperty) {
                 if (change.OldValue is MessageViewModel oldm) {
                     oldm.PropertyChanged -= Message_PropertyChanged;
+                    oldm.MessageEdited -= Message_MessageEdited;
                 }
                 if (Message == null) {
                     IsVisible = false;
@@ -118,6 +120,7 @@ namespace ELOR.Laney.Controls {
                 }
                 IsVisible = true;
                 Message.PropertyChanged += Message_PropertyChanged;
+                Message.MessageEdited += Message_MessageEdited;
                 RenderElement();
             }
         }
@@ -126,7 +129,6 @@ namespace ELOR.Laney.Controls {
             if (e.PropertyName == nameof(MessageViewModel.Text)) {
                 SetText(Message.Text);
             }
-            ChangeUI();
 
             switch (e.PropertyName) {
                 case nameof(MessageViewModel.Text):
@@ -141,8 +143,12 @@ namespace ELOR.Laney.Controls {
             }
         }
 
+        private void Message_MessageEdited(object sender, EventArgs e) {
+            RenderElement();
+        }
+
         private void RenderElement() {
-            if (!isUILoaded) return;
+            if (!isUILoaded || !Message.CanShowInUI) return;
 
             // Outgoing
             BubbleRoot.HorizontalAlignment = IsOutgoing ? HorizontalAlignment.Right : HorizontalAlignment.Left;
@@ -281,6 +287,8 @@ namespace ELOR.Laney.Controls {
         // Конечно, можно и через TemplateBinding такие вещи делать,
         // но code-behind лучше.
         private void ChangeUI() {
+            if (!isUILoaded || !Message.CanShowInUI) return;
+
             // Avatar visibility
             SenderAvatar.Opacity = Message.IsSenderAvatarVisible ? 1 : 0;
 
