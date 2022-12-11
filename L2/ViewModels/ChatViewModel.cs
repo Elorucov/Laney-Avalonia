@@ -14,10 +14,8 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKUI.Controls;
 
@@ -381,6 +379,10 @@ namespace ELOR.Laney.ViewModels {
                 if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
                 if (msg.SenderId != session.Id) UnreadMessagesCount++;
                 if (canAddToDisplayedMessages) DisplayedMessages.Insert(msg);
+
+                // Remove user from activity status
+                var status = ActivityStatusUsers.RegisteredObjects.Where(m => m.MemberId == message.FromId).FirstOrDefault();
+                if (status != null) ActivityStatusUsers.Remove(status);
             });
         }
 
@@ -601,7 +603,7 @@ namespace ELOR.Laney.ViewModels {
             }
             if (!String.IsNullOrEmpty(r)) {
                 if (count > 1) {
-                    r += $" {String.Format(Localizer.Instance.GetFormatted("im_status_more"), count - 1)}";
+                    r += $" {Localizer.Instance.GetFormatted("im_status_more", count - 1)}";
                 }
             }
             return r;

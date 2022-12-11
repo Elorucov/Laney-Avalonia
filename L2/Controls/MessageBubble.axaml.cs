@@ -138,6 +138,7 @@ namespace ELOR.Laney.Controls {
                 case nameof(MessageViewModel.IsImportant):
                 case nameof(MessageViewModel.EditTime):
                 case nameof(MessageViewModel.IsSenderNameVisible):
+                case nameof(MessageViewModel.IsSenderAvatarVisible):
                     ChangeUI();
                     break;
             }
