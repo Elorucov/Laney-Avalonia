@@ -11,15 +11,15 @@ namespace ELOR.Laney.Helpers {
             "ban_info", "blacklisted", "blacklisted_by_me", "can_message", "can_write_private_message", "friend_status",
             "is_messages_blocked", "online_info", "domain", "verified", "sex", "activity",
             "first_name_gen", "first_name_dat", "first_name_acc", "first_name_ins", "first_name_abl",
-            "last_name_gen", "last_name_dat", "last_name_acc", "last_name_ins", "last_name_abl"
+            "last_name_gen", "last_name_dat", "last_name_acc", "last_name_ins", "last_name_abl", "photo_avg_color"
         };
 
         public static readonly List<string> UserFields = new List<string>() { "photo_200", "photo_100", "photo_50", "sex",
-            "blacklisted", "blacklisted_by_me", "can_write_private_message", "friend_status", "online_info", "domain", "verified"
+            "blacklisted", "blacklisted_by_me", "can_write_private_message", "friend_status", "online_info", "domain", "verified", "photo_avg_color"
         };
 
         public static readonly List<string> GroupFields = new List<string>() { "photo_200", "photo_100", "photo_50", "description",
-            "ban_info", "can_message", "is_messages_blocked", "domain", "activity", "status", "verified", "activity"
+            "ban_info", "can_message", "is_messages_blocked", "domain", "activity", "status", "verified", "activity", "photo_avg_color"
         };
 
         #region Errors

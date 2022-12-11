@@ -1,4 +1,5 @@
 ﻿using ELOR.Laney.Execute.Objects;
+using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace ELOR.Laney.Execute {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("func_v", "2");
             parameters.Add("lp_version", Core.LongPoll.VERSION.ToString());
+            parameters.Add("fields", string.Join(",", VKAPIHelper.Fields));
             return await API.CallMethodAsync<StartSessionResponse>("execute.l2StartSession", parameters);
         }
 

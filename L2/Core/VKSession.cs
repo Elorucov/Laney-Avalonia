@@ -165,17 +165,19 @@ namespace ELOR.Laney.Core {
 
                 if (!IsGroup) {
                     var currentUser = info.User;
+
                     Name = currentUser.FullName;
                     Avatar = new Uri(currentUser.Photo100);
-                    LongPoll = new LongPoll(info.LongPoll, API, Id, GroupId);
-                    LongPoll.StateChanged += LongPoll_StateChanged;
-                    LongPoll.Run();
                 } else {
                     var currentGroup = _sessions.Where(s => s.Id == Id).FirstOrDefault();
                     Name = currentGroup.Name;
                     Avatar = currentGroup.Avatar;
                 }
 
+                var lp = info.LongPolls.Where(lps => lps.SessionId == Id).FirstOrDefault();
+                LongPoll = new LongPoll(lp.LongPoll, API, Id, GroupId);
+                LongPoll.StateChanged += LongPoll_StateChanged;
+                LongPoll.Run();
 
                 SetUpTrayMenu(); // обновляем tray menu, отображая уже все загружнные сессии
             } catch (Exception ex) {
