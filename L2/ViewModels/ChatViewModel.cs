@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKUI.Controls;
 
@@ -440,6 +439,27 @@ namespace ELOR.Laney.ViewModels {
                 case "chat_photo_remove":
                     Avatar = new Uri("https://vk.com/images/icons/im_multichat_200.png");
                     break;
+                case "chat_pin_message":
+                    UpdatePinnedMessage(action.ConversationMessageId);
+                    break;
+                case "chat_unpin_message":
+                    PinnedMessage = null;
+                    break;
+            }
+        }
+
+        private async void UpdatePinnedMessage(int cmid) {
+            var msg = ReceivedMessages.Where(m => m.ConversationMessageId == cmid).FirstOrDefault();
+            if (msg == null) msg = DisplayedMessages.Where(m => m.ConversationMessageId == cmid).FirstOrDefault();
+            if (msg != null) {
+                PinnedMessage = msg;
+            } else {
+                try {
+                    var resp = await session.API.Messages.GetByConversationMessageIdAsync(session.GroupId, PeerId, new List<int> { cmid });
+                    PinnedMessage = new MessageViewModel(resp.Items[0], session);
+                } catch (Exception ex) {
+                    Log.Error(ex, $"Cannot get pinned message from event! peer={PeerId} cmid={cmid}");
+                }
             }
         }
 
@@ -487,20 +507,11 @@ namespace ELOR.Laney.ViewModels {
         private async void LongPoll_ConversationFlagReset(LongPoll longPoll, int peerId, int flags) {
             if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                //if (flags.HasFlag(16)) { // Включено уведомление
-                //    IsMuted = false;
-                //}
-
                 bool mention = flags.HasFlag(1024); // Упоминаний больше нет
                 bool mark = flags.HasFlag(16384); // Маркированного сообщения больше нет
                 if (mark) {
                     HasMention = false;
                     HasSelfDestructMessage = false;
-                    //if (mention) {
-                    //    HasMention = false;
-                    //} else {
-                    //    HasSelfDestructMessage = false;
-                    //}
                 }
             });
         }
@@ -508,10 +519,6 @@ namespace ELOR.Laney.ViewModels {
         private async void LongPoll_ConversationFlagSet(LongPoll longPoll, int peerId, int flags) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                //if (flags.HasFlag(16)) { // Отключено уведомление
-                //    IsMuted = true;
-                //}
-
                 bool mention = flags.HasFlag(1024); // Наличие упоминания
                 bool mark = flags.HasFlag(16384); // Наличие маркированного сообщения
                 if (mark) {
