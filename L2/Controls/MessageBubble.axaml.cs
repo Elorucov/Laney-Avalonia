@@ -126,13 +126,9 @@ namespace ELOR.Laney.Controls {
         }
 
         private void Message_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (e.PropertyName == nameof(MessageViewModel.Text)) {
-                SetText(Message.Text);
-            }
-
             switch (e.PropertyName) {
                 case nameof(MessageViewModel.Text):
-                    SetText(Message.Text);
+                    if (isUILoaded && Message.CanShowInUI) SetText(Message.Text);
                     break;
                 case nameof(MessageViewModel.State):
                 case nameof(MessageViewModel.IsImportant):

@@ -265,7 +265,6 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (message.Id != Id) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 Setup(message);
-                // OnPropertyChanged(nameof(IsExpired)); // чтобы корректно рендерился UI expired-сообщения.
                 bool isUnread = flags.HasFlag(1);
                 State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
                 MessageEdited?.Invoke(this, null);

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKUI.Controls;
 
@@ -36,7 +37,7 @@ namespace ELOR.Laney.ViewModels {
         private ObservableCollection<MessageViewModel> _receivedMessages = new ObservableCollection<MessageViewModel>();
         private MessagesCollection _displayedMessages;
         private MessageViewModel _pinnedMessage;
-        private bool _isMuted;
+        private PushSettings _pushSettings;
         private int _inread;
         private int _outread;
         private ChatSettings _csettings;
@@ -65,7 +66,7 @@ namespace ELOR.Laney.ViewModels {
         public MessagesCollection DisplayedMessages { get { return _displayedMessages; } private set { _displayedMessages = value; OnPropertyChanged(); } }
         public MessageViewModel LastMessage { get { return ReceivedMessages.LastOrDefault(); } }
         public MessageViewModel PinnedMessage { get { return _pinnedMessage; } private set { _pinnedMessage = value; OnPropertyChanged(); } }
-        public bool IsMuted { get { return _isMuted; } private set { _isMuted = value; OnPropertyChanged(); } }
+        public PushSettings PushSettings { get { return _pushSettings; } private set { _pushSettings = value; OnPropertyChanged(); } }
         public int InRead { get { return _inread; } private set { _inread = value; OnPropertyChanged(); } }
         public int OutRead { get { return _outread; } private set { _outread = value; OnPropertyChanged(); } }
         public ChatSettings ChatSettings { get { return _csettings; } private set { _csettings = value; OnPropertyChanged(); } }
@@ -127,9 +128,10 @@ namespace ELOR.Laney.ViewModels {
             CanWrite = c.CanWrite;
             InRead = c.InRead;
             OutRead = c.OutRead;
-            IsMuted = c.PushSettings != null && c.PushSettings.DisabledForever ? true : false;
+            PushSettings = c.PushSettings;
             IsMarkedAsUnread = c.IsMarkedUnread;
             IsPinned = SortId.MajorId > 0 && SortId.MajorId % 16 == 0;
+            
 
             if (c.Mentions != null && c.Mentions.Count > 0) {
                 Mentions = new ObservableCollection<int>(c.Mentions);
@@ -231,6 +233,7 @@ namespace ELOR.Laney.ViewModels {
                     OnPropertyChanged(nameof(MentionIconId));
             };
 
+            session.LongPoll.MessageFlagSet += LongPoll_MessageFlagSet;
             session.LongPoll.MessageReceived += LongPoll_MessageReceived;
             session.LongPoll.MessageEdited += LongPoll_MessageEdited;
             session.LongPoll.MentionReceived += LongPoll_MentionReceived;
@@ -240,7 +243,9 @@ namespace ELOR.Laney.ViewModels {
             session.LongPoll.ConversationFlagSet += LongPoll_ConversationFlagSet;
             session.LongPoll.MajorIdChanged += LongPoll_MajorIdChanged;
             session.LongPoll.MinorIdChanged += LongPoll_MinorIdChanged;
+            session.LongPoll.ConversationDataChanged += LongPoll_ConversationDataChanged;
             session.LongPoll.ActivityStatusChanged += LongPoll_ActivityStatusChanged;
+            session.LongPoll.NotificationsSettingsChanged += LongPoll_NotificationsSettingsChanged;
 
             ActivityStatusUsers.Elapsed += (a, b) => UpdateActivityStatus();
         }
@@ -364,6 +369,30 @@ namespace ELOR.Laney.ViewModels {
 
         #region LongPoll events
 
+        private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, int peerId) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                if (flags.HasFlag(128)) { // Удаление сообщения
+                    if (messageId > InRead && UnreadMessagesCount > 0) UnreadMessagesCount--;
+
+                    if (ReceivedMessages.LastOrDefault()?.Id == SortId.MinorId && !ChatSettings.IsDisappearing) {
+                        if (ReceivedMessages.Count > 1) {
+                            MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
+                            UpdateSortId(SortId.MajorId, prev.Id);
+                        } else {
+                            Log.Warning("Cannot update minor_id after last message is deleted!");
+                        }
+                    }
+
+                    MessageViewModel msg = ReceivedMessages.Where(m => m.Id == messageId).FirstOrDefault();
+                    if (msg != null) ReceivedMessages.Remove(msg);
+
+                    MessageViewModel dmsg = DisplayedMessages.Where(m => m.Id == messageId).FirstOrDefault();
+                    if (dmsg != null) DisplayedMessages.Remove(dmsg);
+                }
+            });
+        }
+
         private async void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
             if (message.PeerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
@@ -374,8 +403,9 @@ namespace ELOR.Laney.ViewModels {
                     msg.State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
                 }
 
-                bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.Id == LastMessage.Id;
+                bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.Id == ReceivedMessages.LastOrDefault()?.Id;
                 ReceivedMessages.Add(msg);
+                if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
                 if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
                 if (msg.SenderId != session.Id) UnreadMessagesCount++;
                 if (canAddToDisplayedMessages) DisplayedMessages.Insert(msg);
@@ -390,10 +420,27 @@ namespace ELOR.Laney.ViewModels {
             if (PeerId != message.PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(async () => {
                 if (LastMessage?.Id == message.Id) {
+                    // нужно для корректной обработки смены фото чата.
+                    if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
+
                     await Task.Delay(16); // ибо первым выполняется событие в объекте сообщения, и только потом тут.
                     OnPropertyChanged(nameof(LastMessage));
                 }
             });
+        }
+
+        private void ParseActionMessage(int fromId, VKAPILib.Objects.Action action, List<Attachment> attachments) {
+            switch (action.Type) {
+                case "chat_title_update":
+                    Title = action.Text;
+                    break;
+                case "chat_photo_update":
+                    if (attachments != null) Avatar = attachments[0].Photo.GetSizeAndUriForThumbnail().Uri;
+                    break;
+                case "chat_photo_remove":
+                    Avatar = new Uri("https://vk.com/images/icons/im_multichat_200.png");
+                    break;
+            }
         }
 
         private async void LongPoll_MentionReceived(LongPoll longPoll, int peerId, int messageId, bool isSelfDestruct) {
@@ -440,9 +487,9 @@ namespace ELOR.Laney.ViewModels {
         private async void LongPoll_ConversationFlagReset(LongPoll longPoll, int peerId, int flags) {
             if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                if (flags.HasFlag(16)) { // Включено уведомление
-                    IsMuted = false;
-                }
+                //if (flags.HasFlag(16)) { // Включено уведомление
+                //    IsMuted = false;
+                //}
 
                 bool mention = flags.HasFlag(1024); // Упоминаний больше нет
                 bool mark = flags.HasFlag(16384); // Маркированного сообщения больше нет
@@ -461,9 +508,9 @@ namespace ELOR.Laney.ViewModels {
         private async void LongPoll_ConversationFlagSet(LongPoll longPoll, int peerId, int flags) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                if (flags.HasFlag(16)) { // Отключено уведомление
-                    IsMuted = true;
-                }
+                //if (flags.HasFlag(16)) { // Отключено уведомление
+                //    IsMuted = true;
+                //}
 
                 bool mention = flags.HasFlag(1024); // Наличие упоминания
                 bool mark = flags.HasFlag(16384); // Наличие маркированного сообщения
@@ -498,6 +545,37 @@ namespace ELOR.Laney.ViewModels {
                 MajorId = major,
                 MinorId = minor
             };
+        }
+
+        private async void LongPoll_ConversationDataChanged(LongPoll longPoll, int type, int peerId, int extra) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                // TODO: 4 и 6
+                switch (type) {
+                    case 3: // Назначен новый администратор
+                        ChatSettings.AdminIDs.Add(extra);
+                        break;
+                    case 7: // Выход из беседы
+                    case 8: // Исключение из беседы
+                        if (extra > 0) {
+                            User user = MembersUsers.Where(u => u.Id == extra).FirstOrDefault();
+                            if (user != null) MembersUsers.Remove(user);
+                        } else if (extra < 0) {
+                            Group group = MembersGroups.Where(g => g.Id == -extra).FirstOrDefault();
+                            if (group != null) MembersGroups.Remove(group);
+                        }
+                        if (extra == session.Id) {
+                            ChatSettings.State = type == 8 ? UserStateInChat.Kicked : UserStateInChat.Left;
+                        }
+                        ChatSettings.MembersCount--;
+                        UpdateSubtitleForChat();
+                        UpdateRestrictionInfo();
+                        break;
+                    case 9: // Разжалован администратор
+                        if (ChatSettings.AdminIDs.Contains(extra)) ChatSettings.AdminIDs.Remove(extra);
+                        break;
+                }
+            });
         }
 
         private async void LongPoll_ActivityStatusChanged(LongPoll longPoll, int peerId, List<LongPollActivityInfo> infos) {
@@ -607,6 +685,18 @@ namespace ELOR.Laney.ViewModels {
                 }
             }
             return r;
+        }
+
+        private async void LongPoll_NotificationsSettingsChanged(object sender, LongPollPushNotificationData e) {
+            if (e.PeerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                PushSettings ps = new PushSettings {
+                    DisabledForever = e.DisabledUntil == -1,
+                    DisabledUntil = e.DisabledUntil,
+                    NoSound = e.Sound == 0
+                };
+                PushSettings = ps;
+            });
         }
 
         #endregion

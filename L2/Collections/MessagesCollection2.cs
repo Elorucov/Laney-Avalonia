@@ -68,7 +68,8 @@ namespace ELOR.Laney.Collections {
             int index = Items.IndexOf(message);
             if (index == -1) return;
             RemoveAt(index);
-            UpdateSenderInfoView(this.ElementAt(index));
+            UpdateSenderInfoView(this.ElementAt(index - 1));
+            if (Count > index) UpdateSenderInfoView(this.ElementAt(index));
         }
 
         private void UpdateSenderInfoView(MessageViewModel msg) {

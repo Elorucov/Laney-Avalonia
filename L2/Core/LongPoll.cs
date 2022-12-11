@@ -176,9 +176,33 @@ namespace ELOR.Laney.Core {
                         int msgId = u[1].Value<int>();
                         int flags = u[2].Value<int>();
                         int peerId = u[3].Value<int>();
-                        Log.Information($"EVENT {eventId}: msg={msgId}, flags={flags}, peer={peerId}");
+                        bool hasMessage = u.Count > 4; // удалённое у текущего юзера сообщение восстановилось
+                        Log.Information($"EVENT {eventId}: msg={msgId}, flags={flags}, peer={peerId}, hasMessage={hasMessage}");
                         if (eventId == 3) MessageFlagRemove?.Invoke(this, msgId, flags, peerId);
                         else MessageFlagSet?.Invoke(this, msgId, flags, peerId);
+                        if (hasMessage) {
+                            Message msgFromHistory3 = messages?.Where(m => m.Id == msgId).FirstOrDefault();
+                            if (msgFromHistory3 != null) {
+                                MessageReceived?.Invoke(this, msgFromHistory3, flags);
+                                if (u.Count > 6) CheckMentions(u[6], msgId, u[3].Value<int>());
+                            } else {
+                                bool isPartial = false;
+                                Exception ex = null;
+                                Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
+                                if (ex == null && rmsg != null) {
+                                    MessageReceived?.Invoke(this, rmsg, u[2].Value<int>());
+                                    if (u.Count > 6) CheckMentions(u[6], msgId, u[3].Value<int>());
+                                    if (isPartial) {
+                                        MessagesFromAPI.Add(msgId, true);
+                                        MessagesFromAPIFlags.Add(msgId, u[2].Value<int>());
+                                    }
+                                } else {
+                                    Log.Error(ex, $"An error occured while building message from LP! Message ID: {u[1].Value<int>()}");
+                                    MessagesFromAPI.Add(msgId, false);
+                                    MessagesFromAPIFlags.Add(msgId, u[2].Value<int>());
+                                }
+                            }
+                        }
                         break;
                     case 4:
                         int receivedMsgId = u[1].Value<int>();
@@ -186,14 +210,14 @@ namespace ELOR.Laney.Core {
                         Message msgFromHistory = messages?.Where(m => m.Id == receivedMsgId).FirstOrDefault();
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, u[2].Value<int>());
-                            CheckMentions(u[6], receivedMsgId, u[3].Value<int>());
+                            if (u.Count > 6) CheckMentions(u[6], receivedMsgId, u[3].Value<int>());
                         } else {
                             bool isPartial = false;
                             Exception ex = null;
                             Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
                                 MessageReceived?.Invoke(this, rmsg, u[2].Value<int>());
-                                CheckMentions(u[6], receivedMsgId, u[3].Value<int>());
+                                if (u.Count > 6) CheckMentions(u[6], receivedMsgId, u[3].Value<int>());
                                 if (isPartial) {
                                     MessagesFromAPI.Add(receivedMsgId, true);
                                     MessagesFromAPIFlags.Add(receivedMsgId, u[2].Value<int>());
@@ -212,7 +236,7 @@ namespace ELOR.Laney.Core {
                         Log.Information($"EVENT {eventId}: msg={editedMsgId}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, u[2].Value<int>());
-                            CheckMentions(u[6], editedMsgId, u[3].Value<int>());
+                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, u[3].Value<int>());
                         } else {
                             if (!MessagesFromAPI.ContainsKey(editedMsgId)) {
                                 MessagesFromAPI.Add(editedMsgId, true);

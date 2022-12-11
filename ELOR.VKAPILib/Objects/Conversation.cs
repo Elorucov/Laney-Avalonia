@@ -179,7 +179,10 @@ namespace ELOR.VKAPILib.Objects {
         public ChatPhoto Photo { get; set; }
 
         [JsonProperty("active_ids")]
-        public List<string> ActiveIDs { get; set; }
+        public List<int> ActiveIDs { get; set; }
+
+        [JsonProperty("admin_ids")]
+        public List<int> AdminIDs { get; set; }
 
         [JsonProperty("is_disappearing")]
         public bool IsDisappearing { get; set; }
