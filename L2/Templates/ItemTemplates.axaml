@@ -5,7 +5,7 @@
   <DataTemplate x:Key="ChatItemTemplate">
     <Grid Height="64" ColumnDefinitions="Auto * Auto">
       <vkui:Avatar Width="48" Height="48" Margin="12,8,0,8" VerticalAlignment="Center" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" ImageUri="{Binding Avatar}"/>
-      <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,6"/>
+      <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,8"/>
       <StackPanel x:Name="Info" Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
         <DockPanel x:Name="FirstLine" HorizontalAlignment="Left" Height="24">
           <TextBlock x:Name="ConvName" Margin="0,2,22,0" Classes="SemiBold" Text="{Binding Title}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
@@ -21,20 +21,16 @@
         </StackPanel>
       </StackPanel>
 
-      <!-- TODO: убрать фон у ReadIndicator и сделать нормальный способ скрыть иконку закрепа при исходящем сообщении -->
-      <Path x:Name="PinIndicator" Grid.Column="2" IsVisible="{Binding IsPinned}" VerticalAlignment="Center" Margin="8,0,12,0" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
-      <Border x:Name="ReadIndicator" Grid.Column="2" IsVisible="{Binding LastMessage, Converter={StaticResource rivc}}" VerticalAlignment="Center" Margin="8,0,12,0" Background="{DynamicResource VKBackgroundContentBrush}">
+      <Path x:Name="PinIndicator" Grid.Column="2" IsVisible="{Binding IsPinned}" VerticalAlignment="Top" Margin="8,12,12,0" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
+      <Border x:Name="ReadIndicator" Grid.Column="2" IsVisible="{Binding LastMessage, Converter={StaticResource rivc}}" VerticalAlignment="Bottom" Margin="8,0,12,13">
         <vkui:VKIcon Id="{Binding LastMessage.State, Converter={StaticResource ric}}"/>
       </Border>
       
-      <StackPanel x:Name="Indicators" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
+      <StackPanel x:Name="Indicators" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,12,13">
         <Grid x:Name="MentionIndicatorContainer" IsVisible="{Binding MentionIconId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="8,0,0,0">
           <Border x:Name="MentionIndicator" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
             <vkui:VKIcon Margin="3" Id="{Binding MentionIconId}" Foreground="{DynamicResource VKCounterPrimaryTextBrush}"/>
           </Border>
-          <!--<Border x:Name="MentionIndicatorMuted" IsVisible="{Binding IsMuted}" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterSecondaryBackgroundBrush}">
-            <vkui:VKIcon Margin="3" Id="{Binding MentionIconId}" Foreground="{DynamicResource VKCounterSecondaryTextBrush}"/>
-          </Border>-->
         </Grid>
         <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}" Margin="8,0,0,0">
           <Border x:Name="UnreadMessagesIndicator" IsVisible="{Binding !IsMuted}" MinWidth="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
