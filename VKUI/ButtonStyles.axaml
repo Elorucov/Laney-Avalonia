@@ -14,6 +14,7 @@
             <TextBlock Classes="ButtonIn SemiBold" Margin="5,9,12,8" Text="Test"/>
           </StackPanel>
         </Button>
+        <Button Margin="8" Classes="ListItem Selected" Content="In list selected"/>
       </StackPanel>
     </Design.PreviewWith>
 
@@ -52,11 +53,19 @@
     </Setter>
   </Style>
 
+  <Style Selector="Button.ListItem /template/ Border#PART_Background">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <Style Selector="Button.ListItem /template/ Border#PART_Hover">
+    <Setter Property="Margin" Value="4,0"/>
+  </Style>
+
   <Style Selector="Button:pointerover /template/ Border#PART_Hover">
     <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}"/>
   </Style>
 
-  <Style Selector="Button:pressed /template/ Border#PART_Hover">
+  <Style Selector="Button:pressed /template/ Border#PART_Hover, Button.Selected /template/ Border#PART_Hover">
     <Setter Property="Background" Value="{DynamicResource VKBackgroundHighlightedBrush}"/>
   </Style>
 

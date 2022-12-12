@@ -7,7 +7,6 @@ using Avalonia.Media.Imaging;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
 
 namespace VKUI.Controls {
     public sealed class Avatar : TemplatedControl {
@@ -48,9 +47,11 @@ namespace VKUI.Controls {
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
             base.OnPropertyChanged(change);
 
-            if (change.Property == ImageUriProperty || change.Property == BoundsProperty) {
-                SetImage();
+            if (change.Property == ImageUriProperty) {
+                if (change.OldValue != change.NewValue) SetImage();
             }
+
+            if (change.Property == BoundsProperty) SetImage();
         }
 
         byte[] imageBytes;

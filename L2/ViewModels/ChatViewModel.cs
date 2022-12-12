@@ -48,6 +48,7 @@ namespace ELOR.Laney.ViewModels {
         private bool _hasMention;
         private bool _hasSelfDestructMessage;
         private string _restrictionReason;
+        private bool _isCurrentOpenedChat;
 
         public PeerType PeerType { get { return _peerType; } private set { _peerType = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -78,6 +79,7 @@ namespace ELOR.Laney.ViewModels {
         public bool HasSelfDestructMessage { get { return _hasSelfDestructMessage; } private set { _hasSelfDestructMessage = value; OnPropertyChanged(); } }
         public string MentionIconId { get { return GetMentionIcon(); } }
         public string RestrictionReason { get { return _restrictionReason; } private set { _restrictionReason = value; OnPropertyChanged(); } }
+        public bool IsCurrentOpenedChat { get { return _isCurrentOpenedChat; } private set { _isCurrentOpenedChat = value; OnPropertyChanged(); } }
 
         public List<User> MembersUsers { get; private set; } = new List<User>();
         public List<Group> MembersGroups { get; private set; } = new List<Group>();
@@ -232,6 +234,8 @@ namespace ELOR.Laney.ViewModels {
                     OnPropertyChanged(nameof(MentionIconId));
             };
 
+            session.CurrentOpenedChatChanged += (a, b) => IsCurrentOpenedChat = b == PeerId;
+
             session.LongPoll.MessageFlagSet += LongPoll_MessageFlagSet;
             session.LongPoll.MessageReceived += LongPoll_MessageReceived;
             session.LongPoll.MessageEdited += LongPoll_MessageEdited;
@@ -374,7 +378,7 @@ namespace ELOR.Laney.ViewModels {
                 if (flags.HasFlag(128)) { // Удаление сообщения
                     if (messageId > InRead && UnreadMessagesCount > 0) UnreadMessagesCount--;
 
-                    if (ReceivedMessages.LastOrDefault()?.Id == SortId.MinorId && !ChatSettings.IsDisappearing) {
+                    if (ReceivedMessages.LastOrDefault()?.Id == SortId.MinorId && (ChatSettings != null && !ChatSettings.IsDisappearing)) {
                         if (ReceivedMessages.Count > 1) {
                             MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
                             UpdateSortId(SortId.MajorId, prev.Id);
@@ -386,7 +390,7 @@ namespace ELOR.Laney.ViewModels {
                     MessageViewModel msg = ReceivedMessages.Where(m => m.Id == messageId).FirstOrDefault();
                     if (msg != null) ReceivedMessages.Remove(msg);
 
-                    MessageViewModel dmsg = DisplayedMessages.Where(m => m.Id == messageId).FirstOrDefault();
+                    MessageViewModel dmsg = DisplayedMessages?.Where(m => m.Id == messageId).FirstOrDefault();
                     if (dmsg != null) DisplayedMessages.Remove(dmsg);
                 }
             });

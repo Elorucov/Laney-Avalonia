@@ -1,13 +1,15 @@
 using Avalonia.Controls;
-using Avalonia.Input;
+using Avalonia.Interactivity;
 using ELOR.Laney.Core;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
+using System;
 
 namespace ELOR.Laney.Views {
-    public sealed partial class ConversationsView : UserControl {
+    public sealed partial class ImView : UserControl {
         private VKSession Session { get { return VKSession.GetByDataContext(this); } }
 
-        public ConversationsView() {
+        public ImView() {
             InitializeComponent();
             AvatarButton.Click += (a, b) => {
                 Session.ShowSessionPopup(AvatarButton);
@@ -16,13 +18,14 @@ namespace ELOR.Laney.Views {
                 App.ToggleTheme();
             };
             SearchButton.Click += (a, b) => {
-                throw new System.Exception("This is a crash. Not bandicoot, but a crash.");
+                throw new Exception("This is a crash. Not bandicoot, but a crash.");
             };
+            chatsListScroll.RegisterIncrementalLoadingEvent(() => Session.ImViewModel.LoadConversations());
         }
 
-        private void ListBoxItemTapped(object sender, TappedEventArgs args) {
-            ListBox listBox = sender as ListBox;
-            ChatViewModel cvm = listBox.SelectedItem as ChatViewModel;
+        private void OnChatClick(object? sender, RoutedEventArgs args) {
+            Button b = sender as Button;
+            ChatViewModel cvm = b.Content as ChatViewModel;
             if (cvm == null) return;
             Session.GetToChat(cvm.PeerId);
         }

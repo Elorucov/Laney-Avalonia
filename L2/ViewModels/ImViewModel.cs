@@ -4,17 +4,16 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Methods;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Linq;
 
 namespace ELOR.Laney.ViewModels {
-    public sealed class ConversationsViewModel : CommonViewModel {
+    public sealed class ImViewModel : CommonViewModel {
         private VKSession session;
 
-        private SourceList<ChatViewModel> _chats = new SourceList<ChatViewModel>();
+        private SourceCache<ChatViewModel, int> _chats = new SourceCache<ChatViewModel, int>(c => c.PeerId);
         private ReadOnlyObservableCollection<ChatViewModel> _sortedChats;
         private ChatViewModel _visualSelectedChat;
         private bool _isEmpty = true;
@@ -23,7 +22,7 @@ namespace ELOR.Laney.ViewModels {
         public ChatViewModel VisualSelectedChat { get { return _visualSelectedChat; } private set { _visualSelectedChat = value; OnPropertyChanged(); } }
         public bool IsEmpty { get { return _isEmpty; } private set { _isEmpty = value; OnPropertyChanged(); } }
 
-        public ConversationsViewModel(VKSession session) {
+        public ImViewModel(VKSession session) {
             this.session = session;
 
             session.PropertyChanged += (a, b) => {
@@ -32,9 +31,10 @@ namespace ELOR.Laney.ViewModels {
             };
 
             var observableChats = _chats.Connect();
+            var prop = observableChats.WhenPropertyChanged(c => c.SortIndex).Select(_ => Unit.Default);
             var loader = observableChats
-                .AutoRefresh(c => c.SortIndex)
-                .Sort(SortExpressionComparer<ChatViewModel>.Descending(c => c.SortIndex))
+                .Sort(SortExpressionComparer<ChatViewModel>.Descending(c => c.SortIndex), prop)
+                .TreatMovesAsRemoveAdd()
                 .Bind(out _sortedChats)
                 .Subscribe(t => {
                     IsEmpty = _chats.Count == 0;
@@ -42,35 +42,33 @@ namespace ELOR.Laney.ViewModels {
                     Debug.WriteLine($"Chats count: {_chats.Count}; sorted count: {_sortedChats.Count}");
                 });
 
-            GetConversations();
+            LoadConversations();
         }
 
-        public async void GetConversations() {
+        public async void LoadConversations() {
+            if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
             try {
-                var response = await session.API.Messages.GetConversationsAsync(session.GroupId, VKAPIHelper.Fields, ConversationsFilter.All, true);
+                var response = await session.API.Messages.GetConversationsAsync(session.GroupId, VKAPIHelper.Fields, ConversationsFilter.All, true, 60, _chats.Count);
                 CacheManager.Add(response.Profiles);
                 CacheManager.Add(response.Groups);
 
-                List<ChatViewModel> loadedChats = new List<ChatViewModel>();
+                // List<ChatViewModel> loadedChats = new List<ChatViewModel>();
                 foreach (var conv in response.Items) {
                     ChatViewModel chat = CacheManager.GetChat(session.Id, conv.Conversation.Peer.Id);
                     if (chat == null) {
                         chat = new ChatViewModel(session, conv.Conversation, conv.LastMessage);
                         CacheManager.Add(session.Id, chat);
                     }
-                    loadedChats.Add(chat);
+                    // loadedChats.Add(chat);
+                    _chats.AddOrUpdate(chat);
                 }
-                _chats.AddRange(loadedChats);
+                
             } catch (Exception ex) {
-                Placeholder = PlaceholderViewModel.GetForException(ex, () => GetConversations());
+                Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadConversations());
             }
             IsLoading = false;
         }
-
-        #region Binded from UI
-
-        #endregion
     }
 }

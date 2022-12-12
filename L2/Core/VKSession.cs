@@ -25,7 +25,7 @@ namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
         private string _name;
         private Uri? _avatar;
-        private ConversationsViewModel _conversationsViewModel;
+        private ImViewModel _imViewModel;
         private ChatViewModel _currentOpenedChat;
 
         public int Id { get { return GroupId > 0 ? -GroupId : UserId; } }
@@ -33,13 +33,15 @@ namespace ELOR.Laney.Core {
         public int GroupId { get; private set; }
         public string Name { get { return _name; } private set { _name = value; OnPropertyChanged(); } }
         public Uri? Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
-        public ConversationsViewModel ConversationsViewModel { get { return _conversationsViewModel; } private set { _conversationsViewModel = value; OnPropertyChanged(); } }
+        public ImViewModel ImViewModel { get { return _imViewModel; } private set { _imViewModel = value; OnPropertyChanged(); } }
         public ChatViewModel CurrentOpenedChat { get { return _currentOpenedChat; } set { _currentOpenedChat = value; OnPropertyChanged(); } }
 
         public bool IsGroup { get => GroupId > 0; }
         public VKAPI API { get; private set; }
         public LongPoll LongPoll { get; private set; }
         public MainWindow Window { get; private set; }
+
+        public event EventHandler<int> CurrentOpenedChatChanged;
 
         #region Binded from UI and tray menu
 
@@ -150,6 +152,7 @@ namespace ELOR.Laney.Core {
                     sessions.Add(this);
 
                     foreach (var group in info.Groups) {
+                        CacheManager.Add(group);
                         if (!group.CanMessage) continue;
                         sessions.Add(new VKSession {
                             UserId = info.User.Id,
@@ -165,6 +168,7 @@ namespace ELOR.Laney.Core {
 
                 if (!IsGroup) {
                     var currentUser = info.User;
+                    CacheManager.Add(currentUser);
 
                     Name = currentUser.FullName;
                     Avatar = new Uri(currentUser.Photo100);
@@ -186,7 +190,7 @@ namespace ELOR.Laney.Core {
                 Init(dontUpdateSessionsList);
             }
 
-            if (ConversationsViewModel == null) ConversationsViewModel = new ConversationsViewModel(this);
+            if (ImViewModel == null) ImViewModel = new ImViewModel(this);
         }
 
         private void TryOpenSessionWindow(object? sender, RoutedEventArgs e) {
@@ -229,10 +233,6 @@ namespace ELOR.Laney.Core {
 
         #region Public
 
-        public void TriggerPropertyChangedEvent(string name) {
-            OnPropertyChanged(name);
-        }
-
         public void GetToChat(int peerId) {
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
             if (chat == null) {
@@ -240,6 +240,7 @@ namespace ELOR.Laney.Core {
                 CacheManager.Add(Id, chat);
             }
             CurrentOpenedChat = chat;
+            CurrentOpenedChatChanged?.Invoke(this, chat.PeerId);
             chat.OnDisplayed();
             Window.SwitchToSide(true);
         }

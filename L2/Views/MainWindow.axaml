@@ -11,7 +11,7 @@
       <ColumnDefinition Width="1*" MinWidth="320"/>
       <ColumnDefinition Width="1.75*"/>
     </Grid.ColumnDefinitions>
-    <views:ConversationsView x:Name="ConvsView"/>
+    <views:ImView x:Name="ConvsView"/>
     <Rectangle x:Name="Separator" HorizontalAlignment="Right" Width="1" VerticalAlignment="Stretch" Fill="{DynamicResource VKSeparatorAlphaBrush}"/>
     <Grid x:Name="ChatViewContainer" Grid.Column="1">
       <views:ChatView x:Name="ChatView" IsVisible="{Binding DataContext, Mode=OneWay, ElementName=ChatView, Converter={x:Static ObjectConverters.IsNotNull}}" DataContext="{Binding CurrentOpenedChat}"/>

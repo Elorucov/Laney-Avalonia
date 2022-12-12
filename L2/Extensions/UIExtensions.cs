@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -61,5 +62,36 @@ namespace ELOR.Laney.Extensions {
             App.Current.ThemeChanged.Add(themeChangedAction);
             control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChanged.Remove(themeChangedAction);
         }
+
+        #region ScrollViewer specific
+        private const double SV_END_DISTANCE = 192;
+        private static Dictionary<ScrollViewer, Action> registeredScrollViewers;
+
+        public static void RegisterIncrementalLoadingEvent(this ScrollViewer scrollViewer, Action action) {
+            if (registeredScrollViewers == null) registeredScrollViewers = new Dictionary<ScrollViewer, Action>();
+            scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+            registeredScrollViewers.Add(scrollViewer, action);
+            scrollViewer.Unloaded += (a, b) => {
+                registeredScrollViewers.Remove(scrollViewer);
+                scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
+            };
+        }
+
+        private static void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
+            ScrollViewer sv = sender as ScrollViewer;
+            double h = sv.Extent.Height - sv.DesiredSize.Height;
+            double y = sv.Offset.Y;
+
+            if (y > h - SV_END_DISTANCE) {
+                if (registeredScrollViewers.ContainsKey(sv)) {
+                    Action act = registeredScrollViewers[sv];
+                    act.Invoke();
+                } else {
+                    Log.Error("Cannot find scroll viewer in registeredScrollViewers!");
+                    sv.ScrollChanged -= ScrollViewer_ScrollChanged;
+                }
+            }
+        }
+        #endregion
     }
 }

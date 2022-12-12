@@ -1,12 +1,13 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ELOR.Laney.Views.ConversationsView">
+             x:Class="ELOR.Laney.Views.ImView">
   <Grid RowDefinitions="Auto *">
-    <vkui:PanelHeader VerticalAlignment="Top" Content="Chats">
+    <vkui:PanelHeader VerticalAlignment="Top" Content="{i18n:Localize chats}">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="AvatarButton">
           <vkui:Avatar Width="32" Height="32" ImageUri="{Binding Avatar}"/>
@@ -23,9 +24,20 @@
     </vkui:PanelHeader>
 
     <Grid Grid.Row="1">
-      <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" VirtualizationMode="None" Items="{Binding ConversationsViewModel.SortedChats}" SelectedItem="{Binding ConversationsViewModel.VisualSelectedChat}" Background="Transparent" ItemTemplate="{StaticResource ChatItemTemplate}" Tapped="ListBoxItemTapped"/>
+      <ScrollViewer x:Name="chatsListScroll">
+        <ItemsRepeater Items="{Binding ImViewModel.SortedChats}">
+          <ItemsRepeater.Layout>
+            <StackLayout/>
+          </ItemsRepeater.Layout>
+          <ItemsRepeater.ItemTemplate>
+            <DataTemplate>
+              <Button Classes="ListItem" Classes.Selected="{Binding IsCurrentOpenedChat}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Content="{Binding}" ContentTemplate="{StaticResource ChatItemTemplate}" Click="OnChatClick"/>
+            </DataTemplate>
+          </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+      </ScrollViewer>
 
-      <Grid Grid.Row="1" x:Name="EmptyListContainer" DataContext="{Binding ConversationsViewModel}" IsVisible="{Binding IsEmpty, Mode=OneWay}">
+      <Grid Grid.Row="1" x:Name="EmptyListContainer" DataContext="{Binding ImViewModel}" IsVisible="{Binding IsEmpty, Mode=OneWay}">
         <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
         <vkui:Placeholder VerticalAlignment="Center"
                               IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"

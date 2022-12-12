@@ -96,6 +96,9 @@
     <Compile Update="FieldTestWindow.axaml.cs">
       <DependentUpon>FieldTestWindow.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\ImView.axaml.cs">
+      <DependentUpon>ImView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\SignInWindow.axaml.cs">
       <DependentUpon>Views\SignInWindow.axaml</DependentUpon>
     </Compile>
