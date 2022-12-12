@@ -5,12 +5,12 @@
     <StackPanel>
       <controls:ActionSheetItem Width="320" Header="Yes">
         <controls:ActionSheetItem.Before>
-          <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon28AddCircleOutline}"/>
+          <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon20ServicesOutline}"/>
         </controls:ActionSheetItem.Before>
       </controls:ActionSheetItem>
       <controls:ActionSheetItem Classes="Destructive" Width="320" Header="No" Subtitle="Test">
         <controls:ActionSheetItem.Before>
-          <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon28ErrorOutline}"/>
+          <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon20PlaceOutline}"/>
         </controls:ActionSheetItem.Before>
       </controls:ActionSheetItem>
     </StackPanel>
@@ -19,14 +19,15 @@
   <Style Selector="controls|ActionSheetItem">
     <Setter Property="Template">
       <ControlTemplate>
-        <Button x:Name="Root" Classes="Tertiary" Padding="0" CornerRadius="0" MinHeight="44" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
-          <Grid ColumnDefinitions="Auto * Auto" Margin="18,0">
-            <ContentPresenter x:Name="BeforeContainer" Margin="0,8,18,8" IsVisible="False"/>
-            <StackPanel Grid.Column="1" Margin="0,12" VerticalAlignment="Center">
-              <TextBlock x:Name="HeaderText" Text="{TemplateBinding Header}"/>
+        <Button x:Name="Root" Classes="Tertiary ListItem" Padding="0" CornerRadius="6" MinHeight="32" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+          <Grid ColumnDefinitions="Auto * Auto" Margin="12,0">
+            <ContentPresenter x:Name="BeforeContainer" VerticalAlignment="Top" Margin="0,6,12,6" IsVisible="False"/>
+            <StackPanel Grid.Column="1" Margin="0,6" VerticalAlignment="Center">
+              <!-- Костыль с margin-ом нужен, т. к. при 15/20 текст располагается выше. -->
+              <TextBlock x:Name="HeaderText" Margin="0,1,0,-1" Text="{TemplateBinding Header}"/>
               <TextBlock x:Name="SubtitleText" Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{TemplateBinding Subtitle, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{TemplateBinding Subtitle}"/>
             </StackPanel>
-            <PathIcon x:Name="CheckedIcon" Grid.Column="2" Margin="26,0,0,0" Foreground="{DynamicResource VKAccentBrush}" Data="{StaticResource Icon24Done}" IsVisible="False"/>
+            <!-- <PathIcon x:Name="CheckedIcon" Grid.Column="2" Margin="26,0,0,0" Foreground="{DynamicResource VKAccentBrush}" Data="{StaticResource Icon24Done}" IsVisible="False"/>-->
           </Grid>
         </Button>
       </ControlTemplate>

@@ -59,8 +59,8 @@ namespace ELOR.Laney.Core {
                         Initials = session.Name.GetInitials(session.IsGroup),
                         Background = session.Id.GetGradient(),
                         Foreground = new SolidColorBrush(Colors.White),
-                        Width = 32,
-                        Height = 32
+                        Width = 20,
+                        Height = 20
                     },
                     Header = session.Name,
                     Tag = session.Id
@@ -72,15 +72,15 @@ namespace ELOR.Laney.Core {
             if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
 
             ActionSheetItem settings = new ActionSheetItem {
-                Before = new VKIcon { Id = VKIconNames.Icon28SettingsOutline },
+                Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
                 Header = Localizer.Instance["settings"],
             };
             ActionSheetItem about = new ActionSheetItem {
-                Before = new VKIcon { Id = VKIconNames.Icon28InfoOutline },
+                Before = new VKIcon { Id = VKIconNames.Icon20InfoCircleOutline },
                 Header = Localizer.Instance["about"],
             };
             ActionSheetItem logout = new ActionSheetItem {
-                Before = new VKIcon { Id = VKIconNames.Icon28DoorArrowRightOutline },
+                Before = new VKIcon { Id = VKIconNames.Icon20DoorArrowRightOutline },
                 Header = Localizer.Instance["log_out"],
             };
             logout.Classes.Add("Destructive");

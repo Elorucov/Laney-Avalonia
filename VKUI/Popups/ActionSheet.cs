@@ -24,13 +24,13 @@ namespace VKUI.Popups {
 
         protected override Control CreatePresenter() {
             StackPanel items = new StackPanel { 
-                Margin = new Thickness(0, 8, 0, 8),
+                Margin = new Thickness(0, 4, 0, 4),
             };
 
             foreach (ActionSheetItem item in _items) {
                 if (item.Before == null && item.Header == null) { // Экстравагатным образом добавляем сепаратор
                     Rectangle separator = new Rectangle();
-                    separator.Classes.Add("Separator");
+                    separator.Classes.Add("ActionSheetSeparator");
                     items.Children.Add(separator);
                     continue;
                 }

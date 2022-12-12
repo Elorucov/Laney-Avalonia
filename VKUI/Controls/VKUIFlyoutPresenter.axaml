@@ -4,20 +4,26 @@
   <Design.PreviewWith>
     <Border Width="384" Height="384">
       <controls:VKUIFlyoutPresenter>
-        <StackPanel Margin="0,8">
-          <controls:ActionSheetItem Header="Avatar" Subtitle="12 unread">
+        <StackPanel Margin="0,4">
+          <controls:ActionSheetItem Header="Avatar">
             <controls:ActionSheetItem.Before>
-              <controls:Avatar Initials="EW" Background="{DynamicResource VKAccentBrush}" Foreground="White"/>
+              <controls:Avatar Initials="EW" Width="20" Height="20" Background="{DynamicResource VKAccentBrush}" Foreground="White"/>
             </controls:ActionSheetItem.Before>
           </controls:ActionSheetItem>
+          <controls:ActionSheetItem Header="Avatar" Subtitle="12 unread">
+            <controls:ActionSheetItem.Before>
+              <controls:Avatar Initials="EW" Width="20" Height="20" Background="{DynamicResource VKAccentBrush}" Foreground="White"/>
+            </controls:ActionSheetItem.Before>
+          </controls:ActionSheetItem>
+          <Rectangle Classes="ActionSheetSeparator"/>
           <controls:ActionSheetItem Header="Item 1" Subtitle="Subtitle">
             <controls:ActionSheetItem.Before>
-              <PathIcon Data="{StaticResource Icon28SearchOutline}"/>
+              <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon20ServicesOutline}"/>
             </controls:ActionSheetItem.Before>
           </controls:ActionSheetItem>
           <controls:ActionSheetItem Header="Item 2">
             <controls:ActionSheetItem.Before>
-              <PathIcon Data="{StaticResource Icon28WriteSquareOutline}"/>
+              <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon20PlaceOutline}"/>
             </controls:ActionSheetItem.Before>
           </controls:ActionSheetItem>
         </StackPanel>
@@ -28,7 +34,7 @@
   <Style Selector="controls|VKUIFlyoutPresenter">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Margin="18,10,18,24" VerticalAlignment="Center" CornerRadius="12" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
+        <Border Margin="8,10,8,24" VerticalAlignment="Center" CornerRadius="12" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
           <ContentPresenter Content="{TemplateBinding Content}"/>
         </Border>
       </ControlTemplate>

@@ -16,6 +16,9 @@
         public const string Icon16Spinner = "Icon16Spinner";
         public const string Icon16Verified = "Icon16Verified";
 
+        public const string Icon20DoorArrowRightOutline = "Icon20DoorArrowRightOutline";
+        public const string Icon20GearOutline = "Icon20GearOutline";
+        public const string Icon20InfoCircleOutline = "Icon20InfoCircleOutline";
         public const string Icon20MentionOutline = "Icon20MentionOutline";
         public const string Icon20PinOutline = "Icon20PinOutline";
         public const string Icon20PlaceOutline = "Icon20PlaceOutline";

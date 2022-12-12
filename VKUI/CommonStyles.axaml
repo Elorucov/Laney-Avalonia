@@ -34,6 +34,13 @@
     <Setter Property="HorizontalAlignment" Value="Stretch" />
   </Style>
 
+  <Style Selector="Rectangle.ActionSheetSeparator">
+    <Setter Property="Fill" Value="{DynamicResource VKSeparatorAlternateBrush}" />
+    <Setter Property="Height" Value="1" />
+    <Setter Property="Margin" Value="12,4" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+  </Style>
+
   <Style Selector="vkui|VKUIFlyoutPresenter Rectangle.Separator">
     <Setter Property="Margin" Value="18,6" />
   </Style>
