@@ -1,8 +1,11 @@
-﻿using DynamicData;
+﻿using Avalonia.Threading;
+using DynamicData;
 using DynamicData.Binding;
 using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Methods;
+using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -43,6 +46,9 @@ namespace ELOR.Laney.ViewModels {
                 });
 
             LoadConversations();
+
+            session.LongPoll.MessageReceived += LongPoll_MessageReceived;
+            session.LongPoll.ConversationRemoved += LongPoll_ConversationRemoved;
         }
 
         public async void LoadConversations() {
@@ -70,5 +76,33 @@ namespace ELOR.Laney.ViewModels {
             }
             IsLoading = false;
         }
+
+        #region Longpoll events
+
+        private async void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                var lookup = _chats.Lookup(message.PeerId);
+                if (!lookup.HasValue) { // В списке нет, и нам надо его (чат) получить.
+                    ChatViewModel chat = CacheManager.GetChat(session.Id, message.PeerId);
+                    if (chat == null) {
+                        Log.Information($"Received message from peer {message.PeerId}, which is not found in cache");
+                        chat = new ChatViewModel(session, message.PeerId, message, true);
+                        CacheManager.Add(session.Id, chat);
+                    }
+                    _chats.AddOrUpdate(chat);
+                }
+            });
+        }
+
+        private async void LongPoll_ConversationRemoved(object sender, int peerId) {
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                var lookup = _chats.Lookup(peerId);
+                if (lookup.HasValue) {
+                    _chats.Remove(lookup.Value);
+                }
+            });
+        }
+
+        #endregion
     }
 }

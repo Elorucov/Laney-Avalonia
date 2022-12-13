@@ -93,11 +93,20 @@ namespace ELOR.Laney.ViewModels {
 
         Elapser<LongPollActivityInfo> ActivityStatusUsers = new Elapser<LongPollActivityInfo>();
 
-        public ChatViewModel(VKSession session, int peerId) {
+        public ChatViewModel(VKSession session, int peerId, Message lastMessage = null, bool needSetup = false) {
             this.session = session;
             SetUpEvents();
             PeerId = peerId;
             Title = peerId.ToString();
+            if (lastMessage != null) {
+                MessageViewModel msg = new MessageViewModel(lastMessage, session);
+                FixState(msg);
+                if (SortId == null) SortId = new SortId { MajorId = 0, MinorId = lastMessage.Id };
+                ReceivedMessages.Add(msg);
+            }
+            // needSetup нужен в случае, когда мы не переходим в беседу и не загружаем сообщения,
+            // но надо загрузить инфу о чате, которую можно получить при загрузке сообщений.
+            if (needSetup) GetInfoFromAPIAndSetup();
         }
 
         public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
@@ -119,6 +128,17 @@ namespace ELOR.Laney.ViewModels {
                 LoadMessages();
             } else {
                 ScrollToMessageRequested?.Invoke(this, InRead);
+            }
+        }
+
+        private async void GetInfoFromAPIAndSetup() {
+            try {
+                var response = await session.API.Messages.GetConversationsByIdAsync(session.GroupId, new List<int> { PeerId }, true, VKAPIHelper.Fields);
+                CacheManager.Add(response.Profiles);
+                CacheManager.Add(response.Groups);
+                Setup(response.Items.FirstOrDefault());
+            } catch (Exception ex) {
+                Log.Error(ex, $"Cannot get conv from API! peer={PeerId}");
             }
         }
 
@@ -244,6 +264,7 @@ namespace ELOR.Laney.ViewModels {
             session.LongPoll.OutgoingMessagesRead += LongPoll_OutgoingMessagesRead;
             session.LongPoll.ConversationFlagReset += LongPoll_ConversationFlagReset;
             session.LongPoll.ConversationFlagSet += LongPoll_ConversationFlagSet;
+            session.LongPoll.ConversationRemoved += LongPoll_ConversationRemoved;
             session.LongPoll.MajorIdChanged += LongPoll_MajorIdChanged;
             session.LongPoll.MinorIdChanged += LongPoll_MinorIdChanged;
             session.LongPoll.ConversationDataChanged += LongPoll_ConversationDataChanged;
@@ -411,7 +432,13 @@ namespace ELOR.Laney.ViewModels {
                 if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
                 if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
                 if (msg.SenderId != session.Id) UnreadMessagesCount++;
-                if (canAddToDisplayedMessages) DisplayedMessages.Insert(msg);
+                if (canAddToDisplayedMessages) {
+                    if (DisplayedMessages == null) {
+                        DisplayedMessages = new MessagesCollection(new List<MessageViewModel>() { msg });
+                    } else {
+                        DisplayedMessages.Insert(msg);
+                    }
+                }
 
                 // Remove user from activity status
                 var status = ActivityStatusUsers.RegisteredObjects.Where(m => m.MemberId == message.FromId).FirstOrDefault();
@@ -532,6 +559,14 @@ namespace ELOR.Laney.ViewModels {
                         HasSelfDestructMessage = true;
                     }
                 }
+            });
+        }
+
+        private async void LongPoll_ConversationRemoved(object sender, int peerId) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                DisplayedMessages?.Clear();
+                ReceivedMessages.Clear();
             });
         }
 

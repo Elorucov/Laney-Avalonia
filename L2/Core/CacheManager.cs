@@ -1,5 +1,6 @@
 ﻿using ELOR.Laney.ViewModels;
 using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace ELOR.Laney.Core {
             try {
                 return CachedUsers.FirstOrDefault(i => i.Id == id);
             } catch (Exception ex) {
-                // Log.General.Error($"Error while getting user with id {id} from cache!", ex);
+                Log.Error(ex, $"Error while getting user with id {id} from cache!");
                 return null;
             }
         }
@@ -71,7 +72,7 @@ namespace ELOR.Laney.Core {
                 if (id < 0) id = id * -1;
                 return CachedGroups.FirstOrDefault(i => i.Id == id);
             } catch (Exception ex) {
-                // Log.General.Error($"Error while getting group with id {id} from cache!", ex);
+                Log.Error(ex, $"Error while getting group with id {id} from cache!");
                 return null;
             }
         }
@@ -81,7 +82,7 @@ namespace ELOR.Laney.Core {
             try {
                 return CachedChats[sessionId].FirstOrDefault(i => i.PeerId == peerId);
             } catch (Exception ex) {
-                // Log.General.Error($"Error while getting chat with id {id} from cache!", ex);
+                Log.Error(ex, $"Error while getting chat with id {peerId} from cache!");
                 return null;
             }
         }
