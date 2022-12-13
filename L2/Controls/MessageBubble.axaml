@@ -57,7 +57,7 @@
   </Style>
 
   <Style Selector="Border.IncomingMessageBackground">
-    <Setter Property="Background" Value="{DynamicResource VKImBubbleIncomingBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource VKImBubbleIncomingAlternateBrush}"/>
   </Style>
   
   <Style Selector="Border.OutgoingMessageBackground">

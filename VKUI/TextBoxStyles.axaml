@@ -5,6 +5,7 @@
             <TextBox Margin="8" Watermark="Hello!"/>
             <TextBox Margin="8" Classes="Search" Watermark="Hello!"/>
             <TextBox Margin="8" Classes="WriteBar" Watermark="Hello!"/>
+            <TextBox Margin="8" Classes="Transparent" Watermark="Hello!"/>
         </StackPanel>
     </Design.PreviewWith>
 
@@ -133,7 +134,7 @@
   </Style>
     
     
-  <Style Selector="TextBox.Search /template/ TextBlock#PART_Watermark, TextBox /template/ TextBlock#PART_FloatingWatermark">
+  <Style Selector="TextBox.Search /template/ TextBlock#PART_Watermark, TextBox.Search /template/ TextBlock#PART_FloatingWatermark">
     <Setter Property="Foreground" Value="{DynamicResource VKSearchBarFieldTintBrush}" />
     <Setter Property="FontSize" Value="17"/>
   </Style>
@@ -146,7 +147,7 @@
     <Setter Property="Foreground" Value="{DynamicResource VKSearchBarFieldTintBrush}" />
   </Style>
 
-  <Style Selector="TextBox.Search:focus /template/ TextBlock#PART_Watermark, TextBox:focus /template/ TextBlock#PART_FloatingWatermark">
+  <Style Selector="TextBox.Search:focus /template/ TextBlock#PART_Watermark, TextBox.Search:focus /template/ TextBlock#PART_FloatingWatermark">
     <Setter Property="Foreground" Value="{DynamicResource VKSearchBarFieldTintBrush}" />
   </Style>
 
@@ -170,8 +171,36 @@
     <Setter Property="MinHeight" Value="22"/>
   </Style>
 
-  <Style Selector="TextBox.WriteBar /template/ TextBlock#PART_Watermark, TextBox /template/ TextBlock#PART_FloatingWatermark">
+  <Style Selector="TextBox.WriteBar /template/ TextBlock#PART_Watermark, TextBox.WriteBar /template/ TextBlock#PART_FloatingWatermark">
     <Setter Property="FontSize" Value="17"/>
     <Setter Property="Foreground" Value="{DynamicResource VKFieldTextPlaceholderBrush}" />
+  </Style>
+
+  <!-- Transparent -->
+
+  <Style Selector="TextBox.Transparent">
+    <Setter Property="Padding" Value="6,0"/>
+    <Setter Property="MinHeight" Value="20"/>
+    <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="LineHeight" Value="20"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+  </Style>
+
+  <Style Selector="TextBox.Transparent /template/ TextPresenter#PART_TextPresenter">
+    <Setter Property="MinHeight" Value="20"/>
+  </Style>
+
+  <Style Selector="TextBox.Transparent /template/ TextBlock#PART_Watermark, TextBox.Transparent /template/ TextBlock#PART_FloatingWatermark">
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="LineHeight" Value="20"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKFieldTextPlaceholderBrush}" />
+  </Style>
+
+  <Style Selector="TextBox.Transparent:focus /template/ Border#PART_BorderElement, TextBox.Transparent:pointerover /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0" />
   </Style>
 </Styles>

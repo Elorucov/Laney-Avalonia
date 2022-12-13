@@ -146,14 +146,4 @@
     <Setter Property="LineHeight" Value="17"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
   </Style>
-
-  <Style Selector="Button.PanelIcon">
-    <Setter Property="Background" Value="{DynamicResource VKButtonTertiaryBackgroundBrush}"/>
-    <Setter Property="Foreground" Value="{DynamicResource VKButtonTertiaryForegroundBrush}"/>
-    <Setter Property="Height" Value="44"/>
-    <Setter Property="Width" Value="48"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-  </Style>
 </Styles>

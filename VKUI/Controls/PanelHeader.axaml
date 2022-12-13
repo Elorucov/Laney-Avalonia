@@ -24,7 +24,7 @@
     <Setter Property="IsSeparatorVisible" Value="true"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
           <Grid ColumnDefinitions="Auto * Auto" Height="52">
             <StackPanel x:Name="LeftButtonsEl" Margin="4,0,0,0" MinWidth="8" Orientation="Horizontal" VerticalAlignment="Center"/>
             <ContentPresenter x:Name="HeaderContentArea" Grid.Column="1" VerticalContentAlignment="Center"/>

@@ -6,9 +6,9 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.161</AssemblyVersion>
-    <FileVersion>2.0.161</FileVersion>
-    <Version>2.0.161-devplat-anycpu-devuser.devpc-221210-1850</Version>
+    <AssemblyVersion>2.0.162</AssemblyVersion>
+    <FileVersion>2.0.162</FileVersion>
+    <Version>2.0.162-devplat-anycpu-devuser.devpc-221213-0730</Version>
     <Platforms>AnyCPU</Platforms>
     <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -18,8 +18,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.161</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.161</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.162</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.162</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>

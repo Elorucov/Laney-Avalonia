@@ -69,6 +69,7 @@ namespace ELOR.Laney.Collections {
             if (index == -1) return;
             RemoveAt(index);
             if (Count == 0) return;
+            UpdateSenderInfoView(this.ElementAt(index - 1));
             if (Count > index) UpdateSenderInfoView(this.ElementAt(index));
         }
 

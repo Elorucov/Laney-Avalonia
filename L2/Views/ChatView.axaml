@@ -6,7 +6,27 @@
              xmlns:controls="using:ELOR.Laney.Controls"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="480"
              x:Class="ELOR.Laney.Views.ChatView">
-  <Grid x:Name="Root" RowDefinitions="Auto Auto * Auto">
+  <UserControl.Styles>
+    <!-- Composer buttons -->
+    <Style Selector="Button.ComposerButton">
+      <Setter Property="Foreground" Value="{DynamicResource VKIconOutlineMediumBrush}"/>
+      <Setter Property="Height" Value="36"/>
+      <Setter Property="Width" Value="36"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.ComposerButton, Button.ComposerButton > vkui|VKIcon">
+      <Setter Property="Foreground" Value="{DynamicResource VKIconOutlineMediumBrush}"/>
+      <Setter Property="Opacity" Value="0.72"/>
+    </Style>
+  
+    <Style Selector="Button.ComposerButton:pointerover, Button.ComposerButton:pointerover > vkui|VKIcon">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+  </UserControl.Styles>
+  <Grid x:Name="Root" RowDefinitions="Auto Auto * Auto" Background="{DynamicResource VKBackgroundPageBrush}">
     <vkui:PanelHeader VerticalAlignment="Top" IsSeparatorVisible="False" Background="{DynamicResource VKBackgroundContentBrush}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="BackButton">
@@ -37,7 +57,7 @@
       <Grid ColumnDefinitions="Auto *">
         <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20PinOutline}" Margin="12,0,0,0" Foreground="{DynamicResource VKIconSecondaryBrush}"/>
         <Button x:Name="PinnedMessageButton" Grid.Column="1" Padding="0" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-          <controls:CompactMessage Margin="12" Message="{Binding PinnedMessage}" IsSentTimeVisible="True"/>
+          <controls:CompactMessage Margin="12,8" Message="{Binding PinnedMessage}" IsSentTimeVisible="True"/>
         </Button>
       </Grid>
     </Border>
@@ -66,37 +86,38 @@
     </Grid>
     
     <TextBlock x:Name="dbgScrollInfo" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
-    
-    <StackPanel x:Name="WriteBarContainer" Grid.Row="3" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNullOrEmpty}}">
-      <Grid MinHeight="52" ColumnDefinitions="Auto * Auto">
-        <Button Classes="PanelIcon" VerticalAlignment="Bottom" Margin="4" Width="44">
-          <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28AddCircleOutline}"/>
-        </Button>
-        <TextBox Grid.Column="1" Classes="WriteBar" VerticalAlignment="Center" Margin="0,8" TextWrapping="Wrap" MaxLength="2048" MaxHeight="136" Watermark="Message"/>
-        <StackPanel x:Name="WriteBarRightButtons" Grid.Column="2" VerticalAlignment="Bottom" Margin="4" Orientation="Horizontal" MinWidth="8">
-          <Button x:Name="EmojiStickerButton" Classes="PanelIcon" Width="44">
-            <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28SmileOutline}"/>
-          </Button>
-          <ToggleButton x:Name="BotKbdButton" IsVisible="{Binding CurrentKeyboard, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="PanelIcon" Width="44">
-            <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28KeyboardBotsOutline}"/>
-          </ToggleButton>
-          <Button x:Name="SendButton" Classes="PanelIcon" Width="44">
-            <vkui:VKIcon Foreground="{DynamicResource VKWritebarIconBrush}" Id="{x:Static vkui:VKIconNames.Icon28Send}"/>
-          </Button>
+
+    <Border Name="ComposerContainer" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
+      <Grid>
+        <DockPanel x:Name="RestrictionInfoContainer" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" MinHeight="44" HorizontalAlignment="Center">
+          <vkui:VKIcon Margin="8,8,0,8" Foreground="{DynamicResource VKDestructiveBrush}" Id="{x:Static vkui:VKIconNames.Icon28ErrorOutline}"/>
+          <TextBlock x:Name="RestrictionReason" Margin="8" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
+        </DockPanel>
+
+        <StackPanel x:Name="Composer" IsVisible="{Binding CanWrite.Allowed}">
+          <!-- Attachments and reply -->
+          <Grid Margin="6,4" MinHeight="36" ColumnDefinitions="Auto * Auto">
+            <Button Classes="Tertiary ComposerButton" VerticalAlignment="Bottom">
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24AddCircleOutline}"/>
+            </Button>
+
+            <!-- Костыль с margin-ом нужен, т. к. при 15/20 текст располагается выше. (должно быть "0,8") -->
+            <TextBox Grid.Column="1" Classes="Transparent" VerticalAlignment="Center" Margin="0,9,0,7" TextWrapping="Wrap" MaxLength="2048" MaxHeight="100" Watermark="Message"/>
+            
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+              <Button Classes="Tertiary ComposerButton" VerticalAlignment="Bottom">
+                <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24SmileOutline}"/>
+              </Button>
+              <Button x:Name="BotKbdButton" IsVisible="{Binding CurrentKeyboard, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="ComposerButton" VerticalAlignment="Bottom">
+                <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24KeyboardBotsOutline}"/>
+              </Button>
+              <Button Classes="Tertiary ComposerButton" VerticalAlignment="Bottom">
+                <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24Send}"/>
+              </Button>
+            </StackPanel>
+          </Grid>
         </StackPanel>
       </Grid>
-      <Border x:Name="BotKeyboardContainer" IsVisible="{Binding CurrentKeyboard, Converter={x:Static ObjectConverters.IsNotNull}}" MaxHeight="194">
-        <ScrollViewer IsVisible="{Binding IsChecked, ElementName=BotKbdButton}">
-          <controls:BotKeyboardUI Keyboard="{Binding CurrentKeyboard}" Margin="8,0,8,8" MaxWidth="656"/>
-        </ScrollViewer>
-      </Border>
-    </StackPanel>
-    
-    <Border x:Name="RestrictionInfoContainer" Grid.Row="3" Background="{DynamicResource VKBackgroundContentBrush}" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
-      <DockPanel MinHeight="52" HorizontalAlignment="Center">
-        <vkui:VKIcon Margin="12,12,0,12" Foreground="{DynamicResource VKDestructiveBrush}" Id="{x:Static vkui:VKIconNames.Icon28ErrorOutline}"/>
-        <TextBlock x:Name="RestrictionReason" Margin="12" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
-      </DockPanel>
-    </Border>  
+    </Border>
   </Grid>
 </UserControl>

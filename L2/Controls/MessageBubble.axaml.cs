@@ -161,8 +161,8 @@ namespace ELOR.Laney.Controls {
             bbc.Clear();
             if (singleImage) {
                 bbc.Add(BACKGROUND_TRANSPARENT);
-            } else if ((uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) && hasReply) {
-                bbc.Add(BACKGROUND_BORDER);
+            //} else if ((uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) && hasReply) {
+            //    bbc.Add(BACKGROUND_BORDER);
             } else if (uiType == MessageUIType.Gift) {
                 bbc.Add(BACKGROUND_GIFT);
             } else {
