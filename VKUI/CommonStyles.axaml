@@ -35,7 +35,7 @@
   </Style>
 
   <Style Selector="Rectangle.ActionSheetSeparator">
-    <Setter Property="Fill" Value="{DynamicResource VKSeparatorAlternateBrush}" />
+    <Setter Property="Fill" Value="{DynamicResource VKSeparatorAlphaBrush}" />
     <Setter Property="Height" Value="1" />
     <Setter Property="Margin" Value="12,4" />
     <Setter Property="HorizontalAlignment" Value="Stretch" />

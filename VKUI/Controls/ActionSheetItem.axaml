@@ -19,7 +19,7 @@
   <Style Selector="controls|ActionSheetItem">
     <Setter Property="Template">
       <ControlTemplate>
-        <Button x:Name="Root" Classes="Tertiary ListItem" Padding="0" CornerRadius="6" MinHeight="32" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+        <Button x:Name="Root" Classes="Tertiary ListItem" Padding="0" CornerRadius="8" MinHeight="32" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
           <Grid ColumnDefinitions="Auto * Auto" Margin="12,0">
             <ContentPresenter x:Name="BeforeContainer" VerticalAlignment="Top" Margin="0,6,12,6" IsVisible="False"/>
             <StackPanel Grid.Column="1" Margin="0,6" VerticalAlignment="Center">
