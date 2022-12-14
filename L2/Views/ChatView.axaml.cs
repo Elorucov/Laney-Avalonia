@@ -4,6 +4,7 @@ using System;
 using ELOR.Laney.ViewModels;
 using System.Threading.Tasks;
 using Serilog;
+using Avalonia.Interactivity;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
@@ -80,7 +81,7 @@ namespace ELOR.Laney.Views {
             itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
         }
 
-        private void PinnedMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {
             Chat.GoToMessage(Chat.PinnedMessage);
         }
     }

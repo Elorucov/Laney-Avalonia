@@ -17,6 +17,11 @@
 
   <!-- Common styles for some elements -->
 
+  <Style Selector="Window">
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundContentBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+  </Style>
+
   <Style Selector="MenuFlyoutPresenter">
     <Setter Property="Background" Value="{DynamicResource VKModalCardBackgroundBrush}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource VKModalCardBorderBrush}"/>

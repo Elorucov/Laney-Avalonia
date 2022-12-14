@@ -5,6 +5,7 @@
         public const string Icon12Mention = "Icon12Mention";
         public const string Icon12Star = "Icon12Star";
 
+        public const string Icon16Cancel = "Icon16Cancel";
         public const string Icon16CheckDoubleOutline = "Icon16CheckDoubleOutline";
         public const string Icon16CheckOutline = "Icon16CheckOutline";
         public const string Icon16ClockOutline = "Icon16ClockOutline";
@@ -16,13 +17,18 @@
         public const string Icon16Spinner = "Icon16Spinner";
         public const string Icon16Verified = "Icon16Verified";
 
+        public const string Icon20CameraOutline = "Icon20CameraOutline";
+        public const string Icon20DocumentOutline = "Icon20DocumentOutline";
         public const string Icon20DoorArrowRightOutline = "Icon20DoorArrowRightOutline";
         public const string Icon20GearOutline = "Icon20GearOutline";
         public const string Icon20InfoCircleOutline = "Icon20InfoCircleOutline";
         public const string Icon20MentionOutline = "Icon20MentionOutline";
+        public const string Icon20PictureOutline = "Icon20PictureOutline";
         public const string Icon20PinOutline = "Icon20PinOutline";
         public const string Icon20PlaceOutline = "Icon20PlaceOutline";
+        public const string Icon20PollOutline = "Icon20PollOutline";
         public const string Icon20ServicesOutline = "Icon20ServicesOutline";
+        public const string Icon20VideoOutline = "Icon20VideoOutline";
 
         public const string Icon24AddCircleOutline = "Icon24AddCircleOutline";
         public const string Icon24ArticleOutline = "Icon24ArticleOutline";

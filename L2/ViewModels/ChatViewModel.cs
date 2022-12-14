@@ -41,7 +41,7 @@ namespace ELOR.Laney.ViewModels {
         private int _outread;
         private ChatSettings _csettings;
         private CanWrite _canwrite;
-        private BotKeyboard _currentKeyboard;
+        private ComposerViewModel _composer;
         private bool _isMarkedAsUnread;
         private bool _isPinned;
         private ObservableCollection<int> _mentions;
@@ -71,7 +71,7 @@ namespace ELOR.Laney.ViewModels {
         public int OutRead { get { return _outread; } private set { _outread = value; OnPropertyChanged(); } }
         public ChatSettings ChatSettings { get { return _csettings; } private set { _csettings = value; OnPropertyChanged(); } }
         public CanWrite CanWrite { get { return _canwrite; } private set { _canwrite = value; OnPropertyChanged(); } }
-        public BotKeyboard CurrentKeyboard { get { return _currentKeyboard; } private set { _currentKeyboard = value; OnPropertyChanged(); } }
+        public ComposerViewModel Composer { get { return _composer; } private set { _composer = value; OnPropertyChanged(); } }
         public bool IsMarkedAsUnread { get { return _isMarkedAsUnread; } private set { _isMarkedAsUnread = value; OnPropertyChanged(); } }
         public bool IsPinned { get { return _isPinned; } private set { _isPinned = value; OnPropertyChanged(); } }
         public ObservableCollection<int> Mentions { get { return _mentions; } private set { _mentions = value; OnPropertyChanged(); } }
@@ -95,6 +95,7 @@ namespace ELOR.Laney.ViewModels {
 
         public ChatViewModel(VKSession session, int peerId, Message lastMessage = null, bool needSetup = false) {
             this.session = session;
+            Composer = new ComposerViewModel(this);
             SetUpEvents();
             PeerId = peerId;
             Title = peerId.ToString();
@@ -111,6 +112,7 @@ namespace ELOR.Laney.ViewModels {
 
         public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
             this.session = session;
+            Composer = new ComposerViewModel(this);
             SetUpEvents();
             Setup(c);
             if (lastMessage != null) {
@@ -152,7 +154,6 @@ namespace ELOR.Laney.ViewModels {
             PushSettings = c.PushSettings;
             IsMarkedAsUnread = c.IsMarkedUnread;
             IsPinned = SortId.MajorId > 0 && SortId.MajorId % 16 == 0;
-            
 
             if (c.Mentions != null && c.Mentions.Count > 0) {
                 Mentions = new ObservableCollection<int>(c.Mentions);
@@ -161,7 +162,7 @@ namespace ELOR.Laney.ViewModels {
             if (c.ExpireConvMessageIds != null && c.ExpireConvMessageIds.Count > 0) {
                 HasSelfDestructMessage = true;
             }
-            if (c.CurrentKeyboard != null && c.CurrentKeyboard.Buttons.Count > 0) CurrentKeyboard = c.CurrentKeyboard;
+            if (c.CurrentKeyboard != null && c.CurrentKeyboard.Buttons.Count > 0) Composer.BotKeyboard = c.CurrentKeyboard;
 
             if (PeerId > 0 && PeerId < 1000000000) { // User
                 PeerType = PeerType.User;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" UseLayoutRounding="True"
         x:Class="ELOR.Laney.Views.MainWindow" MinWidth="400" MinHeight="540"
-        Title="Laney" Background="{DynamicResource VKBackgroundContentBrush}">
+        Title="Laney">
   <Grid x:Name="Root">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="1*" MinWidth="320"/>

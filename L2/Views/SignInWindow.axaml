@@ -7,8 +7,6 @@
         mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
         x:Class="ELOR.Laney.Views.SignInWindow"
         Width="420" Height="540"
-        Background="{DynamicResource VKBackgroundContentBrush}"
-        Foreground="{DynamicResource VKTextPrimaryBrush}"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
         Title="Welcome!">
