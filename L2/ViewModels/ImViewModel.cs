@@ -60,14 +60,12 @@ namespace ELOR.Laney.ViewModels {
                 CacheManager.Add(response.Profiles);
                 CacheManager.Add(response.Groups);
 
-                // List<ChatViewModel> loadedChats = new List<ChatViewModel>();
                 foreach (var conv in response.Items) {
                     ChatViewModel chat = CacheManager.GetChat(session.Id, conv.Conversation.Peer.Id);
                     if (chat == null) {
                         chat = new ChatViewModel(session, conv.Conversation, conv.LastMessage);
                         CacheManager.Add(session.Id, chat);
                     }
-                    // loadedChats.Add(chat);
                     _chats.AddOrUpdate(chat);
                 }
                 
@@ -87,7 +85,7 @@ namespace ELOR.Laney.ViewModels {
                     if (chat == null) {
                         Log.Information($"Received message from peer {message.PeerId}, which is not found in cache");
                         chat = new ChatViewModel(session, message.PeerId, message, true);
-                        CacheManager.Add(session.Id, chat);
+                        if (!(IsLoading && _chats.Count == 0)) CacheManager.Add(session.Id, chat);
                     }
                     _chats.AddOrUpdate(chat);
                 }
