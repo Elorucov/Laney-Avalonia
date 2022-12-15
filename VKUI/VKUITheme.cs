@@ -172,6 +172,9 @@ namespace VKUI {
                 },
                 new StyleInclude(baseUri) {
                     Source = new Uri("avares://VKUI/Controls/VKUIFlyoutPresenter.axaml")
+                },
+                new StyleInclude(baseUri) {
+                    Source = new Uri("avares://VKUI/Controls/WindowTitleBar.axaml")
                 }
             };
 

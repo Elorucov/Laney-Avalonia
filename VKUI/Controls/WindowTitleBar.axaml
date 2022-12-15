@@ -1,0 +1,34 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:controls="using:VKUI.Controls">
+  <Design.PreviewWith>
+    <controls:WindowTitleBar Width="360" Height="32"/>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|WindowTitleBar">
+    <Setter Property="VerticalAlignment" Value="Top"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid x:Name="TitleBar" ColumnDefinitions="* Auto">
+          <TextBlock x:Name="WindowTitle" Grid.ColumnSpan="2" TextAlignment="Center" TextTrimming="CharacterEllipsis" Classes="SemiBold"/>
+          <Border x:Name="DragArea" Grid.ColumnSpan="2" Background="Transparent"/>
+          <Button x:Name="CloseButton" Grid.Column="1" Classes="Tertiary" IsVisible="False" Width="32" Height="32" MinHeight="32" CornerRadius="8" Padding="8">
+            <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}" Foreground="{DynamicResource VKIconOutlineMediumBrush}"/>
+          </Button>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|WindowTitleBar /template/ TextBlock.Mac">
+    <Setter Property="Margin" Value="68,3"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="LineHeight" Value="18"/>
+  </Style>
+  <Style Selector="controls|WindowTitleBar /template/ TextBlock.Windows">
+    <Setter Property="Margin" Value="32,8"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="LineHeight" Value="16"/>
+  </Style>
+</Styles>

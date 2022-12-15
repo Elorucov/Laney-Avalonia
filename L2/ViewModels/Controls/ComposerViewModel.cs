@@ -62,6 +62,9 @@ namespace ELOR.Laney.ViewModels.Controls {
                 AttachmentPicker ap = new AttachmentPicker();
                 ap.ShowDialog<object>(VKSession.GetByDataContext(target).Window);
             };
+            poll.Click += (a, b) => {
+                
+            };
 
             ash.Items.Add(photo);
             ash.Items.Add(video);
