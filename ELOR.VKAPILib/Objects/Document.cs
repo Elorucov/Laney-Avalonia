@@ -39,7 +39,7 @@ namespace ELOR.VKAPILib.Objects
         public string Title { get; set; }
 
         [JsonProperty("size")]
-        public long Size { get; set; }
+        public ulong Size { get; set; }
 
         [JsonProperty("ext")]
         public string Extension { get; set; }

@@ -1,0 +1,118 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vkui="using:VKUI.Controls">
+    <Design.PreviewWith>
+        <StackPanel Margin="6">
+          <ListBox Margin="6" SelectionMode="Multiple" SelectedIndex="2">
+            <TextBlock Text="Anna"/>
+            <TextBlock Text="Lena"/>
+            <TextBlock Text="Nastya"/>
+            <TextBlock Text="Yulia"/>
+            <TextBlock Text="Zlata"/>
+          </ListBox>
+          
+          <ListBox Classes="GridView" Margin="6" SelectionMode="Multiple" SelectedIndex="0">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel ItemWidth="72" ItemHeight="64"/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <TextBlock Margin="4" Text="Anna"/>
+            <TextBlock Margin="4" Text="Lena"/>
+            <TextBlock Margin="4" Text="Nastya"/>
+            <TextBlock Margin="4" Text="Yulia"/>
+            <TextBlock Margin="4" Text="Zlata"/>
+          </ListBox>
+        </StackPanel>
+    </Design.PreviewWith>
+
+  <Style Selector="ListBox">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+  
+  <Style Selector="ListBoxItem">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Padding" Value="12,6"/>
+    <Setter Property="MinHeight" Value="32"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Name="PART_Root"
+                Background="{TemplateBinding Background}"
+                Padding="{TemplateBinding Padding}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+          <Grid ColumnDefinitions="* Auto">
+            <ContentPresenter Name="PART_ContentPresenter"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+            <vkui:VKIcon x:Name="PART_CheckIcon" IsVisible="False" Grid.Column="1" Foreground="{DynamicResource VKIconSecondaryBrush}" Id="{x:Static vkui:VKIconNames.Icon20CheckCircleOff}"/>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="ListBox[SelectionMode=Multiple] ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon, ListBox[SelectionMode=Multiple,AlwaysSelected] ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon">
+    <Setter Property="IsVisible" Value="True"/>
+  </Style>
+  
+  <Style Selector="ListBoxItem:pointerover /template/ Border#PART_Root">
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}"/>
+  </Style>
+
+  <Style Selector="ListBoxItem:selected /template/ Border#PART_Root">
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundHighlightedBrush}"/>
+  </Style>
+
+  <Style Selector="ListBox[SelectionMode=Multiple] ListBoxItem:selected /template/ vkui|VKIcon#PART_CheckIcon, ListBox[SelectionMode=Multiple,AlwaysSelected] ListBoxItem:selected /template/ vkui|VKIcon#PART_CheckIcon">
+    <Setter Property="Id" Value="{x:Static vkui:VKIconNames.Icon20CheckCircleOn}"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
+  </Style>
+
+  <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter, ListBoxItem:selected /template/ ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <!-- For grid view -->
+
+  <Style Selector="ListBox.GridView ListBoxItem">
+    <Setter Property="BorderThickness" Value="2"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="MinHeight" Value="0"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Name="PART_Root"
+                Background="{TemplateBinding Background}"
+                Padding="{TemplateBinding Padding}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+          <Grid ColumnDefinitions="* Auto">
+            <ContentPresenter Name="PART_ContentPresenter"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Grid.ColumnSpan="2"/>
+            <vkui:VKIcon x:Name="PART_CheckIcon" VerticalAlignment="Top" Margin="8" IsVisible="False" Grid.Column="1" Foreground="{DynamicResource VKIconSecondaryBrush}" Id="{x:Static vkui:VKIconNames.Icon20CheckCircleOff}"/>
+            <Border x:Name="PART_SelectionBorder" Grid.ColumnSpan="2" IsHitTestVisible="False" Background="Transparent" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="Transparent" CornerRadius="{TemplateBinding CornerRadius}"/>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="ListBox.GridView ListBoxItem:pointerover /template/ Border#PART_Root, ListBox.GridView ListBoxItem:selected /template/ Border#PART_Root">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <Style Selector="ListBox.GridView ListBoxItem:pointerover /template/ Border#PART_SelectionBorder">
+    <Setter Property="BorderBrush" Value="{DynamicResource VKBackgroundHoverBrush}"/>
+  </Style>
+
+  <Style Selector="ListBox.GridView ListBoxItem:selected /template/ Border#PART_SelectionBorder">
+    <Setter Property="BorderBrush" Value="{DynamicResource VKAccentBrush}"/>
+  </Style>
+</Styles>

@@ -35,6 +35,7 @@ namespace VKUI.Controls {
             get => GetValue(TextProperty);
             set => SetValue(TextProperty, value);
         }
+
         public Control Action {
             get => GetValue(ActionProperty);
             set => SetValue(ActionProperty, value);

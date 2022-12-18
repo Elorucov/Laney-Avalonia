@@ -236,4 +236,11 @@
   <SolidColorBrush x:Key="VKPrimaryOverlayBadgeBrush" Color="{StaticResource VKWhiteAlpha40Color}"/>
   <SolidColorBrush x:Key="VKSecondaryOverlayBadgeBrush" Color="{StaticResource VKWhiteAlpha15Color}"/>
   <SolidColorBrush x:Key="VKContentPositiveBackgroundBrush" Color="{StaticResource VKGreenAlphaColor}"/>
+
+  <LinearGradientBrush x:Key="TransparentToContentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+    <LinearGradientBrush.GradientStops>
+      <GradientStop Offset="0" Color="#19191A00"/>
+      <GradientStop Offset="1" Color="{StaticResource VKGray900Color}"/>
+    </LinearGradientBrush.GradientStops>
+  </LinearGradientBrush>
 </ResourceDictionary>

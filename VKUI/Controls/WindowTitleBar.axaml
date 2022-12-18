@@ -7,13 +7,14 @@
   </Design.PreviewWith>
 
   <Style Selector="controls|WindowTitleBar">
+    <Setter Property="CanShowTitleAndMove" Value="True"/>
     <Setter Property="VerticalAlignment" Value="Top"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid x:Name="TitleBar" ColumnDefinitions="* Auto">
           <TextBlock x:Name="WindowTitle" Grid.ColumnSpan="2" TextAlignment="Center" TextTrimming="CharacterEllipsis" Classes="SemiBold"/>
           <Border x:Name="DragArea" Grid.ColumnSpan="2" Background="Transparent"/>
-          <Button x:Name="CloseButton" Grid.Column="1" Classes="Tertiary" IsVisible="False" Width="32" Height="32" MinHeight="32" CornerRadius="8" Padding="8">
+          <Button x:Name="CloseButton" Grid.Column="1" IsVisible="False" Width="24" Height="24" MinHeight="24" CornerRadius="12" Margin="12" Padding="4">
             <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}" Foreground="{DynamicResource VKIconOutlineMediumBrush}"/>
           </Button>
         </Grid>
@@ -26,7 +27,7 @@
     <Setter Property="FontSize" Value="14"/>
     <Setter Property="LineHeight" Value="18"/>
   </Style>
-  <Style Selector="controls|WindowTitleBar /template/ TextBlock.Windows">
+  <Style Selector="controls|WindowTitleBar /template/ TextBlock.Default">
     <Setter Property="Margin" Value="32,8"/>
     <Setter Property="FontSize" Value="13"/>
     <Setter Property="LineHeight" Value="16"/>

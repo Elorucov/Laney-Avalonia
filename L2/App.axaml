@@ -18,8 +18,11 @@
     </ResourceDictionary>
 
     <conv:AvatarGradientConverter x:Key="agc"/>
+    <conv:CounterConverter x:Key="cc"/>
     <conv:DateTimeDiffConverter x:Key="dtdc"/>
     <conv:DateConverter x:Key="dc"/>
+    <conv:DocumentIconConverter x:Key="dic"/>
+    <conv:FileSizeConverter x:Key="fsc"/>
     <conv:MessageSenderNameConverter x:Key="msnc"/>
     <conv:OnlineIconConverter x:Key="oic"/>
     <conv:ReadIndicatorConverter x:Key="ric"/>
@@ -53,25 +56,6 @@
       <Setter Property="Padding" Value="0"/>
       <Setter Property="FontSize" Value="15"/>
       <Setter Property="MinHeight" Value="0"/>
-    </Style>
-    <Style Selector="TextBlock">
-      <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
-    </Style>
-    
-    <Style Selector="ListBox">
-      <Setter Property="BorderThickness" Value="0"/>
-    </Style>
-    <Style Selector="ListBoxItem">
-      <Setter Property="Padding" Value="0"/>
-    </Style>
-    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}"/>
-    </Style>
-    <Style Selector="ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Background" Value="{DynamicResource VKBackgroundHighlightedBrush}"/>
-    </Style>
-    <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Background" Value="{DynamicResource VKBackgroundHighlightedBrush}"/>
     </Style>
   
   </Application.Styles>

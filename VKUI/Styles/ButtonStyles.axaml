@@ -2,16 +2,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
       <StackPanel Margin="8">
-        <Button Margin="8" Classes="Medium" Content="Hello!"/>
-        <Button Margin="8" Classes="Primary" Content="Hello!"/>
-        <Button Margin="8" Classes="Tertiary" Content="Hello!"/>
-        <Button Margin="8" Classes="Outline" Content="Hello!"/>
-        <Button Margin="8" Classes="Commerce" Content="Hello!"/>
-        <Button Margin="8" Classes="Negative" Content="Hello!"/>
-        <Button Margin="8" Classes="Medium" Padding="0">
-          <StackPanel Orientation="Horizontal">
-            <Path Fill="{DynamicResource VKAccentBrush}" Margin="10,8,5,8" Data="{StaticResource Icon20ServicesOutline}"/>
-            <TextBlock Classes="ButtonIn SemiBold" Margin="5,9,12,8" Text="Test"/>
+        <Button Margin="8" Classes="Primary Large" Content="Large"/>
+        <Button Margin="8" Classes="Primary Medium" Content="Medium"/>
+        <Button Margin="8" Classes="Primary" Content="Primary"/>
+        <Button Margin="8" Classes="Tertiary" Content="Tertiary"/>
+        <Button Margin="8" Classes="Outline" Content="Outline"/>
+        <Button Margin="8" Classes="Commerce" Content="Commerce"/>
+        <Button Margin="8" Classes="Negative" Content="Negative"/>
+        <Button Margin="8" Classes="Medium">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Path Fill="{DynamicResource VKAccentBrush}" Margin="0,0,6,0" Data="{StaticResource Icon20ServicesOutline}"/>
+            <TextBlock Classes="ButtonIn SemiBold" VerticalAlignment="Center" Text="Test"/>
           </StackPanel>
         </Button>
         <Button Margin="8" Classes="ListItem Selected" Content="In list selected"/>
@@ -22,11 +23,11 @@
     <Setter Property="Cursor" Value="Hand"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="MinHeight" Value="28"/>
-    <Setter Property="Padding" Value="12,6,12,5"/>
-    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="Padding" Value="16,6,16,6"/>
+    <Setter Property="CornerRadius" Value="8"/>
     <Setter Property="Background" Value="{DynamicResource VKButtonSecondaryBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonSecondaryForegroundBrush}"/>
-    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontSize" Value="13"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="Template">
@@ -44,6 +45,7 @@
                           Content="{TemplateBinding Content}"
                           ContentTemplate="{TemplateBinding ContentTemplate}"
                           Padding="{TemplateBinding Padding}"
+                          LineHeight="16"
                           RecognizesAccessKey="True"
                           TextTrimming="CharacterEllipsis"
                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -74,8 +76,8 @@
   </Style>
 
   <Style Selector="Button TextBlock.ButtonIn">
-    <Setter Property="FontSize" Value="14"/>
-    <Setter Property="LineHeight" Value="14"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="LineHeight" Value="16"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonSecondaryForegroundBrush}"/>
   </Style>
@@ -124,26 +126,34 @@
   </Style>
 
   <Style Selector="Button.Medium">
-    <Setter Property="MinHeight" Value="36"/>
-    <Setter Property="Padding" Value="12,9,12,8"/>
-    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="MinHeight" Value="32"/>
+    <Setter Property="Padding" Value="16,6,16,6"/>
+    <Setter Property="FontSize" Value="14"/>
+  </Style>
+
+  <Style Selector="Button.Medium /template/ ContentPresenter#PART_Presenter">
+    <Setter Property="LineHeight" Value="20"/>
   </Style>
 
   <Style Selector="Button.Medium TextBlock.ButtonIn">
-    <Setter Property="FontSize" Value="15"/>
-    <Setter Property="LineHeight" Value="15"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="LineHeight" Value="20"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
   </Style>
 
   <Style Selector="Button.Large">
-    <Setter Property="MinHeight" Value="44"/>
-    <Setter Property="Padding" Value="16,12,16,13"/>
-    <Setter Property="FontSize" Value="17"/>
+    <Setter Property="MinHeight" Value="36"/>
+    <Setter Property="Padding" Value="20,7,20,7"/>
+    <Setter Property="FontSize" Value="15"/>
+  </Style>
+
+  <Style Selector="Button.Large /template/ ContentPresenter#PART_Presenter">
+    <Setter Property="LineHeight" Value="20"/>
   </Style>
 
   <Style Selector="Button.Large TextBlock.ButtonIn">
-    <Setter Property="FontSize" Value="17"/>
-    <Setter Property="LineHeight" Value="17"/>
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="LineHeight" Value="20"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
   </Style>
 </Styles>

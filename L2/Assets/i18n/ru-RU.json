@@ -14,11 +14,13 @@
   "tomorrow": "завтра",
   "time_at": "в",
 
+  "all": "Все",
   "you": "Вы",
   "yes": "Да",
   "no": "Нет",
   "retry": "Повторить попытку",
   "open": "Открыть",
+  "attach": "Прикрепить",
   "sign_in": "Войти",
 
   "landing_title": "Это Laney",
@@ -189,5 +191,14 @@
   "lp_act_video_single": "отправляет видео",
   "lp_act_file_multi": "отправляют файл",
   "lp_act_file_single": "отправляет файл",
-  "im_status_more": "и ещё {0}"
+  "im_status_more": "и ещё {0}",
+
+  "atchpicker_doctype_animations": "Анимации",
+  "atchpicker_doctype_archives": "Архивы",
+  "atchpicker_doctype_audio": "Аудио",
+  "atchpicker_doctype_books": "Книги",
+  "atchpicker_doctype_other": "Прочее",
+  "atchpicker_doctype_pictures": "Картинки",
+  "atchpicker_doctype_texts": "Текстовые",
+  "atchpicker_doctype_video": "Видео"
 }

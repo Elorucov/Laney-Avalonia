@@ -24,7 +24,7 @@
             <ContentPresenter x:Name="BeforeContainer" VerticalAlignment="Top" Margin="0,6,12,6" IsVisible="False"/>
             <StackPanel Grid.Column="1" Margin="0,6" VerticalAlignment="Center">
               <!-- Костыль с margin-ом нужен, т. к. при 15/20 текст располагается выше. -->
-              <TextBlock x:Name="HeaderText" Margin="0,1,0,-1" Text="{TemplateBinding Header}"/>
+              <TextBlock x:Name="HeaderText" Margin="0,1,0,-1" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{TemplateBinding Header}"/>
               <TextBlock x:Name="SubtitleText" Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{TemplateBinding Subtitle, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{TemplateBinding Subtitle}"/>
             </StackPanel>
             <!-- <PathIcon x:Name="CheckedIcon" Grid.Column="2" Margin="26,0,0,0" Foreground="{DynamicResource VKAccentBrush}" Data="{StaticResource Icon24Done}" IsVisible="False"/>-->

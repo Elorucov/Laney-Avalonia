@@ -27,5 +27,17 @@ namespace ELOR.Laney.Execute {
             parameters.Add("func_v", "5");
             return await API.CallMethodAsync<MessagesHistoryEx>("execute.getHistoryWithMembers", parameters);
         }
+
+        public static async Task<List<AlbumLite>> GetPhotoAlbumsAsync(this VKAPI API, int ownerId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("owner_id", ownerId.ToString());
+            return await API.CallMethodAsync<List<AlbumLite>>("execute.getPhotoAlbums", parameters);
+        }
+
+        public static async Task<List<AlbumLite>> GetVideoAlbumsAsync(this VKAPI API, int ownerId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("owner_id", ownerId.ToString());
+            return await API.CallMethodAsync<List<AlbumLite>>("execute.getVideoAlbums", parameters);
+        }
     }
 }

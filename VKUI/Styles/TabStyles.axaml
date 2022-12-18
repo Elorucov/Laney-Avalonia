@@ -1,0 +1,78 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border>
+          <TabControl>
+            <TabItem Header="Alpha">
+              <Border Height="128"/>
+            </TabItem>
+            <TabItem Header="Beta">
+              <Border Height="128"/>
+            </TabItem>
+            <TabItem Header="Epsilon">
+              <Border Height="128"/>
+            </TabItem>
+          </TabControl>
+        </Border>
+    </Design.PreviewWith>
+
+  <Style Selector="TabControl[TabStripPlacement=Top]">
+    <Setter Property="Padding" Value="0" />
+  </Style>
+  
+  <Style Selector="TabItem">
+    <Setter Property="Padding" Value="10,12" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid Name="PART_Root">
+          <ContentPresenter Name="PART_ContentPresenter"
+                          Padding="{TemplateBinding Padding}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          Foreground="{TemplateBinding Foreground}"
+                          TextElement.FontFamily="{TemplateBinding FontFamily}"
+                          Content="{TemplateBinding Header}"
+                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                          CornerRadius="{TemplateBinding CornerRadius}">
+            <ContentPresenter.Styles>
+                <Style Selector="TextBlock">
+                  <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}" />
+                </Style>
+            </ContentPresenter.Styles>
+          </ContentPresenter>
+          <Rectangle Name="PART_Underline" IsVisible="False" VerticalAlignment="Bottom" RadiusX="1" RadiusY="1" Height="2" Fill="{DynamicResource VKAccentBrush}"/>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  
+  <Style Selector="TabItem:disabled /template/ Grid#PART_Root">
+    <Setter Property="Opacity" Value="0.6" />
+  </Style>
+  <Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}" />
+  </Style>
+  <Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="TextElement.Foreground" Value="{DynamicResource VKTextPrimaryBrush}" />
+  </Style>
+  <Style Selector="TabItem:selected /template/ Rectangle#PART_Underline">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+  <Style Selector="TabItem:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style Selector="TabItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}" />
+  </Style>
+  <Style Selector="TabItem:selected:focus:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}" />
+  </Style>
+</Styles>

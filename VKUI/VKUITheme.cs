@@ -144,13 +144,22 @@ namespace VKUI {
                     Source = new Uri("avares://VKUI/Typography.axaml")
                 },
                 new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/CommonStyles.axaml")
+                    Source = new Uri("avares://VKUI/Styles/ButtonStyles.axaml")
                 },
                 new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/ButtonStyles.axaml")
+                    Source = new Uri("avares://VKUI/Styles/ComboBoxStyles.axaml")
                 },
                 new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/TextBoxStyles.axaml")
+                    Source = new Uri("avares://VKUI/Styles/CommonStyles.axaml")
+                },
+                new StyleInclude(baseUri) {
+                    Source = new Uri("avares://VKUI/Styles/ListBoxStyles.axaml")
+                },
+                new StyleInclude(baseUri) {
+                    Source = new Uri("avares://VKUI/Styles/TabStyles.axaml")
+                },
+                new StyleInclude(baseUri) {
+                    Source = new Uri("avares://VKUI/Styles/TextBoxStyles.axaml")
                 },
                 new StyleInclude(baseUri) {
                     Source = new Uri("avares://VKUI/Controls/ActionSheetItem.axaml")

@@ -13,10 +13,10 @@
             <Border x:Name="ImagePreview" Width="36" Height="36" CornerRadius="2" Margin="0,0,8,0" IsVisible="{Binding Message.PreviewImageUri, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
             <StackPanel>
               <DockPanel>
-                <TextBlock x:Name="SenderName" Classes="Caption2 SemiBold" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}"/>
+                <TextBlock x:Name="SenderName" Classes="Caption2 SemiBold" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}"/>
                 <TextBlock x:Name="SentTime" Classes="Caption2" IsVisible="{Binding IsSentTimeVisible, RelativeSource={RelativeSource TemplatedParent}}" Margin="8,0,0,0" Foreground="{DynamicResource VKHeaderTextSecondaryBrush}" Text="{Binding Message.SentTime, RelativeSource={RelativeSource TemplatedParent}}"/>
               </DockPanel>
-              <TextBlock x:Name="MessagePreview" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock x:Name="MessagePreview" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
             </StackPanel>
           </DockPanel>
         </Border>

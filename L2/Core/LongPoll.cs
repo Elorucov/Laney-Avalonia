@@ -247,14 +247,14 @@ namespace ELOR.Laney.Core {
                     case 6:
                         int peerId6 = u[1].Value<int>();
                         int msgId6 = u[2].Value<int>();
-                        int count6 = u[3].Value<int>();
+                        int count6 = u.Count > 3 ? u[3].Value<int>() : 0;
                         Log.Information($"EVENT {eventId}: peer={peerId6}, msg={msgId6}, count={count6}");
                         IncomingMessagesRead?.Invoke(this, peerId6, msgId6, count6);
                         break;
                     case 7:
                         int peerId7 = u[1].Value<int>();
                         int msgId7 = u[2].Value<int>();
-                        int count7 = u[3].Value<int>();
+                        int count7 = u.Count > 3 ? u[3].Value<int>() : 0;
                         Log.Information($"EVENT {eventId}: peer={peerId7}, msg={msgId7}, count={count7}");
                         OutgoingMessagesRead?.Invoke(this, peerId7, msgId7, count7);
                         break;

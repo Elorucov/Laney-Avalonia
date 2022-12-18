@@ -1,9 +1,11 @@
-﻿using ELOR.Laney.Core;
+﻿using Avalonia.Media;
+using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using System.Collections.Generic;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Helpers {
     public static class VKAPIHelper {
@@ -79,6 +81,32 @@ namespace ELOR.Laney.Helpers {
 
             if (!string.IsNullOrEmpty(sender)) sender += ": ";
             return sender;
+        }
+
+        public static SolidColorBrush GetDocumentIconBackground(DocumentType type) {
+            switch (type) {
+                case DocumentType.Text: return new SolidColorBrush(Color.FromArgb(255, 0, 122, 204));
+                case DocumentType.Archive: return new SolidColorBrush(Color.FromArgb(255, 118, 185, 121));
+                case DocumentType.GIF: return new SolidColorBrush(Color.FromArgb(255, 119, 165, 214));
+                case DocumentType.Image: return new SolidColorBrush(Color.FromArgb(255, 119, 165, 214));
+                case DocumentType.Audio: return new SolidColorBrush(Color.FromArgb(255, 186, 104, 200));
+                case DocumentType.Video: return new SolidColorBrush(Color.FromArgb(255, 229, 115, 155));
+                case DocumentType.EBook: return new SolidColorBrush(Color.FromArgb(255, 255, 174, 56));
+                default: return new SolidColorBrush(Color.FromArgb(255, 119, 165, 214));
+            }
+        }
+
+        public static string GetDocumentIcon(DocumentType type) {
+            switch (type) {
+                case DocumentType.Text: return VKIconNames.Icon28ArticleOutline;
+                case DocumentType.Archive: return VKIconNames.Icon28ZipOutline;
+                case DocumentType.GIF: return VKIconNames.Icon28PictureOutline;
+                case DocumentType.Image: return VKIconNames.Icon28PictureOutline;
+                case DocumentType.Audio: return VKIconNames.Icon28MusicOutline;
+                case DocumentType.Video: return VKIconNames.Icon28VideoOutline;
+                case DocumentType.EBook: return VKIconNames.Icon28ArticleOutline;
+                default: return VKIconNames.Icon28DocumentOutline;
+            }
         }
     }
 }

@@ -34,6 +34,10 @@
     <Setter Property="Height" Value="612"/>
   </Style>
 
+  <Style Selector="Window.Dialog.WinFix  /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Margin" Value="1"/>
+  </Style>
+
   <Style Selector="MenuFlyoutPresenter">
     <Setter Property="Background" Value="{DynamicResource VKModalCardBackgroundBrush}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource VKModalCardBorderBrush}"/>

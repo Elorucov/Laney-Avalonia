@@ -1,0 +1,132 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vkui="using:VKUI.Controls">
+    <Design.PreviewWith>
+        <Border Padding="12,12,12,192">
+          <ComboBox SelectedIndex="2">
+            <ComboBoxItem Content="Anna"/>
+            <ComboBoxItem Content="Lena"/>
+            <ComboBoxItem Content="Nastya"/>
+            <ComboBoxItem Content="Yulia"/>
+            <ComboBoxItem Content="Zlata"/>
+          </ComboBox>
+        </Border>
+    </Design.PreviewWith>
+
+  <Style Selector="ComboBox">
+    <Setter Property="Background" Value="{DynamicResource VKFieldBackgroundBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource VKFieldBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="11,11,0,11"/>
+    <Setter Property="MinHeight" Value="42"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="PlaceholderForeground" Value="{DynamicResource VKFieldTextPlaceholderBrush}" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Name="border"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Name="PlaceholderTextBlock"
+                       Grid.Column="0"
+                       Margin="{TemplateBinding Padding}"
+                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                       Foreground="{TemplateBinding PlaceholderForeground}"
+                       IsVisible="{TemplateBinding SelectionBoxItem,
+                                                   Converter={x:Static ObjectConverters.IsNull}}"
+                       Text="{TemplateBinding PlaceholderText}" />
+            <ContentControl Margin="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding SelectionBoxItem}"
+                            ContentTemplate="{TemplateBinding ItemTemplate}" />
+            <ToggleButton Name="toggle"
+                          Grid.Column="1"
+                          Background="Transparent"
+                          BorderThickness="0"
+                          CornerRadius="{TemplateBinding CornerRadius}"
+                          Padding="10,0"
+                          ClickMode="Press"
+                          Focusable="False"
+                          IsChecked="{TemplateBinding IsDropDownOpen,
+                                                      Mode=TwoWay}">
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24ChevronDown}" Foreground="{DynamicResource VKIconSecondaryBrush}"/>
+            </ToggleButton>
+            <Popup Name="PART_Popup"
+                   MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                   IsLightDismissEnabled="True"
+                   IsOpen="{TemplateBinding IsDropDownOpen,
+                                            Mode=TwoWay}"
+                   PlacementTarget="{TemplateBinding}">
+              <Border Background="{DynamicResource VKModalCardBackgroundBrush}"
+                      CornerRadius="12"
+                      BorderThickness="1"
+                      Padding="0,4"
+                      BorderBrush="{TemplateBinding BorderBrush}">
+                <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                              VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                  <ItemsPresenter Name="PART_ItemsPresenter"
+                                  ItemTemplate="{TemplateBinding ItemTemplate}"
+                                  Items="{TemplateBinding Items}"
+                                  ItemsPanel="{TemplateBinding ItemsPanel}"
+                                  VirtualizationMode="{TemplateBinding VirtualizationMode}" />
+                </ScrollViewer>
+              </Border>
+            </Popup>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="ComboBox:pointerover /template/ Border#border">
+    <Setter Property="BorderBrush" Value="{DynamicResource VKIconTertiaryAlphaBrush}" />
+  </Style>
+  <Style Selector="ComboBox:disabled /template/ Border#border">
+    <Setter Property="Opacity" Value="0.6" />
+  </Style>
+  <Style Selector="ComboBox /template/ ToggleButton#toggle:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+
+  <Style Selector="ComboBoxItem">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Padding" Value="10,6" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+          <Border Name="PART_Selection" CornerRadius="8" Margin="4,0" Background="{TemplateBinding Background}"/>
+          <ContentPresenter Name="PART_ContentPresenter"
+                          Padding="{TemplateBinding Padding}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          CornerRadius="{TemplateBinding CornerRadius}" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="ComboBoxItem:pointerover /template/ Border#PART_Selection">
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}" />
+  </Style>
+  <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style Selector="ComboBoxItem:selected /template/ Border#PART_Selection">
+    <Setter Property="Background" Value="{DynamicResource VKButtonPrimaryBackgroundBrush}" />
+  </Style>
+  <Style Selector="ComboBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource VKButtonPrimaryForegroundBrush}" />
+  </Style>
+</Styles>

@@ -18,7 +18,7 @@ namespace ELOR.Laney.Extensions {
             return new Avalonia.Size(size.Width, size.Height);
         }
 
-        public static string ToFileSize(this long b) {
+        public static string ToFileSize(this ulong b) {
             if (b < 1024) {
                 return $"{b} B";
             }

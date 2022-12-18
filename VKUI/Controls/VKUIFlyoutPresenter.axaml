@@ -34,7 +34,7 @@
   <Style Selector="controls|VKUIFlyoutPresenter">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Margin="8,10,8,24" VerticalAlignment="Center" CornerRadius="12" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
+        <Border Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="12" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
           <ContentPresenter Content="{TemplateBinding Content}"/>
         </Border>
       </ControlTemplate>

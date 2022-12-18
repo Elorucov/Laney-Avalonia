@@ -50,17 +50,19 @@ namespace ELOR.Laney.ViewModels.Controls {
                 Header = Localizer.Instance["poll"],
             };
 
+            var session = VKSession.GetByDataContext(target);
+
             photo.Click += (a, b) => {
-                AttachmentPicker ap = new AttachmentPicker();
-                ap.ShowDialog<object>(VKSession.GetByDataContext(target).Window);
+                AttachmentPicker ap = new AttachmentPicker(session, 10 - Attachments.Count, 0);
+                ap.ShowDialog<object>(session.Window);
             };
             video.Click += (a, b) => {
-                AttachmentPicker ap = new AttachmentPicker();
-                ap.ShowDialog<object>(VKSession.GetByDataContext(target).Window);
+                AttachmentPicker ap = new AttachmentPicker(session, 10 - Attachments.Count, 1);
+                ap.ShowDialog<object>(session.Window);
             };
             file.Click += (a, b) => {
-                AttachmentPicker ap = new AttachmentPicker();
-                ap.ShowDialog<object>(VKSession.GetByDataContext(target).Window);
+                AttachmentPicker ap = new AttachmentPicker(session, 10 - Attachments.Count, 2);
+                ap.ShowDialog<object>(session.Window);
             };
             poll.Click += (a, b) => {
                 

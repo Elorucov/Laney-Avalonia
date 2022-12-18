@@ -97,6 +97,21 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<PhotoUploadServer>(this, parameters);
         }
 
+        /// <summary>Returns a list of photos in which a user is tagged.</summary>
+        /// <param name="userId">User ID.</param>
+        /// <param name="offset">Offset needed to return a specific subset of photos.</param>
+        /// <param name="count">Number of photos to return. </param>
+        /// <param name="sort">true — sort by date the tag was added in ascending order, false — descending</param>
+        [Method("getUserPhotos")]
+        public async Task<VKList<Photo>> GetUserPhotosAsync(int userId, int offset = 0, int count = 0, bool sort = false) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("user_id", userId.ToString());
+            if (offset > 0) parameters.Add("offset", offset.ToString());
+            if (count > 0) parameters.Add("count", count.ToString());
+            if (sort) parameters.Add("sort", "1");
+            return await API.CallMethodAsync<VKList<Photo>>(this, parameters);
+        }
+
         /// <summary>Saves a photo after being successfully uploaded.</summary>
         [Method("saveMessagesPhoto")]
         public async Task<List<PhotoSaveResult>> SaveMessagesPhotoAsync(int groupId, int server, string photo, string hash) {

@@ -1,11 +1,8 @@
 ﻿using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
-using Avalonia.Metadata;
 using VKUI.Controls;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace VKUI.Popups {

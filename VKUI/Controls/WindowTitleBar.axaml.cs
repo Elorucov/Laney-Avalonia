@@ -9,6 +9,14 @@ namespace VKUI.Controls {
     public class WindowTitleBar : TemplatedControl {
         #region Properties
 
+        public static readonly StyledProperty<bool> CanShowTitleAndMoveProperty =
+            AvaloniaProperty.Register<WindowTitleBar, bool>(nameof(CanShowTitleAndMove));
+
+        public bool CanShowTitleAndMove {
+            get => GetValue(CanShowTitleAndMoveProperty);
+            set => SetValue(CanShowTitleAndMoveProperty, value);
+        }
+
         #endregion
 
         #region Template elements
@@ -33,6 +41,15 @@ namespace VKUI.Controls {
 
             isTemplateLoaded = true;
             Setup();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
+            base.OnPropertyChanged(change);
+            if (!isTemplateLoaded) return;
+
+            if (change.Property == CanShowTitleAndMoveProperty) {
+                WindowTitle.IsVisible = CanShowTitleAndMove;
+            }
         }
 
         #endregion
@@ -64,18 +81,17 @@ namespace VKUI.Controls {
             if (OwnerWindow == null) throw new ArgumentNullException("Unable to find a parent Window!");
 
             // Appearance
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-                TitleBar.Height = 32;
-                WindowTitle.Classes.Add("Windows");
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+                TitleBar.Height = 48;
+                WindowTitle.Classes.Add("Default");
                 CloseButton.IsVisible = true;
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
                 TitleBar.Height = 22;
                 WindowTitle.Classes.Add("Mac");
-            } else {
-                TitleBar.IsVisible = false;
             }
 
             // Window
+            WindowTitle.IsVisible = CanShowTitleAndMove;
             WindowTitle.Text = OwnerWindow.Title;
             OwnerWindow.PropertyChanged += OwnerWindow_PropertyChanged;
             DragArea.PointerPressed += DragArea_PointerPressed;
@@ -88,7 +104,7 @@ namespace VKUI.Controls {
         }
 
         private void DragArea_PointerPressed(object sender, Avalonia.Input.PointerPressedEventArgs e) {
-            OwnerWindow.PlatformImpl.BeginMoveDrag(e);
+            if (CanShowTitleAndMove) OwnerWindow.PlatformImpl.BeginMoveDrag(e);
         }
     }
 }

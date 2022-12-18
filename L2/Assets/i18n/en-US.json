@@ -14,11 +14,13 @@
   "tomorrow": "tomorrow",
   "time_at": "at",
 
+  "all": "All",
   "you": "You",
   "yes": "Yes",
   "no": "No",
   "retry": "Try again",
   "open": "Open",
+  "attach": "Attach",
   "sign_in": "Sign in",
 
   "landing_title": "This is Laney",
@@ -37,7 +39,7 @@
   "about": "About",
   "log_out": "Log out",
 
-  "chats":  "Chats",
+  "chats": "Chats",
 
   "members_sub_nom": "{0} member",
   "members_sub_gen": "{0} members",
@@ -189,5 +191,14 @@
   "lp_act_video_single": "is sending a video",
   "lp_act_file_multi": "is sending a file",
   "lp_act_file_single": "is sending a file",
-  "im_status_more": "and {0} more"
+  "im_status_more": "and {0} more",
+
+  "atchpicker_doctype_animations": "Animations",
+  "atchpicker_doctype_archives": "Archives",
+  "atchpicker_doctype_audio": "Audio",
+  "atchpicker_doctype_books": "Books",
+  "atchpicker_doctype_other": "Other",
+  "atchpicker_doctype_pictures": "Pictures",
+  "atchpicker_doctype_texts": "Texts",
+  "atchpicker_doctype_video": "Video"
 }

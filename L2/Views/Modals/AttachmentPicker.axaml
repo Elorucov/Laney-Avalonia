@@ -1,13 +1,196 @@
 <vkw:DialogWindow xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
+        xmlns:vke="using:ELOR.Laney.Execute.Objects"
+        xmlns:vko="using:ELOR.VKAPILib.Objects"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="612"
         x:Class="ELOR.Laney.Views.Modals.AttachmentPicker"
         Title="Attachment picker">
-  <Grid>
-    <vkui:WindowTitleBar/>
+  <vkw:DialogWindow.Resources>
+    <DataTemplate x:Key="PhotoAlbumTemplate" x:DataType="vke:AlbumLite">
+      <StackPanel Width="220">
+        <Rectangle Width="220" Height="124" RadiusX="8" RadiusY="8" controls:ImageLoader.FillSource="{Binding ThumbUri}"/>
+        <TextBlock x:Name="AlbumTitle" Margin="0,6,0,0" Classes="Subhead SemiBold" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Text="{Binding Title}"/>
+        <TextBlock x:Name="ItemsCount" Margin="0,0,0,4" Classes="Caption1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Size, Converter={StaticResource cc}, ConverterParameter=photo}"/>
+      </StackPanel>
+    </DataTemplate>
+
+    <!-- PhotoAlbumTemplate и VideoAlbumTemplate, как вы заметили, почти полностью одинаковые,
+    за исключением надписи "n фото" и "n видео" в ItemsCount -->
+    <DataTemplate x:Key="VideoAlbumTemplate" x:DataType="vke:AlbumLite">
+      <StackPanel Width="220">
+        <Rectangle Width="220" Height="124" RadiusX="8" RadiusY="8" controls:ImageLoader.FillSource="{Binding ThumbUri}"/>
+        <TextBlock x:Name="AlbumTitle" Margin="0,6,0,0" Classes="Subhead SemiBold" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Text="{Binding Title}"/>
+        <TextBlock x:Name="ItemsCount" Margin="0,0,0,4" Classes="Caption1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Size, Converter={StaticResource cc}, ConverterParameter=video}"/>
+      </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PhotoTemplate" x:DataType="vko:Photo">
+      <Rectangle Margin="2" RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding MinimalSizedPhoto.Uri}"/>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="VideoTemplate" x:DataType="vko:Video">
+      <Grid ColumnDefinitions="Auto *">
+        <Grid Width="118" Height="78">
+          <Rectangle RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Image[1].Uri}"/>
+        </Grid>
+        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+          <TextBlock MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{Binding Title}"/>
+          <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding DurationTime}"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DocTemplate" x:DataType="vko:Document">
+      <Grid ColumnDefinitions="Auto *">
+        <ContentPresenter Width="48" Height="48" Content="{Binding Converter={StaticResource dic}}"/>
+        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+          <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Title}"/>
+          <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Size, Converter={StaticResource fsc}}"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+  </vkw:DialogWindow.Resources>
+  
+  <vkw:DialogWindow.Styles>
+    <Style Selector="ListBox.GridView.AlbumList ListBoxItem">
+      <Setter Property="Margin" Value="6,0"/>
+    </Style>
+  
+    <Style Selector="ListBox.GridView.AlbumList ListBoxItem">
+      <Setter Property="BorderThickness" Value="0,0,0,2"/>
+      <Setter Property="CornerRadius" Value="0"/>
+    </Style>
+  </vkw:DialogWindow.Styles>
+    
+  <Grid RowDefinitions="Auto * Auto">
+    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitleAndMove="False"/>
+    
+    <TabControl x:Name="Tabs" Grid.RowSpan="2" SelectionChanged="Tabs_SelectionChanged">
+      <TabItem Header="{i18n:Localize photo}">
+        <Grid RowDefinitions="Auto *">
+          <Button HorizontalAlignment="Stretch" Margin="12" Content="Upload"/>
+          <ScrollViewer Grid.Row="1">
+            <StackPanel>
+              <ListBox x:Name="PhotoAlbumsList" Classes="GridView AlbumList" SelectionMode="Single" Items="{Binding PhotoAlbums}" ItemTemplate="{StaticResource PhotoAlbumTemplate}" SelectedItem="{Binding SelectedPhotoAlbum, Mode=TwoWay}">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="6,0"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+              </ListBox>
+
+              <ListBox x:Name="PhotosList" Classes="GridView" Margin="0,10,0,0" MaxWidth="520" Items="{Binding Photos.Items}" ItemTemplate="{StaticResource PhotoTemplate}" SelectionMode="Multiple" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel ItemHeight="88" ItemWidth="130"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+              </ListBox>
+
+              <Border MinHeight="32">
+                <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Photos.IsLoading}"/>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+
+          <vkui:Placeholder Grid.Row="1" VerticalAlignment="Center"
+                              IsVisible="{Binding Photos.Placeholder, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                              Icon="{Binding Photos.Placeholder.Icon}"
+                              Header="{Binding Photos.Placeholder.Header}"
+                              Text="{Binding Photos.Placeholder.Text}">
+            <vkui:Placeholder.Action>
+              <Button Classes="Primary" Content="{Binding Photos.Placeholder.ActionButton}" Command="{Binding Photos.Placeholder.ActionButtonFunc}"/>
+            </vkui:Placeholder.Action>
+          </vkui:Placeholder>
+        </Grid>
+      </TabItem>
+
+      <TabItem Header="{i18n:Localize video}">
+        <Grid RowDefinitions="Auto *">
+          <Button HorizontalAlignment="Stretch" Margin="12" Content="Upload"/>
+          <ScrollViewer Grid.Row="1">
+            <StackPanel>
+              <ListBox x:Name="VideoAlbumsList" Classes="GridView AlbumList" SelectionMode="Single" Items="{Binding VideoAlbums}" ItemTemplate="{StaticResource VideoAlbumTemplate}" SelectedItem="{Binding SelectedVideoAlbum, Mode=TwoWay}">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="6,0"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+              </ListBox>
+
+              <ListBox x:Name="VideosList" Margin="0,6,0,0" Items="{Binding Videos.Items}" ItemTemplate="{StaticResource VideoTemplate}" SelectionMode="Multiple" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+
+              <Border MinHeight="32">
+                <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Videos.IsLoading}"/>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+
+          <vkui:Placeholder Grid.Row="1" VerticalAlignment="Center"
+                              IsVisible="{Binding Videos.Placeholder, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                              Icon="{Binding Videos.Placeholder.Icon}"
+                              Header="{Binding Videos.Placeholder.Header}"
+                              Text="{Binding Videos.Placeholder.Text}">
+            <vkui:Placeholder.Action>
+              <Button Classes="Primary" Content="{Binding Videos.Placeholder.ActionButton}" Command="{Binding Videos.Placeholder.ActionButtonFunc}"/>
+            </vkui:Placeholder.Action>
+          </vkui:Placeholder>
+        </Grid>
+      </TabItem>
+
+      <TabItem Header="{i18n:Localize doc}">
+        <Grid ColumnDefinitions="Auto *" RowDefinitions="Auto *">
+          <Button Margin="12,12,0,12" Content="Upload"/>
+          <ComboBox x:Name="DocsTypeBox" Margin="12" Grid.Column="1" SelectedIndex="{Binding DocumentTypeIndex, Mode=TwoWay}">
+            <ComboBoxItem Content="{i18n:Localize all}"/>
+            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_texts}"/>
+            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_archives}"/>
+            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_animations}"/>
+            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_pictures}"/>
+            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_audio}"/>
+            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_video}"/>
+            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_books}"/>
+            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_other}"/>
+          </ComboBox>
+
+          <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
+            <StackPanel>
+              <ListBox x:Name="DocsList" Margin="0,6,0,0" Items="{Binding Documents.Items}" ItemTemplate="{StaticResource DocTemplate}" SelectionMode="Multiple" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+
+              <Border MinHeight="32">
+                <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Documents.IsLoading}"/>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+
+          <vkui:Placeholder Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center"
+                              IsVisible="{Binding Documents.Placeholder, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                              Icon="{Binding Documents.Placeholder.Icon}"
+                              Header="{Binding Documents.Placeholder.Header}"
+                              Text="{Binding Documents.Placeholder.Text}">
+            <vkui:Placeholder.Action>
+              <Button Classes="Primary" Content="{Binding Documents.Placeholder.ActionButton}" Command="{Binding Documents.Placeholder.ActionButtonFunc}"/>
+            </vkui:Placeholder.Action>
+          </vkui:Placeholder>
+        </Grid>
+      </TabItem>
+    </TabControl>
+    
+    <Rectangle VerticalAlignment="Bottom" Grid.Row="1" Height="24" Fill="{DynamicResource TransparentToContentGradientBrush}"/>
+      
+    <Button Grid.Row="2" Classes="Primary Large" Margin="12,0,12,12" HorizontalAlignment="Stretch" IsEnabled="{Binding !!SelectedAttachmentsCount}">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Classes="ButtonIn" Text="{i18n:Localize attach}"/>
+        <Border IsVisible="{Binding !!SelectedAttachmentsCount}" Margin="8,0,0,0" MinWidth="16" Height="16" CornerRadius="8" Background="{DynamicResource VKButtonPrimaryForegroundBrush}">
+          <TextBlock Margin="4,0" Classes="Subhead SemiBold" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="{Binding SelectedAttachmentsCount}"/>
+        </Border>
+      </StackPanel>
+    </Button>
   </Grid>
 </vkw:DialogWindow>
