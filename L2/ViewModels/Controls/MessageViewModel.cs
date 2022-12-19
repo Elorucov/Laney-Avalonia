@@ -138,7 +138,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             UpdateUIType();
             if (msg.IsPartial || State != MessageVMState.Read) State = MessageVMState.Loading;
 
-            if (session != null) {
+            if (session != null && !DemoMode.IsEnabled) {
                 session.LongPoll.MessageEdited += LongPoll_MessageEdited;
                 session.LongPoll.MessageFlagSet += LongPoll_MessageFlagSet;
                 session.LongPoll.MessageFlagRemove += LongPoll_MessageFlagRemove;
@@ -146,6 +146,10 @@ namespace ELOR.Laney.ViewModels.Controls {
                 if (session.Id == SenderId) session.LongPoll.OutgoingMessagesRead += LongPoll_MessagesRead;
             }
 
+            if (DemoMode.IsEnabled) {
+                DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
+                if (ds.Times.ContainsKey(Id)) SentTime = DateTime.Now.AddSeconds(-ds.Times[Id]);
+            }
         }
 
         private void SetSenderNameAndAvatar() {

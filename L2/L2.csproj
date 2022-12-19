@@ -6,9 +6,9 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.162</AssemblyVersion>
-    <FileVersion>2.0.162</FileVersion>
-    <Version>2.0.162-devplat-anycpu-devuser.devpc-221213-0730</Version>
+    <AssemblyVersion>2.0.208</AssemblyVersion>
+    <FileVersion>2.0.208</FileVersion>
+    <Version>2.0.208-devplat-anycpu-devuser.devpc-221219-2009</Version>
     <Platforms>AnyCPU</Platforms>
     <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -18,8 +18,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.162</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.162</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.208</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.208</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -113,5 +113,9 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Controls\MessageBubble.axaml" />
   </ItemGroup>
-  <ProjectExtensions><VisualStudio><UserProperties assets_4i18n_4en-us_1json__JsonSchema="https://citation-file-format.github.io/1.2.0/schema.json" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties assets_4i18n_4en-us_1json__JsonSchema="https://citation-file-format.github.io/1.2.0/schema.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

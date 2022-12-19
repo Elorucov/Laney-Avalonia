@@ -20,6 +20,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using ELOR.Laney.Core.Network;
 using Avalonia.Threading;
+using ELOR.VKAPILib.Objects;
+using ELOR.Laney.DataModels;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -92,7 +94,7 @@ namespace ELOR.Laney.Core {
             ash.ShowAt(owner);
         }
 
-        private void SetUpTrayMenu() {
+        private static void SetUpTrayMenu() {
             NativeMenu menu = new NativeMenu();
 
             foreach (var session in VKSession.Sessions) {
@@ -110,12 +112,12 @@ namespace ELOR.Laney.Core {
                 new FieldTestWindow().Show();
             };
 
-            var exit = new NativeMenuItem { Header = "Exit" };
+            var exit = new NativeMenuItem { Header = Localizer.Instance["exit"] };
             exit.Click += (a, b) => {
                 App.Current.DesktopLifetime.Shutdown();
             };
 
-            menu.Items.Add(ft);
+            if (!DemoMode.IsEnabled) menu.Items.Add(ft);
             menu.Items.Add(exit);
 
             TrayIcon icon = new TrayIcon {
@@ -140,6 +142,10 @@ namespace ELOR.Laney.Core {
                 Log.Information("Init session ({0})", Id);
                 SetUpTrayMenu(); // Чтобы можно было закрыть приложение, если будут проблемы с загрузкой
 
+                if (DemoMode.IsEnabled) {
+                    ImViewModel = new ImViewModel(this);
+                    return;
+                }
                 if (API.WebRequestCallback == null) API.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
 
                 List<VKSession> sessions = new List<VKSession>();
@@ -193,23 +199,23 @@ namespace ELOR.Laney.Core {
             if (ImViewModel == null) ImViewModel = new ImViewModel(this);
         }
 
-        private void TryOpenSessionWindow(object? sender, RoutedEventArgs e) {
+        private static void TryOpenSessionWindow(object? sender, RoutedEventArgs e) {
             ActionSheetItem item = sender as ActionSheetItem;
             int sessionId = (int)item.Tag;
             TryOpenSessionWindow(sessionId);
         }
 
-        private void TryOpenSessionWindow(int sessionId) {
+        private static void TryOpenSessionWindow(int sessionId) {
             VKSession session = _sessions.Where(s => s.Id == sessionId).FirstOrDefault();
 
             if (session.Window == null) {
-                Log.Information("Creating and showing new window for session {0}", Id);
+                Log.Information("Creating and showing new window for session {0}", sessionId);
                 session.Window = new MainWindow();
                 session.Window.DataContext = session;
                 session.Init(true);
                 session.Window.Show();
             } else {
-                Log.Information("Showing/activating window for session {0}", Id);
+                Log.Information("Showing/activating window for session {0}", sessionId);
                 if (!session.Window.IsVisible) session.Window.Show();
                 if (!session.Window.IsActive) session.Window.Activate();
             }
@@ -264,6 +270,28 @@ namespace ELOR.Laney.Core {
             session.Window.DataContext = session;
             session.Init();
             session.Window.Show();
+        }
+
+        public static void StartDemoSession(DemoModeSession mainSession) {
+            CacheManager.Add(DemoMode.Data.Profiles);
+            CacheManager.Add(DemoMode.Data.Groups);
+            foreach (var ds in DemoMode.Data.Sessions) {
+                var info = CacheManager.GetNameAndAvatar(ds.Id);
+                VKSession session = new VKSession {
+                    UserId = ds.Id,
+                    Name = String.Join(" ", new List<string> { info.Item1, info.Item2 }),
+                    Avatar = info.Item3,
+                    API = new VKAPI(ds.Id, null, Localizer.Instance["lang"], App.UserAgent),
+                    Window = new MainWindow()
+                };
+                _sessions.Add(session);
+                session.Window.DataContext = session;
+                if (mainSession.Id == session.Id) {
+                    session.Init();
+                    session.Window.Show();
+                }
+            }
+            SetUpTrayMenu();
         }
 
         // Т. к. мы привязываем VKSession к окну, то

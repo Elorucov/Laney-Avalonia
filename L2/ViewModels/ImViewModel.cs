@@ -2,6 +2,7 @@
 using DynamicData;
 using DynamicData.Binding;
 using ELOR.Laney.Core;
+using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
@@ -47,11 +48,24 @@ namespace ELOR.Laney.ViewModels {
 
             LoadConversations();
 
-            session.LongPoll.MessageReceived += LongPoll_MessageReceived;
-            session.LongPoll.ConversationRemoved += LongPoll_ConversationRemoved;
+            if (!DemoMode.IsEnabled) {
+                session.LongPoll.MessageReceived += LongPoll_MessageReceived;
+                session.LongPoll.ConversationRemoved += LongPoll_ConversationRemoved;
+            }
         }
 
         public async void LoadConversations() {
+            if (DemoMode.IsEnabled) {
+                DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
+                foreach (var conv in ds.Conversations) {
+                    ChatViewModel chat = new ChatViewModel(session, conv.Conversation, conv.LastMessage);
+                    CacheManager.Add(session.Id, chat);
+                    _chats.AddOrUpdate(chat);
+                }
+
+                return;
+            }
+
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;

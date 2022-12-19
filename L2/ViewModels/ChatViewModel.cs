@@ -255,22 +255,24 @@ namespace ELOR.Laney.ViewModels {
                     OnPropertyChanged(nameof(MentionIconId));
             };
 
-            session.CurrentOpenedChatChanged += (a, b) => IsCurrentOpenedChat = b == PeerId;
+            if (!DemoMode.IsEnabled) {
+                session.CurrentOpenedChatChanged += (a, b) => IsCurrentOpenedChat = b == PeerId;
 
-            session.LongPoll.MessageFlagSet += LongPoll_MessageFlagSet;
-            session.LongPoll.MessageReceived += LongPoll_MessageReceived;
-            session.LongPoll.MessageEdited += LongPoll_MessageEdited;
-            session.LongPoll.MentionReceived += LongPoll_MentionReceived;
-            session.LongPoll.IncomingMessagesRead += LongPoll_IncomingMessagesRead;
-            session.LongPoll.OutgoingMessagesRead += LongPoll_OutgoingMessagesRead;
-            session.LongPoll.ConversationFlagReset += LongPoll_ConversationFlagReset;
-            session.LongPoll.ConversationFlagSet += LongPoll_ConversationFlagSet;
-            session.LongPoll.ConversationRemoved += LongPoll_ConversationRemoved;
-            session.LongPoll.MajorIdChanged += LongPoll_MajorIdChanged;
-            session.LongPoll.MinorIdChanged += LongPoll_MinorIdChanged;
-            session.LongPoll.ConversationDataChanged += LongPoll_ConversationDataChanged;
-            session.LongPoll.ActivityStatusChanged += LongPoll_ActivityStatusChanged;
-            session.LongPoll.NotificationsSettingsChanged += LongPoll_NotificationsSettingsChanged;
+                session.LongPoll.MessageFlagSet += LongPoll_MessageFlagSet;
+                session.LongPoll.MessageReceived += LongPoll_MessageReceived;
+                session.LongPoll.MessageEdited += LongPoll_MessageEdited;
+                session.LongPoll.MentionReceived += LongPoll_MentionReceived;
+                session.LongPoll.IncomingMessagesRead += LongPoll_IncomingMessagesRead;
+                session.LongPoll.OutgoingMessagesRead += LongPoll_OutgoingMessagesRead;
+                session.LongPoll.ConversationFlagReset += LongPoll_ConversationFlagReset;
+                session.LongPoll.ConversationFlagSet += LongPoll_ConversationFlagSet;
+                session.LongPoll.ConversationRemoved += LongPoll_ConversationRemoved;
+                session.LongPoll.MajorIdChanged += LongPoll_MajorIdChanged;
+                session.LongPoll.MinorIdChanged += LongPoll_MinorIdChanged;
+                session.LongPoll.ConversationDataChanged += LongPoll_ConversationDataChanged;
+                session.LongPoll.ActivityStatusChanged += LongPoll_ActivityStatusChanged;
+                session.LongPoll.NotificationsSettingsChanged += LongPoll_NotificationsSettingsChanged;
+            }
 
             ActivityStatusUsers.Elapsed += (a, b) => UpdateActivityStatus();
         }
@@ -293,6 +295,14 @@ namespace ELOR.Laney.ViewModels {
         }
 
         private async void LoadMessages(int startMessageId = -1) {
+            if (DemoMode.IsEnabled) {
+                DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
+                var messages = ds.Messages.Where(m => m.PeerId == PeerId).ToList();
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(messages, session, FixState));
+
+                return;
+            }
+
             if (IsLoading) return;
             Placeholder = null;
             DisplayedMessages?.Clear();
@@ -331,7 +341,7 @@ namespace ELOR.Laney.ViewModels {
             int count = Constants.MessagesCount;
 
             try {
-                Log.Information("LoadPreviousMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages.Count);
+                Log.Information("LoadPreviousMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages?.Count);
                 IsLoading = true;
                 MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.Id, false, VKAPIHelper.Fields, true);
                 CacheManager.Add(mhr.MentionedProfiles);

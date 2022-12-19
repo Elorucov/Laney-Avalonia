@@ -7,14 +7,17 @@ using Avalonia.Themes.Simple;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
+using Fizzler;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKUI;
 
@@ -67,13 +70,23 @@ namespace ELOR.Laney {
                 // Settings up web request callbacks
                 VKUITheme.Current.WebRequestCallback = WebRequestCallback;
 
-                int uid = Settings.Get<int>(Settings.VK_USER_ID);
-                string token = Settings.Get<string>(Settings.VK_TOKEN);
-                if (uid > 0 && !String.IsNullOrEmpty(token)) {
-                    VKSession.StartUserSession(uid, token);
+                // Demo mode
+                if (DemoMode.Check()) {
+                    var usessions = DemoMode.Data.Sessions.Where(s => s.Id > 0);
+                    int ucount = usessions.Count();
+                    if (ucount == 0) throw new Exception("No user session found!");
+                    if (ucount > 1) throw new Exception("There can be only 1 user session!");
+                    VKSession.StartDemoSession(usessions.FirstOrDefault());
                     desktop.MainWindow = VKSession.Main.Window;
                 } else {
-                    desktop.MainWindow = new Views.SignInWindow();
+                    int uid = Settings.Get<int>(Settings.VK_USER_ID);
+                    string token = Settings.Get<string>(Settings.VK_TOKEN);
+                    if (uid > 0 && !String.IsNullOrEmpty(token)) {
+                        VKSession.StartUserSession(uid, token);
+                        desktop.MainWindow = VKSession.Main.Window;
+                    } else {
+                        desktop.MainWindow = new Views.SignInWindow();
+                    }
                 }
             }
 
@@ -116,7 +129,7 @@ namespace ELOR.Laney {
             }
         }
 
-#region Platform
+        #region Platform
 
         public static OSPlatform Platform => GetCurrentPlatform();
 
@@ -154,9 +167,9 @@ namespace ELOR.Laney {
             return $"LaneyMessenger (2; {sections[0]}; {sections[1]}; {sections[2]})";
         }
 
-#endregion
+        #endregion
 
-#region Paths
+        #region Paths
 
         public static string LocalDataPath { get => GetLocalDataPath(); }
 
@@ -170,6 +183,6 @@ namespace ELOR.Laney {
             }
         }
 
-#endregion
+        #endregion
     }
 }

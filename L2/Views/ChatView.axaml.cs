@@ -41,6 +41,7 @@ namespace ELOR.Laney.Views {
             double h = scrollViewer.Extent.Height - scrollViewer.DesiredSize.Height;
             double y = scrollViewer.Offset.Y;
             dbgScrollInfo.Text = $"{Math.Round(y)}/{h}";
+            if (h < trigger) return;
 
             if (needToSaveScroll && oldScrollViewerHeight != h) {
                 double diff = h - oldScrollViewerHeight;
@@ -78,7 +79,8 @@ namespace ELOR.Laney.Views {
         }
 
         private void ScrollToMessage(object sender, int messageId) {
-            itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages.GetById(messageId)));
+            if (Chat.DisplayedMessages == null) return;
+            itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
         }
 
         private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {
