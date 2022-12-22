@@ -41,6 +41,7 @@
   "exit": "Exit",
 
   "chats": "Chats",
+  "chatview_placeholder": "Select a chat or create a new one",
 
   "members_sub_nom": "{0} member",
   "members_sub_gen": "{0} members",

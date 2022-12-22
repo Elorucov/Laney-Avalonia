@@ -41,6 +41,7 @@
   "exit": "Выйти",
 
   "chats": "Чаты",
+  "chatview_placeholder": "Выберите чат или создайте новый",
 
   "members_sub_nom": "{0} участник",
   "members_sub_gen": "{0} участника",

@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:views="using:ELOR.Laney.Views"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,7 +16,7 @@
     <Rectangle x:Name="Separator" HorizontalAlignment="Right" Width="1" VerticalAlignment="Stretch" Fill="{DynamicResource VKSeparatorAlphaBrush}"/>
     <Grid x:Name="ChatViewContainer" Grid.Column="1">
       <views:ChatView x:Name="ChatView" IsVisible="{Binding DataContext, Mode=OneWay, ElementName=ChatView, Converter={x:Static ObjectConverters.IsNotNull}}" DataContext="{Binding CurrentOpenedChat}"/>
-      <TextBlock x:Name="NonSelectedChatInfo" IsVisible="{Binding CurrentOpenedChat, Converter={x:Static ObjectConverters.IsNull}}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Select conversation"/>
+      <TextBlock x:Name="NonSelectedChatInfo" IsVisible="{Binding CurrentOpenedChat, Converter={x:Static ObjectConverters.IsNull}}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{i18n:Localize chatview_placeholder}"/>
     </Grid>
   </Grid>
 </Window>
