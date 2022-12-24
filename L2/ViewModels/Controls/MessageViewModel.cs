@@ -148,7 +148,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             if (DemoMode.IsEnabled) {
                 DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
-                if (ds.Times.ContainsKey(Id)) SentTime = DateTime.Now.AddSeconds(-ds.Times[Id]);
+                if (ds.Times != null && ds.Times.ContainsKey(Id)) SentTime = DateTime.Now.AddSeconds(-ds.Times[Id]);
             }
         }
 

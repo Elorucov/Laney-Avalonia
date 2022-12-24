@@ -15,6 +15,9 @@ namespace ELOR.Laney.DataModels {
 
         [JsonProperty("times")]
         public Dictionary<int, int> Times { get; private set; }
+
+        [JsonProperty("activity_statuses")]
+        public Dictionary<int, List<LongPollActivityInfo>> ActivityStatuses { get; private set; }
     }
 
     public class DemoModeData {

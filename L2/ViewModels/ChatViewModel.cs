@@ -167,8 +167,13 @@ namespace ELOR.Laney.ViewModels {
             if (PeerId > 0 && PeerId < 1000000000) { // User
                 PeerType = PeerType.User;
                 PeerUser = CacheManager.GetUser(PeerId);
-                Title = PeerUser.FullName;
-                Avatar = new Uri(PeerUser.Photo200);
+                if (PeerId == session.Id) {
+                    Title = Localizer.Instance["favorites"];
+                    Avatar = new Uri("https://vk.com/images/icons/im_favorites_200.png");
+                } else {
+                    Title = PeerUser.FullName;
+                    Avatar = new Uri(PeerUser.Photo200);
+                }
                 IsVerified = PeerUser.Verified;
                 Online = PeerUser.OnlineInfo;
             } else if (PeerId < 0 && PeerId > -1000000000) { // Group
@@ -192,6 +197,17 @@ namespace ELOR.Laney.ViewModels {
             } else if (PeerId < -2000000000) { // E-mail
                 PeerType = PeerType.Email;
                 Title = $"E-Mail {PeerId}";
+            }
+
+            // Checking and displaying activity status
+            if (DemoMode.IsEnabled) {
+                var ds = DemoMode.GetDemoSessionById(session.Id);
+                if (ds.ActivityStatuses.ContainsKey(PeerId)) {
+                    foreach (var status in ds.ActivityStatuses[PeerId]) {
+                        ActivityStatusUsers.Add(status, 1000 * 3600);
+                    }
+                    UpdateActivityStatus();
+                }
             }
 
             UpdateRestrictionInfo();
@@ -669,7 +685,7 @@ namespace ELOR.Laney.ViewModels {
 
                 if (PeerType != PeerType.Chat) {
                     if (count == 1) {
-                        ActivityStatus = GetLocalizedActivityStatus(acts.FirstOrDefault().Status, 1);
+                        ActivityStatus = GetLocalizedActivityStatus(acts.FirstOrDefault().Status, 1) + "...";
                     }
                 } else {
                     var typing = acts.Where(a => a?.Status == LongPollActivityType.Typing).ToList();

@@ -35,6 +35,7 @@
   "err_network_aborted": "Connection aborted.",
   "err_network_timeout": "Connection timed out.",
 
+  "favorites": "Favorites",
   "settings": "Settings",
   "about": "About",
   "log_out": "Log out",

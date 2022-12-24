@@ -10,13 +10,17 @@ namespace ELOR.Laney.DataModels {
     }
 
     public class LongPollActivityInfo {
-        internal LongPollActivityInfo(int id, LongPollActivityType status) {
+        public LongPollActivityInfo() { }
+
+        public LongPollActivityInfo(int id, LongPollActivityType status) {
             MemberId = id;
             Status = status;
         }
 
+        [JsonProperty("member_id")]
         public int MemberId { get; private set; }
 
+        [JsonProperty("status")]
         public LongPollActivityType Status { get; private set; }
 
         public override string ToString() {

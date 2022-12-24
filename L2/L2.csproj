@@ -114,8 +114,6 @@
     <UpToDateCheckInput Remove="Controls\MessageBubble.axaml" />
   </ItemGroup>
   <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties assets_4i18n_4en-us_1json__JsonSchema="https://citation-file-format.github.io/1.2.0/schema.json" />
-    </VisualStudio>
+    <VisualStudio><UserProperties /></VisualStudio>
   </ProjectExtensions>
 </Project>

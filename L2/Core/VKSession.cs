@@ -14,14 +14,11 @@ using ELOR.VKAPILib;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Http;
-using ELOR.Laney.Core.Network;
 using Avalonia.Threading;
-using ELOR.VKAPILib.Objects;
 using ELOR.Laney.DataModels;
+using Newtonsoft.Json;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -273,6 +270,10 @@ namespace ELOR.Laney.Core {
         }
 
         public static void StartDemoSession(DemoModeSession mainSession) {
+            Dictionary<int, List<LongPollActivityInfo>> test = new Dictionary<int, List<LongPollActivityInfo>>();
+            test.Add(2000000100, new List<LongPollActivityInfo> { new LongPollActivityInfo(172894294, LongPollActivityType.Typing) });
+            string ss = JsonConvert.SerializeObject(test);
+
             CacheManager.Add(DemoMode.Data.Profiles);
             CacheManager.Add(DemoMode.Data.Groups);
             foreach (var ds in DemoMode.Data.Sessions) {
