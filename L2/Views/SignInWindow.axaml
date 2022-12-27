@@ -11,8 +11,6 @@
         WindowStartupLocation="CenterScreen"
         Title="Welcome!">
   <Grid RowDefinitions="Auto * 48">
-    <!--<Border x:Name="TitleBar" IsHitTestVisible="False" Background="Transparent" Height="48"/>-->
-
     <StackPanel Grid.Row="1" Margin="32,48" VerticalAlignment="Center">
       <Image Width="96" Height="96" Source="{svg:SvgImage /Assets/Logo/FullShadow.svg}"/>
       <TextBlock Classes="Title2 DisplayBold" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
