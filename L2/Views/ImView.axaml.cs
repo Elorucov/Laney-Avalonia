@@ -1,9 +1,9 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
-using System;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ImView : UserControl {
@@ -18,7 +18,10 @@ namespace ELOR.Laney.Views {
                 App.ToggleTheme();
             };
             SearchButton.Click += (a, b) => {
-                throw new Exception("This is a crash. Not bandicoot, but a crash.");
+                // throw new Exception("This is a crash. Not bandicoot, but a crash.");
+                Window w = Session.Window;
+                w.WindowState = WindowState.Normal;
+                w.PlatformImpl.Resize(new Size(1134, 756));
             };
             chatsListScroll.RegisterIncrementalLoadingEvent(() => Session.ImViewModel.LoadConversations());
         }

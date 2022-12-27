@@ -88,6 +88,26 @@ namespace ELOR.Laney.Core {
             ash.Items.Add(about);
             ash.Items.Add(logout);
 
+            List<ActionSheetItem> devmenu = new List<ActionSheetItem>();
+            if (DemoMode.IsEnabled) {
+                ActionSheetItem demoresize = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
+                    Header = "Resize 1134x756",
+                };
+                demoresize.Click += (a, b) => {
+                    Window.WindowState = WindowState.Normal;
+                    Window.PlatformImpl.Resize(new Size(1134, 756));
+                };
+                // devmenu.Add(demoresize);
+            }
+
+            if (devmenu.Count > 0) {
+                ash.Items.Add(new ActionSheetItem());
+                foreach (var item in devmenu) {
+                    ash.Items.Add(item);
+                }
+            }
+
             ash.ShowAt(owner);
         }
 
