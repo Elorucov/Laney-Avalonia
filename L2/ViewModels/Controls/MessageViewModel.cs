@@ -119,7 +119,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             Text = msg.Text;
             if (msg.Attachments != null) Attachments = msg.Attachments;
             Location = msg.Geo;
-            if (msg.ReplyMessage != null) ReplyMessage = new MessageViewModel(msg.ReplyMessage);
+            if (msg.ReplyMessage != null) ReplyMessage = new MessageViewModel(msg.ReplyMessage, session);
             Action = msg.Action;
             Keyboard = msg.Keyboard;
             Template = msg.Template;

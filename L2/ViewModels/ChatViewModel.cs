@@ -353,7 +353,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         public async void LoadPreviousMessages() {
-            if (DisplayedMessages?.Count == 0 || IsLoading) return;
+            if (DemoMode.IsEnabled || DisplayedMessages?.Count == 0 || IsLoading) return;
             int count = Constants.MessagesCount;
 
             try {
@@ -380,7 +380,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         public async void LoadNextMessages() {
-            if (DisplayedMessages?.Count == 0 || IsLoading) return;
+            if (DemoMode.IsEnabled || DisplayedMessages?.Count == 0 || IsLoading) return;
             int count = Constants.MessagesCount;
 
             try {
