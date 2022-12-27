@@ -6,9 +6,9 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.208</AssemblyVersion>
-    <FileVersion>2.0.208</FileVersion>
-    <Version>2.0.208-devplat-anycpu-devuser.devpc-221219-2009</Version>
+    <AssemblyVersion>2.0.209</AssemblyVersion>
+    <FileVersion>2.0.209</FileVersion>
+    <Version>2.0.209-devplat-anycpu-devuser.devpc-221227-1307</Version>
     <Platforms>AnyCPU</Platforms>
     <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -18,8 +18,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.208</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.208</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.209</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.209</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -114,6 +114,8 @@
     <UpToDateCheckInput Remove="Controls\MessageBubble.axaml" />
   </ItemGroup>
   <ProjectExtensions>
-    <VisualStudio><UserProperties /></VisualStudio>
+    <VisualStudio>
+      <UserProperties />
+    </VisualStudio>
   </ProjectExtensions>
 </Project>
