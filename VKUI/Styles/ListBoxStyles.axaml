@@ -3,7 +3,7 @@
         xmlns:vkui="using:VKUI.Controls">
     <Design.PreviewWith>
         <StackPanel Margin="6">
-          <ListBox Margin="6" SelectionMode="Multiple" SelectedIndex="2">
+          <ListBox Margin="6" SelectionMode="Multiple,Toggle" SelectedIndex="2">
             <TextBlock Text="Anna"/>
             <TextBlock Text="Lena"/>
             <TextBlock Text="Nastya"/>
@@ -11,7 +11,7 @@
             <TextBlock Text="Zlata"/>
           </ListBox>
           
-          <ListBox Classes="GridView" Margin="6" SelectionMode="Multiple" SelectedIndex="0">
+          <ListBox Classes="GridView" Margin="6" SelectionMode="Multiple,Toggle" SelectedIndex="0">
             <ListBox.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel ItemWidth="72" ItemHeight="64"/>
@@ -55,7 +55,7 @@
     </Setter>
   </Style>
 
-  <Style Selector="ListBox[SelectionMode=Multiple] ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon, ListBox[SelectionMode=Multiple,AlwaysSelected] ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon">
+  <Style Selector="ListBox[SelectionMode=Multiple] ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon, ListBox[SelectionMode=Multiple,Toggle] ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon">
     <Setter Property="IsVisible" Value="True"/>
   </Style>
   
@@ -67,7 +67,7 @@
     <Setter Property="Background" Value="{DynamicResource VKBackgroundHighlightedBrush}"/>
   </Style>
 
-  <Style Selector="ListBox[SelectionMode=Multiple] ListBoxItem:selected /template/ vkui|VKIcon#PART_CheckIcon, ListBox[SelectionMode=Multiple,AlwaysSelected] ListBoxItem:selected /template/ vkui|VKIcon#PART_CheckIcon">
+  <Style Selector="ListBox[SelectionMode=Multiple] ListBoxItem:selected /template/ vkui|VKIcon#PART_CheckIcon, ListBox[SelectionMode=Multiple,Toggle] ListBoxItem:selected /template/ vkui|VKIcon#PART_CheckIcon">
     <Setter Property="Id" Value="{x:Static vkui:VKIconNames.Icon20CheckCircleOn}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
   </Style>

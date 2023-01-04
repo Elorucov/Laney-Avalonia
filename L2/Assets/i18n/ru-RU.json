@@ -203,5 +203,7 @@
   "atchpicker_doctype_other": "Прочее",
   "atchpicker_doctype_pictures": "Картинки",
   "atchpicker_doctype_texts": "Текстовые",
-  "atchpicker_doctype_video": "Видео"
+  "atchpicker_doctype_video": "Видео",
+  "atchpicker_upload_photo": "Загрузить фотографию",
+  "atchpicker_upload_video": "Загрузить видео"
 }

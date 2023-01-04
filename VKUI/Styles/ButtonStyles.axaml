@@ -1,18 +1,26 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vkui="using:VKUI.Controls">
     <Design.PreviewWith>
       <StackPanel Margin="8">
         <Button Margin="8" Classes="Primary Large" Content="Large"/>
         <Button Margin="8" Classes="Primary Medium" Content="Medium"/>
-        <Button Margin="8" Classes="Primary" Content="Primary"/>
         <Button Margin="8" Classes="Tertiary" Content="Tertiary"/>
         <Button Margin="8" Classes="Outline" Content="Outline"/>
         <Button Margin="8" Classes="Commerce" Content="Commerce"/>
         <Button Margin="8" Classes="Negative" Content="Negative"/>
-        <Button Margin="8" Classes="Medium">
+        <Button Margin="8" Classes="Medium Commerce">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <Path Fill="{DynamicResource VKAccentBrush}" Margin="0,0,6,0" Data="{StaticResource Icon20ServicesOutline}"/>
-            <TextBlock Classes="ButtonIn SemiBold" VerticalAlignment="Center" Text="Test"/>
+            <vkui:VKIcon Margin="0,0,6,0" Id="Icon20ServicesOutline"/>
+            <TextBlock Classes="ButtonIn" VerticalAlignment="Center" Text="Test"/>
+          </StackPanel>
+        </Button>
+        <Button Margin="8" Classes="Large Primary">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Classes="ButtonIn" Text="Attach"/>
+            <Border Margin="8,0,0,0" MinWidth="16" Height="16" CornerRadius="8" Background="{DynamicResource VKButtonPrimaryForegroundBrush}">
+              <TextBlock Margin="4,0" Classes="Subhead SemiBold" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="4"/>
+            </Border>
           </StackPanel>
         </Button>
         <Button Margin="8" Classes="ListItem Selected" Content="In list selected"/>
@@ -45,6 +53,10 @@
                           Content="{TemplateBinding Content}"
                           ContentTemplate="{TemplateBinding ContentTemplate}"
                           Padding="{TemplateBinding Padding}"
+                          FontFamily="{TemplateBinding FontFamily}"
+                          TextElement.FontFamily="{TemplateBinding FontFamily}"
+                          FontSize="{TemplateBinding FontSize}"
+                          TextElement.FontSize="{TemplateBinding FontSize}"
                           LineHeight="16"
                           RecognizesAccessKey="True"
                           TextTrimming="CharacterEllipsis"
@@ -55,6 +67,11 @@
     </Setter>
   </Style>
 
+  <Style Selector="Button TextBlock.ButtonIn">
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
+  </Style>
+  
   <Style Selector="Button.ListItem /template/ Border#PART_Background">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
@@ -75,53 +92,55 @@
     <Setter Property="Opacity" Value="0.6"/>
   </Style>
 
-  <Style Selector="Button TextBlock.ButtonIn">
-    <Setter Property="FontSize" Value="13"/>
-    <Setter Property="LineHeight" Value="16"/>
-    <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
+  <Style Selector="Button vkui|VKIcon">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonSecondaryForegroundBrush}"/>
   </Style>
   
   <Style Selector="Button.Primary">
     <Setter Property="Background" Value="{DynamicResource VKButtonPrimaryBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonPrimaryForegroundBrush}"/>
+    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonPrimaryForegroundBrush}"/>
   </Style>
 
-  <Style Selector="Button.Primary TextBlock.ButtonIn">
+  <Style Selector="Button.Primary vkui|VKIcon">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonPrimaryForegroundBrush}"/>
   </Style>
 
   <Style Selector="Button.Tertiary">
     <Setter Property="Background" Value="{DynamicResource VKButtonTertiaryBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonTertiaryForegroundBrush}"/>
+    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonTertiaryForegroundBrush}"/>
   </Style>
 
-  <Style Selector="Button.Tertiary TextBlock.ButtonIn">
+  <Style Selector="Button.Tertiary vkui|VKIcon">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonTertiaryForegroundBrush}"/>
   </Style>
 
   <Style Selector="Button.Outline">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonOutlineForegroundBrush}"/>
+    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonOutlineForegroundBrush}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource VKButtonOutlineBorderBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
   </Style>
 
-  <Style Selector="Button.Outline TextBlock.ButtonIn">
+  <Style Selector="Button.Outline vkui|VKIcon">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonOutlineForegroundBrush}"/>
   </Style>
 
   <Style Selector="Button.Commerce">
     <Setter Property="Background" Value="{DynamicResource VKButtonCommerceBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
+    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
   </Style>
 
   <Style Selector="Button.Negative">
     <Setter Property="Background" Value="{DynamicResource VKDestructiveBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
+    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
   </Style>
 
-  <Style Selector="Button.Commerce TextBlock.ButtonIn, Button.Negative TextBlock.ButtonIn">
+  <Style Selector="Button.Commerce vkui|VKIcon, Button.Negative vkui|VKIcon">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
   </Style>
 
@@ -129,22 +148,23 @@
     <Setter Property="MinHeight" Value="32"/>
     <Setter Property="Padding" Value="16,6,16,6"/>
     <Setter Property="FontSize" Value="14"/>
+    <Setter Property="TextElement.FontSize" Value="14"/>
   </Style>
 
   <Style Selector="Button.Medium /template/ ContentPresenter#PART_Presenter">
-    <Setter Property="LineHeight" Value="20"/>
+    <Setter Property="LineHeight" Value="18"/>
   </Style>
 
   <Style Selector="Button.Medium TextBlock.ButtonIn">
     <Setter Property="FontSize" Value="14"/>
-    <Setter Property="LineHeight" Value="20"/>
-    <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
+    <Setter Property="LineHeight" Value="18"/>
   </Style>
 
   <Style Selector="Button.Large">
     <Setter Property="MinHeight" Value="36"/>
     <Setter Property="Padding" Value="20,7,20,7"/>
     <Setter Property="FontSize" Value="15"/>
+    <Setter Property="TextElement.FontSize" Value="15"/>
   </Style>
 
   <Style Selector="Button.Large /template/ ContentPresenter#PART_Presenter">
@@ -154,6 +174,5 @@
   <Style Selector="Button.Large TextBlock.ButtonIn">
     <Setter Property="FontSize" Value="15"/>
     <Setter Property="LineHeight" Value="20"/>
-    <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}"/>
   </Style>
 </Styles>

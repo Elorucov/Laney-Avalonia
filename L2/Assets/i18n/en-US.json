@@ -203,5 +203,7 @@
   "atchpicker_doctype_other": "Other",
   "atchpicker_doctype_pictures": "Pictures",
   "atchpicker_doctype_texts": "Texts",
-  "atchpicker_doctype_video": "Video"
+  "atchpicker_doctype_video": "Video",
+  "atchpicker_upload_photo": "Upload photo",
+  "atchpicker_upload_video": "Upload video"
 }

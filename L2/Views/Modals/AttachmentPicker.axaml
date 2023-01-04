@@ -30,11 +30,11 @@
       </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="PhotoTemplate" x:DataType="vko:Photo">
+    <DataTemplate x:Key="PhotoTemplate">
       <Rectangle Margin="2" RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding MinimalSizedPhoto.Uri}"/>
     </DataTemplate>
     
-    <DataTemplate x:Key="VideoTemplate" x:DataType="vko:Video">
+    <DataTemplate x:Key="VideoTemplate">
       <Grid ColumnDefinitions="Auto *">
         <Grid Width="118" Height="78">
           <Rectangle RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Image[1].Uri}"/>
@@ -46,7 +46,7 @@
       </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="DocTemplate" x:DataType="vko:Document">
+    <DataTemplate x:Key="DocTemplate">
       <Grid ColumnDefinitions="Auto *">
         <ContentPresenter Width="48" Height="48" Content="{Binding Converter={StaticResource dic}}"/>
         <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
@@ -71,10 +71,15 @@
   <Grid RowDefinitions="Auto * Auto">
     <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitleAndMove="False"/>
     
-    <TabControl x:Name="Tabs" Grid.RowSpan="2" SelectionChanged="Tabs_SelectionChanged">
+    <TabControl x:Name="Tabs" Classes="Accent" Grid.RowSpan="2" SelectionChanged="Tabs_SelectionChanged">
       <TabItem Header="{i18n:Localize photo}">
         <Grid RowDefinitions="Auto *">
-          <Button HorizontalAlignment="Stretch" Margin="12" Content="Upload"/>
+          <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12">
+            <StackPanel Orientation="Horizontal">
+              <vkui:VKIcon Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
+              <TextBlock Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_photo}"/>
+            </StackPanel>
+          </Button>
           <ScrollViewer Grid.Row="1">
             <StackPanel>
               <ListBox x:Name="PhotoAlbumsList" Classes="GridView AlbumList" SelectionMode="Single" Items="{Binding PhotoAlbums}" ItemTemplate="{StaticResource PhotoAlbumTemplate}" SelectedItem="{Binding SelectedPhotoAlbum, Mode=TwoWay}">
@@ -85,7 +90,7 @@
                 </ListBox.ItemsPanel>
               </ListBox>
 
-              <ListBox x:Name="PhotosList" Classes="GridView" Margin="0,10,0,0" MaxWidth="520" Items="{Binding Photos.Items}" ItemTemplate="{StaticResource PhotoTemplate}" SelectionMode="Multiple" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+              <ListBox x:Name="PhotosList" Classes="GridView" Margin="0,10,0,0" MaxWidth="520" Items="{Binding Photos.Items}" ItemTemplate="{StaticResource PhotoTemplate}" SelectionMode="Multiple,Toggle"  VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemsPanel>
                   <ItemsPanelTemplate>
                     <WrapPanel ItemHeight="88" ItemWidth="130"/>
@@ -113,7 +118,12 @@
 
       <TabItem Header="{i18n:Localize video}">
         <Grid RowDefinitions="Auto *">
-          <Button HorizontalAlignment="Stretch" Margin="12" Content="Upload"/>
+          <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12">
+            <StackPanel Orientation="Horizontal">
+              <vkui:VKIcon Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
+              <TextBlock Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_video}"/>
+            </StackPanel>
+          </Button>
           <ScrollViewer Grid.Row="1">
             <StackPanel>
               <ListBox x:Name="VideoAlbumsList" Classes="GridView AlbumList" SelectionMode="Single" Items="{Binding VideoAlbums}" ItemTemplate="{StaticResource VideoAlbumTemplate}" SelectedItem="{Binding SelectedVideoAlbum, Mode=TwoWay}">
@@ -124,7 +134,7 @@
                 </ListBox.ItemsPanel>
               </ListBox>
 
-              <ListBox x:Name="VideosList" Margin="0,6,0,0" Items="{Binding Videos.Items}" ItemTemplate="{StaticResource VideoTemplate}" SelectionMode="Multiple" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+              <ListBox x:Name="VideosList" Margin="0,6,0,0" Items="{Binding Videos.Items}" ItemTemplate="{StaticResource VideoTemplate}" SelectionMode="Multiple,Toggle" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
               <Border MinHeight="32">
                 <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Videos.IsLoading}"/>
@@ -146,8 +156,10 @@
 
       <TabItem Header="{i18n:Localize doc}">
         <Grid ColumnDefinitions="Auto *" RowDefinitions="Auto *">
-          <Button Margin="12,12,0,12" Content="Upload"/>
-          <ComboBox x:Name="DocsTypeBox" Margin="12" Grid.Column="1" SelectedIndex="{Binding DocumentTypeIndex, Mode=TwoWay}">
+          <Button Classes="Tertiary Medium" Margin="12,0,0,12">
+            <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
+          </Button>
+          <ComboBox x:Name="DocsTypeBox" Margin="12,0,12,12" Grid.Column="1" SelectedIndex="{Binding DocumentTypeIndex, Mode=TwoWay}">
             <ComboBoxItem Content="{i18n:Localize all}"/>
             <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_texts}"/>
             <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_archives}"/>
@@ -161,7 +173,7 @@
 
           <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
             <StackPanel>
-              <ListBox x:Name="DocsList" Margin="0,6,0,0" Items="{Binding Documents.Items}" ItemTemplate="{StaticResource DocTemplate}" SelectionMode="Multiple" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+              <ListBox x:Name="DocsList" Margin="0,6,0,0" Items="{Binding Documents.Items}" ItemTemplate="{StaticResource DocTemplate}" SelectionMode="Multiple,Toggle" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
               <Border MinHeight="32">
                 <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Documents.IsLoading}"/>
@@ -182,7 +194,7 @@
       </TabItem>
     </TabControl>
     
-    <Rectangle VerticalAlignment="Bottom" Grid.Row="1" Height="24" Fill="{DynamicResource TransparentToContentGradientBrush}"/>
+    <Rectangle VerticalAlignment="Bottom" Grid.Row="1" Height="24" IsHitTestVisible="False" Fill="{DynamicResource TransparentToContentGradientBrush}"/>
       
     <Button Grid.Row="2" Classes="Primary Large" Margin="12,0,12,12" HorizontalAlignment="Stretch" IsEnabled="{Binding !!SelectedAttachmentsCount}">
       <StackPanel Orientation="Horizontal">

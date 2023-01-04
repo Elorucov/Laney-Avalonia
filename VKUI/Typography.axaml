@@ -25,6 +25,11 @@
     <Setter Property="LineHeight" Value="20"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
   </Style>
+  <Style Selector="TextBlock.Default">
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="LineHeight" Value="20"/>
+    <Setter Property="FontFamily" Value="{StaticResource VKSansTextRegular}"/>
+  </Style>
   <Style Selector="TextBlock.Subhead">
     <Setter Property="FontSize" Value="14"/>
     <Setter Property="LineHeight" Value="18"/>

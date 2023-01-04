@@ -23,9 +23,9 @@ $newversion = "$($ver[0]).$($ver[1]).$($nextbuild)";
 
 echo "Current build: $($currentbuild)";
 
-$location = "$(Get-Location)/bin/Release/net6.0";
+$location = "$(Get-Location)/bin/Release/net7.0";
 if ($IsWindows) {
-    $location = "$(Get-Location)\bin\Release\net6.0";
+    $location = "$(Get-Location)\bin\Release\net7.0";
 }
 
 if ($IsWindows) {
@@ -33,11 +33,6 @@ if ($IsWindows) {
     echo $btagw1;
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-x64 --self-contained false -p:PublishSingleFile=true -p:Version=$($btagw1) -p:DefineConstants=WIN";
     echo "Win x86-64 is done.$([Environment]::NewLine)";
-
-    $btagw2 = "$($currentversion)-win-x86-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
-    echo $btagw2;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-x86 --self-contained false -p:PublishSingleFile=true -p:Version=$($btagw2) -p:DefineConstants=WIN";
-    echo "Win x86 is done.$([Environment]::NewLine)";
 
     $btagw3 = "$($currentversion)-win-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw3;
@@ -82,7 +77,7 @@ if ($IsMacOS) {
     Remove-Item -Path "$($location)/publish" -Recurse;
     echo "macOS 11 arm64 is done.$([Environment]::NewLine)";
 
-    $btagm2 = "$($currentversion)-macos12-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagm2 = "$($currentversion)-macos-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm2;
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx.12-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC";
     Copy-Item "$($projfolder)/Assets/Logo/Laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"

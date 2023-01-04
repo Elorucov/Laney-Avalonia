@@ -94,8 +94,8 @@ namespace ELOR.Laney.Controls {
                 TextAlignment = TextAlignment.Center,
                 Margin = new Thickness(4, 10, 4, 10)
             };
-            label.Classes.Add("SemiBold");
-            if (button.Color != BotButtonColor.Default || button.Action.Type == BotButtonType.VKPay) 
+            // label.Classes.Add("SemiBold");
+            if (button.Color != BotButtonColor.Default || button.Action.Type == BotButtonType.VKPay)
                 label.Classes.Add("ButtonIn");
 
             contentIn.Children.Add(icon);
