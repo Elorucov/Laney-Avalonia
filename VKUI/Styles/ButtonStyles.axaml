@@ -11,7 +11,7 @@
         <Button Margin="8" Classes="Negative" Content="Negative"/>
         <Button Margin="8" Classes="Medium Commerce">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <vkui:VKIcon Margin="0,0,6,0" Id="Icon20ServicesOutline"/>
+            <vkui:VKIcon Classes="ButtonIn" Margin="0,0,6,0" Id="Icon20ServicesOutline"/>
             <TextBlock Classes="ButtonIn" VerticalAlignment="Center" Text="Test"/>
           </StackPanel>
         </Button>
@@ -92,7 +92,7 @@
     <Setter Property="Opacity" Value="0.6"/>
   </Style>
 
-  <Style Selector="Button vkui|VKIcon">
+  <Style Selector="Button vkui|VKIcon.ButtonIn">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonSecondaryForegroundBrush}"/>
   </Style>
   
@@ -102,7 +102,7 @@
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonPrimaryForegroundBrush}"/>
   </Style>
 
-  <Style Selector="Button.Primary vkui|VKIcon">
+  <Style Selector="Button.Primary vkui|VKIcon.ButtonIn">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonPrimaryForegroundBrush}"/>
   </Style>
 
@@ -112,7 +112,7 @@
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonTertiaryForegroundBrush}"/>
   </Style>
 
-  <Style Selector="Button.Tertiary vkui|VKIcon">
+  <Style Selector="Button.Tertiary vkui|VKIcon.ButtonIn">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonTertiaryForegroundBrush}"/>
   </Style>
 
@@ -124,7 +124,7 @@
     <Setter Property="BorderThickness" Value="1"/>
   </Style>
 
-  <Style Selector="Button.Outline vkui|VKIcon">
+  <Style Selector="Button.Outline vkui|VKIcon.ButtonIn">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonOutlineForegroundBrush}"/>
   </Style>
 
@@ -140,7 +140,7 @@
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
   </Style>
 
-  <Style Selector="Button.Commerce vkui|VKIcon, Button.Negative vkui|VKIcon">
+  <Style Selector="Button.Commerce vkui|VKIcon.ButtonIn, Button.Negative vkui|VKIcon.ButtonIn">
     <Setter Property="Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
   </Style>
 

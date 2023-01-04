@@ -76,8 +76,8 @@
         <Grid RowDefinitions="Auto *">
           <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12">
             <StackPanel Orientation="Horizontal">
-              <vkui:VKIcon Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
-              <TextBlock Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_photo}"/>
+              <vkui:VKIcon Classes="ButtonIn" Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
+              <TextBlock Classes="ButtonIn" Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_photo}"/>
             </StackPanel>
           </Button>
           <ScrollViewer Grid.Row="1">
@@ -120,8 +120,8 @@
         <Grid RowDefinitions="Auto *">
           <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12">
             <StackPanel Orientation="Horizontal">
-              <vkui:VKIcon Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
-              <TextBlock Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_video}"/>
+              <vkui:VKIcon Classes="ButtonIn" Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
+              <TextBlock Classes="ButtonIn" Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_video}"/>
             </StackPanel>
           </Button>
           <ScrollViewer Grid.Row="1">
@@ -157,7 +157,7 @@
       <TabItem Header="{i18n:Localize doc}">
         <Grid ColumnDefinitions="Auto *" RowDefinitions="Auto *">
           <Button Classes="Tertiary Medium" Margin="12,0,0,12">
-            <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
+            <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
           </Button>
           <ComboBox x:Name="DocsTypeBox" Margin="12,0,12,12" Grid.Column="1" SelectedIndex="{Binding DocumentTypeIndex, Mode=TwoWay}">
             <ComboBoxItem Content="{i18n:Localize all}"/>
