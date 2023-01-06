@@ -1,11 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
+using Avalonia.Platform.Storage;
 using DynamicData;
 using ELOR.Laney.Core;
 using ELOR.Laney.ViewModels.Modals;
 using ELOR.VKAPILib.Objects;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using VKUI.Windows;
 
@@ -59,6 +62,37 @@ namespace ELOR.Laney.Views.Modals {
             if (e.RemovedItems.Count > 0) {
                 ViewModel.SelectedAttachments.Remove(e.RemovedItems[0] as AttachmentBase);
             }
+        }
+
+        private async void OpenFilePickerForPhoto(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            if (!StorageProvider.CanOpen) return;
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions { 
+                AllowMultiple = true,
+                FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.ImageAll }
+            });
+            Close(files.ToList());
+        }
+
+        private async void OpenFilePickerForVideo(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            if (!StorageProvider.CanOpen) return;
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                AllowMultiple = true,
+                FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All } // Video!!!
+            });
+            Close(files.ToList());
+        }
+
+        private async void OpenFilePickerForDoc(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            if (!StorageProvider.CanOpen) return;
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                AllowMultiple = true,
+                FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All }
+            });
+            Close(files.ToList());
+        }
+
+        private void CloseAndAttach(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            Close(ViewModel.SelectedAttachments.ToList());
         }
     }
 }

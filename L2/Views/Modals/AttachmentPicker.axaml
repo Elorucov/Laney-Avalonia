@@ -74,7 +74,7 @@
     <TabControl x:Name="Tabs" Classes="Accent" Grid.RowSpan="2" SelectionChanged="Tabs_SelectionChanged">
       <TabItem Header="{i18n:Localize photo}">
         <Grid RowDefinitions="Auto *">
-          <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12">
+          <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12" Click="OpenFilePickerForPhoto">
             <StackPanel Orientation="Horizontal">
               <vkui:VKIcon Classes="ButtonIn" Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
               <TextBlock Classes="ButtonIn" Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_photo}"/>
@@ -118,7 +118,7 @@
 
       <TabItem Header="{i18n:Localize video}">
         <Grid RowDefinitions="Auto *">
-          <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12">
+          <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12" Click="OpenFilePickerForVideo">
             <StackPanel Orientation="Horizontal">
               <vkui:VKIcon Classes="ButtonIn" Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
               <TextBlock Classes="ButtonIn" Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_video}"/>
@@ -156,7 +156,7 @@
 
       <TabItem Header="{i18n:Localize doc}">
         <Grid ColumnDefinitions="Auto *" RowDefinitions="Auto *">
-          <Button Classes="Tertiary Medium" Margin="12,0,0,12">
+          <Button Classes="Tertiary Medium" Margin="12,0,0,12" Click="OpenFilePickerForDoc">
             <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
           </Button>
           <ComboBox x:Name="DocsTypeBox" Margin="12,0,12,12" Grid.Column="1" SelectedIndex="{Binding DocumentTypeIndex, Mode=TwoWay}">
@@ -196,7 +196,7 @@
     
     <Rectangle VerticalAlignment="Bottom" Grid.Row="1" Height="24" IsHitTestVisible="False" Fill="{DynamicResource TransparentToContentGradientBrush}"/>
       
-    <Button Grid.Row="2" Classes="Primary Large" Margin="12,0,12,12" HorizontalAlignment="Stretch" IsEnabled="{Binding !!SelectedAttachmentsCount}">
+    <Button Grid.Row="2" Classes="Primary Large" Margin="12,0,12,12" HorizontalAlignment="Stretch" IsEnabled="{Binding !!SelectedAttachmentsCount}" Click="CloseAndAttach">
       <StackPanel Orientation="Horizontal">
         <TextBlock Classes="ButtonIn" Text="{i18n:Localize attach}"/>
         <Border IsVisible="{Binding !!SelectedAttachmentsCount}" Margin="8,0,0,0" MinWidth="16" Height="16" CornerRadius="8" Background="{DynamicResource VKButtonPrimaryForegroundBrush}">

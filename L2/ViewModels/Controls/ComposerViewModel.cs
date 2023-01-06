@@ -1,10 +1,11 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Interactivity;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using VKUI.Controls;
 using VKUI.Popups;
 
@@ -52,17 +53,17 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             var session = VKSession.GetByDataContext(target);
 
-            photo.Click += (a, b) => {
+            photo.Click += async (a, b) => {
                 AttachmentPicker ap = new AttachmentPicker(session, 10 - Attachments.Count, 0);
-                ap.ShowDialog<object>(session.Window);
+                AddAttachments(await ap.ShowDialog<object>(session.Window));
             };
-            video.Click += (a, b) => {
+            video.Click += async (a, b) => {
                 AttachmentPicker ap = new AttachmentPicker(session, 10 - Attachments.Count, 1);
-                ap.ShowDialog<object>(session.Window);
+                AddAttachments(await ap.ShowDialog<object>(session.Window));
             };
-            file.Click += (a, b) => {
+            file.Click += async (a, b) => {
                 AttachmentPicker ap = new AttachmentPicker(session, 10 - Attachments.Count, 2);
-                ap.ShowDialog<object>(session.Window);
+                AddAttachments(await ap.ShowDialog<object>(session.Window));
             };
             poll.Click += (a, b) => {
                 
@@ -73,6 +74,15 @@ namespace ELOR.Laney.ViewModels.Controls {
             ash.Items.Add(file);
             ash.Items.Add(poll);
             ash.ShowAt(target);
+        }
+
+        private void AddAttachments(object pickerResult) {
+            if (pickerResult == null) return;
+            if (pickerResult is List<AttachmentBase> attachments) {
+                foreach (AttachmentBase attachment in CollectionsMarshal.AsSpan(attachments)) {
+                    Attachments.Add(new OutboundAttachmentViewModel(attachment));
+                }
+            }
         }
     }
 }

@@ -31,9 +31,9 @@ namespace ELOR.Laney.Extensions {
             return $"{Math.Round((double)b / 1073741824, 1)} Gb";
         }
 
-        public static PhotoSizes GetSizeAndUriForThumbnail(this IPreview preview) {
-            int maxWidth = 360; // TODO: учитывать системное масштабирование, но оно прописано у окна,
-                                // коих может быть несколько в разных мониторах с разным масштабированием.
+        public static PhotoSizes GetSizeAndUriForThumbnail(this IPreview preview, int maxWidth = 360) {
+            // TODO: учитывать системное масштабирование, но оно прописано у окна,
+            // коих может быть несколько в разных мониторах с разным масштабированием.
             PhotoSizes ps = null;
             if (preview is Photo p) {
                 foreach (PhotoSizes s in CollectionsMarshal.AsSpan(p.Sizes)) {

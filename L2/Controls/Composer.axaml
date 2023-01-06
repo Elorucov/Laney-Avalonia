@@ -36,18 +36,43 @@
       </Button>
     </DockPanel>
 
-    <Border x:Name="AttachmentsArea" Margin="0,12,0,2" IsVisible="{Binding !!Attachments.Count}">
+    <Border x:Name="AttachmentsArea" Margin="0,8,0,2" IsVisible="{Binding !!Attachments.Count}">
       <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden">
-        <ItemsRepeater Margin="6,0">
+        <ItemsRepeater Margin="6,0" Items="{Binding Attachments}">
           <ItemsRepeater.Layout>
             <StackLayout Orientation="Horizontal" DisableVirtualization="True"/>
           </ItemsRepeater.Layout>
+          <ItemsRepeater.ItemTemplate>
+            <DataTemplate>
+              <Border x:Name="OutboundAttachmentRoot" Background="{DynamicResource VKImBubbleIncomingBrush}" Width="88" Height="88" CornerRadius="8" Margin="6,4,6,0">
+                <Grid x:Name="OAInfoRoot">
+                  <StackPanel x:Name="DocumentInfo" Margin="8" IsVisible="{Binding PreviewImage, Converter={x:Static ObjectConverters.IsNull}}">
+                    <Border HorizontalAlignment="Left" Width="36" Height="36" Background="{DynamicResource VKIconSecondaryBrush}" CornerRadius="6">
+                      <vkui:VKIcon Foreground="White" Id="{Binding IconId}"/>
+                    </Border>
+                    <TextBlock Margin="0,4,0,0" Classes="Caption1" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{Binding DisplayName}"/>
+                  </StackPanel>
+
+                  <Rectangle x:Name="Preview" RadiusX="8" RadiusY="8" IsVisible="{Binding PreviewImage, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <Rectangle.Fill>
+                      <ImageBrush Source="{Binding PreviewImage}" AlignmentX="Center" AlignmentY="Center" Stretch="UniformToFill"/>
+                    </Rectangle.Fill>
+                  </Rectangle>
+
+                  <Border x:Name="ExtraInfoContainer" IsVisible="{Binding ExtraInfo, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Background="#66000000" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4" Padding="6,3" CornerRadius="6">
+                    <TextBlock Classes="Caption3" Foreground="White" Text="{Binding ExtraInfo}"/>
+                  </Border>
+
+                  <Border HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-4,-4,0" CornerRadius="12" BoxShadow="0 2 4 #14000000">
+                    <Button Background="{DynamicResource VKIconSecondaryBrush}" Padding="0" Width="24" Height="24" MinHeight="24" CornerRadius="12" BorderThickness="2" BorderBrush="{DynamicResource VKBackgroundContentBrush}" Click="RemoveAttachment">
+                      <vkui:VKIcon Foreground="White" Id="{x:Static vkui:VKIconNames.Icon16Cancel}"/>
+                    </Button>
+                  </Border>
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsRepeater.ItemTemplate>
         </ItemsRepeater>
-        <!--<StackPanel Orientation="Horizontal" Margin="6,0">
-                <Border Background="{DynamicResource VKIconOutlineMediumBrush}" Width="88" Height="88" CornerRadius="8" Margin="6,0"/>
-                <Border Background="{DynamicResource VKIconOutlineMediumBrush}" Width="88" Height="88" CornerRadius="8" Margin="6,0"/>
-                <Border Background="{DynamicResource VKIconOutlineMediumBrush}" Width="88" Height="88" CornerRadius="8" Margin="6,0"/>
-              </StackPanel>-->
       </ScrollViewer>
     </Border>
 
