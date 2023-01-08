@@ -21,6 +21,7 @@
   "retry": "Повторити спробу",
   "open": "Вiдкрити",
   "attach": "Прикріпити",
+  "delete": "Видалити",
   "sign_in": "Увійти",
 
   "landing_title": "Це Laney",
@@ -205,5 +206,6 @@
   "atchpicker_doctype_texts": "Текстові",
   "atchpicker_doctype_video": "Відео",
   "atchpicker_upload_photo": "Завантажити фотографію",
-  "atchpicker_upload_video": "Завантажити відео"
+  "atchpicker_upload_video": "Завантажити відео",
+  "upload_error": "Не вдалося завантажити файл"
 }

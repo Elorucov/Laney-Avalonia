@@ -1,8 +1,11 @@
-﻿using Avalonia;
+﻿using Avalonia.Media.Imaging;
 using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
-using System.Drawing;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.Extensions {
     public static class CommonExtensions {
@@ -32,26 +35,47 @@ namespace ELOR.Laney.Extensions {
         }
 
         public static PhotoSizes GetSizeAndUriForThumbnail(this IPreview preview, int maxWidth = 360) {
-            // TODO: учитывать системное масштабирование, но оно прописано у окна,
-            // коих может быть несколько в разных мониторах с разным масштабированием.
+            maxWidth = Convert.ToInt32(maxWidth * App.Current.DPI);
             PhotoSizes ps = null;
             if (preview is Photo p) {
                 foreach (PhotoSizes s in CollectionsMarshal.AsSpan(p.Sizes)) {
                     ps = s;
-                    if (s.Width > maxWidth) break; // да, выбирать будем первую фотку с шириной больше maxWidth
+                    if (s.Width >= maxWidth) break; // да, выбирать будем первую фотку с шириной больше maxWidth
                 }
             } else if (preview is Video v) {
                 foreach (PhotoSizes s in CollectionsMarshal.AsSpan(v.Image)) {
                     ps = s;
-                    if (s.Width > maxWidth) break;
+                    if (s.Width >= maxWidth) break;
                 }
             } else if (preview is Document d && d.Preview != null) {
                 foreach (PhotoSizes s in CollectionsMarshal.AsSpan(d.Preview.Photo.Sizes)) {
                     ps = s;
-                    if (s.Width > maxWidth) break;
+                    if (s.Width >= maxWidth) break;
                 }
             }
+            if (ps != null) {
+                Debug.WriteLine($"GetSizeAndUriForThumbnail: Requested {maxWidth}, found {ps.Width}");
+            } else {
+                Debug.WriteLine($"GetSizeAndUriForThumbnail: Requested {maxWidth} but not found!");
+            }
             return ps;
+        }
+
+        public static async Task<Bitmap> TryGetBitmapFromStreamAsync(this Stream stream, int decodeWidth = 0) {
+            try {
+                if (decodeWidth > 0) {
+                    decodeWidth = Convert.ToInt32(decodeWidth * App.Current.DPI);
+                    return await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth));
+                } else {
+                    return new Bitmap(stream);
+                }
+            } catch (ArgumentNullException) {
+                Log.Warning("TryGetBitmapFromStream: data in stream is not a bitmap!");
+                return null;
+            } catch (Exception ex) {
+                Log.Error(ex, "TryGetBitmapFromStream error!");
+                return null;
+            }
         }
     }
 }

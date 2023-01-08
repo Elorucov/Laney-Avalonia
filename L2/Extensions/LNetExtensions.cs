@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Extensions {
@@ -16,21 +17,34 @@ namespace ELOR.Laney.Extensions {
         static Dictionary<string, Bitmap> cachedImages = new Dictionary<string, Bitmap>();
         const int cachesLimit = 500;
 
-        public static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri) {
+        public static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri, int decodeWidth = 0) {
             string url = uri.AbsoluteUri;
-            if (!cachedImages.ContainsKey(url)) {
+            if (decodeWidth > 0) { // DPI aware
+                decodeWidth = Convert.ToInt32(decodeWidth * App.Current.DPI);
+            }
+
+            string key = decodeWidth > 0
+                ? Convert.ToBase64String(Encoding.UTF8.GetBytes(url)) + "||" + decodeWidth
+                : url;
+
+            if (!cachedImages.ContainsKey(key)) {
                 var response = await LNet.GetAsync(uri);
                 var bytes = await response.Content.ReadAsByteArrayAsync();
                 Stream stream = new MemoryStream(bytes);
-                if (bytes.Length == 0) throw new Exception("Image length is 0.");
-                Bitmap bitmap = new Bitmap(stream);
+                if (bytes.Length == 0) throw new Exception("Image length is 0!");
+
+                Bitmap bitmap = decodeWidth > 0
+                    ? await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality))
+                    : new Bitmap(stream);
+
                 if (cachedImages.Count == cachesLimit) cachedImages.Remove(cachedImages.First().Key);
-                if (!cachedImages.ContainsKey(url)) {
-                    cachedImages.Add(url, bitmap);
+                if (!cachedImages.ContainsKey(key)) {
+                    cachedImages.Add(key, bitmap);
                 }
+                await stream.FlushAsync();
                 return bitmap;
             } else {
-                return cachedImages[url];
+                return cachedImages[key];
             }
         }
 
@@ -38,34 +52,34 @@ namespace ELOR.Laney.Extensions {
             return await LNet.PostAsync(uri, parameters, headers);
         }
 
-        public static async Task<Bitmap> GetBitmapAsync(Uri source) {
+        public static async Task<Bitmap> GetBitmapAsync(Uri source, int decodeWidth = 0) {
             try {
-                return await TryGetCachedBitmapAsync(source);
+                return await TryGetCachedBitmapAsync(source, decodeWidth);
             } catch (Exception ex) {
                 Log.Error(ex, "GetBitmapAsync error!");
                 return null;
             }
         }
 
-        public static async void SetUriSourceAsync(this Image image, Uri source) {
+        public static async void SetUriSourceAsync(this Image image, Uri source, int decodeWidth = 0) {
             try {
-                image.Source = await TryGetCachedBitmapAsync(source);
+                image.Source = await TryGetCachedBitmapAsync(source, decodeWidth);
             } catch (Exception ex) {
                 Log.Error(ex, "SetUriSourceAsync error!");
             }
         }
 
-        public static async void SetUriSourceAsync(this ImageBrush imageBrush, Uri source) {
+        public static async void SetUriSourceAsync(this ImageBrush imageBrush, Uri source, int decodeWidth = 0) {
             try {
-                imageBrush.Source = await TryGetCachedBitmapAsync(source);
+                imageBrush.Source = await TryGetCachedBitmapAsync(source, decodeWidth);
             } catch (Exception ex) {
                 Log.Error(ex, "SetUriSourceAsync error!");
             }
         }
 
-        public static async void SetImageFillAsync(this Shape shape, Uri source) {
+        public static async void SetImageFillAsync(this Shape shape, Uri source, int decodeWidth = 0) {
             try {
-                Bitmap bitmap = await TryGetCachedBitmapAsync(source);
+                Bitmap bitmap = await TryGetCachedBitmapAsync(source, decodeWidth);
                 shape.Fill = new ImageBrush(bitmap) {
                     BitmapInterpolationMode = BitmapInterpolationMode.HighQuality,
                     AlignmentX = AlignmentX.Center,
@@ -77,10 +91,10 @@ namespace ELOR.Laney.Extensions {
             }
         }
 
-        public static async void SetImageBackgroundAsync(this Border control, Uri source) {
+        public static async void SetImageBackgroundAsync(this Border control, Uri source, int decodeWidth = 0) {
             if (control == null) return;
             try {
-                Bitmap bitmap = await TryGetCachedBitmapAsync(source);
+                Bitmap bitmap = await TryGetCachedBitmapAsync(source, decodeWidth);
                 control.Background = new ImageBrush(bitmap) {
                     BitmapInterpolationMode = BitmapInterpolationMode.HighQuality,
                     AlignmentX = AlignmentX.Center,

@@ -17,6 +17,7 @@
         public const string Icon16Spinner = "Icon16Spinner";
         public const string Icon16UploadOutline = "Icon16UploadOutline";
         public const string Icon16Verified = "Icon16Verified";
+        public const string Icon16WarningTriangleOutline = "Icon16WarningTriangleOutline";
 
         public const string Icon20CameraOutline = "Icon20CameraOutline";
         public const string Icon20CheckCircleOff = "Icon20CheckCircleOff";

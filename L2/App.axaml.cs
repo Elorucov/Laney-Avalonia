@@ -26,6 +26,7 @@ namespace ELOR.Laney {
         private static App _current;
         public static new App Current => _current;
         public ClassicDesktopStyleApplicationLifetime DesktopLifetime { get; private set; }
+        public double DPI { get; private set; }
 
         public override void Initialize() {
             _current = this;
@@ -82,12 +83,17 @@ namespace ELOR.Laney {
                     int uid = Settings.Get<int>(Settings.VK_USER_ID);
                     string token = Settings.Get<string>(Settings.VK_TOKEN);
                     if (uid > 0 && !String.IsNullOrEmpty(token)) {
+                        Log.Information($"Authorized user: {uid}");
                         VKSession.StartUserSession(uid, token);
                         desktop.MainWindow = VKSession.Main.Window;
                     } else {
+                        Log.Information($"Not authorized. Opening sign in window...");
                         desktop.MainWindow = new Views.SignInWindow();
                     }
                 }
+
+                DPI = desktop.MainWindow.Screens.All.Select(s => s.Scaling).Max();
+                Log.Information($"Maximal DPI: {DPI}");
             }
 
             base.OnFrameworkInitializationCompleted();

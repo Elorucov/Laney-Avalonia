@@ -1,16 +1,20 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Platform.Storage.FileIO;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using VKUI.Controls;
 using VKUI.Popups;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public class ComposerViewModel : CommonViewModel {
+        private VKSession session;
+        
         private bool _isEditMode;
         private string _text;
         private ObservableCollection<OutboundAttachmentViewModel> _attachments = new ObservableCollection<OutboundAttachmentViewModel>();
@@ -25,7 +29,8 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         ChatViewModel Chat;
 
-        public ComposerViewModel(ChatViewModel chat) {
+        public ComposerViewModel(VKSession session, ChatViewModel chat) {
+            this.session = session;
             Chat = chat;
         }
 
@@ -76,11 +81,16 @@ namespace ELOR.Laney.ViewModels.Controls {
             ash.ShowAt(target);
         }
 
-        private void AddAttachments(object pickerResult) {
+        private async void AddAttachments(object pickerResult) {
             if (pickerResult == null) return;
             if (pickerResult is List<AttachmentBase> attachments) {
-                foreach (AttachmentBase attachment in CollectionsMarshal.AsSpan(attachments)) {
-                    Attachments.Add(new OutboundAttachmentViewModel(attachment));
+                foreach (AttachmentBase attachment in attachments) {
+                    Attachments.Add(new OutboundAttachmentViewModel(session, attachment));
+                }
+            } else if (pickerResult is Tuple<int, List<BclStorageFile>> pfiles) {
+                foreach (BclStorageFile file in pfiles.Item2) {
+                    Attachments.Add(new OutboundAttachmentViewModel(session, file, pfiles.Item1));
+                    await Task.Delay(500);
                 }
             }
         }

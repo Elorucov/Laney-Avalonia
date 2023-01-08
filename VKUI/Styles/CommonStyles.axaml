@@ -12,6 +12,9 @@
           <RadioButton GroupName="TestBest" Content="Anna"/>
           <RadioButton GroupName="TestBest" Content="Lena" IsEnabled="False"/>
           <RadioButton GroupName="TestBest" Content="Nastya" IsChecked="True"/>
+        
+          <ProgressBar Margin="0,6" Value="75"/>
+          <ProgressBar Margin="0,6,0,12" IsIndeterminate="True"/>
         </StackPanel>
     </Design.PreviewWith>
 
@@ -279,5 +282,21 @@
 
   <Style Selector="RadioButton:checked /template/ Ellipse#CheckOuterEllipse">
     <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <!-- Progress bar -->
+  <Style Selector="ProgressBar">
+    <Setter Property="Background" Value="{DynamicResource VKSeparatorAlphaBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
+    <Setter Property="CornerRadius" Value="1"/>
+  </Style>
+
+  <Style Selector="ProgressBar /template/ Border, ProgressBar:indeterminate /template/ Border">
+    <Setter Property="CornerRadius" Value="1"/>
+  </Style>
+
+  <Style Selector="ProgressBar:horizontal">
+    <Setter Property="MinWidth" Value="64"/>
+    <Setter Property="MinHeight" Value="2"/>
   </Style>
 </Styles>

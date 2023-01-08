@@ -95,7 +95,7 @@ namespace ELOR.Laney.ViewModels {
 
         public ChatViewModel(VKSession session, int peerId, Message lastMessage = null, bool needSetup = false) {
             this.session = session;
-            Composer = new ComposerViewModel(this);
+            Composer = new ComposerViewModel(session, this);
             SetUpEvents();
             PeerId = peerId;
             Title = peerId.ToString();
@@ -112,7 +112,7 @@ namespace ELOR.Laney.ViewModels {
 
         public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
             this.session = session;
-            Composer = new ComposerViewModel(this);
+            Composer = new ComposerViewModel(session, this);
             SetUpEvents();
             Setup(c);
             if (lastMessage != null) {

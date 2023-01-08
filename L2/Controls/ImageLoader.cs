@@ -28,7 +28,7 @@ namespace ELOR.Laney.Controls {
 
             var bitmap = uri == null
                 ? null
-                : await LNetExtensions.TryGetCachedBitmapAsync(uri);
+                : await LNetExtensions.TryGetCachedBitmapAsync(uri, (int)sender.Width);
             if (GetSource(sender) != uri) return;
             sender.Source = bitmap;
 
@@ -37,12 +37,12 @@ namespace ELOR.Laney.Controls {
 
         private static void OnBackgroundSourceChanged(Border sender, Uri uri) {
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            sender.SetImageBackgroundAsync(uri);
+            sender.SetImageBackgroundAsync(uri, (int)sender.Width);
         }
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {
             sender.Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            sender.SetImageFillAsync(uri);
+            sender.SetImageFillAsync(uri, (int)sender.Width);
         }
 
         public static readonly AttachedProperty<Uri?> SourceProperty = AvaloniaProperty.RegisterAttached<Image, Uri?>("Source", typeof(ImageLoader));

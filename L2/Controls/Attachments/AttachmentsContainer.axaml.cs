@@ -142,10 +142,10 @@ namespace ELOR.Laney.Controls.Attachments {
                     RadiusY = NoMargins ? 4 : 14,
                     Width = imageFixedWidth,
                     Height = size.Width == 0 || size.Height == 0 ? imageFixedWidth :
-                        Math.Min(imageFixedWidth / (double)size.Width * (double)size.Height, imageFixedWidth / 9 * 16),
+                        Math.Min(imageFixedWidth / size.Width * size.Height, imageFixedWidth / 9 * 16),
                     Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4)
                 };
-                if (uri != null) rect.SetImageFillAsync(uri);
+                if (uri != null) rect.SetImageFillAsync(uri, Convert.ToInt32(imageFixedWidth));
                 StandartAttachments.Children.Add(rect);
             } else if (previews.Count > 1) {
                 List<Size> sizes = new List<Size>();
@@ -188,7 +188,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     };
                     Canvas.SetLeft(border, rect.Left);
                     Canvas.SetTop(border, rect.Top);
-                    if (p.Uri != null) border.SetImageBackgroundAsync(p.Uri);
+                    if (p.Uri != null) border.SetImageBackgroundAsync(p.Uri, Convert.ToInt32(rect.Width));
                     canvas.Children.Add(border);
                     i++;
                 }

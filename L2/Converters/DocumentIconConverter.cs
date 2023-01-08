@@ -20,7 +20,7 @@ namespace ELOR.Laney.Converters {
                     CornerRadius = new CornerRadius(4)
                 };
                 if (d.Preview != null) {
-                    b.SetImageBackgroundAsync(d.Preview.Photo.MinimalSizedPhoto.Uri);
+                    b.SetImageBackgroundAsync(d.GetSizeAndUriForThumbnail(48).Uri, 48);
                 } else {
                     b.Child = new VKIcon {
                         Foreground = new SolidColorBrush(Colors.White),

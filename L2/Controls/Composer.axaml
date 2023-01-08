@@ -63,6 +63,14 @@
                     <TextBlock Classes="Caption3" Foreground="White" Text="{Binding ExtraInfo}"/>
                   </Border>
 
+                  <Border x:Name="ProgressContainer" IsVisible="{Binding IsUploading}" VerticalAlignment="Bottom" Margin="4" CornerRadius="4" Background="#66000000">
+                    <ProgressBar Margin="1" Background="Transparent" Foreground="White" Value="{Binding UploadProgress}"/>
+                  </Border>
+
+                  <Button IsVisible="{Binding UploadException, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="Negative" Padding="0" Width="24" Height="24" MinHeight="24" CornerRadius="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8" Click="ShowAttachmentErrorInfo">
+                    <vkui:VKIcon Foreground="White" Id="{x:Static vkui:VKIconNames.Icon16WarningTriangleOutline}"/>
+                  </Button>
+
                   <Border HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-4,-4,0" CornerRadius="12" BoxShadow="0 2 4 #14000000">
                     <Button Background="{DynamicResource VKIconSecondaryBrush}" Padding="0" Width="24" Height="24" MinHeight="24" CornerRadius="12" BorderThickness="2" BorderBrush="{DynamicResource VKBackgroundContentBrush}" Click="RemoveAttachment">
                       <vkui:VKIcon Foreground="White" Id="{x:Static vkui:VKIconNames.Icon16Cancel}"/>

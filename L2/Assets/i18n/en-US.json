@@ -21,6 +21,7 @@
   "retry": "Try again",
   "open": "Open",
   "attach": "Attach",
+  "delete": "Delete",
   "sign_in": "Sign in",
 
   "landing_title": "This is Laney",
@@ -205,5 +206,6 @@
   "atchpicker_doctype_texts": "Texts",
   "atchpicker_doctype_video": "Video",
   "atchpicker_upload_photo": "Upload photo",
-  "atchpicker_upload_video": "Upload video"
+  "atchpicker_upload_video": "Upload video",
+  "upload_error": "Unable to upload the file"
 }

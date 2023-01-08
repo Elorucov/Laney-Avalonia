@@ -31,13 +31,13 @@
     </DataTemplate>
 
     <DataTemplate x:Key="PhotoTemplate">
-      <Rectangle Margin="2" RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding MinimalSizedPhoto.Uri}"/>
+      <Rectangle Margin="2" RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Converter={StaticResource vpsc}, ConverterParameter=130}"/>
     </DataTemplate>
     
     <DataTemplate x:Key="VideoTemplate">
       <Grid ColumnDefinitions="Auto *">
         <Grid Width="118" Height="78">
-          <Rectangle RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Image[1].Uri}"/>
+          <Rectangle RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Converter={StaticResource vpsc}, ConverterParameter=118}"/>
         </Grid>
         <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
           <TextBlock MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{Binding Title}"/>

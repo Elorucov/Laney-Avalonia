@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
+using Avalonia.Platform.Storage.FileIO;
 using DynamicData;
 using ELOR.Laney.Core;
 using ELOR.Laney.ViewModels.Modals;
@@ -15,6 +17,7 @@ using VKUI.Windows;
 namespace ELOR.Laney.Views.Modals {
     public partial class AttachmentPicker : DialogWindow {
         private AttachmentPickerViewModel ViewModel { get { return DataContext as AttachmentPickerViewModel; } }
+        private int Limit;
 
         public AttachmentPicker() {
             InitializeComponent();
@@ -22,6 +25,7 @@ namespace ELOR.Laney.Views.Modals {
 
         public AttachmentPicker(VKSession session, int limit, int tab = 0) {
             InitializeComponent();
+            Limit = limit;
             DataContext = new AttachmentPickerViewModel(session);
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
                 Grid.SetRow(Tabs, 1);
@@ -53,7 +57,7 @@ namespace ELOR.Laney.Views.Modals {
             ListBox listBox = sender as ListBox;
 
             if (e.AddedItems.Count > 0) {
-                if (ViewModel.SelectedAttachmentsCount >= 10) {
+                if (ViewModel.SelectedAttachmentsCount >= Limit) {
                     if (e.AddedItems.Count == 1) listBox.SelectedItems.Remove(e.AddedItems[0]);
                 } else {
                     ViewModel.SelectedAttachments.Add(e.AddedItems[0] as AttachmentBase);
@@ -64,34 +68,34 @@ namespace ELOR.Laney.Views.Modals {
             }
         }
 
-        private async void OpenFilePickerForPhoto(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private async void OpenFilePickerForPhoto(object sender, RoutedEventArgs e) {
             if (!StorageProvider.CanOpen) return;
             var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions { 
                 AllowMultiple = true,
                 FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.ImageAll }
             });
-            Close(files.ToList());
+            if (files.Count > 0) Close(new Tuple<int, List<BclStorageFile>>(Constants.PhotoUploadCommand, files.Cast<BclStorageFile>().ToList()));
         }
 
-        private async void OpenFilePickerForVideo(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private async void OpenFilePickerForVideo(object sender, RoutedEventArgs e) {
             if (!StorageProvider.CanOpen) return;
             var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
                 AllowMultiple = true,
                 FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All } // Video!!!
             });
-            Close(files.ToList());
+            if (files.Count > 0) Close(new Tuple<int, List<BclStorageFile>>(Constants.VideoUploadCommand, files.Cast<BclStorageFile>().ToList()));
         }
 
-        private async void OpenFilePickerForDoc(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private async void OpenFilePickerForDoc(object sender, RoutedEventArgs e) {
             if (!StorageProvider.CanOpen) return;
             var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
                 AllowMultiple = true,
                 FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All }
             });
-            Close(files.ToList());
+            if (files.Count > 0) Close(new Tuple<int, List<BclStorageFile>>(Constants.FileUploadCommand, files.Cast<BclStorageFile>().ToList()));
         }
 
-        private void CloseAndAttach(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private void CloseAndAttach(object sender, RoutedEventArgs e) {
             Close(ViewModel.SelectedAttachments.ToList());
         }
     }

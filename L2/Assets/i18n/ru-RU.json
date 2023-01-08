@@ -21,6 +21,7 @@
   "retry": "Повторить попытку",
   "open": "Открыть",
   "attach": "Прикрепить",
+  "delete": "Удалить",
   "sign_in": "Войти",
 
   "landing_title": "Это Laney",
@@ -205,5 +206,6 @@
   "atchpicker_doctype_texts": "Текстовые",
   "atchpicker_doctype_video": "Видео",
   "atchpicker_upload_photo": "Загрузить фотографию",
-  "atchpicker_upload_video": "Загрузить видео"
+  "atchpicker_upload_video": "Загрузить видео",
+  "upload_error": "Не удалось загрузить файл"
 }
