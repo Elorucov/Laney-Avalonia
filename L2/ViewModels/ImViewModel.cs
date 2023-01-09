@@ -23,16 +23,10 @@ namespace ELOR.Laney.ViewModels {
         private bool _isEmpty = true;
 
         public ReadOnlyObservableCollection<ChatViewModel> SortedChats { get { return _sortedChats; } }
-        public ChatViewModel VisualSelectedChat { get { return _visualSelectedChat; } private set { _visualSelectedChat = value; OnPropertyChanged(); } }
         public bool IsEmpty { get { return _isEmpty; } private set { _isEmpty = value; OnPropertyChanged(); } }
 
         public ImViewModel(VKSession session) {
             this.session = session;
-
-            session.PropertyChanged += (a, b) => {
-                if (b.PropertyName == nameof(VKSession.CurrentOpenedChat))
-                    VisualSelectedChat = session.CurrentOpenedChat;
-            };
 
             var observableChats = _chats.Connect();
             var prop = observableChats.WhenPropertyChanged(c => c.SortIndex).Select(_ => Unit.Default);
@@ -42,7 +36,6 @@ namespace ELOR.Laney.ViewModels {
                 .Bind(out _sortedChats)
                 .Subscribe(t => {
                     IsEmpty = _chats.Count == 0;
-                    VisualSelectedChat = session.CurrentOpenedChat;
                     Debug.WriteLine($"Chats count: {_chats.Count}; sorted count: {_sortedChats.Count}");
                 });
 

@@ -5,6 +5,15 @@ using ELOR.Laney.ViewModels;
 using System.Threading.Tasks;
 using Serilog;
 using Avalonia.Interactivity;
+using Avalonia.Input;
+using System.Diagnostics;
+using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
+using System.Collections.Generic;
+using ELOR.Laney.Controls;
+using ELOR.Laney.Extensions;
+using System.Linq;
+using ELOR.VKAPILib.Objects;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
@@ -16,6 +25,9 @@ namespace ELOR.Laney.Views {
             DataContextChanged += ChatView_DataContextChanged;
             scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
             PinnedMessageButton.Click += PinnedMessageButton_Click;
+
+            itemsPresenter.GotFocus += ItemsPresenter_GotFocus;
+            itemsPresenter.LostFocus += ItemsPresenter_LostFocus;
         }
 
         public event EventHandler BackButtonClick;
@@ -24,6 +36,8 @@ namespace ELOR.Laney.Views {
         }
 
         private void ChatView_DataContextChanged(object sender, EventArgs e) {
+            currentFocused = null;
+
             if (Chat != null) {
                 Chat.ScrollToMessageRequested -= ScrollToMessage;
                 Chat.MessagesChunkLoaded -= TrySaveScroll;
@@ -86,5 +100,52 @@ namespace ELOR.Laney.Views {
         private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {
             Chat.GoToMessage(Chat.PinnedMessage);
         }
+
+        #region Messages list focus
+
+        List<MessageBubble> messageBubbles = new List<MessageBubble>();
+        MessageBubble currentFocused = null;
+
+        private void ItemsPresenter_GotFocus(object sender, GotFocusEventArgs e) {
+            var element = FocusManager.Instance?.Current;
+            if (element != null) {
+                string name = (element as Control).Name;
+                Debug.WriteLine($"{element.GetType()}: {name}");
+
+                itemsPresenter.FindVisualChildrenByType<MessageBubble>(messageBubbles);
+                if (messageBubbles.Count > 0) {
+                    if (currentFocused == null) currentFocused = messageBubbles.LastOrDefault();
+                    FocusManager.Instance?.Focus(currentFocused, NavigationMethod.Directional, e.KeyModifiers);
+
+                    itemsPresenter.KeyDown += ItemsPresenter_KeyDown;
+                }
+            }
+        }
+
+        private void ItemsPresenter_LostFocus(object sender, RoutedEventArgs e) {
+            itemsPresenter.KeyDown -= ItemsPresenter_KeyDown;
+            messageBubbles.Clear();
+            // currentFocused = null;
+        }
+
+        private void ItemsPresenter_KeyDown(object sender, KeyEventArgs e) {
+            if (currentFocused == null || messageBubbles.Count == 0) return;
+            int index = messageBubbles.IndexOf(currentFocused);
+            if (e.Key == Key.Up) {
+                if (index > 0) {
+                    currentFocused = messageBubbles.ElementAt(index - 1);
+                    FocusManager.Instance?.Focus(currentFocused, NavigationMethod.Directional, e.KeyModifiers);
+                    itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(currentFocused.Message));
+                }
+            } else if (e.Key == Key.Down) {
+                if (index < messageBubbles.Count - 1) {
+                    currentFocused = messageBubbles.ElementAt(index + 1);
+                    FocusManager.Instance?.Focus(currentFocused, NavigationMethod.Directional, e.KeyModifiers);
+                    itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(currentFocused.Message));
+                }
+            }
+        }
+
+        #endregion
     }
 }

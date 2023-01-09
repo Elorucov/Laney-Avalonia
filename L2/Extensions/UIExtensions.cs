@@ -1,8 +1,10 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Chrome;
+using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Avalonia.VisualTree;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -69,7 +71,24 @@ namespace ELOR.Laney.Extensions {
             control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChanged.Remove(themeChangedAction);
         }
 
+        public static void FindLogicalChildrenByType<T>(this Control control, List<T> found) {
+            var children = control.GetLogicalChildren();
+            foreach (var child in children) {
+                if (child is T el) found.Add(el);
+                (child as Control).FindLogicalChildrenByType<T>(found);
+            }
+        }
+
+        public static void FindVisualChildrenByType<T>(this Control control, List<T> found) {
+            var children = control.GetVisualChildren();
+            foreach (var child in children) {
+                if (child is T el) found.Add(el);
+                (child as Control).FindVisualChildrenByType<T>(found);
+            }
+        }
+
         #region ScrollViewer specific
+
         private const double SV_END_DISTANCE = 192;
         private static Dictionary<ScrollViewer, Action> registeredScrollViewers;
 
@@ -98,6 +117,7 @@ namespace ELOR.Laney.Extensions {
                 }
             }
         }
+
         #endregion
     }
 }
