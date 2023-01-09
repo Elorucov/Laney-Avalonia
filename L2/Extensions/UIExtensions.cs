@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Chrome;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Serilog;
@@ -7,14 +8,19 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using VKUI;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Extensions {
     public static class UIExtensions {
-        public static void FixDecoration(this Window window) {
-            window.ExtendClientAreaToDecorationsHint = true;
-            window.ExtendClientAreaChromeHints = 
-                App.Platform == OSPlatform.Linux ? ExtendClientAreaChromeHints.NoChrome : ExtendClientAreaChromeHints.SystemChrome;
-            window.ExtendClientAreaTitleBarHeightHint = 1;
+        public static void FixDialogWindows(this Window window, WindowTitleBar titleBar, Control content) {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+                Grid.SetRow(content, 1);
+                Grid.SetRowSpan(content, 1);
+                titleBar.CanShowTitle = true;
+                titleBar.CanMove = true;
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+                titleBar.IsVisible = false;
+            }
         }
 
         public static string GetInitials(this string name, bool oneLetter = false) {

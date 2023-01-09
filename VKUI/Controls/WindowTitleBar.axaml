@@ -7,7 +7,8 @@
   </Design.PreviewWith>
 
   <Style Selector="controls|WindowTitleBar">
-    <Setter Property="CanShowTitleAndMove" Value="True"/>
+    <Setter Property="CanShowTitle" Value="True"/>
+    <Setter Property="CanMove" Value="True"/>
     <Setter Property="VerticalAlignment" Value="Top"/>
     <Setter Property="Template">
       <ControlTemplate>

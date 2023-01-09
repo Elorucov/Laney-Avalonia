@@ -45,12 +45,10 @@ namespace ELOR.Laney.Controls {
         }
 
         private async void ShowAttachmentErrorInfo(OutboundAttachmentViewModel oavm, Exception ex) {
-            Dictionary<short, string> buttons = new Dictionary<short, string> {
-                { 1, Localizer.Instance["retry"] }, { 2, Localizer.Instance["delete"] }
-            };
+            string[] buttons = new string[] { Localizer.Instance["retry"], Localizer.Instance["delete"] };
 
             VKUIDialog dlg = new VKUIDialog(Localizer.Instance["upload_error"], ex.Message, buttons, 1);
-            short id = await dlg.ShowDialog<short>(VKSession.GetByDataContext(this).Window);
+            int id = await dlg.ShowDialog<int>(VKSession.GetByDataContext(this).Window);
             switch (id) {
                 case 1:
                     oavm.DoUploadFile();

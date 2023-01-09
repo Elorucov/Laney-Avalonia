@@ -69,7 +69,7 @@
   </vkw:DialogWindow.Styles>
     
   <Grid RowDefinitions="Auto * Auto">
-    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitleAndMove="False"/>
+    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="False"/>
     
     <TabControl x:Name="Tabs" Classes="Accent" Grid.RowSpan="2" SelectionChanged="Tabs_SelectionChanged">
       <TabItem Header="{i18n:Localize photo}">

@@ -9,12 +9,20 @@ namespace VKUI.Controls {
     public class WindowTitleBar : TemplatedControl {
         #region Properties
 
-        public static readonly StyledProperty<bool> CanShowTitleAndMoveProperty =
-            AvaloniaProperty.Register<WindowTitleBar, bool>(nameof(CanShowTitleAndMove));
+        public static readonly StyledProperty<bool> CanShowTitleProperty =
+            AvaloniaProperty.Register<WindowTitleBar, bool>(nameof(CanShowTitle));
 
-        public bool CanShowTitleAndMove {
-            get => GetValue(CanShowTitleAndMoveProperty);
-            set => SetValue(CanShowTitleAndMoveProperty, value);
+        public bool CanShowTitle {
+            get => GetValue(CanShowTitleProperty);
+            set => SetValue(CanShowTitleProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> CanMoveProperty =
+            AvaloniaProperty.Register<WindowTitleBar, bool>(nameof(CanMove));
+
+        public bool CanMove {
+            get => GetValue(CanMoveProperty);
+            set => SetValue(CanMoveProperty, value);
         }
 
         #endregion
@@ -47,8 +55,8 @@ namespace VKUI.Controls {
             base.OnPropertyChanged(change);
             if (!isTemplateLoaded) return;
 
-            if (change.Property == CanShowTitleAndMoveProperty) {
-                WindowTitle.IsVisible = CanShowTitleAndMove;
+            if (change.Property == CanShowTitleProperty) {
+                WindowTitle.IsVisible = CanShowTitle;
             }
         }
 
@@ -91,7 +99,7 @@ namespace VKUI.Controls {
             }
 
             // Window
-            WindowTitle.IsVisible = CanShowTitleAndMove;
+            WindowTitle.IsVisible = CanShowTitle;
             WindowTitle.Text = OwnerWindow.Title;
             OwnerWindow.PropertyChanged += OwnerWindow_PropertyChanged;
             DragArea.PointerPressed += DragArea_PointerPressed;
@@ -104,7 +112,7 @@ namespace VKUI.Controls {
         }
 
         private void DragArea_PointerPressed(object sender, Avalonia.Input.PointerPressedEventArgs e) {
-            if (CanShowTitleAndMove) OwnerWindow.PlatformImpl.BeginMoveDrag(e);
+            if (CanMove) OwnerWindow.PlatformImpl.BeginMoveDrag(e);
         }
     }
 }

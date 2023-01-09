@@ -305,8 +305,8 @@ namespace ELOR.Laney.ViewModels {
                     LoadMessages(message.Id);
                 }
             } else {
-                VKUIDialog dlg = new VKUIDialog("Showing message in window is not ready yet!", message.ToString(), VKUIDialog.OkButton, 1);
-                await dlg.ShowDialog<short>(VKSession.Main.Window);
+                VKUIDialog dlg = new VKUIDialog("Showing message in window is not ready yet!", message.ToString());
+                await dlg.ShowDialog<int>(VKSession.Main.Window);
             }
         }
 

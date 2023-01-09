@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib;
@@ -49,15 +50,12 @@ namespace ELOR.Laney.Core {
             int userId = 0;
             string accessToken = String.Empty;
 
-            Dictionary<short, string> buttons = new Dictionary<short, string> {
-                { 1, "Continue" }, { 2, "Cancel" }
-            };
-
+            string[] buttons = new string[] { "Continue", "Cancel" };
             VKUIDialog dlg = new VKUIDialog("Enter access token", "WebView пока что не готов. Нажмите \"Open auth page\", пройдите авторизацию в браузере, затем скопируйте значение access_token из адресной строки и вставьте в поле ввода ниже.", buttons, 1);
             TextBox tokenBox = new TextBox { Watermark = "access_token" };
 
             Button link = new Button { Content = "Open auth page", Margin = new Avalonia.Thickness(0, 0, 0, 8) };
-            link.Classes.Add("Hyperlink");
+            link.Classes.Add("Tertiary");
             link.Click += (a, b) => Launcher.LaunchUrl(authUri.ToString());
 
             StackPanel panel = new StackPanel();

@@ -6,6 +6,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Platform.Storage.FileIO;
 using DynamicData;
 using ELOR.Laney.Core;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Modals;
 using ELOR.VKAPILib.Objects;
 using System;
@@ -27,11 +28,7 @@ namespace ELOR.Laney.Views.Modals {
             InitializeComponent();
             Limit = limit;
             DataContext = new AttachmentPickerViewModel(session);
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
-                Grid.SetRow(Tabs, 1);
-                Grid.SetRowSpan(Tabs, 1);
-                TitleBar.CanShowTitleAndMove = true;
-            }
+            this.FixDialogWindows(TitleBar, Tabs);
 
             PhotosList.SelectionChanged += ListSelectionChanged;
             VideosList.SelectionChanged += ListSelectionChanged;
