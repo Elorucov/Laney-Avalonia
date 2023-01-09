@@ -85,6 +85,7 @@
         public const string Icon28ZipOutline = "Icon28ZipOutline";
 
         public const string Icon32Spinner = "Icon32Spinner";
+        public const string Icon32ErrorCircleOutline = "Icon32ErrorCircleOutline";
 
         public const string Icon44Spinner = "Icon44Spinner";
 

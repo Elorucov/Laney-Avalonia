@@ -67,8 +67,8 @@
                     <ProgressBar Margin="1" Background="Transparent" Foreground="White" Value="{Binding UploadProgress}"/>
                   </Border>
 
-                  <Button IsVisible="{Binding UploadException, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="Negative" Padding="0" Width="24" Height="24" MinHeight="24" CornerRadius="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8" Click="ShowAttachmentErrorInfo">
-                    <vkui:VKIcon Foreground="White" Id="{x:Static vkui:VKIconNames.Icon16WarningTriangleOutline}"/>
+                  <Button IsVisible="{Binding UploadException, Converter={x:Static ObjectConverters.IsNotNull}}" Classes="Negative" Padding="0" Width="32" Height="32" CornerRadius="16" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ShowAttachmentErrorInfo">
+                    <vkui:VKIcon Foreground="White" Id="{x:Static vkui:VKIconNames.Icon32ErrorCircleOutline}"/>
                   </Button>
 
                   <Border HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-4,-4,0" CornerRadius="12" BoxShadow="0 2 4 #14000000">
