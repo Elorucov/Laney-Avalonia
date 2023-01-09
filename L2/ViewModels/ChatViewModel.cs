@@ -371,9 +371,9 @@ namespace ELOR.Laney.ViewModels {
                 }).ToList());
                 await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
-                //if (await ExceptionHelper.ShowErrorDialogAsync(ex)) {
-                //    LoadPreviousMessages();
-                //}
+                if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) {
+                    LoadPreviousMessages();
+                }
             } finally {
                 IsLoading = false;
             }
@@ -398,9 +398,9 @@ namespace ELOR.Laney.ViewModels {
                 }).ToList());
                 await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
-                //if (await ExceptionHelper.ShowErrorDialogAsync(ex)) {
-                //    LoadNextMessages();
-                //}
+                if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) {
+                    LoadNextMessages();
+                }
             } finally {
                 IsLoading = false;
             }

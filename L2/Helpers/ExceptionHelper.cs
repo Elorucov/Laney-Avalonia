@@ -1,9 +1,12 @@
-﻿using ELOR.Laney.Core.Localization;
+﻿using Avalonia.Controls;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
+using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.Helpers {
     public static class ExceptionHelper {
@@ -46,23 +49,20 @@ namespace ELOR.Laney.Helpers {
             return result;
         }
 
-        // From UWP version, need refactor.
+        public static async Task<bool> ShowErrorDialogAsync(Window owner, Tuple<string, string> errorInfo, bool hideRetry = false) {
+            string[] buttons = hideRetry 
+                ? new string[] { Localizer.Instance["close"] } 
+                : new string[] { Localizer.Instance["retry"], Localizer.Instance["close"] };
 
-        //public static async Task<bool> ShowErrorDialogAsync(Tuple<string, string> errorInfo, bool hideRetry = false) {
-        //    Alert alert = new Alert {
-        //        Header = errorInfo.Item1,
-        //        Text = errorInfo.Item2,
-        //        PrimaryButtonText = !hideRetry ? Locale.Get("retry") : null,
-        //        SecondaryButtonText = Locale.Get("close"),
-        //    };
-        //    AlertButton result = await alert.ShowAsync();
-        //    return result == AlertButton.Primary;
-        //}
+            VKUIDialog alert = new VKUIDialog(errorInfo.Item1, errorInfo.Item2, buttons, 1);
+            int result = await alert.ShowDialog<int>(owner);
+            return !hideRetry && result == 1;
+        }
 
-        //public static async Task<bool> ShowErrorDialogAsync(Exception ex, bool hideRetry = false) {
-        //    if (ex is AggregateException agex) ex = agex.InnerException;
-        //    Tuple<string, string> err = GetDefaultErrorInfo(ex);
-        //    return await ShowErrorDialogAsync(err, hideRetry);
-        //}
+        public static async Task<bool> ShowErrorDialogAsync(Window owner, Exception ex, bool hideRetry = false) {
+            if (ex is AggregateException agex) ex = agex.InnerException;
+            Tuple<string, string> err = GetDefaultErrorInfo(ex);
+            return await ShowErrorDialogAsync(owner, err, hideRetry);
+        }
     }
 }

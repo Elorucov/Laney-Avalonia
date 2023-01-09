@@ -84,7 +84,11 @@ namespace ELOR.Laney.ViewModels {
                 }
                 
             } catch (Exception ex) {
-                Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadConversations());
+                if (_chats.Count > 0) {
+                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) LoadConversations();
+                } else {
+                    Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadConversations());
+                }
             }
             IsLoading = false;
         }
