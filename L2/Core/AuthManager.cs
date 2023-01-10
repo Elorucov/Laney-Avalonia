@@ -13,38 +13,7 @@ namespace ELOR.Laney.Core {
     public static class AuthManager {
         const int APP_ID = 6614620;
         const string INTERNAL_PROTOCOL = "l2auth";
-        static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&display=windows_mobile&redirect_uri=https://oauth.vk.com/blank.html&scope=4666462&response_type=token&revoke=1&v=5.136");
-        //static PhotinoWindow webView = null;
-
-        //[STAThread]
-        //public static async Task<string> AuthViaOauthWebViewAsync() {
-        //    var httpClient = new HttpClient();
-        //    string response = await httpClient.GetStringAsync(authUri.ToString());
-
-        //    response = response.Replace("</body>", $"<script src=\"{INTERNAL_PROTOCOL}://dynamic.js\"></script></body>");
-
-        //    webView = new PhotinoWindow();
-        //    webView.SetContextMenuEnabled(false)
-        //        .SetWidth(480).SetHeight(540)
-        //        .SetResizable(false).Center()
-        //        .RegisterWebMessageReceivedHandler(WebMsgHandler)
-        //        .RegisterCustomSchemeHandler(INTERNAL_PROTOCOL, (object sender, string scheme, string url, out string contentType) => {
-        //            contentType = "text/javascript";
-        //            return new MemoryStream(Encoding.UTF8.GetBytes(@"
-        //                (() =>{
-        //                    window.setTimeout(() => {
-        //                        window.external.sendMessage('Test');
-        //                    }, 2000);
-        //                })();
-        //            "));
-        //        })
-        //        .LoadRawString(response).WaitForClose();
-        //    return "OK!";
-        //}
-
-        //private static void WebMsgHandler(object? sender, string e) {
-        //    var window = (PhotinoWindow)sender;
-        //}
+        static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=4666462&response_type=token&revoke=1&v=5.136");
 
         public static async Task<Tuple<int, string>> AuthWithTokenAsync(Window parentWindow, string errorText = null) {
             int userId = 0;
@@ -68,7 +37,7 @@ namespace ELOR.Laney.Core {
             });
             dlg.DialogContent = panel;
 
-            short id = await dlg.ShowDialog<short>(parentWindow);
+            int id = await dlg.ShowDialog<int>(parentWindow);
             if (id == 1) {
                 if (String.IsNullOrEmpty(tokenBox.Text)) return await AuthWithTokenAsync(parentWindow, "Enter token!");
                 try {
