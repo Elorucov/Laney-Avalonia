@@ -112,7 +112,7 @@ namespace ELOR.Laney.Views {
                 string name = (element as Control).Name;
                 Debug.WriteLine($"{element.GetType()}: {name}");
 
-                itemsPresenter.FindVisualChildrenByType<MessageBubble>(messageBubbles);
+                itemsPresenter.FindVisualChildrenByType(messageBubbles);
                 if (messageBubbles.Count > 0) {
                     if (currentFocused == null) currentFocused = messageBubbles.LastOrDefault();
                     FocusManager.Instance?.Focus(currentFocused, NavigationMethod.Directional, e.KeyModifiers);
@@ -125,7 +125,6 @@ namespace ELOR.Laney.Views {
         private void ItemsPresenter_LostFocus(object sender, RoutedEventArgs e) {
             itemsPresenter.KeyDown -= ItemsPresenter_KeyDown;
             messageBubbles.Clear();
-            // currentFocused = null;
         }
 
         private void ItemsPresenter_KeyDown(object sender, KeyEventArgs e) {
