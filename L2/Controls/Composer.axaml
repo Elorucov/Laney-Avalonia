@@ -86,7 +86,7 @@
 
     <DockPanel x:Name="ReplyMessageArea" Margin="12,10,3,2" IsVisible="{Binding Reply, Converter={x:Static ObjectConverters.IsNotNull}}">
       <Rectangle Fill="{DynamicResource VKImTextNameBrush}" Width="2" RadiusX="1" RadiusY="1" Margin="0,0,6,0" VerticalAlignment="Stretch"/>
-      <controls:CompactMessage Message="{Binding PinnedMessage}"/>
+      <controls:CompactMessage Message="{Binding Reply}"/>
       <Button x:Name="ReplyMessageDeletionButton" Classes="Tertiary ComposerButton" HorizontalAlignment="Right" DockPanel.Dock="Right" CornerRadius="16" Width="32" Height="32" VerticalAlignment="Center">
         <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}"/>
       </Button>

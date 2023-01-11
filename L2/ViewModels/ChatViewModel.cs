@@ -626,7 +626,8 @@ namespace ELOR.Laney.ViewModels {
                 // TODO: 4 и 6
                 switch (type) {
                     case 3: // Назначен новый администратор
-                        ChatSettings.AdminIDs.Add(extra);
+                        if (ChatSettings.AdminIDs == null) ChatSettings.AdminIDs = new List<int>();
+                        ChatSettings.AdminIDs?.Add(extra);
                         break;
                     case 7: // Выход из беседы
                     case 8: // Исключение из беседы
@@ -645,7 +646,7 @@ namespace ELOR.Laney.ViewModels {
                         UpdateRestrictionInfo();
                         break;
                     case 9: // Разжалован администратор
-                        if (ChatSettings.AdminIDs.Contains(extra)) ChatSettings.AdminIDs.Remove(extra);
+                        if (ChatSettings.AdminIDs != null && ChatSettings.AdminIDs.Contains(extra)) ChatSettings.AdminIDs?.Remove(extra);
                         break;
                 }
             });

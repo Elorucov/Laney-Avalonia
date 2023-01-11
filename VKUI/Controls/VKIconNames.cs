@@ -19,20 +19,29 @@
         public const string Icon16Verified = "Icon16Verified";
         public const string Icon16WarningTriangleOutline = "Icon16WarningTriangleOutline";
 
+        public const string Icon20BugOutline = "Icon20BugOutline";
         public const string Icon20CameraOutline = "Icon20CameraOutline";
         public const string Icon20CheckCircleOff = "Icon20CheckCircleOff";
         public const string Icon20CheckCircleOn = "Icon20CheckCircleOn";
+        public const string Icon20DeleteOutline = "Icon20DeleteOutline";
         public const string Icon20DocumentOutline = "Icon20DocumentOutline";
         public const string Icon20DoorArrowRightOutline = "Icon20DoorArrowRightOutline";
+        public const string Icon20FavoriteOutline = "Icon20FavoriteOutline";
         public const string Icon20GearOutline = "Icon20GearOutline";
         public const string Icon20InfoCircleOutline = "Icon20InfoCircleOutline";
         public const string Icon20MentionOutline = "Icon20MentionOutline";
         public const string Icon20PictureOutline = "Icon20PictureOutline";
         public const string Icon20PinOutline = "Icon20PinOutline";
+        public const string Icon20PinSlashOutline = "Icon20PinSlashOutline";
         public const string Icon20PlaceOutline = "Icon20PlaceOutline";
         public const string Icon20PollOutline = "Icon20PollOutline";
+        public const string Icon20ReplyOutline = "Icon20ReplyOutline";
+        public const string Icon20ReportOutline = "Icon20ReportOutline";
         public const string Icon20ServicesOutline = "Icon20ServicesOutline";
+        public const string Icon20ShareOutline = "Icon20ShareOutline";
+        public const string Icon20UnfavoriteOutline = "Icon20UnfavoriteOutline";
         public const string Icon20VideoOutline = "Icon20VideoOutline";
+        public const string Icon20WriteOutline = "Icon20WriteOutline";
 
         public const string Icon24AddCircleOutline = "Icon24AddCircleOutline";
         public const string Icon24ArticleOutline = "Icon24ArticleOutline";
@@ -51,6 +60,7 @@
         public const string Icon24Gallery = "Icon24Gallery";
         public const string Icon24KeyboardBotsOutline = "Icon24KeyboardBotsOutline";
         public const string Icon24Link = "Icon24Link";
+        public const string Icon24MessagesOutline = "Icon24MessagesOutline";
         public const string Icon24Music = "Icon24Music";
         public const string Icon24Phone = "Icon24Phone";
         public const string Icon24Poll = "Icon24Poll";

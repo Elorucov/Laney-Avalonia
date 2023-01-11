@@ -11,7 +11,7 @@
     <!-- Set Defaults -->
     <Setter Property="Template">
       <ControlTemplate>
-        <StackPanel>
+        <StackPanel Background="Transparent">
           <Border x:Name="DateContainer" HorizontalAlignment="Center" CornerRadius="12" IsVisible="{Binding Message.IsDateBetweenVisible, RelativeSource={RelativeSource TemplatedParent}}">
             <TextBlock Classes="Caption1" Margin="6,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Message.SentTime.Date, Converter={StaticResource dc} RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>

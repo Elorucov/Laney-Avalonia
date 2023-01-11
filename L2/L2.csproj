@@ -114,8 +114,6 @@
     <UpToDateCheckInput Remove="Controls\MessageBubble.axaml" />
   </ItemGroup>
   <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties />
-    </VisualStudio>
+    <VisualStudio><UserProperties assets_4i18n_4en-us_1json__JsonSchema="https://datahubproject.io/schemas/datahub_ingestion_schema.json" /></VisualStudio>
   </ProjectExtensions>
 </Project>

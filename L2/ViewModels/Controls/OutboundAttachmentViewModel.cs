@@ -1,17 +1,17 @@
-﻿using Avalonia.Media.Imaging;
+﻿using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage.FileIO;
 using Avalonia.Threading;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
-using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Upload;
-using ExCSS;
 using Newtonsoft.Json;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -47,6 +47,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public Exception UploadException { get { return _uploadException; } private set { _uploadException = value; OnPropertyChanged(); } }
         public ObservableCollection<MessageViewModel> ForwardedMessages { get { return _forwardedMessages; } private set { _forwardedMessages = value; OnPropertyChanged(); } }
         public Tuple<double, double> Place { get { return _place; } private set { _place = value; OnPropertyChanged(); } }
+        public int ForwardedMessagesFromGroupId { get; private set; }
+
 
         OutboundAttachmentUploadFileType uploadFileType = OutboundAttachmentUploadFileType.Doc;
         BclStorageFile file = null;
@@ -83,7 +85,17 @@ namespace ELOR.Laney.ViewModels.Controls {
             PrepareToUpload(type);
         }
 
+        public OutboundAttachmentViewModel(List<MessageViewModel> forwardedMessages, int groupId = 0) {
+            Log.Information($"Init outbound attachment for forwarded messages. Count: {forwardedMessages.Count}; group: {groupId}");
+            ForwardedMessagesFromGroupId = groupId;
+            Type = OutboundAttachmentType.ForwardedMessages;
+            ForwardedMessages = new ObservableCollection<MessageViewModel>(forwardedMessages);
+            UpdateUIForFwdMessages();
+            ForwardedMessages.CollectionChanged += (a, b) => UpdateUIForFwdMessages();
+        }
+
         #region Setup
+
         int width = Constants.OutboundAttachmentUIWidth;
 
         private async void SetUp(Photo p) {
@@ -178,6 +190,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         #endregion
+
+        #region Uploader
 
         private IFileUploader uploader;
 
@@ -301,5 +315,17 @@ namespace ELOR.Laney.ViewModels.Controls {
             uploader?.Cancel();
             uploader = null;
         }
+
+        #endregion
+
+        #region Forwarded messages
+
+        private void UpdateUIForFwdMessages() {
+            int c = ForwardedMessages.Count;
+            DisplayName = Localizer.Instance.GetDeclensionFormatted2(c, "message");
+            IconId = VKIconNames.Icon24MessagesOutline;
+        }
+
+        #endregion
     }
 }

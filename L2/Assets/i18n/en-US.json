@@ -77,6 +77,11 @@
 
   "casper_chat": "Casper-chat",
 
+  "message": "Message",
+  "message_nom": "{0} message",
+  "message_gen": "{0} messages",
+  "message_plu": "{0} messages",
+
   "forwarded_message": "Forwarded message",
   "forwarded_message_nom": "{0} forwarded message",
   "forwarded_message_gen": "{0} forwarded messages",
@@ -185,6 +190,17 @@
   "from": "from",
   "watch": "Watch",
   "play": "Play",
+
+  "reply": "Reply",
+  "reply_privately": "Reply privately",
+  "forward": "Forward",
+  "forward_here": "Forward here",
+  "mark_important": "Mark as important",
+  "unmark_important": "Unmark",
+  "edit": "Edit",
+  "pin": "Pin",
+  "unpin": "Unpin",
+  "mark_spam": "Mark as spam",
 
   "lp_act_typing_multi": "is typing",
   "lp_act_typing_single": "is typing",

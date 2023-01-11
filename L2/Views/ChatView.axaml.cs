@@ -7,13 +7,13 @@ using Serilog;
 using Avalonia.Interactivity;
 using Avalonia.Input;
 using System.Diagnostics;
-using Avalonia.LogicalTree;
-using Avalonia.VisualTree;
 using System.Collections.Generic;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Extensions;
 using System.Linq;
-using ELOR.VKAPILib.Objects;
+using ELOR.Laney.ViewModels.Controls;
+using ELOR.Laney.Helpers;
+using ELOR.Laney.Core;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
@@ -143,6 +143,18 @@ namespace ELOR.Laney.Views {
                     itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(currentFocused.Message));
                 }
             }
+        }
+
+        #endregion
+
+        #region Context menu for message
+
+        private void ChatViewItem_ContextRequested(object sender, ContextRequestedEventArgs e) {
+            ChatViewItem cvi = sender as ChatViewItem;
+            MessageViewModel message = cvi?.DataContext as MessageViewModel;
+            if (message == null) return;
+
+            ContextMenuHelper.ShowForMessage(message, Chat, cvi);
         }
 
         #endregion

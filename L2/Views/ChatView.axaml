@@ -66,7 +66,7 @@
       <ItemsPresenter x:Name="itemsPresenter" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages, Mode=OneWay}" VirtualizationMode="None">
         <ItemsPresenter.ItemTemplate>
           <DataTemplate>
-            <controls:ChatViewItem Message="{Binding}"/>
+            <controls:ChatViewItem Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
           </DataTemplate>
         </ItemsPresenter.ItemTemplate>
       </ItemsPresenter>

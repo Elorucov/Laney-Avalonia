@@ -77,6 +77,11 @@
 
   "casper_chat": "Фантом-чат",
 
+  "message": "Сообщение",
+  "message_nom": "{0} сообщение",
+  "message_gen": "{0} сообщения",
+  "message_plu": "{0} сообщений",
+
   "forwarded_message": "Пересланное сообщение",
   "forwarded_message_nom": "{0} пересланное сообщение",
   "forwarded_message_gen": "{0} пересланных сообщения",
@@ -185,6 +190,17 @@
   "from": "от",
   "watch": "Посмотреть",
   "play": "Слушать",
+
+  "reply": "Ответить",
+  "reply_privately": "Ответить лично",
+  "forward": "Переслать",
+  "forward_here": "Переслать сюда",
+  "mark_important": "Отметить как важное",
+  "unmark_important": "Снять отметку",
+  "edit": "Редактировать",
+  "pin": "Закрепить",
+  "unpin": "Открепить",
+  "mark_spam": "Отметить как спам",
 
   "lp_act_typing_multi": "печатают",
   "lp_act_typing_single": "печатает",
