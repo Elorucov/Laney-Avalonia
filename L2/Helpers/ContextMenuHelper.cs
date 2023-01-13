@@ -99,9 +99,9 @@ namespace ELOR.Laney.Helpers {
             if (message.Action == null) {
                 ash.Items.Add(new ActionSheetItem());
                 if (chat.CanWrite.Allowed) ash.Items.Add(reply);
-                if (canReplyPrivately) ash.Items.Add(repriv);
+                if (canReplyPrivately && chat.PeerType == PeerType.Chat) ash.Items.Add(repriv);
                 ash.Items.Add(forward);
-                if (chat.CanWrite.Allowed) ash.Items.Add(forwardHere);
+                // if (chat.CanWrite.Allowed) ash.Items.Add(forwardHere);
                 if (!message.IsImportant) ash.Items.Add(mark);
                 if (message.IsImportant) ash.Items.Add(unmark);
                 if (canPin && !isMessagePinned) ash.Items.Add(pin);
