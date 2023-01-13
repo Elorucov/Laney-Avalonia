@@ -177,13 +177,16 @@ namespace ELOR.Laney.Core {
                     foreach (var group in info.Groups) {
                         CacheManager.Add(group);
                         if (!group.CanMessage) continue;
-                        sessions.Add(new VKSession {
+
+                        VKSession gs = new VKSession {
                             UserId = info.User.Id,
                             GroupId = group.Id,
                             Name = group.Name,
                             Avatar = new Uri(group.Photo100),
-                            API = new VKAPI(info.User.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent)
-                        });
+                            API = new VKAPI(info.User.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent),
+                        };
+                        gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
+                        sessions.Add(gs);
                     }
 
                     _sessions = sessions;
@@ -202,7 +205,8 @@ namespace ELOR.Laney.Core {
                 }
 
                 var lp = info.LongPolls.Where(lps => lps.SessionId == Id).FirstOrDefault();
-                LongPoll = new LongPoll(lp.LongPoll, API, Id, GroupId);
+                if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId);
+                LongPoll.SetUp(lp.LongPoll);
                 LongPoll.StateChanged += LongPoll_StateChanged;
                 LongPoll.Run();
 
@@ -283,6 +287,7 @@ namespace ELOR.Laney.Core {
                 API = new VKAPI(userId, accessToken, Localizer.Instance["lang"], App.UserAgent),
                 Window = new MainWindow()
             };
+            session.LongPoll = new LongPoll(session.API, session.Id, session.GroupId);
             _sessions.Add(session);
             session.Window.DataContext = session;
             session.Init();

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,12 +35,7 @@ namespace ELOR.Laney.Core {
         private bool isRunning = false;
         private Logger Log;
 
-        public LongPoll(LongPollServerInfo info, VKAPI api, int sessionId, int groupId) {
-            Server = info.Server;
-            Key = info.Key;
-            TimeStamp = info.TS;
-            PTS = info.PTS;
-
+        public LongPoll(VKAPI api, int sessionId, int groupId) {
             API = api;
             this.sessionId = sessionId;
             this.groupId = groupId;
@@ -49,6 +45,13 @@ namespace ELOR.Laney.Core {
                 .MinimumLevel.Information()
                 .WriteTo.File(Path.Combine(App.LocalDataPath, "logs", "L2_LP_.log"), rollingInterval: RollingInterval.Day)
                 .CreateLogger();
+        }
+
+        public void SetUp(LongPollServerInfo info) {
+            Server = info.Server;
+            Key = info.Key;
+            TimeStamp = info.TS;
+            PTS = info.PTS;
         }
 
         #region Events
@@ -149,9 +152,7 @@ namespace ELOR.Laney.Core {
                     // TODO: кешировать беседы.
                     ParseUpdates(response.History, response.Messages.Items);
 
-                    Server = response.Credentials.Server;
-                    TimeStamp = response.Credentials.TS;
-                    PTS = response.Credentials.PTS;
+                    SetUp(response.Credentials);
 
                     if (response.More) PTS = response.NewPTS;
                     trying = response.More;
