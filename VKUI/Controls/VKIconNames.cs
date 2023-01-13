@@ -47,6 +47,7 @@
         public const string Icon24ArticleOutline = "Icon24ArticleOutline";
         public const string Icon24BombOutline = "Icon24BombOutline";
         public const string Icon24BrushOutline = "Icon24BrushOutline";
+        public const string Icon24CancelOutline = "Icon24CancelOutline";
         public const string Icon24CheckBoxOff = "Icon24CheckBoxOff";
         public const string Icon24CheckBoxOn = "Icon24CheckBoxOn";
         public const string Icon24CheckCircleOff = "Icon24CheckCircleOff";
@@ -61,11 +62,14 @@
         public const string Icon24KeyboardBotsOutline = "Icon24KeyboardBotsOutline";
         public const string Icon24Link = "Icon24Link";
         public const string Icon24MessagesOutline = "Icon24MessagesOutline";
+        public const string Icon24MoreHorizontal = "Icon24MoreHorizontal";
         public const string Icon24Music = "Icon24Music";
         public const string Icon24Phone = "Icon24Phone";
         public const string Icon24Poll = "Icon24Poll";
         public const string Icon24Question = "Icon24Question";
+        public const string Icon24ReplyOutline = "Icon24ReplyOutline";
         public const string Icon24Send = "Icon24Send";
+        public const string Icon24ShareOutline = "Icon24ShareOutline";
         public const string Icon24SmileOutline = "Icon24SmileOutline";
         public const string Icon24Song = "Icon24Song";
         public const string Icon24Spinner = "Icon24Spinner";

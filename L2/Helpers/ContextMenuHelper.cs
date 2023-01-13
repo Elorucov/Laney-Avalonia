@@ -8,6 +8,7 @@ using VKUI.Popups;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ELOR.Laney.Helpers {
     public class ContextMenuHelper {
@@ -109,6 +110,50 @@ namespace ELOR.Laney.Helpers {
                 ash.Items.Add(spam);
                 ash.Items.Add(delete);
             }
+            if (ash.Items.Count > 0) ash.ShowAt(target, true);
+        }
+
+        public static void ShowForMultipleMessages(List<MessageViewModel> messages, Control target) {
+            ActionSheet ash = new ActionSheet { 
+                Placement = FlyoutPlacementMode.LeftEdgeAlignedTop
+            };
+
+            ActionSheetItem mark = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20FavoriteOutline },
+                Header = Localizer.Instance["mark_important"],
+            };
+            ActionSheetItem unmark = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20UnfavoriteOutline },
+                Header = Localizer.Instance["unmark_important"],
+            };
+            ActionSheetItem spam = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20ReportOutline },
+                Header = Localizer.Instance["mark_spam"],
+            };
+            ActionSheetItem delete = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
+                Header = Localizer.Instance["delete"],
+            };
+            spam.Classes.Add("Destructive");
+            delete.Classes.Add("Destructive");
+
+            // Conditions
+
+            var session = VKSession.GetByDataContext(target);
+            var isAllMessagesMarkedAsImportant = messages.Where(m => m.IsImportant).Count() == messages.Count;
+
+            // Actions
+
+
+            
+            // ¯\_(ツ)_/¯
+
+            ash.Items.Add(spam);
+            ash.Items.Add(delete);
+            ash.Items.Add(new ActionSheetItem());
+            if (!isAllMessagesMarkedAsImportant) ash.Items.Add(mark);
+            if (isAllMessagesMarkedAsImportant) ash.Items.Add(unmark);
+
             if (ash.Items.Count > 0) ash.ShowAt(target, true);
         }
     }

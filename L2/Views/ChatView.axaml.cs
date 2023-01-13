@@ -13,21 +13,30 @@ using ELOR.Laney.Extensions;
 using System.Linq;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Helpers;
-using ELOR.Laney.Core;
+using Avalonia.Controls.Presenters;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
         ChatViewModel Chat { get; set; }
+        ScrollViewer MessagesListScrollViewer;
+        ItemsPresenter MessagesListItemsPresenter;
 
         public ChatView() {
             InitializeComponent();
+
+            MessagesList.Loaded += (a, b) => {
+                MessagesListScrollViewer = MessagesList.Scroll as ScrollViewer;
+                MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+                MessagesListScrollViewer.GotFocus += MessagesList_GotFocus;
+
+                MessagesListItemsPresenter = MessagesList.GetFirstVisualChildrenByType<ItemsPresenter>();
+            };
+
+
+            Unloaded += (a, b) => MessagesListScrollViewer.KeyDown -= MessagesList_KeyDown;
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
             DataContextChanged += ChatView_DataContextChanged;
-            scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
             PinnedMessageButton.Click += PinnedMessageButton_Click;
-
-            itemsPresenter.GotFocus += ItemsPresenter_GotFocus;
-            itemsPresenter.LostFocus += ItemsPresenter_LostFocus;
         }
 
         public event EventHandler BackButtonClick;
@@ -36,8 +45,6 @@ namespace ELOR.Laney.Views {
         }
 
         private void ChatView_DataContextChanged(object sender, EventArgs e) {
-            currentFocused = null;
-
             if (Chat != null) {
                 Chat.ScrollToMessageRequested -= ScrollToMessage;
                 Chat.MessagesChunkLoaded -= TrySaveScroll;
@@ -52,8 +59,8 @@ namespace ELOR.Laney.Views {
         bool needToSaveScroll = false;
         private async void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
             double trigger = 40;
-            double h = scrollViewer.Extent.Height - scrollViewer.DesiredSize.Height;
-            double y = scrollViewer.Offset.Y;
+            double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
+            double y = MessagesListScrollViewer.Offset.Y;
             dbgScrollInfo.Text = $"{Math.Round(y)}/{h}";
             if (h < trigger) return;
 
@@ -61,18 +68,18 @@ namespace ELOR.Laney.Views {
                 double diff = h - oldScrollViewerHeight;
                 double newpos = y + diff;
 
-                scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
+                MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
                 try {
-                    if (scrollViewer.CheckAccess()) {
-                        while (scrollViewer.Offset.Y != newpos) {
-                            scrollViewer.Offset = new Vector(scrollViewer.Offset.X, newpos);
+                    if (MessagesListScrollViewer.CheckAccess()) {
+                        while (MessagesListScrollViewer.Offset.Y != newpos) {
+                            MessagesListScrollViewer.Offset = new Vector(MessagesListScrollViewer.Offset.X, newpos);
                             await Task.Delay(32).ConfigureAwait(false);
                         }
                     }
                 } catch (Exception ex) {
                     Log.Error(ex, "Unable to save scroll position after old messages are loaded!");
                 }
-                scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+                MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
 
                 needToSaveScroll = false;
                 oldScrollViewerHeight = h;
@@ -94,54 +101,52 @@ namespace ELOR.Laney.Views {
 
         private void ScrollToMessage(object sender, int messageId) {
             if (Chat.DisplayedMessages == null) return;
-            itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
+            MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
         }
 
         private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {
             Chat.GoToMessage(Chat.PinnedMessage);
         }
 
-        #region Messages list focus
+        private void ChatView_SizeChanged(object sender, SizeChangedEventArgs e) {
+            if (MessagesListItemsPresenter != null)
+                MessagesListItemsPresenter.Width = e.NewSize.Width; // костыль, который фиксит очень странный баг.
 
-        List<MessageBubble> messageBubbles = new List<MessageBubble>();
-        MessageBubble currentFocused = null;
-
-        private void ItemsPresenter_GotFocus(object sender, GotFocusEventArgs e) {
-            var element = FocusManager.Instance?.Current;
-            if (element != null) {
-                string name = (element as Control).Name;
-                Debug.WriteLine($"{element.GetType()}: {name}");
-
-                itemsPresenter.FindVisualChildrenByType(messageBubbles);
-                if (messageBubbles.Count > 0) {
-                    if (currentFocused == null) currentFocused = messageBubbles.LastOrDefault();
-                    FocusManager.Instance?.Focus(currentFocused, NavigationMethod.Directional, e.KeyModifiers);
-
-                    itemsPresenter.KeyDown += ItemsPresenter_KeyDown;
-                }
+            if (e.NewSize.Width >= 512) {
+                MessagesCommandsRoot.Classes.Clear();
+            } else {
+                if (!MessagesCommandsRoot.Classes.Contains("CompactMsgCmd")) MessagesCommandsRoot.Classes.Add("CompactMsgCmd");
             }
         }
 
-        private void ItemsPresenter_LostFocus(object sender, RoutedEventArgs e) {
-            itemsPresenter.KeyDown -= ItemsPresenter_KeyDown;
-            messageBubbles.Clear();
+        #region Messages list focus
+
+        // При фокусе на список сообщений фокусируемся на последнее сообщение
+        // (в будущем надо на последнее видимое).
+        private void MessagesList_GotFocus(object sender, GotFocusEventArgs e) {
+            List<ListBoxItem> messageUIs = new List<ListBoxItem>();
+            var element = FocusManager.Instance?.Current;
+            if (element != null && e.NavigationMethod == NavigationMethod.Tab) {
+                Debug.WriteLine($"Focused on {FocusManager.Instance.Current}");
+                string name = (element as Control).Name;
+                Debug.WriteLine($"{element.GetType()}: {name}");
+
+                MessagesList.FindVisualChildrenByType(messageUIs);
+                if (messageUIs.Count > 0) {
+                    FocusManager.Instance?.Focus(messageUIs.LastOrDefault(), NavigationMethod.Directional, e.KeyModifiers);
+                }
+                MessagesListScrollViewer.KeyDown += MessagesList_KeyDown;
+            }
         }
 
-        private void ItemsPresenter_KeyDown(object sender, KeyEventArgs e) {
-            if (currentFocused == null || messageBubbles.Count == 0) return;
-            int index = messageBubbles.IndexOf(currentFocused);
-            if (e.Key == Key.Up) {
-                if (index > 0) {
-                    currentFocused = messageBubbles.ElementAt(index - 1);
-                    FocusManager.Instance?.Focus(currentFocused, NavigationMethod.Directional, e.KeyModifiers);
-                    itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(currentFocused.Message));
-                }
-            } else if (e.Key == Key.Down) {
-                if (index < messageBubbles.Count - 1) {
-                    currentFocused = messageBubbles.ElementAt(index + 1);
-                    FocusManager.Instance?.Focus(currentFocused, NavigationMethod.Directional, e.KeyModifiers);
-                    itemsPresenter.ScrollIntoView(Chat.DisplayedMessages.IndexOf(currentFocused.Message));
-                }
+        // А ещё родной ListBox не умеет скроллить список при навигации кнопками вверх/вниз.
+        private async void MessagesList_KeyDown(object sender, KeyEventArgs e) {
+            if (FocusManager.Instance == null) return;
+            if (e.Key == Key.Up || e.Key == Key.Down) {
+                await Task.Delay(10); // надо, чтобы в FocusManager.Instance.Current был актуальный контрол
+                Debug.WriteLine($"Focused on {FocusManager.Instance.Current}");
+                MessageViewModel msg = (FocusManager.Instance.Current as Control).DataContext as MessageViewModel;
+                if (msg != null) MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(msg));
             }
         }
 
@@ -153,6 +158,10 @@ namespace ELOR.Laney.Views {
             ChatViewItem cvi = sender as ChatViewItem;
             MessageViewModel message = cvi?.DataContext as MessageViewModel;
             if (message == null) return;
+
+            // При ПКМ на сообщение оно выделяется, перед этим очищая Chat.SelectedMessages.
+            // Пока что будем ещё раз чистить Chat.SelectedMessages. ¯\_(ツ)_/¯
+            Chat.SelectedMessages.Clear();
 
             ContextMenuHelper.ShowForMessage(message, Chat, cvi);
         }

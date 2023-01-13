@@ -87,6 +87,12 @@ namespace ELOR.Laney.Extensions {
             }
         }
 
+        public static T GetFirstVisualChildrenByType<T>(this Control control) {
+            List<T> found = new List<T>();
+            control.FindVisualChildrenByType(found);
+            return found.Count > 0 ? found[0] : default;
+        }
+
         #region ScrollViewer specific
 
         private const double SV_END_DISTANCE = 192;

@@ -51,6 +51,7 @@
     <StyleInclude Source="avares://Laney/Controls/CompactMessage.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/MessageBubble.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/PostUI.axaml"/>
+    <StyleInclude Source="avares://Laney/Styles/ListBoxStyles.axaml"/>
       
     <Style Selector="Button.Hyperlink">
       <Setter Property="Background" Value="Transparent"/>

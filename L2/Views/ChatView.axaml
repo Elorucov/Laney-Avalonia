@@ -4,7 +4,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:dm="using:ELOR.Laney.DataModels"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="480"
+             SizeChanged="ChatView_SizeChanged"
              x:Class="ELOR.Laney.Views.ChatView">
   <UserControl.Styles>
     <!-- Composer buttons -->
@@ -16,6 +19,25 @@
       <Setter Property="HorizontalContentAlignment" Value="Center"/>
       <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
+    
+    <Style Selector="Button.MessagesCommands">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Margin" Value="3,0"/>
+      <Setter Property="MinWidth" Value="32"/>
+    </Style>
+    
+    <Style Selector="Button.MessagesCommands vkui|VKIcon.ButtonIn">
+      <Setter Property="Foreground" Value="{DynamicResource VKHeaderTintBrush}"/>
+      <Setter Property="Margin" Value="4,0"/>
+    </Style>
+    <Style Selector="Button.MessagesCommands TextBlock.ButtonIn">
+      <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0,1,6,0"/>
+    </Style>
+    <Style Selector="Grid.CompactMsgCmd Button.MessagesCommands TextBlock.ButtonIn">
+      <Setter Property="IsVisible" Value="False"/>
+    </Style>
 
     <Style Selector="Button.ComposerButton, Button.ComposerButton > vkui|VKIcon">
       <Setter Property="Foreground" Value="{DynamicResource VKIconOutlineMediumBrush}"/>
@@ -26,6 +48,7 @@
       <Setter Property="Opacity" Value="1"/>
     </Style>
   </UserControl.Styles>
+  
   <Grid x:Name="Root" RowDefinitions="Auto Auto * Auto" Background="{DynamicResource VKBackgroundPageBrush}">
     <vkui:PanelHeader VerticalAlignment="Top" IsSeparatorVisible="False" Background="{DynamicResource VKBackgroundContentBrush}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
       <vkui:PanelHeader.LeftButtons>
@@ -62,15 +85,18 @@
       </Grid>
     </Border>
 
-    <ScrollViewer x:Name="scrollViewer" Grid.Row="2">
-      <ItemsPresenter x:Name="itemsPresenter" VerticalAlignment="Bottom" Margin="0,4" Items="{Binding DisplayedMessages, Mode=OneWay}" VirtualizationMode="None">
-        <ItemsPresenter.ItemTemplate>
-          <DataTemplate>
-            <controls:ChatViewItem Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
-          </DataTemplate>
-        </ItemsPresenter.ItemTemplate>
-      </ItemsPresenter>
-    </ScrollViewer>
+    <ListBox x:Name="MessagesList" Classes="MessagesList" Grid.Row="2" VerticalAlignment="Bottom" SelectionMode="Multiple,Toggle" Selection="{Binding SelectedMessages, Mode=TwoWay}" Items="{Binding DisplayedMessages, Mode=OneWay}" VirtualizationMode="Simple">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Margin="0,4"/>
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <controls:ChatViewItem Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
     
     <Grid Grid.Row="2" x:Name="EmptyListContainer" IsVisible="{Binding !DisplayedMessages.Count}">
       <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
@@ -87,14 +113,46 @@
     
     <TextBlock x:Name="dbgScrollInfo" IsVisible="False" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
 
-    <Border Name="ComposerContainer" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
+    <Border Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="894" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
       <Grid>
-        <DockPanel x:Name="RestrictionInfoContainer" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" MinHeight="44" HorizontalAlignment="Center">
-          <vkui:VKIcon Margin="8,8,0,8" Foreground="{DynamicResource VKDestructiveBrush}" Id="{x:Static vkui:VKIconNames.Icon28ErrorOutline}"/>
-          <TextBlock x:Name="RestrictionReason" Margin="8" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
-        </DockPanel>
+        <Grid x:Name="ComposerContainer" IsVisible="{Binding !SelectedMessagesCount}">
+          <DockPanel x:Name="RestrictionInfoContainer" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" MinHeight="44" HorizontalAlignment="Center">
+            <vkui:VKIcon Margin="8,8,0,8" Foreground="{DynamicResource VKDestructiveBrush}" Id="{x:Static vkui:VKIconNames.Icon28ErrorOutline}"/>
+            <TextBlock x:Name="RestrictionReason" Margin="8" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
+          </DockPanel>
 
-        <controls:Composer IsVisible="{Binding CanWrite.Allowed}" DataContext="{Binding Composer}"/>
+          <controls:Composer IsVisible="{Binding CanWrite.Allowed}" DataContext="{Binding Composer}"/>
+        </Grid>
+        <Grid x:Name="MessagesCommandsRoot" IsVisible="{Binding !!SelectedMessagesCount}" VerticalAlignment="Bottom" MinHeight="44" ColumnDefinitions="* Auto">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="3,0,0,0">
+            <Button Classes="Tertiary Medium MessagesCommands" Command="{Binding ClearSelectedMessages}">
+              <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon24CancelOutline}"/>
+            </Button>
+            <TextBlock Classes="Subhead" FontFamily="{StaticResource VKSansTextSemiBold}" VerticalAlignment="Center" Margin="0,1,0,0" Text="{Binding SelectedMessagesCount, Converter={StaticResource cc}, ConverterParameter=message}"/>
+          </StackPanel>
+          <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0">
+            <ItemsControl Items="{Binding MessagesCommands}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Button Classes="Tertiary Medium MessagesCommands" ToolTip.Tip="{Binding Label}" Command="{Binding Action}">
+                    <StackPanel Orientation="Horizontal">
+                      <vkui:VKIcon Classes="ButtonIn" Id="{Binding IconId}"/>
+                      <TextBlock Classes="ButtonIn" Text="{Binding Label}"/>
+                    </StackPanel>
+                  </Button>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Classes="Tertiary Medium MessagesCommands" Command="{Binding ShowContextMenuForSelectedMessages}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+              <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon24MoreHorizontal}"/>
+            </Button>
+          </StackPanel>
+        </Grid>
       </Grid>
     </Border>
   </Grid>

@@ -94,5 +94,9 @@ namespace ELOR.Laney.ViewModels.Controls {
                 }
             }
         }
+
+        public void DeleteReply() {
+            Reply = null;
+        }
     }
 }

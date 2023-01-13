@@ -26,7 +26,7 @@
             </StackPanel>
           </Border>
           <Border x:Name="MessageUIWrapper" IsVisible="{Binding Message.CanShowInUI, RelativeSource={RelativeSource TemplatedParent}}">
-            <controls:MessageBubble x:Name="MessageUI" Focusable="True" Message="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
+            <controls:MessageBubble x:Name="MessageUI" Message="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
         </StackPanel>
       </ControlTemplate>

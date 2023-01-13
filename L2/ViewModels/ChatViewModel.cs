@@ -1,4 +1,6 @@
-﻿using Avalonia.Threading;
+﻿using Avalonia.Controls;
+using Avalonia.Controls.Selection;
+using Avalonia.Threading;
 using ELOR.Laney.Collections;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
@@ -49,6 +51,8 @@ namespace ELOR.Laney.ViewModels {
         private bool _hasSelfDestructMessage;
         private string _restrictionReason;
         private bool _isCurrentOpenedChat;
+        private int _selectedMessagesCount;
+        private ObservableCollection<Command> _messagesCommands = new ObservableCollection<Command>();
 
         public PeerType PeerType { get { return _peerType; } private set { _peerType = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -80,6 +84,13 @@ namespace ELOR.Laney.ViewModels {
         public string MentionIconId { get { return GetMentionIcon(); } }
         public string RestrictionReason { get { return _restrictionReason; } private set { _restrictionReason = value; OnPropertyChanged(); } }
         public bool IsCurrentOpenedChat { get { return _isCurrentOpenedChat; } private set { _isCurrentOpenedChat = value; OnPropertyChanged(); } }
+        public int SelectedMessagesCount { get { return _selectedMessagesCount; } private set { _selectedMessagesCount = value; OnPropertyChanged(); } }
+        public ObservableCollection<Command> MessagesCommands { get { return _messagesCommands; } private set { _messagesCommands = value; OnPropertyChanged(); } }
+
+
+        public SelectionModel<MessageViewModel> SelectedMessages { get; } = new SelectionModel<MessageViewModel> { 
+            SingleSelect = false
+        };
 
         public List<User> MembersUsers { get; private set; } = new List<User>();
         public List<Group> MembersGroups { get; private set; } = new List<Group>();
@@ -262,6 +273,7 @@ namespace ELOR.Laney.ViewModels {
         private void SetUpEvents() {
             // При приёме сообщения обновляем последнее сообщение.
             ReceivedMessages.CollectionChanged += (a, b) => OnPropertyChanged(nameof(LastMessage));
+            SelectedMessages.SelectionChanged += SelectedMessages_SelectionChanged;
 
             PropertyChanged += (a, b) => { 
                 if (b.PropertyName == nameof(Online)) 
@@ -292,6 +304,46 @@ namespace ELOR.Laney.ViewModels {
 
             ActivityStatusUsers.Elapsed += (a, b) => UpdateActivityStatus();
         }
+
+        private void SelectedMessages_SelectionChanged(object sender, SelectionModelSelectionChangedEventArgs<MessageViewModel> e) {
+            SelectedMessagesCount = SelectedMessages.Count;
+            MessagesCommands.Clear();
+            if (SelectedMessagesCount > 0) {
+                Command reply = new Command(VKIconNames.Icon24ReplyOutline, Localizer.Instance["reply"], false, ReplyToMessageCommand);
+                Command fwdhere = new Command(VKIconNames.Icon24ShareOutline, Localizer.Instance["forward_here"], false, ForwardHereCommand);
+                Command forward = new Command(VKIconNames.Icon24ShareOutline, Localizer.Instance["forward"], false, ForwardCommand);
+
+                MessagesCommands.Add(SelectedMessagesCount == 1 ? reply : fwdhere);
+                MessagesCommands.Add(forward);
+            }
+        }
+
+        #region Commands
+
+        public void ClearSelectedMessages() {
+            SelectedMessages.Clear();
+        }
+
+        private void ReplyToMessageCommand(object o) {
+            if (SelectedMessages.Count > 0) Composer.Reply = SelectedMessages.SelectedItem;
+            SelectedMessages.Clear();
+        }
+
+        private void ForwardHereCommand(object o) {
+            OutboundAttachmentViewModel oavm = new OutboundAttachmentViewModel(SelectedMessages.SelectedItems.ToList(), session.GroupId);
+            Composer.Attachments.Insert(0, oavm);
+            SelectedMessages.Clear();
+        }
+
+        private void ForwardCommand(object o) {
+            // TODO
+        }
+
+        public void ShowContextMenuForSelectedMessages(object p) {
+            ContextMenuHelper.ShowForMultipleMessages(SelectedMessages.SelectedItems.ToList(), (Control)p);
+        }
+
+        #endregion
 
         #region Loading messages
 
