@@ -397,7 +397,7 @@ namespace ELOR.Laney.ViewModels {
                     ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
                 }
             } catch (Exception ex) {
-                Placeholder = PlaceholderViewModel.GetForException(ex, () => { LoadMessages(startMessageId); });
+                Placeholder = PlaceholderViewModel.GetForException(ex, (o) => { LoadMessages(startMessageId); });
             } finally {
                 IsLoading = false;
                 // SetPlaceholder();

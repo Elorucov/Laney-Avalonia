@@ -80,7 +80,7 @@ namespace ELOR.Laney.ViewModels {
                 if (_chats.Count > 0) {
                     if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) LoadConversations();
                 } else {
-                    Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadConversations());
+                    Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadConversations());
                 }
             }
             IsLoading = false;

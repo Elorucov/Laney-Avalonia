@@ -27,7 +27,7 @@ namespace ELOR.Laney.Views.Modals {
         public AttachmentPicker(VKSession session, int limit, int tab = 0) {
             InitializeComponent();
             Limit = limit;
-            DataContext = new AttachmentPickerViewModel(session);
+            DataContext = new AttachmentPickerViewModel(session, this);
             this.FixDialogWindows(TitleBar, Tabs);
 
             PhotosList.SelectionChanged += ListSelectionChanged;

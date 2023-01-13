@@ -1,7 +1,9 @@
-﻿using ELOR.Laney.Core;
+﻿using Avalonia.Controls;
+using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Execute;
 using ELOR.Laney.Execute.Objects;
+using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
@@ -40,8 +42,9 @@ namespace ELOR.Laney.ViewModels.Modals {
         private bool noMoreVideos = false;
         private bool noMoreDocs = false;
         private VKSession session;
+        private Window ownerWindow;
 
-        public AttachmentPickerViewModel(VKSession session) {
+        public AttachmentPickerViewModel(VKSession session, Window owner) {
             this.session = session;
             PropertyChanged += (a, b) => {
                 switch (b.PropertyName) {
@@ -73,7 +76,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SelectedPhotoAlbum = PhotoAlbums.First();
             } catch (Exception ex) {
                 Photos.IsLoading = false;
-                Photos.Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadPhotoAlbums());
+                Photos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadPhotoAlbums());
             }
         }
 
@@ -100,9 +103,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 photos.Items.ForEach((p) => Photos.Items.Add(p));
             } catch (Exception ex) {
                 if (Photos.Items.Count == 0) {
-                    Photos.Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadPhotos());
+                    Photos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadPhotos());
                 } else {
-                    // TODO: Error dialog.
+                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) LoadPhotos();
                 }
             }
             Photos.IsLoading = false;
@@ -124,7 +127,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SelectedVideoAlbum = VideoAlbums.First();
             } catch (Exception ex) {
                 Videos.IsLoading = false;
-                Videos.Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadVideoAlbums());
+                Videos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadVideoAlbums());
             }
         }
 
@@ -140,9 +143,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 videos.Items.ForEach((v) => Videos.Items.Add(v));
             } catch (Exception ex) {
                 if (Videos.Items.Count == 0) {
-                    Videos.Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadVideos());
+                    Videos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadVideos());
                 } else {
-                    // TODO: Error dialog.
+                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) LoadVideos();
                 }
             }
             Videos.IsLoading = false;
@@ -162,9 +165,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 docs.Items.ForEach(d => Documents.Items.Add(d));
             } catch (Exception ex) {
                 if (Documents.Items.Count == 0) {
-                    Documents.Placeholder = PlaceholderViewModel.GetForException(ex, () => LoadDocuments());
+                    Documents.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadDocuments());
                 } else {
-                    // TODO: Error dialog.
+                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) LoadDocuments();
                 }
             }
 

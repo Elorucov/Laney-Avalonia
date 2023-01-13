@@ -11,17 +11,17 @@ namespace ELOR.Laney.ViewModels {
         private string _header;
         private string _text;
         private string _actionButton;
-        private Action _actionButtonFunc;
+        private RelayCommand _actionButtonFunc;
         private object _data;
 
         public Control Icon { get { return _icon; } private set { _icon = value; OnPropertyChanged(); } }
         public string Header { get { return _header; } private set { _header = value; OnPropertyChanged(); } }
         public string Text { get { return _text; } private set { _text = value; OnPropertyChanged(); } }
         public string ActionButton { get { return _actionButton; } private set { _actionButton = value; OnPropertyChanged(); } }
-        public Action ActionButtonFunc { get { return _actionButtonFunc; } private set { _actionButtonFunc = value; OnPropertyChanged(); } }
+        public RelayCommand ActionButtonFunc { get { return _actionButtonFunc; } private set { _actionButtonFunc = value; OnPropertyChanged(); } }
         public object Data { get { return _data; } private set { _data = value; OnPropertyChanged(); } }
 
-        public static PlaceholderViewModel GetForException(Exception ex, Action function = null) {
+        public static PlaceholderViewModel GetForException(Exception ex, Action<object> function = null) {
             var err = ExceptionHelper.GetDefaultErrorInfo(ex);
             return new PlaceholderViewModel() {
                 Data = ex,
@@ -29,7 +29,7 @@ namespace ELOR.Laney.ViewModels {
                 Header = err.Item1,
                 Text = err.Item2,
                 ActionButton = Localizer.Instance["retry"],
-                ActionButtonFunc = function
+                ActionButtonFunc = new RelayCommand(function)
             };
         }
     }
