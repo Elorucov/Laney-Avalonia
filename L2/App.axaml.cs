@@ -2,12 +2,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
 using Avalonia.Themes.Simple;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
-using Fizzler;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -17,7 +15,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using VKUI;
 
@@ -67,9 +64,6 @@ namespace ELOR.Laney {
             if (ApplicationLifetime is ClassicDesktopStyleApplicationLifetime desktop) {
                 DesktopLifetime = desktop;
                 if (Platform == OSPlatform.FreeBSD) desktop.Shutdown();
-
-                // Settings up web request callbacks
-                VKUITheme.Current.WebRequestCallback = WebRequestCallback;
 
                 // Demo mode
                 if (DemoMode.Check()) {

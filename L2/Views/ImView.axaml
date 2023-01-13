@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,7 +11,7 @@
     <vkui:PanelHeader VerticalAlignment="Top" Content="{i18n:Localize chats}">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="AvatarButton">
-          <vkui:Avatar Width="32" Height="32" ImageUri="{Binding Avatar}"/>
+          <vkui:Avatar Width="32" Height="32" controls:ImageLoader.Image="{Binding Avatar}"/>
         </Button>
       </vkui:PanelHeader.LeftButtons>
       <vkui:PanelHeader.RightButtons>

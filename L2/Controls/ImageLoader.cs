@@ -6,6 +6,7 @@ using ELOR.Laney.Extensions;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
     public static class ImageLoader {
@@ -21,6 +22,10 @@ namespace ELOR.Laney.Controls {
             FillSourceProperty.Changed
                 .Where(args => args.IsEffectiveValueChange)
                 .Subscribe(args => OnFillSourceChanged((Shape)args.Sender, args.NewValue.Value));
+
+            ImageProperty.Changed
+                .Where(args => args.IsEffectiveValueChange)
+                .Subscribe(args => OnImageChanged((Avatar)args.Sender, args.NewValue.Value));
         }
 
         private static async void OnSourceChanged(Image sender, Uri? uri) {
@@ -37,12 +42,16 @@ namespace ELOR.Laney.Controls {
 
         private static void OnBackgroundSourceChanged(Border sender, Uri uri) {
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            sender.SetImageBackgroundAsync(uri, (int)sender.Width);
+            sender.SetImageBackgroundAsync(uri, (int)sender.DesiredSize.Width);
         }
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {
             sender.Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            sender.SetImageFillAsync(uri, (int)sender.Width);
+            sender.SetImageFillAsync(uri, (int)sender.DesiredSize.Width);
+        }
+
+        private static void OnImageChanged(Avatar sender, Uri uri) {
+            sender.SetImageAsync(uri, (int)sender.DesiredSize.Width);
         }
 
         public static readonly AttachedProperty<Uri?> SourceProperty = AvaloniaProperty.RegisterAttached<Image, Uri?>("Source", typeof(ImageLoader));
@@ -73,6 +82,16 @@ namespace ELOR.Laney.Controls {
 
         public static void SetFillSource(Shape element, Uri? value) {
             element.SetValue(FillSourceProperty, value);
+        }
+
+        public static readonly AttachedProperty<Uri?> ImageProperty = AvaloniaProperty.RegisterAttached<Avatar, Uri?>("Image", typeof(ImageLoader));
+
+        public static Uri? GetImage(Avatar element) {
+            return element.GetValue(ImageProperty);
+        }
+
+        public static void SetImage(Avatar element, Uri? value) {
+            element.SetValue(ImageProperty, value);
         }
 
         //public static readonly AttachedProperty<bool> IsLoadingProperty = AvaloniaProperty.RegisterAttached<Image, bool>("IsLoading", typeof(ImageLoader));

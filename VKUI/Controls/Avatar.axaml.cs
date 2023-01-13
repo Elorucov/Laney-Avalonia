@@ -14,15 +14,15 @@ namespace VKUI.Controls {
 
         #region Properties
 
-        public static readonly StyledProperty<Uri> ImageUriProperty =
-            AvaloniaProperty.Register<Avatar, Uri>(nameof(ImageUri));
+        public static readonly StyledProperty<Bitmap> ImageProperty =
+            AvaloniaProperty.Register<Avatar, Bitmap>(nameof(Image));
 
         public static readonly StyledProperty<string> InitialsProperty =
             AvaloniaProperty.Register<Avatar, string>(nameof(Initials));
 
-        public Uri ImageUri {
-            get => GetValue(ImageUriProperty);
-            set => SetValue(ImageUriProperty, value);
+        public Bitmap Image {
+            get => GetValue(ImageProperty);
+            set => SetValue(ImageProperty, value);
         }
 
         public string Initials {
@@ -47,53 +47,28 @@ namespace VKUI.Controls {
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
             base.OnPropertyChanged(change);
 
-            if (change.Property == ImageUriProperty) {
+            if (change.Property == ImageProperty) {
                 if (change.OldValue != change.NewValue) SetImage();
             }
 
             if (change.Property == BoundsProperty) SetImage();
         }
 
-        byte[] imageBytes;
-        Uri currentImageUri;
-
-        private async void SetImage() {
+        private void SetImage() {
             if (ImageEllipse == null) return;
             double size = Math.Min(Bounds.Width, Bounds.Height);
             ImageEllipse.Width = size;
             ImageEllipse.Height = size;
 
-            if (ImageUri == null) {
+            if (Image == null) {
                 ImageEllipse.Fill = null;
                 return;
             }
-            if (currentImageUri == ImageUri) {
-                Draw(); // событие SetImage может быть вызван из-за изменения размера
-                return;
-            }
-            currentImageUri = ImageUri;
 
-            // TODO: В будущем сделать публичное свойство ImageBytes,
-            // чтобы приложение само скачивало картинку по-своему
-            // (например, Laney через LNet) и отдавало Avatar-у
-            // только саму картинку.
             try {
-                var response = await VKUITheme.Current.WebRequestCallback?.Invoke(currentImageUri);
-                imageBytes = await response.Content.ReadAsByteArrayAsync();
+                ImageEllipse.Fill = new ImageBrush(Image) { BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
             } catch (Exception ex) {
-                Debug.WriteLine($"Cannot get an image! 0x{ex.HResult.ToString("x8")}: {ex.Message}");
-            }
-            Draw();
-        }
-
-        private void Draw() {
-            try {
-                if (imageBytes == null) return;
-                Stream stream = new MemoryStream(imageBytes);
-                Bitmap bitmap = new Bitmap(stream);
-                ImageEllipse.Fill = new ImageBrush(bitmap) { BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
-            } catch (Exception ex) {
-                Debug.WriteLine($"Error while drawing an Avatar! 0x{ex.HResult.ToString("x8")}");
+                Debug.WriteLine($"Error while drawing in Avatar! 0x{ex.HResult.ToString("x8")}");
             }
         }
     }

@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
-    <controls:Avatar Width="48" Height="48" Margin="12" Initials="tt" ImageUri="https://sun1-13.userapi.com/s/v1/ig2/73U16T9XhAN1QxGBZVtU-RRRKOTbR8J1557k3iA6D3Nqh_4NrAbH75_sFwJfA0-QWGGmxTWEEvxtvkxDtUinxgO8.jpg?size=100x100&amp;quality=96&amp;crop=240,0,1182,1182&amp;ava=1"/>
+    <controls:Avatar Width="48" Height="48" Margin="12" Initials="WW" Background="Cyan"/>
   </Design.PreviewWith>
 
   <Style Selector="controls|Avatar">
@@ -14,7 +14,7 @@
           <Viewbox>
             <Grid Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center">
               <Ellipse x:Name="GradientEllipse" Width="48" Height="48" Fill="{TemplateBinding Background}"/>
-              <TextBlock x:Name="Initials" VerticalAlignment="Center" HorizontalAlignment="Center" Classes="Display" FontSize="16" LineHeight="20" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Initials}"/>
+              <TextBlock x:Name="Initials" VerticalAlignment="Center" HorizontalAlignment="Center" Classes="DisplayBold" FontSize="16" LineHeight="20" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Initials}"/>
             </Grid>
           </Viewbox>
           <Ellipse x:Name="ImageEllipse" HorizontalAlignment="Center" VerticalAlignment="Center"/>

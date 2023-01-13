@@ -28,9 +28,6 @@ namespace VKUI {
 
         public static VKUITheme Current { get; private set; }
 
-        // Необходимо, чтобы для загрузки из веба либа юзала реализацию программы, использующая эту либу 
-        public Func<Uri, Task<HttpResponseMessage>> WebRequestCallback { get; set; }
-
         public static IResourceDictionary Icons {
             get => (Application.Current.Resources.MergedDictionaries[0] as ResourceInclude).Loaded;
         }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Extensions {
     public static class LNetExtensions {
@@ -74,6 +75,14 @@ namespace ELOR.Laney.Extensions {
                 imageBrush.Source = await TryGetCachedBitmapAsync(source, decodeWidth);
             } catch (Exception ex) {
                 Log.Error(ex, "SetUriSourceAsync error!");
+            }
+        }
+
+        public static async void SetImageAsync(this Avatar avatar, Uri source, int decodeWidth = 0) {
+            try {
+                avatar.Image = await TryGetCachedBitmapAsync(source, decodeWidth);
+            } catch (Exception ex) {
+                Log.Error(ex, "SetImageAsync error!");
             }
         }
 

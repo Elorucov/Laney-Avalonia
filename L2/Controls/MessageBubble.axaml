@@ -17,7 +17,7 @@
         <Grid x:Name="MessageUIRoot" ColumnDefinitions="Auto *" Margin="12,4" MaxWidth="894">
           <vkui:Avatar x:Name="SenderAvatar" VerticalAlignment="Bottom" Margin="0,0,8,2" Width="32" Height="32"
                        Initials="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}"
-                       ImageUri="{Binding Message.SenderAvatar, RelativeSource={RelativeSource TemplatedParent}}"/>
+                       controls:ImageLoader.Image="{Binding Message.SenderAvatar, RelativeSource={RelativeSource TemplatedParent}}"/>
           <Grid x:Name="BubbleRoot" RowDefinitions="* Auto" Grid.Column="1" MinHeight="36" MinWidth="48" MaxWidth="420" HorizontalAlignment="Left" ToolTip.Tip="{Binding Message.UIType, RelativeSource={RelativeSource TemplatedParent}}">
             <Border x:Name="BubbleBackground" Grid.RowSpan="2" CornerRadius="18"/>
             <StackPanel x:Name="MessageContent">

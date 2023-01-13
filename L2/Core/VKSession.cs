@@ -50,17 +50,18 @@ namespace ELOR.Laney.Core {
             };
 
             foreach (var session in VKSession.Sessions) {
-                if (session.GroupId == 142317063 || session.GroupId == 176011438) continue; // Temporary
+                // if (session.GroupId == 142317063 || session.GroupId == 176011438) continue; // Temporary
                 if (session.Id == Id) continue;
+                Avatar ava = new Avatar {
+                    Initials = session.Name.GetInitials(session.IsGroup),
+                    Background = session.Id.GetGradient(),
+                    Foreground = new SolidColorBrush(Colors.White),
+                    Width = 20,
+                    Height = 20
+                };
+                ava.SetImageAsync(session.Avatar);
                 ActionSheetItem item = new ActionSheetItem {
-                    Before = new Avatar {
-                        ImageUri = session.Avatar,
-                        Initials = session.Name.GetInitials(session.IsGroup),
-                        Background = session.Id.GetGradient(),
-                        Foreground = new SolidColorBrush(Colors.White),
-                        Width = 20,
-                        Height = 20
-                    },
+                    Before = ava,
                     Header = session.Name,
                     Tag = session.Id
                 };
