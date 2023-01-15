@@ -129,12 +129,8 @@ namespace VKUI {
         void IResourceProvider.RemoveOwner(IResourceHost owner) => (Loaded as IResourceProvider)?.RemoveOwner(owner);
 
         private void InitStyles(Uri baseUri) {
-            Application.Current.Resources["VKSansTextLight"] = new FontFamily(new Uri("avares://VKUI/Fonts/VKSansText/"), "Light.ttf#VK Sans Text");
-            Application.Current.Resources["VKSansTextRegular"] = new FontFamily(new Uri("avares://VKUI/Fonts/VKSansText/"), "Regular.ttf#VK Sans Text");
-            Application.Current.Resources["VKSansTextSemiBold"] = new FontFamily(new Uri("avares://VKUI/Fonts/VKSansText/"), "SemiBold.ttf#VK Sans Text");
-            Application.Current.Resources["VKSansTextBold"] = new FontFamily(new Uri("avares://VKUI/Fonts/VKSansText/"), "Bold.ttf#VK Sans Text");
-            Application.Current.Resources["VKSansDisplayRegular"] = new FontFamily(new Uri("avares://VKUI/Fonts/VKSansDisplay/"), "Regular.otf#VK Sans Display");
-            Application.Current.Resources["VKSansDisplayBold"] = new FontFamily(new Uri("avares://VKUI/Fonts/VKSansDisplay/"), "Bold.otf#VK Sans Display");
+            Application.Current.Resources["VKSansText"] = FontFamily.Parse("avares://VKUI/Fonts#VK Sans Text");
+            Application.Current.Resources["VKSansDisplay"] = FontFamily.Parse("avares://VKUI/Fonts#VK Sans Display");
 
             _sharedStyles = new Styles {
                 new StyleInclude(baseUri) {

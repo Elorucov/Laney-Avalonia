@@ -19,7 +19,7 @@
       </StackPanel>
 
       <StackPanel Orientation="Horizontal">
-        <Button x:Name="btl" Margin="8" Classes="Primary" Content="Switch theme to light"/>
+        <Button x:Name="btl" Margin="8" Classes="Primary" Content="Switch theme to" FontWeight="Light"/>
         <Button x:Name="btd" Margin="8" Classes="Primary" Content="Switch theme to dark"/>
       </StackPanel>
 
@@ -43,75 +43,85 @@
       <StackPanel Margin="0,8,0,0">
         <WrapPanel Width="392" HorizontalAlignment="Left">
           <StackPanel Margin="8">
-            <TextBlock Classes="Title1 Bold" Text="Title1"/>
-            <TextBlock Classes="Title1 SemiBold" Text="Title1"/>
+            <TextBlock Classes="Title1" FontWeight="Bold" Text="Title1"/>
+            <TextBlock Classes="Title1" FontWeight="SemiBold" Text="Title1"/>
+            <TextBlock Classes="Title1" FontWeight="Medium" Text="Title1"/>
             <TextBlock Classes="Title1" Text="Title1"/>
-            <TextBlock Classes="Title1 Light" Text="Title1"/>
+            <TextBlock Classes="Title1" FontWeight="Light" Text="Title1"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Title2 Bold" Text="Title2"/>
-            <TextBlock Classes="Title2 SemiBold" Text="Title2"/>
+            <TextBlock Classes="Title2" FontWeight="Bold" Text="Title2"/>
+            <TextBlock Classes="Title2" FontWeight="SemiBold" Text="Title2"/>
+            <TextBlock Classes="Title2" FontWeight="Medium" Text="Title2"/>
             <TextBlock Classes="Title2" Text="Title2"/>
-            <TextBlock Classes="Title2 Light" Text="Title2"/>
+            <TextBlock Classes="Title2" FontWeight="Light" Text="Title2"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Title3 Bold" Text="Title3"/>
-            <TextBlock Classes="Title3 SemiBold" Text="Title3"/>
+            <TextBlock Classes="Title3" FontWeight="Bold" Text="Title3"/>
+            <TextBlock Classes="Title3" FontWeight="SemiBold" Text="Title3"/>
+            <TextBlock Classes="Title3" FontWeight="Medium" Text="Title3"/>
             <TextBlock Classes="Title3" Text="Title3"/>
-            <TextBlock Classes="Title3 Light" Text="Title3"/>
+            <TextBlock Classes="Title3" FontWeight="Light" Text="Title3"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Headline Bold" Text="Headline"/>
-            <TextBlock Classes="Headline SemiBold" Text="Headline"/>
+            <TextBlock Classes="Headline" FontWeight="Bold" Text="Headline"/>
+            <TextBlock Classes="Headline" FontWeight="SemiBold" Text="Headline"/>
+            <TextBlock Classes="Headline" FontWeight="Medium" Text="Headline"/>
             <TextBlock Classes="Headline" Text="Headline"/>
-            <TextBlock Classes="Headline Light" Text="Headline"/>
+            <TextBlock Classes="Headline" FontWeight="Light" Text="Headline"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Bold" Text="Bold"/>
-            <TextBlock Classes="SemiBold" Text="SemiBold"/>
-            <TextBlock Classes="Headline" Text="Regular"/>
-            <TextBlock Classes="Light" Text="Light"/>
+            <TextBlock FontWeight="Bold" Text="Bold"/>
+            <TextBlock FontWeight="SemiBold" Text="SemiBold"/>
+            <TextBlock FontWeight="Medium" Text="Medium"/>
+            <TextBlock Text="Regular"/>
+            <TextBlock FontWeight="Light" Text="Light"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Subhead Bold" Text="Subhead"/>
-            <TextBlock Classes="Subhead SemiBold" Text="Subhead"/>
+            <TextBlock Classes="Subhead" FontWeight="Bold" Text="Subhead"/>
+            <TextBlock Classes="Subhead" FontWeight="SemiBold" Text="Subhead"/>
+            <TextBlock Classes="Subhead" FontWeight="Medium" Text="Subhead"/>
             <TextBlock Classes="Subhead" Text="Subhead"/>
-            <TextBlock Classes="Subhead Light" Text="Subhead"/>
+            <TextBlock Classes="Subhead" FontWeight="Light" Text="Subhead"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption1 Bold" Text="Caption1"/>
-            <TextBlock Classes="Caption1 SemiBold" Text="Caption1"/>
+            <TextBlock Classes="Caption1" FontWeight="Bold" Text="Caption1"/>
+            <TextBlock Classes="Caption1" FontWeight="SemiBold" Text="Caption1"/>
+            <TextBlock Classes="Caption1" FontWeight="Medium" Text="Caption1"/>
             <TextBlock Classes="Caption1" Text="Caption1"/>
-            <TextBlock Classes="Caption1 Light" Text="Caption1"/>
+            <TextBlock Classes="Caption1" FontWeight="Light" Text="Caption1"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption2 Bold" Text="Caption2"/>
-            <TextBlock Classes="Caption2 SemiBold" Text="Caption2"/>
+            <TextBlock Classes="Caption2" FontWeight="Bold" Text="Caption2"/>
+            <TextBlock Classes="Caption2" FontWeight="SemiBold" Text="Caption2"/>
+            <TextBlock Classes="Caption2" FontWeight="Medium" Text="Caption2"/>
             <TextBlock Classes="Caption2" Text="Caption2"/>
-            <TextBlock Classes="Caption2 Light" Text="Caption2"/>
+            <TextBlock Classes="Caption2" FontWeight="Light" Text="Caption2"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption3 Bold" Text="Caption3"/>
-            <TextBlock Classes="Caption3 SemiBold" Text="Caption3"/>
+            <TextBlock Classes="Caption3" FontWeight="Bold" Text="Caption3"/>
+            <TextBlock Classes="Caption3" FontWeight="SemiBold" Text="Caption3"/>
+            <TextBlock Classes="Caption3" FontWeight="Medium" Text="Caption3"/>
             <TextBlock Classes="Caption3" Text="Caption3"/>
-            <TextBlock Classes="Caption3 Light" Text="Caption3"/>
+            <TextBlock Classes="Caption3" FontWeight="Light" Text="Caption3"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption4 Bold" Text="Caption4"/>
-            <TextBlock Classes="Caption4 SemiBold" Text="Caption4"/>
+            <TextBlock Classes="Caption4" FontWeight="Bold" Text="Caption4"/>
+            <TextBlock Classes="Caption4" FontWeight="SemiBold" Text="Caption4"/>
+            <TextBlock Classes="Caption4" FontWeight="Medium" Text="Caption4"/>
             <TextBlock Classes="Caption4" Text="Caption4"/>
-            <TextBlock Classes="Caption4 Light" Text="Caption4"/>
+            <TextBlock Classes="Caption4" FontWeight="Light" Text="Caption4"/>
           </StackPanel>
         </WrapPanel>
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">
-        <TextBlock Margin="8" Classes="Title2 Bold" Text="Window test"/>
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Window test"/>
         <Button x:Name="w1" Margin="8" Content="Resize 360x640"/>
       </StackPanel>
       
       <StackPanel Margin="0,8,0,0">
-        <TextBlock Margin="8" Classes="Title2 Bold" Text="Settings test"/>
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Settings test"/>
         <StackPanel Orientation="Horizontal">
           <TextBox x:Name="settingDemo" Width="240" Margin="8"/>
           <Button x:Name="setBtn" Width="64" Margin="8" Classes="Large Commerce" HorizontalContentAlignment="Center" Content="Set"/>

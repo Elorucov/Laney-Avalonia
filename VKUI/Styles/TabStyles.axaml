@@ -40,7 +40,8 @@
                           CornerRadius="{TemplateBinding CornerRadius}">
             <ContentPresenter.Styles>
                 <Style Selector="TextBlock">
-                  <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}" />
+                  <Setter Property="FontFamily" Value="{StaticResource VKSansText}" />
+                  <Setter Property="FontWeight" Value="SemiBold" />
                 </Style>
             </ContentPresenter.Styles>
           </ContentPresenter>
@@ -101,7 +102,8 @@
                           CornerRadius="{TemplateBinding CornerRadius}">
             <ContentPresenter.Styles>
               <Style Selector="TextBlock">
-                <Setter Property="FontFamily" Value="{StaticResource VKSansTextSemiBold}" />
+                <Setter Property="FontFamily" Value="{StaticResource VKSansText}" />
+                <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="FontSize" Value="14" />
                 <Setter Property="LineHeight" Value="20" />
               </Style>

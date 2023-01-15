@@ -19,6 +19,8 @@ namespace ELOR.Laney.Extensions {
         const int cachesLimit = 500;
 
         public static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri, int decodeWidth = 0) {
+            if (uri == null) return null;
+
             string url = uri.AbsoluteUri;
             if (decodeWidth > 0) { // DPI aware
                 decodeWidth = Convert.ToInt32(decodeWidth * App.Current.DPI);
@@ -80,6 +82,7 @@ namespace ELOR.Laney.Extensions {
 
         public static async void SetImageAsync(this Avatar avatar, Uri source, int decodeWidth = 0) {
             try {
+                avatar.Image = null;
                 avatar.Image = await TryGetCachedBitmapAsync(source, decodeWidth);
             } catch (Exception ex) {
                 Log.Error(ex, "SetImageAsync error!");

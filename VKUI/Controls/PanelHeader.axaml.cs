@@ -104,9 +104,10 @@ namespace VKUI.Controls {
         private void SetupHeaderContent() {
             if (Content is string text) {
                 TextBlock textBlock = new TextBlock { 
-                    Text = text
+                    Text = text,
+                    FontWeight = Avalonia.Media.FontWeight.SemiBold
                 };
-                textBlock.Classes.Add("DisplayBold");
+                textBlock.Classes.Add("Display");
                 textBlock.Classes.Add("PanelHeaderTextStyle");
                 HeaderContentArea.Content = textBlock;
             } else if (Content is Control control) {

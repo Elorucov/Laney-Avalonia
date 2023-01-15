@@ -14,21 +14,23 @@
     <NoWarn>8632</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Remove="Fonts\VKSansDisplay\Bold.otf" />
-    <None Remove="Fonts\VKSansDisplay\Regular.otf" />
-    <None Remove="Fonts\VKSansText\Bold.ttf" />
-    <None Remove="Fonts\VKSansText\Light.ttf" />
-    <None Remove="Fonts\VKSansText\Regular.ttf" />
-    <None Remove="Fonts\VKSansText\SemiBold.ttf" />
+    <AvaloniaXaml Remove="Fonts\VKSansDisplay\**" />
+    <AvaloniaXaml Remove="Fonts\VKSansText\**" />
+    <Compile Remove="Fonts\VKSansDisplay\**" />
+    <Compile Remove="Fonts\VKSansText\**" />
+    <EmbeddedResource Remove="Fonts\VKSansDisplay\**" />
+    <EmbeddedResource Remove="Fonts\VKSansText\**" />
+    <None Remove="Fonts\VKSansDisplay\**" />
+    <None Remove="Fonts\VKSansText\**" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Fonts\VKSansDisplay\Bold.otf" />
-    <AvaloniaResource Include="Fonts\VKSansDisplay\Regular.otf" />
-    <AvaloniaResource Include="Fonts\VKSansText\Bold.ttf" />
-    <AvaloniaResource Include="Fonts\VKSansText\Light.ttf" />
-    <AvaloniaResource Include="Fonts\VKSansText\Regular.ttf" />
-    <AvaloniaResource Include="Fonts\VKSansText\SemiBold.ttf" />
+    <None Remove=".gitignore" />
+    <None Remove="Fonts\VKSansDisplay-Bold.otf" />
+    <None Remove="Fonts\VKSansDisplay-Regular.otf" />
+    <None Remove="Fonts\VKSansText-Bold.ttf" />
+    <None Remove="Fonts\VKSansText-Light.ttf" />
+    <None Remove="Fonts\VKSansText-Regular.ttf" />
+    <None Remove="Fonts\VKSansText-SemiBold.ttf" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
@@ -47,5 +49,13 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="ListBoxStyles.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Fonts\VKSansDisplay-Bold.otf" />
+    <AvaloniaResource Include="Fonts\VKSansDisplay-Regular.otf" />
+    <AvaloniaResource Include="Fonts\VKSansText-Bold.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-Light.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-Regular.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-SemiBold.ttf" />
   </ItemGroup>
 </Project>

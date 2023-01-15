@@ -13,7 +13,7 @@
           <Grid MinHeight="80" ColumnDefinitions="Auto *">
             <Border x:Name="PreviewImage" Background="{DynamicResource VKBackgroundHoverBrush}" IsVisible="{Binding Preview, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Top" Width="80" Height="80" CornerRadius="14" Margin="0,0,10,0"/>
             <StackPanel Grid.Column="1" VerticalAlignment="Top">
-              <TextBlock Classes="Subhead SemiBold" Foreground="{DynamicResource VKTextPrimaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap" MaxLines="2" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock Classes="Subhead" FontWeight="SemiBold" Foreground="{DynamicResource VKTextPrimaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap" MaxLines="2" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
               <TextBlock Classes="Caption2" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" MaxLines="2" Text="{Binding Subtitle, RelativeSource={RelativeSource TemplatedParent}}"/>
               <Button x:Name="ActionButton" Classes="Outline" Margin="0,7,0,0" IsVisible="{Binding ActionButtonText, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{Binding ActionButtonText, RelativeSource={RelativeSource TemplatedParent}}"/>
             </StackPanel>
