@@ -43,7 +43,7 @@ namespace ELOR.Laney {
             AppBuilder.Configure<App>().UseAvaloniaNative().UsePlatformDetect()
             .With(new Win32PlatformOptions {
                 UseWgl = true,
-                UseWindowsUIComposition = false
+                UseWindowsUIComposition = true
             })
             .With(new SkiaOptions {
                 MaxGpuResourceSizeBytes = 33554432
