@@ -22,6 +22,7 @@ namespace ELOR.VKAPILib {
         public MessagesMethods Messages { get; private set; }
         public PhotosMethods Photos { get; private set; }
         public PollsMethods Polls { get; private set; }
+        public StoreMethods Store { get; private set; }
         public UsersMethods Users { get; private set; }
         public UtilsMethods Utils { get; private set; }
         public VideoMethods Video { get; private set; }
@@ -88,6 +89,7 @@ namespace ELOR.VKAPILib {
             Messages = new MessagesMethods(this);
             Photos = new PhotosMethods(this);
             Polls = new PollsMethods(this);
+            Store = new StoreMethods(this);
             Users = new UsersMethods(this);
             Utils = new UtilsMethods(this);
             Video = new VideoMethods(this);

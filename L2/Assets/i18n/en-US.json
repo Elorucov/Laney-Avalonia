@@ -37,6 +37,8 @@
   "err_network_aborted": "Connection aborted.",
   "err_network_timeout": "Connection timed out.",
 
+  "emoji": "Emoji",
+  "recent": "Recent",
   "favorites": "Favorites",
   "settings": "Settings",
   "about": "About",

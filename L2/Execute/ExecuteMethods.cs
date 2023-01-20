@@ -39,5 +39,11 @@ namespace ELOR.Laney.Execute {
             parameters.Add("owner_id", ownerId.ToString());
             return await API.CallMethodAsync<List<AlbumLite>>("execute.getVideoAlbums", parameters);
         }
+
+        public static async Task<StickerPickerData> GetRecentStickersAndGraffitiesAsync(this VKAPI API) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("func_v", "2");
+            return await API.CallMethodAsync<StickerPickerData>("execute.getRecentStickersAndGraffities", parameters);
+        }
     }
 }

@@ -54,6 +54,7 @@ namespace ELOR.Laney.Views.Modals {
                     Content = buttons[i - 1],
                     Margin = new Thickness(8, 0, 0, 0)
                 };
+                button.Classes.Add("Medium");
                 if (i == primaryButton) button.Classes.Add("Primary");
                 button.Click += Button_Click;
                 Buttons.Children.Add(button);

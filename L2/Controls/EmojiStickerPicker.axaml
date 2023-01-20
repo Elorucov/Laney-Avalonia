@@ -1,0 +1,103 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vkui="using:VKUI.Controls"
+             xmlns:controls="using:ELOR.Laney.Controls"
+             x:Name="PickerRoot"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="438"
+             Loaded="EmojiStickerPicker_Loaded"
+             x:Class="ELOR.Laney.Controls.EmojiStickerPicker">
+  <UserControl.Resources>
+    <DataTemplate x:Key="EmojiTabTemplate">
+      <ScrollViewer>
+        <ItemsControl x:Name="emojiList" Items="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <StackPanel>
+                <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding Key}"/>
+                <ListBox Classes="GridView" Items="{Binding}" SelectionMode="Single" KeyUp="EmojiListBox_KeyUp">
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <WrapPanel Margin="8,0" ItemWidth="24" ItemHeight="24" Width="384"/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
+                  <ListBox.ItemTemplate>
+                    <DataTemplate>
+                      <Border Width="24" Height="24" Background="Transparent" Tapped="EmojiListBoxItem_Tapped">
+                        <TextBlock FontSize="16" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding}"/>
+                      </Border>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </DataTemplate>
+    <DataTemplate x:Key="StickersTabTemplate">
+      <Grid RowDefinitions="Auto *">
+        <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding DataContext.SelectedTab.Label, Mode=OneWay, ElementName=PickerRoot}"/>
+        <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" VirtualizationMode="None" Items="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}" KeyUp="StickersListBox_KeyUp">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Margin="8,0,8,8" ItemWidth="96" ItemHeight="96" Width="384"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Border Width="96" Height="96" Background="Transparent" Tapped="StickersListBoxItem_Tapped">
+                <Image Width="96" Height="96" controls:ImageLoader.Source="{Binding Converter={StaticResource vpsc}, ConverterParameter=96}"/>
+              </Border>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </DataTemplate>
+  </UserControl.Resources>
+  <Grid RowDefinitions="* Auto">
+    <ContentPresenter x:Name="TabContent"/>
+    <Border Grid.Row="1" Height="44" BoxShadow="0 0 2 #14000000, 0 -8 16 #14000000">
+      <Border.Styles>
+        <Style Selector="ListBoxItem">
+          <Setter Property="Width" Value="28"/>
+          <Setter Property="Height" Value="28"/>
+          <Setter Property="MinHeight" Value="28"/>
+          <Setter Property="Margin" Value="4"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected /template/ Border#PART_Root, ListBoxItem:pointerover /template/ Border#PART_Root">
+          <Setter Property="CornerRadius" Value="6"/>
+          <Setter Property="BorderThickness" Value="1"/>
+          <Setter Property="BorderBrush" Value="{DynamicResource VKSeparatorAlternateBrush}"/>
+        </Style>
+        <Style Selector="ListBoxItem vkui|VKIcon">
+          <Setter Property="Foreground" Value="{DynamicResource VKIconOutlineMediumBrush}"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected vkui|VKIcon">
+          <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
+        </Style>
+      </Border.Styles>
+      <ListBox SelectionMode="Single" Height="44" Items="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Margin="4" Orientation="Horizontal"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Grid Width="28" Height="28">
+              <vkui:VKIcon Id="{Binding IconId}" IsVisible="{Binding IconId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+              <Image Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" controls:ImageLoader.Source="{Binding Image}"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+  </Grid>
+</UserControl>

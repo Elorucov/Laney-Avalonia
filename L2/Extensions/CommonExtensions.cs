@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media.Imaging;
+using ELOR.Laney.Controls;
 using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
@@ -57,6 +58,21 @@ namespace ELOR.Laney.Extensions {
                 Debug.WriteLine($"GetSizeAndUriForThumbnail: Requested {maxWidth}, found {ps.Width}");
             } else {
                 Debug.WriteLine($"GetSizeAndUriForThumbnail: Requested {maxWidth} but not found!");
+            }
+            return ps;
+        }
+
+        public static StickerImage GetSizeAndUriForThumbnail(this Sticker sticker, double maxWidth = MessageBubble.STICKER_WIDTH) {
+            maxWidth = maxWidth * App.Current.DPI;
+            StickerImage ps = null;
+            foreach (var s in CollectionsMarshal.AsSpan(sticker.Images)) {
+                ps = s;
+                if (s.Width >= maxWidth) break; // да, выбирать будем первую фотку с шириной больше maxWidth
+            }
+            if (ps != null) {
+                Debug.WriteLine($"GetSizeAndUriForThumbnail (sticker): Requested {maxWidth}, found {ps.Width}");
+            } else {
+                Debug.WriteLine($"GetSizeAndUriForThumbnail (sticker): Requested {maxWidth} but not found!");
             }
             return ps;
         }

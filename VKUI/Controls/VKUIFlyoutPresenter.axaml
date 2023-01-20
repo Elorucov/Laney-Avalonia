@@ -3,7 +3,7 @@
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
     <Border Width="384" Height="384">
-      <controls:VKUIFlyoutPresenter>
+      <controls:VKUIFlyoutPresenter Classes="ActionSheet">
         <StackPanel Margin="0,4">
           <controls:ActionSheetItem Header="Avatar">
             <controls:ActionSheetItem.Before>
@@ -34,10 +34,14 @@
   <Style Selector="controls|VKUIFlyoutPresenter">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="12" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
+        <Border x:Name="FlyoutPresenterRoot" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
           <ContentPresenter Content="{TemplateBinding Content}"/>
         </Border>
       </ControlTemplate>
     </Setter>
+  </Style>
+
+  <Style Selector="controls|VKUIFlyoutPresenter.ActionSheet /template/ Border#FlyoutPresenterRoot">
+    <Setter Property="CornerRadius" Value="12"/>
   </Style>
 </Styles>

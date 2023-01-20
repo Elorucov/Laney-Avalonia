@@ -35,10 +35,12 @@
         public const string Icon20PinSlashOutline = "Icon20PinSlashOutline";
         public const string Icon20PlaceOutline = "Icon20PlaceOutline";
         public const string Icon20PollOutline = "Icon20PollOutline";
+        public const string Icon20RecentOutline = "Icon20RecentOutline";
         public const string Icon20ReplyOutline = "Icon20ReplyOutline";
         public const string Icon20ReportOutline = "Icon20ReportOutline";
         public const string Icon20ServicesOutline = "Icon20ServicesOutline";
         public const string Icon20ShareOutline = "Icon20ShareOutline";
+        public const string Icon20SmileOutline = "Icon20SmileOutline";
         public const string Icon20UnfavoriteOutline = "Icon20UnfavoriteOutline";
         public const string Icon20VideoOutline = "Icon20VideoOutline";
         public const string Icon20WriteOutline = "Icon20WriteOutline";

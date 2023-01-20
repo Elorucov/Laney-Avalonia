@@ -6,6 +6,7 @@ using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
+using VKUI.Popups;
 
 namespace ELOR.Laney.Controls {
     public partial class Composer : UserControl {
@@ -17,6 +18,10 @@ namespace ELOR.Laney.Controls {
 
         private void BotKbdButton_Click(object sender, RoutedEventArgs e) {
             BotKeyboardToggle.IsChecked = !BotKeyboardToggle.IsChecked;
+        }
+
+        private void ShowStickersFlyout(object sender, RoutedEventArgs e) {
+            ViewModel.ShowEmojiStickerPicker(sender as Button);
         }
 
         private void ShowAttachmentPickerContextMenu(object sender, RoutedEventArgs e) {

@@ -12,7 +12,7 @@
   <Grid RowDefinitions="Auto Auto Auto">
     <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="False"/>
     <StackPanel x:Name="ContentRoot" Margin="24">
-      <TextBlock x:Name="DlgHeader" TextWrapping="Wrap" Classes="Headline Bold" Margin="0,0,0,8"/>
+      <TextBlock x:Name="DlgHeader" TextWrapping="Wrap" Classes="Headline" FontWeight="SemiBold" Margin="0,0,0,8"/>
       <TextBlock x:Name="DlgText" IsVisible="False" TextWrapping="Wrap" Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
       <ContentPresenter x:Name="ContentArea" Margin="0,8,0,0" IsVisible="False"/>
     </StackPanel>

@@ -42,9 +42,11 @@ namespace VKUI.Popups {
                 itemsPanel.Children.Add(item);
             }
 
-            return new VKUIFlyoutPresenter {
+            VKUIFlyoutPresenter presenter = new VKUIFlyoutPresenter {
                 Content = itemsPanel
             };
+            presenter.Classes.Add("ActionSheet");
+            return presenter;
         }
 
         protected override void OnOpened() {

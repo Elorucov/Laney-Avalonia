@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage.FileIO;
+using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Views.Modals;
@@ -79,6 +80,32 @@ namespace ELOR.Laney.ViewModels.Controls {
             ash.Items.Add(file);
             ash.Items.Add(poll);
             ash.ShowAt(target);
+        }
+
+        public void ShowEmojiStickerPicker(Control target) {
+            var picker = new EmojiStickerPicker {
+                Width = 400,
+                Height = 438,
+                DataContext = new EmojiStickerPickerViewModel(session)
+            };
+
+            VKUIFlyout flyout = new VKUIFlyout {
+                Content = picker
+            };
+
+            picker.EmojiPicked += Picker_EmojiPicked;
+            picker.StickerPicked += async (a, b) => {
+                flyout.Hide();
+
+                VKUIDialog dlg = new VKUIDialog("Coming soon!", "Not ready yet...");
+                await dlg.ShowDialog(session.Window);
+            };
+
+            flyout.ShowAt(target);
+        }
+
+        private void Picker_EmojiPicked(object sender, string e) {
+            Text += e;
         }
 
         private async void AddAttachments(object pickerResult) {
