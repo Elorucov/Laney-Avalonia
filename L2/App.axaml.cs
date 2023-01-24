@@ -60,7 +60,8 @@ namespace ELOR.Laney {
         }
 
         public override void OnFrameworkInitializationCompleted() {
-            Localizer.Instance.LoadLanguage("ru-RU");
+            string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
+            Localizer.Instance.LoadLanguage(lang);
             if (ApplicationLifetime is ClassicDesktopStyleApplicationLifetime desktop) {
                 DesktopLifetime = desktop;
                 if (Platform == OSPlatform.FreeBSD) desktop.Shutdown();

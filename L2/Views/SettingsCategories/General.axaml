@@ -3,18 +3,62 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vkui="using:VKUI.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="450"
              x:Class="ELOR.Laney.Views.SettingsCategories.General">
-  <Border Classes="Group" VerticalAlignment="Top">
+  <ScrollViewer>
     <StackPanel>
-      <Grid Classes="GroupHeader">
-        <TextBlock Text="{Binding Test}"/>
-      </Grid>
-      <vkui:Cell Header="Test">
-        <vkui:Cell.After>
-          <ToggleSwitch/>
-        </vkui:Cell.After>
-      </vkui:Cell>
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <vkui:Cell Header="{i18n:Localize st_lang}">
+            <vkui:Cell.After>
+              <ComboBox Classes="Alternate" Items="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Item2}"/>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+            </vkui:Cell.After>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <Grid Classes="GroupHeader">
+            <TextBlock Text="{i18n:Localize st_send_method}"/>
+          </Grid>
+          <RadioButton Margin="12,6" GroupName="EnterBtn" IsChecked="{Binding SentViaEnter, Mode=TwoWay}" Content="{i18n:Localize st_send_method_1}"/>
+          <RadioButton Margin="12,6" GroupName="EnterBtn" IsChecked="{Binding !SentViaEnter, Mode=TwoWay}" Content="{i18n:Localize st_send_method_2}"/>
+          <vkui:Cell Header="{i18n:Localize st_send_dpl}">
+            <vkui:Cell.After>
+              <ToggleSwitch IsChecked="{Binding DontParseLinks, Mode=TwoWay}"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+          <vkui:Cell Header="{i18n:Localize st_send_nomentions}">
+            <vkui:Cell.After>
+              <ToggleSwitch IsChecked="{Binding DisableMentions, Mode=TwoWay}"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <Grid Classes="GroupHeader">
+            <TextBlock Text="{i18n:Localize st_stickers}"/>
+          </Grid>
+          <vkui:Cell Header="{i18n:Localize st_stickers_suggest}" Subtitle="{i18n:Localize st_stickers_suggest_desc}">
+            <vkui:Cell.After>
+              <ToggleSwitch IsChecked="{Binding SuggestStickers, Mode=TwoWay}"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+          <vkui:Cell Header="{i18n:Localize st_stickers_animate}" Subtitle="{i18n:Localize st_stickers_animate_desc}">
+            <vkui:Cell.After>
+              <ToggleSwitch IsChecked="{Binding AnimateStickers, Mode=TwoWay}"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
     </StackPanel>
-  </Border>
+  </ScrollViewer>
 </UserControl>

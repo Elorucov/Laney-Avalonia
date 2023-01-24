@@ -84,6 +84,8 @@
         public const string Icon28AddCircleOutline = "Icon28AddCircleOutline";
         public const string Icon28ArticleOutline = "Icon28ArticleOutline";
         public const string Icon28ArrowLeftOutline = "Icon28ArrowLeftOutline";
+        public const string Icon28BlockOutline = "Icon28BlockOutline";
+        public const string Icon28BugOutline = "Icon28BugOutline";
         public const string Icon28DocumentOutline = "Icon28DocumentOutline";
         public const string Icon28DoorArrowRightOutline = "Icon28DoorArrowRightOutline";
         public const string Icon28ErrorOutline = "Icon28ErrorOutline";
@@ -91,7 +93,10 @@
         public const string Icon28KeyboardBotsOutline = "Icon28KeyboardBotsOutline";
         public const string Icon28MoreHorizontal = "Icon28MoreHorizontal";
         public const string Icon28MusicOutline = "Icon28MusicOutline";
+        public const string Icon28Notifications = "Icon28Notifications";
+        public const string Icon28PaletteOutline = "Icon28PaletteOutline";
         public const string Icon28PictureOutline = "Icon28PictureOutline";
+        public const string Icon28PrivacyOutline = "Icon28PrivacyOutline";
         public const string Icon28SearchOutline = "Icon28SearchOutline";
         public const string Icon28SettingsOutline = "Icon28SettingsOutline";
         public const string Icon28Send = "Icon28Send";

@@ -6,9 +6,9 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.278</AssemblyVersion>
-    <FileVersion>2.0.278</FileVersion>
-    <Version>2.0.278-devplat-anycpu-devuser.devpc-230113-0818</Version>
+    <AssemblyVersion>2.0.279</AssemblyVersion>
+    <FileVersion>2.0.279</FileVersion>
+    <Version>2.0.279-devplat-anycpu-devuser.devpc-230124-1841</Version>
     <Platforms>AnyCPU</Platforms>
     <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -18,8 +18,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.278</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.278</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.279</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.279</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -119,7 +119,7 @@
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties assets_4i18n_4en-us_1json__JsonSchema="https://datahubproject.io/schemas/datahub_ingestion_schema.json" />
+      <UserProperties />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

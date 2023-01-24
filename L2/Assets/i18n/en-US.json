@@ -138,7 +138,6 @@
   "not_supported": "Not supported",
 
   "empty_message": "Empty message",
-  "message": "Message",
   "edited_indicator": "edited",
 
   "msg_action_create_m": "created the group chat",
@@ -226,5 +225,23 @@
   "atchpicker_doctype_video": "Video",
   "atchpicker_upload_photo": "Upload photo",
   "atchpicker_upload_video": "Upload video",
-  "upload_error": "Unable to upload the file"
+  "upload_error": "Unable to upload the file",
+
+  "settings_general": "General",
+  "settings_appearance": "Appearance",
+  "settings_notifications": "Notifications",
+  "settings_privacy": "Privacy",
+  "settings_blacklist": "Black list",
+
+  "st_lang": "Language",
+  "st_send_method": "Message sending options",
+  "st_send_method_1": "Enter — send\nShift + Enter — line break",
+  "st_send_method_2": "Ctrl + Enter — send\nEnter — line break",
+  "st_send_dpl": "Don't parse links",
+  "st_send_nomentions": "Disable mentions",
+  "st_stickers": "Stickers",
+  "st_stickers_suggest": "Suggest stickers",
+  "st_stickers_suggest_desc": "Matching stickers will appear when you type certain words or emojis",
+  "st_stickers_animate": "Animated stickers",
+  "st_stickers_animate_desc": "Animated stickers will be played automatically"
 }

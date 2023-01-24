@@ -60,7 +60,7 @@
                          BoxShadow="0 0 2 #1F000000, 0 2 2 #3D000000"/>
 
                 <Border x:Name="SwitchKnobOff"
-                         Background="{DynamicResource VKControlBackgroundBrush}"
+                         Background="#F2F3F5"
                          Width="16" Height="16"
                          CornerRadius="8"
                          BoxShadow="0 0 2 #1F000000, 0 2 2 #3D000000"/>
@@ -78,7 +78,7 @@
   </Style>
 
   <Style Selector="ToggleSwitch:pointerover /template/ Border#SwitchKnobOff">
-    <Setter Property="Background" Value="{DynamicResource VKControlBackgroundBrush}" />
+    <Setter Property="Background" Value="#F2F3F5" />
   </Style>
 
   <Style Selector="ToggleSwitch:pointerover /template/ Border#SwitchKnobOn">
@@ -95,7 +95,7 @@
   </Style>
 
   <Style Selector="ToggleSwitch:pressed /template/ Border#SwitchKnobOff">
-    <Setter Property="Background" Value="{DynamicResource VKControlBackgroundBrush}" />
+    <Setter Property="Background" Value="#F2F3F5" />
   </Style>
 
   <Style Selector="ToggleSwitch:pressed /template/ Border#SwitchKnobOn">
@@ -117,7 +117,7 @@
   </Style>
 
   <Style Selector="ToggleSwitch:disabled /template/ Border#SwitchKnobOff">
-    <Setter Property="Background" Value="{DynamicResource VKControlBackgroundBrush}" />
+    <Setter Property="Background" Value="#F2F3F5" />
   </Style>
 
   <Style Selector="ToggleSwitch:disabled /template/ Border#SwitchKnobOn">

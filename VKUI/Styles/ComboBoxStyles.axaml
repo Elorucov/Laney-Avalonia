@@ -2,7 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vkui="using:VKUI.Controls">
     <Design.PreviewWith>
-        <Border Padding="12,12,12,192">
+      <StackPanel Height="220">
+        <Border Padding="12">
           <ComboBox SelectedIndex="2">
             <ComboBoxItem Content="Anna"/>
             <ComboBoxItem Content="Lena"/>
@@ -11,6 +12,16 @@
             <ComboBoxItem Content="Zlata"/>
           </ComboBox>
         </Border>
+        <Border Padding="12">
+          <ComboBox Classes="Alternate" HorizontalAlignment="Right" SelectedIndex="2">
+            <ComboBoxItem Content="Anna"/>
+            <ComboBoxItem Content="Lena"/>
+            <ComboBoxItem Content="Nastya"/>
+            <ComboBoxItem Content="Yulia"/>
+            <ComboBoxItem Content="Zlata"/>
+          </ComboBox>
+        </Border>
+      </StackPanel>
     </Design.PreviewWith>
 
   <Style Selector="ComboBox">
@@ -95,6 +106,18 @@
     <Setter Property="Background" Value="Transparent" />
   </Style>
 
+  <Style Selector="ComboBox.Alternate">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="MinHeight" Value="24"/>
+  </Style>
+
+  <Style Selector="ComboBox.Alternate /template/ ToggleButton#toggle">
+    <Setter Property="Padding" Value="8,0,0,0"/>
+  </Style>
+  
   <Style Selector="ComboBoxItem">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Padding" Value="10,6" />

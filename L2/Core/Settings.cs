@@ -118,15 +118,45 @@ namespace ELOR.Laney.Core {
         #region Constants
 
         public const string TEST_STRING = "test_string";
-        public const string TEST_INT = "test_int";
-        public const string TEST_DOUBLE = "test_double";
-        public const string TEST_BOOL = "test_bool";
-        public const string TEST_ARRAY_STRING = "test_array_string";
-        public const string TEST_ARRAY_INT = "test_array_int";
-        public const string TEST_ARRAY_DOUBLE = "test_array_double";
 
         public const string VK_USER_ID = "user_id";
         public const string VK_TOKEN = "access_token";
+
+        public const string LANGUAGE = "lang";
+        public const string SEND_VIA_ENTER = "sent_via_enter";
+        public const string DONT_PARSE_LINKS = "dont_parse_liks";
+        public const string DISABLE_MENTIONS = "disable_mentions";
+        public const string STICKERS_SUGGEST = "suggest_stickers";
+        public const string STICKERS_ANIMATE = "animate_stickers";
+
+        #endregion
+
+        #region Settings with defaults
+
+        public static bool SentViaEnter { 
+            get => Get(SEND_VIA_ENTER, true);
+            set => Set(SEND_VIA_ENTER, value);
+        }
+
+        public static bool DontParseLinks {
+            get => Get(DONT_PARSE_LINKS, false);
+            set => Set(DONT_PARSE_LINKS, value);
+        }
+
+        public static bool DisableMentions {
+            get => Get(DISABLE_MENTIONS, false);
+            set => Set(DISABLE_MENTIONS, value);
+        }
+
+        public static bool SuggestStickers {
+            get => Get(STICKERS_SUGGEST, true);
+            set => Set(STICKERS_SUGGEST, value);
+        }
+
+        public static bool AnimateStickers {
+            get => Get(STICKERS_ANIMATE, true);
+            set => Set(STICKERS_ANIMATE, value);
+        }
 
         #endregion
     }

@@ -138,7 +138,6 @@
   "not_supported": "Не поддерживается",
 
   "empty_message": "Пустое сообщение",
-  "message": "Сообщение",
   "edited_indicator": "ред.",
 
   "msg_action_create_m": "создал беседу",
@@ -226,5 +225,23 @@
   "atchpicker_doctype_video": "Видео",
   "atchpicker_upload_photo": "Загрузить фотографию",
   "atchpicker_upload_video": "Загрузить видео",
-  "upload_error": "Не удалось загрузить файл"
+  "upload_error": "Не удалось загрузить файл",
+
+  "settings_general": "Основные",
+  "settings_appearance": "Внешний вид",
+  "settings_notifications": "Уведомления",
+  "settings_privacy": "Приватность",
+  "settings_blacklist": "Чёрный список",
+
+  "st_lang": "Язык",
+  "st_send_method": "Параметры отправки сообщения",
+  "st_send_method_1": "Enter — отправка\nShift + Enter — перенос строки",
+  "st_send_method_2": "Ctrl + Enter — отправка\nEnter — перенос строки",
+  "st_send_dpl": "Не создавать сниппет ссылки",
+  "st_send_nomentions": "Не уведомлять об упоминании",
+  "st_stickers": "Стикеры",
+  "st_stickers_suggest": "Подсказывать стикеры",
+  "st_stickers_suggest_desc": "При вводе смайлов и некоторых слов будут показываться подсказки стикеров",
+  "st_stickers_animate": "Анимированные стикеры",
+  "st_stickers_animate_desc": "Стикеры с анимацией будут проигрываться автоматически"
 }

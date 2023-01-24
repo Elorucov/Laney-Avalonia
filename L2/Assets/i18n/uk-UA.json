@@ -138,7 +138,6 @@
   "not_supported": "Не підтримується",
 
   "empty_message": "Пусте повiдомлення",
-  "message": "Повiдомлення",
   "edited_indicator": "ред.",
 
   "msg_action_create_m": "створив бесіду",
@@ -226,5 +225,23 @@
   "atchpicker_doctype_video": "Відео",
   "atchpicker_upload_photo": "Завантажити фотографію",
   "atchpicker_upload_video": "Завантажити відео",
-  "upload_error": "Не вдалося завантажити файл"
+  "upload_error": "Не вдалося завантажити файл",
+
+  "settings_general": "Основні",
+  "settings_appearance": "Зовнішній вигляд",
+  "settings_notifications": "Сповіщення",
+  "settings_privacy": "Конфіденційність",
+  "settings_blacklist": "Чорний список",
+
+  "st_lang": "Мова",
+  "st_send_method": "Параметри надсилання повiдомлень",
+  "st_send_method_1": "Enter — надсилання\nShift + Enter — перенесення рядка",
+  "st_send_method_2": "Ctrl + Enter — надсилання\nEnter — перенесення рядка",
+  "st_send_dpl": "Не створювати сніпет посилання",
+  "st_send_nomentions": "Не сповіщувати про згадки",
+  "st_stickers": "Стікери",
+  "st_stickers_suggest": "Підказувати стікери",
+  "st_stickers_suggest_desc": "При виборі смайлів або введенні деяких слів будуть відображатися підказки стікерів",
+  "st_stickers_animate": "Анімовані стікери",
+  "st_stickers_animate_desc": "Стікери з анімацією програватимуться автоматично"
 }
