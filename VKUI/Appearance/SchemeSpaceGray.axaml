@@ -237,6 +237,8 @@
   <SolidColorBrush x:Key="VKSecondaryOverlayBadgeBrush" Color="{StaticResource VKWhiteAlpha15Color}"/>
   <SolidColorBrush x:Key="VKContentPositiveBackgroundBrush" Color="{StaticResource VKGreenAlphaColor}"/>
 
+  <SolidColorBrush x:Key="VKCustomGroupShadowBrush" Color="{StaticResource VKGray100Color}"/>
+
   <LinearGradientBrush x:Key="TransparentToContentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
     <LinearGradientBrush.GradientStops>
       <GradientStop Offset="0" Color="#19191A00"/>

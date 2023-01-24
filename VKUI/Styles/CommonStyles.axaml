@@ -2,19 +2,31 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vkui="using:VKUI.Controls">
     <Design.PreviewWith>
-        <StackPanel Margin="12,0">
-          <CheckBox Content="Anna"/>
-          <CheckBox Content="Lena" IsEnabled="False"/>
-          <CheckBox Content="Nastya" IsChecked="True"/>
-          
-          <Rectangle Classes="Separator"/>
-          
-          <RadioButton GroupName="TestBest" Content="Anna"/>
-          <RadioButton GroupName="TestBest" Content="Lena" IsEnabled="False"/>
-          <RadioButton GroupName="TestBest" Content="Nastya" IsChecked="True"/>
-        
-          <ProgressBar Margin="0,6" Value="75"/>
-          <ProgressBar Margin="0,6,0,12" IsIndeterminate="True"/>
+        <StackPanel Width="360" Background="{DynamicResource VKBackgroundPageBrush}">
+
+          <Border Classes="Group">
+            <StackPanel>
+              <Grid Classes="GroupHeader">
+                <TextBlock Text="Group title"/>
+              </Grid>
+              <CheckBox Margin="12,0" Content="Anna"/>
+              <CheckBox Margin="12,0" Content="Lena" IsEnabled="False"/>
+              <CheckBox Margin="12,0" Content="Nastya" IsChecked="True"/>
+
+              <Rectangle Margin="12,0" Classes="Separator"/>
+
+              <RadioButton Margin="12,0" GroupName="TestBest" Content="Anna"/>
+              <RadioButton Margin="12,0" GroupName="TestBest" Content="Lena" IsEnabled="False"/>
+              <RadioButton Margin="12,0" GroupName="TestBest" Content="Nastya" IsChecked="True"/>
+            </StackPanel>
+          </Border>
+
+          <Border Classes="Group">
+            <StackPanel Margin="12">
+              <ProgressBar Margin="0,6" Value="75"/>
+              <ProgressBar Margin="0,6,0,12" IsIndeterminate="True"/>
+            </StackPanel>
+          </Border>
         </StackPanel>
     </Design.PreviewWith>
 
@@ -47,10 +59,6 @@
     <Setter Property="CornerRadius" Value="8"/>
   </Style>
   
-  <Style Selector="ListBox">
-    <Setter Property="Padding" Value="0" />
-  </Style>
-
   <Style Selector="Rectangle.Separator">
     <Setter Property="Fill" Value="{DynamicResource VKSeparatorAlphaBrush}" />
     <Setter Property="Height" Value="1" />
@@ -69,6 +77,29 @@
     <Setter Property="Margin" Value="18,6" />
   </Style>
 
+  <!-- VKUI Group -->
+
+  <Style Selector="Border.Group">
+    <Setter Property="Margin" Value="11,0,11,11" />
+    <Setter Property="CornerRadius" Value="12" />
+    <Setter Property="Background" Value="{DynamicResource VKBackgroundContentBrush}" />
+    <!-- Temporary -->
+    <Setter Property="BorderBrush" Value="{DynamicResource VKInputBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="Grid.GroupHeader">
+    <Setter Property="Margin" Value="12,0" />
+  </Style>
+
+  <Style Selector=".GroupHeader > TextBlock:nth-child(1)">
+    <Setter Property="Margin" Value="0,14,0,10" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="LineHeight" Value="18" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}" />
+  </Style>
+  
   <!-- Checkbox -->
   
   <Style Selector="CheckBox">

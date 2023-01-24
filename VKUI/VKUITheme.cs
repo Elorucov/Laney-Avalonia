@@ -155,10 +155,16 @@ namespace VKUI {
                     Source = new Uri("avares://VKUI/Styles/TextBoxStyles.axaml")
                 },
                 new StyleInclude(baseUri) {
+                    Source = new Uri("avares://VKUI/Styles/ToggleSwitchStyles.axaml")
+                },
+                new StyleInclude(baseUri) {
                     Source = new Uri("avares://VKUI/Controls/ActionSheetItem.axaml")
                 },
                 new StyleInclude(baseUri) {
                     Source = new Uri("avares://VKUI/Controls/Avatar.axaml")
+                },
+                new StyleInclude(baseUri) {
+                    Source = new Uri("avares://VKUI/Controls/Cell.axaml")
                 },
                 new StyleInclude(baseUri) {
                     Source = new Uri("avares://VKUI/Controls/PanelHeader.axaml")

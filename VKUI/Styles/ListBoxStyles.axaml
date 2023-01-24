@@ -3,6 +3,11 @@
         xmlns:vkui="using:VKUI.Controls">
     <Design.PreviewWith>
         <StackPanel Margin="6">
+          <ListBox Margin="6" SelectionMode="Toggle" SelectedIndex="2">
+            <TextBlock Text="Simple"/>
+            <TextBlock Text="ListBox"/>
+          </ListBox>
+
           <ListBox Margin="6" SelectionMode="Multiple,Toggle" SelectedIndex="2">
             <TextBlock Text="Anna"/>
             <TextBlock Text="Lena"/>
@@ -30,12 +35,15 @@
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderBrush" Value="Transparent"/>
     <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
   </Style>
   
   <Style Selector="ListBoxItem">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Padding" Value="12,6"/>
     <Setter Property="MinHeight" Value="32"/>
+    <Setter Property="CornerRadius" Value="8"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border Name="PART_Root"

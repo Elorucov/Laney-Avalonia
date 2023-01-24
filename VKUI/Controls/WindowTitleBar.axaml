@@ -3,7 +3,7 @@
         xmlns:vkui="using:VKUI.Controls"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
-    <controls:WindowTitleBar Width="360" Height="32"/>
+    <controls:WindowTitleBar Width="360"/>
   </Design.PreviewWith>
 
   <Style Selector="controls|WindowTitleBar">
@@ -29,8 +29,8 @@
     <Setter Property="LineHeight" Value="18"/>
   </Style>
   <Style Selector="controls|WindowTitleBar /template/ TextBlock.Default">
-    <Setter Property="Margin" Value="32,8"/>
-    <Setter Property="FontSize" Value="13"/>
-    <Setter Property="LineHeight" Value="16"/>
+    <Setter Property="Margin" Value="32,15"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="LineHeight" Value="18"/>
   </Style>
 </Styles>

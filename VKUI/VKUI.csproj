@@ -58,4 +58,7 @@
     <AvaloniaResource Include="Fonts\VKSansText-Regular.ttf" />
     <AvaloniaResource Include="Fonts\VKSansText-SemiBold.ttf" />
   </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\Cell.axaml" />
+  </ItemGroup>
 </Project>

@@ -45,4 +45,13 @@
       </StackPanel>
     </Grid>
   </DataTemplate>
+
+  <!-- Категории настроек -->
+  <DataTemplate x:Key="CellItemTemplate">
+    <vkui:Cell Header="{Binding Title}">
+      <vkui:Cell.Before>
+        <vkui:VKIcon Id="{Binding IconId}"/>
+      </vkui:Cell.Before>
+    </vkui:Cell>
+  </DataTemplate>
 </ResourceDictionary>

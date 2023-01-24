@@ -1,0 +1,48 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:VKUI.Controls">
+  <Design.PreviewWith>
+    <StackPanel Width="360">
+      <controls:Cell Header="Elchin Orujov" Subtitle="Creator">
+        <controls:Cell.Before>
+          <controls:Avatar Initials="WW" Background="Cyan"/>
+        </controls:Cell.Before>
+        <controls:Cell.After>
+          <controls:VKIcon Id="{x:Static controls:VKIconNames.Icon28MoreHorizontal}"/>
+        </controls:Cell.After>
+      </controls:Cell>
+      <controls:Cell Header="Settings">
+        <controls:Cell.Before>
+          <controls:VKIcon Id="Icon28SettingsOutline"/>
+        </controls:Cell.Before>
+      </controls:Cell>
+      <controls:Cell Header="Setting">
+        <controls:Cell.After>
+          <TextBlock Text="Only me"/>
+        </controls:Cell.After>
+      </controls:Cell>
+    </StackPanel>
+  </Design.PreviewWith>
+  
+
+  <Style Selector="controls|Cell">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}">
+          <Grid ColumnDefinitions="Auto * Auto" Margin="12,0">
+            <ContentPresenter x:Name="BeforeControl" Margin="0,8,12,8" VerticalAlignment="Center" IsVisible="{TemplateBinding Before, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding Before}"/>
+            <StackPanel Grid.Column="1" Margin="0,12" VerticalAlignment="Center">
+              <TextBlock x:Name="HeaderText" Text="{TemplateBinding Header}"/>
+              <TextBlock x:Name="SubtitleText" Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{TemplateBinding Subtitle, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{TemplateBinding Subtitle}"/>
+            </StackPanel>
+            <ContentPresenter x:Name="AfterControl" Grid.Column="2" Margin="12,8,0,8" VerticalAlignment="Center" IsVisible="{TemplateBinding After, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding After}"/>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|Cell /template/ ContentPresenter#AfterControl TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
+  </Style>
+</Styles>

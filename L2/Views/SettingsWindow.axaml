@@ -1,0 +1,29 @@
+<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vkw="using:VKUI.Windows"
+        xmlns:vkui="using:VKUI.Controls"
+        mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="640"
+        x:Class="ELOR.Laney.Views.SettingsWindow"
+        Width="720" Height="640"
+        Background="{DynamicResource VKBackgroundPageBrush}"
+        Title="{i18n:Localize settings}">
+  <Grid RowDefinitions="Auto *" ColumnDefinitions="240 *">
+    <Grid x:Name="CategoriesPanel" Grid.Row="1">
+      <Grid.Styles>
+        <Style Selector="ListBoxItem">
+          <Setter Property="Padding" Value="0"/>
+        </Style>
+      </Grid.Styles>
+      <ListBox x:Name="CategoriesList" ItemTemplate="{StaticResource CellItemTemplate}" Items="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" SelectionMode="Toggle" SelectionChanged="CategoriesList_SelectionChanged"/>
+    </Grid>
+    <ContentControl x:Name="ContentPanel" Grid.Column="1" Grid.Row="1">
+    </ContentControl>
+
+    <!-- <Rectangle x:Name="Separator" Grid.RowSpan="2" HorizontalAlignment="Right" Width="1" VerticalAlignment="Stretch" Fill="{DynamicResource VKSeparatorAlphaBrush}"/> -->
+    <vkui:WindowTitleBar x:Name="TitleBar" Grid.ColumnSpan="2" CanShowTitle="True" CanMove="True"/>
+  </Grid>
+</vkw:DialogWindow>

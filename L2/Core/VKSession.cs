@@ -85,6 +85,11 @@ namespace ELOR.Laney.Core {
             };
             logout.Classes.Add("Destructive");
 
+            settings.Click += async (a, b) => {
+                SettingsWindow sw = new SettingsWindow();
+                await sw.ShowDialog(Window);
+            };
+
             ash.Items.Add(settings);
             ash.Items.Add(about);
             ash.Items.Add(logout);
