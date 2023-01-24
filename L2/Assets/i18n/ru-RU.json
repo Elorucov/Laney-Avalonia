@@ -235,8 +235,10 @@
 
   "st_lang": "Язык",
   "st_send_method": "Параметры отправки сообщения",
-  "st_send_method_1": "Enter — отправка\nShift + Enter — перенос строки",
-  "st_send_method_2": "Ctrl + Enter — отправка\nEnter — перенос строки",
+  "st_send_method_1": "Enter — отправка",
+  "st_send_method_1_desc": "Shift + Enter — перенос строки",
+  "st_send_method_2": "Ctrl + Enter — отправка",
+  "st_send_method_2_desc": "Enter — перенос строки",
   "st_send_dpl": "Не создавать сниппет ссылки",
   "st_send_nomentions": "Не уведомлять об упоминании",
   "st_stickers": "Стикеры",

@@ -21,6 +21,16 @@
           <TextBlock Text="Only me"/>
         </controls:Cell.After>
       </controls:Cell>
+      <controls:Cell Header="Aaaaa" Subtitle="Aaaaa">
+        <controls:Cell.Before>
+          <RadioButton GroupName="Test" IsChecked="True"/>
+        </controls:Cell.Before>
+      </controls:Cell>
+      <controls:Cell Header="Bbbbb" Subtitle="Bbbbb">
+        <controls:Cell.Before>
+          <RadioButton GroupName="Test"/>
+        </controls:Cell.Before>
+      </controls:Cell>
     </StackPanel>
   </Design.PreviewWith>
   
@@ -30,7 +40,7 @@
       <ControlTemplate>
         <Border Background="{TemplateBinding Background}">
           <Grid ColumnDefinitions="Auto * Auto" Margin="12,0">
-            <ContentPresenter x:Name="BeforeControl" Margin="0,8,12,8" VerticalAlignment="Center" IsVisible="{TemplateBinding Before, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding Before}"/>
+            <ContentPresenter x:Name="BeforeControl" Margin="0,8,12,8" VerticalAlignment="Stretch" IsVisible="{TemplateBinding Before, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding Before}"/>
             <StackPanel Grid.Column="1" Margin="0,12" VerticalAlignment="Center">
               <TextBlock x:Name="HeaderText" Text="{TemplateBinding Header}"/>
               <TextBlock x:Name="SubtitleText" Classes="Caption1" TextWrapping="Wrap" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{TemplateBinding Subtitle, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{TemplateBinding Subtitle}"/>
@@ -45,5 +55,10 @@
   <Style Selector="controls|Cell /template/ ContentPresenter#AfterControl > TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+
+  <Style Selector="controls|Cell /template/ ContentPresenter#BeforeControl > RadioButton">
+    <Setter Property="VerticalAlignment" Value="Top"/>
+    <Setter Property="Margin" Value="0,-10,-12,0"/>
   </Style>
 </Styles>

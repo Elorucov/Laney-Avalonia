@@ -235,8 +235,10 @@
 
   "st_lang": "Language",
   "st_send_method": "Message sending options",
-  "st_send_method_1": "Enter — send\nShift + Enter — line break",
-  "st_send_method_2": "Ctrl + Enter — send\nEnter — line break",
+  "st_send_method_1": "Enter — send",
+  "st_send_method_1_desc": "Shift + Enter — line break",
+  "st_send_method_2": "Ctrl + Enter — send",
+  "st_send_method_2_desc": "Enter — line break",
   "st_send_dpl": "Don't parse links",
   "st_send_nomentions": "Disable mentions",
   "st_stickers": "Stickers",

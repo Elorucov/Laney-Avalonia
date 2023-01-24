@@ -235,8 +235,10 @@
 
   "st_lang": "Мова",
   "st_send_method": "Параметри надсилання повiдомлень",
-  "st_send_method_1": "Enter — надсилання\nShift + Enter — перенесення рядка",
-  "st_send_method_2": "Ctrl + Enter — надсилання\nEnter — перенесення рядка",
+  "st_send_method_1": "Enter — надсилання",
+  "st_send_method_1_desc": "Shift + Enter — перенесення рядка",
+  "st_send_method_2": "Ctrl + Enter — надсилання",
+  "st_send_method_2_desc": "Enter — перенесення рядка",
   "st_send_dpl": "Не створювати сніпет посилання",
   "st_send_nomentions": "Не сповіщувати про згадки",
   "st_stickers": "Стікери",

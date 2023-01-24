@@ -28,8 +28,16 @@
           <Grid Classes="GroupHeader">
             <TextBlock Text="{i18n:Localize st_send_method}"/>
           </Grid>
-          <RadioButton Margin="12,6" GroupName="EnterBtn" IsChecked="{Binding SentViaEnter, Mode=TwoWay}" Content="{i18n:Localize st_send_method_1}"/>
-          <RadioButton Margin="12,6" GroupName="EnterBtn" IsChecked="{Binding !SentViaEnter, Mode=TwoWay}" Content="{i18n:Localize st_send_method_2}"/>
+          <vkui:Cell Header="{i18n:Localize st_send_method_1}" Subtitle="{i18n:Localize st_send_method_1_desc}">
+            <vkui:Cell.Before>
+              <RadioButton GroupName="EnterBtn" IsChecked="{Binding SentViaEnter, Mode=TwoWay}"/>
+            </vkui:Cell.Before>
+          </vkui:Cell>
+          <vkui:Cell Header="{i18n:Localize st_send_method_2}" Subtitle="{i18n:Localize st_send_method_2_desc}">
+            <vkui:Cell.Before>
+              <RadioButton GroupName="EnterBtn" IsChecked="{Binding !SentViaEnter, Mode=TwoWay}"/>
+            </vkui:Cell.Before>
+          </vkui:Cell>
           <vkui:Cell Header="{i18n:Localize st_send_dpl}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding DontParseLinks, Mode=TwoWay}"/>
