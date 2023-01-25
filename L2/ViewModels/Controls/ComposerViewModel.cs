@@ -3,6 +3,7 @@ using Avalonia.Platform.Storage.FileIO;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
 using System;
@@ -16,23 +17,40 @@ namespace ELOR.Laney.ViewModels.Controls {
     public class ComposerViewModel : CommonViewModel {
         private VKSession session;
         
+        private bool _canSendMessage;
         private bool _isEditMode;
         private string _text;
+        private int _textSelectionStart;
+        private int _textSelectionEnd;
         private ObservableCollection<OutboundAttachmentViewModel> _attachments = new ObservableCollection<OutboundAttachmentViewModel>();
         private MessageViewModel _reply;
         private BotKeyboard _botKeyboard;
+        private RelayCommand _sendCommand;
+        private RelayCommand _recordAudioCommand;
 
+        public bool CanSendMessage { get { return _canSendMessage; } private set { _canSendMessage = value; OnPropertyChanged(); } }
         public bool IsEditMode { get { return _isEditMode; } set { _isEditMode = value; OnPropertyChanged(); } }
-        public string Text { get { return _text; } set { _text = value; OnPropertyChanged(); } }
+        public string Text { get { return _text; } set { _text = value; OnPropertyChanged(); CheckCanSendMessage(); } }
+        public int TextSelectionStart { get { return _textSelectionStart; } set { _textSelectionStart = value; OnPropertyChanged(); } }
+        public int TextSelectionEnd { get { return _textSelectionEnd; } set { _textSelectionEnd = value; OnPropertyChanged(); } }
         public ObservableCollection<OutboundAttachmentViewModel> Attachments { get { return _attachments; } set { _attachments = value; OnPropertyChanged(); } }
         public MessageViewModel Reply { get { return _reply; } set { _reply = value; OnPropertyChanged(); } }
         public BotKeyboard BotKeyboard { get { return _botKeyboard; } set { _botKeyboard = value; OnPropertyChanged(); } }
 
         ChatViewModel Chat;
+        public RelayCommand SendCommand { get { return _sendCommand; } private set { _sendCommand = value; OnPropertyChanged(); } }
+        public RelayCommand RecordAudioCommand { get { return _recordAudioCommand; } private set { _recordAudioCommand = value; OnPropertyChanged(); } }
 
         public ComposerViewModel(VKSession session, ChatViewModel chat) {
             this.session = session;
             Chat = chat;
+            Attachments.CollectionChanged += (a, b) => CheckCanSendMessage();
+            SendCommand = new RelayCommand((o) => SendMessage());
+            RecordAudioCommand = new RelayCommand((o) => RecordAudio());
+        }
+
+        private void CheckCanSendMessage() {
+            CanSendMessage = !String.IsNullOrEmpty(Text) || Attachments.Count > 0;
         }
 
         public void ShowAttachmentPickerContextMenu(Control target) {
@@ -105,7 +123,19 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         private void Picker_EmojiPicked(object sender, string e) {
-            Text += e;
+            if (TextSelectionStart == TextSelectionEnd) {
+                Text = Text.Insert(TextSelectionEnd, e);
+                TextSelectionStart += e.Length;
+                TextSelectionEnd += e.Length;
+            } else {
+                int start = Math.Min(TextSelectionStart, TextSelectionEnd);
+                int end = Math.Max(TextSelectionStart, TextSelectionEnd);
+                string newText = Text.Remove(start, end - start);
+                Text = newText.Insert(start, e);
+                start += e.Length;
+                TextSelectionStart = start;
+                TextSelectionEnd = start;
+            }
         }
 
         private async void AddAttachments(object pickerResult) {
@@ -124,6 +154,14 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         public void DeleteReply() {
             Reply = null;
+        }
+    
+        public void SendMessage() {
+            ExceptionHelper.ShowNotImplementedDialogAsync(session.Window);
+        }
+
+        public void RecordAudio() {
+            ExceptionHelper.ShowNotImplementedDialogAsync(session.Window);
         }
     }
 }

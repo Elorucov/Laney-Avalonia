@@ -28,6 +28,8 @@
   "landing_title": "Це Laney",
   "landing_subtitle": "Мессенджер соціальної мережі ВКонтактi",
 
+  "not_implemented": "Не реалізовано",
+  "not_implemented_desc": "Ця функцiя з'явиться в наступних бета-версiях Laney.",
   "error": "Помилка",
   "error_api": "Помилка VK API",
   "err_network": "Помилка мережі",

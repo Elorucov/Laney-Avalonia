@@ -28,6 +28,8 @@
   "landing_title": "Это Laney",
   "landing_subtitle": "Мессенджер социальной сети ВКонтакте",
 
+  "not_implemented": "Пока не реализовано",
+  "not_implemented_desc": "Функция появится в следующих бета-версиях Laney.",
   "error": "Ошибка",
   "error_api": "Ошибка VK API",
   "err_network": "Ошибка сети",

@@ -64,5 +64,10 @@ namespace ELOR.Laney.Helpers {
             Tuple<string, string> err = GetDefaultErrorInfo(ex);
             return await ShowErrorDialogAsync(owner, err, hideRetry);
         }
+
+        public static async void ShowNotImplementedDialogAsync(Window owner) {
+            VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"]);
+            await alert.ShowDialog(owner);
+        }
     }
 }

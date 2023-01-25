@@ -28,6 +28,8 @@
   "landing_title": "This is Laney",
   "landing_subtitle": "The messenger of VK social network",
 
+  "not_implemented": "Not implemented yet",
+  "not_implemented_desc": "This feature will coming in the next beta-versions of Laney.",
   "error": "Error",
   "error_api": "VK API error",
   "err_network": "Network error",

@@ -80,6 +80,7 @@
         public const string Icon24Video = "Icon24Video";
         public const string Icon24Videocam = "Icon24Videocam";
         public const string Icon24Voice = "Icon24Voice";
+        public const string Icon24VoiceOutline = "Icon24VoiceOutline";
 
         public const string Icon28AddCircleOutline = "Icon28AddCircleOutline";
         public const string Icon28ArticleOutline = "Icon28ArticleOutline";

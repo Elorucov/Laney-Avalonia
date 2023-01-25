@@ -6,14 +6,36 @@ using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using VKUI.Popups;
 
 namespace ELOR.Laney.Controls {
     public partial class Composer : UserControl {
         private ComposerViewModel ViewModel { get { return DataContext as ComposerViewModel; } }
+        private Tuple<int, int> OldSelectionRange = null;
 
         public Composer() {
             InitializeComponent();
+            MessageText.PropertyChanged += MessageText_PropertyChanged;
+        }
+
+        // Костыль для сохранения выделения в тексте сообщения после потери фокуса.
+        private async void MessageText_PropertyChanged(object sender, Avalonia.AvaloniaPropertyChangedEventArgs e) {
+            if (e.Property == TextBox.SelectionStartProperty || e.Property == TextBox.SelectionEndProperty) {
+                await Task.Delay(10);
+                OldSelectionRange = new Tuple<int, int>(MessageText.SelectionStart, MessageText.SelectionEnd);
+            }
+        }
+
+        // Костыль для сохранения выделения в тексте сообщения после потери фокуса.
+        private void MessageText_LostFocus(object sender, RoutedEventArgs e) {
+            if (OldSelectionRange != null && OldSelectionRange.Item1 != OldSelectionRange.Item2) {
+                ViewModel.TextSelectionStart = OldSelectionRange.Item1;
+                ViewModel.TextSelectionEnd = OldSelectionRange.Item2;
+            }
+
+            MessageText.SelectionStart = ViewModel.TextSelectionStart;
+            MessageText.SelectionEnd = ViewModel.TextSelectionEnd;
         }
 
         private void BotKbdButton_Click(object sender, RoutedEventArgs e) {

@@ -25,7 +25,7 @@ namespace ELOR.Laney.ViewModels.SettingsCategories {
         }
 
         private Tuple<string, string> GetLang() {
-            var id = Settings.Get<string>(Settings.LANGUAGE, Constants.DefaultLang);
+            var id = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
             return Languages.Where(l => l.Item1 == id).FirstOrDefault();
         }
 
