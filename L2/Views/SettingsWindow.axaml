@@ -24,7 +24,7 @@
       <ContentControl.Styles>
         <Style Selector="vkui|Cell /template/ ContentPresenter#AfterControl > ToggleSwitch">
           <Setter Property="VerticalAlignment" Value="Top"/>
-          <Setter Property="Margin" Value="0,2,0,0"/>
+          <Setter Property="Margin" Value="-2,2,-2,0"/>
         </Style>
 
         <Style Selector="vkui|Cell /template/ ContentPresenter#AfterControl > ComboBox.Alternate">
@@ -32,7 +32,10 @@
           <Setter Property="Margin" Value="0,2,0,0"/>
           <Setter Property="Foreground" Value="{DynamicResource VKTextLinkBrush}"/>
         </Style>
-      
+
+        <Style Selector="Border.Group vkui|Cell:nth-child(1)">
+          <Setter Property="Margin" Value="0,6,0,0"/>
+        </Style>
         <Style Selector="Border.Group vkui|Cell:nth-last-child(1)">
           <Setter Property="Margin" Value="0,0,0,6"/>
         </Style>

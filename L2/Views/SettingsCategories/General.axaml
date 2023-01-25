@@ -10,7 +10,7 @@
     <StackPanel>
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
-          <vkui:Cell Header="{i18n:Localize st_lang}">
+          <vkui:Cell Margin="0" Header="{i18n:Localize st_lang}">
             <vkui:Cell.After>
               <ComboBox Classes="Alternate" Items="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>

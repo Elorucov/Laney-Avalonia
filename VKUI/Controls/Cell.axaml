@@ -16,9 +16,14 @@
           <controls:VKIcon Id="Icon28SettingsOutline"/>
         </controls:Cell.Before>
       </controls:Cell>
-      <controls:Cell Header="Setting">
+      <controls:Cell Header="Setting" Background="#7f7f7f7f">
         <controls:Cell.After>
           <TextBlock Text="Only me"/>
+        </controls:Cell.After>
+      </controls:Cell>
+      <controls:Cell Header="ToggleSwitch" Background="#3f7f7f7f">
+        <controls:Cell.After>
+          <ToggleSwitch/>
         </controls:Cell.After>
       </controls:Cell>
       <controls:Cell Header="Aaaaa" Subtitle="Aaaaa">
@@ -40,12 +45,12 @@
       <ControlTemplate>
         <Border Background="{TemplateBinding Background}">
           <Grid ColumnDefinitions="Auto * Auto" Margin="12,0">
-            <ContentPresenter x:Name="BeforeControl" Margin="0,8,12,8" VerticalAlignment="Stretch" IsVisible="{TemplateBinding Before, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding Before}"/>
-            <StackPanel Grid.Column="1" Margin="0,12" VerticalAlignment="Center">
+            <ContentPresenter x:Name="BeforeControl" Margin="0,6,12,6" VerticalAlignment="Stretch" IsVisible="{TemplateBinding Before, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding Before}"/>
+            <StackPanel Grid.Column="1" Margin="0,8" VerticalAlignment="Center">
               <TextBlock x:Name="HeaderText" Text="{TemplateBinding Header}"/>
               <TextBlock x:Name="SubtitleText" Classes="Caption1" TextWrapping="Wrap" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{TemplateBinding Subtitle, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{TemplateBinding Subtitle}"/>
             </StackPanel>
-            <ContentPresenter x:Name="AfterControl" Grid.Column="2" Margin="12,8,0,8" VerticalAlignment="Stretch" IsVisible="{TemplateBinding After, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding After}"/>
+            <ContentPresenter x:Name="AfterControl" Grid.Column="2" Margin="12,6,0,6" VerticalAlignment="Stretch" IsVisible="{TemplateBinding After, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding After}"/>
           </Grid>
         </Border>
       </ControlTemplate>
@@ -59,6 +64,6 @@
 
   <Style Selector="controls|Cell /template/ ContentPresenter#BeforeControl > RadioButton">
     <Setter Property="VerticalAlignment" Value="Top"/>
-    <Setter Property="Margin" Value="0,-10,-12,0"/>
+    <Setter Property="Margin" Value="0,-8,-10,0"/>
   </Style>
 </Styles>
