@@ -1,12 +1,12 @@
 ﻿using Avalonia.Controls;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
 using ELOR.Laney.ViewModels.Controls;
 using VKUI.Controls;
 using VKUI.Popups;
 using ELOR.VKAPILib.Objects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -84,14 +84,14 @@ namespace ELOR.Laney.Helpers {
             bool isMessagePinned = chat.ChatSettings?.PinnedMessage != null 
                 ? chat.ChatSettings.PinnedMessage.Id == message.Id : false;
 
-            // TODO: проверка на наличие нередактируемых объектов (стикеры и пр.)
-            bool canEdit = message.SentTime.AddDays(1) > DateTime.Now && message.SenderId == session.Id;
+            // TODO: проверка на наличие нередактируемых объектов (стикеры, голосовухи, сервисных и пр.)
+            bool canEdit = message.CanEdit(session.Id);
 
             // Actions
 
             reply.Click += (a, b) => chat.Composer.Reply = message;
-            forwardHere.Click += (a, b) => 
-                chat.Composer.Attachments.Add(new OutboundAttachmentViewModel(new List<MessageViewModel> { message }));
+            forwardHere.Click += (a, b) => chat.Composer.AddForwardedMessages(new List<MessageViewModel> { message });
+            edit.Click += (a, b) => chat.Composer.StartEditing(message);
 
             // ¯\_(ツ)_/¯
 

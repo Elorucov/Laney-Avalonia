@@ -327,5 +327,39 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         #endregion
+
+        #region Static
+
+        // Обратите внимание и на MessageExtensions.CanAttachToSend!
+        public static OutboundAttachmentViewModel FromAttachmentBase(VKSession session, Attachment attachment) {
+            switch (attachment.Type) {
+                case AttachmentType.Audio: 
+                    return new OutboundAttachmentViewModel(session, attachment.Audio);
+                case AttachmentType.Graffiti:
+                    return new OutboundAttachmentViewModel(session, attachment.Graffiti);
+                case AttachmentType.Document:
+                    return new OutboundAttachmentViewModel(session, attachment.Document);
+                case AttachmentType.Market:
+                    return new OutboundAttachmentViewModel(session, attachment.Market);
+                case AttachmentType.Narrative:
+                    return new OutboundAttachmentViewModel(session, attachment.Narrative);
+                case AttachmentType.Photo:
+                    return new OutboundAttachmentViewModel(session, attachment.Photo);
+                case AttachmentType.Podcast:
+                    return new OutboundAttachmentViewModel(session, attachment.Podcast);
+                case AttachmentType.Poll:
+                    return new OutboundAttachmentViewModel(session, attachment.Poll);
+                case AttachmentType.Story:
+                    return new OutboundAttachmentViewModel(session, attachment.Story);
+                case AttachmentType.Video:
+                    return new OutboundAttachmentViewModel(session, attachment.Video);
+                case AttachmentType.Wall:
+                    return new OutboundAttachmentViewModel(session, attachment.Wall);
+                default:
+                    return null;
+            }
+        }
+
+        #endregion
     }
 }

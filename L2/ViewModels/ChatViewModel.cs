@@ -310,7 +310,7 @@ namespace ELOR.Laney.ViewModels {
             MessagesCommands.Clear();
             if (SelectedMessagesCount > 0) {
                 Command reply = new Command(VKIconNames.Icon24ReplyOutline, Localizer.Instance["reply"], false, ReplyToMessageCommand);
-                Command fwdhere = new Command(VKIconNames.Icon24ShareOutline, Localizer.Instance["forward_here"], false, ForwardHereCommand);
+                Command fwdhere = new Command(VKIconNames.Icon24ReplyOutline, Localizer.Instance["forward_here"], false, ForwardHereCommand);
                 Command forward = new Command(VKIconNames.Icon24ShareOutline, Localizer.Instance["forward"], false, ForwardCommand);
 
                 MessagesCommands.Add(SelectedMessagesCount == 1 ? reply : fwdhere);
@@ -330,8 +330,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         private void ForwardHereCommand(object o) {
-            OutboundAttachmentViewModel oavm = new OutboundAttachmentViewModel(SelectedMessages.SelectedItems.ToList(), session.GroupId);
-            Composer.Attachments.Insert(0, oavm);
+            Composer.AddForwardedMessages(SelectedMessages.SelectedItems.ToList(), session.GroupId);
             SelectedMessages.Clear();
         }
 
