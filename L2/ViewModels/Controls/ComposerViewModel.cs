@@ -32,12 +32,12 @@ namespace ELOR.Laney.ViewModels.Controls {
         private RelayCommand _recordAudioCommand;
 
         public bool CanSendMessage { get { return _canSendMessage; } private set { _canSendMessage = value; OnPropertyChanged(); } }
-        public int EditingMessageId { get { return _editingMessageId; } set { _editingMessageId = value; OnPropertyChanged(); } }
+        public int EditingMessageId { get { return _editingMessageId; } private set { _editingMessageId = value; OnPropertyChanged(); } }
         public string Text { get { return _text; } set { _text = value; OnPropertyChanged(); CheckCanSendMessage(); } }
         public int TextSelectionStart { get { return _textSelectionStart; } set { _textSelectionStart = value; OnPropertyChanged(); } }
         public int TextSelectionEnd { get { return _textSelectionEnd; } set { _textSelectionEnd = value; OnPropertyChanged(); } }
-        public ObservableCollection<OutboundAttachmentViewModel> Attachments { get { return _attachments; } set { _attachments = value; OnPropertyChanged(); } }
-        public MessageViewModel Reply { get { return _reply; } set { _reply = value; OnPropertyChanged(); } }
+        public ObservableCollection<OutboundAttachmentViewModel> Attachments { get { return _attachments; } private set { _attachments = value; OnPropertyChanged(); } }
+        public MessageViewModel Reply { get { return _reply; } private set { _reply = value; OnPropertyChanged(); } }
         public BotKeyboard BotKeyboard { get { return _botKeyboard; } set { _botKeyboard = value; OnPropertyChanged(); } }
 
         ChatViewModel Chat;
@@ -60,7 +60,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         private void CheckCanSendMessage() {
-            CanSendMessage = !String.IsNullOrEmpty(Text) || Attachments.Count > 0;
+            CanSendMessage = !String.IsNullOrEmpty(Text) || Attachments.Count > 0 || StickerId > 0;
         }
 
         public void ShowAttachmentPickerContextMenu(Control target) {
@@ -124,7 +124,9 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             picker.EmojiPicked += Picker_EmojiPicked;
             picker.StickerPicked += (a, b) => {
+                flyout.Hide();
                 StickerId = b.StickerId;
+                CheckCanSendMessage();
                 SendMessage();
             };
 
@@ -161,15 +163,18 @@ namespace ELOR.Laney.ViewModels.Controls {
             }
         }
 
+        public void AddReply(MessageViewModel message) {
+            Reply = message;
+            var favm = Attachments.Where(a => a.Type == OutboundAttachmentType.ForwardedMessages).FirstOrDefault();
+            if (favm != null) Attachments.Remove(favm);
+        }
+
         public void AddForwardedMessages(List<MessageViewModel> messages, int groupId = 0) {
             if (messages == null || messages.Count == 0) return;
-            if (EditingMessageId > 0) {
-                Clear();
-            } else {
-                var favm = Attachments.Where(a => a.Type == OutboundAttachmentType.ForwardedMessages).FirstOrDefault();
-                if (favm != null) Attachments.Remove(favm);
-            }
+            var favm = Attachments.Where(a => a.Type == OutboundAttachmentType.ForwardedMessages).FirstOrDefault();
+            if (favm != null) Attachments.Remove(favm);
             Attachments.Insert(0, new OutboundAttachmentViewModel(messages, groupId));
+            Reply = null;
         }
 
         public void StartEditing(MessageViewModel message) {
@@ -198,7 +203,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         public async void SendMessage() {
-            if (!CanSendMessage) return;
+            if (!CanSendMessage || IsLoading) return;
 
             int uploadingFiles = Attachments.Where(a => a.Type == OutboundAttachmentType.Attachment && a.IsUploading).Count();
             int failedFiles = Attachments.Where(a => a.Type == OutboundAttachmentType.Attachment && a.UploadException != null).Count();
@@ -217,9 +222,8 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             string text = !String.IsNullOrEmpty(Text) ? Text.Replace("\r\n", "\r").Replace("\r", "\r\n").Trim() : null;
 
-            var attachmentsList = Attachments.Where(a => a.Type == OutboundAttachmentType.Attachment)
-                .Select(a => a.Attachment.ToString());
-            string attachments = String.Join(',', attachmentsList);
+            var attachments = Attachments.Where(a => a.Type == OutboundAttachmentType.Attachment)
+                .Select(a => a.Attachment.ToString()).ToList();
 
             List<int> forwardedMessages = new List<int>();
             List<string> forwardedMessagesFromGroup = new List<string>();
@@ -240,20 +244,35 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             IsLoading = true;
 
-            VKUIDialog elor = new VKUIDialog("Send", $"Peer id: {Chat.PeerId}\nRandom id: {RandomId}\nEditing message id: {EditingMessageId}\nReply to: {replyTo}\nText: {text}\nAttachments: {attachments}\nForwarded messages: {String.Join(',', forwardedMessages)}\nSticker: {StickerId}\nDPL: {dontParseLinks}\nDM: {disableMentions}");
-            await elor.ShowDialog(session.Window);
+            //VKUIDialog elor = new VKUIDialog("Send", $"Peer id: {Chat.PeerId}\nRandom id: {RandomId}\nEditing message id: {EditingMessageId}\nReply to: {replyTo}\nText: {text}\nAttachments: {attachments}\nForwarded messages: {String.Join(',', forwardedMessages)}\nSticker: {StickerId}\nDPL: {dontParseLinks}\nDM: {disableMentions}");
+            //await elor.ShowDialog(session.Window);
 
-            IsLoading = false;
-            RandomId = Random.Next(100000000, 999999999);
-            Clear();
+            try {
+                if (EditingMessageId == 0) {
+                    int response = await session.API.Messages.SendAsync(session.GroupId, Chat.PeerId, RandomId, text,
+                        0, 0, attachments, replyTo, forwardedMessages, forwardedMessagesFromGroup, StickerId,
+                        dontParseLinks: dontParseLinks, disableMentions: disableMentions);
+                    RandomId = Random.Next(100000000, 999999999);
+                } else {
+                    bool response = await session.API.Messages.EditAsync(session.GroupId, Chat.PeerId, EditingMessageId, 
+                        text, 0, 0, attachments, forwardedMessages.Count > 0, true, dontParseLinks); 
+                    // TODO: keep snippets и сделать недоступным добавление пересланных, если активен режим редактирования. 
+                }
+                Clear();
+                IsLoading = false;
+            } catch (Exception ex) {
+                IsLoading = false;
+                if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) SendMessage();
+            }
         }
 
         public void RecordAudio() {
             ExceptionHelper.ShowNotImplementedDialogAsync(session.Window);
         }
 
-        private void Clear() {
+        public void Clear() {
             EditingMessageId = 0;
+            Reply = null;
             Text = null;
             Attachments.Clear();
             StickerId = 0;

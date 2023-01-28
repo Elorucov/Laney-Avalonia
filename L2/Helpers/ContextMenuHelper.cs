@@ -89,8 +89,11 @@ namespace ELOR.Laney.Helpers {
 
             // Actions
 
-            reply.Click += (a, b) => chat.Composer.Reply = message;
-            forwardHere.Click += (a, b) => chat.Composer.AddForwardedMessages(new List<MessageViewModel> { message });
+            reply.Click += (a, b) => chat.Composer.AddReply(message);
+            forwardHere.Click += (a, b) => {
+                chat.Composer.Clear();
+                chat.Composer.AddForwardedMessages(new List<MessageViewModel> { message });
+            };
             edit.Click += (a, b) => chat.Composer.StartEditing(message);
 
             // ¯\_(ツ)_/¯

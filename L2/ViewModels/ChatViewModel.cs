@@ -325,11 +325,12 @@ namespace ELOR.Laney.ViewModels {
         }
 
         private void ReplyToMessageCommand(object o) {
-            if (SelectedMessages.Count > 0) Composer.Reply = SelectedMessages.SelectedItem;
+            if (SelectedMessages.Count > 0) Composer.AddReply(SelectedMessages.SelectedItem);
             SelectedMessages.Clear();
         }
 
         private void ForwardHereCommand(object o) {
+            Composer.Clear();
             Composer.AddForwardedMessages(SelectedMessages.SelectedItems.ToList(), session.GroupId);
             SelectedMessages.Clear();
         }
