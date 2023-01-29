@@ -3,9 +3,49 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:vkui="using:VKUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ELOR.Laney.Views.SettingsCategories.DebugPage">
-  <Border Classes="Group" VerticalAlignment="Top">
-    <TextBlock Margin="12" Text="{i18n:Localize not_implemented_desc}"/>
-  </Border>
+  <ScrollViewer>
+    <StackPanel>
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <Grid Classes="GroupHeader">
+            <TextBlock Text="ЛОГИ"/>
+          </Grid>
+          <vkui:Cell Header="Запись логов" Subtitle="Требуется перезапуск">
+            <vkui:Cell.After>
+              <ToggleSwitch x:Name="l01"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+          <vkui:Cell Header="Запись логов LongPoll" Subtitle="Требуется перезапуск">
+            <vkui:Cell.After>
+              <ToggleSwitch x:Name="l02"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+          <Button x:Name="b01" Classes="Tertiary" Click="b01_Click">
+            <vkui:Cell Header="Открыть папку с логами"/>
+          </Button>
+        </StackPanel>
+      </Border>
+      
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <Grid Classes="GroupHeader">
+            <TextBlock Text="EXPERIMENTAL &amp; FEATURE TOGGLES"/>
+          </Grid>
+          <vkui:Cell Header="Show Avalonia's FPS counter">
+            <vkui:Cell.After>
+              <ToggleSwitch x:Name="p01"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+          <vkui:Cell Header="Show debug infos in ChatView and composer">
+            <vkui:Cell.After>
+              <ToggleSwitch x:Name="p02"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

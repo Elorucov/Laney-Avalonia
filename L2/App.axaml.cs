@@ -30,13 +30,6 @@ namespace ELOR.Laney {
 
             AvaloniaXamlLoader.Load(this);
             SwitchTheme(VKUIScheme.BrightLight);
-
-            // в macOS нельзя вроде запустить более одного процесса одной программы.
-            if (Platform == OSPlatform.OSX) {
-                Settings.Initialize();
-            } else {
-                if (!Design.IsDesignMode && IsAlreadyRunning()) Process.GetCurrentProcess().Kill();
-            }
         }
 
         public static string GetCmdLineValue(string key) {
@@ -48,15 +41,6 @@ namespace ELOR.Laney {
                 }
             }
             return null;
-        }
-
-        private static bool IsAlreadyRunning() {
-            try {
-                Settings.Initialize();
-                return false;
-            } catch {
-                return true;
-            }
         }
 
         public override void OnFrameworkInitializationCompleted() {

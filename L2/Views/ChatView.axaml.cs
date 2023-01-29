@@ -16,6 +16,7 @@ using ELOR.Laney.Helpers;
 using Avalonia.Controls.Presenters;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using ELOR.Laney.Core;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
@@ -39,6 +40,17 @@ namespace ELOR.Laney.Views {
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
             DataContextChanged += ChatView_DataContextChanged;
             PinnedMessageButton.Click += PinnedMessageButton_Click;
+
+            DebugOverlay.IsVisible = Settings.ShowDebugCounters;
+            Settings.SettingChanged += Settings_SettingChanged;
+        }
+
+        private void Settings_SettingChanged(string key, object value) {
+            switch (key) {
+                case Settings.DEBUG_COUNTERS_CHAT:
+                    DebugOverlay.IsVisible = (bool)value;
+                    break;
+            }
         }
 
         public event EventHandler BackButtonClick;
@@ -67,6 +79,7 @@ namespace ELOR.Laney.Views {
                 int lastDisplayed = Chat.DisplayedMessages.Last.Id;
                 if (lastReceived == lastDisplayed) {
                     MessagesList.ScrollIntoView(Chat.DisplayedMessages.Count - 1);
+
                     // TODO: починить момент, когда после изменения сообщения
                     // после loading-cостояния надо ещё раз скроллить до конца.
                 }
@@ -80,7 +93,8 @@ namespace ELOR.Laney.Views {
             double trigger = 40;
             double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
             double y = MessagesListScrollViewer.Offset.Y;
-            dbgScrollInfo.Text = $"{Math.Round(y)}/{h}";
+            dbgScrV.Text = $"{h}";
+            dbgScrO.Text = $"{Math.Round(y)}";
             if (h < trigger) return;
 
             if (needToSaveScroll && oldScrollViewerHeight != h) {
@@ -120,6 +134,7 @@ namespace ELOR.Laney.Views {
             } else {
                 autoScrollToLastMessage = false;
             }
+            dbgScrAuto.Text = $"{autoScrollToLastMessage}";
         }
 
         private void TrySaveScroll(object sender, bool e) {

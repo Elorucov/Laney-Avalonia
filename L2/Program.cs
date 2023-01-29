@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using Avalonia;
+using Avalonia.Controls;
+using ELOR.Laney.Core;
+using Microsoft.CodeAnalysis;
 using Serilog;
 
 namespace ELOR.Laney {
@@ -14,10 +19,20 @@ namespace ELOR.Laney {
             string localDataPath = App.LocalDataPath;
             if (!Directory.Exists(localDataPath)) Directory.CreateDirectory(localDataPath);
 
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.File(Path.Combine(localDataPath, "logs", "L2_.log"), rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+            // в macOS нельзя вроде запустить более одного процесса одной программы.
+            if (App.Platform == OSPlatform.OSX) {
+                Settings.Initialize();
+            } else {
+                if (!Design.IsDesignMode && IsAlreadyRunning()) Process.GetCurrentProcess().Kill();
+            }
+
+            var loggerConfig = new LoggerConfiguration()
+                .MinimumLevel.Information();
+
+            if (Settings.EnableLogs) 
+                loggerConfig = loggerConfig.WriteTo.File(Path.Combine(localDataPath, "logs", "L2_.log"), rollingInterval: RollingInterval.Hour, retainedFileCountLimit: 10);
+
+            Log.Logger = loggerConfig.CreateLogger();
             Log.Information("Laney is starting up. Build tag: {0}", App.BuildInfoFull);
             Log.Information("Local data folder: {0}", localDataPath);
 
@@ -36,6 +51,15 @@ namespace ELOR.Laney {
 
             Log.Fatal(ex, "App crashed!\n");
             Log.CloseAndFlush();
+        }
+
+        private static bool IsAlreadyRunning() {
+            try {
+                Settings.Initialize();
+                return false;
+            } catch {
+                return true;
+            }
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.

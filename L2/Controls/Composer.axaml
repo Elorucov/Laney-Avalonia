@@ -119,11 +119,6 @@
           <vkui:Spinner Width="16" Height="16" Opacity="0.72" Foreground="{DynamicResource VKIconOutlineMediumBrush}"/>
         </Border>
       </StackPanel>
-      <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" IsHitTestVisible="False">
-        <TextBlock Classes="Caption3" Text="{Binding TextSelectionStart}"/>
-        <TextBlock Classes="Caption3" Text="/"/>
-        <TextBlock Classes="Caption3" Text="{Binding TextSelectionEnd}"/>
-      </StackPanel>
     </Grid>
     <Border x:Name="BotKeyboard" IsVisible="{Binding BotKeyboard, Converter={x:Static ObjectConverters.IsNotNull}}" MaxHeight="194">
       <ScrollViewer IsVisible="{Binding IsChecked, ElementName=BotKeyboardToggle}">

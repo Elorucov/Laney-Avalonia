@@ -1,0 +1,12 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:vkui="using:VKUI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ELOR.Laney.Views.SettingsCategories.Appearance">
+  <Border Classes="Group" VerticalAlignment="Top">
+    <vkui:Cell Header="{i18n:Localize not_implemented_desc}" Subtitle="Appearance"/>
+  </Border>
+</UserControl>

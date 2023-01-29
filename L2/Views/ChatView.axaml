@@ -110,8 +110,6 @@
         </vkui:Placeholder.Action>
       </vkui:Placeholder>
     </Grid>
-    
-    <TextBlock x:Name="dbgScrollInfo" IsVisible="False" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
 
     <Border Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="894" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
       <Grid>
@@ -154,6 +152,37 @@
           </StackPanel>
         </Grid>
       </Grid>
+    </Border>
+
+    <Border x:Name="DebugOverlay" Grid.Row="1" Grid.RowSpan="2" IsVisible="False" Margin="0,64,0,0" Padding="8,4" Width="128" 
+            IsHitTestVisible="False" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#7f000000" TextElement.Foreground="White">
+      <Border.Styles>
+        <Style Selector="TextBlock">
+          <Setter Property="LineHeight" Value="16"/>
+          <Setter Property="FontSize" Value="12"/>
+          <Setter Property="FontFamily" Value="Consolas,SF Mono,DejaVu Sans Mono"/>
+        </Style>
+      </Border.Styles>
+      <StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock>Scroll: </TextBlock>
+          <TextBlock x:Name="dbgScrV" Margin="6,0,0,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock>Offset:</TextBlock>
+          <TextBlock x:Name="dbgScrO" Margin="6,0,0,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock>Autoscroll:</TextBlock>
+          <TextBlock x:Name="dbgScrAuto" Margin="6,0,0,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock>MI sel:</TextBlock>
+          <TextBlock Margin="6,0,0,0">
+            <Run Text="{Binding Composer.TextSelectionStart}"/><Run>/</Run><Run Text="{Binding Composer.TextSelectionEnd}"/>
+          </TextBlock>
+        </StackPanel>
+      </StackPanel>
     </Border>
   </Grid>
 </UserControl>

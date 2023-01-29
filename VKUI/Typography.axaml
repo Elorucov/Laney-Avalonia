@@ -20,10 +20,12 @@
     <Setter Property="LineHeight" Value="20"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>
   </Style>
+  <Style Selector="Window">
+    <Setter Property="TextElement.FontSize" Value="15"/>
+    <Setter Property="TextElement.FontFamily" Value="{StaticResource VKSansText}"/>
+  </Style>
   <Style Selector="TextBlock">
-    <Setter Property="FontSize" Value="15"/>
     <Setter Property="LineHeight" Value="20"/>
-    <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>
   </Style>
   <Style Selector="TextBlock.Default">
     <Setter Property="FontSize" Value="15"/>

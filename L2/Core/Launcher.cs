@@ -19,5 +19,20 @@ namespace ELOR.Laney.Core {
                 return false;
             }
         }
+
+        public static bool LaunchFolder(string path) {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                Process p = Process.Start(new ProcessStartInfo("explorer", path) { CreateNoWindow = true });
+                return p != null;
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+                Process p = Process.Start("xdg-open", path); // NOT TESTED!
+                return p != null;
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+                Process p = Process.Start("open", path); // NOT TESTED!
+                return p != null;
+            } else {
+                return false;
+            }
+        }
     }
 }

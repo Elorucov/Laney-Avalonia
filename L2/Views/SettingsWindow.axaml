@@ -39,6 +39,24 @@
         <Style Selector="Border.Group vkui|Cell:nth-last-child(1)">
           <Setter Property="Margin" Value="0,0,0,6"/>
         </Style>
+
+        <Style Selector="Border.Group > StackPanel > Button.Tertiary:nth-child(1)">
+          <Setter Property="Margin" Value="0,6,0,0"/>
+        </Style>
+        <Style Selector="Border.Group > StackPanel > Button.Tertiary:nth-last-child(1)">
+          <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+        <Style Selector="Border.Group > StackPanel > Button.Tertiary:nth-child(1), Border.Group > StackPanel > Button.Tertiary:nth-last-child(1)">
+          <Setter Property="Margin" Value="0,6"/>
+        </Style>
+
+        <Style Selector="Border.Group > StackPanel > Button.Tertiary">
+          <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+          <Setter Property="FontWeight" Value="Regular"/>
+          <Setter Property="Padding" Value="0,0,0,0"/>
+          <Setter Property="HorizontalAlignment" Value="Stretch"/>
+          <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
       </ContentControl.Styles>
     </ContentControl>
 

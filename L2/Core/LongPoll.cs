@@ -40,11 +40,13 @@ namespace ELOR.Laney.Core {
             this.sessionId = sessionId;
             this.groupId = groupId;
 
-            // TODO: настройка в UI для включения/отключения логирования LP.
-            Log = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.File(Path.Combine(App.LocalDataPath, "logs", "L2_LP_.log"), rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+            var loggerConfig = new LoggerConfiguration()
+                .MinimumLevel.Information();
+
+            if (Settings.EnableLongPollLogs)
+                loggerConfig = loggerConfig.WriteTo.File(Path.Combine(App.LocalDataPath, "logs", "L2_LP_.log"), rollingInterval: RollingInterval.Hour, retainedFileCountLimit: 10);
+
+            Log = loggerConfig.CreateLogger();
         }
 
         public void SetUp(LongPollServerInfo info) {

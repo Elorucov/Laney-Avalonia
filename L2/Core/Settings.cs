@@ -12,6 +12,9 @@ namespace ELOR.Laney.Core {
         private static FileStream _file;
         public static string FilePath { get; private set; }
 
+        public delegate void SettingChangedDelegate(string key, object value);
+        public static event SettingChangedDelegate SettingChanged;
+
         #region Initialization
 
         public static void Initialize() {
@@ -95,12 +98,13 @@ namespace ELOR.Laney.Core {
         public static void Set(string key, object value) {
             AddOrReplace(key, value);
             UpdateFile();
-            // SettingChanged event;
+            SettingChanged?.Invoke(key, value);
         }
 
         public static void SetBatch(Dictionary<string, object> settings) {
             foreach (var setting in settings) {
                 AddOrReplace(setting.Key, setting.Value);
+                SettingChanged?.Invoke(setting.Key, setting.Value);
             }
             UpdateFile();
         }
@@ -129,6 +133,12 @@ namespace ELOR.Laney.Core {
         public const string STICKERS_SUGGEST = "suggest_stickers";
         public const string STICKERS_ANIMATE = "animate_stickers";
 
+        public const string DEBUG_LOGS_CORE = "log_to_file_core";
+        public const string DEBUG_LOGS_LP = "log_to_file_lp";
+
+        public const string DEBUG_FPS = "dbg_fps";
+        public const string DEBUG_COUNTERS_CHAT = "dbg_counters_chat";
+
         #endregion
 
         #region Settings with defaults
@@ -156,6 +166,28 @@ namespace ELOR.Laney.Core {
         public static bool AnimateStickers {
             get => Get(STICKERS_ANIMATE, true);
             set => Set(STICKERS_ANIMATE, value);
+        }
+
+        // Debug
+
+        public static bool EnableLogs {
+            get => Get(DEBUG_LOGS_CORE, true);
+            set => Set(DEBUG_LOGS_CORE, value);
+        }
+
+        public static bool EnableLongPollLogs {
+            get => Get(DEBUG_LOGS_CORE, false);
+            set => Set(DEBUG_LOGS_CORE, value);
+        }
+
+        public static bool ShowFPS {
+            get => Get(DEBUG_FPS, false);
+            set => Set(DEBUG_FPS, value);
+        }
+
+        public static bool ShowDebugCounters {
+            get => Get(DEBUG_COUNTERS_CHAT, false);
+            set => Set(DEBUG_COUNTERS_CHAT, value);
         }
 
         #endregion

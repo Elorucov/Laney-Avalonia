@@ -12,6 +12,7 @@ namespace ELOR.Laney.Views {
             InitializeComponent();
             Log.Information($"{nameof(MainWindow)} initialized.");
 
+            Unloaded += MainWindow_Unloaded;
             Activated += MainWindow_Activated;
             EffectiveViewportChanged += MainWindow_EffectiveViewportChanged;
             ChatView.BackButtonClick += ChatView_BackButtonClick;
@@ -19,6 +20,17 @@ namespace ELOR.Laney.Views {
             // TODO: запомнить и восстановить размер и положение окна.
             Width = 800; Height = 540;
             this.Position = new PixelPoint(128, 64);
+
+            Renderer.DrawFps = Settings.ShowFPS;
+            Settings.SettingChanged += Settings_SettingChanged;
+        }
+
+        private void MainWindow_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            Unloaded -= MainWindow_Unloaded;
+            Activated -= MainWindow_Activated;
+            EffectiveViewportChanged -= MainWindow_EffectiveViewportChanged;
+            ChatView.BackButtonClick -= ChatView_BackButtonClick;
+            Settings.SettingChanged -= Settings_SettingChanged;
         }
 
         private void MainWindow_EffectiveViewportChanged(object? sender, Avalonia.Layout.EffectiveViewportChangedEventArgs e) {
@@ -43,6 +55,12 @@ namespace ELOR.Laney.Views {
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e) {
             e.Cancel = true;
             Hide();
+        }
+
+        private void Settings_SettingChanged(string key, object value) {
+            if (key == Settings.DEBUG_FPS) {
+                Renderer.DrawFps = (bool)value;
+            }
         }
 
         #region Adaptivity and convsview / chatview navigation
