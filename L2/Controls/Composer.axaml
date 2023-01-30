@@ -30,7 +30,7 @@
 
   <StackPanel x:Name="Root">
     <DockPanel x:Name="EditingInfoArea" Margin="12,10,12,-2" IsVisible="{Binding EditingMessageId}">
-      <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="Editing"/>
+      <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{i18n:Localize editing}"/>
       <Button x:Name="EditionCancelButton" Classes="Tertiary ComposerButton" HorizontalAlignment="Right" DockPanel.Dock="Right" CornerRadius="2" Width="16" MinHeight="16" Height="16" Command="{Binding CancelEditing}">
         <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}"/>
       </Button>

@@ -141,6 +141,7 @@
 
   "empty_message": "Empty message",
   "edited_indicator": "edited",
+  "editing": "Edit",
 
   "msg_action_create_m": "created the group chat",
   "msg_action_create_f": "created the group chat",
