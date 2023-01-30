@@ -84,8 +84,8 @@
     <Setter Property="Margin" Value="11,0,11,11" />
     <Setter Property="CornerRadius" Value="12" />
     <Setter Property="Background" Value="{DynamicResource VKBackgroundContentBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource VKSeparatorCommonBrush}" />
-    <Setter Property="BorderThickness" Value="1" />
+    <!-- <Setter Property="BorderBrush" Value="{DynamicResource VKSeparatorCommonBrush}" />
+    <Setter Property="BorderThickness" Value="1" />-->
   </Style>
 
   <Style Selector="Grid.GroupHeader">
@@ -93,7 +93,7 @@
   </Style>
 
   <Style Selector=".GroupHeader > TextBlock:nth-child(1)">
-    <Setter Property="Margin" Value="0,12,0,6" />
+    <Setter Property="Margin" Value="0,12,0,10" />
     <Setter Property="FontSize" Value="14" />
     <Setter Property="LineHeight" Value="18" />
     <Setter Property="FontWeight" Value="SemiBold" />

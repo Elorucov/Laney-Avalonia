@@ -43,8 +43,15 @@ namespace ELOR.Laney.Core.Localization {
         public string this[string key] {
             get {
                 string res;
-                if (m_Strings != null && m_Strings.TryGetValue(key, out res))
+                bool uppercase = false;
+                if (key[0] == '!') {
+                    uppercase = true;
+                    key = key.Substring(1);
+                }
+                if (m_Strings != null && m_Strings.TryGetValue(key, out res)) {
+                    if (uppercase) res = res.ToUpper();
                     return res.Replace("\\n", "\n");
+                }
 
                 return $"%{key}%";
             }
