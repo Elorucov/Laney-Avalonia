@@ -21,6 +21,12 @@ namespace ELOR.Laney.Views.SettingsCategories {
 
             p02.IsChecked = Settings.ShowDebugCounters;
             p02.Click += (a, b) => Settings.ShowDebugCounters = (bool)(a as ToggleSwitch).IsChecked;
+
+            p03.IsChecked = Settings.ShowRAMUsage;
+            p03.Click += (a, b) => Settings.ShowRAMUsage = (bool)(a as ToggleSwitch).IsChecked;
+
+            p04.IsChecked = Settings.ShowDevItemsInContextMenus;
+            p04.Click += (a, b) => Settings.ShowDevItemsInContextMenus = (bool)(a as ToggleSwitch).IsChecked;
         }
 
         private void b01_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

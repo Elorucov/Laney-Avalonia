@@ -84,7 +84,6 @@ namespace ELOR.Laney.Helpers {
             bool isMessagePinned = chat.ChatSettings?.PinnedMessage != null 
                 ? chat.ChatSettings.PinnedMessage.Id == message.Id : false;
 
-            // TODO: проверка на наличие нередактируемых объектов (стикеры, голосовухи, сервисных и пр.)
             bool canEdit = message.CanEdit(session.Id);
 
             // Actions
@@ -98,7 +97,7 @@ namespace ELOR.Laney.Helpers {
 
             // ¯\_(ツ)_/¯
 
-            ash.Items.Add(debug);
+            if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
             if (message.Action == null) {
                 ash.Items.Add(new ActionSheetItem());
                 if (chat.CanWrite.Allowed) ash.Items.Add(reply);

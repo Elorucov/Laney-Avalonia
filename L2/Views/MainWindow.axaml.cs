@@ -1,8 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using ELOR.Laney.Core;
+using ELOR.Laney.Extensions;
 using Serilog;
 using System;
+using System.Diagnostics;
 
 namespace ELOR.Laney.Views {
     public sealed partial class MainWindow : Window {
@@ -22,6 +25,8 @@ namespace ELOR.Laney.Views {
             this.Position = new PixelPoint(128, 64);
 
             Renderer.DrawFps = Settings.ShowFPS;
+            RAMInfoOverlay.IsVisible = Settings.ShowRAMUsage;
+            ToggleRAMInfoOverlay();
             Settings.SettingChanged += Settings_SettingChanged;
         }
 
@@ -61,6 +66,39 @@ namespace ELOR.Laney.Views {
             if (key == Settings.DEBUG_FPS) {
                 Renderer.DrawFps = (bool)value;
             }
+            switch (key) {
+                case Settings.DEBUG_FPS:
+                    Renderer.DrawFps = (bool)value;
+                    break;
+                case Settings.DEBUG_COUNTERS_RAM:
+                    RAMInfoOverlay.IsVisible = (bool)value;
+                    ToggleRAMInfoOverlay();
+                    break;
+            }
+        }
+
+        DispatcherTimer ramTimer = null;
+        private void ToggleRAMInfoOverlay() {
+            if (Settings.ShowRAMUsage) {
+                UpdateRAMUsageInfo();
+                if (ramTimer == null) {
+                    ramTimer = new DispatcherTimer {
+                        Interval = TimeSpan.FromMilliseconds(500)
+                    };
+                    ramTimer.Tick += (a, b) => UpdateRAMUsageInfo();
+                }
+                ramTimer.Start();
+            } else {
+                if (ramTimer != null) {
+                    ramTimer.Stop();
+                }
+            }
+        }
+
+        private void UpdateRAMUsageInfo() {
+            long ram = Process.GetCurrentProcess().PrivateMemorySize64;
+            double rammb = (double)ram / 1048576;
+            RAMInfo.Text = $"{Math.Round(rammb, 1)} Mb";
         }
 
         #region Adaptivity and convsview / chatview navigation

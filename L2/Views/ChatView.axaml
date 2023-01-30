@@ -154,15 +154,8 @@
       </Grid>
     </Border>
 
-    <Border x:Name="DebugOverlay" Grid.Row="1" Grid.RowSpan="2" IsVisible="False" Margin="0,64,0,0" Padding="8,4" Width="128" 
+    <Border x:Name="DebugOverlay" Classes="Debug" Grid.Row="1" Grid.RowSpan="2" IsVisible="False" Margin="0,64,0,0" Padding="8,4" Width="128" 
             IsHitTestVisible="False" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#7f000000" TextElement.Foreground="White">
-      <Border.Styles>
-        <Style Selector="TextBlock">
-          <Setter Property="LineHeight" Value="16"/>
-          <Setter Property="FontSize" Value="12"/>
-          <Setter Property="FontFamily" Value="Consolas,SF Mono,DejaVu Sans Mono"/>
-        </Style>
-      </Border.Styles>
       <StackPanel>
         <StackPanel Orientation="Horizontal">
           <TextBlock>Scroll: </TextBlock>

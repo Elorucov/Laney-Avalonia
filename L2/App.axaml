@@ -60,6 +60,11 @@
       <Setter Property="FontSize" Value="15"/>
       <Setter Property="MinHeight" Value="0"/>
     </Style>
-  
+
+    <Style Selector="Border.Debug TextBlock">
+      <Setter Property="LineHeight" Value="16"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FontFamily" Value="Consolas,SF Mono,DejaVu Sans Mono"/>
+    </Style>
   </Application.Styles>
 </Application>

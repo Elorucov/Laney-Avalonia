@@ -138,6 +138,8 @@ namespace ELOR.Laney.Core {
 
         public const string DEBUG_FPS = "dbg_fps";
         public const string DEBUG_COUNTERS_CHAT = "dbg_counters_chat";
+        public const string DEBUG_COUNTERS_RAM = "dbg_counters_chat";
+        public const string DEBUG_CONTEXT_MENU = "dbg_dev_context_menu";
 
         #endregion
 
@@ -188,6 +190,16 @@ namespace ELOR.Laney.Core {
         public static bool ShowDebugCounters {
             get => Get(DEBUG_COUNTERS_CHAT, false);
             set => Set(DEBUG_COUNTERS_CHAT, value);
+        }
+
+        public static bool ShowRAMUsage {
+            get => Get(DEBUG_COUNTERS_RAM, false);
+            set => Set(DEBUG_COUNTERS_RAM, value);
+        }
+
+        public static bool ShowDevItemsInContextMenus {
+            get => Get(DEBUG_CONTEXT_MENU, false);
+            set => Set(DEBUG_CONTEXT_MENU, value);
         }
 
         #endregion
