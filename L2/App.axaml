@@ -24,6 +24,7 @@
     <conv:DocumentIconConverter x:Key="dic"/>
     <conv:FileSizeConverter x:Key="fsc"/>
     <conv:MessageSenderNameConverter x:Key="msnc"/>
+    <conv:MessageInChatConverter x:Key="micc"/>
     <conv:OnlineIconConverter x:Key="oic"/>
     <conv:ReadIndicatorConverter x:Key="ric"/>
     <conv:ReadIndicatorVisibilityConverter x:Key="rivc"/>

@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Chrome;
+using Avalonia.Controls.Documents;
 using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -60,6 +61,18 @@ namespace ELOR.Laney.Extensions {
         }
 
         public static void RegisterThemeResource(this Control control, StyledProperty<IBrush> property, string resourceKey) {
+            IBrush newBrush = App.GetResource<IBrush>(resourceKey);
+            control.SetValue(property, newBrush);
+
+            Action<VKUIScheme> themeChangedAction = new Action<VKUIScheme>((t) => {
+                IBrush newBrush = App.GetResource<IBrush>(resourceKey);
+                control.SetValue(property, newBrush);
+            });
+            App.Current.ThemeChanged.Add(themeChangedAction);
+            control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChanged.Remove(themeChangedAction);
+        }
+
+        public static void RegisterThemeResource(this Inline control, StyledProperty<IBrush> property, string resourceKey) {
             IBrush newBrush = App.GetResource<IBrush>(resourceKey);
             control.SetValue(property, newBrush);
 

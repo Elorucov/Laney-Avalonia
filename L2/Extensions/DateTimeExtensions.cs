@@ -66,5 +66,15 @@ namespace ELOR.Laney.Extensions {
             text += $"{at}{target.ToString("H:mm")}";
             return text;
         }
+
+        public static string ToHumanizedTimeOrDateString(this DateTime target) {
+            DateTime current = DateTime.Now;
+            string text = String.Empty;
+            if (current.Date != target.Date) {
+                return target.ToHumanizedDateString();
+            } else {
+                return target.ToString("H:mm");
+            }
+        }
     }
 }

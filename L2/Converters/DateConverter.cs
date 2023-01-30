@@ -8,7 +8,9 @@ namespace ELOR.Laney.Converters {
     public class DateConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             if (value != null && value is DateTime dateTime) {
-                return dateTime.ToHumanizedDateString();
+                return parameter != null && parameter is string s && s == "t"
+                    ? dateTime.ToHumanizedTimeOrDateString() 
+                    : dateTime.ToHumanizedDateString();
             }
             return String.Empty;
         }

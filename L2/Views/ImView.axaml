@@ -32,7 +32,7 @@
           </ItemsRepeater.Layout>
           <ItemsRepeater.ItemTemplate>
             <DataTemplate>
-              <Button Classes="ListItem" Classes.Selected="{Binding IsCurrentOpenedChat}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Content="{Binding}" ContentTemplate="{StaticResource ChatItemTemplate}" Click="OnChatClick"/>
+              <Button Classes="ListItem" Classes.Selected="{Binding IsCurrentOpenedChat}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Content="{Binding}" ContentTemplate="{StaticResource ChatItemTemplate2Row}" Click="OnChatClick"/>
             </DataTemplate>
           </ItemsRepeater.ItemTemplate>
         </ItemsRepeater>
