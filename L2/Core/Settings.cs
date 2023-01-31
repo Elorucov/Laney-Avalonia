@@ -133,6 +133,9 @@ namespace ELOR.Laney.Core {
         public const string STICKERS_SUGGEST = "suggest_stickers";
         public const string STICKERS_ANIMATE = "animate_stickers";
 
+        public const string THEME = "theme";
+        public const string CHAT_ITEM_MORE_ROWS = "chat_item_more_rows";
+
         public const string DEBUG_LOGS_CORE = "log_to_file_core";
         public const string DEBUG_LOGS_LP = "log_to_file_lp";
 
@@ -168,6 +171,18 @@ namespace ELOR.Laney.Core {
         public static bool AnimateStickers {
             get => Get(STICKERS_ANIMATE, true);
             set => Set(STICKERS_ANIMATE, value);
+        }
+
+        // Appearance
+
+        public static int AppTheme {
+            get => Get(THEME, Constants.DefaultTheme);
+            set => Set(THEME, value);
+        }
+
+        public static bool ChatItemMoreRows {
+            get => Get(CHAT_ITEM_MORE_ROWS, false);
+            set => Set(CHAT_ITEM_MORE_ROWS, value);
         }
 
         // Debug

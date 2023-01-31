@@ -68,9 +68,9 @@ namespace VKUI {
             base.OnPropertyChanged(change);
             if (change.Property == SchemeProperty) {
                 if (Scheme == VKUIScheme.SpaceGray) {
-                    (Loaded as Styles)![1] = _spaceGray;
+                    (Loaded as Styles)![0] = _spaceGray;
                 } else {
-                    (Loaded as Styles)![1] = _brightLight;
+                    (Loaded as Styles)![0] = _brightLight;
                 }
             }
         }
@@ -84,11 +84,13 @@ namespace VKUI {
             get {
                 if (_loaded == null) {
                     _isLoading = true;
-
+                    _loaded = _sharedStyles;
                     if (Scheme == VKUIScheme.BrightLight) {
-                        _loaded = new Styles() { _sharedStyles, _brightLight };
+                        // _loaded = new Styles() { _sharedStyles, _brightLight };
+                        (_loaded as Styles).Insert(0, _brightLight);
                     } else if (Scheme == VKUIScheme.SpaceGray) {
-                        _loaded = new Styles() { _sharedStyles, _spaceGray };
+                        // _loaded = new Styles() { _sharedStyles, _spaceGray };
+                        (_loaded as Styles).Insert(0, _spaceGray);
                     }
                     _isLoading = false;
                 }

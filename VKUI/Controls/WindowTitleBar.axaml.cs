@@ -45,7 +45,7 @@ namespace VKUI.Controls {
             CloseButton = e.NameScope.Find<Button>(nameof(CloseButton));
 
             CloseButton.Click += CloseButton_Click;
-            DetachedFromVisualTree += WindowTitleBar_DetachedFromVisualTree;
+            Unloaded += WindowTitleBar_Unloaded;
 
             isTemplateLoaded = true;
             Setup();
@@ -66,10 +66,10 @@ namespace VKUI.Controls {
             OwnerWindow.Close();
         }
 
-        private void WindowTitleBar_DetachedFromVisualTree(object? sender, VisualTreeAttachmentEventArgs e) {
+        private void WindowTitleBar_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             OwnerWindow.PropertyChanged -= OwnerWindow_PropertyChanged;
             CloseButton.Click -= CloseButton_Click;
-            DetachedFromVisualTree -= WindowTitleBar_DetachedFromVisualTree;
+            Unloaded -= WindowTitleBar_Unloaded;
         }
 
         private void Setup() {

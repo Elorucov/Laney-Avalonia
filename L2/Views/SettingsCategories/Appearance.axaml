@@ -6,7 +6,41 @@
              xmlns:vkui="using:VKUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ELOR.Laney.Views.SettingsCategories.Appearance">
-  <Border Classes="Group" VerticalAlignment="Top">
-    <vkui:Cell Header="{i18n:Localize not_implemented_desc}" Subtitle="Appearance"/>
-  </Border>
+  <ScrollViewer>
+    <StackPanel>
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <vkui:Cell Margin="0" Header="{i18n:Localize st_theme}">
+            <vkui:Cell.After>
+              <ComboBox Classes="Alternate" Items="{Binding AppThemes}" SelectedItem="{Binding CurrentAppTheme, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Item2}"/>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+            </vkui:Cell.After>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <Grid Classes="GroupHeader">
+            <TextBlock Text="{i18n:Localize !st_chat_item_rows}"/>
+          </Grid>
+          <vkui:Cell Header="{i18n:Localize st_chat_item_rows_2}">
+            <vkui:Cell.Before>
+              <RadioButton GroupName="ChatListRow" IsChecked="{Binding !ChatItemMoreRows, Mode=TwoWay}"/>
+            </vkui:Cell.Before>
+          </vkui:Cell>
+          <vkui:Cell Header="{i18n:Localize st_chat_item_rows_3}">
+            <vkui:Cell.Before>
+              <RadioButton GroupName="ChatListRow" IsChecked="{Binding ChatItemMoreRows, Mode=TwoWay}"/>
+            </vkui:Cell.Before>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

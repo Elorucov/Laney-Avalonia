@@ -248,5 +248,13 @@
   "st_stickers_suggest": "Suggest stickers",
   "st_stickers_suggest_desc": "Matching stickers will appear when you type certain words or emojis",
   "st_stickers_animate": "Animated stickers",
-  "st_stickers_animate_desc": "Animated stickers will be played automatically"
+  "st_stickers_animate_desc": "Animated stickers will be played automatically",
+
+  "st_theme": "Mode",
+  "st_theme_light": "Light",
+  "st_theme_dark": "Dark",
+
+  "st_chat_item_rows": "Chat list",
+  "st_chat_item_rows_2": "Two line",
+  "st_chat_item_rows_3": "Three line"
 }

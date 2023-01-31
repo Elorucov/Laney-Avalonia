@@ -9,7 +9,6 @@ using ELOR.Laney.Core.Network;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -29,7 +28,9 @@ namespace ELOR.Laney {
             _current = this;
 
             AvaloniaXamlLoader.Load(this);
-            SwitchTheme(VKUIScheme.BrightLight);
+
+            ChangeTheme(Settings.AppTheme);
+            Settings.SettingChanged += Settings_SettingChanged;
         }
 
         public static string GetCmdLineValue(string key) {
@@ -96,6 +97,17 @@ namespace ELOR.Laney {
             }
         }
 
+        public static void ChangeTheme(int id) {
+            switch (id) {
+                case 1:
+                    SwitchTheme(VKUIScheme.BrightLight);
+                    break;
+                case 2:
+                    SwitchTheme(VKUIScheme.SpaceGray);
+                    break;
+            }
+        }
+
         public static void ToggleTheme() {
             SwitchTheme(_current.CurrentScheme == VKUIScheme.BrightLight ? VKUIScheme.SpaceGray : VKUIScheme.BrightLight);
         }
@@ -111,6 +123,14 @@ namespace ELOR.Laney {
                     Log.Error("Resource \"{0}\" is not {1}, but {2}", key, typeof(T), resource.GetType());
                 }
                 return default(T);
+            }
+        }
+
+        private void Settings_SettingChanged(string key, object value) {
+            switch (key) {
+                case Settings.THEME:
+                    ChangeTheme((int)value);
+                    break;
             }
         }
 

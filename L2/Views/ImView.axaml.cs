@@ -2,12 +2,14 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml.Templates;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Reactive.Linq;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ImView : UserControl {
@@ -19,7 +21,7 @@ namespace ELOR.Laney.Views {
                 Session.ShowSessionPopup(AvatarButton);
             };
             NewConvButton.Click += (a, b) => {
-                App.ToggleTheme();
+                ExceptionHelper.ShowNotImplementedDialogAsync(Session.Window);
             };
             SearchButton.Click += (a, b) => {
                 // throw new Exception("This is a crash. Not bandicoot, but a crash.");
@@ -31,17 +33,29 @@ namespace ELOR.Laney.Views {
 
             DataContextChanged += ImView_DataContextChanged;
             ChatsList.Loaded += ChatsList_Loaded;
+
+            ChatsList.ItemTemplate = App.GetResource<DataTemplate>(Settings.ChatItemMoreRows ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row");
+            Settings.SettingChanged += Settings_SettingChanged;
+        }
+
+        private void Settings_SettingChanged(string key, object value) {
+            switch (key) {
+                case Settings.CHAT_ITEM_MORE_ROWS:
+                    DataTemplate template = App.GetResource<DataTemplate>((bool)value ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row");
+                    ChatsList.ItemTemplate = template;
+
+                    // Костыль для того, чтобы шаблон действительно сменился.
+                    ChatsList.Items = null;
+                    var prop = ChatsList.GetObservable(ListBox.DataContextProperty)
+                        .OfType<VKSession>()
+                        .Select(v => v.ImViewModel.SortedChats);
+                    ChatsList.Bind(ListBox.ItemsProperty, prop);
+                    break;
+            }
         }
 
         private void ImView_DataContextChanged(object sender, EventArgs e) {
             DataContextChanged -= ImView_DataContextChanged;
-            Session.PropertyChanged += Session_PropertyChanged;
-        }
-
-        private void Session_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (e.PropertyName == nameof(VKSession.CurrentOpenedChat)) {
-                ChatsList.SelectedItem = Session.CurrentOpenedChat;
-            }
         }
 
         private void ChatsList_Loaded(object sender, RoutedEventArgs e) {

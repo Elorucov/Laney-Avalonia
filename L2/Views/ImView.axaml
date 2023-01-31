@@ -25,7 +25,7 @@
     </vkui:PanelHeader>
 
     <Grid x:Name="ChatsListRoot" Grid.Row="1">
-      <ListBox x:Name="ChatsList" SelectionMode="Toggle" AutoScrollToSelectedItem="True" Items="{Binding ImViewModel.SortedChats}" ItemTemplate="{StaticResource ChatItemTemplate3Row}">
+      <ListBox x:Name="ChatsList" SelectionMode="Toggle" AutoScrollToSelectedItem="True" Items="{Binding ImViewModel.SortedChats}" SelectedItem="{Binding ImViewModel.VisualSelectedChat}">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
             <Setter Property="Padding" Value="0"/>
@@ -37,19 +37,6 @@
           </ItemsPanelTemplate>
         </ListBox.ItemsPanel>
       </ListBox>
-
-      <!--<ScrollViewer x:Name="chatsListScroll">
-        <ItemsRepeater Items="{Binding ImViewModel.SortedChats}">
-          <ItemsRepeater.Layout>
-            <StackLayout/>
-          </ItemsRepeater.Layout>
-          <ItemsRepeater.ItemTemplate>
-            <DataTemplate>
-              <Button Classes="ListItem" Classes.Selected="{Binding IsCurrentOpenedChat}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Content="{Binding}" ContentTemplate="{StaticResource ChatItemTemplate2Row}" Click="OnChatClick"/>
-            </DataTemplate>
-          </ItemsRepeater.ItemTemplate>
-        </ItemsRepeater>
-      </ScrollViewer>-->
 
       <Grid Grid.Row="1" x:Name="EmptyListContainer" DataContext="{Binding ImViewModel}" IsVisible="{Binding IsEmpty, Mode=OneWay}">
         <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>

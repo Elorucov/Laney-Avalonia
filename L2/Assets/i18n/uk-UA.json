@@ -248,5 +248,13 @@
   "st_stickers_suggest": "Підказувати стікери",
   "st_stickers_suggest_desc": "При виборі смайлів або введенні деяких слів будуть відображатися підказки стікерів",
   "st_stickers_animate": "Анімовані стікери",
-  "st_stickers_animate_desc": "Стікери з анімацією програватимуться автоматично"
+  "st_stickers_animate_desc": "Стікери з анімацією програватимуться автоматично",
+
+  "st_theme": "Тема",
+  "st_theme_light": "Світла",
+  "st_theme_dark": "Темна",
+
+  "st_chat_item_rows": "Список чатiв",
+  "st_chat_item_rows_2": "Дворядковий",
+  "st_chat_item_rows_3": "Трирядкови4й"
 }

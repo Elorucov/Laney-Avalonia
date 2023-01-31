@@ -10,6 +10,7 @@ using Serilog;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 
@@ -23,10 +24,15 @@ namespace ELOR.Laney.ViewModels {
         private bool _isEmpty = true;
 
         public ReadOnlyObservableCollection<ChatViewModel> SortedChats { get { return _sortedChats; } }
+        public ChatViewModel VisualSelectedChat { get { return _visualSelectedChat; } private set { _visualSelectedChat = value; OnPropertyChanged(); } }
         public bool IsEmpty { get { return _isEmpty; } private set { _isEmpty = value; OnPropertyChanged(); } }
 
         public ImViewModel(VKSession session) {
             this.session = session;
+
+            session.CurrentOpenedChatChanged += (a, b) => {
+                VisualSelectedChat = SortedChats.Where(c => c.PeerId == b).FirstOrDefault();
+            };
 
             var observableChats = _chats.Connect();
             var prop = observableChats.WhenPropertyChanged(c => c.SortIndex).Select(_ => Unit.Default);

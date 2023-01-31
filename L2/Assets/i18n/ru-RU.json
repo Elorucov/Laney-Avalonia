@@ -248,5 +248,13 @@
   "st_stickers_suggest": "Подсказывать стикеры",
   "st_stickers_suggest_desc": "При вводе смайлов и некоторых слов будут показываться подсказки стикеров",
   "st_stickers_animate": "Анимированные стикеры",
-  "st_stickers_animate_desc": "Стикеры с анимацией будут проигрываться автоматически"
+  "st_stickers_animate_desc": "Стикеры с анимацией будут проигрываться автоматически",
+
+  "st_theme": "Тема",
+  "st_theme_light": "Светлая",
+  "st_theme_dark": "Тёмная",
+
+  "st_chat_item_rows": "Список чатов",
+  "st_chat_item_rows_2": "Двухстрочный",
+  "st_chat_item_rows_3": "Трёхстрочный"
 }
