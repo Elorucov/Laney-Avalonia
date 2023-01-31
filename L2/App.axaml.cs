@@ -79,10 +79,6 @@ namespace ELOR.Laney {
             base.OnFrameworkInitializationCompleted();
         }
 
-        private async Task<HttpResponseMessage> WebRequestCallback(Uri arg) {
-            return await LNet.GetAsync(arg);
-        }
-
         public VKUIScheme CurrentScheme { get; private set; }
         public List<Action<VKUIScheme>> ThemeChanged = new List<Action<VKUIScheme>>();
 

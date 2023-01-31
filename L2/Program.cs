@@ -5,16 +5,20 @@ using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using ELOR.Laney.Core;
-using Microsoft.CodeAnalysis;
 using Serilog;
 
 namespace ELOR.Laney {
     class Program {
+        static Stopwatch stopwatch;
+        public static long LaunchTime { get { return stopwatch.ElapsedMilliseconds; } }
+
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
         [STAThread]
         public static void Main(string[] args) {
+            stopwatch = Stopwatch.StartNew();
+
             // Создаём локальную папку для хранения настроек и данных.
             string localDataPath = App.LocalDataPath;
             if (!Directory.Exists(localDataPath)) Directory.CreateDirectory(localDataPath);
@@ -60,6 +64,10 @@ namespace ELOR.Laney {
             } catch {
                 return true;
             }
+        }
+
+        public static void StopStopwatch() {
+            stopwatch.Stop();
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.

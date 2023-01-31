@@ -5,15 +5,18 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using Serilog;
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace ELOR.Laney.Views {
     public sealed partial class SignInWindow : Window {
         public SignInWindow() {
             InitializeComponent();
             Log.Information($"{nameof(SignInWindow)} initialized.");
+
+            Activated += (a, b) => {
+                Program.StopStopwatch();
+                Log.Information($"{nameof(SignInWindow)} activated. Launch time: {Program.LaunchTime} ms.");
+            };
 
             VersionInfo.Text = $"Ver. {App.BuildInfo}";
             VersionInfo.Text += $"\nApp folder: {App.LocalDataPath}";

@@ -43,8 +43,9 @@ namespace ELOR.Laney.Views {
         }
 
         private void MainWindow_Activated(object? sender, EventArgs e) {
-            Log.Information($"{nameof(MainWindow)} activated.");
-            this.Activated -= MainWindow_Activated;
+            Program.StopStopwatch();
+            Log.Information($"{nameof(MainWindow)} activated. Launch time: {Program.LaunchTime} ms.");
+            Activated -= MainWindow_Activated;
             Closing += MainWindow_Closing;
             VKSession.GetByDataContext(this).PropertyChanged += SessionPropertyChanged;
             Title = $"{VKSession.GetByDataContext(this).Name} - Laney";

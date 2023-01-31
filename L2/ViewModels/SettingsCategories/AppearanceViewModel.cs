@@ -1,4 +1,5 @@
 ﻿using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,8 +7,8 @@ using System.Linq;
 namespace ELOR.Laney.ViewModels.SettingsCategories {
     public class AppearanceViewModel : CommonViewModel {
         public ObservableCollection<Tuple<int, string>> AppThemes { get; private set; } = new ObservableCollection<Tuple<int, string>> {
-            new Tuple<int, string>(1, "Light"),
-            new Tuple<int, string>(2, "Dark")
+            new Tuple<int, string>(1, Localizer.Instance["st_theme_light"]),
+            new Tuple<int, string>(2, Localizer.Instance["st_theme_dark"])
         };
 
         public Tuple<int, string> CurrentAppTheme { get { return GetTheme(); } set { ChangeTheme(value); OnPropertyChanged(); } }
