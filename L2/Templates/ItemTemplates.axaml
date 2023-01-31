@@ -30,8 +30,8 @@
           </Grid>
           <TextBlock x:Name="ActivityStatusText" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" LineHeight="20" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding ActivityStatus}" TextTrimming="CharacterEllipsis"/>
 
-          <Path x:Name="PinIndicator" Grid.Column="1" IsVisible="{Binding IsPinned}" HorizontalAlignment="Right" Margin="1,1,13,1" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
-          <StackPanel x:Name="Indicators" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,12,0">
+          <Path x:Name="PinIndicator" Grid.Column="1" IsVisible="{Binding IsPinned}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="1,1,13,1" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
+          <StackPanel x:Name="Indicators" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,12,0">
             <Grid x:Name="MentionIndicatorContainer" IsVisible="{Binding MentionIconId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,0,8,0">
               <Border x:Name="MentionIndicator" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
                 <vkui:VKIcon Margin="3" Id="{Binding MentionIconId}" Foreground="{DynamicResource VKCounterPrimaryTextBrush}"/>
@@ -72,11 +72,11 @@
         </Grid>
 
         <Grid x:Name="SecondLine" Margin="0,2,0,0" ColumnDefinitions="* Auto">
-          <TextBlock x:Name="LastMessage" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Foreground="{DynamicResource VKTextSubheadBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Inlines="{Binding LastMessage, Converter={StaticResource micc}}"/>
+          <TextBlock x:Name="LastMessage" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" Margin="0,0,12,0" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Foreground="{DynamicResource VKTextSubheadBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Inlines="{Binding LastMessage, Converter={StaticResource micc}}"/>
           <TextBlock x:Name="ActivityStatusText" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Foreground="{DynamicResource VKAccentBrush}" TextWrapping="Wrap" Text="{Binding ActivityStatus}" MaxLines="2" TextTrimming="CharacterEllipsis"/>
           
-          <Path x:Name="PinIndicator" Grid.Column="1" IsVisible="{Binding IsPinned}" HorizontalAlignment="Right" Margin="1,1,13,1" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
-          <StackPanel x:Name="Indicators" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,12,0">
+          <Path x:Name="PinIndicator" Grid.Column="1" IsVisible="{Binding IsPinned}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="1,1,13,1" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
+          <StackPanel x:Name="Indicators" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,12,0">
             <Grid x:Name="MentionIndicatorContainer" IsVisible="{Binding MentionIconId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,0,8,0">
               <Border x:Name="MentionIndicator" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
                 <vkui:VKIcon Margin="3" Id="{Binding MentionIconId}" Foreground="{DynamicResource VKCounterPrimaryTextBrush}"/>

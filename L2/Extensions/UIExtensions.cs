@@ -1,15 +1,19 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Documents;
+using Avalonia.Controls.Presenters;
+using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Media;
-using Avalonia.Platform;
 using Avalonia.VisualTree;
+using DynamicData;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using VKUI;
 using VKUI.Controls;
 
@@ -45,7 +49,7 @@ namespace ELOR.Laney.Extensions {
         };
 
         private static LinearGradientBrush BuildGradientBrush(Color start, Color end) {
-            LinearGradientBrush lgb = new LinearGradientBrush { 
+            LinearGradientBrush lgb = new LinearGradientBrush {
                 StartPoint = RelativePoint.TopLeft,
                 EndPoint = RelativePoint.BottomRight
             };
@@ -113,8 +117,8 @@ namespace ELOR.Laney.Extensions {
 
         public static void RegisterIncrementalLoadingEvent(this ScrollViewer scrollViewer, Action action) {
             if (registeredScrollViewers == null) registeredScrollViewers = new Dictionary<ScrollViewer, Action>();
-            scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
             registeredScrollViewers.Add(scrollViewer, action);
+            scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
             scrollViewer.Unloaded += (a, b) => {
                 registeredScrollViewers.Remove(scrollViewer);
                 scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
@@ -125,6 +129,7 @@ namespace ELOR.Laney.Extensions {
             ScrollViewer sv = sender as ScrollViewer;
             double h = sv.Extent.Height - sv.DesiredSize.Height;
             double y = sv.Offset.Y;
+            if (h < SV_END_DISTANCE) return;
 
             if (y > h - SV_END_DISTANCE) {
                 if (registeredScrollViewers.ContainsKey(sv)) {

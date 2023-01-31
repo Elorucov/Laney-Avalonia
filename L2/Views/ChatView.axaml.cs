@@ -22,7 +22,6 @@ namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
         ChatViewModel Chat { get; set; }
         ScrollViewer MessagesListScrollViewer;
-        ItemsPresenter MessagesListItemsPresenter;
 
         public ChatView() {
             InitializeComponent();
@@ -30,13 +29,12 @@ namespace ELOR.Laney.Views {
             MessagesList.Loaded += (a, b) => {
                 MessagesListScrollViewer = MessagesList.Scroll as ScrollViewer;
                 MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
-                MessagesListScrollViewer.GotFocus += MessagesList_GotFocus;
-
-                MessagesListItemsPresenter = MessagesList.GetFirstVisualChildrenByType<ItemsPresenter>();
+                new ListBoxAutoScrollHelper(MessagesList) {
+                    ScrollToLastItemAfterTabFocus = true
+                };
+                new ItemsPresenterWidthFixer(MessagesList);
             };
 
-
-            Unloaded += (a, b) => MessagesListScrollViewer.KeyDown -= MessagesList_KeyDown;
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
             DataContextChanged += ChatView_DataContextChanged;
             PinnedMessageButton.Click += PinnedMessageButton_Click;
@@ -152,48 +150,12 @@ namespace ELOR.Laney.Views {
         }
 
         private void ChatView_SizeChanged(object sender, SizeChangedEventArgs e) {
-            if (MessagesListItemsPresenter != null)
-                MessagesListItemsPresenter.Width = e.NewSize.Width; // костыль, который фиксит очень странный баг.
-
             if (e.NewSize.Width >= 512) {
                 MessagesCommandsRoot.Classes.Clear();
             } else {
                 if (!MessagesCommandsRoot.Classes.Contains("CompactMsgCmd")) MessagesCommandsRoot.Classes.Add("CompactMsgCmd");
             }
         }
-
-        #region Messages list focus
-
-        // При фокусе на список сообщений фокусируемся на последнее сообщение
-        // (в будущем надо на последнее видимое).
-        private void MessagesList_GotFocus(object sender, GotFocusEventArgs e) {
-            List<ListBoxItem> messageUIs = new List<ListBoxItem>();
-            var element = FocusManager.Instance?.Current;
-            if (element != null && e.NavigationMethod == NavigationMethod.Tab) {
-                Debug.WriteLine($"Focused on {FocusManager.Instance.Current}");
-                string name = (element as Control).Name;
-                Debug.WriteLine($"{element.GetType()}: {name}");
-
-                MessagesList.FindVisualChildrenByType(messageUIs);
-                if (messageUIs.Count > 0) {
-                    FocusManager.Instance?.Focus(messageUIs.LastOrDefault(), NavigationMethod.Directional, e.KeyModifiers);
-                }
-                MessagesListScrollViewer.KeyDown += MessagesList_KeyDown;
-            }
-        }
-
-        // А ещё родной ListBox не умеет скроллить список при навигации кнопками вверх/вниз.
-        private async void MessagesList_KeyDown(object sender, KeyEventArgs e) {
-            if (FocusManager.Instance == null) return;
-            if (e.Key == Key.Up || e.Key == Key.Down) {
-                await Task.Delay(10); // надо, чтобы в FocusManager.Instance.Current был актуальный контрол
-                Debug.WriteLine($"Focused on {FocusManager.Instance.Current}");
-                MessageViewModel msg = (FocusManager.Instance.Current as Control).DataContext as MessageViewModel;
-                if (msg != null) MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(msg));
-            }
-        }
-
-        #endregion
 
         #region Context menu for message
 

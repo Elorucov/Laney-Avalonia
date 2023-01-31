@@ -193,7 +193,7 @@ namespace ELOR.Laney.ViewModels {
                 Title = PeerGroup.Name;
                 Avatar = new Uri(PeerGroup.Photo200);
                 IsVerified = PeerGroup.Verified;
-                Subtitle = PeerGroup.Activity.ToLowerInvariant();
+                Subtitle = PeerGroup.Activity?.ToLowerInvariant();
             } else if (PeerId > 2000000000) { // Chat
                 PeerType = PeerType.Chat;
                 ChatSettings = c.ChatSettings;
