@@ -1,4 +1,8 @@
-﻿using System;
+﻿#define WIN
+#define LINUX
+#define MAC
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -38,6 +42,16 @@ namespace ELOR.Laney {
 
             Log.Logger = loggerConfig.CreateLogger();
             Log.Information("Laney is starting up. Build tag: {0}", App.BuildInfoFull);
+
+            // Чисто для проверки conditional compilation, в будущем будет использован в других местах.
+#if WIN
+            Log.Information("Built for Windows");
+#elif LINUX
+            Log.Information("Built for Linux");
+#elif MAC
+            Log.Information("Built for macOS");
+#endif
+
             Log.Information("Local data folder: {0}", localDataPath);
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -83,13 +97,5 @@ namespace ELOR.Laney {
             .With(new AvaloniaNativePlatformOptions {
                 UseCompositor = true,
             });
-
-        //public static AppBuilder BuildAvaloniaApp() {
-        //    #if WIN
-        //        return AppBuilder.Configure<App>().UseWin32().UseDirect2D1();
-        //    #else
-        //        return AppBuilder.Configure<App>().UseAvaloniaNative().UsePlatformDetect();
-        //    #endif
-        //}
     }
 }

@@ -6,11 +6,15 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.291</AssemblyVersion>
-    <FileVersion>2.0.291</FileVersion>
-    <Version>2.0.291-devplat-anycpu-devuser.devpc-230124-1841</Version>
+    <AssemblyVersion>2.0.292</AssemblyVersion>
+    <FileVersion>2.0.292</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.292-win-anycpu-devuser.devpc-230131-1317</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.292-linux-anycpu-devuser.devpc-230131-1317</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.292-macos-anycpu-devuser.devpc-230131-1317</Version>
+    <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
     <Platforms>AnyCPU</Platforms>
-    <DefineConstants>WIN</DefineConstants>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
     <TrimMode>copyused</TrimMode>
   </PropertyGroup>
@@ -18,8 +22,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.291</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.291</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.292</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.292</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
