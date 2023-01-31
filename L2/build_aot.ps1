@@ -1,6 +1,9 @@
 <# Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #>
 
 echo "=== L2 builder script by ELOR ===";
+echo "=== WARNING! For testing purposes only! ===";
+echo "=== Laney compiled by this script will not run at this moment! ===";
+
 $edition = $PSVersionTable.PSEdition;
 if ($edition -ne "Core") {
     echo "Please use PowerShell Core 6 and newer! Download it from here: https://aka.ms/powershell-release?tag=stable";
