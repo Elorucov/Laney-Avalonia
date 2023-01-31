@@ -1,4 +1,4 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
@@ -31,7 +31,7 @@
     </Border>
   </Design.PreviewWith>
 
-  <Style Selector="controls|VKUIFlyoutPresenter">
+  <ControlTheme x:Key="{x:Type controls:VKUIFlyoutPresenter}" TargetType="controls:VKUIFlyoutPresenter">
     <Setter Property="Template">
       <ControlTemplate>
         <Border x:Name="FlyoutPresenterRoot" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
@@ -39,9 +39,9 @@
         </Border>
       </ControlTemplate>
     </Setter>
-  </Style>
 
-  <Style Selector="controls|VKUIFlyoutPresenter.ActionSheet /template/ Border#FlyoutPresenterRoot">
-    <Setter Property="CornerRadius" Value="12"/>
-  </Style>
-</Styles>
+    <Style Selector="^.ActionSheet /template/ Border#FlyoutPresenterRoot">
+      <Setter Property="CornerRadius" Value="12"/>
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

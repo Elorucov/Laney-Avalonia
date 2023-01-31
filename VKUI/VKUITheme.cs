@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -158,35 +156,36 @@ namespace VKUI {
                 },
                 new StyleInclude(baseUri) {
                     Source = new Uri("avares://VKUI/Styles/ToggleSwitchStyles.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/ActionSheetItem.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/Avatar.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/Cell.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/PanelHeader.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/Placeholder.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/Spinner.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/VKIcon.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/VKUIFlyoutPresenter.axaml")
-                },
-                new StyleInclude(baseUri) {
-                    Source = new Uri("avares://VKUI/Controls/WindowTitleBar.axaml")
                 }
             };
+
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/ActionSheetItem.axaml")
+            });
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/Avatar.axaml")
+            });
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/Cell.axaml")
+            });
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/PanelHeader.axaml")
+            });
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/Placeholder.axaml")
+            });
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/Spinner.axaml")
+            });
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/VKIcon.axaml")
+            });
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/VKUIFlyoutPresenter.axaml")
+            });
+            _sharedStyles.Resources.MergedDictionaries.Add(new ResourceInclude() {
+                Source = new Uri("avares://VKUI/Controls/WindowTitleBar.axaml")
+            });
 
             _brightLight = (Style)AvaloniaXamlLoader.Load(new Uri("avares://VKUI/Light.axaml"));
             _spaceGray = (Style)AvaloniaXamlLoader.Load(new Uri("avares://VKUI/Dark.axaml"));

@@ -1,4 +1,4 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
@@ -12,10 +12,17 @@
     </controls:Placeholder>
   </Design.PreviewWith>
 
-  <Style Selector="controls|Placeholder">
+  <ControlTheme x:Key="{x:Type controls:Placeholder}" TargetType="controls:Placeholder">
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel x:Name="Root" Margin="32,48">
+          <StackPanel.Styles>
+            <Style Selector="ContentPresenter.PlaceholderIcon controls|VKIcon">
+              <Setter Property="Foreground" Value="{DynamicResource VKPlaceholderIconForegroundSecondaryBrush}"/>
+              <Setter Property="Width" Value="56"/>
+              <Setter Property="Height" Value="56"/>
+            </Style>
+          </StackPanel.Styles>
           <ContentPresenter x:Name="IconTB" Classes="PlaceholderIcon" Margin="0,0,0,12" HorizontalAlignment="Center" Content="{TemplateBinding Icon}" IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
           <TextBlock x:Name="HeaderTB" TextAlignment="Center" TextWrapping="Wrap" MaxLines="3" Classes="Title2" FontWeight="SemiBold" Text="{TemplateBinding Header}"/>
           <TextBlock x:Name="TextTB" Margin="0,8,0,0" TextAlignment="Center" TextWrapping="Wrap" Classes="Headline" Foreground="{DynamicResource VKTextPlaceholderBrush}" Text="{TemplateBinding Text}"/>
@@ -23,11 +30,5 @@
         </StackPanel>
       </ControlTemplate>
     </Setter>
-  </Style>
-
-  <Style Selector="ContentPresenter.PlaceholderIcon controls|VKIcon">
-    <Setter Property="Foreground" Value="{DynamicResource VKPlaceholderIconForegroundSecondaryBrush}"/>
-    <Setter Property="Width" Value="56"/>
-    <Setter Property="Height" Value="56"/>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

@@ -67,9 +67,9 @@ namespace VKUI.Controls {
         }
 
         private void WindowTitleBar_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            OwnerWindow.PropertyChanged -= OwnerWindow_PropertyChanged;
-            CloseButton.Click -= CloseButton_Click;
-            Unloaded -= WindowTitleBar_Unloaded;
+            //OwnerWindow.PropertyChanged -= OwnerWindow_PropertyChanged;
+            //CloseButton.Click -= CloseButton_Click;
+            //Unloaded -= WindowTitleBar_Unloaded;
         }
 
         private void Setup() {

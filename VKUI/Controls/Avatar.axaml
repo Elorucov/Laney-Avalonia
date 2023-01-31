@@ -1,11 +1,11 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
     <controls:Avatar Width="48" Height="48" Margin="12" Initials="WW" Background="Cyan"/>
   </Design.PreviewWith>
 
-  <Style Selector="controls|Avatar">
+  <ControlTheme x:Key="{x:Type controls:Avatar}" TargetType="controls:Avatar">
     <Setter Property="Background" Value="{DynamicResource VKPlaceholderIconBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
     <Setter Property="Template">
@@ -14,12 +14,12 @@
           <Viewbox>
             <Grid Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center">
               <Ellipse x:Name="GradientEllipse" Width="48" Height="48" Fill="{TemplateBinding Background}"/>
-              <TextBlock x:Name="Initials" VerticalAlignment="Center" HorizontalAlignment="Center" Classes="DisplayBold" FontSize="16" LineHeight="20" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Initials}"/>
+              <TextBlock x:Name="Initials" VerticalAlignment="Center" HorizontalAlignment="Center" Classes="Display" FontWeight="SemiBold" FontSize="16" LineHeight="20" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Initials}"/>
             </Grid>
           </Viewbox>
           <Ellipse x:Name="ImageEllipse" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

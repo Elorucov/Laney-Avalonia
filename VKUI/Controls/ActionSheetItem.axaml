@@ -1,4 +1,4 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
@@ -16,10 +16,19 @@
     </StackPanel>
   </Design.PreviewWith>
 
-  <Style Selector="controls|ActionSheetItem">
+  <ControlTheme x:Key="{x:Type controls:ActionSheetItem}" TargetType="controls:ActionSheetItem">
     <Setter Property="Template">
       <ControlTemplate>
         <Button x:Name="Root" Classes="Tertiary ListItem" Padding="0" CornerRadius="8" MinHeight="32" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+          <Button.Styles>
+            <Style Selector="controls|VKIcon.ActionSheetItemBeforeIcon">
+              <Setter Property="Foreground" Value="{DynamicResource VKIconOutlineMediumBrush}"/>
+            </Style>
+
+            <Style Selector="controls|VKIcon.ActionSheetItemBeforeIconDestructive">
+              <Setter Property="Foreground" Value="{DynamicResource VKDestructiveBrush}"/>
+            </Style>
+          </Button.Styles>
           <Grid ColumnDefinitions="Auto * Auto" Margin="12,0">
             <ContentPresenter x:Name="BeforeContainer" VerticalAlignment="Top" Margin="0,6,12,6" IsVisible="False"/>
             <StackPanel Grid.Column="1" Margin="0,6" VerticalAlignment="Center">
@@ -32,13 +41,5 @@
         </Button>
       </ControlTemplate>
     </Setter>
-  </Style>
-
-  <Style Selector="controls|VKIcon.ActionSheetItemBeforeIcon">
-    <Setter Property="Foreground" Value="{DynamicResource VKIconOutlineMediumBrush}"/>
-  </Style>
-
-  <Style Selector="controls|VKIcon.ActionSheetItemBeforeIconDestructive">
-    <Setter Property="Foreground" Value="{DynamicResource VKDestructiveBrush}"/>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

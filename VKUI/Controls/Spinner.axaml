@@ -1,11 +1,11 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
     <controls:Spinner Width="44" Height="44"/>
   </Design.PreviewWith>
 
-  <Style Selector="controls|Spinner">
+  <ControlTheme x:Key="{x:Type controls:Spinner}" TargetType="controls:Spinner">
     <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
     <Setter Property="Width" Value="16"/>
     <Setter Property="Height" Value="16"/>
@@ -21,7 +21,7 @@
         </Viewbox>
       </ControlTemplate>
     </Setter>
-    <Style.Animations>
+    <ControlTheme.Animations>
       <Animation Duration="0:0:0.7" IterationCount="Infinite">
         <KeyFrame Cue="0%">
           <Setter Property="RotateTransform.Angle" Value="0"/>
@@ -30,6 +30,6 @@
           <Setter Property="RotateTransform.Angle" Value="360"/>
         </KeyFrame>
       </Animation>
-    </Style.Animations>
-  </Style>
-</Styles>
+    </ControlTheme.Animations>
+  </ControlTheme>
+</ResourceDictionary>
