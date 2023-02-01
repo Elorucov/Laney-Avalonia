@@ -1,9 +1,5 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 using ELOR.Laney.Core;
-using ELOR.Laney.Extensions;
-using ELOR.Laney.Views.Modals;
 using Serilog;
 using System.Collections.Generic;
 

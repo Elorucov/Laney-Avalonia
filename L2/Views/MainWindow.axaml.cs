@@ -2,9 +2,9 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using ELOR.Laney.Core;
-using ELOR.Laney.Extensions;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace ELOR.Laney.Views {
@@ -20,14 +20,32 @@ namespace ELOR.Laney.Views {
             EffectiveViewportChanged += MainWindow_EffectiveViewportChanged;
             ChatView.BackButtonClick += ChatView_BackButtonClick;
 
-            // TODO: запомнить и восстановить размер и положение окна.
-            Width = 800; Height = 540;
-            this.Position = new PixelPoint(128, 64);
+            // Window size, position & state
+            // На данный момент есть баг со стороны Авалонии,
+            // github.com/AvaloniaUI/Avalonia/issues/8869
+
+            bool isMaximized = Settings.Get(Settings.WIN_MAXIMIZED, false);
+            if (!isMaximized) WindowState = WindowState.Normal;
+
+            Width = Settings.Get<double>(Settings.WIN_SIZE_W, 800);
+            Height = Settings.Get<double>(Settings.WIN_SIZE_H, 600);
+            int wx = Settings.Get(Settings.WIN_POS_X, 128);
+            int wy = Settings.Get(Settings.WIN_POS_Y, 32);
+            Position = new PixelPoint(wx, wy);
+
+            Opened += MainWindow_Opened;
 
             Renderer.DrawFps = Settings.ShowFPS;
             RAMInfoOverlay.IsVisible = Settings.ShowRAMUsage;
             ToggleRAMInfoOverlay();
             Settings.SettingChanged += Settings_SettingChanged;
+        }
+
+        // Bug workaround
+        private void MainWindow_Opened(object sender, EventArgs e) {
+            Opened -= MainWindow_Opened;
+            bool isMaximized = Settings.Get(Settings.WIN_MAXIMIZED, false);
+            WindowState = isMaximized ? WindowState.Maximized : WindowState.Normal;
         }
 
         private void MainWindow_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
@@ -60,6 +78,7 @@ namespace ELOR.Laney.Views {
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e) {
             e.Cancel = true;
+            SaveWindowParameters();
             Hide();
         }
 
@@ -77,6 +96,22 @@ namespace ELOR.Laney.Views {
                     break;
             }
         }
+
+        private void SaveWindowParameters() {
+            if (WindowState == WindowState.Maximized) {
+                Settings.Set(Settings.WIN_MAXIMIZED, true);
+            } else {
+                Settings.SetBatch(new Dictionary<string, object> {
+                    { Settings.WIN_SIZE_W, Width },
+                    { Settings.WIN_SIZE_H, Height },
+                    { Settings.WIN_POS_X, Position.X },
+                    { Settings.WIN_POS_Y, Position.Y },
+                    { Settings.WIN_MAXIMIZED, false }
+                });
+            }
+        }
+
+        #region RAM info
 
         DispatcherTimer ramTimer = null;
         private void ToggleRAMInfoOverlay() {
@@ -101,6 +136,8 @@ namespace ELOR.Laney.Views {
             double rammb = (double)ram / 1048576;
             RAMInfo.Text = $"{Math.Round(rammb, 1)} Mb";
         }
+
+        #endregion
 
         #region Adaptivity and convsview / chatview navigation
 

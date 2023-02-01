@@ -126,6 +126,12 @@ namespace ELOR.Laney.Core {
         public const string VK_USER_ID = "user_id";
         public const string VK_TOKEN = "access_token";
 
+        public const string WIN_SIZE_W = "winw";
+        public const string WIN_SIZE_H = "winh";
+        public const string WIN_POS_X = "winx";
+        public const string WIN_POS_Y = "winy";
+        public const string WIN_MAXIMIZED = "winm";
+
         public const string LANGUAGE = "lang";
         public const string SEND_VIA_ENTER = "sent_via_enter";
         public const string DONT_PARSE_LINKS = "dont_parse_liks";
