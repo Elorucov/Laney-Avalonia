@@ -111,7 +111,7 @@
       </vkui:Placeholder>
     </Grid>
 
-    <Border Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="894" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
+    <Border x:Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="894" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
       <Grid>
         <Grid x:Name="ComposerContainer" IsVisible="{Binding !SelectedMessagesCount}">
           <DockPanel x:Name="RestrictionInfoContainer" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" MinHeight="44" HorizontalAlignment="Center">
@@ -119,7 +119,7 @@
             <TextBlock x:Name="RestrictionReason" Margin="8" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
           </DockPanel>
 
-          <controls:Composer IsVisible="{Binding CanWrite.Allowed}" DataContext="{Binding Composer}"/>
+          <controls:Composer IsVisible="{Binding DataContext.RestrictionReason, ElementName=ComposerContainer, Converter={x:Static StringConverters.IsNullOrEmpty}}" DataContext="{Binding Composer}"/>
         </Grid>
         <Grid x:Name="MessagesCommandsRoot" IsVisible="{Binding !!SelectedMessagesCount}" VerticalAlignment="Bottom" MinHeight="44" ColumnDefinitions="* Auto">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="3,0,0,0">

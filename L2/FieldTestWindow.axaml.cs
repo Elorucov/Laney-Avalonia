@@ -1,56 +1,24 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
-using VKUI;
+using System;
 
 namespace ELOR.Laney {
     public partial class FieldTestWindow : Window {
         public FieldTestWindow() {
             InitializeComponent();
-            test = this.FindControl<TextBlock>("test");
-            buildInfo = this.FindControl<TextBlock>("buildInfo");
-            setResult = this.FindControl<TextBlock>("setResult");
-            settingDemo = this.FindControl<TextBox>("settingDemo");
 
             EffectiveViewportChanged += MainWindow_EffectiveViewportChanged;
 
-            this.FindControl<Button>("ben").Click += ben_Click;
-            this.FindControl<Button>("bru").Click += bru_Click;
-            this.FindControl<Button>("buk").Click += buk_Click;
+            getBtn.Click += getBtn_Click;
+            setBtn.Click += setBtn_Click;
 
-            this.FindControl<Button>("btl").Click += btl_Click;
-            this.FindControl<Button>("btd").Click += btd_Click;
+            checkLinkBtn.Click += CheckLinkBtn_Click;
 
-            this.FindControl<Button>("getBtn").Click += getBtn_Click;
-            this.FindControl<Button>("setBtn").Click += setBtn_Click;
-
-            this.FindControl<Button>("w1").Click += w1_Click;
+            w1.Click += w1_Click;
 
             buildInfo.Text = $"Build tag: {App.BuildInfoFull}";
             setResult.Text += $"\n\nSettings file location:\n{Settings.FilePath}";
-        }
-
-        private void ben_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            Localizer.Instance.LoadLanguage("en-US");
-        }
-
-        private void bru_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            Localizer.Instance.LoadLanguage("ru-RU");
-        }
-
-        private void buk_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            Localizer.Instance.LoadLanguage("uk-UA");
-        }
-
-        private void btl_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            App.SwitchTheme(VKUIScheme.BrightLight);
-        }
-
-        private void btd_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            App.SwitchTheme(VKUIScheme.SpaceGray);
         }
 
         private void MainWindow_EffectiveViewportChanged(object? sender, Avalonia.Layout.EffectiveViewportChangedEventArgs e) {
@@ -65,6 +33,17 @@ namespace ELOR.Laney {
 
         private void setBtn_Click(object? sender, RoutedEventArgs e) {
             Settings.Set(Settings.TEST_STRING, settingDemo.Text);
+        }
+
+        private async void CheckLinkBtn_Click(object sender, RoutedEventArgs e) {
+            string url = linkBox.Text;
+            if (!Uri.IsWellFormedUriString(url, UriKind.Absolute)) {
+                routerResult.Text = "Invalid URL!";
+                return;
+            }
+
+            var result = await Router.LaunchLinkAsync(VKSession.Main, url);
+            routerResult.Text = $"Type: {result.Item1}";
         }
 
         private void w1_Click(object? sender, RoutedEventArgs e) {

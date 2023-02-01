@@ -11,17 +11,7 @@
     <StackPanel Margin="8">
       <TextBlock x:Name="buildInfo" Margin="8" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
       <TextBlock x:Name="test" Margin="8" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
-      <TextBlock x:Name="test2" Margin="8" Foreground="{DynamicResource VKTextPrimaryBrush}" Classes="DisplayBold Title1" Text="{i18n:Localize human}"/>
-      <StackPanel Orientation="Horizontal">
-        <Button x:Name="ben" Margin="8" Content="Switch lang to EN"/>
-        <Button x:Name="bru" Margin="8" Content="Switch lang to RU"/>
-        <Button x:Name="buk" Margin="8" Content="Switch lang to UK"/>
-      </StackPanel>
-
-      <StackPanel Orientation="Horizontal">
-        <Button x:Name="btl" Margin="8" Classes="Primary" Content="Switch theme to" FontWeight="Light"/>
-        <Button x:Name="btd" Margin="8" Classes="Primary" Content="Switch theme to dark"/>
-      </StackPanel>
+      <TextBlock x:Name="test2" Margin="8" Foreground="{DynamicResource VKTextPrimaryBrush}" Classes="Display Title1" FontWeight="Bold" Text="{i18n:Localize human}"/>
 
       <TextBox Width="320" Margin="8" HorizontalAlignment="Left" Watermark="TextBox" TextWrapping="Wrap"/>
       <TextBox Width="320" Margin="8" HorizontalAlignment="Left" Classes="Search" Watermark="Search"/>
@@ -43,76 +33,85 @@
       <StackPanel Margin="0,8,0,0">
         <WrapPanel Width="392" HorizontalAlignment="Left">
           <StackPanel Margin="8,6">
-            <TextBlock Classes="Title1" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Title1"/>
-            <TextBlock Classes="Title1" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Title1"/>
-            <TextBlock Classes="Title1" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Title1"/>
-            <TextBlock Classes="Title1" Background="Gray" Margin="0,1" Text="Title1"/>
-            <TextBlock Classes="Title1" Background="Gray" Margin="0,1" FontWeight="Light" Text="Title1"/>
+            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Title1"/>
+            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Title1"/>
+            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Title1"/>
+            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" Text="Title1"/>
+            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Title1"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Title2" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Title2"/>
-            <TextBlock Classes="Title2" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Title2"/>
-            <TextBlock Classes="Title2" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Title2"/>
-            <TextBlock Classes="Title2" Background="Gray" Margin="0,1" Text="Title2"/>
-            <TextBlock Classes="Title2" Background="Gray" Margin="0,1" FontWeight="Light" Text="Title2"/>
+            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Title2"/>
+            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Title2"/>
+            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Title2"/>
+            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" Text="Title2"/>
+            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Title2"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Title3" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Title3"/>
-            <TextBlock Classes="Title3" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Title3"/>
-            <TextBlock Classes="Title3" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Title3"/>
-            <TextBlock Classes="Title3" Background="Gray" Margin="0,1" Text="Title3"/>
-            <TextBlock Classes="Title3" Background="Gray" Margin="0,1" FontWeight="Light" Text="Title3"/>
+            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Title3"/>
+            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Title3"/>
+            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Title3"/>
+            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" Text="Title3"/>
+            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Title3"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Headline" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Headline"/>
-            <TextBlock Classes="Headline" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Headline"/>
-            <TextBlock Classes="Headline" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Headline"/>
-            <TextBlock Classes="Headline" Background="Gray" Margin="0,1" Text="Headline"/>
-            <TextBlock Classes="Headline" Background="Gray" Margin="0,1" FontWeight="Light" Text="Headline"/>
+            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Headline"/>
+            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Headline"/>
+            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Headline"/>
+            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" Text="Headline"/>
+            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Headline"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Background="Gray" Margin="0,1" FontWeight="Bold" Text="Bold"/>
-            <TextBlock Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="SemiBold"/>
-            <TextBlock Background="Gray" Margin="0,1" FontWeight="Medium" Text="Medium"/>
-            <TextBlock Background="Gray" Margin="0,1" Text="Regular"/>
-            <TextBlock Background="Gray" Margin="0,1" FontWeight="Light" Text="Light"/>
+            <TextBlock Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Bold"/>
+            <TextBlock Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="SemiBold"/>
+            <TextBlock Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Medium"/>
+            <TextBlock Background="#7f7f7f7f" Margin="0,1" Text="Regular"/>
+            <TextBlock Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Light"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Subhead" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Subhead"/>
-            <TextBlock Classes="Subhead" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Subhead"/>
-            <TextBlock Classes="Subhead" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Subhead"/>
-            <TextBlock Classes="Subhead" Background="Gray" Margin="0,1" Text="Subhead"/>
-            <TextBlock Classes="Subhead" Background="Gray" Margin="0,1" FontWeight="Light" Text="Subhead"/>
+            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Subhead"/>
+            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Subhead"/>
+            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Subhead"/>
+            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" Text="Subhead"/>
+            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Subhead"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption1" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Caption1"/>
-            <TextBlock Classes="Caption1" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Caption1"/>
-            <TextBlock Classes="Caption1" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Caption1"/>
-            <TextBlock Classes="Caption1" Background="Gray" Margin="0,1" Text="Caption1"/>
-            <TextBlock Classes="Caption1" Background="Gray" Margin="0,1" FontWeight="Light" Text="Caption1"/>
+            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Caption1"/>
+            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Caption1"/>
+            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Caption1"/>
+            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" Text="Caption1"/>
+            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption1"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption2" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Caption2"/>
-            <TextBlock Classes="Caption2" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Caption2"/>
-            <TextBlock Classes="Caption2" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Caption2"/>
-            <TextBlock Classes="Caption2" Background="Gray" Margin="0,1" Text="Caption2"/>
-            <TextBlock Classes="Caption2" Background="Gray" Margin="0,1" FontWeight="Light" Text="Caption2"/>
+            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Caption2"/>
+            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Caption2"/>
+            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Caption2"/>
+            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" Text="Caption2"/>
+            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption2"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption3" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Caption3"/>
-            <TextBlock Classes="Caption3" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Caption3"/>
-            <TextBlock Classes="Caption3" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Caption3"/>
-            <TextBlock Classes="Caption3" Background="Gray" Margin="0,1" Text="Caption3"/>
-            <TextBlock Classes="Caption3" Background="Gray" Margin="0,1" FontWeight="Light" Text="Caption3"/>
+            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Caption3"/>
+            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Caption3"/>
+            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Caption3"/>
+            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" Text="Caption3"/>
+            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption3"/>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption4" Background="Gray" Margin="0,1" FontWeight="Bold" Text="Caption4"/>
-            <TextBlock Classes="Caption4" Background="Gray" Margin="0,1" FontWeight="SemiBold" Text="Caption4"/>
-            <TextBlock Classes="Caption4" Background="Gray" Margin="0,1" FontWeight="Medium" Text="Caption4"/>
-            <TextBlock Classes="Caption4" Background="Gray" Margin="0,1" Text="Caption4"/>
-            <TextBlock Classes="Caption4" Background="Gray" Margin="0,1" FontWeight="Light" Text="Caption4"/>
+            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Caption4"/>
+            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Caption4"/>
+            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Caption4"/>
+            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" Text="Caption4"/>
+            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption4"/>
           </StackPanel>
         </WrapPanel>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Router test"/>
+        <StackPanel Orientation="Horizontal">
+          <TextBox x:Name="linkBox" Width="240" Margin="8" Watermark="https://vk.com/elorucov"/>
+          <Button x:Name="checkLinkBtn" Margin="8" Classes="Large Primary" HorizontalContentAlignment="Center" Content="Check"/>
+        </StackPanel>
+        <TextBlock x:Name="routerResult" Margin="8" Text="Link info here..."/>
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">
