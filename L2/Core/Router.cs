@@ -40,11 +40,11 @@ namespace ELOR.Laney.Core {
             return VKLinkType.Unknown;
         }
 
-        public static async Task<Tuple<VKLinkType, string>> LaunchLinkAsync(this VKSession session, Uri uri) {
-            return await LaunchLinkAsync(session, uri.AbsoluteUri);
+        public static Tuple<VKLinkType, string> LaunchLink(this VKSession session, Uri uri) {
+            return LaunchLink(session, uri.AbsoluteUri);
         }
 
-        public static async Task<Tuple<VKLinkType, string>> LaunchLinkAsync(this VKSession session, string url) {
+        public static Tuple<VKLinkType, string> LaunchLink(this VKSession session, string url) {
             VKLinkType type = GetLinkType(url);
             string id = null;
 
@@ -106,8 +106,11 @@ namespace ELOR.Laney.Core {
         }
 
         private static async void OpenPeerProfile(VKSession session, int peerId) {
-            VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nPeer id: {peerId}");
-            await alert.ShowDialog(session.Window);
+            //VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nPeer id: {peerId}");
+            //await alert.ShowDialog(session.Window);
+
+            PeerProfile pp = new PeerProfile();
+            await pp.ShowDialog(session.Window);
         }
 
         private static async void OpenPollViewer(VKSession session, int ownerId, int id) {
