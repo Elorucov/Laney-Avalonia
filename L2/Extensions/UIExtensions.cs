@@ -77,17 +77,6 @@ namespace ELOR.Laney.Extensions {
             control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChangedActions.Remove(themeChangedAction);
         }
 
-        public static void RegisterThemeResource(this Inline control, StyledProperty<IBrush> property, string resourceKey) {
-            IBrush newBrush = App.GetResource<IBrush>(resourceKey);
-            control.SetValue(property, newBrush);
-
-            Action<ThemeVariant> themeChangedAction = new Action<ThemeVariant>((t) => {
-                IBrush newBrush = App.GetResource<IBrush>(resourceKey);
-                control.SetValue(property, newBrush);
-            });
-            App.Current.ThemeChangedActions.Add(themeChangedAction);
-            control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChangedActions.Remove(themeChangedAction);
-        }
 
         public static void FindLogicalChildrenByType<T>(this Control control, List<T> found) {
             var children = control.GetLogicalChildren();

@@ -30,6 +30,8 @@ namespace ELOR.Laney.Views {
             Height = Settings.Get<double>(Settings.WIN_SIZE_H, 600);
             int wx = Settings.Get(Settings.WIN_POS_X, 128);
             int wy = Settings.Get(Settings.WIN_POS_Y, 32);
+            if (wx < 0) wx = 128;
+            if (wy < 0) wy = 32;
             Position = new PixelPoint(wx, wy);
 
             Renderer.Diagnostics.DebugOverlays = Settings.ShowFPS ? RendererDebugOverlays.Fps : RendererDebugOverlays.None;

@@ -86,9 +86,14 @@
     </Border>
 
     <ListBox x:Name="MessagesList" Classes="MessagesList" Grid.Row="2" VerticalAlignment="Bottom" SelectionMode="Multiple,Toggle" Selection="{Binding SelectedMessages, Mode=TwoWay}" Items="{Binding DisplayedMessages, Mode=OneWay}">
+      <ListBox.Styles>
+        <Style Selector="ListBoxItem:nth-last-child(1)">
+          <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+      </ListBox.Styles>
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
-          <StackPanel Margin="0,4"/>
+          <StackPanel/>
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
       <ListBox.ItemTemplate>

@@ -135,7 +135,11 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private void Picker_EmojiPicked(object sender, string e) {
             if (TextSelectionStart == TextSelectionEnd) {
-                Text = Text.Insert(TextSelectionEnd, e);
+                if (Text == null) {
+                    Text = e;
+                } else {
+                    Text = Text.Insert(TextSelectionEnd, e);
+                }
                 TextSelectionStart += e.Length;
                 TextSelectionEnd += e.Length;
             } else {

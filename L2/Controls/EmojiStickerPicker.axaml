@@ -11,34 +11,30 @@
   <UserControl.Resources>
     <DataTemplate x:Key="EmojiTabTemplate">
       <ScrollViewer>
-        <ItemsControl x:Name="emojiList" Items="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}">
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-              <StackPanel/>
-            </ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
-          <ItemsControl.ItemTemplate>
+        <ItemsRepeater x:Name="emojiList" Items="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}">
+          <ItemsRepeater.Layout>
+            <StackLayout/>
+          </ItemsRepeater.Layout>
+          <ItemsRepeater.ItemTemplate>
             <DataTemplate>
               <StackPanel>
                 <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding Key}"/>
-                <ListBox Classes="GridView" Items="{Binding}" SelectionMode="Single" KeyUp="EmojiListBox_KeyUp">
-                  <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                      <WrapPanel Margin="8,0" ItemWidth="24" ItemHeight="24" Width="384"/>
-                    </ItemsPanelTemplate>
-                  </ListBox.ItemsPanel>
-                  <ListBox.ItemTemplate>
+                <ItemsRepeater Items="{Binding}" Margin="12,0">
+                  <ItemsRepeater.Layout>
+                    <UniformGridLayout MinItemWidth="24" MinItemHeight="24" MaximumRowsOrColumns="16" ItemsJustification="Start" ItemsStretch="None"/>
+                  </ItemsRepeater.Layout>
+                  <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
-                      <Border Width="24" Height="24" Background="Transparent" Tapped="EmojiListBoxItem_Tapped">
+                      <Border Focusable="True" Width="24" Height="24" Background="Transparent" Tapped="EmojiListBoxItem_Tapped">
                         <TextBlock FontSize="16" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding}"/>
                       </Border>
                     </DataTemplate>
-                  </ListBox.ItemTemplate>
-                </ListBox>
+                  </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
               </StackPanel>
             </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
+          </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
       </ScrollViewer>
     </DataTemplate>
     <DataTemplate x:Key="StickersTabTemplate">

@@ -31,11 +31,6 @@
             <Setter Property="Padding" Value="0"/>
           </Style>
         </ListBox.Styles>
-        <ListBox.ItemsPanel>
-          <ItemsPanelTemplate>
-            <StackPanel/>
-          </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
       </ListBox>
 
       <Grid Grid.Row="1" x:Name="EmptyListContainer" DataContext="{Binding ImViewModel}" IsVisible="{Binding IsEmpty, Mode=OneWay}">

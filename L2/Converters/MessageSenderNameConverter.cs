@@ -32,7 +32,7 @@ namespace ELOR.Laney.Converters {
                     Run r = new Run {
                         Text = sender,
                     };
-                    r.RegisterThemeResource(Run.ForegroundProperty, "VKTextPrimaryBrush");
+                    r.Classes.Add("Accent");
                     ic.Add(r);
                 }
                 if (!String.IsNullOrEmpty(text)) {
