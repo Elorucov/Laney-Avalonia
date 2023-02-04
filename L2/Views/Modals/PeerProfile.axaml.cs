@@ -9,8 +9,7 @@ namespace ELOR.Laney.Views.Modals {
         public PeerProfile() {
             InitializeComponent();
 
-#if WIN
-#elif LINUX      
+#if LINUX
             TitleBar.IsVisible = false;
 #elif MAC
             TitleBar.CanShowTitle = true;
