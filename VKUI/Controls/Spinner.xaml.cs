@@ -11,13 +11,13 @@ namespace VKUI.Controls {
 
         #region Template elements
 
-        Path Icon;
+        VKIcon Icon;
 
         #endregion
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
             base.OnApplyTemplate(e);
-            Icon = e.NameScope.Find<Path>(nameof(Icon));
+            Icon = e.NameScope.Find<VKIcon>(nameof(Icon));
 
             SetupSpinner(Math.Min(DesiredSize.Width, DesiredSize.Height));
 
@@ -46,13 +46,12 @@ namespace VKUI.Controls {
         }
 
         private void SetupSpinner(double s) {
-            int size = 16;
-            if (s >= 20) size = 24;
-            if (s >= 28) size = 32;
-            if (s >= 38) size = 44;
+            string iconId = VKIconNames.Icon16Spinner;
+            if (s >= 20) iconId = VKIconNames.Icon24Spinner;
+            if (s >= 28) iconId = VKIconNames.Icon32Spinner;
+            if (s >= 38) iconId = VKIconNames.Icon44Spinner;
 
-            Geometry spinner = VKUITheme.Icons[$"Icon{size}Spinner"] as Geometry;
-            Icon.Data = spinner;
+            Icon.Id = iconId;
             Icon.Width = s;
             Icon.Height = s;
         }

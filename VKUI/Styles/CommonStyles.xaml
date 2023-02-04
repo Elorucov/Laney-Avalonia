@@ -35,13 +35,11 @@
   <Style Selector="Window">
     <Setter Property="Background" Value="{DynamicResource VKBackgroundContentBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
-    <Setter Property="TextElement.Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
   </Style>
 
   <Style Selector="Window.Dialog">
     <Setter Property="CanResize" Value="False"/>
     <Setter Property="ShowInTaskbar" Value="False"/>
-    <Setter Property="WindowStartupLocation" Value="CenterOwner"/>
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="ExtendClientAreaChromeHints" Value="SystemChrome"/>
     <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0"/>

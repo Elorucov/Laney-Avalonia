@@ -93,9 +93,6 @@ namespace ELOR.Laney {
             })
             .With(new SkiaOptions {
                 MaxGpuResourceSizeBytes = 33554432
-            })
-            .With(new AvaloniaNativePlatformOptions {
-                UseCompositor = true,
             });
     }
 }

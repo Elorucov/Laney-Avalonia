@@ -44,7 +44,7 @@
     <DataTemplate x:Key="StickersTabTemplate">
       <Grid RowDefinitions="Auto *">
         <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding DataContext.SelectedTab.Label, Mode=OneWay, ElementName=PickerRoot}"/>
-        <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" VirtualizationMode="None" Items="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}" KeyUp="StickersListBox_KeyUp">
+        <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" Items="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}" KeyUp="StickersListBox_KeyUp">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <WrapPanel Margin="8,0,8,8" ItemWidth="96" ItemHeight="96" Width="384"/>

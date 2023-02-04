@@ -85,7 +85,7 @@
       </Grid>
     </Border>
 
-    <ListBox x:Name="MessagesList" Classes="MessagesList" Grid.Row="2" VerticalAlignment="Bottom" SelectionMode="Multiple,Toggle" Selection="{Binding SelectedMessages, Mode=TwoWay}" Items="{Binding DisplayedMessages, Mode=OneWay}" VirtualizationMode="Simple">
+    <ListBox x:Name="MessagesList" Classes="MessagesList" Grid.Row="2" VerticalAlignment="Bottom" SelectionMode="Multiple,Toggle" Selection="{Binding SelectedMessages, Mode=TwoWay}" Items="{Binding DisplayedMessages, Mode=OneWay}">
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
           <StackPanel Margin="0,4"/>

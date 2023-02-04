@@ -38,11 +38,13 @@
 
     <Border x:Name="AttachmentsArea" Margin="0,8,0,2" IsVisible="{Binding !!Attachments.Count}">
       <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden">
-        <ItemsRepeater Margin="6,0" Items="{Binding Attachments}">
-          <ItemsRepeater.Layout>
-            <StackLayout Orientation="Horizontal" DisableVirtualization="True"/>
-          </ItemsRepeater.Layout>
-          <ItemsRepeater.ItemTemplate>
+        <ItemsControl Margin="6,0" Items="{Binding Attachments}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
             <DataTemplate>
               <Border x:Name="OutboundAttachmentRoot" Background="{DynamicResource VKImBubbleIncomingBrush}" Width="88" Height="88" CornerRadius="8" Margin="6,4,6,0">
                 <Grid x:Name="OAInfoRoot">
@@ -79,8 +81,8 @@
                 </Grid>
               </Border>
             </DataTemplate>
-          </ItemsRepeater.ItemTemplate>
-        </ItemsRepeater>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
       </ScrollViewer>
     </Border>
 

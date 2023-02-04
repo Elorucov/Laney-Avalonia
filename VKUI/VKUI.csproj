@@ -25,12 +25,34 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Appearance\Palette.xaml" />
+    <None Remove="Appearance\Scheme.xaml" />
+    <None Remove="Controls\ActionSheetItem.xaml" />
+    <None Remove="Controls\Avatar.xaml" />
+    <None Remove="Controls\Cell.xaml" />
+    <None Remove="Controls\PanelHeader.xaml" />
+    <None Remove="Controls\Placeholder.xaml" />
+    <None Remove="Controls\Spinner.xaml" />
+    <None Remove="Controls\VKIcon.xaml" />
+    <None Remove="Controls\VKUIFlyoutPresenter.xaml" />
+    <None Remove="Controls\WindowTitleBar.xaml" />
     <None Remove="Fonts\VKSansDisplay-Bold.otf" />
     <None Remove="Fonts\VKSansDisplay-Regular.otf" />
     <None Remove="Fonts\VKSansText-Bold.ttf" />
     <None Remove="Fonts\VKSansText-Light.ttf" />
+    <None Remove="Fonts\VKSansText-Medium.ttf" />
     <None Remove="Fonts\VKSansText-Regular.ttf" />
     <None Remove="Fonts\VKSansText-SemiBold.ttf" />
+    <None Remove="Icons.xaml" />
+    <None Remove="Styles\ButtonStyles.xaml" />
+    <None Remove="Styles\ComboBoxStyles.xaml" />
+    <None Remove="Styles\CommonStyles.xaml" />
+    <None Remove="Styles\ListBoxStyles.xaml" />
+    <None Remove="Styles\TabStyles.xaml" />
+    <None Remove="Styles\TextBoxStyles.xaml" />
+    <None Remove="Styles\ToggleSwitchStyles.xaml" />
+    <None Remove="Typography.xaml" />
+    <None Remove="VKUITheme.xaml" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
@@ -40,25 +62,64 @@
     <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview4" />
+    <PackageReference Include="Avalonia" Version="11.0.0-preview5" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview5" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview4" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview5" />
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0-preview4" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
   <ItemGroup>
-    <UpToDateCheckInput Remove="ListBoxStyles.axaml" />
+    <AvaloniaResource Include="**/*.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Remove="Styles\ButtonStyles.xaml" />
+    <AvaloniaResource Remove="Styles\ComboBoxStyles.xaml" />
+    <AvaloniaResource Remove="Styles\CommonStyles.xaml" />
+    <AvaloniaResource Remove="Styles\ListBoxStyles.xaml" />
+    <AvaloniaResource Remove="Styles\TabStyles.xaml" />
+    <AvaloniaResource Remove="Styles\TextBoxStyles.xaml" />
+    <AvaloniaResource Remove="Styles\ToggleSwitchStyles.xaml" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="Fonts\VKSansDisplay-Bold.otf" />
     <AvaloniaResource Include="Fonts\VKSansDisplay-Regular.otf" />
     <AvaloniaResource Include="Fonts\VKSansText-Bold.ttf" />
     <AvaloniaResource Include="Fonts\VKSansText-Light.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-Medium.ttf" />
     <AvaloniaResource Include="Fonts\VKSansText-Regular.ttf" />
     <AvaloniaResource Include="Fonts\VKSansText-SemiBold.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <UpToDateCheckInput Remove="Controls\Cell.axaml" />
+    <AvaloniaXaml Include="Styles\ButtonStyles.xaml" />
+    <AvaloniaXaml Include="Styles\ComboBoxStyles.xaml" />
+    <AvaloniaXaml Include="Styles\CommonStyles.xaml" />
+    <AvaloniaXaml Include="Styles\ListBoxStyles.xaml" />
+    <AvaloniaXaml Include="Styles\TabStyles.xaml" />
+    <AvaloniaXaml Include="Styles\TextBoxStyles.xaml" />
+    <AvaloniaXaml Include="Styles\ToggleSwitchStyles.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Controls\Cell.xaml.cs">
+      <DependentUpon>Controls\Cell.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\PanelHeader.xaml.cs">
+      <DependentUpon>Controls\PanelHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Placeholder.xaml.cs">
+      <DependentUpon>Controls\Placeholder.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Spinner.xaml.cs">
+      <DependentUpon>Controls\Spinner.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\VKIcon.xaml.cs">
+      <DependentUpon>Controls\VKIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\VKUIFlyoutPresenter.xaml.cs">
+      <DependentUpon>Controls\VKUIFlyoutPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\WindowTitleBar.xaml.cs">
+      <DependentUpon>Controls\WindowTitleBar.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

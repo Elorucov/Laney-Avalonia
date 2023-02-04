@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <Color x:Key="VKAzure100MutedColor">#67A5EB</Color>
+    <Color x:Key="VKAzure100MutedColor">#67A5EB</Color>
     <Color x:Key="VKAzure300Color">#2688EB</Color>
     <Color x:Key="VKAzure350Color">#2975CC</Color>
     <Color x:Key="VKAzureA100Color">#0077FF</Color>

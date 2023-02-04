@@ -1,4 +1,4 @@
-﻿using Avalonia.Platform.Storage.FileIO;
+﻿using Avalonia.Platform.Storage;
 using Serilog;
 using System;
 using System.Diagnostics;
@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace ELOR.Laney.Core.Network {
     public interface IFileUploader {
@@ -24,12 +23,12 @@ namespace ELOR.Laney.Core.Network {
         CancellationTokenSource cts;
         string _type;
         Uri _uploadUri;
-        BclStorageFile _file;
+        IStorageFile _file;
 
         public event EventHandler<double> ProgressChanged;
         public event EventHandler<Exception> UploadFailed;
 
-        public VKHttpClientFileUploader(string type, Uri uploadUri, BclStorageFile file) {
+        public VKHttpClientFileUploader(string type, Uri uploadUri, IStorageFile file) {
             _type = type;
             _uploadUri = uploadUri;
             _file = file;

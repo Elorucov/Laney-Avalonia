@@ -1,7 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:theme="using:Avalonia.Themes.Simple"
-             xmlns:ui="clr-namespace:VKUI;assembly=VKUI"
+             xmlns:ui="using:VKUI"
              xmlns:conv="using:ELOR.Laney.Converters"
              xmlns:logo="using:ELOR.Laney.Assets.Logo"
              x:Class="ELOR.Laney.App">
@@ -10,9 +10,8 @@
       <SolidColorBrush x:Key="SystemControlTransparentBrush" Color="Transparent"/>
       
       <ResourceDictionary.MergedDictionaries>
-        <ResourceInclude Source="avares://VKUI/Icons.axaml"/>
-        <ResourceInclude Source="/Styles/FluentScrollBar.axaml"/>
-        <ResourceInclude Source="/Styles/FluentScrollViewer.axaml"/>
+        <!--<ResourceInclude Source="/Styles/FluentScrollBar.axaml"/>
+        <ResourceInclude Source="/Styles/FluentScrollViewer.axaml"/>-->
         <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
@@ -41,8 +40,8 @@
     </DataTemplate>
   </Application.Resources>
   <Application.Styles>
-    <theme:SimpleTheme Mode="Light"/>
-    <ui:VKUITheme Scheme="BrightLight"/>
+    <theme:SimpleTheme/>
+    <ui:VKUITheme/>
     
     <StyleInclude Source="avares://Laney/Controls/Attachments/AttachmentsContainer.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/Attachments/BasicAttachment.axaml"/>

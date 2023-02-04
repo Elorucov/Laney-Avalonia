@@ -71,7 +71,7 @@ namespace ELOR.Laney.Views.Modals {
                 AllowMultiple = true,
                 FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.ImageAll }
             });
-            if (files.Count > 0) Close(new Tuple<int, List<BclStorageFile>>(Constants.PhotoUploadCommand, files.Cast<BclStorageFile>().ToList()));
+            if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.PhotoUploadCommand, files.ToList()));
         }
 
         private async void OpenFilePickerForVideo(object sender, RoutedEventArgs e) {
@@ -80,7 +80,7 @@ namespace ELOR.Laney.Views.Modals {
                 AllowMultiple = true,
                 FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All } // Video!!!
             });
-            if (files.Count > 0) Close(new Tuple<int, List<BclStorageFile>>(Constants.VideoUploadCommand, files.Cast<BclStorageFile>().ToList()));
+            if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.VideoUploadCommand, files.ToList()));
         }
 
         private async void OpenFilePickerForDoc(object sender, RoutedEventArgs e) {
@@ -89,7 +89,7 @@ namespace ELOR.Laney.Views.Modals {
                 AllowMultiple = true,
                 FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All }
             });
-            if (files.Count > 0) Close(new Tuple<int, List<BclStorageFile>>(Constants.FileUploadCommand, files.Cast<BclStorageFile>().ToList()));
+            if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.FileUploadCommand, files.ToList()));
         }
 
         private void CloseAndAttach(object sender, RoutedEventArgs e) {

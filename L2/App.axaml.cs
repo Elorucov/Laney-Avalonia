@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Styling;
 using Avalonia.Themes.Simple;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
@@ -29,6 +30,7 @@ namespace ELOR.Laney {
 
             AvaloniaXamlLoader.Load(this);
 
+            this.ActualThemeVariantChanged += App_ActualThemeVariantChanged;
             ChangeTheme(Settings.AppTheme);
             Settings.SettingChanged += Settings_SettingChanged;
         }
@@ -47,6 +49,7 @@ namespace ELOR.Laney {
         public override void OnFrameworkInitializationCompleted() {
             string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
             Localizer.Instance.LoadLanguage(lang);
+
             if (ApplicationLifetime is ClassicDesktopStyleApplicationLifetime desktop) {
                 DesktopLifetime = desktop;
                 if (Platform == OSPlatform.FreeBSD) desktop.Shutdown();
@@ -79,33 +82,28 @@ namespace ELOR.Laney {
             base.OnFrameworkInitializationCompleted();
         }
 
-        public VKUIScheme CurrentScheme { get; private set; }
-        public List<Action<VKUIScheme>> ThemeChanged = new List<Action<VKUIScheme>>();
+        #region Theme
 
-        public static void SwitchTheme(VKUIScheme scheme) {
-            SimpleTheme simple = (SimpleTheme)_current.Styles[0]!;
-            simple.Mode = scheme == VKUIScheme.BrightLight ? SimpleThemeMode.Light : SimpleThemeMode.Dark;
+        public List<Action<ThemeVariant>> ThemeChangedActions = new List<Action<ThemeVariant>>();
 
-            VKUITheme.Current.Scheme = scheme;
-            _current.CurrentScheme = scheme;
-            foreach (Action<VKUIScheme> action in CollectionsMarshal.AsSpan(_current.ThemeChanged)) {
-                action.Invoke(scheme);
+        private void App_ActualThemeVariantChanged(object sender, EventArgs e) {
+            foreach (var action in CollectionsMarshal.AsSpan(_current.ThemeChangedActions)) {
+                action?.Invoke(_current.ActualThemeVariant);
             }
         }
 
         public static void ChangeTheme(int id) {
             switch (id) {
                 case 1:
-                    SwitchTheme(VKUIScheme.BrightLight);
+                    _current.RequestedThemeVariant = ThemeVariant.Light;
                     break;
                 case 2:
-                    SwitchTheme(VKUIScheme.SpaceGray);
+                    _current.RequestedThemeVariant = ThemeVariant.Dark;
+                    break;
+                default:
+                    _current.RequestedThemeVariant = ThemeVariant.Default;
                     break;
             }
-        }
-
-        public static void ToggleTheme() {
-            SwitchTheme(_current.CurrentScheme == VKUIScheme.BrightLight ? VKUIScheme.SpaceGray : VKUIScheme.BrightLight);
         }
 
         public static T GetResource<T>(string key) {
@@ -121,6 +119,8 @@ namespace ELOR.Laney {
                 return default(T);
             }
         }
+
+        #endregion
 
         private void Settings_SettingChanged(string key, object value) {
             switch (key) {

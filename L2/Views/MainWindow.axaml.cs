@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Rendering;
 using Avalonia.Threading;
 using ELOR.Laney.Core;
 using Serilog;
@@ -21,8 +22,6 @@ namespace ELOR.Laney.Views {
             ChatView.BackButtonClick += ChatView_BackButtonClick;
 
             // Window size, position & state
-            // На данный момент есть баг со стороны Авалонии,
-            // github.com/AvaloniaUI/Avalonia/issues/8869
 
             bool isMaximized = Settings.Get(Settings.WIN_MAXIMIZED, false);
             if (!isMaximized) WindowState = WindowState.Normal;
@@ -33,19 +32,10 @@ namespace ELOR.Laney.Views {
             int wy = Settings.Get(Settings.WIN_POS_Y, 32);
             Position = new PixelPoint(wx, wy);
 
-            Opened += MainWindow_Opened;
-
-            Renderer.DrawFps = Settings.ShowFPS;
+            Renderer.Diagnostics.DebugOverlays = Settings.ShowFPS ? RendererDebugOverlays.Fps : RendererDebugOverlays.None;
             RAMInfoOverlay.IsVisible = Settings.ShowRAMUsage;
             ToggleRAMInfoOverlay();
             Settings.SettingChanged += Settings_SettingChanged;
-        }
-
-        // Bug workaround
-        private void MainWindow_Opened(object sender, EventArgs e) {
-            Opened -= MainWindow_Opened;
-            bool isMaximized = Settings.Get(Settings.WIN_MAXIMIZED, false);
-            WindowState = isMaximized ? WindowState.Maximized : WindowState.Normal;
         }
 
         private void MainWindow_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
@@ -83,12 +73,9 @@ namespace ELOR.Laney.Views {
         }
 
         private void Settings_SettingChanged(string key, object value) {
-            if (key == Settings.DEBUG_FPS) {
-                Renderer.DrawFps = (bool)value;
-            }
             switch (key) {
                 case Settings.DEBUG_FPS:
-                    Renderer.DrawFps = (bool)value;
+                    Renderer.Diagnostics.DebugOverlays = (bool)value ? RendererDebugOverlays.Fps : RendererDebugOverlays.None;
                     break;
                 case Settings.DEBUG_COUNTERS_RAM:
                     RAMInfoOverlay.IsVisible = (bool)value;

@@ -1,7 +1,7 @@
 ﻿namespace ELOR.Laney.Core {
     public static class Constants {
         public const string DefaultLang = "ru-RU";
-        public const int DefaultTheme = 1;
+        public const int DefaultTheme = 0;
         public const int MessagesCount = 40;
 
         // For attachment picker

@@ -17,7 +17,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Viewbox x:Name="viewBox" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Stretch="Uniform">
-          <Path x:Name="Icon" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}"/>
+          <controls:VKIcon x:Name="Icon" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}"/>
         </Viewbox>
       </ControlTemplate>
     </Setter>

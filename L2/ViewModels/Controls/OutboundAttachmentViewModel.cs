@@ -1,6 +1,5 @@
-﻿using Avalonia.Markup.Xaml.Templates;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform.Storage.FileIO;
+﻿using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
@@ -51,7 +50,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
 
         OutboundAttachmentUploadFileType uploadFileType = OutboundAttachmentUploadFileType.Doc;
-        BclStorageFile file = null;
+        IStorageFile file = null;
 
         public OutboundAttachmentViewModel(VKSession session, AttachmentBase attachment) {
             this.session = session;
@@ -76,7 +75,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             }
         }
 
-        public OutboundAttachmentViewModel(VKSession session, BclStorageFile file, int type) {
+        public OutboundAttachmentViewModel(VKSession session, IStorageFile file, int type) {
             this.session = session;
             this.file = file;
             IsUploading = true;
@@ -199,7 +198,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (!IsUploading) await DoUploadFileInternal(file, uploadFileType);
         }
 
-        private async Task<bool> DoUploadFileInternal(BclStorageFile file, OutboundAttachmentUploadFileType uploadFileType) {
+        private async Task<bool> DoUploadFileInternal(IStorageFile file, OutboundAttachmentUploadFileType uploadFileType) {
             UploadException = null;
             UploadProgress = 0;
             IsUploading = true;

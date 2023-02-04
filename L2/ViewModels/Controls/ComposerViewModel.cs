@@ -1,5 +1,5 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Platform.Storage.FileIO;
+using Avalonia.Platform.Storage;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
@@ -155,8 +155,8 @@ namespace ELOR.Laney.ViewModels.Controls {
                 foreach (AttachmentBase attachment in attachments) {
                     Attachments.Add(new OutboundAttachmentViewModel(session, attachment));
                 }
-            } else if (pickerResult is Tuple<int, List<BclStorageFile>> pfiles) {
-                foreach (BclStorageFile file in pfiles.Item2) {
+            } else if (pickerResult is Tuple<int, List<IStorageFile>> pfiles) {
+                foreach (IStorageFile file in pfiles.Item2) {
                     Attachments.Add(new OutboundAttachmentViewModel(session, file, pfiles.Item1));
                     await Task.Delay(500);
                 }

@@ -4,7 +4,6 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using ELOR.Laney.Extensions;
 using System;
-using System.Linq;
 using System.Reactive.Linq;
 using VKUI.Controls;
 
@@ -12,19 +11,15 @@ namespace ELOR.Laney.Controls {
     public static class ImageLoader {
         static ImageLoader() {
             SourceProperty.Changed
-                .Where(args => args.IsEffectiveValueChange)
                 .Subscribe(args => OnSourceChanged((Image)args.Sender, args.NewValue.Value));
 
             BackgroundSourceProperty.Changed
-                .Where(args => args.IsEffectiveValueChange)
                 .Subscribe(args => OnBackgroundSourceChanged((Border)args.Sender, args.NewValue.Value));
 
             FillSourceProperty.Changed
-                .Where(args => args.IsEffectiveValueChange)
                 .Subscribe(args => OnFillSourceChanged((Shape)args.Sender, args.NewValue.Value));
 
             ImageProperty.Changed
-                .Where(args => args.IsEffectiveValueChange)
                 .Subscribe(args => OnImageChanged((Avatar)args.Sender, args.NewValue.Value));
         }
 

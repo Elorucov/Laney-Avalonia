@@ -1,0 +1,35 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="VKUI.VKUITheme">
+  <Styles.Resources>
+    <ResourceDictionary>
+      <FontFamily x:Key="VKSansDisplay">avares://VKUI/Fonts#VK Sans Display</FontFamily>
+      <FontFamily x:Key="VKSansText">avares://VKUI/Fonts#VK Sans Text</FontFamily>
+      
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://VKUI/Appearance/Palette.xaml"/>
+        <ResourceInclude Source="avares://VKUI/Appearance/Scheme.xaml"/>
+        <ResourceInclude Source="avares://VKUI/Icons.xaml"/>
+        
+        <ResourceInclude Source="avares://VKUI/Controls/ActionSheetItem.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/Avatar.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/Cell.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/PanelHeader.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/Placeholder.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/Spinner.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/VKIcon.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/VKUIFlyoutPresenter.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/WindowTitleBar.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Styles.Resources>
+
+  <StyleInclude Source="/Typography.xaml"/>
+  <StyleInclude Source="/Styles/CommonStyles.xaml"/>
+  <StyleInclude Source="/Styles/ButtonStyles.xaml"/>
+  <StyleInclude Source="/Styles/ComboBoxStyles.xaml"/>
+  <StyleInclude Source="/Styles/ListBoxStyles.xaml"/>
+  <StyleInclude Source="/Styles/TabStyles.xaml"/>
+  <StyleInclude Source="/Styles/TextBoxStyles.xaml"/>
+  <StyleInclude Source="/Styles/ToggleSwitchStyles.xaml"/>
+</Styles>

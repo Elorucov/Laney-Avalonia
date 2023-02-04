@@ -90,7 +90,7 @@
                 </ListBox.ItemsPanel>
               </ListBox>
 
-              <ListBox x:Name="PhotosList" Classes="GridView" Margin="0,10,0,0" MaxWidth="520" Items="{Binding Photos.Items}" ItemTemplate="{StaticResource PhotoTemplate}" SelectionMode="Multiple,Toggle"  VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+              <ListBox x:Name="PhotosList" Classes="GridView" Margin="0,10,0,0" MaxWidth="520" Items="{Binding Photos.Items}" ItemTemplate="{StaticResource PhotoTemplate}" SelectionMode="Multiple,Toggle" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemsPanel>
                   <ItemsPanelTemplate>
                     <WrapPanel ItemHeight="88" ItemWidth="130"/>
@@ -134,7 +134,7 @@
                 </ListBox.ItemsPanel>
               </ListBox>
 
-              <ListBox x:Name="VideosList" Margin="0,6,0,0" Items="{Binding Videos.Items}" ItemTemplate="{StaticResource VideoTemplate}" SelectionMode="Multiple,Toggle" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+              <ListBox x:Name="VideosList" Margin="0,6,0,0" Items="{Binding Videos.Items}" ItemTemplate="{StaticResource VideoTemplate}" SelectionMode="Multiple,Toggle" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
               <Border MinHeight="32">
                 <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Videos.IsLoading}"/>
@@ -173,7 +173,7 @@
 
           <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
             <StackPanel>
-              <ListBox x:Name="DocsList" Margin="0,6,0,0" Items="{Binding Documents.Items}" ItemTemplate="{StaticResource DocTemplate}" SelectionMode="Multiple,Toggle" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+              <ListBox x:Name="DocsList" Margin="0,6,0,0" Items="{Binding Documents.Items}" ItemTemplate="{StaticResource DocTemplate}" SelectionMode="Multiple,Toggle" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
               <Border MinHeight="32">
                 <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Documents.IsLoading}"/>

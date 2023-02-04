@@ -5,6 +5,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Media;
+using Avalonia.Styling;
 using Avalonia.VisualTree;
 using DynamicData;
 using Serilog;
@@ -68,24 +69,24 @@ namespace ELOR.Laney.Extensions {
             IBrush newBrush = App.GetResource<IBrush>(resourceKey);
             control.SetValue(property, newBrush);
 
-            Action<VKUIScheme> themeChangedAction = new Action<VKUIScheme>((t) => {
+            Action<ThemeVariant> themeChangedAction = new Action<ThemeVariant>((t) => {
                 IBrush newBrush = App.GetResource<IBrush>(resourceKey);
                 control.SetValue(property, newBrush);
             });
-            App.Current.ThemeChanged.Add(themeChangedAction);
-            control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChanged.Remove(themeChangedAction);
+            App.Current.ThemeChangedActions.Add(themeChangedAction);
+            control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChangedActions.Remove(themeChangedAction);
         }
 
         public static void RegisterThemeResource(this Inline control, StyledProperty<IBrush> property, string resourceKey) {
             IBrush newBrush = App.GetResource<IBrush>(resourceKey);
             control.SetValue(property, newBrush);
 
-            Action<VKUIScheme> themeChangedAction = new Action<VKUIScheme>((t) => {
+            Action<ThemeVariant> themeChangedAction = new Action<ThemeVariant>((t) => {
                 IBrush newBrush = App.GetResource<IBrush>(resourceKey);
                 control.SetValue(property, newBrush);
             });
-            App.Current.ThemeChanged.Add(themeChangedAction);
-            control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChanged.Remove(themeChangedAction);
+            App.Current.ThemeChangedActions.Add(themeChangedAction);
+            control.DetachedFromLogicalTree += (a, b) => App.Current.ThemeChangedActions.Remove(themeChangedAction);
         }
 
         public static void FindLogicalChildrenByType<T>(this Control control, List<T> found) {

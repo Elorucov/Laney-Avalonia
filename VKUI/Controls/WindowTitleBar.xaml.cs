@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using System;
 using System.Runtime.InteropServices;
@@ -78,7 +77,7 @@ namespace VKUI.Controls {
             // Finding window
             // TODO: чекать, это DialogWindow или обычный Window
             // и менять стиль кнопок в зависимости от этого.
-            IControl control = Parent;
+            Control control = Parent;
             do {
                 if (control is Window window) {
                     OwnerWindow = window;

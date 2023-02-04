@@ -102,7 +102,6 @@
   <Style Selector="Button.Primary">
     <Setter Property="Background" Value="{DynamicResource VKButtonPrimaryBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonPrimaryForegroundBrush}"/>
-    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonPrimaryForegroundBrush}"/>
   </Style>
 
   <Style Selector="Button.Primary vkui|VKIcon.ButtonIn">
@@ -112,7 +111,6 @@
   <Style Selector="Button.Tertiary">
     <Setter Property="Background" Value="{DynamicResource VKButtonTertiaryBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonTertiaryForegroundBrush}"/>
-    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonTertiaryForegroundBrush}"/>
   </Style>
 
   <Style Selector="Button.Tertiary vkui|VKIcon.ButtonIn">
@@ -122,7 +120,6 @@
   <Style Selector="Button.Outline">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonOutlineForegroundBrush}"/>
-    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonOutlineForegroundBrush}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource VKButtonOutlineBorderBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
   </Style>
@@ -134,13 +131,11 @@
   <Style Selector="Button.Commerce">
     <Setter Property="Background" Value="{DynamicResource VKButtonCommerceBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
-    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
   </Style>
 
   <Style Selector="Button.Negative">
     <Setter Property="Background" Value="{DynamicResource VKDestructiveBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
-    <Setter Property="TextBlock.Foreground" Value="{DynamicResource VKButtonCommerceForegroundBrush}"/>
   </Style>
 
   <Style Selector="Button.Commerce vkui|VKIcon.ButtonIn, Button.Negative vkui|VKIcon.ButtonIn">
@@ -151,7 +146,6 @@
     <Setter Property="MinHeight" Value="32"/>
     <Setter Property="Padding" Value="16,6,16,6"/>
     <Setter Property="FontSize" Value="14"/>
-    <Setter Property="TextElement.FontSize" Value="14"/>
   </Style>
 
   <Style Selector="Button.Medium /template/ ContentPresenter#PART_Presenter">
@@ -167,7 +161,6 @@
     <Setter Property="MinHeight" Value="36"/>
     <Setter Property="Padding" Value="20,7,20,7"/>
     <Setter Property="FontSize" Value="15"/>
-    <Setter Property="TextElement.FontSize" Value="15"/>
   </Style>
 
   <Style Selector="Button.Large /template/ ContentPresenter#PART_Presenter">
