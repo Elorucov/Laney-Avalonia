@@ -18,6 +18,7 @@
   </Design.PreviewWith>
 
   <!-- Resources for ScrollBar.xaml -->
+  <SolidColorBrush x:Key="SystemControlTransparentBrush" Color="Transparent"/>
   <x:Double x:Key="ScrollBarTrackBorderThemeThickness">0</x:Double>
   <StaticResource x:Key="ScrollBarBackground" ResourceKey="SystemControlTransparentBrush" />
   <StaticResource x:Key="ScrollBarBackgroundPointerOver" ResourceKey="SystemControlTransparentBrush" />
@@ -25,30 +26,30 @@
   <StaticResource x:Key="ScrollBarBorderBrush" ResourceKey="SystemControlTransparentBrush" />
   <StaticResource x:Key="ScrollBarButtonBackground" ResourceKey="SystemControlTransparentBrush" />
   <StaticResource x:Key="ScrollBarButtonBackgroundPointerOver" ResourceKey="VKBackgroundHoverBrush" />
-  <StaticResource x:Key="ScrollBarButtonBackgroundPressed" ResourceKey="SystemControlBackgroundBaseMediumBrush" />
+  <StaticResource x:Key="ScrollBarButtonBackgroundPressed" ResourceKey="VKBackgroundHighlightedBrush" />
   <StaticResource x:Key="ScrollBarButtonBorderBrush" ResourceKey="SystemControlTransparentBrush" />
   <StaticResource x:Key="ScrollBarButtonBorderBrushPointerOver" ResourceKey="SystemControlTransparentBrush" />
   <StaticResource x:Key="ScrollBarButtonBorderBrushPressed" ResourceKey="SystemControlTransparentBrush" />
   <StaticResource x:Key="ScrollBarButtonBorderBrushDisabled" ResourceKey="SystemControlTransparentBrush" />
-  <StaticResource x:Key="ScrollBarButtonArrowForeground" ResourceKey="VKIconTertiaryAlphaBrush" />
-  <StaticResource x:Key="ScrollBarButtonArrowForegroundPointerOver" ResourceKey="VKIconTertiaryAlphaBrush" />
-  <StaticResource x:Key="ScrollBarButtonArrowForegroundPressed" ResourceKey="VKIconSecondaryAlphaBrush" />
-  <StaticResource x:Key="ScrollBarButtonArrowForegroundDisabled" ResourceKey="VKIconTertiaryAlphaBrush" />
-  <StaticResource x:Key="ScrollBarThumbFillPointerOver" ResourceKey="VKIconTertiaryAlphaBrush" />
-  <StaticResource x:Key="ScrollBarThumbFillPressed" ResourceKey="VKIconSecondaryAlphaBrush" />
+  <StaticResource x:Key="ScrollBarButtonArrowForeground" ResourceKey="VKIconTertiaryBrush" />
+  <StaticResource x:Key="ScrollBarButtonArrowForegroundPointerOver" ResourceKey="VKIconTertiaryBrush" />
+  <StaticResource x:Key="ScrollBarButtonArrowForegroundPressed" ResourceKey="VKIconSecondaryBrush" />
+  <StaticResource x:Key="ScrollBarButtonArrowForegroundDisabled" ResourceKey="VKIconTertiaryBrush" />
+  <StaticResource x:Key="ScrollBarThumbFillPointerOver" ResourceKey="VKIconTertiaryBrush" />
+  <StaticResource x:Key="ScrollBarThumbFillPressed" ResourceKey="VKIconSecondaryBrush" />
   <StaticResource x:Key="ScrollBarThumbFillDisabled" ResourceKey="VKIconTertiaryAlphaBrush" />
   <SolidColorBrush x:Key="ScrollBarTrackFill" Color="#000" Opacity="0" />
   <SolidColorBrush x:Key="ScrollBarTrackFillPointerOver" Color="#000" Opacity="0" />
   <StaticResource x:Key="ScrollBarTrackStroke" ResourceKey="SystemControlTransparentBrush" />
   <StaticResource x:Key="ScrollBarTrackStrokePointerOver" ResourceKey="SystemControlTransparentBrush" />
-  <StaticResource x:Key="ScrollBarThumbBackgroundColor" ResourceKey="VKBlackAlpha12Color" />
-  <StaticResource x:Key="ScrollBarPanningThumbBackgroundColor" ResourceKey="VKBlackAlpha12Color" />
+  <StaticResource x:Key="ScrollBarThumbBackgroundColor" ResourceKey="VKIconTertiaryAlphaBrush" />
+  <StaticResource x:Key="ScrollBarPanningThumbBackgroundColor" ResourceKey="VKIconTertiaryAlphaBrush" />
   <SolidColorBrush x:Key="ScrollBarPanningThumbBackground" Color="{StaticResource ScrollBarPanningThumbBackgroundColor}" />
-  <x:Double x:Key="ScrollBarSize">16</x:Double>
+  <x:Double x:Key="ScrollBarSize">12</x:Double>
   <x:Double x:Key="ScrollBarButtonArrowIconFontSize">8</x:Double>
 
   <ControlTheme x:Key="FluentScrollBarThumb" TargetType="Thumb">
-    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Background" Value="#2f7f7f7f"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate>
@@ -191,7 +192,8 @@
                                   Focusable="False" />
                   </Track.IncreaseButton>
                   <Thumb Theme="{StaticResource FluentScrollBarThumb}"
-                         Width="{DynamicResource ScrollBarSize}"
+                         Width="8"
+                         CornerRadius="4"
                          MinHeight="{DynamicResource ScrollBarSize}"
                          RenderTransform="{DynamicResource VerticalSmallScrollThumbScaleTransform}"
                          RenderTransformOrigin="100%,50%" />
@@ -267,7 +269,8 @@
                                   Focusable="False" />
                   </Track.IncreaseButton>
                   <Thumb Theme="{StaticResource FluentScrollBarThumb}"
-                         Height="{DynamicResource ScrollBarSize}"
+                         Height="8"
+                         CornerRadius="4"
                          MinWidth="{DynamicResource ScrollBarSize}"
                          RenderTransform="{DynamicResource HorizontalSmallScrollThumbScaleTransform}"
                          RenderTransformOrigin="50%,100%" />

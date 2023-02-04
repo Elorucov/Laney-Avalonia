@@ -6,12 +6,8 @@
              xmlns:logo="using:ELOR.Laney.Assets.Logo"
              x:Class="ELOR.Laney.App">
   <Application.Resources>
-    <ResourceDictionary>
-      <SolidColorBrush x:Key="SystemControlTransparentBrush" Color="Transparent"/>
-      
+    <ResourceDictionary>      
       <ResourceDictionary.MergedDictionaries>
-        <!--<ResourceInclude Source="/Styles/FluentScrollBar.axaml"/>
-        <ResourceInclude Source="/Styles/FluentScrollViewer.axaml"/>-->
         <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>

@@ -32,6 +32,8 @@
     <None Remove="Controls\Cell.xaml" />
     <None Remove="Controls\PanelHeader.xaml" />
     <None Remove="Controls\Placeholder.xaml" />
+    <None Remove="Controls\ScrollBar.xaml" />
+    <None Remove="Controls\ScrollViewer.xaml" />
     <None Remove="Controls\Spinner.xaml" />
     <None Remove="Controls\VKIcon.xaml" />
     <None Remove="Controls\VKUIFlyoutPresenter.xaml" />
@@ -98,6 +100,14 @@
     <AvaloniaXaml Include="Styles\TabStyles.xaml" />
     <AvaloniaXaml Include="Styles\TextBoxStyles.xaml" />
     <AvaloniaXaml Include="Styles\ToggleSwitchStyles.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Update="Controls\ScrollBar.xaml">
+      <Generator></Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Controls\ScrollViewer.xaml">
+      <Generator></Generator>
+    </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Controls\Cell.xaml.cs">

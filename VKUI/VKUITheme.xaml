@@ -16,6 +16,8 @@
         <ResourceInclude Source="avares://VKUI/Controls/Cell.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/PanelHeader.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Placeholder.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/ScrollBar.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/ScrollViewer.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Spinner.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/VKIcon.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/VKUIFlyoutPresenter.xaml" />
