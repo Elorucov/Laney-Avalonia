@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls.Documents;
 using Avalonia.Data.Converters;
-using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using System;

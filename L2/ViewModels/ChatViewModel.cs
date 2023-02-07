@@ -53,6 +53,7 @@ namespace ELOR.Laney.ViewModels {
         private bool _isCurrentOpenedChat;
         private int _selectedMessagesCount;
         private ObservableCollection<Command> _messagesCommands = new ObservableCollection<Command>();
+        private RelayCommand _openProfileCommand;
 
         public PeerType PeerType { get { return _peerType; } private set { _peerType = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -86,6 +87,7 @@ namespace ELOR.Laney.ViewModels {
         public bool IsCurrentOpenedChat { get { return _isCurrentOpenedChat; } private set { _isCurrentOpenedChat = value; OnPropertyChanged(); } }
         public int SelectedMessagesCount { get { return _selectedMessagesCount; } private set { _selectedMessagesCount = value; OnPropertyChanged(); } }
         public ObservableCollection<Command> MessagesCommands { get { return _messagesCommands; } private set { _messagesCommands = value; OnPropertyChanged(); } }
+        public RelayCommand OpenProfileCommand { get { return _openProfileCommand; } private set { _openProfileCommand = value; OnPropertyChanged(); } }
 
 
         public SelectionModel<MessageViewModel> SelectedMessages { get; } = new SelectionModel<MessageViewModel> { 
@@ -219,6 +221,8 @@ namespace ELOR.Laney.ViewModels {
                     }
                     UpdateActivityStatus();
                 }
+            } else {
+                OpenProfileCommand = new RelayCommand(OpenPeerProfile);
             }
 
             UpdateRestrictionInfo();
@@ -319,6 +323,10 @@ namespace ELOR.Laney.ViewModels {
         }
 
         #region Commands
+
+        private void OpenPeerProfile(object o) {
+            Router.OpenPeerProfile(session, PeerId);
+        }
 
         public void ClearSelectedMessages() {
             SelectedMessages.Clear();

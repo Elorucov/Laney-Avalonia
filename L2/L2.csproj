@@ -8,12 +8,12 @@
     <RootNamespace>ELOR.Laney</RootNamespace>
     <AssemblyVersion>2.0.333</AssemblyVersion>
     <FileVersion>2.0.333</FileVersion>
-    <Version Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">2.0.333-win-anycpu-devuser.devpc-230131-1317</Version>
-    <Version Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))">2.0.333-linux-anycpu-devuser.devpc-230131-1317</Version>
-    <Version Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))">2.0.333-macos-anycpu-devuser.devpc-230131-1317</Version>
-    <DefineConstants Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">WIN</DefineConstants>
-    <DefineConstants Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))">LINUX</DefineConstants>
-    <DefineConstants Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))">MAC</DefineConstants>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.333-win-anycpu-devuser.devpc-230131-1317</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.333-linux-anycpu-devuser.devpc-230131-1317</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.333-macos-anycpu-devuser.devpc-230131-1317</Version>
+    <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
+    <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
     <Platforms>AnyCPU</Platforms>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
     <TrimMode>copyused</TrimMode>

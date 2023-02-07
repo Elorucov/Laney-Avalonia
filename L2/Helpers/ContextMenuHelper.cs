@@ -99,7 +99,7 @@ namespace ELOR.Laney.Helpers {
 
             if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
             if (message.Action == null) {
-                ash.Items.Add(new ActionSheetItem());
+                if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
                 if (chat.CanWrite.Allowed) ash.Items.Add(reply);
                 if (canReplyPrivately && chat.PeerType == PeerType.Chat) ash.Items.Add(repriv);
                 ash.Items.Add(forward);

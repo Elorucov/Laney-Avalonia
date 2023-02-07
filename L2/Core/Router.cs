@@ -94,7 +94,7 @@ namespace ELOR.Laney.Core {
                     break;
                 case VKLinkType.ScreenName:
                     id = snm[0].Value;
-                    TryResolveScreenName(session, id, url);
+                    TryResolveScreenNameAndOpenProfile(session, id, url);
                     Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.Unknown:
@@ -105,39 +105,39 @@ namespace ELOR.Laney.Core {
             return new Tuple<VKLinkType, string>(type, id);
         }
 
-        private static async void OpenPeerProfile(VKSession session, int peerId) {
+        #endregion
+
+        public static async void OpenPeerProfile(VKSession session, int peerId) {
             //VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nPeer id: {peerId}");
             //await alert.ShowDialog(session.Window);
 
-            PeerProfile pp = new PeerProfile();
+            PeerProfile pp = new PeerProfile(session, peerId);
             await pp.ShowDialog(session.Window);
         }
 
-        private static async void OpenPollViewer(VKSession session, int ownerId, int id) {
+        public static async void OpenPollViewer(VKSession session, int ownerId, int id) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nOwner: {ownerId}, poll id: {id}");
             await alert.ShowDialog(session.Window);
         }
 
-        private static async void OpenChatPreview(VKSession session, string url) {
+        public static async void OpenChatPreview(VKSession session, string url) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nChat url: {url}");
             await alert.ShowDialog(session.Window);
         }
 
-        private static async void OpenStickerPackPreview(VKSession session, string packName) {
+        public static async void OpenStickerPackPreview(VKSession session, string packName) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nStickerpack name: {packName}");
             await alert.ShowDialog(session.Window);
         }
 
-        private static async void TryResolveScreenName(VKSession session, string name, string fallbackUrl) {
+        public static async void TryResolveScreenNameAndOpenProfile(VKSession session, string name, string fallbackUrl) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nName: {name}\nFallback: {fallbackUrl}");
             await alert.ShowDialog(session.Window);
         }
 
-        private static async void TryResolveScreenNameAndOpenConv(VKSession session, string name, string fallbackUrl) {
+        public static async void TryResolveScreenNameAndOpenConv(VKSession session, string name, string fallbackUrl) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nName: {name}\nFallback: {fallbackUrl}");
             await alert.ShowDialog(session.Window);
         }
-
-        #endregion
     }
 }

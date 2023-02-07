@@ -1,6 +1,7 @@
 ﻿using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
+using ELOR.VKAPILib.Objects;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -44,6 +45,27 @@ namespace ELOR.Laney.Execute {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("func_v", "2");
             return await API.CallMethodAsync<StickerPickerData>("execute.getRecentStickersAndGraffities", parameters);
+        }
+
+        public static async Task<UserEx> GetUserCardAsync(this VKAPI API, int userId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("user_id", userId.ToString());
+            parameters.Add("func_v", "3");
+            return await API.CallMethodAsync<UserEx>("execute.getUserCard", parameters);
+        }
+
+        public static async Task<GroupEx> GetGroupCardAsync(this VKAPI API, int groupId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("group_id", groupId.ToString());
+            return await API.CallMethodAsync<GroupEx>("execute.getGroupCard", parameters);
+        }
+
+        public static async Task<ChatInfoEx> GetChatAsync(this VKAPI API, int chatId, List<string> fields) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("chat_id", chatId.ToString());
+            parameters.Add("fields", string.Join(",", fields));
+            parameters.Add("func_v", "2");
+            return await API.CallMethodAsync<ChatInfoEx>("execute.getChatInfoWithMembers", parameters);
         }
     }
 }

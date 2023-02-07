@@ -26,6 +26,6 @@ namespace ELOR.Laney.Execute.Objects {
         public List<Group> MentionedGroups { get; set; }
 
         [JsonProperty("online_info")]
-        public UserOnlineInfo OnlineInfo { get; set; }
+        public UserOnlineInfoEx OnlineInfo { get; set; }
     }
 }

@@ -1,8 +1,4 @@
-﻿#define WIN
-#define LINUX
-#define MAC
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -46,10 +42,10 @@ namespace ELOR.Laney {
             // Чисто для проверки conditional compilation, в будущем будет использован в других местах.
 #if WIN
             Log.Information("Built for Windows");
-#elif LINUX
-            Log.Information("Built for Linux");
 #elif MAC
             Log.Information("Built for macOS");
+#else
+            Log.Information("Built for Linux");
 #endif
 
             Log.Information("Local data folder: {0}", localDataPath);

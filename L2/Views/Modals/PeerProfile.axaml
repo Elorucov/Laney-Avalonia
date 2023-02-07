@@ -11,35 +11,40 @@
         Width="540" Height="640"
         Title="PeerProfile">
   <Grid Grid.RowDefinitions="Auto Auto *">
-    <Grid x:Name="PeerInfo" Margin="24" ColumnDefinitions="Auto *">
-      <vkui:Avatar x:Name="PeerAva" Width="80" Height="80" Margin="0,0,20,0" Background="#7f007acc"/>
+    <Grid x:Name="PeerInfo" IsVisible="{Binding !IsLoading}" Margin="24" ColumnDefinitions="Auto *">
+      <vkui:Avatar x:Name="PeerAva" Width="80" Height="80" Margin="0,0,20,0" Initials="{Binding Header, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Avatar}"/>
       <StackPanel Grid.Column="1" VerticalAlignment="Center">
-        <TextBlock FontSize="19" LineHeight="23" FontWeight="SemiBold" TextWrapping="Wrap" MaxLines="2" Margin="0,0,0,8" Text="Elchin Orujov"/>
-        <TextBlock Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}" Text="online via Laney"/>
+        <TextBlock FontSize="19" LineHeight="23" FontWeight="SemiBold" TextWrapping="Wrap" MaxLines="2" Margin="0,0,0,8" Text="{Binding Header}"/>
+        <TextBlock Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Subhead}"/>
       </StackPanel>
     </Grid>
 
-    <Border Grid.Row="1" Margin="12,0" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" BorderThickness="0,1">
-      <Grid ColumnDefinitions="* * * Auto" Margin="-12,3">
-        <Button Grid.Column="0" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+    <Border x:Name="CommandsArea" Grid.Row="1" IsVisible="{Binding !IsLoading}" Margin="12,0" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" BorderThickness="0,1">
+      <Grid ColumnDefinitions="* * * Auto" Margin="0,3">
+        <Grid.Styles>
+          <Style Selector="Button">
+            <Setter Property="Padding" Value="3,6"/>
+          </Style>
+        </Grid.Styles>
+        <Button Grid.Column="0" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding FirstCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <vkui:VKIcon Margin="0,0,6,0" Id="{x:Static vkui:VKIconNames.Icon28WriteSquareOutline}"/>
-            <TextBlock Classes="Default" VerticalAlignment="Center" Text="Message"/>
+            <vkui:VKIcon Margin="0,0,6,0" Id="{Binding FirstCommand.IconId}"/>
+            <TextBlock Classes="Default" VerticalAlignment="Center" Text="{Binding FirstCommand.Label}"/>
           </StackPanel>
         </Button>
-        <Button Grid.Column="1" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+        <Button Grid.Column="1" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding SecondCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <vkui:VKIcon Margin="0,0,6,0" Id="{x:Static vkui:VKIconNames.Icon28SettingsOutline}"/>
-            <TextBlock Classes="Default" VerticalAlignment="Center" Text="Friend"/>
+            <vkui:VKIcon Margin="0,0,6,0" Id="{Binding SecondCommand.IconId}"/>
+            <TextBlock Classes="Default" VerticalAlignment="Center" Text="{Binding SecondCommand.Label}"/>
           </StackPanel>
         </Button>
-        <Button Grid.Column="2" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+        <Button Grid.Column="2" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding ThirdCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <vkui:VKIcon Margin="0,0,6,0" Id="{x:Static vkui:VKIconNames.Icon28SearchOutline}"/>
-            <TextBlock Classes="Default" VerticalAlignment="Center" Text="Search"/>
+            <vkui:VKIcon Margin="0,0,6,0" Id="{Binding ThirdCommand.IconId}"/>
+            <TextBlock Classes="Default" VerticalAlignment="Center" Text="{Binding ThirdCommand.Label}"/>
           </StackPanel>
         </Button>
-        <Button Grid.Column="3" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+        <Button Grid.Column="3" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="0" Width="44" Command="{Binding MoreCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" IsVisible="{Binding MoreCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28MoreHorizontal}"/>
           </StackPanel>
@@ -47,7 +52,7 @@
       </Grid>
     </Border>
 
-    <TabControl Grid.Row="2" Margin="0,2,0,0" Classes="Accent">
+    <TabControl Grid.Row="2" IsVisible="{Binding !IsLoading}" Margin="0,2,0,0" Classes="Accent">
       <TabItem Header="Info">
         
       </TabItem>
@@ -67,6 +72,19 @@
 
       </TabItem>
     </TabControl>
+    
+    <vkui:Spinner Grid.RowSpan="3" IsVisible="{Binding IsLoading}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="44" Height="44"/>
+
+    <Border Grid.RowSpan="3" IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKBackgroundContentBrush}">
+      <vkui:Placeholder VerticalAlignment="Center"
+                              Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                              Header="{Binding Placeholder.Header, Mode=OneWay}"
+                              Text="{Binding Placeholder.Text, Mode=OneWay}">
+        <vkui:Placeholder.Action>
+          <Button Classes="Primary" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+        </vkui:Placeholder.Action>
+      </vkui:Placeholder>
+    </Border>
     
     <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="True"/>
   </Grid>
