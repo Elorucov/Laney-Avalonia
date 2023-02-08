@@ -8,11 +8,8 @@ using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using VKUI.Controls;
 using VKUI.Popups;
 
@@ -23,6 +20,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         private string _header;
         private string _subhead;
         private Uri _avatar;
+        private ObservableCollection<Tuple<string, string>> _information = new ObservableCollection<Tuple<string, string>>();
         private Command _firstCommand;
         private Command _secondCommand;
         private Command _thirdCommand;
@@ -32,6 +30,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         public string Header { get { return _header; } private set { _header = value; OnPropertyChanged(); } }
         public string Subhead { get { return _subhead; } private set { _subhead = value; OnPropertyChanged(); } }
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
+        public ObservableCollection<Tuple<string, string>> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
         public Command FirstCommand { get { return _firstCommand; } private set { _firstCommand = value; OnPropertyChanged(); } }
         public Command SecondCommand { get { return _secondCommand; } private set { _secondCommand = value; OnPropertyChanged(); } }
         public Command ThirdCommand { get { return _thirdCommand; } private set { _thirdCommand = value; OnPropertyChanged(); } }
@@ -69,11 +68,64 @@ namespace ELOR.Laney.ViewModels.Modals {
                     default: Subhead = VKAPIHelper.GetOnlineInfo(user.OnlineInfo, user.Sex).ToLowerInvariant(); break;
                 }
 
+                SetupInfo(user);
                 SetupCommands(user);
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetUser(userId));
             }
             IsLoading = false;
+        }
+
+        private void SetupInfo(UserEx user) {
+            Information.Clear();
+
+            Information.Add(new Tuple<string, string>(VKIconNames.Icon20BugOutline, user.Id.ToString()));
+
+            // Banned/deleted/blocked...
+            if (user.Blacklisted) {
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted", user.Sex)));
+            }
+            if (user.BlacklistedByMe) {
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted_by_me", user.Sex)));
+            }
+
+            // Domain
+            Information.Add(new Tuple<string, string>(VKIconNames.Icon20MentionOutline, user.Domain));
+
+            // Private profile
+            if (user.IsClosed && !user.CanAccessClosed)
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20LockOutline, Localizer.Instance["user_private"]));
+
+            // Status
+            if (!String.IsNullOrEmpty(user.Status))
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20ArticleOutline, user.Status.Trim()));
+
+            // Birthday
+            if (!String.IsNullOrEmpty(user.BirthDate))
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20GiftOutline, VKAPIHelper.GetNormalizedBirthDate(user.BirthDate)));
+
+            // Live in
+            if (!String.IsNullOrWhiteSpace(user.LiveIn))
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20HomeOutline, user.LiveIn.Trim()));
+
+            // Work
+            if (user.CurrentCareer != null) {
+                var c = user.CurrentCareer;
+                string h = c.Company.Trim();
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20WorkOutline, String.IsNullOrWhiteSpace(c.Position) ? h : $"{h} — {c.Position.Trim()}"));
+            }
+
+            // Education
+            if (!String.IsNullOrWhiteSpace(user.CurrentEducation))
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20EducationOutline, user.CurrentEducation.Trim()));
+
+            // Site
+            if (!String.IsNullOrWhiteSpace(user.Site))
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20LinkCircleOutline, user.Site.Trim()));
+
+            // Followers
+            if (user.Followers > 0)
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20FollowersOutline, Localizer.Instance.GetDeclensionFormatted(user.Followers, "follower")));
         }
 
         private void SetupCommands(UserEx user) {

@@ -4,6 +4,7 @@ using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
+using System;
 using System.Collections.Generic;
 using VKUI.Controls;
 
@@ -107,6 +108,12 @@ namespace ELOR.Laney.Helpers {
                 case DocumentType.EBook: return VKIconNames.Icon28ArticleOutline;
                 default: return VKIconNames.Icon28DocumentOutline;
             }
+        }
+
+        public static string GetNormalizedBirthDate(string bdate) {
+            string[] a = bdate.Split('.');
+            DateTime dt = a.Length == 3 ? new DateTime(Int32.Parse(a[2]), Int32.Parse(a[1]), Int32.Parse(a[0])) : new DateTime(1604, Int32.Parse(a[1]), Int32.Parse(a[0]));
+            return a.Length == 3 ? $"{dt.ToString("M")} {dt.Year}" : dt.ToString("M");
         }
     }
 }

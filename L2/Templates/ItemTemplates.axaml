@@ -110,4 +110,12 @@
       </vkui:Cell.Before>
     </vkui:Cell>
   </DataTemplate>
+
+  <!-- Шаблон с инфой в PeerProfile (Tuple<string, string>) -->
+  <DataTemplate x:Key="PeerInfoTemplate">
+    <Grid Margin="12,6" ColumnDefinitions="Auto *" MinHeight="20">
+      <vkui:VKIcon Margin="0,0,12,0" VerticalAlignment="Top" Foreground="{DynamicResource VKIconSecondaryBrush}" Id="{Binding Item1}"/>
+      <TextBlock Grid.Column="1" Margin="0,1,0,0" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Item2}"/>
+    </Grid>
+  </DataTemplate>
 </ResourceDictionary>

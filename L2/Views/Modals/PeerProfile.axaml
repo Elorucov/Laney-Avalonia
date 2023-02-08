@@ -10,7 +10,15 @@
         x:Class="ELOR.Laney.Views.Modals.PeerProfile"
         Width="540" Height="640"
         Title="PeerProfile">
-  <Grid Grid.RowDefinitions="Auto Auto *">
+  <vkw:DialogWindow.Resources>
+    <DataTemplate x:Key="UserGroupInfoContentTemplate">
+      <ScrollViewer>
+        <ItemsControl Margin="0,6" Items="{Binding DataContext.Information, ElementName=Root}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>
+      </ScrollViewer>
+    </DataTemplate>
+  </vkw:DialogWindow.Resources>
+    
+  <Grid x:Name="Root" Grid.RowDefinitions="Auto Auto *">
     <Grid x:Name="PeerInfo" IsVisible="{Binding !IsLoading}" Margin="24" ColumnDefinitions="Auto *">
       <vkui:Avatar x:Name="PeerAva" Width="80" Height="80" Margin="0,0,20,0" Initials="{Binding Header, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Avatar}"/>
       <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -24,6 +32,10 @@
         <Grid.Styles>
           <Style Selector="Button">
             <Setter Property="Padding" Value="3,6"/>
+          </Style>
+          <!-- Чтобы юзеру не казался, что текст находится выше относительно иконки -->
+          <Style Selector="Button TextBlock">
+            <Setter Property="Margin" Value="0,2,0,0"/>
           </Style>
         </Grid.Styles>
         <Button Grid.Column="0" Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding FirstCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
@@ -53,8 +65,8 @@
     </Border>
 
     <TabControl Grid.Row="2" IsVisible="{Binding !IsLoading}" Margin="0,2,0,0" Classes="Accent">
-      <TabItem Header="Info">
-        
+      <TabItem x:Name="FirstTab" Header="Info">
+        <ContentControl x:Name="FirstTabContent" ContentTemplate="{StaticResource UserGroupInfoContentTemplate}"/>
       </TabItem>
       <TabItem Header="Photos">
 

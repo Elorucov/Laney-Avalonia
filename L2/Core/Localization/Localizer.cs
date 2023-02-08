@@ -93,12 +93,14 @@ namespace ELOR.Laney.Core.Localization {
             return this[$"{str}{GetDeclensionSuffix(num)}"];
         }
 
+        // Example: 1 message, 2 messages
         public string GetDeclensionFormatted(decimal num, string key, params object[] args) {
             var list = args.ToList();
             list.Insert(0, num);
             return String.Format(GetDeclension(num, key), list.ToArray());
         }
 
+        // Example: Message, 2 messages
         public string GetDeclensionFormatted2(decimal num, string key, params object[] args) {
             if (num != 1) {
                 var list = args.ToList();

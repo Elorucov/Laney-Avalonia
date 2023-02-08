@@ -68,6 +68,7 @@
   "user_blacklisted_m": "Додав Вас у чорний список",
   "user_blocked": "Користувача заблоковано",
   "user_deleted": "Користувача видалено",
+  "user_private": "Закритий профіль",
 
   "offline_last_month_f": "Була у мережі в цьому місяці",
   "offline_last_week_f": "Була у мережі на цьому тижні",
@@ -84,6 +85,11 @@
   "offline": "не в мережі",
 
   "casper_chat": "Фантом-чат",
+
+  "follower": "Підписник",
+  "follower_nom": "{0} підписник",
+  "follower_gen": "{0} підписника",
+  "follower_plu": "{0} підписникiв",
 
   "message": "Повідомлення",
   "message_nom": "{0} повідомлення",

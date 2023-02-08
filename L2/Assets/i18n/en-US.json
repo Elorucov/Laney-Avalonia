@@ -61,13 +61,14 @@
   "chat_kicked": "You were removed from the chat",
   "chat_left": "You left the chat",
 
-  "cannot_write": "You  cannot send messages",
+  "cannot_write": "You cannot send messages",
   "user_blacklisted_by_me_f": "Blacklisted",
   "user_blacklisted_by_me_m": "Blacklisted",
   "user_blacklisted_f": "Added you to the blacklist",
   "user_blacklisted_m": "Added you to the blacklist",
   "user_blocked": "User blocked",
   "user_deleted": "User deleted",
+  "user_private": "Private profile",
 
   "offline_last_month_f": "Last seen this month",
   "offline_last_week_f": "Last seen this week",
@@ -84,6 +85,11 @@
   "offline": "Offline",
 
   "casper_chat": "Casper-chat",
+
+  "follower": "Follower",
+  "follower_nom": "{0} follower",
+  "follower_gen": "{0} followers",
+  "follower_plu": "{0} followers",
 
   "message": "Message",
   "message_nom": "{0} message",

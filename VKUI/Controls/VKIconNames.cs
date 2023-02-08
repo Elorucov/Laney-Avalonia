@@ -19,6 +19,7 @@
         public const string Icon16Verified = "Icon16Verified";
         public const string Icon16WarningTriangleOutline = "Icon16WarningTriangleOutline";
 
+        public const string Icon20ArticleOutline = "Icon20ArticleOutline";
         public const string Icon20BlockOutline = "Icon20BlockOutline";
         public const string Icon20BugOutline = "Icon20BugOutline";
         public const string Icon20CameraOutline = "Icon20CameraOutline";
@@ -29,10 +30,15 @@
         public const string Icon20DocumentOutline = "Icon20DocumentOutline";
         public const string Icon20DoorArrowRightOutline = "Icon20DoorArrowRightOutline";
         public const string Icon20DoorEnterArrowRightOutline = "Icon20DoorEnterArrowRightOutline";
+        public const string Icon20EducationOutline = "Icon20EducationOutline";
         public const string Icon20FavoriteOutline = "Icon20FavoriteOutline";
+        public const string Icon20FollowersOutline = "Icon20FollowersOutline";
         public const string Icon20GearOutline = "Icon20GearOutline";
+        public const string Icon20GiftOutline = "Icon20GiftOutline";
+        public const string Icon20HomeOutline = "Icon20HomeOutline";
         public const string Icon20InfoCircleOutline = "Icon20InfoCircleOutline";
         public const string Icon20LinkCircleOutline = "Icon20LinkCircleOutline";
+        public const string Icon20LockOutline = "Icon20LockOutline";
         public const string Icon20MentionOutline = "Icon20MentionOutline";
         public const string Icon20PictureOutline = "Icon20PictureOutline";
         public const string Icon20PinOutline = "Icon20PinOutline";
@@ -49,6 +55,7 @@
         public const string Icon20UnlockOutline = "Icon20UnlockOutline";
         public const string Icon20VideoOutline = "Icon20VideoOutline";
         public const string Icon20WriteOutline = "Icon20WriteOutline";
+        public const string Icon20WorkOutline = "Icon20WorkOutline";
 
         public const string Icon24AddCircleOutline = "Icon24AddCircleOutline";
         public const string Icon24ArticleOutline = "Icon24ArticleOutline";
