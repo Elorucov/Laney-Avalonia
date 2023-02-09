@@ -94,6 +94,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public Uri PreviewImageUri { get { return _previewImageUri; } private set { _previewImageUri = value; OnPropertyChanged(); } }
         public bool CanShowInUI { get { return Action == null && !IsExpired; } }
 
+        public VKSession OwnerSession { get => session; }
+
         #region Events
 
         public event EventHandler MessageEdited;

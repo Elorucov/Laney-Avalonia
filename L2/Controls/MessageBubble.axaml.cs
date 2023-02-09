@@ -8,11 +8,8 @@ using Avalonia.Media;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
 using ELOR.Laney.ViewModels.Controls;
-using ELOR.Laney.Views.Modals;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
@@ -59,6 +56,7 @@ namespace ELOR.Laney.Controls {
 
         Grid BubbleRoot;
         Border BubbleBackground;
+        Button AvatarButton;
         Avatar SenderAvatar;
         Border SenderNameWrap;
         TextBlock SenderName;
@@ -79,6 +77,7 @@ namespace ELOR.Laney.Controls {
             base.OnApplyTemplate(e);
             BubbleRoot = e.NameScope.Find<Grid>(nameof(BubbleRoot));
             BubbleBackground = e.NameScope.Find<Border>(nameof(BubbleBackground));
+            AvatarButton = e.NameScope.Find<Button>(nameof(AvatarButton));
             SenderAvatar = e.NameScope.Find<Avatar>(nameof(SenderAvatar));
             SenderNameWrap = e.NameScope.Find<Border>(nameof(SenderNameWrap));
             SenderName = e.NameScope.Find<TextBlock>(nameof(SenderName));
@@ -98,6 +97,7 @@ namespace ELOR.Laney.Controls {
             Map.Width = mapWidth;
             Map.Height = mapWidth / 2;
 
+            AvatarButton.Click += AvatarButton_Click;
             ReplyMessageButton.Click += ReplyMessageButton_Click;
 
             isUILoaded = true;
@@ -351,8 +351,12 @@ namespace ELOR.Laney.Controls {
 
         #region Template events
 
+        private void AvatarButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            Router.OpenPeerProfile(Message.OwnerSession, Message.SenderId);
+        }
+
         private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            VKSession.Main.CurrentOpenedChat.GoToMessage(Message.ReplyMessage);
+            Message.OwnerSession.CurrentOpenedChat.GoToMessage(Message.ReplyMessage);
         }
 
         #endregion
