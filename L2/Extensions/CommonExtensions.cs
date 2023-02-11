@@ -93,5 +93,12 @@ namespace ELOR.Laney.Extensions {
                 return null;
             }
         }
+
+        // Возвращает имя с одной буквой фамилии (например, Данил Н.)
+        public static string NameWithFirstLetterSurname(this User user) {
+            string lastName = user.LastName;
+            if (!String.IsNullOrEmpty(lastName)) lastName = lastName[0].ToString() + ".";
+            return $"{user.FirstName} {lastName}".Trim();
+        }
     }
 }

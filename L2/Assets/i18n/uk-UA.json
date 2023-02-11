@@ -256,6 +256,16 @@
   "pp_exit_channel": "Покинути канал",
   "pp_return_chat": "Повернувся в чат",
   "pp_return_channel": "Повернутися до каналу",
+  "pp_search_members": "Пошук учасників",
+
+  "admin": "адмiн",
+  "created_on_m": "створив чат",
+  "created_on_f": "створила чат",
+  "invited_by_m": "запросив {0}",
+  "invited_by_f": "запросила {0}",
+  "pp_member_admin_add": "Призначити адмiнiстратором",
+  "pp_member_admin_remove": "Розжалувати адмiнiстратора",
+  "pp_member_kick": "Виключити з бесiди",
 
   "settings_general": "Основні",
   "settings_appearance": "Зовнішній вигляд",

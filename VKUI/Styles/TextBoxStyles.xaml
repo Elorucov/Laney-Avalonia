@@ -49,6 +49,7 @@
                                 TextWrapping="{TemplateBinding TextWrapping}"
                                 IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                FontSize="{TemplateBinding FontSize}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         <TextPresenter Name="PART_TextPresenter"
                                       Text="{TemplateBinding Text, Mode=TwoWay}"
@@ -115,10 +116,10 @@
     <Setter Property="Background" Value="{DynamicResource VKSearchBarFieldBackgroundBrush}"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="CornerRadius" Value="10"/>
-    <Setter Property="Padding" Value="8,8,12,8"/>
-    <Setter Property="MinHeight" Value="36"/>
+    <Setter Property="Padding" Value="6,7,12,5"/>
+    <Setter Property="MinHeight" Value="32"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>
-    <Setter Property="FontSize" Value="17"/>
+    <Setter Property="FontSize" Value="15"/>
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
     <Setter Property="InnerLeftContent">
       <Setter.Value>
@@ -136,7 +137,8 @@
     
   <Style Selector="TextBox.Search /template/ TextBlock#PART_Watermark, TextBox.Search /template/ TextBlock#PART_FloatingWatermark">
     <Setter Property="Foreground" Value="{DynamicResource VKSearchBarFieldTintBrush}" />
-    <Setter Property="FontSize" Value="17"/>
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="LineHeight" Value="20"/>
   </Style>
     
   <Style Selector="TextBox.Search:pointerover /template/ Border#PART_BorderElement">

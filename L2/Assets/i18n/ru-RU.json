@@ -256,6 +256,16 @@
   "pp_exit_channel": "Покинуть канал",
   "pp_return_chat": "Вернуться в чат",
   "pp_return_channel": "Вернуться в канал",
+  "pp_search_members": "Поиск участников",
+
+  "admin": "админ",
+  "created_on_m": "создал чат",
+  "created_on_f": "создала чат",
+  "invited_by_m": "пригласил {0}",
+  "invited_by_f": "пригласила {0}",
+  "pp_member_admin_add": "Назначить администратором",
+  "pp_member_admin_remove": "Разжаловать администратора",
+  "pp_member_kick": "Исключить из чата",
 
   "settings_general": "Основные",
   "settings_appearance": "Внешний вид",

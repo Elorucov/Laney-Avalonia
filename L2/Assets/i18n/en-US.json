@@ -256,6 +256,16 @@
   "pp_exit_channel": "Leave channel",
   "pp_return_chat": "Return to chat",
   "pp_return_channel": "Return to channel",
+  "pp_search_members": "Search members",
+
+  "admin": "admin",
+  "created_on_m": "created this chat on",
+  "created_on_f": "created this chat on",
+  "invited_by_m": "invited by {0} on",
+  "invited_by_f": "invited by {0} on",
+  "pp_member_admin_add": "Appoint as administrator",
+  "pp_member_admin_remove": "Dismiss administrator",
+  "pp_member_kick": "Remove from chat",
 
   "settings_general": "General",
   "settings_appearance": "Appearance",

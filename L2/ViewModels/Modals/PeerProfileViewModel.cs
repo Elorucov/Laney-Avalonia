@@ -4,6 +4,7 @@ using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Execute;
 using ELOR.Laney.Execute.Objects;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
@@ -21,6 +22,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         private string _subhead;
         private Uri _avatar;
         private ObservableCollection<Tuple<string, string>> _information = new ObservableCollection<Tuple<string, string>>();
+        private ObservableCollection<Tuple<int, Uri, string, string, Command>> _members = new ObservableCollection<Tuple<int, Uri, string, string, Command>>();
         private Command _firstCommand;
         private Command _secondCommand;
         private Command _thirdCommand;
@@ -31,6 +33,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         public string Subhead { get { return _subhead; } private set { _subhead = value; OnPropertyChanged(); } }
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
         public ObservableCollection<Tuple<string, string>> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
+        public ObservableCollection<Tuple<int, Uri, string, string, Command>> Members { get { return _members; } private set { _members = value; OnPropertyChanged(); } }
         public Command FirstCommand { get { return _firstCommand; } private set { _firstCommand = value; OnPropertyChanged(); } }
         public Command SecondCommand { get { return _secondCommand; } private set { _secondCommand = value; OnPropertyChanged(); } }
         public Command ThirdCommand { get { return _thirdCommand; } private set { _thirdCommand = value; OnPropertyChanged(); } }
@@ -224,11 +227,40 @@ namespace ELOR.Laney.ViewModels.Modals {
                 Header = group.Name;
                 if (group.Photo != null) Avatar = group.Photo;
                 Subhead = group.Activity;
+                SetupInfo(group);
                 SetupCommands(group);
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetGroup(groupId));
             }
             IsLoading = false;
+        }
+
+        private void SetupInfo(GroupEx group) {
+            Information.Clear();
+
+            Information.Add(new Tuple<string, string>(VKIconNames.Icon20BugOutline, group.Id.ToString()));
+
+            // Domain
+            Information.Add(new Tuple<string, string>(VKIconNames.Icon20MentionOutline, !String.IsNullOrEmpty(group.ScreenName) ? group.ScreenName : $"club{group.Id}"));
+
+            // Status
+            if (!String.IsNullOrEmpty(group.Status))
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20ArticleOutline, group.Status.Trim()));
+
+            // City
+            string cc = null;
+            if (group.City != null) cc = group.City.Title.Trim();
+            if (group.Country != null) cc += !String.IsNullOrEmpty(cc) ? $", {group.Country.Title.Trim()}" : group.Country.Title.Trim();
+            if (!String.IsNullOrEmpty(cc))
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20HomeOutline, cc));
+
+            // Site
+            if (!String.IsNullOrWhiteSpace(group.Site))
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20LinkCircleOutline, group.Site.Trim()));
+
+            // Members
+            if (group.Members > 0)
+                Information.Add(new Tuple<string, string>(VKIconNames.Icon20FollowersOutline, Localizer.Instance.GetDeclensionFormatted(group.Members, "members_sub")));
         }
 
         private void SetupCommands(GroupEx group) {
@@ -301,11 +333,94 @@ namespace ELOR.Laney.ViewModels.Modals {
                     Subhead = Localizer.Instance[chat.State == UserStateInChat.Left ? "chat_left" : "chat_kicked"].ToLowerInvariant();
                 }
 
+                SetupMembers(chat);
                 SetupCommands(chat);
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetChat(peerId));
             }
             IsLoading = false;
+        }
+
+        private void SetupMembers(ChatInfoEx chat) {
+            Members.Clear();
+            CacheManager.Add(chat.Members.Profiles);
+            CacheManager.Add(chat.Members.Groups);
+
+            foreach (var member in CollectionsMarshal.AsSpan(chat.Members.Items)) {
+                string name = member.MemberId.ToString();
+                string desc = String.Empty;
+                int mid = member.MemberId;
+                int iid = member.InvitedBy;
+                Uri avatar = null;
+
+                string joinDate = member.JoinDate.ToHumanizedTimeOrDateString();
+
+                if (mid != iid) {
+                    string invitedBy = String.Empty;
+                    if (iid > 0) {
+                        var user = CacheManager.GetUser(iid);
+                        if (user != null) {
+                            invitedBy = Localizer.Instance.GetFormatted(user.Sex, "invited_by", user.NameWithFirstLetterSurname());
+                        }
+                    } else if (iid < 0) {
+                        var group = CacheManager.GetGroup(iid);
+                        if (group != null) {
+                            invitedBy = Localizer.Instance.GetFormatted(Sex.Male, "invited_by", group.Name);
+                        }
+                    }
+                    if (member.IsAdmin) desc = $"{Localizer.Instance["admin"]}, ";
+                    desc += $"{invitedBy} {joinDate}";
+                } else if (mid == chat.OwnerId) {
+                    desc = $"{Localizer.Instance.Get("created_on", Sex.Male)} {joinDate}";
+                }
+
+                if (mid > 0) {
+                    var user = CacheManager.GetUser(member.MemberId);
+                    if (user != null) {
+                        name = user.FullName;
+                        avatar = user.Photo;
+                    }
+                } else if (mid < 0) {
+                    var group = CacheManager.GetGroup(member.MemberId);
+                    if (group != null) {
+                        name = group.Name;
+                        avatar = group.Photo;
+                    }
+                }
+
+                Command command = SetUpMemberCommand(chat, member);
+
+                Members.Add(new Tuple<int, Uri, string, string, Command>(mid, avatar, name, desc, command));
+            }
+        }
+
+        private Command SetUpMemberCommand(ChatInfoEx chat, ChatMember member) {
+            ActionSheet ash = new ActionSheet {
+                Placement = FlyoutPlacementMode.BottomEdgeAlignedRight
+            };
+
+            // TODO: админы (не создатель), которые тоже имеют права менять админов.
+            bool canChangeAdmin = chat.OwnerId == session.Id;
+
+            if (member.MemberId != session.Id && canChangeAdmin && !member.IsAdmin) ash.Items.Add(new ActionSheetItem {
+                Header = Localizer.Instance["pp_member_admin_add"]
+            });
+
+            if (member.MemberId != session.Id && canChangeAdmin && member.IsAdmin) ash.Items.Add(new ActionSheetItem {
+                Header = Localizer.Instance["pp_member_admin_remove"]
+            });
+
+            if (member.MemberId != session.Id && member.CanKick) ash.Items.Add(new ActionSheetItem { 
+                Header = Localizer.Instance["pp_member_kick"]
+            });
+
+            if (ash.Items.Count > 0) {
+                return new Command(VKIconNames.Icon24MoreHorizontal, Localizer.Instance["more"], false, (c) => {
+                    ash.ShowAt(c as Control);
+                });
+            }
+
+            return null;
         }
 
         private void SetupCommands(ChatInfoEx chat) {

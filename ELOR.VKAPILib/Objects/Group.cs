@@ -97,9 +97,9 @@ namespace ELOR.VKAPILib.Objects {
         [JsonIgnore]
         public Uri Photo {
             get {
-                Uri p100 = !String.IsNullOrEmpty(Photo100) && Uri.IsWellFormedUriString(Photo100, UriKind.Absolute) ? new Uri(Photo100) : new Uri("https://vk.com/images/community_100.png");
-                Uri p200 = !String.IsNullOrEmpty(Photo200) && Uri.IsWellFormedUriString(Photo200, UriKind.Absolute) ? new Uri(Photo200) : new Uri("https://vk.com/images/community_200.png");
-                return String.IsNullOrEmpty(Photo200) ? p100 : p200;
+                if (Uri.IsWellFormedUriString(Photo200, UriKind.Absolute)) return new Uri(Photo200);
+                if (Uri.IsWellFormedUriString(Photo100, UriKind.Absolute)) return new Uri(Photo100);
+                return new Uri("https://vk.com/images/community_200.png");
             }
         }
 

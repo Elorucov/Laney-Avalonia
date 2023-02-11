@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:theme="using:Avalonia.Themes.Simple"
              xmlns:ui="using:VKUI"
+             xmlns:vkui="using:VKUI.Controls"
              xmlns:conv="using:ELOR.Laney.Converters"
              xmlns:logo="using:ELOR.Laney.Assets.Logo"
              x:Class="ELOR.Laney.App">
@@ -49,7 +50,11 @@
     <StyleInclude Source="avares://Laney/Controls/MessageBubble.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/PostUI.axaml"/>
     <StyleInclude Source="avares://Laney/Styles/ListBoxStyles.axaml"/>
-      
+
+    <Style Selector="vkui|Avatar">
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+
     <Style Selector="Button.Hyperlink">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Padding" Value="0"/>

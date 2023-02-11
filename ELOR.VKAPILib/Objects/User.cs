@@ -227,6 +227,9 @@ namespace ELOR.VKAPILib.Objects {
         [JsonProperty("sex")]
         public Sex Sex { get; set; }
 
+        [JsonProperty("photo_50")]
+        public string Photo50 { get; set; }
+
         [JsonProperty("photo_100")]
         public string Photo100 { get; set; }
 
@@ -236,9 +239,10 @@ namespace ELOR.VKAPILib.Objects {
         [JsonIgnore]
         public Uri Photo {
             get {
-                Uri p100 = !String.IsNullOrEmpty(Photo100) && Uri.IsWellFormedUriString(Photo100, UriKind.Absolute) ? new Uri(Photo100) : new Uri("https://vk.com/images/camera_100.png");
-                Uri p200 = !String.IsNullOrEmpty(Photo200) && Uri.IsWellFormedUriString(Photo200, UriKind.Absolute) ? new Uri(Photo200) : new Uri("https://vk.com/images/camera_200.png");
-                return String.IsNullOrEmpty(Photo200) ? p100 : p200;
+                if (Uri.IsWellFormedUriString(Photo200, UriKind.Absolute)) return new Uri(Photo200);
+                if (Uri.IsWellFormedUriString(Photo100, UriKind.Absolute)) return new Uri(Photo100);
+                if (Uri.IsWellFormedUriString(Photo50, UriKind.Absolute)) return new Uri(Photo50);
+                return new Uri("https://vk.com/images/camera_200.png");
             }
         }
 

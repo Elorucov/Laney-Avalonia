@@ -115,7 +115,24 @@
   <DataTemplate x:Key="PeerInfoTemplate">
     <Grid Margin="12,6" ColumnDefinitions="Auto *" MinHeight="20">
       <vkui:VKIcon Margin="0,0,12,0" VerticalAlignment="Top" Foreground="{DynamicResource VKIconSecondaryBrush}" Id="{Binding Item1}"/>
-      <TextBlock Grid.Column="1" Margin="0,1,0,0" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Item2}"/>
+      <TextBlock Grid.Column="1" Margin="0,1,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Item2}"/>
+    </Grid>
+  </DataTemplate>
+
+  <!-- Шаблон участника чата в PeerProfile (Tuple<int, Uri, string, string, Command>) -->
+  <DataTemplate x:Key="ChatMemberTemplate">
+    <Grid Margin="12,6" ColumnDefinitions="Auto * Auto" MinHeight="40">
+      <vkui:Avatar Image="{Binding Item2}" Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"
+                   Initials="{Binding Item3, Converter={StaticResource ic}}"
+                   Background="{Binding Item1, Converter={StaticResource agc}}"
+                   controls:ImageLoader.Image="{Binding Item2}"/>
+      <StackPanel Grid.Column="1" VerticalAlignment="Center">
+        <TextBlock Grid.Column="1" Text="{Binding Item3}"/>
+        <TextBlock Grid.Column="1" Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Item4}"/>
+      </StackPanel>
+      <Button x:Name="CommandButton" Grid.Column="2" Classes="Tertiary" Padding="0" Width="32" Height="32" IsVisible="{Binding Item5, Converter={x:Static ObjectConverters.IsNotNull}}" ToolTip.Tip="{Binding Item5.Label}" Command="{Binding Item5.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+        <vkui:VKIcon Id="{Binding Item5.IconId}"/>
+      </Button>
     </Grid>
   </DataTemplate>
 </ResourceDictionary>
