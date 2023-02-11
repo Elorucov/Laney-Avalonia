@@ -108,36 +108,34 @@ namespace ELOR.Laney.Core {
         #endregion
 
         public static async void OpenPeerProfile(VKSession session, int peerId) {
-            //VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nPeer id: {peerId}");
-            //await alert.ShowDialog(session.Window);
-
+            if (DemoMode.IsEnabled) return;
             PeerProfile pp = new PeerProfile(session, peerId);
-            await pp.ShowDialog(session.Window);
+            await pp.ShowDialog(session.ModalWindow);
         }
 
         public static async void OpenPollViewer(VKSession session, int ownerId, int id) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nOwner: {ownerId}, poll id: {id}");
-            await alert.ShowDialog(session.Window);
+            await alert.ShowDialog(session.ModalWindow);
         }
 
         public static async void OpenChatPreview(VKSession session, string url) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nChat url: {url}");
-            await alert.ShowDialog(session.Window);
+            await alert.ShowDialog(session.ModalWindow);
         }
 
         public static async void OpenStickerPackPreview(VKSession session, string packName) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nStickerpack name: {packName}");
-            await alert.ShowDialog(session.Window);
+            await alert.ShowDialog(session.ModalWindow);
         }
 
         public static async void TryResolveScreenNameAndOpenProfile(VKSession session, string name, string fallbackUrl) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nName: {name}\nFallback: {fallbackUrl}");
-            await alert.ShowDialog(session.Window);
+            await alert.ShowDialog(session.ModalWindow);
         }
 
         public static async void TryResolveScreenNameAndOpenConv(VKSession session, string name, string fallbackUrl) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nName: {name}\nFallback: {fallbackUrl}");
-            await alert.ShowDialog(session.Window);
+            await alert.ShowDialog(session.ModalWindow);
         }
     }
 }

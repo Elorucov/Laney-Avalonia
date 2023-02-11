@@ -46,6 +46,7 @@
   "emoji": "Emoji",
   "recent": "Recent",
   "favorites": "Favorites",
+  "info": "Information",
   "settings": "Settings",
   "about": "About",
   "log_out": "Log out",
@@ -54,6 +55,7 @@
   "chats": "Chats",
   "chatview_placeholder": "Select a chat or create a new one",
 
+  "members": "Members",
   "members_sub_nom": "{0} member",
   "members_sub_gen": "{0} members",
   "members_sub_plu": "{0} members",
@@ -139,6 +141,7 @@
   "graffiti": "Graffiti",
   "group_call_in_progress": "Group call",
   "link": "Link",
+  "links": "Links",
   "market": "Product",
   "narrative": "Narrative",
   "podcast": "Podcast",

@@ -46,6 +46,7 @@
   "emoji": "Емодзi",
   "recent": "Недавнi",
   "favorites": "Збережене",
+  "info": "Iнформацiя",
   "settings": "Налаштування",
   "about": "Про додаток",
   "log_out": "Вийти з акаунту",
@@ -54,6 +55,7 @@
   "chats": "Чати",
   "chatview_placeholder": "Виберіть чат або створіть новий",
 
+  "members": "Учасники",
   "members_sub_nom": "{0} учасник",
   "members_sub_gen": "{0} учасника",
   "members_sub_plu": "{0} учасникiв",
@@ -139,6 +141,7 @@
   "graffiti": "Графіті",
   "group_call_in_progress": "Груповий дзвінок",
   "link": "Посилання",
+  "links": "Посилання",
   "market": "Товар",
   "narrative": "Сюжет",
   "podcast": "Подкаст",

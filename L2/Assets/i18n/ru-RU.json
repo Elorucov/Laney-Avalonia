@@ -46,6 +46,7 @@
   "emoji": "Эмодзи",
   "recent": "Недавние",
   "favorites": "Избранное",
+  "info": "Информация",
   "settings": "Настройки",
   "about": "О программе",
   "log_out": "Выйти из аккаунта",
@@ -54,6 +55,7 @@
   "chats": "Чаты",
   "chatview_placeholder": "Выберите чат или создайте новый",
 
+  "members": "Участники",
   "members_sub_nom": "{0} участник",
   "members_sub_gen": "{0} участника",
   "members_sub_plu": "{0} участников",
@@ -139,6 +141,7 @@
   "graffiti": "Граффити",
   "group_call_in_progress": "Групповой звонок",
   "link": "Ссылка",
+  "links": "Ссылки",
   "market": "Товар",
   "narrative": "Сюжет",
   "podcast": "Подкаст",

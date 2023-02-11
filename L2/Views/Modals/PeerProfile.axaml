@@ -77,22 +77,22 @@
     </Border>
 
     <TabControl Grid.Row="2" IsVisible="{Binding !IsLoading}" Margin="0,2,0,0" Classes="Accent">
-      <TabItem x:Name="FirstTab" Header="Info">
+      <TabItem x:Name="FirstTab" Header="{i18n:Localize info}">
         <ContentControl x:Name="FirstTabContent" ContentTemplate="{StaticResource UserGroupInfoContentTemplate}"/>
       </TabItem>
-      <TabItem Header="Photos">
+      <TabItem IsVisible="False" Header="{i18n:Localize photo}">
 
       </TabItem>
-      <TabItem Header="Videos">
+      <TabItem IsVisible="False" Header="{i18n:Localize video}">
 
       </TabItem>
-      <TabItem Header="Files">
+      <TabItem IsVisible="False" Header="{i18n:Localize doc}">
 
       </TabItem>
-      <TabItem Header="Audios">
+      <TabItem IsVisible="False" Header="{i18n:Localize audio}">
 
       </TabItem>
-      <TabItem Header="Links">
+      <TabItem IsVisible="False" Header="{i18n:Localize links}">
 
       </TabItem>
     </TabControl>

@@ -144,7 +144,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             // или если открыт чат с этим юзером,
             // то не будем добавлять эту кнопку
             if ((user.CanWritePrivateMessage || user.MessagesCount > 0) && session.CurrentOpenedChat?.PeerId != user.Id) {
-                Command messageCmd = new Command(VKIconNames.Icon28MessageOutline, Localizer.Instance["message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command messageCmd = new Command(VKIconNames.Icon28MessageOutline, Localizer.Instance["message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(messageCmd);
             }
 
@@ -173,31 +173,31 @@ namespace ELOR.Laney.ViewModels.Modals {
                         break;
                 }
 
-                Command friendCmd = new Command(ficon, flabel, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command friendCmd = new Command(ficon, flabel, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(friendCmd);
             }
 
             // Notifications
             string notifIcon = user.NotificationsDisabled ? VKIconNames.Icon28NotificationDisableOutline : VKIconNames.Icon28Notifications;
-            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             commands.Add(notifsCmd);
 
             // Open in browser
             string linkIcon = commands.Count >= 3 ? VKIconNames.Icon20LinkCircleOutline : VKIconNames.Icon28LinkCircleOutline;
-            Command openExternalCmd = new Command(linkIcon, Localizer.Instance["pp_profile"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+            Command openExternalCmd = new Command(linkIcon, Localizer.Instance["pp_profile"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             commands.Add(openExternalCmd);
 
             // Ban/unban
             if (session.UserId != user.Id && !user.Blacklisted) {
                 string banIcon = user.BlacklistedByMe ? VKIconNames.Icon20UnlockOutline : VKIconNames.Icon20BlockOutline;
                 string banLabel = Localizer.Instance[user.BlacklistedByMe ? "unblock" : "block"];
-                Command banCmd = new Command(banIcon, banLabel, true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command banCmd = new Command(banIcon, banLabel, true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 moreCommands.Add(banCmd);
             }
 
             // Clear history
             if (user.MessagesCount > 0) {
-                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 moreCommands.Add(clearCmd);
             }
 
@@ -272,30 +272,30 @@ namespace ELOR.Laney.ViewModels.Modals {
             List<Command> moreCommands = new List<Command>();
 
             if ((group.CanMessage || group.MessagesCount > 0) && session.CurrentOpenedChat.PeerId != -group.Id) {
-                Command messageCmd = new Command(VKIconNames.Icon28MessageOutline, Localizer.Instance["message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command messageCmd = new Command(VKIconNames.Icon28MessageOutline, Localizer.Instance["message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(messageCmd);
             }
 
             // Notifications
             string notifIcon = group.NotificationsDisabled ? VKIconNames.Icon28NotificationDisableOutline : VKIconNames.Icon28Notifications;
-            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             commands.Add(notifsCmd);
 
             // Open in browser
             string linkIcon = commands.Count >= 3 ? VKIconNames.Icon20LinkCircleOutline : VKIconNames.Icon28LinkCircleOutline;
-            Command openExternalCmd = new Command(linkIcon, Localizer.Instance["pp_group"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+            Command openExternalCmd = new Command(linkIcon, Localizer.Instance["pp_group"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             commands.Add(openExternalCmd);
 
             // Allow/deny messages from group
 
             string banIcon = group.MessagesAllowed ? VKIconNames.Icon20BlockOutline : VKIconNames.Icon20Check;
             string banLabel = Localizer.Instance[group.MessagesAllowed ? "pp_deny" : "pp_allow"];
-            Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+            Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             moreCommands.Add(banCmd);
 
             // Clear history
             if (group.MessagesCount > 0) {
-                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 moreCommands.Add(clearCmd);
             }
 
@@ -433,37 +433,37 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Edit
             if (chat.ACL.CanChangeInfo) {
-                Command editCmd = new Command(VKIconNames.Icon28EditOutline, Localizer.Instance["edit"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command editCmd = new Command(VKIconNames.Icon28EditOutline, Localizer.Instance["edit"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(editCmd);
             }
 
             // Add member
             if (chat.ACL.CanInvite) {
-                Command addCmd = new Command(VKIconNames.Icon28UserAddOutline, Localizer.Instance["add"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command addCmd = new Command(VKIconNames.Icon28UserAddOutline, Localizer.Instance["add"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(addCmd);
             }
 
             // Notifications
             string notifIcon = chat.PushSettings.DisabledForever ? VKIconNames.Icon28NotificationDisableOutline : VKIconNames.Icon28Notifications;
-            Command notifsCmd = new Command(VKIconNames.Icon28Notifications, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+            Command notifsCmd = new Command(VKIconNames.Icon28Notifications, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             commands.Add(notifsCmd);
 
             // Link
             if (chat.ACL.CanSeeInviteLink) {
                 string linkIcon = commands.Count >= 3 ? VKIconNames.Icon20LinkCircleOutline : VKIconNames.Icon28LinkCircleOutline;
-                Command chatLinkCmd = new Command(linkIcon, Localizer.Instance["link"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command chatLinkCmd = new Command(linkIcon, Localizer.Instance["link"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(chatLinkCmd);
             }
 
             // Unpin message
             if (chat.ACL.CanChangePin && chat.PinnedMessage != null) {
                 string pinIcon = commands.Count >= 3 ? VKIconNames.Icon20PinSlashOutline : VKIconNames.Icon28DoorArrowRightOutline;
-                Command unpinCmd = new Command(pinIcon, Localizer.Instance["pp_unpin_message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command unpinCmd = new Command(pinIcon, Localizer.Instance["pp_unpin_message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(unpinCmd);
             }
 
             // Clear history
-            Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+            Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             moreCommands.Add(clearCmd);
 
             // Exit or return to chat/channel
@@ -471,7 +471,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 string exitLabel = Localizer.Instance[chat.IsChannel ? "pp_exit_channel" : "pp_exit_chat"];
                 string returnLabel = Localizer.Instance[chat.IsChannel ? "pp_return_channel" : "pp_return_chat"];
                 string icon = chat.State == UserStateInChat.In ? VKIconNames.Icon20DoorArrowRightOutline : VKIconNames.Icon20DoorEnterArrowRightOutline;
-                Command exitRetCmd = new Command(icon, chat.State == UserStateInChat.In ? exitLabel : returnLabel, true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.Window));
+                Command exitRetCmd = new Command(icon, chat.State == UserStateInChat.In ? exitLabel : returnLabel, true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 moreCommands.Add(exitRetCmd);
             }
 

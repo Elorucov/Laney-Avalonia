@@ -39,6 +39,7 @@ namespace ELOR.Laney.Core {
         public VKAPI API { get; private set; }
         public LongPoll LongPoll { get; private set; }
         public MainWindow Window { get; private set; }
+        public Window ModalWindow { get => GetLastOpenedModalWindow(Window); }
 
         public event EventHandler<int> CurrentOpenedChatChanged;
 
@@ -246,6 +247,16 @@ namespace ELOR.Laney.Core {
                 if (!session.Window.IsVisible) session.Window.Show();
                 if (!session.Window.IsActive) session.Window.Activate();
             }
+        }
+
+        private Window GetLastOpenedModalWindow(Window window) {
+            // В приложении главное окно может иметь только одно дочернее (диалоговое) окно.
+            var ows = window.OwnedWindows;
+            if (ows.Count == 0) return window;
+            if (ows.Count > 1) throw new ArgumentException("Session's main window cannot have 2 and more child windows!");
+
+            var fow = ows[0];
+            return GetLastOpenedModalWindow(fow);
         }
 
         #endregion

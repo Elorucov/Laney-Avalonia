@@ -7,15 +7,10 @@ using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
-using DynamicData;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using VKUI;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Extensions {
