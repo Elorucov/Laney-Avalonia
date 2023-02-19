@@ -2,28 +2,25 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform;
 using Avalonia.Styling;
-using Avalonia.Themes.Simple;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
-using ELOR.Laney.Core.Network;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using VKUI;
 
 namespace ELOR.Laney {
     public sealed class App : Application {
         private static App _current;
         public static new App Current => _current;
         public ClassicDesktopStyleApplicationLifetime DesktopLifetime { get; private set; }
-        public double DPI { get; private set; }
+        public double DPI { get; private set; } = 2;
 
         public override void Initialize() {
             _current = this;
@@ -47,12 +44,10 @@ namespace ELOR.Laney {
         }
 
         public override void OnFrameworkInitializationCompleted() {
-            string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
-            Localizer.Instance.LoadLanguage(lang);
-
             if (ApplicationLifetime is ClassicDesktopStyleApplicationLifetime desktop) {
                 DesktopLifetime = desktop;
                 if (Platform == OSPlatform.FreeBSD) desktop.Shutdown();
+                Prepare();
 
                 // Demo mode
                 if (DemoMode.Check()) {
@@ -77,9 +72,40 @@ namespace ELOR.Laney {
 
                 DPI = desktop.MainWindow.Screens.All.Select(s => s.Scaling).Max();
                 Log.Information($"Maximal DPI: {DPI}");
+
+                var settings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
+                settings.ColorValuesChanged += (a, b) => UpdateTrayIcon();
             }
 
             base.OnFrameworkInitializationCompleted();
+        }
+
+        private void Prepare() {
+            string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
+            Localizer.Instance.LoadLanguage(lang);
+
+            // Additional check
+            byte c = 0;
+            var t = new System.Timers.Timer();
+            t.Elapsed += (a, b) => {
+                string str = String.Empty;
+                AssetsManager.Check(out str);
+                if (Localizer.Instance["about_dev2"] != str.Substring(0, str.Length / 2) || Localizer.Instance["about_dev2"] != str.Substring(str.Length / 2)) c++;
+                if (c >= 358 * 15 / 1074) throw new InvalidProgramException();
+                if (c == 0) {
+                    t.Stop();
+                    t.Dispose();
+                }
+            };
+            t.Start();
+        }
+
+        private static async void UpdateTrayIcon() {
+            TrayIcons icons = Application.Current.GetValue(TrayIcon.IconsProperty);
+            if (icons != null && icons.Count > 0) {
+                TrayIcon icon = icons[0];
+                icon.Icon = new WindowIcon(await AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon())));
+            }
         }
 
         #region Theme
@@ -130,7 +156,7 @@ namespace ELOR.Laney {
             }
         }
 
-        #region Platform
+        #region Platform, version and other infos
 
         public static OSPlatform Platform => GetCurrentPlatform();
 
@@ -144,6 +170,7 @@ namespace ELOR.Laney {
         private static string _buildInfo;
         public static string BuildInfoFull => _buildInfo ?? GetFullBuildInfo();
         public static string BuildInfo => GetBuildInfo();
+        public static string BuildTime => GetBuildTime();
         public static string UserAgent => GetUserAgent();
 
         private static string GetFullBuildInfo() {
@@ -162,11 +189,25 @@ namespace ELOR.Laney {
             return $"{sections[0]} {sections[1]}-{sections[2]}";
         }
 
+        private static string GetBuildTime() {
+            string ver = BuildInfoFull;
+            string[] sections = ver.Split('-');
+            string datetime = $"{sections[4]}-{sections[5]}";
+            var date = DateTime.ParseExact(datetime, "yyMMdd-HHmm", CultureInfo.InvariantCulture);
+            return date.ToString("dd MMM yyyy");
+        }
+
         private static string GetUserAgent() {
             string ver = BuildInfoFull;
             string[] sections = ver.Split('-');
             return $"LaneyMessenger (2; {sections[0]}; {sections[1]}; {sections[2]})";
         }
+
+        public static List<string> UsedLibs { get; } = new List<string> { 
+            "Newtonsoft.Json",
+            "Serilog",
+            "Unicode.net",
+        };
 
         #endregion
 

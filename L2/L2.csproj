@@ -6,8 +6,8 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.333</AssemblyVersion>
-    <FileVersion>2.0.333</FileVersion>
+    <AssemblyVersion>2.0.337</AssemblyVersion>
+    <FileVersion>2.0.337</FileVersion>
     <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.333-win-anycpu-devuser.devpc-230131-1317</Version>
     <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.333-linux-anycpu-devuser.devpc-230131-1317</Version>
     <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.333-macos-anycpu-devuser.devpc-230131-1317</Version>
@@ -22,8 +22,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.333</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.333</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.337</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.337</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -31,6 +31,7 @@
     <NSPrincipalClass>NSApplication</NSPrincipalClass>
     <NSHighResolutionCapable>true</NSHighResolutionCapable>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>8632</NoWarn>
@@ -47,32 +48,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Assets\Audio\bb2.mp3" />
     <None Remove="Assets\i18n\en-US.json" />
     <None Remove="Assets\i18n\ru-RU.json" />
     <None Remove="Assets\i18n\uk-UA.json" />
-    <None Remove="Assets\Logo\FullShadow.svg" />
-    <None Remove="Assets\Logo\Tray\t16cb.png" />
-    <None Remove="Assets\Logo\Tray\t16cw.png" />
-    <None Remove="Assets\Logo\Tray\t16mb.png" />
-    <None Remove="Assets\Logo\Tray\t16mw.png" />
-    <None Remove="Assets\Logo\Tray\t32cb.png" />
-    <None Remove="Assets\Logo\Tray\t32cw.png" />
+    <None Remove="Assets\Logo\Laney.png" />
     <None Remove="Assets\Logo\Tray\t32mb.png" />
     <None Remove="Assets\Logo\Tray\t32mw.png" />
+    <None Remove="Assets\Logo\win.png" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Include="Assets\Audio\bb2.mp3" />
     <AvaloniaResource Include="Assets\i18n\en-US.json" />
     <AvaloniaResource Include="Assets\i18n\ru-RU.json" />
     <AvaloniaResource Include="Assets\i18n\uk-UA.json" />
-    <AvaloniaResource Include="Assets\Logo\FullShadow.svg" NamespaceName="ELOR.Laney.Assets.Logo" ClassName="FullShadow" />
-    <AvaloniaResource Include="Assets\Logo\Tray\t16cb.png" />
-    <AvaloniaResource Include="Assets\Logo\Tray\t16cw.png" />
-    <AvaloniaResource Include="Assets\Logo\Tray\t16mb.png" />
-    <AvaloniaResource Include="Assets\Logo\Tray\t16mw.png" />
-    <AvaloniaResource Include="Assets\Logo\Tray\t32cb.png" />
-    <AvaloniaResource Include="Assets\Logo\Tray\t32cw.png" />
     <AvaloniaResource Include="Assets\Logo\Tray\t32mb.png" />
     <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
+    <AvaloniaResource Include="Assets\Logo\win.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.0-preview5" />
@@ -84,8 +76,6 @@
     <PackageReference Include="DynamicData" Version="7.12.11" />
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Svg.SourceGenerator.Skia" Version="0.6.0-preview4" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0-preview4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
@@ -129,5 +119,8 @@
   </ProjectExtensions>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\SettingsCategories\Appearance.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
 </Project>

@@ -20,8 +20,10 @@ namespace ELOR.Laney.ViewModels {
                 new SettingsCategory(VKIconNames.Icon28PaletteOutline, Localizer.Instance["settings_appearance"], new Appearance(), new AppearanceViewModel()),
                 new SettingsCategory(VKIconNames.Icon28Notifications, Localizer.Instance["settings_notifications"], new NotificationsPage(), null),
                 new SettingsCategory(VKIconNames.Icon28PrivacyOutline, Localizer.Instance["settings_privacy"], new Privacy(), null),
-                // new SettingsCategory(VKIconNames.Icon28BlockOutline, Localizer.Instance["settings_blacklist"], new DebugPage(), null),
-                new SettingsCategory(VKIconNames.Icon28BugOutline, "Debug", new DebugPage(), null),
+#if RELEASE
+#else
+                new SettingsCategory(VKIconNames.Icon28BugOutline, "Debug", new DebugPage(), null)
+#endif
             };
             SelectedCategory = Categories.FirstOrDefault();
         }

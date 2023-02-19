@@ -371,7 +371,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                     if (member.IsAdmin) desc = $"{Localizer.Instance["admin"]}, ";
                     desc += $"{invitedBy} {joinDate}";
                 } else if (mid == chat.OwnerId) {
-                    desc = $"{Localizer.Instance.Get("created_on", Sex.Male)} {joinDate}";
+                    desc = Localizer.Instance.Get("created_on", Sex.Male);
                 }
 
                 if (mid > 0) {

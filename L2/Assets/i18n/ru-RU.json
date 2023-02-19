@@ -51,6 +51,9 @@
   "about": "О программе",
   "log_out": "Выйти из аккаунта",
   "exit": "Выйти",
+  "app_version": "Версия",
+  "build_time": "Время сборки",
+  "dotnet_version": "Версия .NET",
 
   "chats": "Чаты",
   "chatview_placeholder": "Выберите чат или создайте новый",
@@ -297,5 +300,13 @@
 
   "st_chat_item_rows": "Список чатов",
   "st_chat_item_rows_2": "Двухстрочный",
-  "st_chat_item_rows_3": "Трёхстрочный"
+  "st_chat_item_rows_3": "Трёхстрочный",
+
+  "about_offical_group": "Наше сообщество",
+  "about_offical_group_desc": "Задавайте вопросы или сообщите об ошибках",
+  "about_libs": "Используемые библиотеки",
+  "about_vk_privacy": "Политика конфиденциальности ВК",
+  "about_vk_terms": "Пользовательское соглашение ВК",
+  "about_dev": "Разработчик:",
+  "about_dev2": "Эльчин Оруджев"
 }

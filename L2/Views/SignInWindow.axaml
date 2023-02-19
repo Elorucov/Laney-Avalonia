@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
-        xmlns:svg="using:Avalonia.Svg.Skia"
+        xmlns:controls="using:ELOR.Laney.Controls"
         mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
         x:Class="ELOR.Laney.Views.SignInWindow"
         Width="420" Height="540"
@@ -12,7 +12,7 @@
         Title="Welcome!">
   <Grid RowDefinitions="Auto * 48">
     <StackPanel Grid.Row="1" Margin="32,48" VerticalAlignment="Center">
-      <Image Width="96" Height="96" Source="{svg:SvgImage /Assets/Logo/FullShadow.svg}"/>
+      <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="12" Source="{StaticResource Logo}"/>
       <TextBlock Classes="Title2 DisplayBold" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
       <TextBlock Classes="Headline" TextWrapping="Wrap" Margin="0,8,0,0" TextAlignment="Center" Text="{i18n:Localize landing_subtitle}"/>
       <Button Classes="Commerce Medium" HorizontalAlignment="Center" Margin="0,24,0,0" Content="{i18n:Localize sign_in}" Click="SignIn"/>

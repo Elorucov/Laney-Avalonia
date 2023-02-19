@@ -51,6 +51,9 @@
   "about": "Про додаток",
   "log_out": "Вийти з акаунту",
   "exit": "Вийти",
+  "app_version": "Версiя",
+  "build_time": "Build time",
+  "dotnet_version": "Версiя .NET",
 
   "chats": "Чати",
   "chatview_placeholder": "Виберіть чат або створіть новий",
@@ -297,5 +300,13 @@
 
   "st_chat_item_rows": "Список чатiв",
   "st_chat_item_rows_2": "Дворядковий",
-  "st_chat_item_rows_3": "Трирядкови4й"
+  "st_chat_item_rows_3": "Трирядковий",
+
+  "about_offical_group": "Наша спільнота",
+  "about_offical_group_desc": "Задавайте питання або повідомте про помилки",
+  "about_libs": "Використовувані бібліотеки",
+  "about_vk_privacy": "Політика конфіденційності ВК",
+  "about_vk_terms": "Угода користувача ВК",
+  "about_dev": "Розробник:",
+  "about_dev2": "Elchin Orujov"
 }

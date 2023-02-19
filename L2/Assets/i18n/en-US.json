@@ -51,6 +51,9 @@
   "about": "About",
   "log_out": "Log out",
   "exit": "Exit",
+  "app_version": "Version",
+  "build_time": "Build time",
+  "dotnet_version": ".NET version",
 
   "chats": "Chats",
   "chatview_placeholder": "Select a chat or create a new one",
@@ -262,8 +265,8 @@
   "pp_search_members": "Search members",
 
   "admin": "admin",
-  "created_on_m": "created this chat on",
-  "created_on_f": "created this chat on",
+  "created_on_m": "created this chat",
+  "created_on_f": "created this chat",
   "invited_by_m": "invited by {0} on",
   "invited_by_f": "invited by {0} on",
   "pp_member_admin_add": "Appoint as administrator",
@@ -297,5 +300,13 @@
 
   "st_chat_item_rows": "Chat list",
   "st_chat_item_rows_2": "Two line",
-  "st_chat_item_rows_3": "Three line"
+  "st_chat_item_rows_3": "Three line",
+
+  "about_offical_group": "Our community",
+  "about_offical_group_desc": "Ask questions or report bugs",
+  "about_libs": "Used libraries",
+  "about_vk_privacy": "VK Privacy Policy",
+  "about_vk_terms": "VK Terms of Service",
+  "about_dev": "Developed by",
+  "about_dev2": "Elchin Orujov"
 }

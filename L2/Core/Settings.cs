@@ -147,7 +147,7 @@ namespace ELOR.Laney.Core {
 
         public const string DEBUG_FPS = "dbg_fps";
         public const string DEBUG_COUNTERS_CHAT = "dbg_counters_chat";
-        public const string DEBUG_COUNTERS_RAM = "dbg_counters_chat";
+        public const string DEBUG_COUNTERS_RAM = "dbg_counters_ram";
         public const string DEBUG_CONTEXT_MENU = "dbg_dev_context_menu";
 
         #endregion

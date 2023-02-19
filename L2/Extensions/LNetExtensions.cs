@@ -2,6 +2,7 @@
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using ELOR.Laney.Core;
 using ELOR.Laney.Core.Network;
 using Serilog;
 using System;
@@ -31,21 +32,30 @@ namespace ELOR.Laney.Extensions {
                 : url;
 
             if (!cachedImages.ContainsKey(key)) {
-                var response = await LNet.GetAsync(uri);
-                var bytes = await response.Content.ReadAsByteArrayAsync();
-                Stream stream = new MemoryStream(bytes);
-                if (bytes.Length == 0) throw new Exception("Image length is 0!");
+                if (uri.Scheme == "avares") {
+                    Bitmap bitmap = await AssetsManager.GetBitmapFromUri(uri, decodeWidth);
+                    if (cachedImages.Count == cachesLimit) cachedImages.Remove(cachedImages.First().Key);
+                    if (!cachedImages.ContainsKey(key)) {
+                        cachedImages.Add(key, bitmap);
+                    }
+                    return bitmap;
+                } else {
+                    var response = await LNet.GetAsync(uri);
+                    var bytes = await response.Content.ReadAsByteArrayAsync();
+                    Stream stream = new MemoryStream(bytes);
+                    if (bytes.Length == 0) throw new Exception("Image length is 0!");
 
-                Bitmap bitmap = decodeWidth > 0
-                    ? await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality))
-                    : new Bitmap(stream);
+                    Bitmap bitmap = decodeWidth > 0
+                        ? await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality))
+                        : new Bitmap(stream);
 
-                if (cachedImages.Count == cachesLimit) cachedImages.Remove(cachedImages.First().Key);
-                if (!cachedImages.ContainsKey(key)) {
-                    cachedImages.Add(key, bitmap);
+                    if (cachedImages.Count == cachesLimit) cachedImages.Remove(cachedImages.First().Key);
+                    if (!cachedImages.ContainsKey(key)) {
+                        cachedImages.Add(key, bitmap);
+                    }
+                    await stream.FlushAsync();
+                    return bitmap;
                 }
-                await stream.FlushAsync();
-                return bitmap;
             } else {
                 return cachedImages[key];
             }

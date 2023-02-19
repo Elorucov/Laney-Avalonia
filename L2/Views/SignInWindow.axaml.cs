@@ -15,7 +15,7 @@ namespace ELOR.Laney.Views {
             };
 
             VersionInfo.Text = $"Ver. {App.BuildInfo}";
-            VersionInfo.Text += $"\nApp folder: {App.LocalDataPath}";
+            // VersionInfo.Text += $"\nApp folder: {App.LocalDataPath}";
         }
 
         private async void SignIn(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {

@@ -31,25 +31,22 @@
       
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
-          <Grid Classes="GroupHeader">
-            <TextBlock Text="DEV TOGGLES"/>
-          </Grid>
-          <vkui:Cell Header="Show Avalonia's FPS counter">
+          <vkui:Cell x:Name="c01" Header="Show Avalonia's FPS counter">
             <vkui:Cell.After>
               <ToggleSwitch x:Name="p01"/>
             </vkui:Cell.After>
           </vkui:Cell>
-          <vkui:Cell Header="Show debug infos in ChatView and composer">
+          <vkui:Cell x:Name="c02" Header="Show debug infos in ChatView and composer">
             <vkui:Cell.After>
               <ToggleSwitch x:Name="p02"/>
             </vkui:Cell.After>
           </vkui:Cell>
-          <vkui:Cell Header="Show RAM usage">
+          <vkui:Cell x:Name="c03" Header="Show RAM usage">
             <vkui:Cell.After>
               <ToggleSwitch x:Name="p03"/>
             </vkui:Cell.After>
           </vkui:Cell>
-          <vkui:Cell Header="Show extra items in context menu">
+          <vkui:Cell x:Name="c04" Header="Show extra items in context menu">
             <vkui:Cell.After>
               <ToggleSwitch x:Name="p04"/>
             </vkui:Cell.After>

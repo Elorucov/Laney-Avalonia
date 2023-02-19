@@ -7,6 +7,12 @@ namespace ELOR.Laney.Views.SettingsCategories {
         public DebugPage() {
             InitializeComponent();
             InitSettings();
+
+#if BETA
+            c01.IsVisible = false;
+            c02.IsVisible = false;
+            c04.IsVisible = false;
+#endif
         }
 
         private void InitSettings() {

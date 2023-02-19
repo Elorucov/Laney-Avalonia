@@ -1,3 +1,6 @@
+param (
+    [string]$channel = ""
+)
 <# Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #>
 
 echo "=== L2 builder script by ELOR ===";
@@ -23,6 +26,11 @@ $currentbuild = [int]$ver[2];
 $nextbuild = $currentbuild + 1;
 $currentversion = "$($ver[0]).$($ver[1]).$($currentbuild)";
 $newversion = "$($ver[0]).$($ver[1]).$($nextbuild)";
+$chstr = "";
+if ($channel -ne "") {
+	$chstr = "%3B$($channel)";
+	echo "Channel: $($channel)";
+}
 
 echo "Current build: $($currentbuild)";
 
@@ -34,19 +42,21 @@ if ($IsWindows) {
 if ($IsWindows) {
     $btagw1 = "$($currentversion)-win-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw1;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-x64 -p:PublishAot=true -p:Version=$($btagw1) -p:DefineConstants=WIN";
-    echo "Win x86-64 is done.$([Environment]::NewLine)";
+    $proc1 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-x64 -p:PublishAot=true -p:Version=$($btagw1) -p:DefineConstants=WIN$($chstr)";
+    $proc1.WaitForExit();
+	echo "Win x86-64 is done.$([Environment]::NewLine)";
 
     $btagw3 = "$($currentversion)-win-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw3;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r win10-arm64 -p:PublishAot=true -p:Version=$($btagw3) -p:DefineConstants=WIN";
-    echo "Win arm64 is done.$([Environment]::NewLine)";
+    $proc2 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-arm64 -p:PublishAot=true -p:Version=$($btagw3) -p:DefineConstants=WIN$($chstr)";
+    $proc2.WaitForExit();
+	echo "Win arm64 is done.$([Environment]::NewLine)";
 }
 
 if ($IsLinux) {
 	$btagl1 = "$($currentversion)-linux-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagl1;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r linux-x64 -p:PublishAot=true -p:StripSymbols=true -p:Version=$($btagl1) -p:DefineConstants=LINUX";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r linux-x64 -p:PublishAot=true -p:StripSymbols=true -p:Version=$($btagl1) -p:DefineConstants=LINUX$($chstr)";
     echo "Linux x86-64 is done.$([Environment]::NewLine)";
 }
 
@@ -60,7 +70,7 @@ if ($IsMacOS) {
 
     $btagm1 = "$($currentversion)-macos-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm1;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-x64 -p:UseAppHost=true -p:Version=$($btagm1) -p:DefineConstants=MAC";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-x64 -p:UseAppHost=true -p:Version=$($btagm1) -p:DefineConstants=MAC$($chstr)";
     Copy-Item "$($projfolder)/Assets/Logo/Laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources";
     
     echo "Creating .app bundle file for macOS x86-64...";
@@ -71,7 +81,7 @@ if ($IsMacOS) {
 
     $btagm2 = "$($currentversion)-macos11-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm2;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx.11.0-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx.11.0-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC$($chstr)";
     Copy-Item "$($projfolder)/Assets/Logo/Laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"
     
     echo "Creating .app bundle file for macOS 11 arm64...";
@@ -82,7 +92,7 @@ if ($IsMacOS) {
 
     $btagm2 = "$($currentversion)-macos-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm2;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx.12-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx.12-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC$($chstr)";
     Copy-Item "$($projfolder)/Assets/Logo/Laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"
         
     echo "Creating .app bundle file for macOS 12 arm64...";
@@ -102,7 +112,9 @@ $proj.Project.PropertyGroup[1].CFBundleShortVersionString = $newversion;
 $proj.Project.PropertyGroup[1].CFBundleVersion = $newversion;
 
 # Unused in .csproj, но всё-таки пропишем, т. к. надо для dev-сборок и чтобы не поломался код проверки версии и даты в самом приложении
-$proj.Project.FirstChild.Version = "$($newversion)-devplat-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[0] = "$($newversion)-win-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[1] = "$($newversion)-linux-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[2] = "$($newversion)-macos-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
 
 #Settings object will instruct how the xml elements are written to the file
 $settings = New-Object System.Xml.XmlWriterSettings

@@ -1,0 +1,56 @@
+<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vkw="using:VKUI.Windows"
+        xmlns:vkui="using:VKUI.Controls"
+        x:Class="ELOR.Laney.Views.Modals.About"
+        Width="420" Height="540"
+        Title="{i18n:Localize about}">
+  <Grid x:Name="Root" RowDefinitions="Auto * Auto">
+    <Grid.Styles>
+      <Style Selector="StackPanel > Button.Tertiary">
+        <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+        <Setter Property="Padding" Value="0,0,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      </Style>
+    </Grid.Styles>
+    <Grid x:Name="Logo" Margin="48" ColumnDefinitions="Auto Auto" HorizontalAlignment="Center">
+      <Image Margin="12,0,0,0" Width="72" Height="72" Source="{StaticResource Logo}"/>
+      <ContentPresenter Grid.Column="1" Margin="23,0,12,0" Height="49" VerticalAlignment="Center" ContentTemplate="{StaticResource LText}"/>
+    </Grid>
+
+    <StackPanel Grid.Row="1" Margin="4,0">
+      <vkui:Cell x:Name="versionCell" Header="{i18n:Localize app_version}"/>
+      <vkui:Cell x:Name="buildTimeCell" Header="{i18n:Localize build_time}"/>
+      <vkui:Cell x:Name="dotnetVersionCell" Header="Runtime"/>
+      <Rectangle Classes="Separator" Margin="12,6"/>
+      <Button x:Name="b01" Classes="Tertiary">
+        <vkui:Cell Header="{i18n:Localize about_offical_group}" Subtitle="{i18n:Localize about_offical_group_desc}"/>
+      </Button>
+      <Button x:Name="b02" Classes="Tertiary">
+        <vkui:Cell Header="{i18n:Localize about_vk_privacy}"/>
+      </Button>
+      <Button x:Name="b03" Classes="Tertiary">
+        <vkui:Cell Header="{i18n:Localize about_vk_terms}"/>
+      </Button>
+      <Button x:Name="b04" Classes="Tertiary" Click="b04_Click">
+        <vkui:Cell Header="{i18n:Localize about_libs}"/>
+      </Button>
+    </StackPanel>
+
+    <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,24,0,24">
+      <TextBlock x:Name="dev" Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}" TextAlignment="Center"/>
+      <TextBlock Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}" TextAlignment="Center">
+        Powered by <Run FontWeight="SemiBold">.NET</Run> and <Run FontWeight="SemiBold">Avalonia UI</Run>
+      </TextBlock>
+    </StackPanel>
+    
+    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="True"/>
+  </Grid>
+</vkw:DialogWindow>

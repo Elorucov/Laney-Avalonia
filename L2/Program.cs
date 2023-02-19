@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using ELOR.Laney.Core;
@@ -53,6 +54,7 @@ namespace ELOR.Laney {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             try {
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnMainWindowClose);
             } finally {
                 Log.Information("App closed.\n");

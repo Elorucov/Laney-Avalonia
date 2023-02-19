@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using ELOR.Laney.DataModels;
 using Newtonsoft.Json;
+using ELOR.Laney.Views.Modals;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -90,6 +91,10 @@ namespace ELOR.Laney.Core {
                 SettingsWindow sw = new SettingsWindow();
                 await sw.ShowDialog(Window);
             };
+            about.Click += async (a, b) => {
+                About aw = new About();
+                await aw.ShowDialog(Window);
+            };
 
             ash.Items.Add(settings);
             ash.Items.Add(about);
@@ -118,18 +123,20 @@ namespace ELOR.Laney.Core {
             ash.ShowAt(owner);
         }
 
-        private static void SetUpTrayMenu() {
-            NativeMenu menu = new NativeMenu();
+        public static NativeMenu TrayMenu { get; private set; }
+
+        private static async void SetUpTrayMenu() {
+            TrayMenu = new NativeMenu();
 
             foreach (var session in VKSession.Sessions) {
                 if (session.GroupId == 142317063 || session.GroupId == 176011438) continue; // Temporary
 
                 var item = new NativeMenuItem { Header = session.Name };
                 item.Click += (a, b) => TryOpenSessionWindow(session.Id);
-                menu.Items.Add(item);
+                TrayMenu.Items.Add(item);
             }
 
-            menu.Items.Add(new NativeMenuItemSeparator());
+            TrayMenu.Items.Add(new NativeMenuItemSeparator());
 
             var ft = new NativeMenuItem { Header = "Field test" };
             ft.Click += (a, b) => {
@@ -141,12 +148,12 @@ namespace ELOR.Laney.Core {
                 App.Current.DesktopLifetime.Shutdown();
             };
 
-            if (!DemoMode.IsEnabled) menu.Items.Add(ft);
-            menu.Items.Add(exit);
+            if (!DemoMode.IsEnabled) TrayMenu.Items.Add(ft);
+            TrayMenu.Items.Add(exit);
 
             TrayIcon icon = new TrayIcon {
-                Icon = new WindowIcon(AssetsManager.GetBitmapFromUri(new Uri("avares://laney/Assets/Logo/Tray/t16mw.png"))),
-                Menu = menu,
+                Icon = new WindowIcon(await AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon()))),
+                Menu = TrayMenu,
                 IsVisible = true,
                 ToolTipText = "Laney"
             };
