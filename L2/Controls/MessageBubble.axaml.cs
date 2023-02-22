@@ -5,8 +5,10 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Layout;
 using Avalonia.Media;
+using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
+using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using System;
 using System.ComponentModel;
@@ -62,7 +64,7 @@ namespace ELOR.Laney.Controls {
         TextBlock SenderName;
         Button ReplyMessageButton;
         GiftUI Gift;
-        SelectableTextBlock MessageText;
+        CTextBlock MessageText;
         AttachmentsContainer MessageAttachments;
         Border Map;
         Border ForwardedMessagesContainer;
@@ -83,7 +85,7 @@ namespace ELOR.Laney.Controls {
             SenderName = e.NameScope.Find<TextBlock>(nameof(SenderName));
             ReplyMessageButton = e.NameScope.Find<Button>(nameof(ReplyMessageButton));
             Gift = e.NameScope.Find<GiftUI>(nameof(Gift));
-            MessageText = e.NameScope.Find<SelectableTextBlock>(nameof(MessageText));
+            MessageText = e.NameScope.Find<CTextBlock>(nameof(MessageText));
             MessageAttachments = e.NameScope.Find<AttachmentsContainer>(nameof(MessageAttachments));
             Map = e.NameScope.Find<Border>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
@@ -253,30 +255,20 @@ namespace ELOR.Laney.Controls {
         }
 
         private void SetText(string text) {
-            MessageText.Inlines.Clear();
-            if (String.IsNullOrEmpty(text)) return;
-
-            string[] t = text.Split('\n');
-            for (int i = 0; i < t.Length; i++) {
-                MessageText.Inlines.Add(new Run {
-                    Text = t[i], 
-                    // Почему-то игнорируются размер и шрифт из самого MessageText.
-                    FontSize = MessageText.FontSize,
-                    FontFamily = MessageText.FontFamily
-                });
-                if (i < t.Length - 1) MessageText.Inlines.Add(new LineBreak());
-            }
+            TextParser.SetText(text, MessageText, OnLinkClicked);
 
             // Empty space for sent time/status
             if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0) {
-                MessageText.Inlines.Add(new InlineUIContainer {
-                    Child = new Border {
-                        Background = new SolidColorBrush(Color.FromArgb(0, 0, 122, 204)),
-                        Width = Message.EditTime != null ? 90 : 52,
-                        Height = MessageText.LineHeight
-                    }
-                });
+                MessageText.Content.Add(new CInlineUIContainer(new Border {
+                    Background = new SolidColorBrush(Color.FromArgb(0, 0, 122, 204)),
+                    Width = Message.EditTime != null ? 90 : 52,
+                    Height = MessageText.LineHeight
+                }));
             }
+        }
+
+        private void OnLinkClicked(string link) {
+            Router.LaunchLink(VKSession.GetByDataContext(this), link);
         }
 
         // Смена некоторых частей UI сообщения, которые не влияют

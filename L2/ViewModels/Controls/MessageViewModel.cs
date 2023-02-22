@@ -3,6 +3,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
+using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
@@ -309,7 +310,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                 return new VKActionMessage(Action, SenderId).ToString();
             }
 
-            if (!String.IsNullOrEmpty(Text)) return Text;
+            if (!String.IsNullOrEmpty(Text)) return TextParser.GetParsedText(Text);
             if (_attachments.Count > 0) {
                 int count = _attachments.Count;
                 if (_attachments.Any(a => a.Type == _attachments[0].Type) && Location == null) {

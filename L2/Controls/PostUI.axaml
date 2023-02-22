@@ -2,7 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:atch="using:ELOR.Laney.Controls.Attachments"
-        xmlns:vkui="using:VKUI.Controls">
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:ctb="using:ColorTextBlock.Avalonia">
   <Design.PreviewWith>
     <controls:PostUI Width="286"/>
   </Design.PreviewWith>
@@ -19,7 +20,7 @@
               <TextBlock x:Name="PostInfo" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
             </StackPanel>
           </Grid>
-          <SelectableTextBlock x:Name="PostText" IsVisible="False" Classes="Headline" Margin="8,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+          <ctb:CTextBlock x:Name="PostText" IsVisible="False" FontSize="16" LineHeight="20" Margin="8,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
           <atch:AttachmentsContainer x:Name="Attachments" NoMargins="True" Margin="4,8,0,0" IsVisible="False"/>
           <Border x:Name="Map" Margin="4,8,0,0" IsVisible="False" Background="#3f7f7f7f" CornerRadius="4">
             <TextBlock Margin="8" FontStyle="Italic" Text="Map"/>

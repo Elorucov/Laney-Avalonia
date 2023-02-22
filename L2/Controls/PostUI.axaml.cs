@@ -1,12 +1,17 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Media;
+using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
+using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
+using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using System;
 using VKUI.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ELOR.Laney.Controls {
     public class PostUI : TemplatedControl {
@@ -27,7 +32,7 @@ namespace ELOR.Laney.Controls {
         Avatar Avatar;
         TextBlock Author;
         TextBlock PostInfo;
-        SelectableTextBlock PostText;
+        CTextBlock PostText;
         AttachmentsContainer Attachments;
         Border Map;
         Border ForwardedMessagesContainer;
@@ -39,7 +44,7 @@ namespace ELOR.Laney.Controls {
             Avatar = e.NameScope.Find<Avatar>(nameof(Avatar));
             Author = e.NameScope.Find<TextBlock>(nameof(Author));
             PostInfo = e.NameScope.Find<TextBlock>(nameof(PostInfo));
-            PostText = e.NameScope.Find<SelectableTextBlock>(nameof(PostText));
+            PostText = e.NameScope.Find<CTextBlock>(nameof(PostText));
             Attachments = e.NameScope.Find<AttachmentsContainer>(nameof(Attachments));
             Map = e.NameScope.Find<Border>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
@@ -81,7 +86,7 @@ namespace ELOR.Laney.Controls {
             Author.Text = message.SenderName;
             PostInfo.Text = message.SentTime.ToHumanizedString(true);
 
-            PostText.Text = message.Text;
+            TextParser.SetText(message.Text, PostText, OnLinkClicked);
             PostText.IsVisible = !String.IsNullOrEmpty(message.Text);
 
             Attachments.IsVisible = message.Attachments.Count > 0;
@@ -112,6 +117,10 @@ namespace ELOR.Laney.Controls {
                     Post = msg
                 });
             }
+        }
+
+        private void OnLinkClicked(string link) {
+            Router.LaunchLink(VKSession.GetByDataContext(this), link);
         }
     }
 }
