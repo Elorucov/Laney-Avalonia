@@ -1,7 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using ColorTextBlock.Avalonia;
 using ELOR.Laney.Core;
+using ELOR.Laney.Helpers;
+using ELOR.Laney.Views.Modals;
 using System;
+using System.Collections.Generic;
 
 namespace ELOR.Laney {
     public partial class FieldTestWindow : Window {
@@ -19,6 +24,12 @@ namespace ELOR.Laney {
 
             buildInfo.Text = $"Build tag: {App.BuildInfoFull}";
             setResult.Text += $"\n\nSettings file location:\n{Settings.FilePath}";
+
+            string test = "Testing VK links in AvaloniaEdit: [id172894294|user], [club171015120|group], https://elor.top and [https://vk.com/wall-171015120_363|link], hee-hee!";
+            TextParser.SetText(test, aeTest, async (link) => {
+                VKUIDialog dlg = new VKUIDialog("Link test", link);
+                await dlg.ShowDialog(this);
+            });
         }
 
         private void MainWindow_EffectiveViewportChanged(object? sender, Avalonia.Layout.EffectiveViewportChangedEventArgs e) {

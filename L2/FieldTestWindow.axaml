@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="clr-namespace:VKUI.Controls;assembly=VKUI"
+        xmlns:ctb="using:ColorTextBlock.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="900"
         x:Class="ELOR.Laney.FieldTestWindow" WindowState="Maximized"
         Title="Field test" Background="{DynamicResource VKBackgroundContentBrush}">
@@ -103,6 +104,11 @@
             <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption4"/>
           </StackPanel>
         </WrapPanel>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="ColorTextBlock / TextParser test"/>
+        <ctb:CTextBlock x:Name="aeTest" HorizontalAlignment="Left" Margin="8" Width="320" TextWrapping="Wrap"/>
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">

@@ -4,7 +4,7 @@
              xmlns:ui="using:VKUI"
              xmlns:vkui="using:VKUI.Controls"
              xmlns:conv="using:ELOR.Laney.Converters"
-             xmlns:logo="using:ELOR.Laney.Assets.Logo"
+             xmlns:ctb="using:ColorTextBlock.Avalonia"
              x:Class="ELOR.Laney.App">
   <Application.Resources>
     <ResourceDictionary>      
@@ -108,6 +108,10 @@
 
     <Style Selector="vkui|Avatar">
       <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style Selector="ctb|CHyperlink">
+      <Setter Property="Foreground" Value="{DynamicResource VKTextLinkBrush}"/>
     </Style>
 
     <Style Selector="Button.Hyperlink">

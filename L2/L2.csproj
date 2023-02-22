@@ -123,4 +123,9 @@
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ColorTextBlock.Avalonia">
+      <HintPath>..\Libraries\ColorTextBlock.Avalonia.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
