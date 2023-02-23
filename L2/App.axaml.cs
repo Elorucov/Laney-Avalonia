@@ -203,7 +203,8 @@ namespace ELOR.Laney {
             return $"LaneyMessenger (2; {sections[0]}; {sections[1]}; {sections[2]})";
         }
 
-        public static List<string> UsedLibs { get; } = new List<string> { 
+        public static List<string> UsedLibs { get; } = new List<string> {
+            "ColorTextBlock.Avalonia by whistyun",
             "Newtonsoft.Json",
             "Serilog",
             "Unicode.net",

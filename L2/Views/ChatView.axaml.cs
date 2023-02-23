@@ -5,15 +5,10 @@ using ELOR.Laney.ViewModels;
 using System.Threading.Tasks;
 using Serilog;
 using Avalonia.Interactivity;
-using Avalonia.Input;
-using System.Diagnostics;
-using System.Collections.Generic;
 using ELOR.Laney.Controls;
-using ELOR.Laney.Extensions;
 using System.Linq;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Helpers;
-using Avalonia.Controls.Presenters;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using ELOR.Laney.Core;
@@ -73,14 +68,44 @@ namespace ELOR.Laney.Views {
             if (e.Action == NotifyCollectionChangedAction.Add && autoScrollToLastMessage && Chat.DisplayedMessages != null && Chat.DisplayedMessages.Count > 0) {
                 ObservableCollection<MessageViewModel> received = sender as ObservableCollection<MessageViewModel>;
                 await Task.Delay(10); // ибо id-ы разные почему-то...
-                int lastReceived = received.LastOrDefault().Id;
-                int lastDisplayed = Chat.DisplayedMessages.Last.Id;
-                if (lastReceived == lastDisplayed) {
-                    MessagesList.ScrollIntoView(Chat.DisplayedMessages.Count - 1);
+                int lastReceivedId = received.LastOrDefault()?.Id ?? 0;
+                var lastDisplayed = Chat.DisplayedMessages.LastOrDefault();
+                int lastDisplayedId = lastDisplayed?.Id ?? 0;
+                if (lastReceivedId == lastDisplayedId && lastDisplayedId > 0) {
+                    // MessagesList.ScrollIntoView(Chat.DisplayedMessages.Count - 1);
+                    double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
+                    ForceScroll(h);
 
-                    // TODO: починить момент, когда после изменения сообщения
+                    // После изменения сообщения
                     // после loading-cостояния надо ещё раз скроллить до конца.
+                    Log.Information($"Need to scroll to last message again. Message id: {lastDisplayedId}");
+                    if (lastDisplayed.State == MessageVMState.Loading) lastDisplayed.PropertyChanged += LastDisplayedMsgPropertyChanged;
                 }
+            }
+        }
+
+        private async void LastDisplayedMsgPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (e.PropertyName == nameof(MessageViewModel.State)) {
+                MessageViewModel msg = sender as MessageViewModel;
+                msg.PropertyChanged -= LastDisplayedMsgPropertyChanged;
+
+                await Task.Delay(10); // нужно, ибо без этого высота скролла старая.
+
+                int lastReceivedId = Chat.ReceivedMessages.LastOrDefault()?.Id ?? 0;
+                if (msg.Id == lastReceivedId) {
+                    // Принудителььно скроллим вниз
+                    double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
+                    ForceScroll(h);
+
+                    Log.Information($"Scroll to message\"{msg.Id}\" done.");
+                }
+            }
+        }
+
+        private async void ForceScroll(double y) {
+            while (MessagesListScrollViewer.Offset.Y < y - 2 || MessagesListScrollViewer.Offset.Y > y + 2) {
+                MessagesListScrollViewer.Offset = new Vector(0, y);
+                await Task.Yield();
             }
         }
 
@@ -88,7 +113,7 @@ namespace ELOR.Laney.Views {
         bool needToSaveScroll = false;
         bool autoScrollToLastMessage = false;
         private async void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
-            double trigger = 40;
+            double trigger = 160;
             double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
             double y = MessagesListScrollViewer.Offset.Y;
             dbgScrV.Text = $"{h}";

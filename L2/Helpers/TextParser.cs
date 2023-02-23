@@ -104,6 +104,7 @@ namespace ELOR.Laney.Helpers {
 
         public static void SetText(string plain, CTextBlock rtb, Action<string> linksClickedCallback = null) {
             rtb.Content.Clear();
+            if (String.IsNullOrEmpty(plain)) return;
 
             foreach (var token in GetRaw(plain)) {
                 if (String.IsNullOrEmpty(token.Item1)) {
