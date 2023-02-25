@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using ELOR.Laney.Extensions;
+using Serilog;
 using System;
 using System.Reactive.Linq;
 using VKUI.Controls;
@@ -26,11 +27,16 @@ namespace ELOR.Laney.Controls {
         private static async void OnSourceChanged(Image sender, Uri? uri) {
             // SetIsLoading(sender, true);
 
-            var bitmap = uri == null
+            try {
+                var bitmap = uri == null
                 ? null
                 : await LNetExtensions.TryGetCachedBitmapAsync(uri, (int)sender.Width);
-            if (GetSource(sender) != uri) return;
-            sender.Source = bitmap;
+                if (GetSource(sender) != uri) return;
+                sender.Source = bitmap;
+            } catch (Exception ex) {
+                Log.Error(ex, "Cannot set bitmap to Image!");
+                sender.Source = null;
+            }
 
             // SetIsLoading(sender, false);
         }

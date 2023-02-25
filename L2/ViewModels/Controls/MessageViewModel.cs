@@ -201,7 +201,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     PreviewImageUri = a.Graffiti.Uri;
                     return;
                 } else if (a.Type == AttachmentType.Story && String.IsNullOrEmpty(Text) && ReplyMessage == null
-                    && ForwardedMessages == null && Location == null && Keyboard == null) {
+                    && ForwardedMessages.Count == 0 && Location == null && Keyboard == null) {
                     UIType = MessageUIType.Story;
                 } else if (a.Type == AttachmentType.Gift) {
                     UIType = MessageUIType.Gift;

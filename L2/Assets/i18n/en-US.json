@@ -273,6 +273,11 @@
   "pp_member_admin_remove": "Dismiss administrator",
   "pp_member_kick": "Remove from chat",
 
+  "stp_your_story": "Your story",
+  "stp_deleted": "Story deleted",
+  "stp_expired": "The story could have been viewed within 24 hours after being created",
+  "stp_private": "Story hidden by author",
+
   "settings_general": "General",
   "settings_appearance": "Appearance",
   "settings_notifications": "Notifications",

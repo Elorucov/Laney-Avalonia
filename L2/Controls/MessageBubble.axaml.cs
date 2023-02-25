@@ -48,6 +48,7 @@ namespace ELOR.Laney.Controls {
         const string INDICATOR_IMAGE = "ImageIndicator";
         const string INDICATOR_COMPLEX_IMAGE = "ComplexImageIndicator";
 
+        public const double STORY_WIDTH = 124;
         public const double BUBBLE_FIXED_WIDTH = 320;
         public const double STICKER_WIDTH = 168; // 168 в макете figma vk ipad, 176 — в vk ios, 
                                                  // 184 — android, 148 — android with reply
@@ -151,10 +152,13 @@ namespace ELOR.Laney.Controls {
 
             // Outgoing
             BubbleRoot.HorizontalAlignment = IsOutgoing ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+            MessageAttachments.IsOutgoing = IsOutgoing;
 
             MessageUIType uiType = Message.UIType;
             bool hasReply = Message.ReplyMessage != null;
             bool singleImage = uiType == MessageUIType.SingleImage
+                || uiType == MessageUIType.Story
+                || uiType == MessageUIType.StoryWithSticker
                 || (uiType == MessageUIType.Sticker && !hasReply)
                 || (uiType == MessageUIType.Graffiti && !hasReply);
 
@@ -172,19 +176,20 @@ namespace ELOR.Laney.Controls {
             }
 
             // Avatar
-            SenderAvatar.IsVisible = IsChat && !IsOutgoing;
+            AvatarButton.IsVisible = IsChat && !IsOutgoing;
 
             // Sender name
             SenderNameWrap.IsVisible = !singleImage;
 
             // Message bubble width
-            if (uiType == MessageUIType.Sticker) {
+            if (uiType == MessageUIType.Sticker || uiType == MessageUIType.StoryWithSticker) {
                 // при BACKGROUND_BORDER у стикера будет отступ в 8px по сторонам.
                 BubbleRoot.Width = hasReply ? STICKER_WIDTH + 16 : STICKER_WIDTH;
+            } else if (uiType == MessageUIType.Story) {
+                BubbleRoot.Width = STORY_WIDTH;
             } else if (uiType == MessageUIType.Graffiti) {
                 // при BACKGROUND_BORDER у граффити будет отступ в 8px по сторонам.
                 BubbleRoot.Width = hasReply ? BUBBLE_FIXED_WIDTH : BUBBLE_FIXED_WIDTH - 8;
-                
             } else if (uiType == MessageUIType.Complex) {
                 BubbleRoot.Width = BUBBLE_FIXED_WIDTH;
             } else {
@@ -194,7 +199,7 @@ namespace ELOR.Laney.Controls {
             // Attachments margin
             double amargin = 0;
             if (!hasReply) {
-                if (uiType == MessageUIType.Sticker) {
+                if (uiType == MessageUIType.Story || uiType == MessageUIType.Sticker || uiType == MessageUIType.StoryWithSticker) {
                     amargin = -8;
                 } else if (uiType == MessageUIType.SingleImage || uiType == MessageUIType.Graffiti) {
                     amargin = -4;

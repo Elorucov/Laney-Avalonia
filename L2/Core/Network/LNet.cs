@@ -195,7 +195,7 @@ namespace ELOR.Laney.Core.Network {
             Uri fixedUri = uri;
             string host = String.Empty;
             var handler = new HttpClientHandler() {
-                AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate,
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
                 AllowAutoRedirect = true,
                 MaxConnectionsPerServer = 50
             };

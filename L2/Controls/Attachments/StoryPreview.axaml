@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="124" d:DesignHeight="220"
+             x:Class="ELOR.Laney.Controls.Attachments.StoryPreview">
+  <Border x:Name="PreviewRoot" Width="124" Height="220" Background="#5f5f5f" CornerRadius="17">
+    <Grid RowDefinitions="Auto *">
+      <Rectangle VerticalAlignment="Stretch" RadiusX="17" RadiusY="17">
+        <Rectangle.Fill>
+          <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,80%">
+            <LinearGradientBrush.GradientStops>
+              <GradientStop Color="#a0000000" Offset="0"/>
+              <GradientStop Color="#00000000" Offset="1"/>
+            </LinearGradientBrush.GradientStops>
+          </LinearGradientBrush>
+        </Rectangle.Fill>
+      </Rectangle>
+      <TextBlock x:Name="StoryAuthor" Margin="12,8,12,32" Classes="Subhead" Foreground="White" TextWrapping="Wrap" MaxLines="3"/>
+      <TextBlock x:Name="RestrictionText" Grid.RowSpan="2" Classes="Caption2" IsVisible="False" Foreground="White" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
+    </Grid>
+  </Border>
+</UserControl>

@@ -273,6 +273,11 @@
   "pp_member_admin_remove": "Разжаловать администратора",
   "pp_member_kick": "Исключить из чата",
 
+  "stp_your_story": "Ваша история",
+  "stp_deleted": "История удалена",
+  "stp_expired": "Историю можно было посмотреть в течение 24 часов после публикации",
+  "stp_private": "Автор скрыл историю",
+
   "settings_general": "Основные",
   "settings_appearance": "Внешний вид",
   "settings_notifications": "Уведомления",

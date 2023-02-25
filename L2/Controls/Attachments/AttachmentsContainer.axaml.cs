@@ -7,6 +7,7 @@ using Avalonia.Media;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
+using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace ELOR.Laney.Controls.Attachments {
         }
 
         public bool NoMargins { get; set; } = false; // отступы по бокам. true нужно для PostUI.
+        public bool? IsOutgoing { get; set; } = null; // нужно для MessageBubble. В других случаях null.
 
         #endregion
 
@@ -197,6 +199,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Sticker
             if (sticker != null) {
+
                 Image stickerImage = new Image() {
                     Width = MessageBubble.STICKER_WIDTH,
                     Height = MessageBubble.STICKER_WIDTH,
@@ -223,8 +226,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Wall post
             if (wp != null) {
-                // string def = GetNameOrDefaultString(wp.OwnerOrToId, VKTextParser.GetParsedText(wp.Text));
-                string def = GetNameOrDefaultString(wp.OwnerOrToId, wp.Text);
+                string def = VKAPIHelper.GetNameOrDefaultString(wp.OwnerOrToId, TextParser.GetParsedText(wp.Text));
                 BasicAttachment ba = new BasicAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24ArticleOutline,
@@ -238,8 +240,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Wall reply
             if (wr != null) {
-                // string def = GetNameOrDefaultString(wr.OwnerId, VKTextParser.GetParsedText(wr.Text));
-                string def = GetNameOrDefaultString(wr.OwnerId, wr.Text);
+                string def = VKAPIHelper.GetNameOrDefaultString(wr.OwnerId, TextParser.GetParsedText(wr.Text));
                 BasicAttachment ba = new BasicAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24CommentOutline,
@@ -302,7 +303,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Poll
             if (poll != null) {
-                string def = GetNameOrDefaultString(poll.AuthorId);
+                string def = VKAPIHelper.GetNameOrDefaultString(poll.AuthorId);
                 BasicAttachment ba = new BasicAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24Poll,
@@ -340,30 +341,43 @@ namespace ELOR.Laney.Controls.Attachments {
             }
 
             // Story
-            foreach (Story st in stories) {
-                string def = GetNameOrDefaultString(st.OwnerId);
-                if (st.IsExpired || st.IsDeleted || st.IsRestricted || st.CanSee == 0) {
-                    BasicAttachment ba = new BasicAttachment {
-                        Margin = new Thickness(0, 0, 0, 8),
-                        Icon = VKIconNames.Icon24Story,
-                        Title = Localizer.Instance["story"],
-                        Subtitle = def,
-                        Name = st.ObjectType
-                    };
-                    // ba.Click += (a, b) => Launcher.LaunchUrl(link);
-                    StandartAttachments.Children.Add(ba);
-                } else {
-                    ExtendedAttachment ea = new ExtendedAttachment {
-                        Margin = new Thickness(0, 0, 0, 8),
-                        Title = Localizer.Instance["story"],
-                        Subtitle = def,
-                        Preview = st.Video != null ? st.Video.FirstFrameForStory.Uri : st.Photo.GetSizeAndUriForThumbnail().Uri,
-                        ActionButtonText = Localizer.Instance["watch"],
-                        Name = st.ObjectType
-                    };
-                    // ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link);
-                    // ea.Click += (a, b) => Launcher.LaunchUrl(link);
-                    StandartAttachments.Children.Add(ea);
+            if (IsOutgoing.HasValue && stories.Count == 1 && (Attachments.Count == 1 || (Attachments.Count == 2 && sticker != null))) {
+
+                StoryPreview prev = new StoryPreview(stories.FirstOrDefault());
+                prev.Margin = new Thickness(0, 0, 0, 8);
+                prev.HorizontalAlignment = IsOutgoing.Value ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+
+                var lastUI = StandartAttachments.Children.LastOrDefault();
+                if (lastUI != null && lastUI.Name == "Sticker") {
+                    lastUI.Margin = new Thickness(0, -72, 0, 8);
+                }
+                StandartAttachments.Children.Insert(0, prev);
+            } else {
+                foreach (Story st in stories) {
+                    string def = VKAPIHelper.GetNameOrDefaultString(st.OwnerId);
+                    if (st.IsExpired || st.IsDeleted || st.IsRestricted || !st.CanSee) {
+                        BasicAttachment ba = new BasicAttachment {
+                            Margin = new Thickness(0, 0, 0, 8),
+                            Icon = VKIconNames.Icon24Story,
+                            Title = Localizer.Instance["story"],
+                            Subtitle = def,
+                            Name = st.ObjectType
+                        };
+                        // ba.Click += (a, b) => Launcher.LaunchUrl(link);
+                        StandartAttachments.Children.Add(ba);
+                    } else {
+                        ExtendedAttachment ea = new ExtendedAttachment {
+                            Margin = new Thickness(0, 0, 0, 8),
+                            Title = Localizer.Instance["story"],
+                            Subtitle = def,
+                            Preview = st.Video != null ? st.Video.FirstFrameForStory.Uri : st.Photo.GetSizeAndUriForThumbnail().Uri,
+                            ActionButtonText = Localizer.Instance["watch"],
+                            Name = st.ObjectType
+                        };
+                        // ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link);
+                        // ea.Click += (a, b) => Launcher.LaunchUrl(link);
+                        StandartAttachments.Children.Add(ea);
+                    }
                 }
             }
 
@@ -373,7 +387,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 ExtendedAttachment ea = new ExtendedAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Title = nr.Title,
-                    Subtitle = $"{Localizer.Instance["narrative"]} {GetNameOrDefaultString(nr.OwnerId)}",
+                    Subtitle = $"{Localizer.Instance["narrative"]} {VKAPIHelper.GetNameOrDefaultString(nr.OwnerId)}",
                     Preview = nr.Cover.CroppedSizes.LastOrDefault().Uri,
                     ActionButtonText = Localizer.Instance["watch"],
                     Name = nr.ObjectType
@@ -486,19 +500,6 @@ namespace ELOR.Laney.Controls.Attachments {
             }
 
             StandartAttachments.IsVisible = StandartAttachments.Children.Count > 0;
-        }
-
-        private string GetNameOrDefaultString(int ownerId, string defaultStr = null) {
-            if (!String.IsNullOrEmpty(defaultStr)) return defaultStr;
-            string from = "";
-            if (ownerId > 0) {
-                User u = CacheManager.GetUser(ownerId);
-                from = u != null ? $"{Localizer.Instance["from"]} {u.FirstNameGen} {u.LastNameGen}" : "";
-            } else if (ownerId < 0) {
-                Group u = CacheManager.GetGroup(ownerId);
-                from = u != null ? $"{Localizer.Instance["from"]} \"{u.Name}\"" : "";
-            }
-            return from;
         }
 
         private BasicAttachment GetCallInfoControl(Call call) {

@@ -98,7 +98,7 @@ namespace ELOR.VKAPILib.Objects {
         public override string ObjectType { get { return "story"; } }
 
         [JsonProperty("can_see")]
-        public int CanSee { get; set; }
+        public bool CanSee { get; set; }
 
         [JsonProperty("can_like")]
         public bool CanLike { get; set; }

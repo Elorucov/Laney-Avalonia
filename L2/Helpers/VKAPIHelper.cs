@@ -115,5 +115,18 @@ namespace ELOR.Laney.Helpers {
             DateTime dt = a.Length == 3 ? new DateTime(Int32.Parse(a[2]), Int32.Parse(a[1]), Int32.Parse(a[0])) : new DateTime(1604, Int32.Parse(a[1]), Int32.Parse(a[0]));
             return a.Length == 3 ? $"{dt.ToString("M")} {dt.Year}" : dt.ToString("M");
         }
+
+        public static string GetNameOrDefaultString(int ownerId, string defaultStr = null) {
+            if (!String.IsNullOrEmpty(defaultStr)) return defaultStr;
+            string from = "";
+            if (ownerId > 0) {
+                User u = CacheManager.GetUser(ownerId);
+                from = u != null ? $"{Localizer.Instance["from"]} {u.FirstNameGen} {u.LastNameGen}" : "";
+            } else if (ownerId < 0) {
+                Group u = CacheManager.GetGroup(ownerId);
+                from = u != null ? $"{Localizer.Instance["from"]} \"{u.Name}\"" : "";
+            }
+            return from;
+        }
     }
 }
