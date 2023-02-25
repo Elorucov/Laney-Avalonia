@@ -1,22 +1,25 @@
 using Avalonia;
 using Avalonia.Controls;
-using System;
-using ELOR.Laney.ViewModels;
-using System.Threading.Tasks;
-using Serilog;
 using Avalonia.Interactivity;
 using ELOR.Laney.Controls;
-using System.Linq;
-using ELOR.Laney.ViewModels.Controls;
-using ELOR.Laney.Helpers;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
 using ELOR.Laney.Core;
+using ELOR.Laney.Helpers;
+using ELOR.Laney.ViewModels;
+using ELOR.Laney.ViewModels.Controls;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
         ChatViewModel Chat { get; set; }
-        ScrollViewer MessagesListScrollViewer;
+        ScrollViewer MessagesListScrollViewer;                                          // height, offset
+        Dictionary<int, Tuple<double, double>> ScrollPositions = new Dictionary<int, Tuple<double, double>>();
+        bool canSaveScrollPosinion = false;
 
         public ChatView() {
             InitializeComponent();
@@ -51,7 +54,8 @@ namespace ELOR.Laney.Views {
             BackButton.IsVisible = isVisible;
         }
 
-        private void ChatView_DataContextChanged(object sender, EventArgs e) {
+        private async void ChatView_DataContextChanged(object sender, EventArgs e) {
+            canSaveScrollPosinion = false;
             if (Chat != null) {
                 Chat.ScrollToMessageRequested -= ScrollToMessage;
                 Chat.MessagesChunkLoaded -= TrySaveScroll;
@@ -62,6 +66,21 @@ namespace ELOR.Laney.Views {
             Chat.ScrollToMessageRequested += ScrollToMessage;
             Chat.MessagesChunkLoaded += TrySaveScroll;
             Chat.ReceivedMessages.CollectionChanged += ReceivedMessages_CollectionChanged;
+
+            if (ScrollPositions.ContainsKey(Chat.PeerId)) {
+                var scrollPos = ScrollPositions[Chat.PeerId];
+                Log.Information($"Trying to restore scroll position for chat {Chat.PeerId}. H: {scrollPos.Item1}, Y: {scrollPos.Item2}");
+
+                while (true) {
+                    await Task.Yield();
+                    double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
+                    if (h == scrollPos.Item1) break;
+                }
+
+                ForceScroll(scrollPos.Item2);
+            }
+
+            canSaveScrollPosinion = true;
         }
 
         private async void ReceivedMessages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
@@ -142,9 +161,19 @@ namespace ELOR.Laney.Views {
                 return;
             }
 
+            if (canSaveScrollPosinion && h > 0 && y > 0) {
+                if (ScrollPositions.ContainsKey(Chat.PeerId)) {
+                    ScrollPositions[Chat.PeerId] = new Tuple<double, double>(h, y);
+                } else {
+                    ScrollPositions.Add(Chat.PeerId, new Tuple<double, double>(h, y));
+                }
+            }
+
             oldScrollViewerHeight = h;
             if (y < trigger) {
-                Chat.LoadPreviousMessages();
+                // canSaveScrollPosinion — признак того, что
+                // data context сменился, а интерфейс не прогрузился.
+                if (canSaveScrollPosinion) Chat.LoadPreviousMessages();
                 autoScrollToLastMessage = false;
             } else if (y > h - trigger) {
                 if (Chat.DisplayedMessages.Last == null || Chat.LastMessage == null) return;
