@@ -46,10 +46,12 @@ namespace ELOR.Laney.Controls.Attachments {
         StackPanel StandartAttachments;
 
         bool isUILoaded = false;
+        VKSession session;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
             base.OnApplyTemplate(e);
             StandartAttachments = e.NameScope.Find<StackPanel>(nameof(StandartAttachments));
             isUILoaded = true;
+            session = VKSession.GetByDataContext(this);
             RenderAttachments();
         }
 
@@ -363,7 +365,7 @@ namespace ELOR.Laney.Controls.Attachments {
                             Subtitle = def,
                             Name = st.ObjectType
                         };
-                        // ba.Click += (a, b) => Launcher.LaunchUrl(link);
+                        ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
                         StandartAttachments.Children.Add(ba);
                     } else {
                         ExtendedAttachment ea = new ExtendedAttachment {
@@ -374,8 +376,8 @@ namespace ELOR.Laney.Controls.Attachments {
                             ActionButtonText = Localizer.Instance["watch"],
                             Name = st.ObjectType
                         };
-                        // ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link);
-                        // ea.Click += (a, b) => Launcher.LaunchUrl(link);
+                        ea.ActionButtonClick += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+                        ea.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
                         StandartAttachments.Children.Add(ea);
                     }
                 }
@@ -431,8 +433,8 @@ namespace ELOR.Laney.Controls.Attachments {
                 BasicAttachment ba = new BasicAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24Song,
-                    Title = "Audio message",
-                    Subtitle = "Not implemented yet",
+                    Title = Localizer.Instance["audio_message"],
+                    Subtitle = Localizer.Instance["not_implemented"],
                     Name = am.ObjectType
                 };
                 StandartAttachments.Children.Add(ba);
@@ -448,7 +450,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     ActionButtonText = Localizer.Instance["play"],
                     Name = p.ObjectType
                 };
-                //ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl();
+                ea.ActionButtonClick += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
                 StandartAttachments.Children.Add(ea);
             }
 
