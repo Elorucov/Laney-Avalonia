@@ -264,11 +264,10 @@ namespace ELOR.Laney.Controls {
 
             // Empty space for sent time/status
             if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0) {
-                MessageText.Content.Add(new CInlineUIContainer(new Border {
-                    Background = new SolidColorBrush(Color.FromArgb(0, 0, 122, 204)),
-                    Width = Message.EditTime != null ? 90 : 52,
-                    Height = MessageText.LineHeight
-                }));
+                MessageText.Content.Add(new CRun { 
+                    Text = "(edited) 22:22 W",
+                    Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0))
+                });
             }
         }
 
