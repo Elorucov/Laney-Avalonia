@@ -48,6 +48,7 @@ namespace ELOR.Laney.Controls.Attachments {
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
             base.OnApplyTemplate(e);
             BAButton = e.NameScope.Find<Button>(nameof(BAButton));
+
             BAButton.Click += BAButton_Click;
             Unloaded += BasicAttachment_Unloaded;
         }

@@ -103,8 +103,18 @@ namespace ELOR.Laney.Controls {
             AvatarButton.Click += AvatarButton_Click;
             ReplyMessageButton.Click += ReplyMessageButton_Click;
 
+            AvatarButton.PointerPressed += SuppressClickEvent;
+            ReplyMessageButton.PointerPressed += SuppressClickEvent;
+            MessageAttachments.PointerPressed += SuppressClickEvent;
+            Map.PointerPressed += SuppressClickEvent;
+
             isUILoaded = true;
             RenderElement();
+        }
+
+        // Это чтобы событие нажатия не доходили до родителей (особенно к ListBox)
+        private void SuppressClickEvent(object sender, Avalonia.Input.PointerPressedEventArgs e) {
+            e.Handled = true;
         }
 
         #endregion
