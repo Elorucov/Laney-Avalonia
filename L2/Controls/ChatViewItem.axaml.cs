@@ -19,5 +19,22 @@ namespace ELOR.Laney.Controls {
         #region Template elements
 
         #endregion
+
+        public ChatViewItem() {
+            PointerPressed += ChatViewItem_PointerPressed;
+            Unloaded += ChatViewItem_Unloaded;
+        }
+
+        // Необходимо для того, чтобы при ПКМ не пробрасывалось
+        // событие нажатия к ListBox и не выделялось сообщение.
+        private void ChatViewItem_PointerPressed(object sender, Avalonia.Input.PointerPressedEventArgs e) {
+            bool isRight = !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
+            if (isRight) e.Handled = true;
+        }
+
+        private void ChatViewItem_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            PointerPressed -= ChatViewItem_PointerPressed;
+            Unloaded -= ChatViewItem_Unloaded;
+        }
     }
 }

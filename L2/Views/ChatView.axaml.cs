@@ -218,10 +218,6 @@ namespace ELOR.Laney.Views {
             MessageViewModel message = cvi?.DataContext as MessageViewModel;
             if (message == null) return;
 
-            // При ПКМ на сообщение оно выделяется, перед этим очищая Chat.SelectedMessages.
-            // Пока что будем ещё раз чистить Chat.SelectedMessages. ¯\_(ツ)_/¯
-            Chat.SelectedMessages.Clear();
-
             ContextMenuHelper.ShowForMessage(message, Chat, cvi);
         }
 
