@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrls="using:ELOR.Laney.Controls"
+             x:Name="CardRoot"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ELOR.Laney.Controls.Attachments.CarouselElementUI">
+  <Button x:Name="RootButton" Classes="Tertiary" Padding="0" CornerRadius="14" VerticalContentAlignment="Stretch" Background="{DynamicResource VKImBubbleIncomingBrush}" Click="RootButton_Click">
+    <Grid RowDefinitions="* Auto">
+      <StackPanel VerticalAlignment="Top" Width="270">
+        <Border x:Name="CardImage" Width="270" Height="166" CornerRadius="14,14,0,0" Background="Blue"/>
+        <TextBlock x:Name="CardTitle" Classes="Subhead" Margin="12,8,12,0" FontWeight="SemiBold" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" MaxLines="2" Text="{Binding Element.Title, ElementName=CardRoot}"/>
+        <TextBlock x:Name="CardDesc" Classes="Subhead" Margin="12,4,12,12" FontWeight="Regular" TextWrapping="Wrap" Foreground="{DynamicResource VKTextSubheadBrush}" MaxLines="2" Text="{Binding Element.Description, ElementName=CardRoot}"/> 
+      </StackPanel>
+      <StackPanel x:Name="Buttons" Grid.Row="1" VerticalAlignment="Bottom" Margin="4,0,4,8"/>
+    </Grid>
+  </Button>
+</UserControl>

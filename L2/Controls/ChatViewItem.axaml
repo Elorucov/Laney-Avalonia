@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:atch="using:ELOR.Laney.Controls.Attachments"
         xmlns:vkui="using:VKUI.Controls">
   <Design.PreviewWith>
     <controls:ChatViewItem />
@@ -28,6 +29,18 @@
           <Border x:Name="MessageUIWrapper" IsVisible="{Binding Message.CanShowInUI, RelativeSource={RelativeSource TemplatedParent}}">
             <controls:MessageBubble x:Name="MessageUI" Message="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
+          <ScrollViewer x:Name="Carousel" Margin="0,0,0,6" IsVisible="{Binding Template, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+            <ItemsRepeater Margin="9,0" Items="{Binding Template.Elements}">
+              <ItemsRepeater.Layout>
+                <StackLayout Orientation="Horizontal"/>
+              </ItemsRepeater.Layout>
+              <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                  <atch:CarouselElementUI Element="{Binding}" Margin="3,0" VerticalAlignment="Stretch"/>
+                </DataTemplate>
+              </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+          </ScrollViewer>
         </StackPanel>
       </ControlTemplate>
     </Setter>

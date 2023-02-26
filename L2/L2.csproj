@@ -83,6 +83,9 @@
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controls\Attachments\CarouselElementUI.axaml.cs">
+      <DependentUpon>CarouselElementUI.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\Attachments\GiftUI.axaml.cs">
       <DependentUpon>GiftUI.axaml</DependentUpon>
     </Compile>
