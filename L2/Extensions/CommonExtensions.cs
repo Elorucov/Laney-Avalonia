@@ -3,8 +3,10 @@ using ELOR.Laney.Controls;
 using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -33,6 +35,16 @@ namespace ELOR.Laney.Extensions {
                 return $"{Math.Round((double)b / 1048576, 1)} Mb";
             }
             return $"{Math.Round((double)b / 1073741824, 1)} Gb";
+        }
+
+        public static Dictionary<string, string> ParseQuery(this string query) {
+            var result = new Dictionary<string, string>();
+            var qparams = query.Split('&');
+            foreach (var q in qparams) {
+                var keyvalue = q.Split('=');
+                result.Add(keyvalue[0], WebUtility.UrlDecode(keyvalue[1]));
+            }
+            return result;
         }
 
         public static PhotoSizes GetSizeAndUriForThumbnail(this IPreview preview, int maxWidth = 360) {

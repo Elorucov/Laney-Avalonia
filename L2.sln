@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "L2", "L2\L2.csproj", "{B7A6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ELOR.VKAPILib", "ELOR.VKAPILib\ELOR.VKAPILib.csproj", "{4E72B837-D825-4157-95B0-54E191552B9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VKUI", "VKUI\VKUI.csproj", "{A1D59591-42F8-4354-AA50-61C1315F02DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VKUI", "VKUI\VKUI.csproj", "{A1D59591-42F8-4354-AA50-61C1315F02DC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAuthWebView", "OAuthWebView\OAuthWebView.csproj", "{B2887479-8BE3-42A7-91AD-B8293ABB8736}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{A1D59591-42F8-4354-AA50-61C1315F02DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A1D59591-42F8-4354-AA50-61C1315F02DC}.Release|x64.ActiveCfg = Release|Any CPU
 		{A1D59591-42F8-4354-AA50-61C1315F02DC}.Release|x64.Build.0 = Release|Any CPU
+		{B2887479-8BE3-42A7-91AD-B8293ABB8736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2887479-8BE3-42A7-91AD-B8293ABB8736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2887479-8BE3-42A7-91AD-B8293ABB8736}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B2887479-8BE3-42A7-91AD-B8293ABB8736}.Debug|x64.Build.0 = Debug|Any CPU
+		{B2887479-8BE3-42A7-91AD-B8293ABB8736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2887479-8BE3-42A7-91AD-B8293ABB8736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2887479-8BE3-42A7-91AD-B8293ABB8736}.Release|x64.ActiveCfg = Release|Any CPU
+		{B2887479-8BE3-42A7-91AD-B8293ABB8736}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

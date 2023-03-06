@@ -5,22 +5,44 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
+using OAuthWebView;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class AuthManager {
         const int APP_ID = 6614620;
-        const string INTERNAL_PROTOCOL = "l2auth";
-        static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=4666462&response_type=token&revoke=1&v=5.136");
+        static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=995414&response_type=token&revoke=1&v={VKAPI.Version}");
+        static Uri finalUri = new Uri("https://oauth.vk.com/auth_redirect"); // почему не blank.html? Потому что у OauthWebView не детектит редирект туда.
+
+        public static async Task<Tuple<int, string>> AuthWithOAuthAsync() {
+            int userId = 0;
+            string accessToken = String.Empty;
+
+            OAuthWindow window = new OAuthWindow(authUri, finalUri, "OAuth", 640, 560);
+            Uri url = await window.StartAuthenticationAsync();
+
+            var queries = url.Query.Substring(1).ParseQuery();
+            if (queries.ContainsKey("authorize_url")) {
+                Uri finalUri = new Uri(WebUtility.UrlDecode(queries["authorize_url"]));
+                var finalQueries = finalUri.Fragment.Substring(1).ParseQuery();
+                if (finalQueries.ContainsKey("access_token") && finalQueries.ContainsKey("user_id")) {
+                    userId = Int32.Parse(finalQueries["user_id"]);
+                    accessToken = finalQueries["access_token"];
+                }
+            }
+
+            return new Tuple<int, string>(userId, accessToken);
+        }
 
         public static async Task<Tuple<int, string>> AuthWithTokenAsync(Window parentWindow, string errorText = null) {
             int userId = 0;
             string accessToken = String.Empty;
 
             string[] buttons = new string[] { "Continue", "Cancel" };
-            VKUIDialog dlg = new VKUIDialog("Enter access token", "WebView пока что не готов. Нажмите \"Open auth page\", пройдите авторизацию в браузере, затем скопируйте значение access_token из адресной строки и вставьте в поле ввода ниже.", buttons, 1);
+            VKUIDialog dlg = new VKUIDialog("Enter access token", "Нажмите \"Open auth page\", пройдите авторизацию в браузере, затем скопируйте значение access_token из адресной строки и вставьте в поле ввода ниже.", buttons, 1);
             TextBox tokenBox = new TextBox { Watermark = "access_token" };
 
             Button link = new Button { Content = "Open auth page", Margin = new Avalonia.Thickness(0, 0, 0, 8) };

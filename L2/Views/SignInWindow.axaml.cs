@@ -22,7 +22,8 @@ namespace ELOR.Laney.Views {
             Button button = sender as Button;
             button.IsEnabled = false;
 
-            var result = await AuthManager.AuthWithTokenAsync(this);
+            // var result = await AuthManager.AuthWithTokenAsync(this);
+            var result = await AuthManager.AuthWithOAuthAsync();
             if (result.Item1 != 0) {
                 Settings.SetBatch(new Dictionary<string, object> {
                     { Settings.VK_USER_ID, result.Item1 },
@@ -31,8 +32,6 @@ namespace ELOR.Laney.Views {
                 VKSession.StartUserSession(result.Item1, result.Item2);
                 App.Current.DesktopLifetime.MainWindow = VKSession.Main.Window;
                 Close();
-            } else {
-                new FieldTestWindow().Show();
             }
 
             button.IsEnabled = true;

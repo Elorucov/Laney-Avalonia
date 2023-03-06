@@ -3,14 +3,16 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
+    <!-- Need to remove Winforms dependency from SpiderEye, after that, we can remove this line -->
+    <TargetFramework Condition="$([MSBuild]::IsOSPlatform('Windows'))">net7.0-windows</TargetFramework>
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.341</AssemblyVersion>
-    <FileVersion>2.0.341</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.341-win-anycpu-devuser.devpc-230131-1317</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.341-linux-anycpu-devuser.devpc-230131-1317</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.341-macos-anycpu-devuser.devpc-230131-1317</Version>
+    <AssemblyVersion>2.0.364</AssemblyVersion>
+    <FileVersion>2.0.364</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.364-win-anycpu-devuser.devpc-230131-1317</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.364-linux-anycpu-devuser.devpc-230131-1317</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.364-macos-anycpu-devuser.devpc-230131-1317</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -22,8 +24,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.341</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.341</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.364</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.364</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -110,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELOR.VKAPILib\ELOR.VKAPILib.csproj" />
+    <ProjectReference Include="..\OAuthWebView\OAuthWebView.csproj" />
     <ProjectReference Include="..\VKUI\VKUI.csproj" />
   </ItemGroup>
   <ItemGroup>
