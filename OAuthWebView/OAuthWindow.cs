@@ -1,30 +1,46 @@
 ﻿using SpiderEye;
+using System.Drawing;
 
 namespace OAuthWebView {
     public class OAuthWindow {
         Uri startUri;
         Uri endUri;
         string title;
-        Size size;
+        System.Drawing.Size size;
+        public string LocalDataPath { get; set; } // Only Windows, for WebView2
 
         Uri currentUri;
         ManualResetEventSlim mres;
         Window window;
+        OAuthWindowWin32 w32;
 
-        public OAuthWindow(Uri startUri, Uri endUri, string windowTitle, double width, double height) {
+        public OAuthWindow(Uri startUri, Uri endUri, string windowTitle, int width, int height) {
             this.startUri = startUri;
             this.endUri = endUri;
             title = windowTitle;
-            size = new Size(width, height);
+            size = new System.Drawing.Size(width, height);
+        }
+
+        public async Task<Uri> StartAuthenticationAsync() {
+#if WIN
+            w32 = new OAuthWindowWin32();
+            w32.NavigationStarting += W32_NavigationStarting;
+            Rectangle rect = new Rectangle(64, 64, Convert.ToInt32(size.Width), Convert.ToInt32(size.Height));
+            int res = w32.Start(startUri.ToString(), rect, LocalDataPath);
+
+            Console.WriteLine($"win32 result: {res}. Now returning URI.");
+            System.Diagnostics.Debug.WriteLine($"win32 result: {res}. Now returning URI.");
+            return currentUri.AbsolutePath == endUri.AbsolutePath ? currentUri : null;
+#else
+            return await StartAuthenticationAsyncNonWin();
+#endif
         }
 
         static bool appInitialized = false;
 
-        public async Task<Uri> StartAuthenticationAsync() {
+        public async Task<Uri> StartAuthenticationAsyncNonWin() {
             if (!appInitialized) {
-#if WIN
-                SpiderEye.Windows.WindowsApplication.Init();
-#elif LINUX
+#if LINUX
                 SpiderEye.Linux.LinuxApplication.Init();
 #elif MAC
                 SpiderEye.Mac.MacApplication.Init();
@@ -45,9 +61,9 @@ namespace OAuthWebView {
                 CanResize = false,
 #endif
                 Title = title,
-                Size = size,
-                MinSize = size,
-                MaxSize = size
+                Size = new SpiderEye.Size(size.Width, size.Height),
+                MinSize = new SpiderEye.Size(size.Width, size.Height),
+                MaxSize = new SpiderEye.Size(size.Width, size.Height)
             };
             window.Navigating += Window_Navigating;
             window.Closed += Window_Closed;
@@ -75,6 +91,15 @@ namespace OAuthWebView {
             window.Navigating -= Window_Navigating;
             Console.WriteLine($"Window closed.");
             mres.Set();
+        }
+
+        private void W32_NavigationStarting(object sender, string url) {
+            Console.WriteLine($"Navigating to {url}");
+            System.Diagnostics.Debug.WriteLine($"Navigating to {url}");
+            currentUri = new Uri(url);
+            if (currentUri.AbsolutePath == endUri.AbsolutePath) {
+                w32.Destroy();
+            }
         }
 
         private void Window_Navigating(object sender, NavigatingEventArgs e) {

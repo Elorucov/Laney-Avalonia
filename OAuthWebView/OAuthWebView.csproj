@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net6.0-windows;net7.0-windows</TargetFrameworks>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
@@ -10,12 +9,15 @@
     <Nullable>disable</Nullable>
     <Authors>ELOR — Elchin Orujov</Authors>
     <Copyright>Copyright (c) 2023 ELOR</Copyright>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="Bildstein.SpiderEye.Core" Version="1.0.0-beta.5" />
-    <PackageReference Include="Bildstein.SpiderEye.Linux" Version="1.0.0-beta.5" />
-    <PackageReference Include="Bildstein.SpiderEye.Mac" Version="1.0.0-beta.5" />
-    <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="Bildstein.SpiderEye.Windows" Version="1.0.0-beta.5" />
+    <PackageReference Condition="$([MSBuild]::IsOSPlatform('Linux'))" Include="Bildstein.SpiderEye.Linux" Version="1.0.0-beta.5" />
+    <PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="Bildstein.SpiderEye.Mac" Version="1.0.0-beta.5" />
+    <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="Microsoft.Web.WebView2" Version="1.0.1587.40" />
+    <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="Vanara.PInvoke.Kernel32" Version="3.4.13" />
+    <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="Vanara.PInvoke.User32" Version="3.4.13" />
   </ItemGroup>
 </Project>

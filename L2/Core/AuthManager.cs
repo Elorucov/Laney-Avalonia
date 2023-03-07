@@ -8,13 +8,14 @@ using ELOR.VKAPILib.Objects;
 using OAuthWebView;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class AuthManager {
         const int APP_ID = 6614620;
-        static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=995414&response_type=token&revoke=1&v={VKAPI.Version}");
+        static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&display=mobile&redirect_uri=https://oauth.vk.com/blank.html&scope=995414&response_type=token&revoke=1&v={VKAPI.Version}");
         static Uri finalUri = new Uri("https://oauth.vk.com/auth_redirect"); // почему не blank.html? Потому что у OauthWebView не детектит редирект туда.
 
         public static async Task<Tuple<int, string>> AuthWithOAuthAsync() {
@@ -22,7 +23,9 @@ namespace ELOR.Laney.Core {
             string accessToken = String.Empty;
 
             OAuthWindow window = new OAuthWindow(authUri, finalUri, "OAuth", 640, 560);
+            window.LocalDataPath = App.LocalDataPath;
             Uri url = await window.StartAuthenticationAsync();
+            if (url == null) return new Tuple<int, string>(userId, accessToken);
 
             var queries = url.Query.Substring(1).ParseQuery();
             if (queries.ContainsKey("authorize_url")) {
