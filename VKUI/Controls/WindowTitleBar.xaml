@@ -12,7 +12,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Grid x:Name="TitleBar" ColumnDefinitions="* Auto">
-          <TextBlock x:Name="WindowTitle" Grid.ColumnSpan="2" TextAlignment="Center" TextTrimming="CharacterEllipsis" FontWeight="SemiBold"/>
+          <TextBlock x:Name="WindowTitle" Grid.ColumnSpan="2" TextAlignment="Center" TextTrimming="CharacterEllipsis"/>
           <Border x:Name="DragArea" Grid.ColumnSpan="2" Background="Transparent"/>
           <Button x:Name="CloseButton" Grid.Column="1" IsVisible="False" Width="24" Height="24" MinHeight="24" CornerRadius="12" Margin="12" Padding="4">
             <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}" Foreground="{DynamicResource VKIconOutlineMediumBrush}"/>
@@ -23,8 +23,9 @@
 
     <Style Selector="^ /template/ TextBlock.Mac">
       <Setter Property="Margin" Value="68,3"/>
-      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="FontSize" Value="13"/>
       <Setter Property="LineHeight" Value="18"/>
+      <Setter Property="Foreground" Value="{DynamicResource VKTextSubheadBrush}"/>
     </Style>
     <Style Selector="^ /template/ TextBlock.Default">
       <Setter Property="Margin" Value="32,15"/>
