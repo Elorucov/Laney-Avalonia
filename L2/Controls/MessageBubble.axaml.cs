@@ -8,6 +8,7 @@ using Avalonia.Media;
 using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using System;
@@ -251,6 +252,15 @@ namespace ELOR.Laney.Controls {
             // Text
             SetText(Message.Text);
 
+            // Map
+            if (Message.Location != null) {
+                var glong = Message.Location.Coordinates.Longitude.ToString().Replace(",", ".");
+                var glat = Message.Location.Coordinates.Latitude.ToString().Replace(",", ".");
+                var w = Map.Width * App.Current.DPI;
+                var h = Map.Height * App.Current.DPI;
+                Map.SetImageBackgroundAsync(new Uri($"https://static-maps.yandex.ru/1.x/?ll={glong},{glat}&size={w},{h}&z=12&lang=ru_RU&l=pmap&pt={glong},{glat},vkbkm"), Convert.ToInt32(Map.Width));
+            }
+
             // Time & indicator class
             IndicatorContainer.Classes.RemoveAll(new string[3] { INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE });
             if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
@@ -343,7 +353,7 @@ namespace ELOR.Laney.Controls {
             var mam = MessageAttachments.Margin;
             MessageAttachments.Margin = new Thickness(mam.Left, atchTopMargin, mam.Right, mam.Bottom);
 
-            // Forwarded messages margin-top
+            // Map margin-top
             double mapTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null || 
                 !String.IsNullOrEmpty(Message.Text) || Message.Attachments.Count > 0 ? 0 : 4;
             var mapm = Map.Margin;
