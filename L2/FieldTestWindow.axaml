@@ -5,6 +5,7 @@
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="clr-namespace:VKUI.Controls;assembly=VKUI"
         xmlns:ctb="using:ColorTextBlock.Avalonia"
+        xmlns:lottie="using:Avalonia.Skia.Lottie"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="900"
         x:Class="ELOR.Laney.FieldTestWindow" WindowState="Maximized"
         Title="Field test" Background="{DynamicResource VKBackgroundContentBrush}">
@@ -109,6 +110,11 @@
       <StackPanel Margin="0,8,0,0">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="ColorTextBlock / TextParser test"/>
         <ctb:CTextBlock x:Name="aeTest" HorizontalAlignment="Left" Margin="8" Width="320" TextWrapping="Wrap"/>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Lottie test"/>
+        <lottie:Lottie x:Name="lottieSticker" Width="128" Height="128" Margin="8" HorizontalAlignment="Left"/>
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">

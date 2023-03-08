@@ -1,9 +1,14 @@
-﻿using ELOR.Laney.ViewModels;
+﻿using Avalonia.Platform.Storage;
+using ELOR.Laney.Core.Network;
+using ELOR.Laney.ViewModels;
 using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class CacheManager {
@@ -109,5 +114,31 @@ namespace ELOR.Laney.Core {
             if (t == null) return String.Empty;
             return id > 0 ? $"{t.Item1} {t.Item2}" : t.Item1;
         }
+
+        #region Files
+
+        public static async Task<bool> GetFileFromCacheAsync(Uri uri) {
+            try {
+                string cachePath = Path.Combine(App.LocalDataPath, "cache");
+                Directory.CreateDirectory(cachePath);
+
+                string filePath = Path.Combine(cachePath, uri.Segments.Last());
+                if (File.Exists(filePath)) return true;
+
+                HttpResponseMessage hmsg = await LNet.GetAsync(uri);
+                using (var stream = await hmsg.Content.ReadAsStreamAsync()) {
+                    using (var fileStream = File.Open(filePath, FileMode.Create)) {
+                        await stream.CopyToAsync(fileStream);
+                        await fileStream.FlushAsync();
+                    }
+                }
+                return true;
+            } catch (Exception ex) {
+                Log.Error(ex, "Error while caching a file!");
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

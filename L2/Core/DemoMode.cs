@@ -14,7 +14,11 @@ namespace ELOR.Laney.Core {
         public static bool Check() {
             Log.Information("Checking if app is running in demo mode...");
             string path = Path.Combine(App.LocalDataPath, "demo.json");
-            
+            if (!File.Exists(path)) {
+                Log.Information("File for demo mode is not found, skipping.");
+                return false;
+            }
+
             try {
                 FileStream file = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 4096);
 
@@ -34,7 +38,7 @@ namespace ELOR.Laney.Core {
                 IsEnabled = true;
                 return true;
             } catch (FileNotFoundException) {
-                Log.Information("File for demo mode is not found, skipping.");
+                Log.Warning("File for demo mode is not found, skipping.");
                 return false;
             } catch (Exception ex) {
                 Log.Error(ex, "An error ocured while trying to open and parse file for demo mode!");
