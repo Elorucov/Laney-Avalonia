@@ -192,7 +192,9 @@ namespace ELOR.Laney.Controls.Attachments {
                     };
                     Canvas.SetLeft(border, rect.Left);
                     Canvas.SetTop(border, rect.Top);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     if (p.Uri != null) border.SetImageBackgroundAsync(p.Uri, Convert.ToInt32(rect.Width));
+#pragma warning restore CS4014
                     canvas.Children.Add(border);
                     i++;
                 }
@@ -202,15 +204,14 @@ namespace ELOR.Laney.Controls.Attachments {
             // Sticker
             if (sticker != null) {
 
-                Image stickerImage = new Image() {
+                StickerPresenter sp = new StickerPresenter() {
                     Width = MessageBubble.STICKER_WIDTH,
                     Height = MessageBubble.STICKER_WIDTH,
                     Margin = new Thickness(0, 0, 0, 8),
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = "Sticker"
+                    Sticker = sticker
                 };
-                stickerImage.SetUriSourceAsync(sticker.Images[sticker.Images.Count - 1].Uri);
-                StandartAttachments.Children.Add(stickerImage);
+                StandartAttachments.Children.Add(sp);
             }
 
             // Graffiti
@@ -350,7 +351,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 prev.HorizontalAlignment = IsOutgoing.Value ? HorizontalAlignment.Right : HorizontalAlignment.Left;
 
                 var lastUI = StandartAttachments.Children.LastOrDefault();
-                if (lastUI != null && lastUI.Name == "Sticker") {
+                if (lastUI != null && lastUI is StickerPresenter) {
                     lastUI.Margin = new Thickness(0, -72, 0, 8);
                 }
                 StandartAttachments.Children.Insert(0, prev);

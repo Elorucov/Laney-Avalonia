@@ -49,9 +49,9 @@ namespace ELOR.Laney.Controls {
             }
         }
 
-        private void CheckImages() {
+        private async void CheckImages() {
             if (!isUILoaded || Message == null || Message.PreviewImageUri == null) return;
-            ImagePreview.SetImageBackgroundAsync(Message.PreviewImageUri);
+            await ImagePreview.SetImageBackgroundAsync(Message.PreviewImageUri);
         }
     }
 }

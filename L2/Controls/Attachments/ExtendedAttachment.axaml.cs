@@ -56,7 +56,7 @@ namespace ELOR.Laney.Controls.Attachments {
         Border PreviewImage;
         Button ActionButton;
 
-        protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
+        protected override async void OnApplyTemplate(TemplateAppliedEventArgs e) {
             base.OnApplyTemplate(e);
             EAButton = e.NameScope.Find<Button>(nameof(EAButton));
             PreviewImage = e.NameScope.Find<Border>(nameof(PreviewImage));
@@ -66,7 +66,7 @@ namespace ELOR.Laney.Controls.Attachments {
             ActionButton.Click += ActionButton_Click;
             Unloaded += BasicAttachment_Unloaded;
 
-            if (Preview != null) PreviewImage.SetImageBackgroundAsync(Preview);
+            if (Preview != null) await PreviewImage.SetImageBackgroundAsync(Preview);
         }
 
         #endregion
@@ -85,11 +85,11 @@ namespace ELOR.Laney.Controls.Attachments {
             Unloaded -= BasicAttachment_Unloaded;
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
+        protected override async void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
             base.OnPropertyChanged(change);
 
             if (change.Property == PreviewProperty) {
-                if (Preview != null) PreviewImage.SetImageBackgroundAsync(Preview);
+                if (Preview != null) await PreviewImage.SetImageBackgroundAsync(Preview);
             }
         }
     }

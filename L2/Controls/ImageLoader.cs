@@ -41,9 +41,9 @@ namespace ELOR.Laney.Controls {
             // SetIsLoading(sender, false);
         }
 
-        private static void OnBackgroundSourceChanged(Border sender, Uri uri) {
+        private static async void OnBackgroundSourceChanged(Border sender, Uri uri) {
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            sender.SetImageBackgroundAsync(uri, (int)sender.DesiredSize.Width);
+            await sender.SetImageBackgroundAsync(uri, (int)sender.DesiredSize.Width);
         }
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {

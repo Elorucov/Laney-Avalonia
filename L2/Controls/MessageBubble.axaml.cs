@@ -68,7 +68,7 @@ namespace ELOR.Laney.Controls {
         GiftUI Gift;
         CTextBlock MessageText;
         AttachmentsContainer MessageAttachments;
-        Border Map;
+        Rectangle Map;
         Border ForwardedMessagesContainer;
         StackPanel ForwardedMessagesStack;
         Border IndicatorContainer;
@@ -89,7 +89,7 @@ namespace ELOR.Laney.Controls {
             Gift = e.NameScope.Find<GiftUI>(nameof(Gift));
             MessageText = e.NameScope.Find<CTextBlock>(nameof(MessageText));
             MessageAttachments = e.NameScope.Find<AttachmentsContainer>(nameof(MessageAttachments));
-            Map = e.NameScope.Find<Border>(nameof(Map));
+            Map = e.NameScope.Find<Rectangle>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
             ForwardedMessagesStack = e.NameScope.Find<StackPanel>(nameof(ForwardedMessagesStack));
             IndicatorContainer = e.NameScope.Find<Border>(nameof(IndicatorContainer));
@@ -258,7 +258,7 @@ namespace ELOR.Laney.Controls {
                 var glat = Message.Location.Coordinates.Latitude.ToString().Replace(",", ".");
                 var w = Map.Width * App.Current.DPI;
                 var h = Map.Height * App.Current.DPI;
-                Map.SetImageBackgroundAsync(new Uri($"https://static-maps.yandex.ru/1.x/?ll={glong},{glat}&size={w},{h}&z=12&lang=ru_RU&l=pmap&pt={glong},{glat},vkbkm"), Convert.ToInt32(Map.Width));
+                Map.SetImageFillAsync(new Uri($"https://static-maps.yandex.ru/1.x/?ll={glong},{glat}&size={w},{h}&z=12&lang=ru_RU&l=pmap&pt={glong},{glat},vkbkm"), Convert.ToInt32(Map.Width));
             }
 
             // Time & indicator class

@@ -117,6 +117,7 @@ namespace ELOR.Laney.Core {
 
         #region Files
 
+        // TODO: TaskCompletionSource
         public static async Task<bool> GetFileFromCacheAsync(Uri uri) {
             try {
                 string cachePath = Path.Combine(App.LocalDataPath, "cache");
