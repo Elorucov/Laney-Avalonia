@@ -8,6 +8,7 @@ using Avalonia.Media;
 using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
@@ -284,9 +285,13 @@ namespace ELOR.Laney.Controls {
 
             // Empty space for sent time/status
             if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0) {
+                string editedPlaceholder = Message.EditTime != null ? Localizer.Instance["edited_indicator"] : "";
+                string favoritePlaceholder = Message.IsImportant ? "W" : "";
+                string outgoingPlaceholder = Message.IsOutgoing ? "W" : "";
                 MessageText.Content.Add(new CRun { 
-                    Text = "(edited) 22:22 W",
-                    Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0))
+                    Text = $"{favoritePlaceholder}{editedPlaceholder} 22:22{outgoingPlaceholder}",
+                    Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+                    FontSize = 12
                 });
             }
         }

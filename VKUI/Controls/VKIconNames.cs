@@ -2,6 +2,7 @@
     public static class VKIconNames {
         public const string Icon12ArrowUpRight = "Icon12ArrowUpRight";
         public const string Icon12Bomb = "Icon12Bomb";
+        public const string Icon12Favorite = "Icon12Favorite";
         public const string Icon12Mention = "Icon12Mention";
         public const string Icon12Star = "Icon12Star";
 
@@ -40,6 +41,10 @@
         public const string Icon20LinkCircleOutline = "Icon20LinkCircleOutline";
         public const string Icon20LockOutline = "Icon20LockOutline";
         public const string Icon20MentionOutline = "Icon20MentionOutline";
+        public const string Icon20MessageOutline = "Icon20MessageOutline";
+        public const string Icon20More = "Icon20More";
+        public const string Icon20NotificationOutline = "Icon20NotificationOutline";
+        public const string Icon20NotificationSlashOutline = "Icon20NotificationSlashOutline";
         public const string Icon20PictureOutline = "Icon20PictureOutline";
         public const string Icon20PinOutline = "Icon20PinOutline";
         public const string Icon20PinSlashOutline = "Icon20PinSlashOutline";
@@ -53,6 +58,9 @@
         public const string Icon20SmileOutline = "Icon20SmileOutline";
         public const string Icon20UnfavoriteOutline = "Icon20UnfavoriteOutline";
         public const string Icon20UnlockOutline = "Icon20UnlockOutline";
+        public const string Icon20UserAddOutline = "Icon20UserAddOutline";
+        public const string Icon20UserCheckOutline = "Icon20UserCheckOutline";
+        public const string Icon20UserOutline = "Icon20UserOutline";
         public const string Icon20VideoOutline = "Icon20VideoOutline";
         public const string Icon20WriteOutline = "Icon20WriteOutline";
         public const string Icon20WorkOutline = "Icon20WorkOutline";
