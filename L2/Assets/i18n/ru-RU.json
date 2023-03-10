@@ -235,6 +235,9 @@
   "lp_act_file_single": "отправляет файл",
   "im_status_more": "и ещё {0}",
 
+  "wnd_attachmentpicker": "Выберите...",
+  "wnd_peerprofile": "Профиль",
+
   "atchpicker_doctype_animations": "Анимации",
   "atchpicker_doctype_archives": "Архивы",
   "atchpicker_doctype_audio": "Аудио",

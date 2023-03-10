@@ -10,7 +10,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="612"
         x:Class="ELOR.Laney.Views.Modals.AttachmentPicker"
-        Title="Attachment picker">
+        Title="{i18n:Localize wnd_attachmentpicker}">
   <vkw:DialogWindow.Resources>
     <DataTemplate x:Key="PhotoAlbumTemplate" x:DataType="vke:AlbumLite">
       <StackPanel Width="220">

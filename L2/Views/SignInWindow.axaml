@@ -9,7 +9,7 @@
         Width="420" Height="540"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
-        Title="Welcome!">
+        Title="Laney">
   <Grid RowDefinitions="Auto * 48">
     <StackPanel Grid.Row="1" Margin="32,48" VerticalAlignment="Center">
       <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="12" Source="{StaticResource Logo}"/>
