@@ -31,7 +31,7 @@
   </vkw:DialogWindow.Resources>
     
   <Grid x:Name="Root" Grid.RowDefinitions="Auto Auto *">
-    <Grid x:Name="PeerInfo" IsVisible="{Binding !IsLoading}" Margin="24" ColumnDefinitions="Auto *">
+    <Grid x:Name="PeerInfo" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="24" ColumnDefinitions="Auto *">
       <vkui:Avatar x:Name="PeerAva" Width="80" Height="80" Margin="0,0,20,0" Initials="{Binding Header, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Avatar}"/>
       <StackPanel Grid.Column="1" VerticalAlignment="Center">
         <TextBlock FontSize="19" LineHeight="23" FontWeight="SemiBold" TextWrapping="Wrap" MaxLines="2" Margin="0,0,0,8" Text="{Binding Header}"/>
@@ -39,10 +39,11 @@
       </StackPanel>
     </Grid>
 
-    <Border x:Name="CommandsArea" Grid.Row="1" IsVisible="{Binding !IsLoading}" Margin="9,0">
+    <Border x:Name="CommandsArea" Grid.Row="1" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="9,0">
       <Grid ColumnDefinitions="* * * Auto">
         <Grid.Styles>
           <Style Selector="Button">
+            <Setter Property="Background" Value="{DynamicResource VKBackgroundLightBrush}"/>
             <Setter Property="Padding" Value="3,6"/>
             <Setter Property="Margin" Value="3,0"/>
           </Style>
@@ -80,7 +81,7 @@
       </Grid>
     </Border>
 
-    <TabControl Grid.Row="2" IsVisible="{Binding !IsLoading}" Margin="0,14,0,0" Classes="Accent">
+    <TabControl Grid.Row="2" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,14,0,0" Classes="Accent">
       <TabItem x:Name="FirstTab" Header="{i18n:Localize info}">
         <ContentControl x:Name="FirstTabContent" ContentTemplate="{StaticResource UserGroupInfoContentTemplate}"/>
       </TabItem>
@@ -100,8 +101,10 @@
 
       </TabItem>
     </TabControl>
-    
-    <vkui:Spinner Grid.RowSpan="3" IsVisible="{Binding IsLoading}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="44" Height="44"/>
+
+    <Border Grid.RowSpan="3" IsVisible="{Binding IsLoading}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="88" Height="88" Background="{DynamicResource VKBackgroundContentBrush}">
+      <vkui:Spinner Width="44" Height="44" Margin="22"/>
+    </Border>
 
     <Border Grid.RowSpan="3" IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKBackgroundContentBrush}">
       <vkui:Placeholder VerticalAlignment="Center"

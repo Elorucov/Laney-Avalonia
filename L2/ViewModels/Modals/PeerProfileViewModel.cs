@@ -40,16 +40,21 @@ namespace ELOR.Laney.ViewModels.Modals {
         public Command MoreCommand { get { return _moreCommand; } private set { _moreCommand = value; OnPropertyChanged(); } }
 
         private VKSession session;
+        public event EventHandler CloseWindowRequested;
 
         public PeerProfileViewModel(VKSession session, int peerId) {
             this.session = session;
             Id = peerId;
-            if (peerId > 2000000000) {
-                GetChat(peerId);
-            } else if (peerId > 0 && peerId < 1900000000) {
-                GetUser(peerId);
-            } else if (peerId < 0) {
-                GetGroup(peerId * -1);
+            Setup();
+        }
+
+        private void Setup() {
+            if (Id > 2000000000) {
+                GetChat(Id);
+            } else if (Id > 0 && Id < 1900000000) {
+                GetUser(Id);
+            } else if (Id < 0) {
+                GetGroup(Id * -1);
             }
         }
 
@@ -144,7 +149,10 @@ namespace ELOR.Laney.ViewModels.Modals {
             // или если открыт чат с этим юзером,
             // то не будем добавлять эту кнопку
             if ((user.CanWritePrivateMessage || user.MessagesCount > 0) && session.CurrentOpenedChat?.PeerId != user.Id) {
-                Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
+                    CloseWindowRequested?.Invoke(this, null);
+                    session.GetToChat(user.Id);
+                });
                 commands.Add(messageCmd);
             }
 
@@ -180,19 +188,19 @@ namespace ELOR.Laney.ViewModels.Modals {
             // Notifications
             if (session.UserId != user.Id) {
                 string notifIcon = user.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-                Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ToggleNotifications(!user.NotificationsDisabled, user.Id));
                 commands.Add(notifsCmd);
             }
 
             // Open in browser
-            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_profile"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_profile"], false, (a) => Launcher.LaunchUrl($"https://vk.com/id{user.Id}"));
             commands.Add(openExternalCmd);
 
             // Ban/unban
             if (session.UserId != user.Id && !user.Blacklisted) {
                 string banIcon = user.BlacklistedByMe ? VKIconNames.Icon20UnlockOutline : VKIconNames.Icon20BlockOutline;
                 string banLabel = Localizer.Instance[user.BlacklistedByMe ? "unblock" : "block"];
-                Command banCmd = new Command(banIcon, banLabel, true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command banCmd = new Command(banIcon, banLabel, true, (a) => ToggleBan(user.Id, user.BlacklistedByMe));
                 moreCommands.Add(banCmd);
             }
 
@@ -212,6 +220,20 @@ namespace ELOR.Laney.ViewModels.Modals {
             } else {
                 ThirdCommand = commands[2];
                 MoreCommand = moreCommand;
+            }
+        }
+
+        private async void ToggleBan(int userId, bool unban) {
+            IsLoading = true;
+            try {
+                bool result = unban ?
+                await session.API.Account.UnbanAsync(userId) :
+                await session.API.Account.BanAsync(userId);
+                IsLoading = false;
+                Setup(); // TODO: обновить кнопку, а не всё окно.
+            } catch (Exception ex) {
+                IsLoading = false;
+                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
             }
         }
 
@@ -273,23 +295,26 @@ namespace ELOR.Laney.ViewModels.Modals {
             List<Command> moreCommands = new List<Command>();
 
             if ((group.CanMessage || group.MessagesCount > 0) && session.CurrentOpenedChat.PeerId != -group.Id) {
-                Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
+                    CloseWindowRequested?.Invoke(this, null);
+                    session.GetToChat(-group.Id);
+                });
                 commands.Add(messageCmd);
             }
 
             // Notifications
             string notifIcon = group.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ToggleNotifications(!group.NotificationsDisabled, -group.Id));
             commands.Add(notifsCmd);
 
             // Open in browser
-            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_group"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_group"], false, (a) => Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
             commands.Add(openExternalCmd);
 
             // Allow/deny messages from group
             string banIcon = group.MessagesAllowed ? VKIconNames.Icon20BlockOutline : VKIconNames.Icon20Check;
             string banLabel = Localizer.Instance[group.MessagesAllowed ? "pp_deny" : "pp_allow"];
-            Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+            Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed, (a) => ToggleMessagesFromGroup(group.Id, group.MessagesAllowed));
             moreCommands.Add(banCmd);
 
             // Clear history
@@ -308,6 +333,20 @@ namespace ELOR.Laney.ViewModels.Modals {
             } else {
                 ThirdCommand = commands[2];
                 MoreCommand = moreCommand;
+            }
+        }
+
+        private async void ToggleMessagesFromGroup(int groupId, bool allowed) {
+            IsLoading = true;
+            try {
+                bool result = allowed ? 
+                    await session.API.Messages.DenyMessagesFromGroupAsync(groupId) :
+                    await session.API.Messages.AllowMessagesFromGroupAsync(groupId);
+                IsLoading = false;
+                Setup(); // TODO: обновить кнопку, а не всё окно.
+            } catch (Exception ex) {
+                IsLoading = false;
+                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
             }
         }
 
@@ -443,8 +482,9 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
 
             // Notifications
-            string notifIcon = chat.PushSettings != null && chat.PushSettings.DisabledUntil != 0 ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline; ;
-            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+            bool notifsDisabled = chat.PushSettings != null && chat.PushSettings.DisabledUntil != 0;
+            string notifIcon = notifsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
+            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ToggleNotifications(!notifsDisabled, chat.PeerId));
             commands.Add(notifsCmd);
 
             // Link
@@ -526,6 +566,18 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             ash.ShowAt(target as Control, true);
 
+        }
+
+        private async void ToggleNotifications(bool enabled, int id) {
+            IsLoading = true;
+            try {
+                var result = await session.API.Account.SetSilenceModeAsync(!enabled ? 0 : -1, id, true);
+                IsLoading = false;
+                Setup(); // TODO: обновить кнопку, а не всё окно.
+            } catch (Exception ex) {
+                IsLoading = false;
+                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
+            }
         }
 
         #endregion
