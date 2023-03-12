@@ -10,6 +10,8 @@ using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using VKUI.Controls;
 using VKUI.Popups;
@@ -22,7 +24,9 @@ namespace ELOR.Laney.ViewModels.Modals {
         private string _subhead;
         private Uri _avatar;
         private ObservableCollection<Tuple<string, string>> _information = new ObservableCollection<Tuple<string, string>>();
-        private ObservableCollection<Tuple<int, Uri, string, string, Command>> _members = new ObservableCollection<Tuple<int, Uri, string, string, Command>>();
+        private ObservableCollection<Tuple<int, Uri, string, string, Command>> _displayedMembers;
+        private string _memberSearchQuery;
+        
         private Command _firstCommand;
         private Command _secondCommand;
         private Command _thirdCommand;
@@ -33,23 +37,36 @@ namespace ELOR.Laney.ViewModels.Modals {
         public string Subhead { get { return _subhead; } private set { _subhead = value; OnPropertyChanged(); } }
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
         public ObservableCollection<Tuple<string, string>> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
-        public ObservableCollection<Tuple<int, Uri, string, string, Command>> Members { get { return _members; } private set { _members = value; OnPropertyChanged(); } }
+        public ObservableCollection<Tuple<int, Uri, string, string, Command>> DisplayedMembers { get { return _displayedMembers; } private set { _displayedMembers = value; OnPropertyChanged(); } }
+        public string MemberSearchQuery { get { return _memberSearchQuery; } set { _memberSearchQuery = value; OnPropertyChanged(); } }
+
         public Command FirstCommand { get { return _firstCommand; } private set { _firstCommand = value; OnPropertyChanged(); } }
         public Command SecondCommand { get { return _secondCommand; } private set { _secondCommand = value; OnPropertyChanged(); } }
         public Command ThirdCommand { get { return _thirdCommand; } private set { _thirdCommand = value; OnPropertyChanged(); } }
         public Command MoreCommand { get { return _moreCommand; } private set { _moreCommand = value; OnPropertyChanged(); } }
 
         private VKSession session;
+        private ObservableCollection<Tuple<int, Uri, string, string, Command>> allMembers = new ObservableCollection<Tuple<int, Uri, string, string, Command>>();
         public event EventHandler CloseWindowRequested;
 
         public PeerProfileViewModel(VKSession session, int peerId) {
             this.session = session;
             Id = peerId;
+            PropertyChanged += OnPropertyChanged;
             Setup();
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+            switch (e.PropertyName) {
+                case nameof(MemberSearchQuery):
+                    SearchMember();
+                    break;
+            }
         }
 
         private void Setup() {
             if (Id > 2000000000) {
+                MemberSearchQuery = null;
                 GetChat(Id);
             } else if (Id > 0 && Id < 1900000000) {
                 GetUser(Id);
@@ -79,6 +96,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SetupInfo(user);
                 SetupCommands(user);
             } catch (Exception ex) {
+                Header = null;
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetUser(userId));
             }
             IsLoading = false;
@@ -253,6 +271,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SetupInfo(group);
                 SetupCommands(group);
             } catch (Exception ex) {
+                Header = null; // чтобы содержимое окна было скрыто
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetGroup(groupId));
             }
             IsLoading = false;
@@ -374,13 +393,15 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SetupMembers(chat);
                 SetupCommands(chat);
             } catch (Exception ex) {
+                Header = null; // чтобы содержимое окна было скрыто
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetChat(peerId));
             }
             IsLoading = false;
         }
 
         private void SetupMembers(ChatInfoEx chat) {
-            Members.Clear();
+            allMembers.Clear();
+            DisplayedMembers = null;
             CacheManager.Add(chat.Members.Profiles);
             CacheManager.Add(chat.Members.Groups);
 
@@ -428,7 +449,8 @@ namespace ELOR.Laney.ViewModels.Modals {
 
                 Command command = SetUpMemberCommand(chat, member);
 
-                Members.Add(new Tuple<int, Uri, string, string, Command>(mid, avatar, name, desc, command));
+                allMembers.Add(new Tuple<int, Uri, string, string, Command>(mid, avatar, name, desc, command));
+                DisplayedMembers = allMembers;
             }
         }
 
@@ -436,6 +458,16 @@ namespace ELOR.Laney.ViewModels.Modals {
             ActionSheet ash = new ActionSheet {
                 Placement = FlyoutPlacementMode.BottomEdgeAlignedRight
             };
+
+            var profile = new ActionSheetItem {
+                Header = Localizer.Instance["open_profile"]
+            };
+            profile.Click += (a, b) => {
+                // TODO: открывать профиль в текущем окне PeerProfile с возможностью вернуться назад.
+                CloseWindowRequested?.Invoke(this, null);
+                Router.OpenPeerProfile(session, member.MemberId);
+            };
+            ash.Items.Add(profile);
 
             // TODO: админы (не создатель), которые тоже имеют права менять админов.
             bool canChangeAdmin = chat.OwnerId == session.Id;
@@ -525,6 +557,16 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SecondCommand = commands[1];
                 ThirdCommand = commands[2];
                 MoreCommand = moreCommand;
+            }
+        }
+
+        private void SearchMember() {
+            if (IsLoading) return;
+            if (!String.IsNullOrWhiteSpace(MemberSearchQuery)) {
+                var foundMembers = allMembers.Where(m => m.Item3.ToLower().Contains(MemberSearchQuery.ToLower()));
+                DisplayedMembers = new ObservableCollection<Tuple<int, Uri, string, string, Command>>(foundMembers);
+            } else {
+                DisplayedMembers = allMembers;
             }
         }
 
