@@ -117,6 +117,10 @@
         </vkui:Placeholder.Action>
       </vkui:Placeholder>
     </Grid>
+    
+    <Border x:Name="TopDateContainer" IsVisible="False" IsHitTestVisible="False" Background="{DynamicResource VKModalCardBackgroundBrush}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="8" Padding="12,4" CornerRadius="8" BoxShadow="0 4 8 #0A000000, 0 0 4 #0F000000">
+      <TextBlock x:Name="TopDate" Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}"/>
+    </Border>
 
     <Border x:Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="894" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
       <Grid>
@@ -181,6 +185,14 @@
           <TextBlock Margin="6,0,0,0">
             <Run Text="{Binding Composer.TextSelectionStart}"/><Run>/</Run><Run Text="{Binding Composer.TextSelectionEnd}"/>
           </TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock>First VM:</TextBlock>
+          <TextBlock x:Name="tmsgId" Margin="6,0,0,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+          <TextBlock>Last VM: </TextBlock>
+          <TextBlock x:Name="bmsgId" Margin="6,0,0,0"/>
         </StackPanel>
       </StackPanel>
     </Border>

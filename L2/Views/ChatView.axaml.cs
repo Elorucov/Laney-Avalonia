@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
 using ELOR.Laney.ViewModels.Controls;
@@ -20,6 +21,9 @@ namespace ELOR.Laney.Views {
         ScrollViewer MessagesListScrollViewer;                                          // height, offset
         Dictionary<int, Tuple<double, double>> ScrollPositions = new Dictionary<int, Tuple<double, double>>();
         bool canSaveScrollPosinion = false;
+
+        MessageViewModel FirstVisible { get => MessagesListScrollViewer?.GetDataContextAt<MessageViewModel>(new Point(64, 0)); }
+        MessageViewModel LastVisible { get => MessagesListScrollViewer?.GetDataContextAt<MessageViewModel>(new Point(64, MessagesListScrollViewer.DesiredSize.Height - 5)); }
 
         public ChatView() {
             InitializeComponent();
@@ -81,6 +85,7 @@ namespace ELOR.Laney.Views {
             }
 
             canSaveScrollPosinion = true;
+            CheckFirstAbdLastDisplayedMessages();
         }
 
         private async void ReceivedMessages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
@@ -112,9 +117,10 @@ namespace ELOR.Laney.Views {
 
                 int lastReceivedId = Chat.ReceivedMessages.LastOrDefault()?.Id ?? 0;
                 if (msg.Id == lastReceivedId) {
-                    // Принудителььно скроллим вниз
+                    // Принудительно скроллим вниз
                     double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
                     ForceScroll(h);
+                    // MessagesListScrollViewer.ScrollToEnd();
 
                     Log.Information($"Scroll to message\"{msg.Id}\" done.");
                 }
@@ -133,7 +139,8 @@ namespace ELOR.Laney.Views {
         bool autoScrollToLastMessage = false;
         private async void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
             double trigger = 160;
-            double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
+            double dh = MessagesListScrollViewer.DesiredSize.Height;
+            double h = MessagesListScrollViewer.Extent.Height - dh;
             double y = MessagesListScrollViewer.Offset.Y;
             dbgScrV.Text = $"{h}";
             dbgScrO.Text = $"{Math.Round(y)}";
@@ -187,6 +194,8 @@ namespace ELOR.Laney.Views {
                 autoScrollToLastMessage = false;
             }
             dbgScrAuto.Text = $"{autoScrollToLastMessage}";
+
+            CheckFirstAbdLastDisplayedMessages();
         }
 
         private void TrySaveScroll(object sender, bool e) {
@@ -197,6 +206,26 @@ namespace ELOR.Laney.Views {
         private void ScrollToMessage(object sender, int messageId) {
             if (Chat.DisplayedMessages == null) return;
             MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
+        }
+
+        private void CheckFirstAbdLastDisplayedMessages() {
+            MessageViewModel fv = FirstVisible;
+            MessageViewModel lv = LastVisible;
+            if (Settings.ShowDebugCounters) {
+                tmsgId.Text = fv?.Id.ToString() ?? "N/A";
+                bmsgId.Text = lv?.Id.ToString() ?? "N/A";
+            }
+            UpdateDateUnderHeader(fv);
+        }
+
+        private void UpdateDateUnderHeader(MessageViewModel msg) {
+            if (msg == null) {
+                TopDateContainer.IsVisible = false;
+                return;
+            }
+
+            TopDate.Text = msg.SentTime.ToHumanizedDateString();
+            TopDateContainer.IsVisible = true;
         }
 
         private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {

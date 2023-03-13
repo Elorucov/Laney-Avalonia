@@ -95,6 +95,13 @@ namespace ELOR.Laney.Extensions {
             return found.Count > 0 ? found[0] : default;
         }
 
+        public static T GetDataContextAt<T>(this Control control, Point position) {
+            if (control == null) return default;
+            Control el = control.GetVisualAt(position) as Control;
+            if (el != null && el.DataContext != null && el.DataContext is T target) return target;
+            return default;
+        }
+
         #region ScrollViewer specific
 
         private const double SV_END_DISTANCE = 192;
