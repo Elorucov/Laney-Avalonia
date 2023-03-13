@@ -13,12 +13,12 @@
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel Background="Transparent">
-          <Border x:Name="DateContainer" HorizontalAlignment="Center" CornerRadius="12" IsVisible="{Binding Message.IsDateBetweenVisible, RelativeSource={RelativeSource TemplatedParent}}">
-            <TextBlock Classes="Caption1" Margin="6,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Message.SentTime.Date, Converter={StaticResource dc} RelativeSource={RelativeSource TemplatedParent}}"/>
+          <Border x:Name="DateContainer" HorizontalAlignment="Center" CornerRadius="13" IsVisible="{Binding Message.IsDateBetweenVisible, RelativeSource={RelativeSource TemplatedParent}}">
+            <TextBlock Classes="Subhead" Margin="8,4" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Message.SentTime.Date, Converter={StaticResource dc} RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
           <!-- TODO: кликабельные имена -->
-          <Border x:Name="ServiceMessageUI" Margin="0,4" HorizontalAlignment="Center" CornerRadius="12" IsVisible="{Binding Message.Action, Converter={x:Static ObjectConverters.IsNotNull} RelativeSource={RelativeSource TemplatedParent}}">
-            <TextBlock Classes="Caption1" Margin="6,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
+          <Border x:Name="ServiceMessageUI" Margin="0,4" HorizontalAlignment="Center" CornerRadius="13" IsVisible="{Binding Message.Action, Converter={x:Static ObjectConverters.IsNotNull} RelativeSource={RelativeSource TemplatedParent}}">
+            <TextBlock Classes="Subhead" Margin="8,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
           <Border x:Name="ExpiredMessageUI" HorizontalAlignment="Center" Height="40" CornerRadius="20" Background="{DynamicResource VKModalCardBackgroundBrush}" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}" BorderThickness="1" IsVisible="{Binding Message.IsExpired, RelativeSource={RelativeSource TemplatedParent}}">
             <StackPanel Orientation="Horizontal">
