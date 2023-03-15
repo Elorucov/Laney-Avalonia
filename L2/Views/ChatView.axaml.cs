@@ -31,6 +31,7 @@ namespace ELOR.Laney.Views {
             MessagesList.Loaded += (a, b) => {
                 MessagesListScrollViewer = MessagesList.Scroll as ScrollViewer;
                 MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+                MessagesListScrollViewer.PropertyChanged += MessagesListScrollViewer_PropertyChanged;
                 new ListBoxAutoScrollHelper(MessagesList) {
                     ScrollToLastItemAfterTabFocus = true
                 };
@@ -40,6 +41,7 @@ namespace ELOR.Laney.Views {
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
             DataContextChanged += ChatView_DataContextChanged;
             PinnedMessageButton.Click += PinnedMessageButton_Click;
+            LoadingSpinner.PropertyChanged += LoadingSpinner_PropertyChanged;
 
             DebugOverlay.IsVisible = Settings.ShowDebugCounters;
             Settings.SettingChanged += Settings_SettingChanged;
@@ -85,7 +87,7 @@ namespace ELOR.Laney.Views {
             }
 
             canSaveScrollPosinion = true;
-            CheckFirstAbdLastDisplayedMessages();
+            CheckFirstAndLastDisplayedMessages();
         }
 
         private async void ReceivedMessages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
@@ -137,7 +139,15 @@ namespace ELOR.Laney.Views {
         double oldScrollViewerHeight = 0;
         bool needToSaveScroll = false;
         bool autoScrollToLastMessage = false;
-        private async void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
+            CheckScroll();
+        }
+
+        private void MessagesListScrollViewer_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
+            if (e.Property == ScrollViewer.ExtentProperty) CheckScroll();
+        }
+
+        private async void CheckScroll() {
             double trigger = 160;
             double dh = MessagesListScrollViewer.DesiredSize.Height;
             double h = MessagesListScrollViewer.Extent.Height - dh;
@@ -195,7 +205,8 @@ namespace ELOR.Laney.Views {
             }
             dbgScrAuto.Text = $"{autoScrollToLastMessage}";
 
-            CheckFirstAbdLastDisplayedMessages();
+            await Task.Delay(32); // надо
+            CheckFirstAndLastDisplayedMessages();
         }
 
         private void TrySaveScroll(object sender, bool e) {
@@ -208,14 +219,16 @@ namespace ELOR.Laney.Views {
             MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
         }
 
-        private void CheckFirstAbdLastDisplayedMessages() {
+        private void CheckFirstAndLastDisplayedMessages() {
             MessageViewModel fv = FirstVisible;
             MessageViewModel lv = LastVisible;
             if (Settings.ShowDebugCounters) {
                 tmsgId.Text = fv?.Id.ToString() ?? "N/A";
                 bmsgId.Text = lv?.Id.ToString() ?? "N/A";
             }
+
             UpdateDateUnderHeader(fv);
+            HopNavContainer.IsVisible = lv == null || Chat?.LastMessage?.Id != lv.Id;
         }
 
         private void UpdateDateUnderHeader(MessageViewModel msg) {
@@ -230,6 +243,14 @@ namespace ELOR.Laney.Views {
 
         private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {
             Chat.GoToMessage(Chat.PinnedMessage);
+        }
+
+        private void LoadingSpinner_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
+            if (e.Property == VKUI.Controls.Spinner.IsVisibleProperty) {
+                TopDateContainer.IsVisible = !LoadingSpinner.IsVisible;
+                HopNavContainer.IsVisible = !LoadingSpinner.IsVisible;
+                if (!LoadingSpinner.IsVisible) CheckFirstAndLastDisplayedMessages();
+            }
         }
 
         private void ChatView_SizeChanged(object sender, SizeChangedEventArgs e) {

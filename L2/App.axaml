@@ -122,6 +122,21 @@
       <Setter Property="MinHeight" Value="0"/>
     </Style>
 
+    <!-- Unread counter -->
+    <Style Selector="Border.Unmuted">
+      <Setter Property="Background" Value="{DynamicResource VKCounterPrimaryBackgroundBrush}"/>
+    </Style>
+    <Style Selector="Border.Unmuted > TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource VKCounterPrimaryTextBrush}"/>
+    </Style>
+
+    <Style Selector="Border.Muted">
+      <Setter Property="Background" Value="{DynamicResource VKCounterSecondaryBackgroundBrush}"/>
+    </Style>
+    <Style Selector="Border.Muted > TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource VKCounterSecondaryTextBrush}"/>
+    </Style>
+
     <Style Selector="Border.Debug TextBlock">
       <Setter Property="LineHeight" Value="16"/>
       <Setter Property="FontSize" Value="12"/>

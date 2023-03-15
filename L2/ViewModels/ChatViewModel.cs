@@ -54,6 +54,7 @@ namespace ELOR.Laney.ViewModels {
         private int _selectedMessagesCount;
         private ObservableCollection<Command> _messagesCommands = new ObservableCollection<Command>();
         private RelayCommand _openProfileCommand;
+        private RelayCommand _goToLastMessageCommand;
 
         public PeerType PeerType { get { return _peerType; } private set { _peerType = value; OnPropertyChanged(); } }
         public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -88,6 +89,7 @@ namespace ELOR.Laney.ViewModels {
         public int SelectedMessagesCount { get { return _selectedMessagesCount; } private set { _selectedMessagesCount = value; OnPropertyChanged(); } }
         public ObservableCollection<Command> MessagesCommands { get { return _messagesCommands; } private set { _messagesCommands = value; OnPropertyChanged(); } }
         public RelayCommand OpenProfileCommand { get { return _openProfileCommand; } private set { _openProfileCommand = value; OnPropertyChanged(); } }
+        public RelayCommand GoToLastMessageCommand { get { return _goToLastMessageCommand; } private set { _goToLastMessageCommand = value; OnPropertyChanged(); } }
 
 
         public SelectionModel<MessageViewModel> SelectedMessages { get; } = new SelectionModel<MessageViewModel> { 
@@ -168,6 +170,12 @@ namespace ELOR.Laney.ViewModels {
             IsMarkedAsUnread = c.IsMarkedUnread;
             IsPinned = SortId.MajorId > 0 && SortId.MajorId % 16 == 0;
 
+            if (PushSettings == null) PushSettings = new PushSettings { 
+                NoSound = false,
+                DisabledForever = false,
+                DisabledUntil = 0
+            };
+
             if (c.Mentions != null && c.Mentions.Count > 0) {
                 Mentions = new ObservableCollection<int>(c.Mentions);
                 HasMention = true;
@@ -223,6 +231,7 @@ namespace ELOR.Laney.ViewModels {
                 }
             } else {
                 OpenProfileCommand = new RelayCommand(OpenPeerProfile);
+                GoToLastMessageCommand = new RelayCommand(GoToLastMessage);
             }
 
             UpdateRestrictionInfo();
@@ -328,6 +337,31 @@ namespace ELOR.Laney.ViewModels {
             Router.OpenPeerProfile(session, PeerId);
         }
 
+        private async void GoToLastMessage(object obj) {
+            if (IsLoading) return;
+
+            if (DisplayedMessages.Last.Id == LastMessage.Id) {
+                GoToMessage(LastMessage);
+            } else {
+                Log.Information($"GoToLastMessage: last message in chat is not displayed. Showing ReceivedMessages...");
+                DisplayedMessages = new MessagesCollection(ReceivedMessages.ToList());
+                await Task.Delay(16); // надо чтобы не крашилось.
+                ScrollToMessageRequested?.Invoke(this, LastMessage.Id);
+                if (ReceivedMessages.Count < 20) {
+                    Log.Information($"GoToLastMessage: need get more messages from API to display.");
+                    MessagesChunkLoaded += PrevMessagesLoaded;
+                    LoadPreviousMessages();
+                }
+            }
+        }
+
+        private async void PrevMessagesLoaded(object sender, bool next) {
+            if (next) return;
+            MessagesChunkLoaded -= PrevMessagesLoaded;
+            await Task.Delay(16); // надо
+            ScrollToMessageRequested?.Invoke(this, LastMessage.Id);
+        }
+
         public void ClearSelectedMessages() {
             SelectedMessages.Clear();
         }
@@ -356,6 +390,7 @@ namespace ELOR.Laney.ViewModels {
         #region Loading messages
 
         public async void GoToMessage(MessageViewModel message) {
+            if (message == null) return;
             if (message.Id > 0) {
                 MessageViewModel msg = (from m in DisplayedMessages where m.Id == message.Id select m).FirstOrDefault();
                 // TODO: искать ещё и в received messages.

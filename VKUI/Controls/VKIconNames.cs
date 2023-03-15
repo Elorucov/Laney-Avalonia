@@ -31,6 +31,7 @@
         public const string Icon20DocumentOutline = "Icon20DocumentOutline";
         public const string Icon20DoorArrowRightOutline = "Icon20DoorArrowRightOutline";
         public const string Icon20DoorEnterArrowRightOutline = "Icon20DoorEnterArrowRightOutline";
+        public const string Icon20Dropdown = "Icon20Dropdown";
         public const string Icon20EducationOutline = "Icon20EducationOutline";
         public const string Icon20FavoriteOutline = "Icon20FavoriteOutline";
         public const string Icon20FollowersOutline = "Icon20FollowersOutline";

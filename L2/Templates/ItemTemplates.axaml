@@ -38,11 +38,8 @@
               </Border>
             </Grid>
             <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}">
-              <Border x:Name="UnreadMessagesIndicatorMuted" IsVisible="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterSecondaryBackgroundBrush}">
-                <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Foreground="{DynamicResource VKCounterSecondaryTextBrush}" Text="{Binding UnreadMessagesCount}"/>
-              </Border>
-              <Border x:Name="UnreadMessagesIndicator" IsVisible="{Binding !PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
-                <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Foreground="{DynamicResource VKCounterPrimaryTextBrush}" Text="{Binding UnreadMessagesCount}"/>
+              <Border x:Name="UnreadMessagesIndicator" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9">
+                <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
               </Border>
             </Grid>
             <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="0,0,8,0" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}"/>
@@ -88,11 +85,8 @@
               </Border>
             </Grid>
             <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}">
-              <Border x:Name="UnreadMessagesIndicatorMuted" IsVisible="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterSecondaryBackgroundBrush}">
-                <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Foreground="{DynamicResource VKCounterSecondaryTextBrush}" Text="{Binding UnreadMessagesCount}"/>
-              </Border>
-              <Border x:Name="UnreadMessagesIndicator" IsVisible="{Binding !PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
-                <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Foreground="{DynamicResource VKCounterPrimaryTextBrush}" Text="{Binding UnreadMessagesCount}"/>
+              <Border x:Name="UnreadMessagesIndicator" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9">
+                <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
               </Border>
             </Grid>
             <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="0,0,8,0" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}"/>
