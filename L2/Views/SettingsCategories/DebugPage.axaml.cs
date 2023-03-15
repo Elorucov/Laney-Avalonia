@@ -12,6 +12,7 @@ namespace ELOR.Laney.Views.SettingsCategories {
             c01.IsVisible = false;
             c02.IsVisible = false;
             c04.IsVisible = false;
+            c05.IsVisible = false;
 #endif
         }
 
@@ -33,6 +34,9 @@ namespace ELOR.Laney.Views.SettingsCategories {
 
             p04.IsChecked = Settings.ShowDevItemsInContextMenus;
             p04.Click += (a, b) => Settings.ShowDevItemsInContextMenus = (bool)(a as ToggleSwitch).IsChecked;
+
+            p05.IsChecked = Settings.DisableMarkingMessagesAsRead;
+            p05.Click += (a, b) => Settings.DisableMarkingMessagesAsRead = (bool)(a as ToggleSwitch).IsChecked;
         }
 
         private void b01_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

@@ -337,7 +337,7 @@ namespace ELOR.Laney.ViewModels {
             Router.OpenPeerProfile(session, PeerId);
         }
 
-        private async void GoToLastMessage(object obj) {
+        private void GoToLastMessage(object obj) {
             if (IsLoading) return;
 
             if (DisplayedMessages.Last.Id == LastMessage.Id) {
@@ -345,7 +345,6 @@ namespace ELOR.Laney.ViewModels {
             } else {
                 Log.Information($"GoToLastMessage: last message in chat is not displayed. Showing ReceivedMessages...");
                 DisplayedMessages = new MessagesCollection(ReceivedMessages.ToList());
-                await Task.Delay(16); // надо чтобы не крашилось.
                 ScrollToMessageRequested?.Invoke(this, LastMessage.Id);
                 if (ReceivedMessages.Count < 20) {
                     Log.Information($"GoToLastMessage: need get more messages from API to display.");
@@ -355,10 +354,9 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        private async void PrevMessagesLoaded(object sender, bool next) {
+        private void PrevMessagesLoaded(object sender, bool next) {
             if (next) return;
             MessagesChunkLoaded -= PrevMessagesLoaded;
-            await Task.Delay(16); // надо
             ScrollToMessageRequested?.Invoke(this, LastMessage.Id);
         }
 
@@ -389,7 +387,7 @@ namespace ELOR.Laney.ViewModels {
 
         #region Loading messages
 
-        public async void GoToMessage(MessageViewModel message) {
+        public void GoToMessage(MessageViewModel message) {
             if (message == null) return;
             if (message.Id > 0) {
                 MessageViewModel msg = (from m in DisplayedMessages where m.Id == message.Id select m).FirstOrDefault();
@@ -400,8 +398,7 @@ namespace ELOR.Laney.ViewModels {
                     LoadMessages(message.Id);
                 }
             } else {
-                VKUIDialog dlg = new VKUIDialog("Showing message in window is not ready yet!", message.ToString());
-                await dlg.ShowDialog<int>(VKSession.Main.Window);
+                ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
             }
         }
 
@@ -434,7 +431,7 @@ namespace ELOR.Laney.ViewModels {
                 mhr.Messages.Reverse();
                 DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
 
-                await Task.Delay(100);
+                await Task.Delay(32);
                 if (startMessageId > 0) ScrollToMessageRequested?.Invoke(this, startMessageId);
                 if (startMessageId == -1) {
                     ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
@@ -443,7 +440,6 @@ namespace ELOR.Laney.ViewModels {
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => { LoadMessages(startMessageId); });
             } finally {
                 IsLoading = false;
-                // SetPlaceholder();
             }
         }
 

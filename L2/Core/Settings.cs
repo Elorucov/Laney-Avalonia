@@ -145,6 +145,8 @@ namespace ELOR.Laney.Core {
         public const string DEBUG_LOGS_CORE = "log_to_file_core";
         public const string DEBUG_LOGS_LP = "log_to_file_lp";
 
+        public const string DEBUG_MARK_AS_READ_OFF = "no_mark_as_read";
+
         public const string DEBUG_FPS = "dbg_fps";
         public const string DEBUG_COUNTERS_CHAT = "dbg_counters_chat";
         public const string DEBUG_COUNTERS_RAM = "dbg_counters_ram";
@@ -221,6 +223,11 @@ namespace ELOR.Laney.Core {
         public static bool ShowDevItemsInContextMenus {
             get => Get(DEBUG_CONTEXT_MENU, false);
             set => Set(DEBUG_CONTEXT_MENU, value);
+        }
+
+        public static bool DisableMarkingMessagesAsRead {
+            get => Get(DEBUG_MARK_AS_READ_OFF, false);
+            set => Set(DEBUG_MARK_AS_READ_OFF, value);
         }
 
         #endregion

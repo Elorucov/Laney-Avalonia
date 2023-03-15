@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
@@ -20,6 +21,7 @@ namespace ELOR.Laney.Views {
         ChatViewModel Chat { get; set; }
         ScrollViewer MessagesListScrollViewer;                                          // height, offset
         Dictionary<int, Tuple<double, double>> ScrollPositions = new Dictionary<int, Tuple<double, double>>();
+        DispatcherTimer markReadTimer;
         bool canSaveScrollPosinion = false;
 
         MessageViewModel FirstVisible { get => MessagesListScrollViewer?.GetDataContextAt<MessageViewModel>(new Point(64, 0)); }
@@ -32,6 +34,15 @@ namespace ELOR.Laney.Views {
                 MessagesListScrollViewer = MessagesList.Scroll as ScrollViewer;
                 MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
                 MessagesListScrollViewer.PropertyChanged += MessagesListScrollViewer_PropertyChanged;
+
+                if (!Settings.DisableMarkingMessagesAsRead) {
+                    markReadTimer = new DispatcherTimer {
+                        Interval = TimeSpan.FromSeconds(1)
+                    };
+                    markReadTimer.Tick += MarkReadTimer_Tick;
+                    markReadTimer.Start();
+                }
+
                 new ListBoxAutoScrollHelper(MessagesList) {
                     ScrollToLastItemAfterTabFocus = true
                 };
@@ -214,8 +225,9 @@ namespace ELOR.Laney.Views {
             needToSaveScroll = true;
         }
 
-        private void ScrollToMessage(object sender, int messageId) {
+        private async void ScrollToMessage(object sender, int messageId) {
             if (Chat.DisplayedMessages == null) return;
+            await Task.Delay(16); // надо чтобы не крашилось.
             MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
         }
 
@@ -260,6 +272,30 @@ namespace ELOR.Laney.Views {
                 if (!MessagesCommandsRoot.Classes.Contains("CompactMsgCmd")) MessagesCommandsRoot.Classes.Add("CompactMsgCmd");
             }
         }
+
+        #region Mark message as read
+
+        private void MarkReadTimer_Tick(object sender, EventArgs e) {
+            TryMarkAsRead(LastVisible);
+        }
+
+        bool isMarking = false;
+        private async void TryMarkAsRead(MessageViewModel msg) {
+            if (isMarking || msg == null || msg.State != MessageVMState.Unread) return;
+            isMarking = true;
+
+            try {
+                var session = VKSession.GetByDataContext(this);
+                bool result = await session.API.Messages.MarkAsReadAsync(session.GroupId, Chat.PeerId, msg.Id);
+                await Task.Delay(1000);
+            } catch (Exception ex) {
+                Log.Error(ex, $"Unable to mark message (id {msg.Id}) as read!");
+            } finally {
+                isMarking = false;
+            }
+        }
+
+        #endregion
 
         #region Context menu for message
 

@@ -51,6 +51,11 @@
               <ToggleSwitch x:Name="p04"/>
             </vkui:Cell.After>
           </vkui:Cell>
+        <vkui:Cell x:Name="c05" Header="Disable marking messages as read">
+            <vkui:Cell.After>
+              <ToggleSwitch x:Name="p05"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
         </StackPanel>
       </Border>
     </StackPanel>
