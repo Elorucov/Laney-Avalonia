@@ -2,13 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="572"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
         x:Class="ELOR.Laney.Views.Modals.About"
-        Width="420" Height="540"
+        Width="420" Height="572"
         Title="{i18n:Localize about}">
   <Grid x:Name="Root" RowDefinitions="Auto * Auto">
     <Grid.Styles>
@@ -29,6 +29,7 @@
       <vkui:Cell x:Name="versionCell" Header="{i18n:Localize app_version}"/>
       <vkui:Cell x:Name="buildTimeCell" Header="{i18n:Localize build_time}"/>
       <vkui:Cell x:Name="dotnetVersionCell" Header="Runtime"/>
+      <vkui:Cell x:Name="launchTimeCell" Header="Launch time"/>
       <Rectangle Classes="Separator" Margin="12,6"/>
       <Button x:Name="b01" Classes="Tertiary">
         <vkui:Cell Header="{i18n:Localize about_offical_group}" Subtitle="{i18n:Localize about_offical_group_desc}"/>

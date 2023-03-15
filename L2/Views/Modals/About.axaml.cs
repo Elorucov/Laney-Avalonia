@@ -14,6 +14,7 @@ namespace ELOR.Laney.Views.Modals {
             versionCell.After = $"{App.BuildInfo}";
             dotnetVersionCell.After = RuntimeInformation.FrameworkDescription;
             buildTimeCell.After = App.BuildTime;
+            launchTimeCell.After = TimeSpan.FromMilliseconds(Program.LaunchTime).ToString(@"%s\.fff") + " sec.";
 
             string str = String.Empty;
             AssetsManager.Check(out str);
