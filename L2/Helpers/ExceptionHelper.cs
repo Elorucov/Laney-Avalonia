@@ -61,6 +61,7 @@ namespace ELOR.Laney.Helpers {
 
         public static async Task<bool> ShowErrorDialogAsync(Window owner, Exception ex, bool hideRetry = false) {
             if (ex is AggregateException agex) ex = agex.InnerException;
+            if (ex is APIException apiex && apiex.Code == 14) return true;
             Tuple<string, string> err = GetDefaultErrorInfo(ex);
             return await ShowErrorDialogAsync(owner, err, hideRetry);
         }

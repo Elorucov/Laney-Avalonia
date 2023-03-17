@@ -191,7 +191,7 @@
             IsHitTestVisible="False" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#7f000000" TextElement.Foreground="White">
       <StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock>Scroll: </TextBlock>
+          <TextBlock>Scroll:</TextBlock>
           <TextBlock x:Name="dbgScrV" Margin="6,0,0,0"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
@@ -209,11 +209,11 @@
           </TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock>First VM:</TextBlock>
+          <TextBlock>FVM:</TextBlock>
           <TextBlock x:Name="tmsgId" Margin="6,0,0,0"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock>Last VM: </TextBlock>
+          <TextBlock>LVM:</TextBlock>
           <TextBlock x:Name="bmsgId" Margin="6,0,0,0"/>
         </StackPanel>
       </StackPanel>

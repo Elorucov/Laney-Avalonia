@@ -55,7 +55,7 @@ namespace ELOR.Laney {
 
             try {
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnMainWindowClose);
+                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
             } finally {
                 Log.Information("App closed.\n");
                 Log.CloseAndFlush();

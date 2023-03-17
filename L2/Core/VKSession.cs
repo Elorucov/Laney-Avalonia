@@ -20,6 +20,8 @@ using Avalonia.Threading;
 using ELOR.Laney.DataModels;
 using Newtonsoft.Json;
 using ELOR.Laney.Views.Modals;
+using ELOR.VKAPILib.Objects.HandlerDatas;
+using ELOR.Laney.Helpers;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -100,17 +102,25 @@ namespace ELOR.Laney.Core {
             ash.Items.Add(about);
             ash.Items.Add(logout);
 
+#if RELEASE
+#elif BETA
+#else
+
             List<ActionSheetItem> devmenu = new List<ActionSheetItem>();
-            if (DemoMode.IsEnabled) {
-                ActionSheetItem demoresize = new ActionSheetItem {
+            if (!DemoMode.IsEnabled) {
+                ActionSheetItem captcha = new ActionSheetItem {
                     Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
-                    Header = "Resize 1134x756",
+                    Header = "Show captcha",
                 };
-                demoresize.Click += (a, b) => {
-                    Window.WindowState = WindowState.Normal;
-                    Window.PlatformImpl.Resize(new Size(1134, 756));
+                captcha.Click += async (a, b) => {
+                    try {
+                        int i = await API.CallMethodAsync<int>("captcha.force");
+                        await new VKUIDialog("Result", i.ToString()).ShowDialog<int>(ModalWindow);
+                    } catch (Exception ex) {
+                        await ExceptionHelper.ShowErrorDialogAsync(ModalWindow, ex, true);
+                    }
                 };
-                // devmenu.Add(demoresize);
+                devmenu.Add(captcha);
             }
 
             if (devmenu.Count > 0) {
@@ -121,6 +131,8 @@ namespace ELOR.Laney.Core {
             }
 
             ash.ShowAt(owner);
+
+#endif
         }
 
         public static NativeMenu TrayMenu { get; private set; }
@@ -129,7 +141,7 @@ namespace ELOR.Laney.Core {
             TrayMenu = new NativeMenu();
 
             foreach (var session in VKSession.Sessions) {
-                if (session.GroupId == 142317063 || session.GroupId == 176011438) continue; // Temporary
+                // if (session.GroupId == 142317063 || session.GroupId == 176011438) continue; // Temporary
 
                 var item = new NativeMenuItem { Header = session.Name };
                 item.Click += (a, b) => TryOpenSessionWindow(session.Id);
@@ -158,13 +170,14 @@ namespace ELOR.Laney.Core {
                 ToolTipText = "Laney"
             };
 
-            TrayIcons icons = new TrayIcons();
-            icons.Add(icon);
+            TrayIcons icons = new TrayIcons {
+                icon
+            };
 
             Application.Current.SetValue(TrayIcon.IconsProperty, icons);
         }
 
-        #endregion
+#endregion
 
         #region Internal
 
@@ -177,6 +190,7 @@ namespace ELOR.Laney.Core {
                     ImViewModel = new ImViewModel(this);
                     return;
                 }
+                API.CaptchaHandler = ShowCaptcha;
                 if (API.WebRequestCallback == null) API.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
 
                 List<VKSession> sessions = new List<VKSession>();
@@ -232,6 +246,38 @@ namespace ELOR.Laney.Core {
             }
 
             if (ImViewModel == null) ImViewModel = new ImViewModel(this);
+        }
+
+        private async Task<string> ShowCaptcha(CaptchaHandlerData arg) {
+            return await Task.Factory.StartNew(() => {
+                string code = null;
+
+                Dispatcher.UIThread.InvokeAsync(async () => {
+                    Image captchaImg = new Image {
+                        Width = 130,
+                        Height = 50
+                    };
+                    captchaImg.SetUriSourceAsync(arg.Image, Convert.ToInt32(captchaImg.Width));
+                    TextBox codeTxt = new TextBox {
+                        Width = 130,
+                        MaxLength = 10,
+                        Margin = new Thickness(0, 12, 0, 0)
+                    };
+
+                    StackPanel panel = new StackPanel {
+                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
+                    };
+                    panel.Children.Add(captchaImg);
+                    panel.Children.Add(codeTxt);
+
+                    VKUIDialog dialog = new VKUIDialog("Enter code", null);
+                    dialog.DialogContent = panel;
+                    int result = await dialog.ShowDialog<int>(ModalWindow);
+                    if (result == 1) code = codeTxt.Text;
+                }).Wait();
+
+                return code;
+            });
         }
 
         private static void TryOpenSessionWindow(object? sender, RoutedEventArgs e) {
@@ -319,10 +365,6 @@ namespace ELOR.Laney.Core {
         }
 
         public static void StartDemoSession(DemoModeSession mainSession) {
-            Dictionary<int, List<LongPollActivityInfo>> test = new Dictionary<int, List<LongPollActivityInfo>>();
-            test.Add(2000000100, new List<LongPollActivityInfo> { new LongPollActivityInfo(172894294, LongPollActivityType.Typing) });
-            string ss = JsonConvert.SerializeObject(test);
-
             CacheManager.Add(DemoMode.Data.Profiles);
             CacheManager.Add(DemoMode.Data.Groups);
             foreach (var ds in DemoMode.Data.Sessions) {

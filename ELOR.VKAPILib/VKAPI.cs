@@ -177,8 +177,18 @@ namespace ELOR.VKAPILib {
                 string key = String.Empty;
                 key = await CaptchaHandler.Invoke(chd);
                 if (String.IsNullOrEmpty(key)) throw apiex;
-                parameters.Add("captcha_sid", apiex.CaptchaSID);
-                parameters.Add("captcha_key", key);
+                if (parameters.ContainsKey("captcha_sid")) {
+                    parameters["captcha_sid"] = apiex.CaptchaSID;
+                } else {
+                    parameters.Add("captcha_sid", apiex.CaptchaSID);
+                }
+
+                if (parameters.ContainsKey("captcha_key")) {
+                    parameters["captcha_key"] = key;
+                } else {
+                    parameters.Add("captcha_key", key);
+                }
+
                 return await CallMethodAsync<T>(method, parameters).ConfigureAwait(false);
             } else {
                 throw apiex;
