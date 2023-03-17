@@ -43,6 +43,8 @@
   "err_network_shinaprovod": "Произошла ошибка на сервере. Повторите попытку позже.",
   "err_network_aborted": "Соединение прервано.",
   "err_network_timeout": "Время ожидания ответа от сервера истекло.",
+  "captcha_title": "Введите код с картинки",
+  "captcha_placeholder": "Введите код",
 
   "emoji": "Эмодзи",
   "recent": "Недавние",

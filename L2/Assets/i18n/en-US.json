@@ -43,6 +43,8 @@
   "err_network_shinaprovod": "A server error occurred. Please try again later.",
   "err_network_aborted": "Connection aborted.",
   "err_network_timeout": "Connection timed out.",
+  "captcha_title": "Enter captcha",
+  "captcha_placeholder": "Enter the code",
 
   "emoji": "Emoji",
   "recent": "Recent",
