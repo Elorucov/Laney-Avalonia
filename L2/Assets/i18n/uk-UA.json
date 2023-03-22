@@ -41,7 +41,7 @@
   "err_network_general": "Перевірте з'єднання і спробуйте знову.",
   "err_network_no_connection": "Відсутнє інтернет-з'єднання.",
   "err_network_shinaprovod": "Сталася помилка на сервері. Повторіть спробу пізніше.",
-  "err_network_aborted": "zСоединение прервано.",
+  "err_network_aborted": "З'єднання перервано",
   "err_network_timeout": "Перевищено час очікування відповіді від сервера.",
   "captcha_title": "Введіть код з картинки",
   "captcha_placeholder": "Введіть код",

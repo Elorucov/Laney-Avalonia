@@ -18,7 +18,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using ELOR.Laney.DataModels;
-using Newtonsoft.Json;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects.HandlerDatas;
 using ELOR.Laney.Helpers;
