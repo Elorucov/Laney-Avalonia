@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.364</AssemblyVersion>
-    <FileVersion>2.0.364</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.364-win-anycpu-devuser.devpc-230131-1317</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.364-linux-anycpu-devuser.devpc-230131-1317</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.364-macos-anycpu-devuser.devpc-230131-1317</Version>
+    <AssemblyVersion>2.0.367</AssemblyVersion>
+    <FileVersion>2.0.367</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.367-win-anycpu-devuser.devpc-230131-1317</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.367-linux-anycpu-devuser.devpc-230131-1317</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.367-macos-anycpu-devuser.devpc-230131-1317</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -22,8 +22,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.364</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.364</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.367</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.367</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -67,14 +67,14 @@
     <AvaloniaResource Include="Assets\Logo\win.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview5" />
+    <PackageReference Include="Avalonia" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview6" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview5" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview6" />
     <PackageReference Include="DynamicData" Version="7.13.1" />
     <PackageReference Include="jp2masa.Avalonia.Flexbox" Version="0.3.0-beta.2" />
     <PackageReference Include="Serilog" Version="2.12.0" />
@@ -83,30 +83,6 @@
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
-    <PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Controls\Attachments\CarouselElementUI.axaml.cs">
-      <DependentUpon>CarouselElementUI.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Attachments\GiftUI.axaml.cs">
-      <DependentUpon>GiftUI.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\BotKeyboardUI.axaml.cs">
-      <DependentUpon>BotKeyboardUI.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="FieldTestWindow.axaml.cs">
-      <DependentUpon>FieldTestWindow.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\ImView.axaml.cs">
-      <DependentUpon>ImView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\SettingsCategories\DebugPage.axaml.cs">
-      <DependentUpon>DebugPage.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\SignInWindow.axaml.cs">
-      <DependentUpon>Views\SignInWindow.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />

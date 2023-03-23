@@ -5,7 +5,7 @@ using Avalonia.Metadata;
 using VKUI.Controls;
 
 namespace VKUI.Popups {
-    public sealed class VKUIFlyout : FlyoutBase {
+    public sealed class VKUIFlyout : PopupFlyoutBase {
         public static readonly StyledProperty<object> ContentProperty =
             AvaloniaProperty.Register<VKUIFlyout, object>(nameof(Content));
 

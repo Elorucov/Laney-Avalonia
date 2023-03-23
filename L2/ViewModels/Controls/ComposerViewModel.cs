@@ -65,7 +65,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         public void ShowAttachmentPickerContextMenu(Control target) {
             ActionSheet ash = new ActionSheet {
-                Placement = FlyoutPlacementMode.TopEdgeAlignedLeft
+                Placement = PlacementMode.TopEdgeAlignedLeft
             };
 
             ActionSheetItem photo = new ActionSheetItem {

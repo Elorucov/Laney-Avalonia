@@ -456,7 +456,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         private Command SetUpMemberCommand(ChatInfoEx chat, ChatMember member) {
             ActionSheet ash = new ActionSheet {
-                Placement = FlyoutPlacementMode.BottomEdgeAlignedRight
+                Placement = PlacementMode.BottomEdgeAlignedRight
             };
 
             var profile = new ActionSheetItem {

@@ -77,12 +77,12 @@ namespace VKUI.Controls {
             // Finding window
             // TODO: чекать, это DialogWindow или обычный Window
             // и менять стиль кнопок в зависимости от этого.
-            Control control = Parent;
+            Control control = (Control)Parent;
             do {
                 if (control is Window window) {
                     OwnerWindow = window;
                 } else {
-                    control = control.Parent;
+                    control = (Control)control.Parent;
                 }
             } while (OwnerWindow == null && control.GetType() != typeof(Window));
             if (OwnerWindow == null) throw new ArgumentNullException("Unable to find a parent Window!");

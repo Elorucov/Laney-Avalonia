@@ -117,7 +117,7 @@ namespace ELOR.Laney.Helpers {
 
         public static void ShowForMultipleMessages(List<MessageViewModel> messages, Control target) {
             ActionSheet ash = new ActionSheet { 
-                Placement = FlyoutPlacementMode.LeftEdgeAlignedTop
+                Placement = PlacementMode.LeftEdgeAlignedTop
             };
 
             ActionSheetItem mark = new ActionSheetItem {

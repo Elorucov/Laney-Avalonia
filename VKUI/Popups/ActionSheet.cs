@@ -11,7 +11,7 @@ using System.Linq;
 using VKUI.Utils;
 
 namespace VKUI.Popups {
-    public sealed class ActionSheet : FlyoutBase {
+    public sealed class ActionSheet : PopupFlyoutBase {
         public ActionSheet() {
             _items = new List<ActionSheetItem>();
         }
