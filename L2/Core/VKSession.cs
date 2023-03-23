@@ -21,6 +21,7 @@ using ELOR.Laney.DataModels;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects.HandlerDatas;
 using ELOR.Laney.Helpers;
+using Avalonia.Controls.Notifications;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -28,6 +29,7 @@ namespace ELOR.Laney.Core {
         private Uri? _avatar;
         private ImViewModel _imViewModel;
         private ChatViewModel _currentOpenedChat;
+        private WindowNotificationManager _notificationManager;
 
         public int Id { get { return GroupId > 0 ? -GroupId : UserId; } }
         public int UserId { get; private set; }
@@ -49,7 +51,7 @@ namespace ELOR.Laney.Core {
 
         public void ShowSessionPopup(Button owner) {
             ActionSheet ash = new ActionSheet {
-                Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft
+                Placement = PlacementMode.BottomEdgeAlignedLeft
             };
 
             foreach (var session in VKSession.Sessions) {
@@ -120,6 +122,15 @@ namespace ELOR.Laney.Core {
                     }
                 };
                 devmenu.Add(captcha);
+
+                ActionSheetItem notif = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
+                    Header = "Show in-app notification",
+                };
+                notif.Click += (a, b) => {
+                    ShowNotification(new Notification("Header", "Lorem ipsum dolor sit amet...", expiration: TimeSpan.FromSeconds(5)));
+                };
+                devmenu.Add(notif);
             }
 
             if (devmenu.Count > 0) {
@@ -176,7 +187,7 @@ namespace ELOR.Laney.Core {
             Application.Current.SetValue(TrayIcon.IconsProperty, icons);
         }
 
-#endregion
+        #endregion
 
         #region Internal
 
@@ -184,6 +195,7 @@ namespace ELOR.Laney.Core {
             try {
                 Log.Information("Init session ({0})", Id);
                 SetUpTrayMenu(); // Чтобы можно было закрыть приложение, если будут проблемы с загрузкой
+                Window.Activated += Window_Activated;
 
                 if (DemoMode.IsEnabled) {
                     ImViewModel = new ImViewModel(this);
@@ -245,6 +257,13 @@ namespace ELOR.Laney.Core {
             }
 
             if (ImViewModel == null) ImViewModel = new ImViewModel(this);
+        }
+
+        private void Window_Activated(object sender, EventArgs e) {
+            (sender as Window).Activated -= Window_Activated;
+            _notificationManager = new WindowNotificationManager(Window) {
+                Position = NotificationPosition.BottomLeft
+            };
         }
 
         private async Task<string> ShowCaptcha(CaptchaHandlerData arg) {
@@ -341,6 +360,10 @@ namespace ELOR.Laney.Core {
             Window.SwitchToSide(true);
         }
 
+        public async void ShowNotification(Notification notification) {
+            _notificationManager?.Show(notification);
+        }
+
         #endregion
 
         #region Static
@@ -398,9 +421,6 @@ namespace ELOR.Laney.Core {
                 }
             } while (session == null && control.GetType() != typeof(Window));
             return session;
-
-            //if (control != null && control.DataContext is VKSession session) return session;
-            //return null;
         }
 
         #endregion
