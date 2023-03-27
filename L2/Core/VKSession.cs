@@ -128,7 +128,7 @@ namespace ELOR.Laney.Core {
                     Header = "Show in-app notification",
                 };
                 notif.Click += (a, b) => {
-                    ShowNotification(new Notification("Header", "Lorem ipsum dolor sit amet...", expiration: TimeSpan.FromSeconds(5)));
+                    ShowNotification(new Notification("Header", null, NotificationType.Error, TimeSpan.FromSeconds(10)));
                 };
                 devmenu.Add(notif);
             }
@@ -360,7 +360,7 @@ namespace ELOR.Laney.Core {
             Window.SwitchToSide(true);
         }
 
-        public async void ShowNotification(Notification notification) {
+        public void ShowNotification(Notification notification) {
             _notificationManager?.Show(notification);
         }
 

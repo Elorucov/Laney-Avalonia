@@ -5,6 +5,10 @@
     <ResourceDictionary>
       <FontFamily x:Key="VKSansDisplay">avares://VKUI/Fonts#VK Sans Display</FontFamily>
       <FontFamily x:Key="VKSansText">avares://VKUI/Fonts#VK Sans Text</FontFamily>
+      <BoxShadows x:Key="VKElevation1">0 0 2 #08000000, 0 2 2 #0F000000</BoxShadows>
+      <BoxShadows x:Key="VKElevation2">0 4 8 #0A000000, 0 0 4 #0F000000</BoxShadows>
+      <BoxShadows x:Key="VKElevation3">0 0 2 #14000000, 0 4 16 #14000000</BoxShadows>
+      <BoxShadows x:Key="VKElevation4">0 0 8 #1F000000, 0 16 16 #29000000</BoxShadows>
       
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://VKUI/Appearance/Palette.xaml"/>
@@ -22,6 +26,7 @@
         <ResourceInclude Source="avares://VKUI/Controls/VKIcon.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/VKUIFlyoutPresenter.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/WindowTitleBar.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/WindowNotificationManager.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Styles.Resources>
@@ -31,6 +36,7 @@
   <StyleInclude Source="/Styles/ButtonStyles.xaml"/>
   <StyleInclude Source="/Styles/ComboBoxStyles.xaml"/>
   <StyleInclude Source="/Styles/ListBoxStyles.xaml"/>
+  <StyleInclude Source="/Styles/NotificationCardStyles.xaml"/>
   <StyleInclude Source="/Styles/TabStyles.xaml"/>
   <StyleInclude Source="/Styles/TextBoxStyles.xaml"/>
   <StyleInclude Source="/Styles/ToggleSwitchStyles.xaml"/>
