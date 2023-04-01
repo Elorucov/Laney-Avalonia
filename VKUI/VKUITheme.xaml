@@ -1,5 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vkui="using:VKUI.Controls"
         x:Class="VKUI.VKUITheme">
   <Styles.Resources>
     <ResourceDictionary>
@@ -18,6 +19,8 @@
         <ResourceInclude Source="avares://VKUI/Controls/ActionSheetItem.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Avatar.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Cell.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/FlipViewItem.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/FlipView.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/PanelHeader.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Placeholder.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/ScrollBar.xaml" />
@@ -31,6 +34,11 @@
     </ResourceDictionary>
   </Styles.Resources>
 
+  <Style Selector="vkui|FlipView > vkui|FlipViewItem">
+    <Setter Property="Width" Value="{Binding $parent.Bounds.Width}"/>
+    <Setter Property="Height" Value="{Binding $parent.Bounds.Height}"/>
+  </Style>
+  
   <StyleInclude Source="/Typography.xaml"/>
   <StyleInclude Source="/Styles/CommonStyles.xaml"/>
   <StyleInclude Source="/Styles/ButtonStyles.xaml"/>

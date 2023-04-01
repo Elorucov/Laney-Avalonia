@@ -110,5 +110,14 @@
     <Reference Include="ColorTextBlock.Avalonia">
       <HintPath>..\Libraries\ColorTextBlock.Avalonia.dll</HintPath>
     </Reference>
+    <!--<Reference Include="DesktopNotifications">
+      <HintPath>..\Libraries\DesktopNotifications.dll</HintPath>
+    </Reference>
+    <Reference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="DesktopNotifications.Windows">
+      <HintPath>..\Libraries\DesktopNotifications.Windows.dll</HintPath>
+    </Reference>
+    <Reference Condition="$([MSBuild]::IsOSPlatform('Linux'))" Include="DesktopNotifications.FreeDesktop">
+      <HintPath>..\Libraries\DesktopNotifications.FreeDesktop.dll</HintPath>
+    </Reference>-->
   </ItemGroup>
 </Project>

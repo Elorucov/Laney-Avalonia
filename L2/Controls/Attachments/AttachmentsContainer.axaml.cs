@@ -8,6 +8,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
+using ELOR.Laney.Views.Media;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
@@ -140,17 +141,19 @@ namespace ELOR.Laney.Controls.Attachments {
                 var size = preview.Size;
                 var uri = preview.Uri;
 
-                Rectangle rect = new Rectangle {
-                    Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
-                    RadiusX = NoMargins ? 4 : 14, 
-                    RadiusY = NoMargins ? 4 : 14,
+                Button imgBtn = new Button {
+                    Tag = new Tuple<List<IPreview>, IPreview>(previews, previews[0]),
+                    Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
+                    Padding = new Thickness(0),
+                    CornerRadius = new CornerRadius(NoMargins ? 4 : 14),
                     Width = imageFixedWidth,
                     Height = size.Width == 0 || size.Height == 0 ? imageFixedWidth :
                         Math.Min(imageFixedWidth / size.Width * size.Height, imageFixedWidth / 9 * 16),
                     Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4)
                 };
-                if (uri != null) rect.SetImageFillAsync(uri, Convert.ToInt32(imageFixedWidth));
-                StandartAttachments.Children.Add(rect);
+                if (uri != null) _ = imgBtn.SetImageBackgroundAsync(uri, Convert.ToInt32(imageFixedWidth));
+                imgBtn.Click += ImgBtn_Click;
+                StandartAttachments.Children.Add(imgBtn);
             } else if (previews.Count > 1) {
                 List<Size> sizes = new List<Size>();
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
@@ -184,18 +187,19 @@ namespace ELOR.Laney.Controls.Attachments {
                     double br = !NoMargins && corner[2] ? 14 : 4;
                     double bl = !NoMargins && corner[3] ? 14 : 4;
 
-                    Border border = new Border {
+                    Button imgBtn = new Button {
+                        Tag = new Tuple<List<IPreview>, IPreview>(previews, preview),
                         Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
+                        Padding = new Thickness(0),
                         CornerRadius = new CornerRadius(tl, tr, br, bl),
                         Width = rect.Width,
                         Height = rect.Height
                     };
-                    Canvas.SetLeft(border, rect.Left);
-                    Canvas.SetTop(border, rect.Top);
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    if (p.Uri != null) border.SetImageBackgroundAsync(p.Uri, Convert.ToInt32(rect.Width));
-#pragma warning restore CS4014
-                    canvas.Children.Add(border);
+                    Canvas.SetLeft(imgBtn, rect.Left);
+                    Canvas.SetTop(imgBtn, rect.Top);
+                    if (p.Uri != null) _ = imgBtn.SetImageBackgroundAsync(p.Uri, Convert.ToInt32(rect.Width));
+                    imgBtn.Click += ImgBtn_Click;
+                    canvas.Children.Add(imgBtn);
                     i++;
                 }
                 StandartAttachments.Children.Add(canvas);
@@ -503,6 +507,19 @@ namespace ELOR.Laney.Controls.Attachments {
             }
 
             StandartAttachments.IsVisible = StandartAttachments.Children.Count > 0;
+        }
+
+        private void ImgBtn_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            Button button = sender as Button;
+            if (button.Tag != null && button.Tag is Tuple<List<IPreview>, IPreview> data) {
+                if (data.Item2 is Video v) {
+                    // TODO: video player
+                    ExceptionHelper.ShowNotImplementedDialogAsync(VKSession.GetByDataContext(button).ModalWindow);
+                } else {
+                    List<IPreview> nonVideo = data.Item1.Where(i => i is not Video).ToList();
+                    Gallery.Show(nonVideo, data.Item2);
+                }
+            }
         }
 
         private BasicAttachment GetCallInfoControl(Call call) {

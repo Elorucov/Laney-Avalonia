@@ -113,16 +113,23 @@ namespace ELOR.Laney.Extensions {
             }
         }
 
-        public static async Task<bool> SetImageBackgroundAsync(this Border control, Uri source, int decodeWidth = 0) {
+        public static async Task<bool> SetImageBackgroundAsync(this Control control, Uri source, int decodeWidth = 0) {
             if (control == null) return false;
             try {
                 Bitmap bitmap = await TryGetCachedBitmapAsync(source, decodeWidth);
-                control.Background = new ImageBrush(bitmap) {
+                var brush = new ImageBrush(bitmap) {
                     BitmapInterpolationMode = BitmapInterpolationMode.HighQuality,
                     AlignmentX = AlignmentX.Center,
                     AlignmentY = AlignmentY.Center,
                     Stretch = Stretch.UniformToFill
                 };
+                if (control is ContentControl cc) {
+                    cc.Background = brush;
+                } else if (control is Border b) {
+                    b.Background = brush;
+                } else {
+                    return false;
+                }
                 return true;
             } catch (Exception ex) {
                 Log.Error(ex, "SetImageBackgroundAsync error!");

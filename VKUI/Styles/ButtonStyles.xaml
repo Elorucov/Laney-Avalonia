@@ -3,7 +3,7 @@
         xmlns:vkui="using:VKUI.Controls">
     <Design.PreviewWith>
       <StackPanel Margin="8">
-        <Button Margin="8" Classes="Primary Large" Content="Large"/>
+        <Button Margin="8" Classes="Primary Large" CornerRadius="22" Content="Large"/>
         <Button Margin="8" Classes="Primary Medium" Content="Medium"/>
         <Button Margin="8" Classes="Tertiary" Content="Tertiary"/>
         <Button Margin="8" Classes="Outline" Content="Outline"/>

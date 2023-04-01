@@ -128,7 +128,7 @@ namespace ELOR.Laney.Core {
                     Header = "Show in-app notification",
                 };
                 notif.Click += (a, b) => {
-                    ShowNotification(new Notification("Header", null, NotificationType.Error, TimeSpan.FromSeconds(10)));
+                    ShowNotification(new Notification("Header", null, NotificationType.Success, TimeSpan.FromSeconds(10)));
                 };
                 devmenu.Add(notif);
             }

@@ -6,6 +6,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using ELOR.Laney.Core;
+using ELOR.Laney.Extensions;
 using Serilog;
 
 namespace ELOR.Laney {

@@ -30,6 +30,8 @@
     <None Remove="Controls\ActionSheetItem.xaml" />
     <None Remove="Controls\Avatar.xaml" />
     <None Remove="Controls\Cell.xaml" />
+    <None Remove="Controls\FlipView.xaml" />
+    <None Remove="Controls\FlipViewItem.xaml" />
     <None Remove="Controls\PanelHeader.xaml" />
     <None Remove="Controls\Placeholder.xaml" />
     <None Remove="Controls\ScrollBar.xaml" />
@@ -106,6 +108,12 @@
     <AvaloniaXaml Include="Styles\ToggleSwitchStyles.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Update="Controls\FlipView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Controls\FlipViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
     <AvaloniaResource Update="Controls\ScrollBar.xaml">
       <Generator></Generator>
     </AvaloniaResource>
