@@ -348,6 +348,8 @@ namespace ELOR.Laney.Core {
 
         #region Public
 
+        byte gcCollectTriggerCounter = 0;
+
         public void GetToChat(int peerId) {
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
             if (chat == null) {
@@ -358,6 +360,13 @@ namespace ELOR.Laney.Core {
             CurrentOpenedChatChanged?.Invoke(this, chat.PeerId);
             chat.OnDisplayed();
             Window.SwitchToSide(true);
+            if (gcCollectTriggerCounter >= 2) {
+                gcCollectTriggerCounter = 0;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            } else {
+                gcCollectTriggerCounter++;
+            }
         }
 
         public void ShowNotification(Notification notification) {

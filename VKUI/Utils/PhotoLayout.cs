@@ -27,7 +27,6 @@ namespace VKUI.Utils {
                     if (rect.Left == 0 && th == csh) corner[3] = true;
                     if (lw == csw && th == csh) corner[2] = true;
                     corners.Add(corner);
-                    if (formed.Count == 6 && corners.Count == formed.Count) Debugger.Break();
                 }
 
                 return new Tuple<List<Rect>, Size, List<bool[]>>(formed, new Size(csw, csh), corners);

@@ -12,8 +12,10 @@ using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
+using Serilog;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
@@ -36,7 +38,19 @@ namespace ELOR.Laney.Controls {
         bool IsOutgoing => Message.IsOutgoing;
         bool IsChat => Message.PeerId > 2000000000;
 
-        #endregion
+#if RELEASE
+#elif BETA
+#else
+        public MessageBubble() {
+            if (Message == null) {
+                Log.Verbose($"MessageBubble init.");
+            } else {
+                Log.Verbose($"MessageBubble init. ({Message.PeerId}_{Message.ConversationMessageId})");
+            }
+        }
+#endif
+
+#endregion
 
         #region Constants
 
@@ -79,6 +93,12 @@ namespace ELOR.Laney.Controls {
 
         bool isUILoaded = false;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
+#if RELEASE
+#elif BETA
+#else
+            Log.Verbose($"MessageBubble OnApplyTemplate exec. ({Message.PeerId}_{Message.ConversationMessageId})");
+#endif
+
             base.OnApplyTemplate(e);
             BubbleRoot = e.NameScope.Find<Grid>(nameof(BubbleRoot));
             BubbleBackground = e.NameScope.Find<Border>(nameof(BubbleBackground));
@@ -112,6 +132,29 @@ namespace ELOR.Laney.Controls {
 
             isUILoaded = true;
             RenderElement();
+
+            Unloaded += MessageBubble_Unloaded;
+        }
+
+        private void MessageBubble_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            if (Message != null) {
+                Message.PropertyChanged -= Message_PropertyChanged;
+                Message.MessageEdited -= Message_MessageEdited;
+
+                Debug.WriteLine($"Message bubble UI for {Message.PeerId}_{Message.ConversationMessageId} is unloaded");
+            }
+
+            AvatarButton.Click -= AvatarButton_Click;
+            ReplyMessageButton.Click -= ReplyMessageButton_Click;
+
+            AvatarButton.PointerPressed -= SuppressClickEvent;
+            ReplyMessageButton.PointerPressed -= SuppressClickEvent;
+            MessageAttachments.PointerPressed -= SuppressClickEvent;
+            Map.PointerPressed -= SuppressClickEvent;
+            Unloaded -= MessageBubble_Unloaded;
+
+            Message = null;
+            BubbleRoot.Children.Clear();
         }
 
         // Это чтобы событие нажатия не доходили до родителей (особенно к ListBox)
@@ -143,14 +186,20 @@ namespace ELOR.Laney.Controls {
         private void Message_PropertyChanged(object sender, PropertyChangedEventArgs e) {
             switch (e.PropertyName) {
                 case nameof(MessageViewModel.Text):
-                    if (isUILoaded && Message.CanShowInUI) SetText(Message.Text);
+                    if (isUILoaded && Message.CanShowInUI) {
+                        Log.Verbose($"> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
+                        SetText(Message.Text);
+                        Log.Verbose($"< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
+                    }
                     break;
                 case nameof(MessageViewModel.State):
                 case nameof(MessageViewModel.IsImportant):
                 case nameof(MessageViewModel.EditTime):
                 case nameof(MessageViewModel.IsSenderNameVisible):
                 case nameof(MessageViewModel.IsSenderAvatarVisible):
+                    Log.Verbose($"> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
                     ChangeUI();
+                    Log.Verbose($"< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
                     break;
             }
         }
@@ -161,6 +210,9 @@ namespace ELOR.Laney.Controls {
 
         private void RenderElement() {
             if (!isUILoaded || !Message.CanShowInUI) return;
+
+            Log.Verbose($"> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendering...");
+            var sw = Stopwatch.StartNew();
 
             // Outgoing
             BubbleRoot.HorizontalAlignment = IsOutgoing ? HorizontalAlignment.Right : HorizontalAlignment.Left;
@@ -278,22 +330,30 @@ namespace ELOR.Laney.Controls {
 
             // UI
             ChangeUI();
+
+            sw.Stop();
+            Log.Verbose($"< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendered. ({sw.ElapsedMilliseconds} ms.)");
+            if (sw.ElapsedMilliseconds > ((double)1000 / (double)30)) {
+                Log.Warning($"MessageBubble: rendering {Message.PeerId}_{Message.ConversationMessageId} took too long! ({sw.ElapsedMilliseconds} ms.)");
+            }
         }
 
         private void SetText(string text) {
+            Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} setting text...");
             TextParser.SetText(text, MessageText, OnLinkClicked);
 
             // Empty space for sent time/status
             if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0) {
                 string editedPlaceholder = Message.EditTime != null ? Localizer.Instance["edited_indicator"] : "";
                 string favoritePlaceholder = Message.IsImportant ? "W" : "";
-                string outgoingPlaceholder = Message.IsOutgoing ? "W" : "";
+                string outgoingPlaceholder = Message.IsOutgoing ? "WW" : "";
                 MessageText.Content.Add(new CRun { 
                     Text = $"{favoritePlaceholder}{editedPlaceholder} 22:22{outgoingPlaceholder}",
                     Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
                     FontSize = 12
                 });
             }
+            Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} text rendered.");
         }
 
         private void OnLinkClicked(string link) {
@@ -306,6 +366,8 @@ namespace ELOR.Laney.Controls {
         // но code-behind лучше.
         private void ChangeUI() {
             if (!isUILoaded || !Message.CanShowInUI) return;
+
+            Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} exec ChangeUI...");
 
             // Avatar visibility
             SenderAvatar.Opacity = Message.IsSenderAvatarVisible ? 1 : 0;
@@ -368,6 +430,8 @@ namespace ELOR.Laney.Controls {
             double fwdTopMargin = !String.IsNullOrEmpty(Message.Text) || Message.Attachments.Count > 0 ? 0 : 8;
             var fwm = ForwardedMessagesContainer.Margin;
             ForwardedMessagesContainer.Margin = new Thickness(fwm.Left, fwdTopMargin, fwm.Right, fwm.Bottom);
+
+            Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} ChangeUI completed.");
         }
 
         #region Template events

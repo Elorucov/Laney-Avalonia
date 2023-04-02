@@ -1,4 +1,5 @@
-﻿using ColorTextBlock.Avalonia;
+﻿using Avalonia.Collections;
+using ColorTextBlock.Avalonia;
 using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
@@ -103,7 +104,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static void SetText(string plain, CTextBlock rtb, Action<string> linksClickedCallback = null) {
-            rtb.Content.Clear();
+            rtb.Content = new AvaloniaList<CInline>();
             if (String.IsNullOrEmpty(plain)) return;
 
             foreach (var token in GetRaw(plain)) {

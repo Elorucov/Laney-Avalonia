@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using ELOR.Laney.ViewModels.Controls;
 
@@ -17,6 +18,13 @@ namespace ELOR.Laney.Controls {
         #endregion
 
         #region Template elements
+
+        StackPanel Root;
+
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
+            base.OnApplyTemplate(e);
+            Root = e.NameScope.Find<StackPanel>(nameof(Root));
+        }
 
         #endregion
 
@@ -41,6 +49,7 @@ namespace ELOR.Laney.Controls {
         private void ChatViewItem_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             PointerPressed -= ChatViewItem_PointerPressed;
             Unloaded -= ChatViewItem_Unloaded;
+            Root.Children.Clear();
         }
     }
 }

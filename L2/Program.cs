@@ -33,7 +33,13 @@ namespace ELOR.Laney {
             }
 
             var loggerConfig = new LoggerConfiguration()
+#if RELEASE
                 .MinimumLevel.Information();
+#elif BETA
+                .MinimumLevel.Information();
+#else
+                .MinimumLevel.Verbose();
+#endif
 
             if (Settings.EnableLogs) 
                 loggerConfig = loggerConfig.WriteTo.File(Path.Combine(localDataPath, "logs", "L2_.log"), rollingInterval: RollingInterval.Hour, retainedFileCountLimit: 10);
