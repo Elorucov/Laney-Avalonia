@@ -112,9 +112,9 @@ $proj.Project.PropertyGroup[1].CFBundleShortVersionString = $newversion;
 $proj.Project.PropertyGroup[1].CFBundleVersion = $newversion;
 
 # Unused in .csproj, но всё-таки пропишем, т. к. надо для dev-сборок и чтобы не поломался код проверки версии и даты в самом приложении
-$proj.Project.FirstChild.Version[0] = "$($newversion)-win-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
-$proj.Project.FirstChild.Version[1] = "$($newversion)-linux-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
-$proj.Project.FirstChild.Version[2] = "$($newversion)-macos-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[0].InnerXML = "$($newversion)-win-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[1].InnerXML = "$($newversion)-linux-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[2].InnerXML = "$($newversion)-macos-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
 
 #Settings object will instruct how the xml elements are written to the file
 $settings = New-Object System.Xml.XmlWriterSettings

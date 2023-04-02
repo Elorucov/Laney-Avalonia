@@ -40,13 +40,13 @@ if ($IsWindows) {
 if ($IsWindows) {
     $btagw1 = "$($currentversion)-win-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw1;
-    $proc1 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-x64 --self-contained false -p:PublishSingleFile=true -p:Version=$($btagw1) -p:DefineConstants=WIN$($chstr)";
+    $proc1 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-x64 --self-contained false -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:Version=$($btagw1) -p:DefineConstants=WIN$($chstr)";
     $proc1.WaitForExit();
 	echo "Win x86-64 is done.$([Environment]::NewLine)";
 
     $btagw3 = "$($currentversion)-win-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw3;
-    $proc2 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-arm64 --self-contained false -p:PublishSingleFile=true -p:Version=$($btagw3) -p:DefineConstants=WIN$($chstr)";
+    $proc2 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-arm64 --self-contained false -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:Version=$($btagw3) -p:DefineConstants=WIN$($chstr)";
     $proc2.WaitForExit();
 	echo "Win arm64 is done.$([Environment]::NewLine)";
 }
@@ -54,7 +54,7 @@ if ($IsWindows) {
 if ($IsLinux) {
 	$btagl1 = "$($currentversion)-linux-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagl1;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r linux-x64 --self-contained false -p:PublishSingleFile=true -p:Version=$($btagl1) -p:DefineConstants=LINUX$($chstr)";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r linux-x64 --self-contained false -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:Version=$($btagl1) -p:DefineConstants=LINUX$($chstr)";
     echo "Linux x86-64 is done.$([Environment]::NewLine)";
 }
 
@@ -68,7 +68,7 @@ if ($IsMacOS) {
 
     $btagm1 = "$($currentversion)-macos-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm1;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-x64 -p:UseAppHost=true -p:Version=$($btagm1) -p:DefineConstants=MAC$($chstr)";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-x64 -p:UseAppHost=true -p:PublishReadyToRun=true -p:Version=$($btagm1) -p:DefineConstants=MAC$($chstr)";
     Copy-Item "$($projfolder)/Assets/Logo/Laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources";
     
     echo "Creating .app bundle file for macOS x86-64...";
@@ -110,9 +110,9 @@ $proj.Project.PropertyGroup[1].CFBundleShortVersionString = $newversion;
 $proj.Project.PropertyGroup[1].CFBundleVersion = $newversion;
 
 # Unused in .csproj, но всё-таки пропишем, т. к. надо для dev-сборок и чтобы не поломался код проверки версии и даты в самом приложении
-$proj.Project.FirstChild.Version[0] = "$($newversion)-win-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
-$proj.Project.FirstChild.Version[1] = "$($newversion)-linux-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
-$proj.Project.FirstChild.Version[2] = "$($newversion)-macos-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[0].InnerXML = "$($newversion)-win-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[1].InnerXML = "$($newversion)-linux-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+$proj.Project.FirstChild.Version[2].InnerXML = "$($newversion)-macos-anycpu-devuser.devpc-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
 
 #Settings object will instruct how the xml elements are written to the file
 $settings = New-Object System.Xml.XmlWriterSettings
