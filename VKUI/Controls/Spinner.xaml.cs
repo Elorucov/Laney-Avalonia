@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Shapes;
-using Avalonia.Media;
 using System;
 
 namespace VKUI.Controls {
@@ -33,6 +31,8 @@ namespace VKUI.Controls {
                 if (oldSize == value) return;
                 SetupSpinner(value);
                 oldSize = value;
+            } else if (e.Property == IsVisibleProperty) {
+                PseudoClasses.Set(":animated", IsVisible);
             }
         }
 
