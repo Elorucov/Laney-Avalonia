@@ -18,9 +18,9 @@ namespace VKUI.Controls {
             Icon = e.NameScope.Find<VKIcon>(nameof(Icon));
 
             SetupSpinner(Math.Min(DesiredSize.Width, DesiredSize.Height));
+            PseudoClasses.Set(":animating", IsVisible);
 
             PropertyChanged += Spinner_PropertyChanged;
-            DetachedFromVisualTree += Spinner_DetachedFromVisualTree;
         }
 
         double oldSize = 0;
@@ -32,14 +32,10 @@ namespace VKUI.Controls {
                 SetupSpinner(value);
                 oldSize = value;
             } else if (e.Property == IsVisibleProperty) {
-                PseudoClasses.Set(":animated", IsVisible);
+                PseudoClasses.Set(":animating", IsVisible);
             }
         }
 
-        private void Spinner_DetachedFromVisualTree(object? sender, VisualTreeAttachmentEventArgs e) {
-            PropertyChanged -= Spinner_PropertyChanged;
-            DetachedFromVisualTree -= Spinner_DetachedFromVisualTree;
-        }
 
         private void Spinner_EffectiveViewportChanged(object? sender, Avalonia.Layout.EffectiveViewportChangedEventArgs e) {
             SetupSpinner(Math.Min(e.EffectiveViewport.Width, e.EffectiveViewport.Height));
