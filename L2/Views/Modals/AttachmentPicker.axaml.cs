@@ -11,6 +11,7 @@ using ELOR.Laney.ViewModels.Modals;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using VKUI.Windows;
@@ -30,9 +31,9 @@ namespace ELOR.Laney.Views.Modals {
             DataContext = new AttachmentPickerViewModel(session, this);
             this.FixDialogWindows(TitleBar, Tabs);
 
-            PhotosList.SelectionChanged += ListSelectionChanged;
-            VideosList.SelectionChanged += ListSelectionChanged;
-            DocsList.SelectionChanged += ListSelectionChanged;
+            PhotosSV.RegisterIncrementalLoadingEvent(LoadMorePhotos);
+            VideosSV.RegisterIncrementalLoadingEvent(LoadMoreVideos);
+            DocsSV.RegisterIncrementalLoadingEvent(LoadMoreDocs);
 
             Tabs.SelectedIndex = tab;
             LoadTab(tab);
@@ -63,6 +64,18 @@ namespace ELOR.Laney.Views.Modals {
             if (e.RemovedItems.Count > 0) {
                 ViewModel.SelectedAttachments.Remove(e.RemovedItems[0] as AttachmentBase);
             }
+        }
+
+        private void LoadMorePhotos() {
+            ViewModel.LoadPhotos();
+        }
+
+        private void LoadMoreVideos() {
+            ViewModel.LoadVideos();
+        }
+
+        private void LoadMoreDocs() {
+            ViewModel.LoadDocuments();
         }
 
         private async void OpenFilePickerForPhoto(object sender, RoutedEventArgs e) {

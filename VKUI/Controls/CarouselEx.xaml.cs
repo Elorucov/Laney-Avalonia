@@ -2,11 +2,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using VKUI.Utils;
 
 namespace VKUI.Controls {
     [TemplatePart("PART_PreviousButton", typeof(Button))]
@@ -61,10 +59,8 @@ namespace VKUI.Controls {
 
         private void CheckScrollViewer() {
             if (Content is ListBox listBox) {
-                List<ScrollViewer> found = new List<ScrollViewer>();
-                listBox.FindVisualChildrenByType(found);
-                if (found.Count > 0) {
-                    scrollViewer = found[0];
+                if (listBox.Scroll != null) {
+                    scrollViewer = listBox.Scroll as ScrollViewer;
                 } else { // почти всегда так, поэтому делаем костыль.
                     listBox.Loaded += ListBox_Loaded;
                 }
@@ -81,9 +77,7 @@ namespace VKUI.Controls {
             listBox.Loaded -= ListBox_Loaded;
 
             while (scrollViewer == null) {
-                List<ScrollViewer> found = new List<ScrollViewer>();
-                listBox.FindVisualChildrenByType(found);
-                if (found.Count > 0) scrollViewer = found[0];
+                scrollViewer = listBox.Scroll as ScrollViewer;
                 await Task.Delay(10);
             }
 

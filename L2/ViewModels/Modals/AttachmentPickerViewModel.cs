@@ -100,7 +100,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             try {
                 noMorePhotos = photos.Items.Count == 0;
-                photos.Items.ForEach((p) => Photos.Items.Add(p));
+                photos.Items.ForEach(Photos.Items.Add);
             } catch (Exception ex) {
                 if (Photos.Items.Count == 0) {
                     Photos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadPhotos());
@@ -140,7 +140,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             try {
                 noMoreVideos = videos.Items.Count == 0;
-                videos.Items.ForEach((v) => Videos.Items.Add(v));
+                videos.Items.ForEach(Videos.Items.Add);
             } catch (Exception ex) {
                 if (Videos.Items.Count == 0) {
                     Videos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadVideos());

@@ -45,7 +45,7 @@ namespace ELOR.Laney.Views {
                     ChatsList.ItemTemplate = template;
 
                     // Костыль для того, чтобы шаблон действительно сменился.
-                    ChatsList.Items = null;
+                    ChatsList.ItemsSource = null;
                     var prop = ChatsList.GetObservable(ListBox.DataContextProperty)
                         .OfType<VKSession>()
                         .Select(v => v.ImViewModel.SortedChats);
