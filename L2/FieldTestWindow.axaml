@@ -31,22 +31,29 @@
           <RadioButton Margin="8,0" GroupName="TestBest" Content="Checked" IsChecked="True"/>
         </StackPanel>
       </Grid>
-
-      <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
-        <Border Margin="8,0,8,16" Padding="12" CornerRadius="8" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="{StaticResource VKElevation1}">
-          <TextBlock>Elevation 1</TextBlock>
-        </Border>
-        <Border Margin="8,0,8,16" Padding="12" CornerRadius="8" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="{StaticResource VKElevation2}">
-          <TextBlock>Elevation 2</TextBlock>
-        </Border>
-        <Border Margin="8,0,8,16" Padding="12" CornerRadius="8" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="{StaticResource VKElevation3}">
-          <TextBlock>Elevation 3</TextBlock>
-        </Border>
-        <Border Margin="8,0,8,16" Padding="12" CornerRadius="8" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="{StaticResource VKElevation4}">
-          <TextBlock>Elevation 4</TextBlock>
-        </Border>
+      
+      <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Horizontal scroll buttons test"/>
+        <controls:CarouselEx HorizontalAlignment="Left" Width="296">
+          <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Horizontal" Margin="8">
+              <Border Width="112" Margin="8,0,8,16" Padding="12" CornerRadius="8" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="{StaticResource VKElevation1}">
+                <TextBlock>Elevation 1</TextBlock>
+              </Border>
+              <Border Width="112" Margin="8,0,8,16" Padding="12" CornerRadius="8" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="{StaticResource VKElevation2}">
+                <TextBlock>Elevation 2</TextBlock>
+              </Border>
+              <Border Width="112" Margin="8,0,8,16" Padding="12" CornerRadius="8" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="{StaticResource VKElevation3}">
+                <TextBlock>Elevation 3</TextBlock>
+              </Border>
+              <Border Width="112" Margin="8,0,8,16" Padding="12" CornerRadius="8" Background="{DynamicResource VKModalCardBackgroundBrush}" BoxShadow="{StaticResource VKElevation4}">
+                <TextBlock>Elevation 4</TextBlock>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+        </controls:CarouselEx>
       </StackPanel>
-
+      
       <StackPanel Margin="0,8,0,0">
         <WrapPanel Width="392" HorizontalAlignment="Left">
           <StackPanel Margin="8,6">

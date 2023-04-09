@@ -6,7 +6,7 @@
              x:Name="CardRoot"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ELOR.Laney.Controls.Attachments.CarouselElementUI">
-  <Button x:Name="RootButton" Classes="Tertiary" Padding="0" CornerRadius="14" VerticalContentAlignment="Stretch" Background="{DynamicResource VKImBubbleIncomingBrush}" Click="RootButton_Click">
+  <Button x:Name="RootButton" Classes="Tertiary" Padding="0" CornerRadius="14" VerticalContentAlignment="Stretch" Background="{DynamicResource VKImBubbleIncomingAlternateBrush}" Click="RootButton_Click">
     <Grid RowDefinitions="* Auto">
       <StackPanel VerticalAlignment="Top" Width="270">
         <Border x:Name="CardImage" Width="270" Height="166" CornerRadius="14,14,0,0" Background="Blue"/>

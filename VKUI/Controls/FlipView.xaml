@@ -42,24 +42,6 @@
             <ScrollGestureRecognizer CanHorizontallyScroll="True"
                                      CanVerticallyScroll="True" />
           </Grid.GestureRecognizers>
-          <Grid.Styles>
-            <Style Selector="Button.FVNav">
-              <Setter Property="Width" Value="72"/>
-              <Setter Property="Height" Value="72"/>
-              <Setter Property="CornerRadius" Value="20"/>
-              <Setter Property="Padding" Value="0"/>
-              <Setter Property="Background" Value="{DynamicResource VKModalCardBackgroundBrush}"/>
-            </Style>
-            <Style Selector="Button.FVNav > control|VKIcon">
-              <Setter Property="Foreground" Value="{DynamicResource VKIconSecondaryBrush}"/>
-            </Style>
-            <Style Selector="Button.FVNav /template/ Border#PART_Background, Button.FVNav /template/ Border#PART_Hover, Button.FVNav /template/ ContentPresenter#PART_Presenter">
-              <Setter Property="Margin" Value="16"/>
-            </Style>
-            <Style Selector="Button.FVNav /template/ Border#PART_Background">
-              <Setter Property="BoxShadow" Value="0 0 2 #14000000, 0 0 16 #1E000000"/>
-            </Style>
-          </Grid.Styles>
           <ScrollViewer Name="PART_ScrollViewer"
                         VerticalSnapPointsType="MandatorySingle"
                         HorizontalSnapPointsType="MandatorySingle"
@@ -75,25 +57,20 @@
           <Button x:Name="PART_PreviousButtonHorizontal"
                   Classes="FVNav"
                   IsTabStop="False"
-                  Foreground="{DynamicResource FlipViewNextPreviousArrowForeground}"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Center">
-            <control:VKIcon Id="Icon24ChevronDown">
-              <control:VKIcon.RenderTransform>
-                <RotateTransform Angle="90"/>
-              </control:VKIcon.RenderTransform>
-            </control:VKIcon>
+            <Path Data="{StaticResource Icon16ChevronLeft}" Width="12" Height="16"/>
           </Button>
           <Button x:Name="PART_NextButtonHorizontal"
                   Classes="FVNav"
                   IsTabStop="False"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Center">
-            <control:VKIcon Id="Icon24ChevronDown">
-              <control:VKIcon.RenderTransform>
-                <RotateTransform Angle="270"/>
-              </control:VKIcon.RenderTransform>
-            </control:VKIcon>
+            <Path Data="{StaticResource Icon16ChevronLeft}" Width="12" Height="16">
+              <Path.RenderTransform>
+                <RotateTransform Angle="180"/>
+              </Path.RenderTransform>
+            </Path>
           </Button>
           <Button x:Name="PART_PreviousButtonVertical"
                   Classes="FVNav"
@@ -101,11 +78,11 @@
                   Foreground="{DynamicResource FlipViewNextPreviousArrowForeground}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Top">
-            <control:VKIcon Id="Icon24ChevronDown">
-              <control:VKIcon.RenderTransform>
-                <RotateTransform Angle="180"/>
-              </control:VKIcon.RenderTransform>
-            </control:VKIcon>
+            <Path Data="{StaticResource Icon16ChevronLeft}" Width="12" Height="16">
+              <Path.RenderTransform>
+                <RotateTransform Angle="270"/>
+              </Path.RenderTransform>
+            </Path>
           </Button>
           <Button x:Name="PART_NextButtonVertical"
                   Classes="FVNav"
@@ -113,7 +90,11 @@
                   Foreground="{DynamicResource FlipViewNextPreviousArrowForeground}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Bottom">
-            <control:VKIcon Id="Icon24ChevronDown"/>
+            <Path Data="{StaticResource Icon16ChevronLeft}" Width="12" Height="16">
+              <Path.RenderTransform>
+                <RotateTransform Angle="90"/>
+              </Path.RenderTransform>
+            </Path>
           </Button>
         </Grid>
       </ControlTemplate>

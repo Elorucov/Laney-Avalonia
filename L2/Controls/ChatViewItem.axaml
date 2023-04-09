@@ -29,18 +29,20 @@
           <Border x:Name="MessageUIWrapper" IsVisible="{Binding Message.CanShowInUI, RelativeSource={RelativeSource TemplatedParent}}">
             <controls:MessageBubble x:Name="MessageUI" Message="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Border>
-          <ScrollViewer x:Name="Carousel" Margin="0,0,0,6" IsVisible="{Binding Template, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-            <ItemsRepeater Margin="9,0" Items="{Binding Template.Elements}">
-              <ItemsRepeater.Layout>
-                <StackLayout Orientation="Horizontal"/>
-              </ItemsRepeater.Layout>
-              <ItemsRepeater.ItemTemplate>
-                <DataTemplate>
-                  <atch:CarouselElementUI Element="{Binding}" Margin="3,0" VerticalAlignment="Stretch"/>
-                </DataTemplate>
-              </ItemsRepeater.ItemTemplate>
-            </ItemsRepeater>
-          </ScrollViewer>
+          <vkui:CarouselEx x:Name="Carousel" ScrollPixels="240" Margin="0,0,0,6" IsVisible="{Binding Template, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+              <ItemsRepeater Margin="9,0" Items="{Binding Template.Elements}">
+                <ItemsRepeater.Layout>
+                  <StackLayout Orientation="Horizontal"/>
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                  <DataTemplate>
+                    <atch:CarouselElementUI Element="{Binding}" Margin="3,0" VerticalAlignment="Stretch"/>
+                  </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+              </ItemsRepeater>
+            </ScrollViewer>
+          </vkui:CarouselEx>
         </StackPanel>
       </ControlTemplate>
     </Setter>

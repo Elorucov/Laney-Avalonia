@@ -18,6 +18,7 @@
         
         <ResourceInclude Source="avares://VKUI/Controls/ActionSheetItem.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Avatar.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/CarouselEx.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Cell.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/FlipViewItem.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/FlipView.xaml" />

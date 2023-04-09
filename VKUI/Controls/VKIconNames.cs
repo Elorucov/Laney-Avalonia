@@ -9,6 +9,7 @@
         public const string Icon16Cancel = "Icon16Cancel";
         public const string Icon16CheckDoubleOutline = "Icon16CheckDoubleOutline";
         public const string Icon16CheckOutline = "Icon16CheckOutline";
+        public const string Icon16ChevronLeft = "Icon16ChevronLeft";
         public const string Icon16ClockOutline = "Icon16ClockOutline";
         public const string Icon16DeleteOutline = "Icon16DeleteOutline";
         public const string Icon16Gift = "Icon16Gift";

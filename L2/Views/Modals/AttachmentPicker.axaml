@@ -82,13 +82,15 @@
           </Button>
           <ScrollViewer Grid.Row="1">
             <StackPanel>
-              <ListBox x:Name="PhotoAlbumsList" Classes="GridView AlbumList" SelectionMode="Single" Items="{Binding PhotoAlbums}" ItemTemplate="{StaticResource PhotoAlbumTemplate}" SelectedItem="{Binding SelectedPhotoAlbum, Mode=TwoWay}">
-                <ListBox.ItemsPanel>
-                  <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="6,0"/>
-                  </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-              </ListBox>
+              <vkui:CarouselEx ScrollPixels="192">
+                <ListBox x:Name="PhotoAlbumsList" Classes="GridView AlbumList" SelectionMode="Single" Items="{Binding PhotoAlbums}" ItemTemplate="{StaticResource PhotoAlbumTemplate}" SelectedItem="{Binding SelectedPhotoAlbum, Mode=TwoWay}">
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Horizontal" Margin="6,0"/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
+                </ListBox>
+              </vkui:CarouselEx>
 
               <ListBox x:Name="PhotosList" Classes="GridView" Margin="0,10,0,0" MaxWidth="520" Items="{Binding Photos.Items}" ItemTemplate="{StaticResource PhotoTemplate}" SelectionMode="Multiple,Toggle" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemsPanel>
@@ -126,13 +128,15 @@
           </Button>
           <ScrollViewer Grid.Row="1">
             <StackPanel>
-              <ListBox x:Name="VideoAlbumsList" Classes="GridView AlbumList" SelectionMode="Single" Items="{Binding VideoAlbums}" ItemTemplate="{StaticResource VideoAlbumTemplate}" SelectedItem="{Binding SelectedVideoAlbum, Mode=TwoWay}">
-                <ListBox.ItemsPanel>
-                  <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="6,0"/>
-                  </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-              </ListBox>
+              <vkui:CarouselEx ScrollPixels="192">
+                <ListBox x:Name="VideoAlbumsList" Classes="GridView AlbumList" SelectionMode="Single" Items="{Binding VideoAlbums}" ItemTemplate="{StaticResource VideoAlbumTemplate}" SelectedItem="{Binding SelectedVideoAlbum, Mode=TwoWay}">
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Horizontal" Margin="6,0"/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
+                </ListBox>
+              </vkui:CarouselEx>
 
               <ListBox x:Name="VideosList" Margin="0,6,0,0" Items="{Binding Videos.Items}" ItemTemplate="{StaticResource VideoTemplate}" SelectionMode="Multiple,Toggle" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 

@@ -1,0 +1,34 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:VKUI.Controls">
+
+  <ControlTheme x:Key="{x:Type controls:CarouselEx}" TargetType="controls:CarouselEx">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid Name="CarouselRoot">
+          <ContentPresenter Content="{TemplateBinding Content}"/>
+          <Button x:Name="PART_PreviousButton"
+                  Classes="FVNav"
+                  IsTabStop="False"
+                  IsVisible="False"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center">
+            <Path Data="{StaticResource Icon16ChevronLeft}" Width="12" Height="16"/>
+          </Button>
+          <Button x:Name="PART_NextButton"
+                  Classes="FVNav"
+                  IsTabStop="False"
+                  IsVisible="False"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center">
+            <Path Data="{StaticResource Icon16ChevronLeft}" Width="12" Height="16">
+              <Path.RenderTransform>
+                <RotateTransform Angle="180"/>
+              </Path.RenderTransform>
+            </Path>
+          </Button>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>
