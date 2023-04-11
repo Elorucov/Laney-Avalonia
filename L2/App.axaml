@@ -9,6 +9,11 @@
   <Application.Resources>
     <ResourceDictionary>      
       <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="/Controls/Attachments/AttachmentsContainer.xaml"/>
+        <ResourceInclude Source="/Controls/ChatViewItem.xaml"/>
+        <ResourceInclude Source="/Controls/CompactMessage.xaml"/>
+        <ResourceInclude Source="/Controls/MessageBubble.xaml"/>
+        <ResourceInclude Source="/Controls/PostUI.xaml"/>
         <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
@@ -95,16 +100,11 @@
     <theme:SimpleTheme/>
     <ui:VKUITheme/>
     
-    <StyleInclude Source="avares://Laney/Controls/Attachments/AttachmentsContainer.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/Attachments/BasicAttachment.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/Attachments/ExtendedAttachment.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/Attachments/GiftUI.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/Attachments/StickerPresenter.axaml"/>
     <StyleInclude Source="avares://Laney/Controls/BotKeyboardUI.axaml"/>
-    <StyleInclude Source="avares://Laney/Controls/ChatViewItem.axaml"/>
-    <StyleInclude Source="avares://Laney/Controls/CompactMessage.axaml"/>
-    <StyleInclude Source="avares://Laney/Controls/MessageBubble.axaml"/>
-    <StyleInclude Source="avares://Laney/Controls/PostUI.axaml"/>
     <StyleInclude Source="avares://Laney/Styles/ListBoxStyles.axaml"/>
 
     <Style Selector="vkui|Avatar">

@@ -1,22 +1,70 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vkui="using:VKUI.Controls"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:atch="using:ELOR.Laney.Controls.Attachments"
         xmlns:ctb="using:ColorTextBlock.Avalonia">
-  <Design.PreviewWith>
-    <StackPanel Width="432">
-      <controls:MessageBubble />
-    </StackPanel>
-  </Design.PreviewWith>
 
-  <Style Selector="controls|MessageBubble">
+  <ControlTheme x:Key="{x:Type controls:MessageBubble}" TargetType="controls:MessageBubble">
     <!-- Set Defaults -->
     <Setter Property="Template">
       <ControlTemplate>
         <Grid x:Name="MessageUIRoot" ColumnDefinitions="Auto *" Margin="12,4" MaxWidth="894">
-          <Button x:Name="AvatarButton" Classes="Tertiary" Padding="0" VerticalAlignment="Bottom" Margin="0,0,8,2" Width="32" Height="32">
+          <Grid.Styles>
+            <Style Selector="Border.IncomingMessageBackground">
+              <Setter Property="Background" Value="{DynamicResource VKImBubbleIncomingAlternateBrush}"/>
+            </Style>
+
+            <Style Selector="Border.OutgoingMessageBackground">
+              <Setter Property="Background" Value="{DynamicResource VKImBubbleOutgoingBrush}"/>
+            </Style>
+
+            <Style Selector="Border.GiftMessageBackground">
+              <Setter Property="Background" Value="{DynamicResource VKImBubbleGiftBackgroundBrush}"/>
+            </Style>
+
+            <Style Selector="Border.BorderMessageBackground">
+              <Setter Property="Background" Value="{DynamicResource VKBackgroundContentBrush}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource VKImageBorderBrush}"/>
+              <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+
+            <!-- Time & indicators -->
+
+            <Style Selector="Border.DefaultIndicator">
+              <Setter Property="Background" Value="Transparent"/>
+              <Setter Property="Margin" Value="0,0,5,2"/>
+            </Style>
+
+            <Style Selector="Border.DefaultIndicator > StackPanel#IndicatorStack > TextBlock">
+              <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
+            </Style>
+
+            <Style Selector="Border.DefaultIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
+              <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
+            </Style>
+
+
+            <Style Selector="Border.ImageIndicator">
+              <Setter Property="Background" Value="#59000000"/>
+              <Setter Property="Margin" Value="0,0,5,5"/>
+            </Style>
+
+            <Style Selector="Border.ComplexImageIndicator">
+              <Setter Property="Background" Value="#59000000"/>
+              <Setter Property="Margin" Value="0,0,9,9"/>
+            </Style>
+
+            <Style Selector="Border.ImageIndicator > StackPanel#IndicatorStack > TextBlock, Border.ComplexImageIndicator > StackPanel#IndicatorStack > TextBlock">
+              <Setter Property="Foreground" Value="White"/>
+            </Style>
+
+            <Style Selector="Border.ImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon, Border.ComplexImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
+              <Setter Property="Foreground" Value="White"/>
+            </Style>
+          </Grid.Styles>
+        <Button x:Name="AvatarButton" Classes="Tertiary" Padding="0" VerticalAlignment="Bottom" Margin="0,0,8,2" Width="32" Height="32">
             <vkui:Avatar x:Name="SenderAvatar" Foreground="White"
                        Initials="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ic}}"
                        Background="{Binding Message.SenderId, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource agc}}"
@@ -56,58 +104,5 @@
         </Grid>
       </ControlTemplate>
     </Setter>
-  </Style>
-
-  <Style Selector="Border.IncomingMessageBackground">
-    <Setter Property="Background" Value="{DynamicResource VKImBubbleIncomingAlternateBrush}"/>
-  </Style>
-  
-  <Style Selector="Border.OutgoingMessageBackground">
-    <Setter Property="Background" Value="{DynamicResource VKImBubbleOutgoingBrush}"/>
-  </Style>
-  
-  <Style Selector="Border.GiftMessageBackground">
-    <Setter Property="Background" Value="{DynamicResource VKImBubbleGiftBackgroundBrush}"/>
-  </Style>
-
-  <Style Selector="Border.BorderMessageBackground">
-    <Setter Property="Background" Value="{DynamicResource VKBackgroundContentBrush}"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource VKImageBorderBrush}"/>
-    <Setter Property="BorderThickness" Value="1"/>
-  </Style>
-
-  <!-- Time & indicators -->
-  
-  <Style Selector="Border.DefaultIndicator">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="Margin" Value="0,0,5,2"/>
-  </Style>
-
-  <Style Selector="Border.DefaultIndicator > StackPanel#IndicatorStack > TextBlock">
-    <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
-  </Style>
-
-  <Style Selector="Border.DefaultIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
-    <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
-  </Style>
-
-  
-  <Style Selector="Border.ImageIndicator">
-    <Setter Property="Background" Value="#59000000"/>
-    <Setter Property="Margin" Value="0,0,5,5"/>
-  </Style>
-
-  <Style Selector="Border.ComplexImageIndicator">
-    <Setter Property="Background" Value="#59000000"/>
-    <Setter Property="Margin" Value="0,0,9,9"/>
-  </Style>
-  
-  <Style Selector="Border.ImageIndicator > StackPanel#IndicatorStack > TextBlock, Border.ComplexImageIndicator > StackPanel#IndicatorStack > TextBlock">
-    <Setter Property="Foreground" Value="White"/>
-  </Style>
-
-  <Style Selector="Border.ImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon, Border.ComplexImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
-    <Setter Property="Foreground" Value="White"/>
-  </Style>
-
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

@@ -56,6 +56,11 @@
     <None Remove="Assets\Logo\Tray\t32mb.png" />
     <None Remove="Assets\Logo\Tray\t32mw.png" />
     <None Remove="Assets\Logo\win.png" />
+    <None Remove="Controls\Attachments\AttachmentsContainer.xaml" />
+    <None Remove="Controls\ChatViewItem.xaml" />
+    <None Remove="Controls\CompactMessage.xaml" />
+    <None Remove="Controls\MessageBubble.xaml" />
+    <None Remove="Controls\PostUI.xaml" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\Audio\bb2.mp3" />
@@ -92,9 +97,6 @@
     <ProjectReference Include="..\OAuthWebView\OAuthWebView.csproj" />
     <ProjectReference Include="..\VKUI\VKUI.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Controls\MessageBubble.axaml" />
-  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties />
@@ -122,5 +124,47 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\SearchView.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\MessageBubble.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\PostUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\ChatViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\CompactMessage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\Attachments\AttachmentsContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Controls\Attachments\AttachmentsContainer.xaml.cs">
+      <DependentUpon>AttachmentsContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\ChatViewItem.xaml.cs">
+      <DependentUpon>ChatViewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\CompactMessage.xaml.cs">
+      <DependentUpon>CompactMessage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\MessageBubble.xaml.cs">
+      <DependentUpon>MessageBubble.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\PostUI.xaml.cs">
+      <DependentUpon>PostUI.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

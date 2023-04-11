@@ -1,11 +1,8 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:ELOR.Laney.Controls">
-  <Design.PreviewWith>
-    <controls:CompactMessage BorderBrush="#007acc" Margin="12" Padding="6,0,0,0" BorderThickness="2,0,0,0"/>
-  </Design.PreviewWith>
 
-  <Style Selector="controls|CompactMessage">
+  <ControlTheme x:Key="{x:Type controls:CompactMessage}" TargetType="controls:CompactMessage">
     <Setter Property="Template">
       <ControlTemplate>
         <Border Height="36" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
@@ -22,5 +19,5 @@
         </Border>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>
