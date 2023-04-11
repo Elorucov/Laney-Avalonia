@@ -120,4 +120,7 @@
       <HintPath>..\Libraries\DesktopNotifications.FreeDesktop.dll</HintPath>
     </Reference>-->
   </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\SearchView.axaml" />
+  </ItemGroup>
 </Project>

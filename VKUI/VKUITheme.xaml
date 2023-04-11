@@ -22,6 +22,7 @@
         <ResourceInclude Source="avares://VKUI/Controls/Cell.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/FlipViewItem.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/FlipView.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/NavigationControl.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/PanelHeader.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Placeholder.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/ScrollBar.xaml" />

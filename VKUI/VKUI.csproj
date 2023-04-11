@@ -33,6 +33,7 @@
     <None Remove="Controls\Cell.xaml" />
     <None Remove="Controls\FlipView.xaml" />
     <None Remove="Controls\FlipViewItem.xaml" />
+    <None Remove="Controls\NavigationControl.xaml" />
     <None Remove="Controls\PanelHeader.xaml" />
     <None Remove="Controls\Placeholder.xaml" />
     <None Remove="Controls\ScrollBar.xaml" />
@@ -116,6 +117,9 @@
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
     <AvaloniaResource Update="Controls\FlipViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Controls\NavigationControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
     <AvaloniaResource Update="Controls\ScrollBar.xaml">

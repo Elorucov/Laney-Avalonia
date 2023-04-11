@@ -59,6 +59,8 @@ namespace ELOR.Laney.Views {
             Closing += MainWindow_Closing;
             VKSession.GetByDataContext(this).PropertyChanged += SessionPropertyChanged;
             Title = $"{VKSession.GetByDataContext(this).Name} - Laney";
+
+            LeftNav.NavigationRouter.NavigateToAsync(new ImView());
         }
 
         private void SessionPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
@@ -137,20 +139,20 @@ namespace ELOR.Laney.Views {
             isWide = width >= 720;
 
             if (!isWide) {
-                Grid.SetColumnSpan(ConvsView, 2);
+                Grid.SetColumnSpan(LeftNav, 2);
                 Grid.SetColumn(ChatViewContainer, 0);
                 Grid.SetColumnSpan(ChatViewContainer, 2);
                 Separator.IsVisible = false;
 
-                ConvsView.IsVisible = !isRightSideDisplaying;
+                LeftNav.IsVisible = !isRightSideDisplaying;
                 ChatViewContainer.IsVisible = isRightSideDisplaying;
             } else {
-                Grid.SetColumnSpan(ConvsView, 1);
+                Grid.SetColumnSpan(LeftNav, 1);
                 Grid.SetColumn(ChatViewContainer, 1);
                 Grid.SetColumnSpan(ChatViewContainer, 1);
                 Separator.IsVisible = true;
 
-                ConvsView.IsVisible = true;
+                LeftNav.IsVisible = true;
                 ChatViewContainer.IsVisible = true;
             }
 

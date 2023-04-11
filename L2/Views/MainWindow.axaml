@@ -1,4 +1,5 @@
 <Window xmlns="https://github.com/avaloniaui"
+        xmlns:vkui="using:VKUI.Controls"
         xmlns:views="using:ELOR.Laney.Views"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,7 +13,8 @@
       <ColumnDefinition Width="1*" MinWidth="320"/>
       <ColumnDefinition Width="1.75*"/>
     </Grid.ColumnDefinitions>
-    <views:ImView x:Name="ConvsView"/>
+    <!--<views:ImView x:Name="ConvsView"/>-->
+    <vkui:NavigationControl x:Name="LeftNav"/>
     <Rectangle x:Name="Separator" HorizontalAlignment="Right" Width="1" VerticalAlignment="Stretch" Fill="{DynamicResource VKSeparatorAlphaBrush}"/>
     <Grid x:Name="ChatViewContainer" Grid.Column="1">
       <views:ChatView x:Name="ChatView" IsVisible="{Binding DataContext, Mode=OneWay, ElementName=ChatView, Converter={x:Static ObjectConverters.IsNotNull}}" DataContext="{Binding CurrentOpenedChat}"/>

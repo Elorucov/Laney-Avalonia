@@ -1,0 +1,64 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:control="using:VKUI.Controls">
+  <ControlTheme x:Key="{x:Type control:NavigationControl}" TargetType="control:NavigationControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockPanel>
+          <Border Name="PART_NavigationBar" 
+                  IsVisible="{TemplateBinding IsNavBarVisible}" 
+                  Height="{DynamicResource NavigationControlNavBarHeight}" 
+                  Background="{DynamicResource NavigationControlNavBarBackground}" 
+                  DockPanel.Dock="Top" 
+                  Padding="5" 
+                  CornerRadius="{DynamicResource ControlCornerRadius}">
+            <DockPanel HorizontalAlignment="Stretch">
+              <DockPanel.Styles>
+                <Styles>
+                  <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                  </Style>
+                </Styles>
+              </DockPanel.Styles>
+              <Button x:Name="PART_BackButton" 
+                      Background="Transparent" 
+                      DockPanel.Dock="Left" 
+                      IsEnabled="{TemplateBinding CanGoBack}" 
+                      IsVisible="{TemplateBinding IsBackButtonVisible}">
+                <!--<PathIcon
+                  Data="{DynamicResource NavigationControlBackIcon}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>-->
+              </Button>
+              <Button x:Name="PART_ForwardButton"
+                      Background="Transparent"
+                      DockPanel.Dock="Left"
+                      IsEnabled="{TemplateBinding CanGoForward}"
+                      IsVisible="{TemplateBinding IsForwardButtonVisible}">
+                <!--<PathIcon
+                  Data="{DynamicResource NavigationControlForwardIcon}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>-->
+              </Button>
+              <ContentPresenter Name="PART_Header"
+                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                  Content="{TemplateBinding Header}"
+                />
+            </DockPanel>
+          </Border>
+          <TransitioningContentControl Name="PART_ContentPresenter"
+                          PageTransition="{TemplateBinding PageTransition}"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          CornerRadius="{TemplateBinding CornerRadius}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Padding="{TemplateBinding Padding}"
+                          Margin="{DynamicResource NavigationControlPageMargin}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+        </DockPanel>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

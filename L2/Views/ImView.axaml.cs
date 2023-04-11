@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml.Templates;
 using ELOR.Laney.Core;
@@ -8,11 +7,11 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
 using System;
-using System.ComponentModel;
 using System.Reactive.Linq;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Views {
-    public sealed partial class ImView : UserControl {
+    public sealed partial class ImView : Page {
         private VKSession Session { get { return VKSession.GetByDataContext(this); } }
 
         public ImView() {
@@ -24,11 +23,7 @@ namespace ELOR.Laney.Views {
                 ExceptionHelper.ShowNotImplementedDialogAsync(Session.Window);
             };
             SearchButton.Click += (a, b) => {
-                // throw new Exception("This is a crash. Not bandicoot, but a crash.");
-                //Window w = Session.Window;
-                //w.WindowState = WindowState.Normal;
-                //w.PlatformImpl.Resize(new Size(1134, 756));
-                ExceptionHelper.ShowNotImplementedDialogAsync(Session.Window);
+                NavigationRouter.NavigateToAsync(new SearchView());
             };
 
             DataContextChanged += ImView_DataContextChanged;

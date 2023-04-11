@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<vkui:Page xmlns="https://github.com/avaloniaui"
              xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:controls="using:ELOR.Laney.Controls"
@@ -47,4 +47,4 @@
       </Grid>
     </Grid>
   </Grid>
-</UserControl>
+</vkui:Page>

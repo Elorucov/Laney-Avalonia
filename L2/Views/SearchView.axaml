@@ -1,0 +1,22 @@
+<vkui:Page xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:controls="using:ELOR.Laney.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ELOR.Laney.Views.SearchView">
+  <Grid RowDefinitions="Auto *">
+    <vkui:PanelHeader VerticalAlignment="Top">
+      <vkui:PanelHeader.LeftButtons>
+        <Button x:Name="BackButton">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}"/>
+        </Button>
+      </vkui:PanelHeader.LeftButtons>
+      <vkui:PanelHeader.Content>
+        <TextBox Classes="Search" Watermark="Search"/>
+      </vkui:PanelHeader.Content>
+    </vkui:PanelHeader>
+  </Grid>
+</vkui:Page>
