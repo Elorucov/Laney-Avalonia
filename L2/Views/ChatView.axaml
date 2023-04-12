@@ -112,7 +112,7 @@
       </ListBox.ItemsPanel>
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <controls:ChatViewItem Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
+          <controls:ChatViewItem Initialized="CVI_Initialized" Loaded="CVI_Loaded" Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>

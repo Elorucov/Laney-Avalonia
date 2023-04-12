@@ -5,27 +5,32 @@
         xmlns:atch="using:ELOR.Laney.Controls.Attachments"
         xmlns:vkui="using:VKUI.Controls">
 
+  <DataTemplate x:Key="DateUnderTitleTemplate">
+    <Border HorizontalAlignment="Center" CornerRadius="13">
+      <TextBlock Classes="Subhead" Margin="8,4" Foreground="{DynamicResource VKTextSubheadBrush}"/>
+    </Border>
+  </DataTemplate>
+  
+  <DataTemplate x:Key="TemporaryServiceMessageTemplate">
+    <Border Margin="0,4" HorizontalAlignment="Center" CornerRadius="13">
+      <TextBlock Classes="Subhead" Margin="8,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding}"/>
+    </Border>
+  </DataTemplate>
+  
+  <DataTemplate x:Key="ExpiredMessageTemplate">
+    <Border x:Name="ExpiredMessageUI" HorizontalAlignment="Center" Height="40" CornerRadius="20" Background="{DynamicResource VKModalCardBackgroundBrush}" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}" BorderThickness="1">
+      <StackPanel Orientation="Horizontal">
+        <vkui:VKIcon Margin="10,0,0,0" Id="{x:Static vkui:VKIconNames.Icon24BombOutline}" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
+        <TextBlock Classes="Caption1" Margin="6,0,12,0" VerticalAlignment="Center" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{i18n:Localize msg_expired}"/>
+      </StackPanel>
+    </Border>
+  </DataTemplate>
+    
   <ControlTheme x:Key="{x:Type controls:ChatViewItem}" TargetType="controls:ChatViewItem">
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel x:Name="Root" Background="Transparent">
-          <Border x:Name="DateContainer" HorizontalAlignment="Center" CornerRadius="13" IsVisible="{Binding Message.IsDateBetweenVisible, RelativeSource={RelativeSource TemplatedParent}}">
-            <TextBlock Classes="Subhead" Margin="8,4" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Message.SentTime.Date, Converter={StaticResource dc} RelativeSource={RelativeSource TemplatedParent}}"/>
-          </Border>
-          <!-- TODO: кликабельные имена -->
-          <Border x:Name="ServiceMessageUI" Margin="0,4" HorizontalAlignment="Center" CornerRadius="13" IsVisible="{Binding Message.Action, Converter={x:Static ObjectConverters.IsNotNull} RelativeSource={RelativeSource TemplatedParent}}">
-            <TextBlock Classes="Subhead" Margin="8,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
-          </Border>
-          <Border x:Name="ExpiredMessageUI" HorizontalAlignment="Center" Height="40" CornerRadius="20" Background="{DynamicResource VKModalCardBackgroundBrush}" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}" BorderThickness="1" IsVisible="{Binding Message.IsExpired, RelativeSource={RelativeSource TemplatedParent}}">
-            <StackPanel Orientation="Horizontal">
-              <vkui:VKIcon Margin="10,0,0,0" Id="{x:Static vkui:VKIconNames.Icon24BombOutline}" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
-              <TextBlock Classes="Caption1" Margin="6,0,12,0" VerticalAlignment="Center" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{i18n:Localize msg_expired}"/>
-            </StackPanel>
-          </Border>
-          <Border x:Name="MessageUIWrapper" IsVisible="{Binding Message.CanShowInUI, RelativeSource={RelativeSource TemplatedParent}}">
-            <controls:MessageBubble x:Name="MessageUI" Message="{Binding Message, RelativeSource={RelativeSource TemplatedParent}}"/>
-          </Border>
-          <vkui:CarouselEx x:Name="Carousel" ScrollPixels="240" Margin="0,0,0,6" IsVisible="{Binding Template, Converter={x:Static ObjectConverters.IsNotNull}}">
+          <!--<vkui:CarouselEx x:Name="Carousel" ScrollPixels="240" Margin="0,0,0,6" IsVisible="{Binding Template, Converter={x:Static ObjectConverters.IsNotNull}}">
             <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
               <ItemsRepeater Margin="9,0" Items="{Binding Template.Elements}">
                 <ItemsRepeater.Layout>
@@ -38,7 +43,7 @@
                 </ItemsRepeater.ItemTemplate>
               </ItemsRepeater>
             </ScrollViewer>
-          </vkui:CarouselEx>
+          </vkui:CarouselEx>-->
         </StackPanel>
       </ControlTemplate>
     </Setter>

@@ -1,7 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Markup.Xaml.Templates;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Controls;
+using Serilog;
+using System;
+using System.ComponentModel;
 
 namespace ELOR.Laney.Controls {
     public class ChatViewItem : TemplatedControl {
@@ -22,22 +27,129 @@ namespace ELOR.Laney.Controls {
         StackPanel Root;
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
+#if RELEASE
+#elif BETA
+#else
+            Log.Verbose($"ChatViewItem OnApplyTemplate exec. ({Message.PeerId}_{Message.ConversationMessageId})");
+#endif
+
             base.OnApplyTemplate(e);
             Root = e.NameScope.Find<StackPanel>(nameof(Root));
+
+            RenderContent(Message);
         }
 
         #endregion
 
         public ChatViewItem() {
+            if (Message == null) {
+                Log.Verbose($"ChatViewItem init.");
+            } else {
+                Log.Verbose($"ChatViewItem init. ({Message.PeerId}_{Message.ConversationMessageId})");
+            }
+
+            Initialized += ChatViewItem_Initialized;
             PointerPressed += ChatViewItem_PointerPressed;
+            PointerReleased += ChatViewItem_PointerReleased;
             Unloaded += ChatViewItem_Unloaded;
+        }
+
+        private void ChatViewItem_Initialized(object sender, EventArgs e) {
+            int i = 0;
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
+            base.OnPropertyChanged(change);
+            if (change.Property == MessageProperty) {
+                MessageViewModel old = change.OldValue as MessageViewModel;
+                if (old != null) {
+                    old.PropertyChanged -= MessagePropertyChanged;
+                }
+
+                if (Root == null) return;
+                Root.Children.Clear();
+                if (change.NewValue == null) return;
+
+                MessageViewModel newm = change.NewValue as MessageViewModel;
+                if (newm.Id == old.Id) return;
+
+                RenderContent(newm);
+                newm.PropertyChanged += MessagePropertyChanged;
+            }
+        }
+
+        private void RenderContent(MessageViewModel message) {
+            Log.Verbose($"ChatViewItem > RenderContent started.");
+            // Date
+            if (message.IsDateBetweenVisible) {
+                DataTemplate template = App.GetResource<DataTemplate>("DateUnderTitleTemplate");
+                var dateUI = template.Build(message);
+                // Check template in CHatViewItem.xaml
+                ((dateUI as Border).Child as TextBlock).Text = message.SentTime.ToHumanizedDateString();
+                Root.Children.Add(dateUI);
+            }
+
+            // Service message
+            if (message.Action != null) {
+                DataTemplate template = App.GetResource<DataTemplate>("TemporaryServiceMessageTemplate");
+                var serviceUI = template.Build(message);
+                Root.Children.Add(serviceUI);
+            }
+
+            // Expired message
+            if (message.IsExpired) {
+                DataTemplate template = App.GetResource<DataTemplate>("ExpiredMessageTemplate");
+                var expiredUI = template.Build(message);
+                Root.Children.Add(expiredUI);
+            }
+
+            // Message bubble
+            if (message.CanShowInUI) {
+                var messageUI = new MessageBubble { Message = message };
+                Root.Children.Add(messageUI);
+            }
+
+            // Carousel
+            if (message.Template != null) {
+
+            }
+
+            Log.Verbose($"ChatViewItem > RenderContent finished.");
+        }
+
+        private void MessagePropertyChanged(object sender, PropertyChangedEventArgs e) {
+            if (Root == null) return;
+            switch (e.PropertyName) {
+                case nameof(MessageViewModel.Action):
+                case nameof(MessageViewModel.IsDateBetweenVisible):
+                case nameof(MessageViewModel.IsExpired):
+                case nameof(MessageViewModel.CanShowInUI):
+                case nameof(MessageViewModel.Template):
+                    Root.Children.Clear();
+                    RenderContent(Message);
+                    break;
+            }
         }
 
         // Необходимо для того, чтобы при ПКМ не пробрасывалось
         // событие нажатия к ListBox и не выделялось сообщение,
         // а при ЛКМ проверить, можно ли выделить сообщение
         // (например, оно не сервисное)
+
+        // Для мыши
         private void ChatViewItem_PointerPressed(object sender, Avalonia.Input.PointerPressedEventArgs e) {
+            if (e.Pointer.Type == Avalonia.Input.PointerType.Touch) return;
+            bool isRight = !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
+            if (isRight) {
+                e.Handled = true;
+            } else {
+                if (Message.Action != null || Message.IsExpired || Message.TTL > 0) e.Handled = true;
+            }
+        }
+
+        // Для тачскрина
+        private void ChatViewItem_PointerReleased(object sender, Avalonia.Input.PointerReleasedEventArgs e) {
+            if (e.Pointer.Type != Avalonia.Input.PointerType.Touch) return;
             bool isRight = !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
             if (isRight) {
                 e.Handled = true;

@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Layout;
@@ -43,9 +42,9 @@ namespace ELOR.Laney.Controls {
 #else
         public MessageBubble() {
             if (Message == null) {
-                Log.Verbose($"MessageBubble init.");
+                Log.Verbose($"> MessageBubble init.");
             } else {
-                Log.Verbose($"MessageBubble init. ({Message.PeerId}_{Message.ConversationMessageId})");
+                Log.Verbose($"> MessageBubble init. ({Message.PeerId}_{Message.ConversationMessageId})");
             }
         }
 #endif
@@ -96,7 +95,7 @@ namespace ELOR.Laney.Controls {
 #if RELEASE
 #elif BETA
 #else
-            Log.Verbose($"MessageBubble OnApplyTemplate exec. ({Message.PeerId}_{Message.ConversationMessageId})");
+            Log.Verbose($"> MessageBubble OnApplyTemplate exec. ({Message.PeerId}_{Message.ConversationMessageId})");
 #endif
 
             base.OnApplyTemplate(e);
@@ -142,6 +141,8 @@ namespace ELOR.Laney.Controls {
                 Message.MessageEdited -= Message_MessageEdited;
 
                 Debug.WriteLine($"Message bubble UI for {Message.PeerId}_{Message.ConversationMessageId} is unloaded");
+            } else {
+                Debug.WriteLine($"Message bubble UI is unloaded");
             }
 
             AvatarButton.Click -= AvatarButton_Click;
@@ -187,9 +188,9 @@ namespace ELOR.Laney.Controls {
             switch (e.PropertyName) {
                 case nameof(MessageViewModel.Text):
                     if (isUILoaded && Message.CanShowInUI) {
-                        Log.Verbose($"> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
+                        Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
                         SetText(Message.Text);
-                        Log.Verbose($"< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
+                        Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
                     }
                     break;
                 case nameof(MessageViewModel.State):
@@ -197,9 +198,9 @@ namespace ELOR.Laney.Controls {
                 case nameof(MessageViewModel.EditTime):
                 case nameof(MessageViewModel.IsSenderNameVisible):
                 case nameof(MessageViewModel.IsSenderAvatarVisible):
-                    Log.Verbose($"> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
+                    Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
                     ChangeUI();
-                    Log.Verbose($"< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
+                    Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
                     break;
             }
         }
@@ -211,7 +212,7 @@ namespace ELOR.Laney.Controls {
         private void RenderElement() {
             if (!isUILoaded || !Message.CanShowInUI) return;
 
-            Log.Verbose($"> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendering...");
+            Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendering...");
             var sw = Stopwatch.StartNew();
 
             // Outgoing
@@ -332,14 +333,14 @@ namespace ELOR.Laney.Controls {
             ChangeUI();
 
             sw.Stop();
-            Log.Verbose($"< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendered. ({sw.ElapsedMilliseconds} ms.)");
+            Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendered. ({sw.ElapsedMilliseconds} ms.)");
             if (sw.ElapsedMilliseconds > ((double)1000 / (double)30)) {
                 Log.Warning($"MessageBubble: rendering {Message.PeerId}_{Message.ConversationMessageId} took too long! ({sw.ElapsedMilliseconds} ms.)");
             }
         }
 
         private void SetText(string text) {
-            Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} setting text...");
+            Log.Verbose($">>> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} setting text...");
             TextParser.SetText(text, MessageText, OnLinkClicked);
 
             // Empty space for sent time/status
@@ -353,7 +354,7 @@ namespace ELOR.Laney.Controls {
                     FontSize = 12
                 });
             }
-            Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} text rendered.");
+            Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} text rendered.");
         }
 
         private void OnLinkClicked(string link) {
@@ -367,7 +368,7 @@ namespace ELOR.Laney.Controls {
         private void ChangeUI() {
             if (!isUILoaded || !Message.CanShowInUI) return;
 
-            Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} exec ChangeUI...");
+            Log.Verbose($">>> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} exec ChangeUI...");
 
             // Avatar visibility
             SenderAvatar.Opacity = Message.IsSenderAvatarVisible ? 1 : 0;
@@ -431,7 +432,7 @@ namespace ELOR.Laney.Controls {
             var fwm = ForwardedMessagesContainer.Margin;
             ForwardedMessagesContainer.Margin = new Thickness(fwm.Left, fwdTopMargin, fwm.Right, fwm.Bottom);
 
-            Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} ChangeUI completed.");
+            Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} ChangeUI completed.");
         }
 
         #region Template events
