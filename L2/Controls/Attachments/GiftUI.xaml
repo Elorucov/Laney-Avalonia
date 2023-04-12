@@ -1,4 +1,4 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:vkui="using:VKUI.Controls"
@@ -9,8 +9,7 @@
     </Border>
   </Design.PreviewWith>
 
-  <Style Selector="controls|GiftUI">
-    <!-- Set Defaults -->
+  <ControlTheme x:Key="{x:Type controls:GiftUI}" TargetType="controls:GiftUI">
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel>
@@ -24,5 +23,5 @@
         </StackPanel>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

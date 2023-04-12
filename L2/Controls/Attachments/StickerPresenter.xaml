@@ -1,11 +1,11 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:ELOR.Laney.Controls.Attachments">
   <Design.PreviewWith>
     <controls:StickerPresenter />
   </Design.PreviewWith>
 
-  <Style Selector="controls|StickerPresenter">
+  <ControlTheme x:Key="{x:Type controls:StickerPresenter}" TargetType="controls:StickerPresenter">
     <Setter Property="Width" Value="168"/>
     <Setter Property="Height" Value="168"/>
     <Setter Property="Template">
@@ -13,5 +13,5 @@
         <Border x:Name="StickerView"/>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

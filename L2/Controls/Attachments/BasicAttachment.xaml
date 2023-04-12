@@ -1,4 +1,4 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vkui="using:VKUI.Controls"
         xmlns:controls="using:ELOR.Laney.Controls.Attachments">
@@ -6,7 +6,7 @@
     <controls:BasicAttachment Margin="8" Title="Крутой проект" Subtitle="ZIP • 75 МБ" Icon="{StaticResource Icon24Done}"/>
   </Design.PreviewWith>
 
-  <Style Selector="controls|BasicAttachment">
+  <ControlTheme x:Key="{x:Type controls:BasicAttachment}" TargetType="controls:BasicAttachment">
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -23,5 +23,5 @@
         </Button>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

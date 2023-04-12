@@ -1,16 +1,15 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:ELOR.Laney.Controls">
   <Design.PreviewWith>
     <controls:BotKeyboardUI Margin="12" Width="320"/>
   </Design.PreviewWith>
 
-  <Style Selector="controls|BotKeyboardUI">
-    <!-- Set Defaults -->
+  <ControlTheme x:Key="{x:Type controls:BotKeyboardUI}" TargetType="controls:BotKeyboardUI">
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel x:Name="Root"/>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

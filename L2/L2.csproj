@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.375</AssemblyVersion>
-    <FileVersion>2.0.375</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.375-win-anycpu-devuser.devpc-230407-1816</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.375-linux-anycpu-devuser.devpc-230407-1816</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.375-macos-anycpu-devuser.devpc-230407-1816</Version>
+    <AssemblyVersion>2.0.376</AssemblyVersion>
+    <FileVersion>2.0.376</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.376-win-anycpu-devuser.devpc-230411-1616</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.376-linux-anycpu-devuser.devpc-230411-1616</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.376-macos-anycpu-devuser.devpc-230411-1616</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -22,8 +22,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.375</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.375</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.376</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.376</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -57,6 +57,11 @@
     <None Remove="Assets\Logo\Tray\t32mw.png" />
     <None Remove="Assets\Logo\win.png" />
     <None Remove="Controls\Attachments\AttachmentsContainer.xaml" />
+    <None Remove="Controls\Attachments\BasicAttachment.xaml" />
+    <None Remove="Controls\Attachments\ExtendedAttachment.xaml" />
+    <None Remove="Controls\Attachments\GiftUI.xaml" />
+    <None Remove="Controls\Attachments\StickerPresenter.xaml" />
+    <None Remove="Controls\BotKeyboardUI.xaml" />
     <None Remove="Controls\ChatViewItem.xaml" />
     <None Remove="Controls\CompactMessage.xaml" />
     <None Remove="Controls\MessageBubble.xaml" />
@@ -70,6 +75,17 @@
     <AvaloniaResource Include="Assets\Logo\Tray\t32mb.png" />
     <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
     <AvaloniaResource Include="Assets\Logo\win.png" />
+    <AvaloniaResource Include="Controls\Attachments\BasicAttachment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Controls\Attachments\ExtendedAttachment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Controls\Attachments\GiftUI.xaml" />
+    <AvaloniaResource Include="Controls\Attachments\StickerPresenter.xaml" />
+    <AvaloniaResource Include="Controls\BotKeyboardUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.0-preview6" />

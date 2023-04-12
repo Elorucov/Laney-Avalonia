@@ -1,11 +1,11 @@
-<Styles xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:ELOR.Laney.Controls.Attachments">
   <Design.PreviewWith>
     <controls:ExtendedAttachment Width="304" Margin="12" Title="Сито" Subtitle="Набор стикеров" ActionButtonText="Открыть" Preview="https://vk.com/sticker/packs/1621/icon/square_4x.png"/>
   </Design.PreviewWith>
 
-  <Style Selector="controls|ExtendedAttachment">
+  <ControlTheme x:Key="{x:Type controls:ExtendedAttachment}" TargetType="controls:ExtendedAttachment">
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -21,5 +21,5 @@
         </Button>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+</ResourceDictionary>

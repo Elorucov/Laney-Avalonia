@@ -10,6 +10,11 @@
     <ResourceDictionary>      
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="/Controls/Attachments/AttachmentsContainer.xaml"/>
+        <ResourceInclude Source="/Controls/Attachments/BasicAttachment.xaml"/>
+        <ResourceInclude Source="/Controls/Attachments/ExtendedAttachment.xaml"/>
+        <ResourceInclude Source="/Controls/Attachments/GiftUI.xaml"/>
+        <ResourceInclude Source="/Controls/Attachments/StickerPresenter.xaml"/>
+        <ResourceInclude Source="/Controls/BotKeyboardUI.xaml"/>
         <ResourceInclude Source="/Controls/ChatViewItem.xaml"/>
         <ResourceInclude Source="/Controls/CompactMessage.xaml"/>
         <ResourceInclude Source="/Controls/MessageBubble.xaml"/>
@@ -100,11 +105,6 @@
     <theme:SimpleTheme/>
     <ui:VKUITheme/>
     
-    <StyleInclude Source="avares://Laney/Controls/Attachments/BasicAttachment.axaml"/>
-    <StyleInclude Source="avares://Laney/Controls/Attachments/ExtendedAttachment.axaml"/>
-    <StyleInclude Source="avares://Laney/Controls/Attachments/GiftUI.axaml"/>
-    <StyleInclude Source="avares://Laney/Controls/Attachments/StickerPresenter.axaml"/>
-    <StyleInclude Source="avares://Laney/Controls/BotKeyboardUI.axaml"/>
     <StyleInclude Source="avares://Laney/Styles/ListBoxStyles.axaml"/>
 
     <Style Selector="vkui|Avatar">
