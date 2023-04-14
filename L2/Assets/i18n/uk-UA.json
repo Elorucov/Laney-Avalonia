@@ -56,6 +56,7 @@
   "exit": "Вийти",
   "app_version": "Версiя",
   "build_time": "Build time",
+  "launch_time": "Launch duration",
   "dotnet_version": "Версiя .NET",
 
   "chats": "Чати",

@@ -11,9 +11,13 @@ namespace ELOR.Laney.Views.Modals {
     public partial class About : DialogWindow {
         public About() {
             InitializeComponent();
+#if RELEASE
             versionCell.After = $"{App.BuildInfo}";
+#else
+            versionCell.After = $"{App.BuildInfo} ({(App.ExpirationDate - DateTime.Now.Date).Days} day(s) to expire)";
+#endif
             dotnetVersionCell.After = RuntimeInformation.FrameworkDescription;
-            buildTimeCell.After = App.BuildTime;
+            buildTimeCell.After = App.BuildTime.ToString("dd MMM yyyy");
             launchTimeCell.After = TimeSpan.FromMilliseconds(Program.LaunchTime).ToString(@"%s\.fff") + " sec.";
 
             string str = String.Empty;

@@ -7,9 +7,11 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -49,6 +51,7 @@ namespace ELOR.Laney {
                 DesktopLifetime = desktop;
                 if (Platform == OSPlatform.FreeBSD) desktop.Shutdown();
                 Prepare();
+                if (DesktopLifetime.MainWindow != null) return; // признак того, что открыто окно expired info.
 
                 // Demo mode
                 if (DemoMode.Check()) {
@@ -84,6 +87,15 @@ namespace ELOR.Laney {
         private void Prepare() {
             string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
             Localizer.Instance.LoadLanguage(lang);
+
+#if RELEASE
+#else
+            if (IsExpired) {
+                DesktopLifetime.MainWindow = new VKUIDialog(Localizer.Instance["error"], "This version is expired!");
+                DesktopLifetime.MainWindow.Closed += (a, b) => Process.GetCurrentProcess().Kill();
+                DesktopLifetime.MainWindow.Show();
+            }
+#endif
 
             // Additional check
             byte c = 0;
@@ -171,7 +183,14 @@ namespace ELOR.Laney {
         private static string _buildInfo;
         public static string BuildInfoFull => _buildInfo ?? GetFullBuildInfo();
         public static string BuildInfo => GetBuildInfo();
-        public static string BuildTime => GetBuildTime();
+        public static DateTime BuildTime => GetBuildTime();
+
+#if RELEASE
+#else
+        public static DateTime ExpirationDate => BuildTime.Date.AddDays(60);
+        public static bool IsExpired => DateTime.Now.Date > ExpirationDate;
+#endif
+
         public static string UserAgent => GetUserAgent();
 
         private static string GetFullBuildInfo() {
@@ -190,12 +209,12 @@ namespace ELOR.Laney {
             return $"{sections[0]} {sections[1]}-{sections[2]}";
         }
 
-        private static string GetBuildTime() {
+        private static DateTime GetBuildTime() {
             string ver = BuildInfoFull;
             string[] sections = ver.Split('-');
             string datetime = $"{sections[4]}-{sections[5]}";
             var date = DateTime.ParseExact(datetime, "yyMMdd-HHmm", CultureInfo.InvariantCulture);
-            return date.ToString("dd MMM yyyy");
+            return date;
         }
 
         private static string GetUserAgent() {
@@ -214,7 +233,7 @@ namespace ELOR.Laney {
             "Unicode.net",
         };
 
-        #endregion
+#endregion
 
         #region Paths
 

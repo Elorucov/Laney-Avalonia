@@ -56,6 +56,7 @@
   "exit": "Exit",
   "app_version": "Version",
   "build_time": "Build time",
+  "launch_time": "Launch duration",
   "dotnet_version": ".NET version",
 
   "chats": "Chats",

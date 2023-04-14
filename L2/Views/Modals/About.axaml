@@ -29,7 +29,7 @@
       <vkui:Cell x:Name="versionCell" Header="{i18n:Localize app_version}"/>
       <vkui:Cell x:Name="buildTimeCell" Header="{i18n:Localize build_time}"/>
       <vkui:Cell x:Name="dotnetVersionCell" Header="Runtime"/>
-      <vkui:Cell x:Name="launchTimeCell" Header="Launch time"/>
+      <vkui:Cell x:Name="launchTimeCell" Header="{i18n:Localize launch_time}"/>
       <Rectangle Classes="Separator" Margin="12,6"/>
       <Button x:Name="b01" Classes="Tertiary">
         <vkui:Cell Header="{i18n:Localize about_offical_group}" Subtitle="{i18n:Localize about_offical_group_desc}"/>
