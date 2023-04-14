@@ -5,11 +5,9 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Views.Modals;
+using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using VKUI.Popups;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ELOR.Laney.Controls {
     public partial class Composer : UserControl {
@@ -62,18 +60,26 @@ namespace ELOR.Laney.Controls {
         // Костыль для ручного ввода символа новой строки,
         // ибо при AcceptsReturn = true не срабатывает KeyDown при нажатии на Enter.
         private void InsertNewLine() {
-            if (MessageText.SelectionStart == MessageText.SelectionEnd) {
-                MessageText.Text = MessageText.Text.Insert(MessageText.SelectionEnd, "\n");
-                MessageText.SelectionStart += 1;
-                MessageText.SelectionEnd += 1;
-            } else {
-                int start = Math.Min(MessageText.SelectionStart, MessageText.SelectionEnd);
-                int end = Math.Max(MessageText.SelectionStart, MessageText.SelectionEnd);
-                string newText = MessageText.Text.Remove(start, end - start);
-                MessageText.Text = newText.Insert(start, "\n");
-                start += 1;
-                MessageText.SelectionStart = start;
-                MessageText.SelectionEnd = start;
+            try {
+                if (MessageText.SelectionStart == MessageText.SelectionEnd) {
+                    if (!String.IsNullOrEmpty(MessageText.Text)) {
+                        MessageText.Text = MessageText.Text.Insert(MessageText.SelectionEnd, "\n");
+                    } else {
+                        MessageText.Text = "\n";
+                    }
+                    MessageText.SelectionStart += 1;
+                    MessageText.SelectionEnd += 1;
+                } else {
+                    int start = Math.Min(MessageText.SelectionStart, MessageText.SelectionEnd);
+                    int end = Math.Max(MessageText.SelectionStart, MessageText.SelectionEnd);
+                    string newText = MessageText.Text.Remove(start, end - start);
+                    MessageText.Text = newText.Insert(start, "\n");
+                    start += 1;
+                    MessageText.SelectionStart = start;
+                    MessageText.SelectionEnd = start;
+                }
+            } catch (Exception ex) {
+                Log.Error($"WTF with Composer.InsertNewLine... 0x{ex.HResult.ToString("x8")}");
             }
         }
 
