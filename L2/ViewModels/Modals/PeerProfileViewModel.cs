@@ -238,6 +238,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SecondCommand = commands[1];
                 ThirdCommand = moreCommand;
             } else {
+                SecondCommand = commands[1];
                 ThirdCommand = commands[2];
                 MoreCommand = moreCommand;
             }
