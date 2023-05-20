@@ -11,7 +11,7 @@
   <UserControl.Resources>
     <DataTemplate x:Key="EmojiTabTemplate">
       <ScrollViewer>
-        <ItemsRepeater x:Name="emojiList" Items="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}">
+        <ItemsRepeater x:Name="emojiList" ItemsSource="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}">
           <ItemsRepeater.Layout>
             <StackLayout/>
           </ItemsRepeater.Layout>
@@ -19,7 +19,7 @@
             <DataTemplate>
               <StackPanel>
                 <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding Key}"/>
-                <ItemsRepeater Items="{Binding}" Margin="12,0">
+                <ItemsRepeater ItemsSource="{Binding}" Margin="12,0">
                   <ItemsRepeater.Layout>
                     <UniformGridLayout MinItemWidth="24" MinItemHeight="24" MaximumRowsOrColumns="16" ItemsJustification="Start" ItemsStretch="None"/>
                   </ItemsRepeater.Layout>
@@ -40,7 +40,7 @@
     <DataTemplate x:Key="StickersTabTemplate">
       <Grid RowDefinitions="Auto *">
         <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding DataContext.SelectedTab.Label, Mode=OneWay, ElementName=PickerRoot}"/>
-        <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" Items="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}" KeyUp="StickersListBox_KeyUp">
+        <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}" KeyUp="StickersListBox_KeyUp">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <WrapPanel Margin="8,0,8,8" ItemWidth="96" ItemHeight="96" Width="384"/>
@@ -79,7 +79,7 @@
           <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
         </Style>
       </Border.Styles>
-      <ListBox SelectionMode="Single" Height="44" Items="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}">
+      <ListBox SelectionMode="Single" Height="44" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab, Mode=TwoWay}">
         <ListBox.ItemsPanel>
           <ItemsPanelTemplate>
             <StackPanel Margin="4" Orientation="Horizontal"/>

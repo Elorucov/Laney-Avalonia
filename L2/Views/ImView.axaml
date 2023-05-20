@@ -25,7 +25,7 @@
     </vkui:PanelHeader>
 
     <Grid x:Name="ChatsListRoot" Grid.Row="1">
-      <ListBox x:Name="ChatsList" SelectionMode="Toggle" AutoScrollToSelectedItem="True" Items="{Binding ImViewModel.SortedChats}" SelectedItem="{Binding ImViewModel.VisualSelectedChat}">
+      <ListBox x:Name="ChatsList" SelectionMode="Toggle" AutoScrollToSelectedItem="True" ItemsSource="{Binding ImViewModel.SortedChats}" SelectedItem="{Binding ImViewModel.VisualSelectedChat}">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
             <Setter Property="Padding" Value="0"/>

@@ -66,7 +66,7 @@ namespace VKUI.Controls {
             }
 
             try {
-                ImageEllipse.Fill = new ImageBrush(Image) { BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+                ImageEllipse.Fill = new ImageBrush(Image);
             } catch (Exception ex) {
                 Debug.WriteLine($"Error while drawing in Avatar! 0x{ex.HResult.ToString("x8")}");
             }

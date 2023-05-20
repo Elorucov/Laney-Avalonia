@@ -12,7 +12,7 @@
         <StackPanel>
           <vkui:Cell Margin="0" Header="{i18n:Localize st_lang}">
             <vkui:Cell.After>
-              <ComboBox Classes="Alternate" Items="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
+              <ComboBox Classes="Alternate" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                   <DataTemplate>
                     <TextBlock Text="{Binding Item2}"/>

@@ -44,8 +44,10 @@ namespace VKUI.Controls {
             ItemsPanelProperty.OverrideDefaultValue<FlipView>(DefaultPanel);
         }
 
-        protected override Control CreateContainerForItemOverride() => new FlipViewItem();
-        protected override bool IsItemItsOwnContainerOverride(Control item) => item is FlipViewItem;
+        protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey) => new FlipViewItem();
+        protected override bool NeedsContainerOverride(object? item, int index, out object? recycleKey) {
+            return NeedsContainer<FlipViewItem>(item, out recycleKey);
+        }
 
         protected override void PrepareContainerForItemOverride(Control element, object? item, int index) {
             if (element is FlipViewItem viewItem) {

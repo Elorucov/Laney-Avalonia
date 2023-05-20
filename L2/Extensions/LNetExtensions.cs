@@ -103,7 +103,6 @@ namespace ELOR.Laney.Extensions {
             try {
                 Bitmap bitmap = await TryGetCachedBitmapAsync(source, decodeWidth);
                 shape.Fill = new ImageBrush(bitmap) {
-                    BitmapInterpolationMode = BitmapInterpolationMode.HighQuality,
                     AlignmentX = AlignmentX.Center,
                     AlignmentY = AlignmentY.Center,
                     Stretch = Stretch.UniformToFill
@@ -118,7 +117,6 @@ namespace ELOR.Laney.Extensions {
             try {
                 Bitmap bitmap = await TryGetCachedBitmapAsync(source, decodeWidth);
                 var brush = new ImageBrush(bitmap) {
-                    BitmapInterpolationMode = BitmapInterpolationMode.HighQuality,
                     AlignmentX = AlignmentX.Center,
                     AlignmentY = AlignmentY.Center,
                     Stretch = Stretch.UniformToFill

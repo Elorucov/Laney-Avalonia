@@ -13,14 +13,14 @@
   <vkw:DialogWindow.Resources>
     <DataTemplate x:Key="UserGroupInfoContentTemplate">
       <ScrollViewer>
-        <ItemsControl Margin="0,-3,0,6" Items="{Binding DataContext.Information, ElementName=Root}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>
+        <ItemsControl Margin="0,-3,0,6" ItemsSource="{Binding DataContext.Information, ElementName=Root}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>
       </ScrollViewer>
     </DataTemplate>
     <DataTemplate x:Key="ChatMembersContentTemplate">
       <Grid RowDefinitions="Auto *">
         <TextBox Classes="Search" Margin="12,2,12,0" Text="{Binding DataContext.MemberSearchQuery, ElementName=Root}" Watermark="{i18n:Localize pp_search_members}"/>
         <ScrollViewer Grid.Row="1">
-          <ItemsRepeater Margin="0,6" Items="{Binding DataContext.DisplayedMembers, ElementName=Root}" ItemTemplate="{StaticResource ChatMemberTemplate}">
+          <ItemsRepeater Margin="0,6" ItemsSource="{Binding DataContext.DisplayedMembers, ElementName=Root}" ItemTemplate="{StaticResource ChatMemberTemplate}">
             <ItemsRepeater.Layout>
               <StackLayout/>
             </ItemsRepeater.Layout>

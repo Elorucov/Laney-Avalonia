@@ -140,9 +140,9 @@ namespace ELOR.Laney.Core {
                 }
             }
 
-            ash.ShowAt(owner);
-
 #endif
+
+            ash.ShowAt(owner);
         }
 
         public static NativeMenu TrayMenu { get; private set; }

@@ -111,7 +111,7 @@ namespace VKUI.Controls {
         }
 
         private void DragArea_PointerPressed(object sender, Avalonia.Input.PointerPressedEventArgs e) {
-            if (CanMove) OwnerWindow.PlatformImpl.BeginMoveDrag(e);
+            if (CanMove) OwnerWindow.BeginMoveDrag(e);
         }
     }
 }

@@ -12,7 +12,7 @@
         <StackPanel>
           <vkui:Cell Margin="0" Header="{i18n:Localize st_theme}">
             <vkui:Cell.After>
-              <ComboBox Classes="Alternate" Items="{Binding AppThemes}" SelectedItem="{Binding CurrentAppTheme, Mode=TwoWay}">
+              <ComboBox Classes="Alternate" ItemsSource="{Binding AppThemes}" SelectedItem="{Binding CurrentAppTheme, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                   <DataTemplate>
                     <TextBlock Text="{Binding Item2}"/>

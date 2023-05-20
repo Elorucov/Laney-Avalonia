@@ -22,7 +22,7 @@ namespace VKUI.Windows {
             int movey = Position.Y + (int)(diffy / 2);
 
             FixSize();
-            PlatformImpl.Move(new Avalonia.PixelPoint(movex, movey));
+            this.Position = new Avalonia.PixelPoint(movex, movey);
         }
 
         private void DialogWindow_SizeChanged(object sender, SizeChangedEventArgs e) {
@@ -49,7 +49,9 @@ namespace VKUI.Windows {
             MaxWidth = finalx + addx; 
             MaxHeight = finaly + addy;
 
-            PlatformImpl.Resize(new Avalonia.Size(MaxWidth, MaxHeight));
+            // PlatformImpl.Resize(new Avalonia.Size(MaxWidth, MaxHeight));
+            this.Width = MaxWidth;
+            this.Height = MaxHeight;
         }
     }
 }

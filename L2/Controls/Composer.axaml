@@ -38,7 +38,7 @@
 
     <Border x:Name="AttachmentsArea" Margin="0,8,0,2" IsVisible="{Binding !!Attachments.Count}">
       <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden">
-        <ItemsControl Margin="6,0" Items="{Binding Attachments}">
+        <ItemsControl Margin="6,0" ItemsSource="{Binding Attachments}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
               <StackPanel Orientation="Horizontal"/>

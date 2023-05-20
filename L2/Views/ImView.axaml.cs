@@ -44,7 +44,7 @@ namespace ELOR.Laney.Views {
                     var prop = ChatsList.GetObservable(ListBox.DataContextProperty)
                         .OfType<VKSession>()
                         .Select(v => v.ImViewModel.SortedChats);
-                    ChatsList.Bind(ListBox.ItemsProperty, prop);
+                    ChatsList.Bind(ListBox.ItemsSourceProperty, prop);
                     break;
             }
         }
