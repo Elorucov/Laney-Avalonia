@@ -30,7 +30,7 @@ namespace ELOR.Laney.Controls {
             try {
                 var bitmap = uri == null
                 ? null
-                : await LNetExtensions.TryGetCachedBitmapAsync(uri, (int)sender.Width);
+                : await LNetExtensions.TryGetCachedBitmapAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
                 if (GetSource(sender) != uri) return;
                 sender.Source = bitmap;
             } catch (Exception ex) {
@@ -43,12 +43,12 @@ namespace ELOR.Laney.Controls {
 
         private static async void OnBackgroundSourceChanged(Border sender, Uri uri) {
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            await sender.SetImageBackgroundAsync(uri, (int)sender.DesiredSize.Width);
+            await sender.SetImageBackgroundAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
         }
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {
             sender.Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            sender.SetImageFillAsync(uri, (int)sender.DesiredSize.Width);
+            sender.SetImageFillAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
         }
 
         private static void OnImageChanged(Avatar sender, Uri uri) {

@@ -99,7 +99,8 @@ namespace ELOR.VKAPILib {
             Dictionary<string, string> prmkv = new Dictionary<string, string>();
 
             foreach (var a in parameters) {
-                prmkv.Add(a.Key, WebUtility.UrlDecode(a.Value));
+                // prmkv.Add(a.Key, WebUtility.UrlDecode(a.Value));
+                prmkv.Add(a.Key, a.Value);
             }
 
             prmkv.Add("access_token", AccessToken);

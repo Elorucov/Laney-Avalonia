@@ -149,6 +149,7 @@ namespace ELOR.Laney.Views {
         }
 
         private async void ReceivedMessages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
+            if (!VKSession.GetByDataContext(this).Window.IsActive) return;
             if (e.Action == NotifyCollectionChangedAction.Add && autoScrollToLastMessage && Chat.DisplayedMessages != null && Chat.DisplayedMessages.Count > 0) {
                 ObservableCollection<MessageViewModel> received = sender as ObservableCollection<MessageViewModel>;
                 await Task.Delay(10); // ибо id-ы разные почему-то...

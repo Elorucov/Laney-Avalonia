@@ -277,6 +277,7 @@ namespace ELOR.Laney.Controls {
 
             // Forwarded messages
             ForwardedMessagesStack.Children.Clear();
+            ForwardedMessagesContainer.IsVisible = Message.ForwardedMessages?.Count > 0;
             var fmcmargin = ForwardedMessagesContainer.Margin;
             var fmcborder = ForwardedMessagesContainer.BorderThickness;
             var fmsmargin = ForwardedMessagesStack.Margin;
