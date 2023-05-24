@@ -58,7 +58,7 @@ namespace ELOR.Laney.Views {
             ChatsList.SelectionChanged += ChatsList_SelectionChanged;
             new ItemsPresenterWidthFixer(ChatsList);
             new ListBoxAutoScrollHelper(ChatsList);
-            (ChatsList.Scroll as ScrollViewer).RegisterIncrementalLoadingEvent(() => Session.ImViewModel.LoadConversations());
+            (ChatsList.Scroll as ScrollViewer).RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);
         }
 
         private void ChatsList_SelectionChanged(object sender, SelectionChangedEventArgs e) {

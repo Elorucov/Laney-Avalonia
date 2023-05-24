@@ -122,6 +122,17 @@
       <Setter Property="MinHeight" Value="0"/>
     </Style>
 
+    <!-- Fix margin for first and last element in ListBox -->
+    <Style Selector="ListBox.FixMargin ListBoxItem">
+      <Setter Property="Padding" Value="0"/>
+    </Style>
+    <Style Selector="ListBox.FixMargin ListBoxItem:nth-child(1)">
+      <Setter Property="Margin" Value="0,6,0,0"/>
+    </Style>
+    <Style Selector="ListBox.FixMargin ListBoxItem:nth-last-child(1)">
+      <Setter Property="Margin" Value="0,0,0,6"/>
+    </Style>
+    
     <!-- Unread counter -->
     <Style Selector="Border.Unmuted">
       <Setter Property="Background" Value="{DynamicResource VKCounterPrimaryBackgroundBrush}"/>

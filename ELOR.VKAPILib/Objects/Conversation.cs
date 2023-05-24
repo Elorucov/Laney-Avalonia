@@ -70,7 +70,7 @@ namespace ELOR.VKAPILib.Objects {
         public PeerType Type { get; set; }
 
         [JsonProperty("local_id")]
-        public string LocalId { get; set; }
+        public int LocalId { get; set; }
     }
 
     public class PushSettings {

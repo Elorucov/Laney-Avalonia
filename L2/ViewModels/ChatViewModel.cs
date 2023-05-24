@@ -138,11 +138,11 @@ namespace ELOR.Laney.ViewModels {
         }
 
         // Вызывается при отображении беседы на окне
-        public void OnDisplayed() {
+        public void OnDisplayed(int messageId = -1) {
             bool isDisplayedMessagesEmpty = DisplayedMessages == null || DisplayedMessages.Count == 0;
             Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}", PeerId, isDisplayedMessagesEmpty);
-            if (isDisplayedMessagesEmpty) {
-                LoadMessages();
+            if (isDisplayedMessagesEmpty || messageId >= 0) {
+                GoToMessage(messageId);
             } else {
                 ScrollToMessageRequested?.Invoke(this, InRead);
             }
@@ -390,15 +390,24 @@ namespace ELOR.Laney.ViewModels {
         public void GoToMessage(MessageViewModel message) {
             if (message == null) return;
             if (message.Id > 0) {
-                MessageViewModel msg = (from m in DisplayedMessages where m.Id == message.Id select m).FirstOrDefault();
-                // TODO: искать ещё и в received messages.
-                if (msg != null) {
-                    ScrollToMessageRequested?.Invoke(this, message.Id);
-                } else {
-                    LoadMessages(message.Id);
-                }
+                GoToMessage(message.Id);
             } else {
                 ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+            }
+        }
+
+        public void GoToMessage(int id) {
+            if (id == 0) return;
+            if (DisplayedMessages == null) {
+                LoadMessages(id);
+                return;
+            }
+            MessageViewModel msg = (from m in DisplayedMessages where m.Id == id select m).FirstOrDefault();
+            // TODO: искать ещё и в received messages.
+            if (msg != null) {
+                ScrollToMessageRequested?.Invoke(this, id);
+            } else {
+                LoadMessages(id);
             }
         }
 

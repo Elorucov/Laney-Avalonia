@@ -350,7 +350,7 @@ namespace ELOR.Laney.Core {
 
         byte gcCollectTriggerCounter = 0;
 
-        public void GetToChat(int peerId) {
+        public void GetToChat(int peerId, int messageId = -1) {
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
             if (chat == null) {
                 chat = new ChatViewModel(this, peerId);
@@ -358,7 +358,7 @@ namespace ELOR.Laney.Core {
             }
             CurrentOpenedChat = chat;
             CurrentOpenedChatChanged?.Invoke(this, chat.PeerId);
-            chat.OnDisplayed();
+            chat.OnDisplayed(messageId);
             Window.SwitchToSide(true);
             if (gcCollectTriggerCounter >= 2) {
                 gcCollectTriggerCounter = 0;

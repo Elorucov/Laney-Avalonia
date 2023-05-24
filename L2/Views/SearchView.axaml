@@ -6,17 +6,69 @@
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:controls="using:ELOR.Laney.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ELOR.Laney.Views.SearchView">
+             x:Class="ELOR.Laney.Views.SearchView" Loaded="SearchView_Loaded">
   <Grid RowDefinitions="Auto *">
-    <vkui:PanelHeader VerticalAlignment="Top">
+    <vkui:PanelHeader VerticalAlignment="Top" IsSeparatorVisible="False">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="BackButton">
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}"/>
         </Button>
       </vkui:PanelHeader.LeftButtons>
       <vkui:PanelHeader.Content>
-        <TextBox Classes="Search" Watermark="Search"/>
+        <TextBox Classes="Search" Watermark="{i18n:Localize search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
       </vkui:PanelHeader.Content>
     </vkui:PanelHeader>
+    <TabControl Grid.Row="1" SelectedIndex="{Binding CurrentTab}">
+      <TabItem Header="{i18n:Localize chats}">
+        <Grid>
+          <ScrollViewer>
+            <ItemsRepeater x:Name="ChatsList" Margin="0,6" ItemsSource="{Binding FoundChats}">
+              <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                  <Button Classes="Tertiary" Padding="0" Content="{Binding}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ContentTemplate="{StaticResource DefaultEntityItemTemplate}" Click="OnChatSelected"/>
+                </DataTemplate>
+              </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+          </ScrollViewer>
+          <Grid x:Name="EmptyChatsListContainer" IsVisible="{Binding FoundChats, Mode=OneWay, Converter={x:Static ObjectConverters.IsNull}}">
+            <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsChatsLoading, Mode=OneWay}"/>
+            <vkui:Placeholder VerticalAlignment="Center"
+                                  IsVisible="{Binding ChatsPlaceholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                  Icon="{Binding ChatsPlaceholder.Icon, Mode=OneWay}"
+                                  Header="{Binding ChatsPlaceholder.Header, Mode=OneWay}"
+                                  Text="{Binding ChatsPlaceholder.Text, Mode=OneWay}">
+              <vkui:Placeholder.Action>
+                <Button Classes="Primary" IsVisible="{Binding ChatsPlaceholder.ActionButtonFunc, Mode=OneWay, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{Binding ChatsPlaceholder.ActionButton, Mode=OneWay}" Command="{Binding ChatsPlaceholder.ActionButtonFunc, Mode=OneWay}"/>
+              </vkui:Placeholder.Action>
+            </vkui:Placeholder>
+          </Grid>
+        </Grid>
+      </TabItem>
+      <TabItem Header="{i18n:Localize messages}">
+        <Grid>
+           <ScrollViewer x:Name="MessagesSV">
+            <ItemsRepeater x:Name="MessagesList" Margin="0,6" ItemsSource="{Binding FoundMessages}">
+              <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                  <Button Classes="Tertiary" Padding="0" Content="{Binding}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ContentTemplate="{StaticResource FoundMessageTemplate}" Click="OnMessageSelected"/>
+                </DataTemplate>
+              </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+          </ScrollViewer>
+          <Grid Grid.Row="1" x:Name="EmptyMessagesListContainer" IsVisible="{Binding FoundMessages, Mode=OneWay, Converter={x:Static ObjectConverters.IsNull}}">
+            <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsMessagesLoading, Mode=OneWay}"/>
+            <vkui:Placeholder VerticalAlignment="Center"
+                                  IsVisible="{Binding MessagesPlaceholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                  Icon="{Binding MessagesPlaceholder.Icon, Mode=OneWay}"
+                                  Header="{Binding MessagesPlaceholder.Header, Mode=OneWay}"
+                                  Text="{Binding MessagesPlaceholder.Text, Mode=OneWay}">
+              <vkui:Placeholder.Action>
+                <Button Classes="Primary" IsVisible="{Binding MessagesPlaceholder.ActionButtonFunc, Mode=OneWay, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{Binding MessagesPlaceholder.ActionButton, Mode=OneWay}" Command="{Binding MessagesPlaceholder.ActionButtonFunc, Mode=OneWay}"/>
+              </vkui:Placeholder.Action>
+            </vkui:Placeholder>
+          </Grid>
+        </Grid>
+      </TabItem>
+    </TabControl>
   </Grid>
 </vkui:Page>

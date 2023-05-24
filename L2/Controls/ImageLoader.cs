@@ -52,7 +52,7 @@ namespace ELOR.Laney.Controls {
         }
 
         private static void OnImageChanged(Avatar sender, Uri uri) {
-            sender.SetImageAsync(uri, (int)sender.DesiredSize.Width);
+            sender.SetImageAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
         }
 
         public static readonly AttachedProperty<Uri?> SourceProperty = AvaloniaProperty.RegisterAttached<Image, Uri?>("Source", typeof(ImageLoader));

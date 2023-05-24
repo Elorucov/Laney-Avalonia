@@ -348,11 +348,14 @@ namespace ELOR.Laney.ViewModels.Modals {
             Command moreCommand = new Command(VKIconNames.Icon20More, Localizer.Instance["more"], false, (a) => OpenContextMenu(a, commands, moreCommands));
 
             FirstCommand = commands[0];
-            SecondCommand = commands[1];
 
-            if (commands.Count < 3) {
+            if (commands.Count < 2) {
+                SecondCommand = moreCommand;
+            } else if (commands.Count < 3) {
+                SecondCommand = commands[1];
                 ThirdCommand = moreCommand;
             } else {
+                SecondCommand = commands[1];
                 ThirdCommand = commands[2];
                 MoreCommand = moreCommand;
             }
@@ -553,7 +556,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             if (commands.Count < 2) {
                 SecondCommand = moreCommand;
-            } else if (commands.Count == 2) {
+            } else if (commands.Count < 3) {
                 SecondCommand = commands[1];
                 ThirdCommand = moreCommand;
             } else {
