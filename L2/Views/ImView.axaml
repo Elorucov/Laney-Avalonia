@@ -18,7 +18,7 @@
         <Button x:Name="SearchButton">
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28SearchOutline}"/>
         </Button>
-        <Button x:Name="NewConvButton">
+        <Button x:Name="NewConvButton" IsVisible="{Binding !IsGroup}">
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28WriteSquareOutline}"/>
         </Button>
       </vkui:PanelHeader.RightButtons>

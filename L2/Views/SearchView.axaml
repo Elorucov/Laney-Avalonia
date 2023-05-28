@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ELOR.Laney.Views.SearchView" Loaded="SearchView_Loaded">
   <Grid RowDefinitions="Auto *">
-    <vkui:PanelHeader VerticalAlignment="Top" IsSeparatorVisible="False">
+    <vkui:PanelHeader IsSeparatorVisible="False">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="BackButton">
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}"/>

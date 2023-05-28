@@ -324,5 +324,9 @@
   "about_vk_privacy": "Политика конфиденциальности ВК",
   "about_vk_terms": "Пользовательское соглашение ВК",
   "about_dev": "Разработчик:",
-  "about_dev2": "Эльчин Оруджев"
+  "about_dev2": "Эльчин Оруджев",
+
+  "chat_creation_title": "Новый чат",
+  "chat_creation_name_watermark": "Название",
+  "chat_creation_name_footnote": "Введите название и при желании загрузите фотографию"
 }

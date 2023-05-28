@@ -1,0 +1,97 @@
+<vkui:Page xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:controls="using:ELOR.Laney.Controls"
+             mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="640"
+             x:Name="Root"
+             x:Class="ELOR.Laney.Views.ChatCreationView" Loaded="ChatCreationView_Loaded">
+  <Grid RowDefinitions="Auto Auto Auto *">
+    <vkui:PanelHeader Content="{i18n:Localize chat_creation_title}">
+      <vkui:PanelHeader.LeftButtons>
+        <Button x:Name="BackButton">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}"/>
+        </Button>
+      </vkui:PanelHeader.LeftButtons>
+      <vkui:PanelHeader.RightButtons>
+        <Button x:Name="SettingsButton" Command="{Binding CustomizeChatSettingsCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28SettingsOutline}"/>
+        </Button>
+        <Button x:Name="CreateButton" IsEnabled="{Binding CanCreateChat}" Command="{Binding CreateCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28DoneOutline}"/>
+        </Button>
+      </vkui:PanelHeader.RightButtons>
+    </vkui:PanelHeader>
+    <Grid Grid.Row="1" ColumnDefinitions="Auto *" Margin="6,6,6,7">
+      <Button VerticalAlignment="Top" BorderThickness="1" Background="{DynamicResource VKFieldBackgroundBrush}" BorderBrush="{DynamicResource VKImageBorderBrush}" Margin="6" Padding="0" Width="72" Height="72" CornerRadius="36" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="{Binding ChatPhotoSetCommand}">
+        <Grid>
+          <vkui:VKIcon Foreground="{DynamicResource VKIconTertiaryBrush}" Id="{x:Static vkui:VKIconNames.Icon28CameraAddOutline}"/>
+        </Grid>
+      </Button>
+      <StackPanel Grid.Column="1" Margin="6">
+        <TextBox x:Name="ChatName" Watermark="{i18n:Localize chat_creation_name_watermark}" Text="{Binding ChatName, Mode=TwoWay}"/>
+        <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap" Text="{i18n:Localize chat_creation_name_footnote}"/>
+      </StackPanel>
+    </Grid>
+    <Separator Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+  
+    <ScrollViewer Grid.Row="2" IsVisible="{Binding !!SelectedFriends.Count}" MaxHeight="116">
+      <ItemsRepeater ItemsSource="{Binding SelectedFriends}" Margin="12,6,12,7">
+        <ItemsRepeater.Layout>
+          <WrapLayout HorizontalSpacing="4" VerticalSpacing="4" Orientation="Horizontal"/>
+        </ItemsRepeater.Layout>
+        <ItemsRepeater.ItemTemplate>
+          <DataTemplate>
+            <Border Height="28" Background="{DynamicResource VKBackgroundLightBrush}" BorderBrush="{DynamicResource VKBackgroundHighlightedBrush}" BorderThickness="1" CornerRadius="6">
+              <Grid ColumnDefinitions="Auto Auto Auto">
+                <vkui:Avatar Width="20" Height="20" Margin="8,0,-2,0" VerticalAlignment="Center" Initials="{Binding FullName, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Photo}"/>
+                <TextBlock Grid.Column="1" Classes="Caption1" Margin="8,0,0,0" VerticalAlignment="Center" Text="{Binding FirstName}"/>
+                <Button Grid.Column="2" Classes="Tertiary" Padding="6" Width="28" Height="28" Click="OnFriendRemoveButtonClick">
+                  <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}" Foreground="{DynamicResource VKIconSecondaryBrush}"/>
+                </Button>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsRepeater.ItemTemplate>
+      </ItemsRepeater>
+    </ScrollViewer>
+    <Separator Grid.Row="2" IsVisible="{Binding !!SelectedFriends.Count}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+  
+    <ScrollViewer Grid.Row="3">
+      <ItemsRepeater ItemsSource="{Binding GroupedFriends}" Margin="0,-1,0,0">
+        <ItemsRepeater.ItemTemplate>
+          <DataTemplate>
+            <StackPanel>
+              <Grid>
+                <Separator Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+                <TextBlock Margin="12,9,12,-3" Foreground="{DynamicResource VKTextSubheadBrush}" FontWeight="Medium" Text="{Binding Key}"/>
+              </Grid>
+              <ListBox Classes="FixMargin" ItemTemplate="{StaticResource DefaultUserItemTemplate}" ItemsSource="{Binding Items}" SelectionMode="Multiple,Toggle" Selection="{Binding Selected}">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+              </ListBox>
+            </StackPanel>
+          </DataTemplate>
+        </ItemsRepeater.ItemTemplate>
+      </ItemsRepeater>
+    </ScrollViewer>
+
+    <Grid x:Name="EmptyListContainer" Grid.Row="3" IsVisible="{Binding GroupedFriends, Mode=OneWay, Converter={x:Static ObjectConverters.IsNull}}">
+      <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
+      <vkui:Placeholder VerticalAlignment="Center"
+                            IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                            Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                            Header="{Binding Placeholder.Header, Mode=OneWay}"
+                            Text="{Binding Placeholder.Text, Mode=OneWay}">
+        <vkui:Placeholder.Action>
+          <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButtonFunc, Mode=OneWay, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+        </vkui:Placeholder.Action>
+      </vkui:Placeholder>
+    </Grid>
+  </Grid>
+</vkui:Page>

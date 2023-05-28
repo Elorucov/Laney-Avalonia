@@ -57,7 +57,13 @@
     <Setter Property="BorderBrush" Value="{DynamicResource VKModalCardBorderBrush}"/>
     <Setter Property="CornerRadius" Value="8"/>
   </Style>
-  
+
+  <Style Selector="Separator">
+    <Setter Property="Background" Value="{DynamicResource VKSeparatorAlphaBrush}" />
+    <Setter Property="Margin" Value="12,0" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+  </Style>
+
   <Style Selector="Rectangle.Separator">
     <Setter Property="Fill" Value="{DynamicResource VKSeparatorAlphaBrush}" />
     <Setter Property="Height" Value="1" />

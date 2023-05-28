@@ -324,5 +324,9 @@
   "about_vk_privacy": "VK Privacy Policy",
   "about_vk_terms": "VK Terms of Service",
   "about_dev": "Developed by",
-  "about_dev2": "Elchin Orujov"
+  "about_dev2": "Elchin Orujov",
+
+  "chat_creation_title": "New chat",
+  "chat_creation_name_watermark": "Name",
+  "chat_creation_name_footnote": "Enter a name and upload an optional photo"
 }

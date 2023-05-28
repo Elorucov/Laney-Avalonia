@@ -8,6 +8,7 @@ using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
 using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Views {
@@ -20,13 +21,12 @@ namespace ELOR.Laney.Views {
                 Session.ShowSessionPopup(AvatarButton);
             };
             NewConvButton.Click += (a, b) => {
-                ExceptionHelper.ShowNotImplementedDialogAsync(Session.Window);
+                NavigationRouter.NavigateToAsync(new ChatCreationView());
             };
             SearchButton.Click += (a, b) => {
                 NavigationRouter.NavigateToAsync(new SearchView());
             };
 
-            DataContextChanged += ImView_DataContextChanged;
             ChatsList.Loaded += ChatsList_Loaded;
 
             ChatsList.ItemTemplate = App.GetResource<DataTemplate>(Settings.ChatItemMoreRows ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row");
@@ -49,15 +49,12 @@ namespace ELOR.Laney.Views {
             }
         }
 
-        private void ImView_DataContextChanged(object sender, EventArgs e) {
-            DataContextChanged -= ImView_DataContextChanged;
-        }
-
-        private void ChatsList_Loaded(object sender, RoutedEventArgs e) {
+        private async void ChatsList_Loaded(object sender, RoutedEventArgs e) {
             ChatsList.Loaded -= ChatsList_Loaded;
             ChatsList.SelectionChanged += ChatsList_SelectionChanged;
             new ItemsPresenterWidthFixer(ChatsList);
             new ListBoxAutoScrollHelper(ChatsList);
+            await Task.Delay(500); // to avoid crash happens sometimes
             (ChatsList.Scroll as ScrollViewer).RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);
         }
 

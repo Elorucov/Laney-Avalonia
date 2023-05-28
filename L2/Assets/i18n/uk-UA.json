@@ -324,5 +324,9 @@
   "about_vk_privacy": "Політика конфіденційності ВК",
   "about_vk_terms": "Угода користувача ВК",
   "about_dev": "Розробник:",
-  "about_dev2": "Elchin Orujov"
+  "about_dev2": "Elchin Orujov",
+
+  "chat_creation_title": "Нова бесіда",
+  "chat_creation_name_watermark": "Назва",
+  "chat_creation_name_footnote": "Введіть назву і за бажанням завантажте фотографію"
 }

@@ -14,7 +14,6 @@ namespace ELOR.Laney.Views {
 
         public SearchView() {
             InitializeComponent();
-
             BackButton.Click += (a, b) => NavigationRouter.BackAsync();
         }
 

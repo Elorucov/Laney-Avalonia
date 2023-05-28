@@ -109,8 +109,10 @@
         public const string Icon28ArrowLeftOutline = "Icon28ArrowLeftOutline";
         public const string Icon28BlockOutline = "Icon28BlockOutline";
         public const string Icon28BugOutline = "Icon28BugOutline";
+        public const string Icon28CameraAddOutline = "Icon28CameraAddOutline";
         public const string Icon28CheckCircleOutline = "Icon28CheckCircleOutline";
         public const string Icon28DocumentOutline = "Icon28DocumentOutline";
+        public const string Icon28DoneOutline = "Icon28DoneOutline";
         public const string Icon28DoorArrowRightOutline = "Icon28DoorArrowRightOutline";
         public const string Icon28EditOutline = "Icon28EditOutline";
         public const string Icon28ErrorCircleOutline = "Icon28ErrorCircleOutline";

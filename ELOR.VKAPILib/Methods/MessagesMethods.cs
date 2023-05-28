@@ -136,12 +136,12 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="userIds">IDs of the users to be added to the chat.</param>
         /// <param name="title">Chat title.</param>
         [Method("createChat")]
-        public async Task<int> CreateChatAsync(int groupId, List<int> userIds, string title = "") {
+        public async Task<CreateChatResponse> CreateChatAsync(int groupId, List<int> userIds, string title = "") {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("user_ids", userIds.Combine());
             parameters.Add("title", title);
-            return await API.CallMethodAsync<int>(this, parameters);
+            return await API.CallMethodAsync<CreateChatResponse>(this, parameters);
         }
 
         /// <summary>Deletes one or more messages.</summary>

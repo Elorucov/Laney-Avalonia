@@ -8,7 +8,7 @@
         x:Class="ELOR.Laney.Views.Modals.VKUIDialog"
         Width="480" SizeToContent="Height" WindowStartupLocation="CenterOwner"
         Background="{DynamicResource VKModalCardBackgroundBrush}"
-        Title="VKUIDialog" CanResize="False">
+        CanResize="False">
   <Grid RowDefinitions="Auto Auto Auto">
     <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="False"/>
     <StackPanel x:Name="ContentRoot" Margin="24">
