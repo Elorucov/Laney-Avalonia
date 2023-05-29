@@ -76,17 +76,31 @@ namespace ELOR.Laney.Extensions {
 
         public static StickerImage GetSizeAndUriForThumbnail(this Sticker sticker, double maxWidth = MessageBubble.STICKER_WIDTH) {
             maxWidth = maxWidth * App.Current.DPI;
-            StickerImage ps = null;
-            foreach (var s in CollectionsMarshal.AsSpan(sticker.Images)) {
-                ps = s;
-                if (s.Width >= maxWidth) break; // да, выбирать будем первую фотку с шириной больше maxWidth
-            }
-            if (ps != null) {
-                Debug.WriteLine($"GetSizeAndUriForThumbnail (sticker): Requested {maxWidth}, found {ps.Width}");
+            if (sticker.IsPartial) {
+                int[] sizes = new int[] { 64, 128, 256, 352, 512 };
+                int size = 0;
+                foreach (int s in sizes) {
+                    size = s;
+                    if (s >= maxWidth) break;
+                }
+                return new StickerImage {
+                    Width = size,
+                    Height = size,
+                    Url = $"https://vk.com/sticker/1-{sticker.StickerId}-{size}b" // TODO: theme!
+                };
             } else {
-                Debug.WriteLine($"GetSizeAndUriForThumbnail (sticker): Requested {maxWidth} but not found!");
+                StickerImage ps = null;
+                foreach (var s in CollectionsMarshal.AsSpan(sticker.ImagesWithBackground)) {
+                    ps = s;
+                    if (s.Width >= maxWidth) break; // да, выбирать будем первую фотку с шириной больше maxWidth
+                }
+                if (ps != null) {
+                    Debug.WriteLine($"GetSizeAndUriForThumbnail (sticker): Requested {maxWidth}, found {ps.Width}");
+                } else {
+                    Debug.WriteLine($"GetSizeAndUriForThumbnail (sticker): Requested {maxWidth} but not found!");
+                }
+                return ps;
             }
-            return ps;
         }
 
         public static async Task<Bitmap> TryGetBitmapFromStreamAsync(this Stream stream, int decodeWidth = 0) {

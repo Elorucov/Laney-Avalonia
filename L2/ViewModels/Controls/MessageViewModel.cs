@@ -194,7 +194,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     UIType = MessageUIType.SingleImage;
                 } else if (a.Type == AttachmentType.Sticker && String.IsNullOrEmpty(Text)) {
                     UIType = MessageUIType.Sticker;
-                    PreviewImageUri = a.Sticker.Images[1].Uri;
+                    PreviewImageUri = a.Sticker.GetSizeAndUriForThumbnail(64).Uri;
                     return;
                 } else if (a.Type == AttachmentType.Graffiti && String.IsNullOrEmpty(Text)) {
                     UIType = MessageUIType.Graffiti;
