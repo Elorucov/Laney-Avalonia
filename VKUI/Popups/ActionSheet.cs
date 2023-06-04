@@ -52,8 +52,9 @@ namespace VKUI.Popups {
         protected override void OnOpened() {
             base.OnOpened();
             itemsPanel.FindVisualChildrenByType(itemsButtons);
-            FocusManager.Instance?.Focus(itemsButtons.FirstOrDefault());
+            itemsButtons.FirstOrDefault().Focus();
             itemsPanel.KeyDown += Items_KeyDown;
+            
         }
 
         protected override void OnClosed() {
@@ -67,15 +68,15 @@ namespace VKUI.Popups {
 
         private void Items_KeyDown(object sender, KeyEventArgs e) {
             Debug.WriteLine($"Action sheet navigation: {e.Key}");
-            if (FocusManager.Instance?.Current != null && FocusManager.Instance.Current is Button current) {
-                int index = itemsButtons.IndexOf(current);
-                if (index < 0) return;
-                if (e.Key == Key.Up && index > 0) {
-                    FocusManager.Instance.Focus(itemsButtons.ElementAt(index - 1), NavigationMethod.Directional);
-                } else if (e.Key == Key.Down && index < itemsButtons.Count - 1) {
-                    FocusManager.Instance.Focus(itemsButtons.ElementAt(index + 1), NavigationMethod.Directional);
-                }
-            }
+            //if (FocusManager.Instance?.Current != null && FocusManager.Instance.Current is Button current) {
+            //    int index = itemsButtons.IndexOf(current);
+            //    if (index < 0) return;
+            //    if (e.Key == Key.Up && index > 0) {
+            //        FocusManager.Instance.Focus(itemsButtons.ElementAt(index - 1), NavigationMethod.Directional);
+            //    } else if (e.Key == Key.Down && index < itemsButtons.Count - 1) {
+            //        FocusManager.Instance.Focus(itemsButtons.ElementAt(index + 1), NavigationMethod.Directional);
+            //    }
+            //}
         }
     }
 }

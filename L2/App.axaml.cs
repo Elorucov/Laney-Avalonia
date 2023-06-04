@@ -77,8 +77,7 @@ namespace ELOR.Laney {
                 DPI = desktop.MainWindow.Screens.All.Select(s => s.Scaling).Max();
                 Log.Information($"Maximal DPI: {DPI}");
 
-                var settings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
-                settings.ColorValuesChanged += (a, b) => UpdateTrayIcon();
+                PlatformSettings.ColorValuesChanged += (a, b) => UpdateTrayIcon();
             }
 
             base.OnFrameworkInitializationCompleted();

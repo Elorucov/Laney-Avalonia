@@ -31,13 +31,13 @@ namespace ELOR.Laney.Helpers {
         private void Scroll_GotFocus(object sender, GotFocusEventArgs e) {
             Debug.WriteLine($"Focused to ListBox's ScrollViewer");
             if (ScrollToLastItemAfterTabFocus) {
-                var element = FocusManager.Instance?.Current;
+                var element = TopLevel.GetTopLevel(listBox).FocusManager.GetFocusedElement();
                 if (element != null && e.NavigationMethod == NavigationMethod.Tab) {
-                    Debug.WriteLine($"Focused on {FocusManager.Instance.Current}");
+                    Debug.WriteLine($"Focused on {element}");
                     List<ListBoxItem> lvis = new List<ListBoxItem>();
                     listBox.FindVisualChildrenByType(lvis);
                     if (lvis.Count > 0) {
-                        FocusManager.Instance?.Focus(lvis.LastOrDefault(), NavigationMethod.Directional, e.KeyModifiers);
+                        lvis.LastOrDefault().Focus(NavigationMethod.Directional, e.KeyModifiers);
                     }
                 }
             }
@@ -51,9 +51,11 @@ namespace ELOR.Laney.Helpers {
         private async void Scroll_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Up || e.Key == Key.Down) {
                 await Task.Delay(10); // надо, чтобы в FocusManager.Instance.Current был актуальный контрол
-                if (FocusManager.Instance == null) return;
-                Debug.WriteLine($"Focused on {FocusManager.Instance.Current}");
-                object itemDC = (FocusManager.Instance.Current as Control).DataContext;
+                if (TopLevel.GetTopLevel(listBox).FocusManager == null) return;
+
+                var el = TopLevel.GetTopLevel(listBox).FocusManager.GetFocusedElement();
+                Debug.WriteLine($"Focused on {el}");
+                object itemDC = (el as Control).DataContext;
                 if (itemDC != null) {
                     var enumerator = listBox.Items.GetEnumerator();
                     int index = 0;

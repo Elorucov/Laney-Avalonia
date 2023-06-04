@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class AssetsManager {
-        static IAssetLoader assets;
-
-        public static async Task<Bitmap> GetBitmapFromUri(Uri uri, int decodeWidth = 0) {
+         public static async Task<Bitmap> GetBitmapFromUri(Uri uri, int decodeWidth = 0) {
             Stream stream = OpenAsset(uri);
             return decodeWidth > 0
                 ? await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.HighQuality))
@@ -20,13 +18,11 @@ namespace ELOR.Laney.Core {
         }
 
         public static Stream OpenAsset(Uri uri) {
-            if (assets == null) assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            return assets.Open(uri);
+            return AssetLoader.Open(uri);
         }
 
         public static string GetThemeDependentTrayIcon() {
-            var settings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
-            var cv = settings.GetColorValues();
+            var cv = Application.Current.PlatformSettings.GetColorValues();
 
             string theme = cv.ThemeVariant == PlatformThemeVariant.Light ? "b" : "w";
             string s = $"avares://laney/Assets/Logo/Tray/t32m{theme}.png";

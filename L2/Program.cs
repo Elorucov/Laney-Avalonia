@@ -92,10 +92,6 @@ namespace ELOR.Laney {
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp() =>
             AppBuilder.Configure<App>().UseAvaloniaNative().UsePlatformDetect()
-            .With(new Win32PlatformOptions {
-                UseWgl = true,
-                UseWindowsUIComposition = true
-            })
             .With(new SkiaOptions {
                 MaxGpuResourceSizeBytes = 33554432
             });

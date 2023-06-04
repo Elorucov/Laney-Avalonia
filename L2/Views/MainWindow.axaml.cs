@@ -34,7 +34,7 @@ namespace ELOR.Laney.Views {
             if (wy < 0) wy = 32;
             Position = new PixelPoint(wx, wy);
 
-            Renderer.Diagnostics.DebugOverlays = Settings.ShowFPS ? RendererDebugOverlays.Fps : RendererDebugOverlays.None;
+            RendererDiagnostics.DebugOverlays = Settings.ShowFPS ? RendererDebugOverlays.Fps : RendererDebugOverlays.None;
             RAMInfoOverlay.IsVisible = Settings.ShowRAMUsage;
             ToggleRAMInfoOverlay();
             Settings.SettingChanged += Settings_SettingChanged;
@@ -79,7 +79,7 @@ namespace ELOR.Laney.Views {
         private void Settings_SettingChanged(string key, object value) {
             switch (key) {
                 case Settings.DEBUG_FPS:
-                    Renderer.Diagnostics.DebugOverlays = (bool)value ? RendererDebugOverlays.Fps : RendererDebugOverlays.None;
+                    RendererDiagnostics.DebugOverlays = (bool)value ? RendererDebugOverlays.Fps : RendererDebugOverlays.None;
                     break;
                 case Settings.DEBUG_COUNTERS_RAM:
                     RAMInfoOverlay.IsVisible = (bool)value;

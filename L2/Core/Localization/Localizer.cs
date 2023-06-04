@@ -20,11 +20,10 @@ namespace ELOR.Laney.Core.Localization {
 
         public bool LoadLanguage(string language) {
             Language = language;
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
 
             Uri uri = new Uri($"avares://laney/Assets/i18n/{language}.json");
-            if (assets.Exists(uri)) {
-                using (StreamReader sr = new StreamReader(assets.Open(uri), Encoding.UTF8)) {
+            if (AssetLoader.Exists(uri)) {
+                using (StreamReader sr = new StreamReader(AssetLoader.Open(uri), Encoding.UTF8)) {
                     m_Strings = JsonConvert.DeserializeObject<Dictionary<string, string>>(sr.ReadToEnd());
                 }
                 Invalidate();
