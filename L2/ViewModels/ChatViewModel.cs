@@ -380,7 +380,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         public void ShowContextMenuForSelectedMessages(object p) {
-            ContextMenuHelper.ShowForMultipleMessages(SelectedMessages.SelectedItems.ToList(), (Control)p);
+            ContextMenuHelper.ShowForMultipleMessages(SelectedMessages.SelectedItems.ToList(), this, (Control)p);
         }
 
         #endregion

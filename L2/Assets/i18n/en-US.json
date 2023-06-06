@@ -328,5 +328,19 @@
 
   "chat_creation_title": "New chat",
   "chat_creation_name_watermark": "Name",
-  "chat_creation_name_footnote": "Enter a name and upload an optional photo"
+  "chat_creation_name_footnote": "Enter a name and upload an optional photo",
+
+  "msg_delete_dialog_single_title": "Delete message",
+  "msg_delete_dialog_single_question": "Delete message?",
+  "msg_delete_dialog_multi_title": "Delete messages",
+  "msg_delete_dialog_multi_question": "Delete messages?",
+  "msg_delete_dialog_text_nom": "Are you sure you want to delete {0} message?",
+  "msg_delete_dialog_text_gen": "Are you sure you want to delete {0} messages?",
+  "msg_delete_dialog_text_plu": "Are you sure you want to delete {0} messages?",
+  "delete_for_all": "Delete for everyone",
+
+  "message_deleted_single": "Message deleted.",
+  "message_deleted_multi": "Messages deleted.",
+  "message_spam_single": "Message marked as spam and deleted.",
+  "message_spam_multi": "Messages marked as spam and deleted."
 }

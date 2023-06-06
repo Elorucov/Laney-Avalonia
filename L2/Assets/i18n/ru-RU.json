@@ -328,5 +328,19 @@
 
   "chat_creation_title": "Новый чат",
   "chat_creation_name_watermark": "Название",
-  "chat_creation_name_footnote": "Введите название и при желании загрузите фотографию"
+  "chat_creation_name_footnote": "Введите название и при желании загрузите фотографию",
+
+  "msg_delete_dialog_single_title": "Удалить сообщение",
+  "msg_delete_dialog_single_question": "Удалить сообщение?",
+  "msg_delete_dialog_multi_title": "Удалить сообщения",
+  "msg_delete_dialog_multi_question": "Удалить сообщения?",
+  "msg_delete_dialog_text_nom": "Вы действительно хотите удалить {0} сообщение?",
+  "msg_delete_dialog_text_gen": "Вы действительно хотите удалить {0} сообщения?",
+  "msg_delete_dialog_text_plu": "Вы действительно хотите удалить {0} сообщений?",
+  "delete_for_all": "Удалить для всех",
+
+  "message_deleted_single": "Сообщение удалено.",
+  "message_deleted_multi": "Сообщения удалены.",
+  "message_spam_single": "Сообщение было помечено как спам и удалено.",
+  "message_spam_multi": "Сообщения были помечены как спам и удалены."
 }

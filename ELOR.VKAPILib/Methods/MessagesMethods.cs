@@ -159,6 +159,23 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<Dictionary<string, int>>(this, parameters);
         }
 
+        /// <summary>Deletes one or more messages.</summary>
+        /// <param name="groupId">Group ID.</param>
+        /// <param name="peerId">Peer ID.</param>
+        /// <param name="cmids">Message IDs in conversation.</param>
+        /// <param name="spam">true — to mark message as spam.</param>
+        /// <param name="deleteForAll">true — to delete message for all (in 24 hours from the sending time).</param>
+        [Method("delete")]
+        public async Task<List<MessageDeleteResponse>> DeleteAsync(int groupId, int peerId, List<int> cmids, bool spam, bool deleteForAll) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            parameters.Add("peer_id", peerId.ToString());
+            parameters.Add("cmids", cmids.Combine());
+            if (spam) parameters.Add("spam", "1");
+            if (deleteForAll) parameters.Add("delete_for_all", "1");
+            return await API.CallMethodAsync<List<MessageDeleteResponse>>(this, parameters);
+        }
+
         /// <summary>Deletes a chat's cover picture.</summary>
         /// <param name="groupId">Group ID.</param>
         /// <param name="chatId">Chat ID.</param>
@@ -560,13 +577,28 @@ namespace ELOR.VKAPILib.Methods {
         }
 
         /// <summary>Marks and unmarks messages as important (starred).</summary>
-        /// <param name="messageIds">IDs of messages to mark as important.</param>
+        /// <param name="ids">IDs of messages to mark as important.</param>
         /// <param name="important">true — to add a star (mark as important), false — to remove the star.</param>
         [Method("markAsImportant")]
-        public async Task<List<int>> MarkAsImportantAsync(List<int> messageIds, bool important) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("message_ids", messageIds.Combine());
-            parameters.Add("important", important ? "1" : "0");
+        public async Task<List<int>> MarkAsImportantAsync(List<int> ids, bool important) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "message_ids", ids.Combine() },
+                { "important", important ? "1" : "0" }
+            };
+            return await API.CallMethodAsync<List<int>>(this, parameters);
+        }
+
+        /// <summary>Marks and unmarks messages as important (starred). Only from 5.217</summary>
+        /// <param name="peerId">Peer ID.</param>
+        /// <param name="cmids">IDs of messages in conversation to mark as important.</param>
+        /// <param name="important">true — to add a star (mark as important), false — to remove the star.</param>
+        [Method("markAsImportant")]
+        public async Task<List<int>> MarkAsImportantAsync(int peerId, List<int> cmids, bool important) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "peer_id", peerId.ToString() },
+                { "cmids", cmids.Combine() },
+                { "important", important ? "1" : "0" }
+            };
             return await API.CallMethodAsync<List<int>>(this, parameters);
         }
 
@@ -613,13 +645,13 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Pins a message.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Destination ID.</param>
-        /// <param name="messageId">ID of message to pin.</param>
+        /// <param name="conversationMessageId">ID of message in conv. to pin.</param>
         [Method("pin")]
-        public async Task<Message> PinAsync(int groupId, int peerId, int messageId) {
+        public async Task<Message> PinAsync(int groupId, int peerId, int conversationMessageId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
-            parameters.Add("message_id", messageId.ToString());
+            parameters.Add("conversation_message_id", conversationMessageId.ToString());
             return await API.CallMethodAsync<Message>(this, parameters);
         }
 
@@ -782,11 +814,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Destination ID.</param>
         [Method("unpin")]
-        public async Task<Message> UnpinAsync(int groupId, int peerId) {
+        public async Task<int> UnpinAsync(int groupId, int peerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if(groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
-            return await API.CallMethodAsync<Message>(this, parameters);
+            return await API.CallMethodAsync<int>(this, parameters);
         }
     }
 }

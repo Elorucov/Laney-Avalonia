@@ -328,5 +328,19 @@
 
   "chat_creation_title": "Нова бесіда",
   "chat_creation_name_watermark": "Назва",
-  "chat_creation_name_footnote": "Введіть назву і за бажанням завантажте фотографію"
+  "chat_creation_name_footnote": "Введіть назву і за бажанням завантажте фотографію",
+
+  "msg_delete_dialog_single_title": "Видалити повідомлення",
+  "msg_delete_dialog_single_question": "Видалити повідомлення?",
+  "msg_delete_dialog_multi_title": "Видалити повідомлення",
+  "msg_delete_dialog_multi_question": "Видалити повідомлення?",
+  "msg_delete_dialog_text_nom": "Ви дійсно хочете видалити {0} повідомлення?",
+  "msg_delete_dialog_text_gen": "Ви дійсно хочете видалити {0} повідомлення?",
+  "msg_delete_dialog_text_plu": "Ви дійсно хочете видалити {0} повідомлень?",
+  "delete_for_all": "Видалити для всіх",
+
+  "message_deleted_single": "Повідомлення видалено.",
+  "message_deleted_multi": "Повідомлення видалені.",
+  "message_spam_single": "Повідомлення було позначено як спам і видалено.",
+  "message_spam_multi": "Повідомлення були позначені як спам і видалені."
 }

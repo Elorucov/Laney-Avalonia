@@ -50,26 +50,23 @@ namespace ELOR.Laney.Controls.Attachments {
         private async void Render() {
             if (!isUILoaded || Sticker == null) return;
             await StickerView.SetImageBackgroundAsync(Sticker.GetSizeAndUriForThumbnail(this.Width).Uri, Convert.ToInt32(this.Width));
-            
-            // Библотеку для рендеринга Lottie не обновили до rc1 вместе с Авалонией,
-            // и старая версия приводит к падению.
 
-            //if (Settings.AnimateStickers && !String.IsNullOrEmpty(Sticker.AnimationUrl)) {
-            //    await Task.Delay(250); // надо
-            //    var uri = new Uri(Sticker.AnimationUrl);
-            //    var file = await CacheManager.GetFileFromCacheAsync(uri);
-            //    if (file) {
-            //        string local = $"file://{Path.Combine(App.LocalDataPath, "cache", uri.Segments.Last()).Replace("\\", "/")}";
-            //        Lottie ls = new Lottie(new Uri("file://")) { // разраб либы не прописал конструктор public Lottie() без параметров, пришлось костылить.
-            //            Stretch = Stretch.Uniform,
-            //            StretchDirection = StretchDirection.Both,
-            //            RepeatCount = 4,
-            //            Path = local
-            //        };
-            //        StickerView.Child = ls;
-            //        StickerView.Background = new SolidColorBrush(Colors.Transparent);
-            //    }
-            //}
+            if (Settings.AnimateStickers && !String.IsNullOrEmpty(Sticker.AnimationUrl)) {
+                await Task.Delay(250); // надо
+                var uri = new Uri(Sticker.AnimationUrl);
+                var file = await CacheManager.GetFileFromCacheAsync(uri);
+                if (file) {
+                    string local = $"file://{Path.Combine(App.LocalDataPath, "cache", uri.Segments.Last()).Replace("\\", "/")}";
+                    Lottie ls = new Lottie(new Uri("file://")) { // разраб либы не прописал конструктор public Lottie() без параметров, пришлось костылить.
+                        Stretch = Stretch.Uniform,
+                        StretchDirection = StretchDirection.Both,
+                        RepeatCount = 4,
+                        Path = local
+                    };
+                    StickerView.Child = ls;
+                    StickerView.Background = new SolidColorBrush(Colors.Transparent);
+                }
+            }
         }
     }
 }

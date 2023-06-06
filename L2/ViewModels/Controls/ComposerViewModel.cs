@@ -7,6 +7,7 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -253,10 +254,12 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             try {
                 if (EditingMessageId == 0) {
+                    Log.Verbose($"Sending message: session={session.Id}; peer_id={Chat.PeerId}, random={RandomId}");
                     int response = await session.API.Messages.SendAsync(session.GroupId, Chat.PeerId, RandomId, text,
                         0, 0, attachments, replyTo, forwardedMessages, forwardedMessagesFromGroup, StickerId,
                         dontParseLinks: dontParseLinks, disableMentions: disableMentions);
-                    RandomId = Random.Next(100000000, 999999999);
+                    RandomId = Random.Next(Int32.MinValue, Int32.MaxValue);
+                    Log.Verbose($"Sending message result: {response}; new random={RandomId}");
                 } else {
                     bool response = await session.API.Messages.EditAsync(session.GroupId, Chat.PeerId, EditingMessageId, 
                         text, 0, 0, attachments, forwardedMessages.Count > 0, true, dontParseLinks); 
