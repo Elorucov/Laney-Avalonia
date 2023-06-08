@@ -342,5 +342,9 @@
   "message_deleted_single": "Сообщение удалено.",
   "message_deleted_multi": "Сообщения удалены.",
   "message_spam_single": "Сообщение было помечено как спам и удалено.",
-  "message_spam_multi": "Сообщения были помечены как спам и удалены."
+  "message_spam_multi": "Сообщения были помечены как спам и удалены.",
+
+  "sharing_messages": "Переслать сообщения",
+  "sharing_user": "В личные сообщения",
+  "sharing_group": "В сообщения сообщества"
 }

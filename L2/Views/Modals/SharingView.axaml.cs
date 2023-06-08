@@ -1,0 +1,68 @@
+using Avalonia.Controls;
+using Avalonia.Input;
+using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Extensions;
+using ELOR.Laney.Helpers;
+using ELOR.Laney.ViewModels.Modals;
+using System;
+using VKUI.Windows;
+
+namespace ELOR.Laney.Views.Modals {
+    public partial class SharingView : DialogWindow {
+        SharingViewModel user;
+        SharingViewModel group;
+        SharingViewModel CurrentViewModel { get { return DataContext as SharingViewModel; } }
+
+        public SharingView() {
+            InitializeComponent();
+        }
+
+        public SharingView(SharingViewModel user, SharingViewModel group) {
+            InitializeComponent();
+            this.user = user;
+            this.group = group;
+
+            switch (user.Type) {
+                case SharingContentType.Messages:
+                    Title = Localizer.Instance["sharing_messages"];
+                    break;
+            }
+
+            DataContextChanged += (a, b) => {
+                CurrentViewModel?.OnDisplayed();
+            };
+
+            var handler = new ListBoxItemClickHandler<Tuple<int, Uri, string>>(ChatsList, ItemClicked);
+
+            if (group != null) {
+                SessionSwitcherContainer.IsVisible = true;
+                this.FixDialogWindows(TitleBar, Content);
+                DataContext = group;
+            } else {
+                Grid.SetRow(Content, 1);
+                TitleBar.CanShowTitle = true;
+                DataContext = user;
+            }
+        }
+
+        private void ItemClicked(Tuple<int, Uri, string> chat) {
+            Close(new Tuple<VKSession, int, int>(CurrentViewModel.Session, chat.Item1, CurrentViewModel.GroupId));
+        }
+
+        private void OnSearchBoxKeyUp(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Enter) CurrentViewModel.SearchChats();
+        }
+
+        private void SessionSwitcher_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            switch (SessionSwitcher?.SelectedIndex) {
+                case 0:
+                    DataContext = group;
+                    break;
+                case 1:
+                    DataContext = user;
+                    break;
+            }
+        }
+    }
+}

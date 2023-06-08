@@ -102,6 +102,13 @@ namespace ELOR.Laney.Helpers {
 
             reply.Click += (a, b) => chat.Composer.AddReply(message);
 
+            repriv.Click += (a, b) => {
+                session.GetToChat(message.SenderId);
+                session.CurrentOpenedChat.Composer.AddForwardedMessages(new List<MessageViewModel> { message });
+            };
+
+            forward.Click += (a, b) => session.Share(new List<MessageViewModel> { message });
+
             forwardHere.Click += (a, b) => {
                 chat.Composer.Clear();
                 chat.Composer.AddForwardedMessages(new List<MessageViewModel> { message });
@@ -147,7 +154,7 @@ namespace ELOR.Laney.Helpers {
             // ¯\_(ツ)_/¯
 
             if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
-            if (message.Action == null) {
+            if (message.Action == null && !message.IsExpired) {
                 if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
                 if (chat.CanWrite.Allowed) ash.Items.Add(reply);
                 if (canReplyPrivately && chat.PeerType == PeerType.Chat) ash.Items.Add(repriv);

@@ -342,5 +342,9 @@
   "message_deleted_single": "Message deleted.",
   "message_deleted_multi": "Messages deleted.",
   "message_spam_single": "Message marked as spam and deleted.",
-  "message_spam_multi": "Messages marked as spam and deleted."
+  "message_spam_multi": "Messages marked as spam and deleted.",
+
+  "sharing_messages": "Forward messages",
+  "sharing_user": "In private message",
+  "sharing_group": "To community messages"
 }

@@ -54,7 +54,7 @@ namespace ELOR.Laney.Views {
             ChatsList.SelectionChanged += ChatsList_SelectionChanged;
             new ItemsPresenterWidthFixer(ChatsList);
             new ListBoxAutoScrollHelper(ChatsList);
-            await Task.Delay(500); // to avoid crash happens sometimes
+            await Task.Delay(1000); // to avoid crash happens sometimes
             (ChatsList.Scroll as ScrollViewer).RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);
         }
 

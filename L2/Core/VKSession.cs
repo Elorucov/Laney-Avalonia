@@ -22,6 +22,8 @@ using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects.HandlerDatas;
 using ELOR.Laney.Helpers;
 using Avalonia.Controls.Notifications;
+using ELOR.Laney.ViewModels.Controls;
+using ELOR.Laney.ViewModels.Modals;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -315,9 +317,13 @@ namespace ELOR.Laney.Core {
                 session.Window.Show();
             } else {
                 Log.Information("Showing/activating window for session {0}", sessionId);
-                if (!session.Window.IsVisible) session.Window.Show();
-                if (!session.Window.IsActive) session.Window.Activate();
+                session.ShowAndActivate();
             }
+        }
+
+        private void ShowAndActivate() {
+            if (!Window.IsVisible) Window.Show();
+            if (!Window.IsActive) Window.Activate();
         }
 
         private Window GetLastOpenedModalWindow(Window window) {
@@ -366,6 +372,20 @@ namespace ELOR.Laney.Core {
                 GC.WaitForPendingFinalizers();
             } else {
                 gcCollectTriggerCounter++;
+            }
+        }
+
+        public async void Share(List<MessageViewModel> messages) {
+            SharingViewModel user = new SharingViewModel(Main, messages, GroupId);
+            SharingViewModel group = IsGroup ? new SharingViewModel(this, messages, 0) : null;
+            SharingView dlg = new SharingView(user, group);
+            // session, peer_id, group_id (if message from group to user session)
+            Tuple<VKSession, int, int>  result = await dlg.ShowDialog<Tuple<VKSession, int, int>>(ModalWindow);
+
+            if (result != null) {
+                result.Item1.ShowAndActivate();
+                result.Item1.GetToChat(result.Item2);
+                result.Item1.CurrentOpenedChat.Composer.AddForwardedMessages(messages, result.Item3);
             }
         }
 

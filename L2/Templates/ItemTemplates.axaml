@@ -5,7 +5,7 @@
 
   <!-- Шаблон для элементов списка бесед (двухстрочный) -->
   <DataTemplate x:Key="ChatItemTemplate2Row">
-    <Grid Height="64" ColumnDefinitions="Auto *">
+    <Grid Height="64" ColumnDefinitions="Auto *" Background="Transparent">
       <vkui:Avatar Width="48" Height="48" Margin="12,8,0,8" VerticalAlignment="Top" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding Avatar}"/>
       <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,8"/>
       <StackPanel x:Name="Info" Grid.Column="1" Margin="12,11,0,11">
@@ -51,7 +51,7 @@
 
   <!-- Шаблон для элементов списка бесед (трёхстрочный) -->
   <DataTemplate x:Key="ChatItemTemplate3Row">
-    <Grid Height="72" ColumnDefinitions="Auto *">
+    <Grid Height="72" ColumnDefinitions="Auto *" Background="Transparent">
       <vkui:Avatar Width="48" Height="48" Margin="12,6,0,6" VerticalAlignment="Top" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding Avatar}"/>
       <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,44,2,0"/>
       <StackPanel x:Name="Info" Grid.Column="1" Margin="12,6,0,0">
@@ -107,7 +107,7 @@
 
   <!-- Шаблон с инфой в PeerProfile (Tuple<string, string>) -->
   <DataTemplate x:Key="PeerInfoTemplate">
-    <Grid Margin="12,6" ColumnDefinitions="Auto *" MinHeight="20">
+    <Grid Margin="12,6" ColumnDefinitions="Auto *" MinHeight="20" Background="Transparent">
       <vkui:VKIcon Margin="0,0,12,0" VerticalAlignment="Top" Foreground="{DynamicResource VKIconSecondaryBrush}" Id="{Binding Item1}"/>
       <TextBlock Grid.Column="1" Margin="0,1,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Item2}"/>
     </Grid>
@@ -117,7 +117,7 @@
        Используется для элементов в таких списках, как поиск чатов, список участников и т. п.
        Tuple<int, Uri, string, string, Command> -->
   <DataTemplate x:Key="DefaultEntityItemTemplate">
-    <Grid Margin="12,6" ColumnDefinitions="Auto * Auto" MinHeight="40">
+    <Grid Margin="12,6" ColumnDefinitions="Auto * Auto" MinHeight="40" Background="Transparent">
       <vkui:Avatar Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"
                    Initials="{Binding Item3, Converter={StaticResource ic}}"
                    Background="{Binding Item1, Converter={StaticResource agc}}"
@@ -136,7 +136,7 @@
        Используется в списке друзей (создание чата, приглашение в чат)
        User -->
   <DataTemplate x:Key="DefaultUserItemTemplate">
-    <Grid Margin="12,6" ColumnDefinitions="Auto *" MinHeight="40">
+    <Grid Margin="12,6" ColumnDefinitions="Auto *" MinHeight="40" Background="Transparent">
       <vkui:Avatar Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"
                    Initials="{Binding FullName, Converter={StaticResource ic}}"
                    Background="{Binding Id, Converter={StaticResource agc}}"
@@ -147,7 +147,7 @@
 
   <!-- Шаблон для элемента сообщений в глобальном поиске (класс FoundMessageItem) -->
   <DataTemplate x:Key="FoundMessageTemplate">
-    <Grid MinHeight="64" ColumnDefinitions="Auto *">
+    <Grid MinHeight="64" ColumnDefinitions="Auto *" Background="Transparent">
       <vkui:Avatar Width="48" Height="48" Margin="12,6,0,6" VerticalAlignment="Top" Initials="{Binding PeerName}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding PeerAvatar}"/>
       <StackPanel x:Name="Info" Grid.Column="1" Margin="12,6,0,0">
         <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">

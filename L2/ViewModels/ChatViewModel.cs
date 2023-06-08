@@ -340,7 +340,7 @@ namespace ELOR.Laney.ViewModels {
         private void GoToLastMessage(object obj) {
             if (IsLoading) return;
 
-            if (DisplayedMessages.Last.Id == LastMessage.Id) {
+            if (DisplayedMessages?.Last?.Id == LastMessage?.Id) {
                 GoToMessage(LastMessage);
             } else {
                 Log.Information($"GoToLastMessage: last message in chat is not displayed. Showing ReceivedMessages...");
@@ -376,7 +376,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         private void ForwardCommand(object o) {
-            // TODO
+            session.Share(SelectedMessages.SelectedItems.ToList());
         }
 
         public void ShowContextMenuForSelectedMessages(object p) {

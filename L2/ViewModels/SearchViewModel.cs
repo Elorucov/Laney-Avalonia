@@ -2,12 +2,10 @@
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
-using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace ELOR.Laney.ViewModels {
     public class SearchViewModel : ViewModelBase {
