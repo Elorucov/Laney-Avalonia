@@ -13,8 +13,8 @@ namespace ELOR.Laney.ViewModels.Modals {
         private string _query;
         private ObservableCollection<Tuple<int, Uri, string>> _chats = new ObservableCollection<Tuple<int, Uri, string>>();
 
-        public string Query { get { return _query; } set { _query = value; OnPropertyChanged("Query"); } }
-        public ObservableCollection<Tuple<int, Uri, string>> Chats { get { return _chats; } set { _chats = value; OnPropertyChanged("Chats"); } }
+        public string Query { get { return _query; } set { _query = value; } }
+        public ObservableCollection<Tuple<int, Uri, string>> Chats { get { return _chats; } set { _chats = value; } }
 
         public SharingContentType Type { get; private set; }
         public int GroupId { get; private set; } // необходим для user-сессии при пересылке сообщений из группы в личку.

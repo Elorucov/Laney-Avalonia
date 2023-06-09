@@ -21,7 +21,7 @@
       </Grid>
       <TextBox Classes="Search" Grid.Row="1" Margin="12,0,12,6" Watermark="{i18n:Localize search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
       <ListBox x:Name="ChatsList" Classes="FixMargin" Grid.Row="2" Background="Transparent" ItemsSource="{Binding Chats}" ItemTemplate="{StaticResource DefaultEntityItemTemplate}"/>
-      <Grid x:Name="EmptyChatsListContainer" Grid.Row="2" IsVisible="{Binding Chats, Mode=OneWay, Converter={x:Static ObjectConverters.IsNull}}">
+      <Grid x:Name="EmptyChatsListContainer" Grid.Row="2" VerticalAlignment="Center">
         <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
         <vkui:Placeholder VerticalAlignment="Center"
                               IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
