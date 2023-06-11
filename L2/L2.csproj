@@ -52,6 +52,7 @@
     <None Remove="Assets\i18n\en-US.json" />
     <None Remove="Assets\i18n\ru-RU.json" />
     <None Remove="Assets\i18n\uk-UA.json" />
+    <None Remove="Assets\Logo\icon.ico" />
     <None Remove="Assets\Logo\Laney.png" />
     <None Remove="Assets\Logo\Tray\t32mb.png" />
     <None Remove="Assets\Logo\Tray\t32mw.png" />
@@ -122,6 +123,7 @@
     <UpToDateCheckInput Remove="Views\SettingsCategories\Appearance.axaml" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Include="Assets\Logo\icon.ico" />
     <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
