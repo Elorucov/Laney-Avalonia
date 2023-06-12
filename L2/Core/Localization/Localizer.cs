@@ -4,17 +4,23 @@ using ELOR.VKAPILib.Objects;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core.Localization {
     public class Localizer : INotifyPropertyChanged {
         private const string IndexerName = "Item";
         private const string IndexerArrayName = "Item[]";
         private Dictionary<string, string> m_Strings;
+
+        public static readonly ObservableCollection<Tuple<string, string>> SupportedLanguages = new ObservableCollection<Tuple<string, string>> {
+            new Tuple<string, string>("en-US", "English"),
+            new Tuple<string, string>("ru-RU", "Русский"),
+            new Tuple<string, string>("uk-UA", "Українська"),
+        };
 
         public Localizer() { }
 

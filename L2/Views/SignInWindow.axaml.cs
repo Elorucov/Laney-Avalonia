@@ -1,7 +1,10 @@
 ﻿using Avalonia.Controls;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using Serilog;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ELOR.Laney.Views {
     public sealed partial class SignInWindow : Window {
@@ -14,7 +17,17 @@ namespace ELOR.Laney.Views {
                 Log.Information($"{nameof(SignInWindow)} activated. Launch time: {Program.LaunchTime} ms.");
             };
 
-            VersionInfo.Text = $"Ver. {App.BuildInfo}";
+            LangPicker.ItemsSource = Localizer.SupportedLanguages;
+            var lid = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
+            LangPicker.SelectedItem = Localizer.SupportedLanguages.Where(l => l.Item1 == lid).FirstOrDefault();
+            LangPicker.SelectionChanged += (a, b) => {
+                Tuple<string, string> selected = LangPicker.SelectedItem as Tuple<string, string>;
+                if (selected == null) return;
+                Settings.Set(Settings.LANGUAGE, selected.Item1);
+                Localizer.Instance.LoadLanguage(selected.Item1);
+            };
+
+            VersionInfo.Text = $"v. {App.BuildInfo}";
             // VersionInfo.Text += $"\nApp folder: {App.LocalDataPath}";
         }
 

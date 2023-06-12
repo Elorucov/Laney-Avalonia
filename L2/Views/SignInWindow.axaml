@@ -4,20 +4,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vkui="using:VKUI.Controls"
         mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
         x:Class="ELOR.Laney.Views.SignInWindow"
         Width="420" Height="540"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
+        Icon="avares://laney/Assets/Logo/icon.ico"
         Title="Laney">
   <Grid RowDefinitions="Auto * 48">
-    <StackPanel Grid.Row="1" Margin="32,48" VerticalAlignment="Center">
+    <StackPanel Grid.Row="1" Margin="24,48" VerticalAlignment="Center">
       <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="12" Source="{StaticResource Logo}"/>
-      <TextBlock Classes="Title2 DisplayBold" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
+      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
       <TextBlock Classes="Headline" TextWrapping="Wrap" Margin="0,8,0,0" TextAlignment="Center" Text="{i18n:Localize landing_subtitle}"/>
-      <Button Classes="Commerce Medium" HorizontalAlignment="Center" Margin="0,24,0,0" Content="{i18n:Localize sign_in}" Click="SignIn"/>
+      <Button Classes="Large" Background="#0077ff" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,32,0,0" Padding="0" Click="SignIn">
+        <Grid ColumnDefinitions="44 * 44">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28LogoVk}" Foreground="White" Margin="8"/>
+          <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Text="{i18n:Localize sign_in_vk_id}"/>
+        </Grid>
+      </Button>
     </StackPanel>
 
-    <TextBlock x:Name="VersionInfo" Grid.Row="2" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Classes="Subhead" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="Version 2.0 platform-arch"/>
+    <Grid Grid.Row="2" ColumnDefinitions="Auto *" Margin="24,0,24,18" VerticalAlignment="Center">
+      <ComboBox x:Name="LangPicker" Classes="Alternate">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Classes="Subhead" Text="{Binding Item2}"/>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      <TextBlock x:Name="VersionInfo" Grid.Column="1" TextAlignment="Right" Classes="Subhead" Margin="0,3,0,0" Foreground="{DynamicResource VKTextSubheadBrush}"/>
+    </Grid>
   </Grid>
 </Window>

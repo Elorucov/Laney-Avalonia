@@ -22,7 +22,7 @@ namespace ELOR.Laney.Core {
             int userId = 0;
             string accessToken = String.Empty;
 
-            OAuthWindow window = new OAuthWindow(authUri, finalUri, "OAuth", 784, 541); // // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
+            OAuthWindow window = new OAuthWindow(authUri, finalUri, Localizer.Instance["sign_in"], 784, 541); // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
             window.LocalDataPath = App.LocalDataPath;
             Uri url = await window.StartAuthenticationAsync();
             if (url == null) return new Tuple<int, string>(userId, accessToken);

@@ -121,6 +121,7 @@
         public const string Icon28InfoOutline = "Icon28InfoOutline";
         public const string Icon28KeyboardBotsOutline = "Icon28KeyboardBotsOutline";
         public const string Icon28LinkCircleOutline = "Icon28LinkCircleOutline";
+        public const string Icon28LogoVk = "Icon28LogoVk";
         public const string Icon28MessageOutline = "Icon28MessageOutline";
         public const string Icon28MoreHorizontal = "Icon28MoreHorizontal";
         public const string Icon28MusicOutline = "Icon28MusicOutline";

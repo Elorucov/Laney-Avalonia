@@ -6,11 +6,7 @@ using System.Linq;
 
 namespace ELOR.Laney.ViewModels.SettingsCategories {
     public class GeneralViewModel : CommonViewModel {
-        public ObservableCollection<Tuple<string, string>> Languages { get; private set; } = new ObservableCollection<Tuple<string, string>> {
-            new Tuple<string, string>("en-US", "English"),
-            new Tuple<string, string>("ru-RU", "Русский"),
-            new Tuple<string, string>("uk-UA", "Українська"),
-        };
+        public ObservableCollection<Tuple<string, string>> Languages { get; private set; } = Localizer.SupportedLanguages;
 
         public Tuple<string, string> CurrentLanguage { get { return GetLang(); } set { ChangeLang(value); OnPropertyChanged(); } }
         public bool SentViaEnter { get { return Settings.SentViaEnter; } set { Settings.SentViaEnter = value; OnPropertyChanged(); } }
