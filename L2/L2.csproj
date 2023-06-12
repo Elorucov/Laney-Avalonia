@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.411</AssemblyVersion>
-    <FileVersion>2.0.411</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.411-win-anycpu-devuser.devpc-230608-1901</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.411-linux-anycpu-devuser.devpc-230608-1901</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.411-macos-anycpu-devuser.devpc-230608-1901</Version>
+    <AssemblyVersion>2.0.413</AssemblyVersion>
+    <FileVersion>2.0.413</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.413-win-anycpu-devuser.devpc-230611-1851</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.413-linux-anycpu-devuser.devpc-230611-1851</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.413-macos-anycpu-devuser.devpc-230611-1851</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -22,8 +22,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.411</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.411</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.413</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.413</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
@@ -56,7 +56,6 @@
     <None Remove="Assets\Logo\Laney.png" />
     <None Remove="Assets\Logo\Tray\t32mb.png" />
     <None Remove="Assets\Logo\Tray\t32mw.png" />
-    <None Remove="Assets\Logo\win.png" />
     <None Remove="Controls\Attachments\AttachmentsContainer.xaml" />
     <None Remove="Controls\Attachments\BasicAttachment.xaml" />
     <None Remove="Controls\Attachments\ExtendedAttachment.xaml" />
@@ -75,7 +74,6 @@
     <AvaloniaResource Include="Assets\i18n\uk-UA.json" />
     <AvaloniaResource Include="Assets\Logo\Tray\t32mb.png" />
     <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
-    <AvaloniaResource Include="Assets\Logo\win.png" />
     <AvaloniaResource Include="Controls\Attachments\BasicAttachment.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
