@@ -5,10 +5,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:dm="using:ELOR.Laney.DataModels"
+             xmlns:vm="using:ELOR.Laney.ViewModels"
+             xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="480"
              SizeChanged="ChatView_SizeChanged"
-             x:Class="ELOR.Laney.Views.ChatView">
+             x:Class="ELOR.Laney.Views.ChatView"
+             x:DataType="vm:ChatViewModel" x:CompileBindings="True">
   <UserControl.Styles>
     <Style Selector="Button.OnChat">
       <Setter Property="Margin" Value="24"/>
@@ -111,7 +114,7 @@
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
       <ListBox.ItemTemplate>
-        <DataTemplate>
+        <DataTemplate x:DataType="vmc:MessageViewModel">
           <controls:ChatViewItem Initialized="CVI_Initialized" Loaded="CVI_Loaded" Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
         </DataTemplate>
       </ListBox.ItemTemplate>
@@ -152,7 +155,9 @@
             <TextBlock x:Name="RestrictionReason" Margin="8" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
           </DockPanel>
 
-          <controls:Composer IsVisible="{Binding DataContext.RestrictionReason, ElementName=ComposerContainer, Converter={x:Static StringConverters.IsNullOrEmpty}}" DataContext="{Binding Composer}"/>
+          <Grid IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+            <controls:Composer DataContext="{Binding Composer}"/>
+          </Grid>
         </Grid>
         <Grid x:Name="MessagesCommandsRoot" IsVisible="{Binding !!SelectedMessagesCount}" VerticalAlignment="Bottom" MinHeight="44" ColumnDefinitions="* Auto">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="3,0,0,0">
