@@ -6,6 +6,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
+using Serilog;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -49,13 +50,22 @@ namespace ELOR.Laney.Views {
             }
         }
 
-        private async void ChatsList_Loaded(object sender, RoutedEventArgs e) {
+        private void ChatsList_Loaded(object sender, RoutedEventArgs e) {
             ChatsList.Loaded -= ChatsList_Loaded;
             ChatsList.SelectionChanged += ChatsList_SelectionChanged;
             new ItemsPresenterWidthFixer(ChatsList);
             new ListBoxAutoScrollHelper(ChatsList);
-            await Task.Delay(1000); // to avoid crash happens sometimes
-            (ChatsList.Scroll as ScrollViewer).RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);
+            TryRegisterIncrementalLoadingEvent();
+        }
+
+        private async void TryRegisterIncrementalLoadingEvent() {
+            await Task.Delay(1000);
+            try {
+                (ChatsList.Scroll as ScrollViewer)?.RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);
+            } catch (Exception ex) {
+                Log.Error(ex, $"A problem has occured while registering incremental loading event for ChatsList!");
+                TryRegisterIncrementalLoadingEvent();
+            }
         }
 
         private void ChatsList_SelectionChanged(object sender, SelectionChangedEventArgs e) {

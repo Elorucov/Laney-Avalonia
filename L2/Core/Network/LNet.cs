@@ -57,8 +57,11 @@ namespace ELOR.Laney.Core.Network {
 
         public static event EventHandler<string> DebugLog;
         private static void Log(string text) {
+#if RELEASE
+#else
             Debug.WriteLine($"LNet: {text}");
             DebugLog?.Invoke(null, text);
+#endif
         }
 
         public static async Task<bool> InitConnectionAsync(CancellationTokenSource cts, bool forceProxy = false) {
@@ -242,8 +245,6 @@ namespace ELOR.Laney.Core.Network {
                     Log($"ServerCertificateCustomValidationCallback end! Valid: {valid}");
                     return valid;
                 };
-            } else {
-                Log($"Host are NOT found in domains. Uri: {fixedUri}");
             }
 
             HttpRequestMessage hrm = new HttpRequestMessage(httpMethod, fixedUri);
@@ -266,11 +267,25 @@ namespace ELOR.Laney.Core.Network {
             cc.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             if (!cc.DefaultRequestHeaders.Contains("User-Agent")) cc.DefaultRequestHeaders.Add("User-Agent", App.UserAgent);
 
-            Log($"Sending request to {fixedUri.AbsoluteUri}...");
+#if RELEASE
+            string paramstr = "";
+#else
+            string paramstr = " | ";
+            if (parameters != null) {
+                foreach (var p in parameters) {
+                    if (p.Key == "access_token") continue;
+                    paramstr += $"{p.Key}={p.Value}; ";
+                }
+            } else {
+                paramstr = String.Empty;
+            }
+#endif
+            Log($"=> {fixedUri.AbsoluteUri} | {httpMethod.Method}{paramstr}");
             var stopwatch = Stopwatch.StartNew();
             var result = cts == null ? await cc.SendAsync(hrm, HttpCompletionOption.ResponseHeadersRead) : await cc.SendAsync(hrm, HttpCompletionOption.ResponseHeadersRead, cts.Token);
             stopwatch.Stop();
-            Log($"Response received. Code: {result.StatusCode}, request took {stopwatch.ElapsedMilliseconds} ms.");
+
+            Log($"<= {fixedUri.AbsoluteUri} | Code: {result.StatusCode} | {stopwatch.ElapsedMilliseconds} ms.");
             return result;
         }
 

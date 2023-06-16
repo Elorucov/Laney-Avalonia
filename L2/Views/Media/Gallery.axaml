@@ -8,7 +8,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ELOR.Laney.Views.Media.Gallery"
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        Title="{i18n:Localize wnd_gallery}" Icon="avares://laney/Assets/Logo/win.png">
+        Title="{i18n:Localize wnd_gallery}" Icon="avares://laney/Assets/Logo/icon.ico">
   <Grid RowDefinitions="Auto * Auto Auto">
 
     <vkui:FlipView x:Name="GalleryItems" Grid.RowSpan="4" SelectionChanged="GalleryItems_SelectionChanged">

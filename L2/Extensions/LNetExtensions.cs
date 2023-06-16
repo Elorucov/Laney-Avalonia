@@ -2,6 +2,7 @@
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Network;
 using Serilog;
@@ -11,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using VKUI.Controls;
 
@@ -32,8 +34,9 @@ namespace ELOR.Laney.Extensions {
                 : url;
 
             if (!cachedImages.ContainsKey(key)) {
+                Bitmap bitmap = null;
                 if (uri.Scheme == "avares") {
-                    Bitmap bitmap = await AssetsManager.GetBitmapFromUri(uri, decodeWidth);
+                    bitmap = await AssetsManager.GetBitmapFromUri(uri, decodeWidth);
                     if (cachedImages.Count == cachesLimit) cachedImages.Remove(cachedImages.First().Key);
                     if (!cachedImages.ContainsKey(key)) {
                         cachedImages.Add(key, bitmap);
@@ -45,7 +48,7 @@ namespace ELOR.Laney.Extensions {
                     Stream stream = new MemoryStream(bytes);
                     if (bytes.Length == 0) throw new Exception("Image length is 0!");
 
-                    Bitmap bitmap = decodeWidth > 0
+                    bitmap = decodeWidth > 0
                         ? await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality))
                         : new Bitmap(stream);
 
@@ -61,10 +64,6 @@ namespace ELOR.Laney.Extensions {
             }
         }
 
-        public static async Task<HttpResponseMessage> SendRequestToAPIViaLNetAsync(Uri uri, Dictionary<string, string> parameters, Dictionary<string, string> headers) {
-            return await LNet.PostAsync(uri, parameters, headers);
-        }
-
         public static async Task<Bitmap> GetBitmapAsync(Uri source, int decodeWidth = 0) {
             try {
                 return await TryGetCachedBitmapAsync(source, decodeWidth);
@@ -74,39 +73,52 @@ namespace ELOR.Laney.Extensions {
             }
         }
 
-        public static async void SetUriSourceAsync(this Image image, Uri source, int decodeWidth = 0) {
+        public static void SetUriSourceAsync(this Image image, Uri source, int decodeWidth = 0) {
             try {
-                image.Source = await TryGetCachedBitmapAsync(source, decodeWidth);
+                new Thread(async () => {
+                    Bitmap bitmap = await GetBitmapAsync(source, decodeWidth);
+                    await Dispatcher.UIThread.InvokeAsync(() => image.Source = bitmap);
+                }).Start();
             } catch (Exception ex) {
                 Log.Error(ex, "SetUriSourceAsync error!");
             }
         }
 
-        public static async void SetUriSourceAsync(this ImageBrush imageBrush, Uri source, int decodeWidth = 0) {
+        public static void SetUriSourceAsync(this ImageBrush imageBrush, Uri source, int decodeWidth = 0) {
             try {
-                imageBrush.Source = await TryGetCachedBitmapAsync(source, decodeWidth);
+                new Thread(async () => {
+                    Bitmap bitmap = await GetBitmapAsync(source, decodeWidth);
+                    await Dispatcher.UIThread.InvokeAsync(() => imageBrush.Source = bitmap);
+                }).Start();
             } catch (Exception ex) {
                 Log.Error(ex, "SetUriSourceAsync error!");
             }
         }
 
-        public static async void SetImageAsync(this Avatar avatar, Uri source, int decodeWidth = 0) {
+        public static void SetImageAsync(this Avatar avatar, Uri source, int decodeWidth = 0) {
             try {
                 avatar.Image = null;
-                avatar.Image = await TryGetCachedBitmapAsync(source, decodeWidth);
+                new Thread(async () => {
+                    Bitmap bitmap = await GetBitmapAsync(source, decodeWidth);
+                    await Dispatcher.UIThread.InvokeAsync(() => avatar.Image = bitmap);
+                }).Start();
             } catch (Exception ex) {
                 Log.Error(ex, "SetImageAsync error!");
             }
         }
 
-        public static async void SetImageFillAsync(this Shape shape, Uri source, int decodeWidth = 0) {
+        public static void SetImageFillAsync(this Shape shape, Uri source, int decodeWidth = 0) {
             try {
-                Bitmap bitmap = await TryGetCachedBitmapAsync(source, decodeWidth);
-                shape.Fill = new ImageBrush(bitmap) {
-                    AlignmentX = AlignmentX.Center,
-                    AlignmentY = AlignmentY.Center,
-                    Stretch = Stretch.UniformToFill
-                };
+                new Thread(async () => {
+                    Bitmap bitmap = await GetBitmapAsync(source, decodeWidth);
+                    await Dispatcher.UIThread.InvokeAsync(() => {
+                        shape.Fill = new ImageBrush(bitmap) {
+                            AlignmentX = AlignmentX.Center,
+                            AlignmentY = AlignmentY.Center,
+                            Stretch = Stretch.UniformToFill
+                        };
+                    });
+                }).Start();
             } catch (Exception ex) {
                 Log.Error(ex, "SetImageFillAsync error!");
             }
@@ -115,7 +127,7 @@ namespace ELOR.Laney.Extensions {
         public static async Task<bool> SetImageBackgroundAsync(this Control control, Uri source, int decodeWidth = 0) {
             if (control == null) return false;
             try {
-                Bitmap bitmap = await TryGetCachedBitmapAsync(source, decodeWidth);
+                Bitmap bitmap = await GetBitmapAsync(source, decodeWidth);
                 var brush = new ImageBrush(bitmap) {
                     AlignmentX = AlignmentX.Center,
                     AlignmentY = AlignmentY.Center,
@@ -133,6 +145,10 @@ namespace ELOR.Laney.Extensions {
                 Log.Error(ex, "SetImageBackgroundAsync error!");
                 return false;
             }
+        }
+
+        public static async Task<HttpResponseMessage> SendRequestToAPIViaLNetAsync(Uri uri, Dictionary<string, string> parameters, Dictionary<string, string> headers) {
+            return await LNet.PostAsync(uri, parameters, headers);
         }
     }
 }

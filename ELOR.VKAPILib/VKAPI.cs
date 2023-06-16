@@ -114,8 +114,9 @@ namespace ELOR.VKAPILib {
             string requestUri = $@"https://{Domain}/method/{method}";
 
             if (WebRequestCallback != null) {
-                Dictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("Accept-Encoding", "gzip,deflate");
+                Dictionary<string, string> headers = new Dictionary<string, string> {
+                    { "Accept-Encoding", "gzip,deflate" }
+                };
                 if (!String.IsNullOrEmpty(UserAgent)) headers.Add("User-Agent", UserAgent);
 
                 var resp = await WebRequestCallback.Invoke(new Uri(requestUri), parameters, headers);

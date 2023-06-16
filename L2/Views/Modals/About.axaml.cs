@@ -34,7 +34,7 @@ namespace ELOR.Laney.Views.Modals {
 #elif BETA
             TextBlock t = new TextBlock { 
                     Text = "BETA",
-                    Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                    Foreground = new SolidColorBrush(Color.Parse("#000000")),
                     TextAlignment = TextAlignment.Center,
                     FontWeight = FontWeight.Bold
                 };
@@ -67,7 +67,7 @@ namespace ELOR.Laney.Views.Modals {
 #else
             TextBlock t = new TextBlock {
                 Text = "DEV",
-                Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                Foreground = new SolidColorBrush(Color.Parse("#FFFFFF")),
                 TextAlignment = TextAlignment.Center,
                 FontWeight = FontWeight.Bold
             };
@@ -77,13 +77,13 @@ namespace ELOR.Laney.Views.Modals {
                 Width = 36,
                 Height = 14,
                 CornerRadius = new Avalonia.CornerRadius(0, 2, 2, 0),
-                Background = new SolidColorBrush(Color.Parse("#D1C097")),
+                Background = new SolidColorBrush(Color.Parse("#FF0000")),
                 Child = t
             };
 
             Path p = new Path {
                 Data = Geometry.Parse("M 0,14 L 10,24 L 10,14 z"),
-                Fill = new SolidColorBrush(Color.Parse("#857250"))
+                Fill = new SolidColorBrush(Color.Parse("#9F0000"))
             };
 
             Canvas c = new Canvas {

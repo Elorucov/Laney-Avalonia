@@ -6,6 +6,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using Serilog;
 
@@ -42,23 +43,17 @@ namespace ELOR.Laney {
 #endif
 
             if (Settings.EnableLogs) 
-                loggerConfig = loggerConfig.WriteTo.File(Path.Combine(localDataPath, "logs", "L2_.log"), rollingInterval: RollingInterval.Hour, retainedFileCountLimit: 10);
+                loggerConfig = loggerConfig.WriteTo.File(Path.Combine(localDataPath, "logs", $"L2_{DateTimeOffset.Now.ToUnixTimeSeconds()}.log"));
 
             Log.Logger = loggerConfig.CreateLogger();
             Log.Information("Laney is starting up. Build tag: {0}", App.BuildInfoFull);
-
-            // Чисто для проверки conditional compilation, в будущем будет использован в других местах.
-#if WIN
-            Log.Information("Built for Windows");
-#elif MAC
-            Log.Information("Built for macOS");
-#else
-            Log.Information("Built for Linux");
-#endif
-
             Log.Information("Local data folder: {0}", localDataPath);
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+#if RELEASE
+#else
+            LNet.DebugLog += (a, b) => Log.Information("LNET: {0}", b);
+#endif
 
             try {
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
