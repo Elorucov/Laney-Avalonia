@@ -37,6 +37,9 @@ namespace ELOR.Laney.Views.SettingsCategories {
 
             p05.IsChecked = Settings.DisableMarkingMessagesAsRead;
             p05.Click += (a, b) => Settings.DisableMarkingMessagesAsRead = (bool)(a as ToggleSwitch).IsChecked;
+
+            p06.IsChecked = Settings.MessagesListVirtualization;
+            p06.Click += (a, b) => Settings.MessagesListVirtualization = (bool)(a as ToggleSwitch).IsChecked;
         }
 
         private void b01_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

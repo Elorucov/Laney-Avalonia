@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml.Templates;
+using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Controls;
 using Serilog;
@@ -9,7 +10,7 @@ using System;
 using System.ComponentModel;
 
 namespace ELOR.Laney.Controls {
-    public class ChatViewItem : TemplatedControl {
+    public class ChatViewItem : TemplatedControl, ICustomVirtalizedListItem {
         #region Properties
 
         public static readonly StyledProperty<MessageViewModel> MessageProperty =
@@ -84,7 +85,7 @@ namespace ELOR.Laney.Controls {
             if (message.IsDateBetweenVisible) {
                 DataTemplate template = App.GetResource<DataTemplate>("DateUnderTitleTemplate");
                 var dateUI = template.Build(message);
-                // Check template in CHatViewItem.xaml
+                // Check template in ChatViewItem.xaml
                 ((dateUI as Border).Child as TextBlock).Text = message.SentTime.ToHumanizedDateString();
                 Root.Children.Add(dateUI);
             }
@@ -115,6 +116,15 @@ namespace ELOR.Laney.Controls {
             }
 
             Log.Verbose($"ChatViewItem > RenderContent finished.");
+            if (!isDisplaying) {
+                Log.Verbose($"ChatViewItem > Measuring...");
+                // 2 раза Parent = ListBoxItem > ListBox.
+                Control lb = Parent.Parent as Control;
+                Root.Measure(new Size(lb.DesiredSize.Width, double.PositiveInfinity));
+                MinHeight = Root.DesiredSize.Height;
+                Log.Verbose($"ChatViewItem > Height: {MinHeight}");
+                Root.Children.Clear();
+            }
         }
 
         private void MessagePropertyChanged(object sender, PropertyChangedEventArgs e) {
@@ -161,6 +171,21 @@ namespace ELOR.Laney.Controls {
         private void ChatViewItem_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             PointerPressed -= ChatViewItem_PointerPressed;
             Unloaded -= ChatViewItem_Unloaded;
+            Root.Children.Clear();
+        }
+
+        bool isDisplaying = !Settings.MessagesListVirtualization;
+        public void OnAppearedOnScreen() {
+            if (isDisplaying) return;
+            isDisplaying = true;
+            RenderContent(Message);
+            MinHeight = 0;
+        }
+
+        public void OnDisappearedFromScreen() {
+            if (!isDisplaying) return;
+            isDisplaying = false;
+            MinHeight = Root.DesiredSize.Height;
             Root.Children.Clear();
         }
     }

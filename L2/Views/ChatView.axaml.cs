@@ -24,6 +24,7 @@ namespace ELOR.Laney.Views {
         Dictionary<int, int> ScrollPositions = new Dictionary<int, int>();
         DispatcherTimer markReadTimer;
         bool canSaveScrollPosition = false;
+        ListBoxCustomVirtualization msgsVirtualizer;
 
         MessageViewModel FirstVisible { get => MessagesListScrollViewer?.GetDataContextAt<MessageViewModel>(new Point(64, 0)); }
         MessageViewModel LastVisible { get => MessagesListScrollViewer?.GetDataContextAt<MessageViewModel>(new Point(64, MessagesListScrollViewer.DesiredSize.Height - 5)); }
@@ -48,6 +49,7 @@ namespace ELOR.Laney.Views {
                     ScrollToLastItemAfterTabFocus = true
                 };
                 new ItemsPresenterWidthFixer(MessagesList);
+                if (Settings.MessagesListVirtualization) msgsVirtualizer = new ListBoxCustomVirtualization(MessagesList);
             };
 
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
@@ -267,8 +269,11 @@ namespace ELOR.Laney.Views {
 
         private async void ScrollToMessage(object sender, int messageId) {
             if (Chat.DisplayedMessages == null) return;
-            await Task.Delay(16); // надо чтобы не крашилось.
             MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
+            if (Settings.MessagesListVirtualization) {
+                await Task.Delay(200);
+                msgsVirtualizer.EnforceProcessVirtualization();
+            }
         }
 
         private void CheckFirstAndLastDisplayedMessages() {

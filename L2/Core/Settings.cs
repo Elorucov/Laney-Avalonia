@@ -151,6 +151,7 @@ namespace ELOR.Laney.Core {
         public const string DEBUG_COUNTERS_CHAT = "dbg_counters_chat";
         public const string DEBUG_COUNTERS_RAM = "dbg_counters_ram";
         public const string DEBUG_CONTEXT_MENU = "dbg_dev_context_menu";
+        public const string DEBUG_MSGESSAGES_LIST_VIRTUALIZATION = "dbg_msgl_virtualization";
 
         #endregion
 
@@ -228,6 +229,11 @@ namespace ELOR.Laney.Core {
         public static bool DisableMarkingMessagesAsRead {
             get => Get(DEBUG_MARK_AS_READ_OFF, false);
             set => Set(DEBUG_MARK_AS_READ_OFF, value);
+        }
+
+        public static bool MessagesListVirtualization {
+            get => Get(DEBUG_MSGESSAGES_LIST_VIRTUALIZATION, false);
+            set => Set(DEBUG_MSGESSAGES_LIST_VIRTUALIZATION, value);
         }
 
         #endregion
