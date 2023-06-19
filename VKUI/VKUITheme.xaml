@@ -23,6 +23,7 @@
         <ResourceInclude Source="avares://VKUI/Controls/FlipViewItem.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/FlipView.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/NavigationControl.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/NotificationCard.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/PanelHeader.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Placeholder.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/ScrollBar.xaml" />
@@ -46,7 +47,6 @@
   <StyleInclude Source="/Styles/ButtonStyles.xaml"/>
   <StyleInclude Source="/Styles/ComboBoxStyles.xaml"/>
   <StyleInclude Source="/Styles/ListBoxStyles.xaml"/>
-  <StyleInclude Source="/Styles/NotificationCardStyles.xaml"/>
   <StyleInclude Source="/Styles/TabStyles.xaml"/>
   <StyleInclude Source="/Styles/TextBoxStyles.xaml"/>
   <StyleInclude Source="/Styles/ToggleSwitchStyles.xaml"/>

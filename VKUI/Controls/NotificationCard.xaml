@@ -1,0 +1,92 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vkui="using:VKUI.Controls">
+    <Design.PreviewWith>
+        <StackPanel Background="#007acc">
+          <NotificationCard Content="Test"/>
+        </StackPanel>
+    </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type NotificationCard}" TargetType="NotificationCard">
+    <Setter Property="Background" Value="{DynamicResource VKModalCardBackgroundBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}" />
+    <Setter Property="UseLayoutRounding" Value="True" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Width" Value="328" />
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <LayoutTransformControl Name="PART_LayoutTransformControl"
+                                UseRenderTransform="True">
+          <Border Margin="12,4,12,20"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  BoxShadow="{StaticResource VKElevation4}">
+            <Grid Margin="12" ColumnDefinitions="Auto *">
+              <vkui:VKIcon x:Name="Icon" VerticalAlignment="Top" Margin="0,0,12,0" Foreground="{DynamicResource VKAccentBrush}" Id="{x:Static vkui:VKIconNames.Icon28InfoCircleOutline}"/>
+              <ContentControl Grid.Column="1" Name="PART_Content" VerticalAlignment="Center" Content="{TemplateBinding Content}" />
+            </Grid>
+          </Border>
+        </LayoutTransformControl>
+      </ControlTemplate>
+    </Setter>
+
+    <ControlTheme.Animations>
+      <Animation Duration="0:0:0.25" Easing="QuadraticEaseIn" FillMode="Forward">
+        <KeyFrame Cue="0%">
+          <Setter Property="Opacity" Value="0"/>
+          <Setter Property="TranslateTransform.X" Value="-160"/>
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="Opacity" Value="1"/>
+          <Setter Property="TranslateTransform.X" Value="0"/>
+        </KeyFrame>
+      </Animation>
+    </ControlTheme.Animations>
+
+    <Style Selector="^[IsClosing=true] /template/ LayoutTransformControl#PART_LayoutTransformControl">
+      <Style.Animations>
+        <Animation Duration="0:0:0.25" Easing="QuadraticEaseOut" FillMode="Forward">
+          <KeyFrame Cue="0%">
+          <Setter Property="Opacity" Value="1"/>
+          <Setter Property="TranslateTransform.X" Value="0"/>
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="Opacity" Value="0"/>
+          <Setter Property="TranslateTransform.X" Value="-160"/>
+        </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+
+    <Style Selector="^[IsClosing=true]">
+      <Style.Animations>
+        <Animation Duration="0:0:0.3" Easing="QuadraticEaseOut" FillMode="Forward">
+          <KeyFrame Cue="100%">
+            <Setter Property="IsClosed" Value="True"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+
+    <Style Selector="^:information, ^:success, ^:warning, ^:error">
+      <Setter Property="Background" Value="{DynamicResource VKModalCardBackgroundBrush}"/>
+    </Style>
+
+    <Style Selector="^:success /template/ vkui|VKIcon#Icon">
+      <Setter Property="Foreground" Value="{DynamicResource VKDynamicGreenBrush}"/>
+      <Setter Property="Id" Value="{x:Static vkui:VKIconNames.Icon28CheckCircleOutline}"/>
+    </Style>
+
+    <Style Selector="^:warning /template/ vkui|VKIcon#Icon">
+      <Setter Property="Foreground" Value="{DynamicResource VKDynamicOrangeBrush}"/>
+    </Style>
+
+    <Style Selector="^:error /template/ vkui|VKIcon#Icon">
+      <Setter Property="Foreground" Value="{DynamicResource VKDynamicRedBrush}"/>
+      <Setter Property="Id" Value="{x:Static vkui:VKIconNames.Icon28ErrorCircleOutline}"/>
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>
