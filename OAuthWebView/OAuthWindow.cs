@@ -1,4 +1,7 @@
-﻿using SpiderEye;
+﻿#if WIN
+#else
+using SpiderEye;
+#endif
 using System.Drawing;
 
 namespace OAuthWebView {
@@ -11,9 +14,10 @@ namespace OAuthWebView {
 
         Uri currentUri;
         ManualResetEventSlim mres;
-        Window window;
 #if WIN
         OAuthWindowWin32 w32;
+#else
+	    Window window;
 #endif
 
         public OAuthWindow(Uri startUri, Uri endUri, string windowTitle, int width, int height) {
@@ -40,6 +44,8 @@ namespace OAuthWebView {
 
         static bool appInitialized = false;
 
+#if WIN
+#else
         public async Task<Uri> StartAuthenticationAsyncNonWin() {
             if (!appInitialized) {
 #if LINUX
@@ -55,6 +61,7 @@ namespace OAuthWebView {
             Thread thread = Thread.CurrentThread;
             Console.WriteLine($"Current thread id: {thread.ManagedThreadId}");
             System.Diagnostics.Debug.WriteLine($"Current thread id: {thread.ManagedThreadId}");
+
 
             window = new Window() {
 #if LINUX
@@ -94,6 +101,7 @@ namespace OAuthWebView {
             Console.WriteLine($"Window closed.");
             mres.Set();
         }
+#endif
 
 #if WIN
         private void W32_NavigationStarting(object sender, string url) {
@@ -104,8 +112,7 @@ namespace OAuthWebView {
                 w32.Destroy();
             }
         }
-#endif
-
+#else
         private void Window_Navigating(object sender, NavigatingEventArgs e) {
             Console.WriteLine($"Navigating to {e.Url}");
             currentUri = e.Url;
@@ -113,5 +120,6 @@ namespace OAuthWebView {
                 window.Close();
             }
         }
+#endif
     }
 }
