@@ -1,4 +1,5 @@
-﻿using Microsoft.Web.WebView2.Core;
+﻿#if WIN
+using Microsoft.Web.WebView2.Core;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Kernel32;
@@ -178,3 +179,5 @@ namespace OAuthWebView {
         }
     }
 }
+
+#endif

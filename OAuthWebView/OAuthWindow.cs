@@ -12,7 +12,9 @@ namespace OAuthWebView {
         Uri currentUri;
         ManualResetEventSlim mres;
         Window window;
+#if WIN
         OAuthWindowWin32 w32;
+#endif
 
         public OAuthWindow(Uri startUri, Uri endUri, string windowTitle, int width, int height) {
             this.startUri = startUri;
@@ -93,6 +95,7 @@ namespace OAuthWebView {
             mres.Set();
         }
 
+#if WIN
         private void W32_NavigationStarting(object sender, string url) {
             Console.WriteLine($"Navigating to {url}");
             System.Diagnostics.Debug.WriteLine($"Navigating to {url}");
@@ -101,6 +104,7 @@ namespace OAuthWebView {
                 w32.Destroy();
             }
         }
+#endif
 
         private void Window_Navigating(object sender, NavigatingEventArgs e) {
             Console.WriteLine($"Navigating to {e.Url}");
