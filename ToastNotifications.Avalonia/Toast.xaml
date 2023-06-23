@@ -1,0 +1,58 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ToastNotifications.Avalonia"
+        xmlns:vkui="using:VKUI.Controls">
+  <Design.PreviewWith>
+    <StackPanel Spacing="6" Margin="0,12">
+      <controls:Toast Width="360" Margin="12,6"
+                    Header="Sender" Body="Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog"/>
+      <controls:Toast Width="360" Margin="12,6"
+                    Header="Sender" Body="Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog."/>
+    </StackPanel>
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type controls:Toast}" TargetType="controls:Toast">
+    <Setter Property="Background" Value="{DynamicResource VKModalCardBackgroundBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource VKSeparatorAlphaBrush}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="12"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="Root" Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Margin="{TemplateBinding Margin}"
+                Padding="{TemplateBinding Padding}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                BoxShadow="{StaticResource VKElevation3}">
+          <Grid ColumnDefinitions="Auto *" RowDefinitions="Auto Auto">
+            <Ellipse x:Name="CircleAvatar" IsHitTestVisible="False" IsVisible="False" VerticalAlignment="Top" Margin="0,0,12,0" Width="56" Height="56" Fill="Red"/>
+            <StackPanel x:Name="ToastContent" IsHitTestVisible="False" Grid.Column="1">
+              <TextBlock x:Name="HeaderTB"
+                         Text="{TemplateBinding Header}"
+                         Classes="Default"
+                         FontWeight="SemiBold"
+                         TextWrapping="Wrap"
+                         MaxLines="2"
+                         Margin="0,0,36,0"
+                         TextTrimming="CharacterEllipsis"/>
+              <TextBlock x:Name="BodyTB"
+                         Text="{TemplateBinding Body}"
+                         Classes="Subhead"
+                         TextWrapping="Wrap"
+                         MaxLines="5"
+                         Foreground="{DynamicResource VKTextSubheadBrush}"
+                         TextTrimming="CharacterEllipsis"/>
+            </StackPanel>
+            <Image x:Name="ImageControl" IsHitTestVisible="False" IsVisible="False" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0" MaxHeight="180"/>
+            <Button x:Name="CloseButton" Classes="Tertiary" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" IsVisible="True" Width="24" Height="24" MinHeight="24" CornerRadius="12" Margin="0,-4,-4,0" Padding="4">
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}" Foreground="{DynamicResource VKIconOutlineMediumBrush}"/>
+            </Button>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

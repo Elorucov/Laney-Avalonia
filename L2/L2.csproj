@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.418</AssemblyVersion>
-    <FileVersion>2.0.418</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.418-win-anycpu-devuser.devpc-230617-1416</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.418-linux-anycpu-devuser.devpc-230617-1416</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.418-macos-anycpu-devuser.devpc-230617-1416</Version>
+    <AssemblyVersion>2.0.419</AssemblyVersion>
+    <FileVersion>2.0.419</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.419-win-anycpu-devuser.devpc-230621-1909</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.419-linux-anycpu-devuser.devpc-230621-1909</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.419-macos-anycpu-devuser.devpc-230621-1909</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -22,12 +22,12 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.418</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.418</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.419</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.419</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
-    <CFBundleIconFile>Assets\Logo\Laney.icns</CFBundleIconFile>
+    <CFBundleIconFile>test.icns</CFBundleIconFile>
     <NSPrincipalClass>NSApplication</NSPrincipalClass>
     <NSHighResolutionCapable>true</NSHighResolutionCapable>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
@@ -110,6 +110,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ELOR.VKAPILib\ELOR.VKAPILib.csproj" />
     <ProjectReference Include="..\OAuthWebView\OAuthWebView.csproj" />
+    <ProjectReference Include="..\ToastNotifications.Avalonia\ToastNotifications.Avalonia.csproj" />
     <ProjectReference Include="..\VKUI\VKUI.csproj" />
   </ItemGroup>
   <ProjectExtensions>

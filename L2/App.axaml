@@ -20,6 +20,7 @@
         <ResourceInclude Source="/Controls/MessageBubble.xaml"/>
         <ResourceInclude Source="/Controls/PostUI.xaml"/>
         <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>
+        <ResourceInclude Source="avares://ToastNotifications.Avalonia/Toast.xaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
 

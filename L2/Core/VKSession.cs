@@ -24,6 +24,7 @@ using ELOR.Laney.Helpers;
 using Avalonia.Controls.Notifications;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.ViewModels.Modals;
+using ToastNotifications.Avalonia;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -32,6 +33,7 @@ namespace ELOR.Laney.Core {
         private ImViewModel _imViewModel;
         private ChatViewModel _currentOpenedChat;
         private WindowNotificationManager _notificationManager;
+        private static ToastNotificationsManager _systemNotificationManager;
 
         public int Id { get { return GroupId > 0 ? -GroupId : UserId; } }
         public int UserId { get; private set; }
@@ -100,6 +102,9 @@ namespace ELOR.Laney.Core {
                 About aw = new About();
                 await aw.ShowDialog(Window);
             };
+            logout.Click += async (a, b) => {
+                ExceptionHelper.ShowNotImplementedDialogAsync(Window);
+            };
 
             ash.Items.Add(settings);
             ash.Items.Add(about);
@@ -133,6 +138,20 @@ namespace ELOR.Laney.Core {
                     ShowNotification(new Notification("Header", null, NotificationType.Success, TimeSpan.FromSeconds(10)));
                 };
                 devmenu.Add(notif);
+
+                ActionSheetItem snotif = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
+                    Header = "Show system notification",
+                };
+                snotif.Click += async (a, b) => {
+                    var ava = await LNetExtensions.GetBitmapAsync(this.Avatar);
+                    var t = new ToastNotification(true, Name, "Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog!", "Caption", ava);
+                    t.OnClick += async () => {
+                        await new VKUIDialog("Result", t.AssociatedObject.ToString()).ShowDialog<int>(ModalWindow);
+                    };
+                    _systemNotificationManager?.Show(t);
+                };
+                devmenu.Add(snotif);
             }
 
             if (devmenu.Count > 0) {
@@ -244,6 +263,9 @@ namespace ELOR.Laney.Core {
                     Name = currentGroup.Name;
                     Avatar = currentGroup.Avatar;
                 }
+
+                // System notifications
+                if (_systemNotificationManager == null) _systemNotificationManager = new ToastNotificationsManager();
 
                 var lp = info.LongPolls.Where(lps => lps.SessionId == Id).FirstOrDefault();
                 if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId);
