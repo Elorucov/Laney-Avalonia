@@ -68,7 +68,7 @@ if ($IsMacOS) {
     $btagm1 = "$($currentversion)-macos-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm1;
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-x64 -p:UseAppHost=true -p:Version=$($btagm1) -p:DefineConstants=MAC$($chstr)";
-    Copy-Item "$($projfolder)/Assets/Logo/laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources";
+    Copy-Item "$($projfolder)/Assets/Logo/icon.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources";
     
     echo "Creating .app bundle file for macOS x86-64...";
     Copy-Item -Path "$($location)/publish/Laney.app/*" -Destination "$($location)/MacOS_Bundles/x64/Laney.app" -Recurse
@@ -79,7 +79,7 @@ if ($IsMacOS) {
     $btagm2 = "$($currentversion)-macos-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm2;
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC$($chstr)";
-    Copy-Item "$($projfolder)/Assets/Logo/laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"
+    Copy-Item "$($projfolder)/Assets/Logo/icon.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"
     
     echo "Creating .app bundle file for macOS arm64...";
     Copy-Item -Path "$($location)/publish/Laney.app/*" -Destination "$($location)/MacOS_Bundles/arm64/Laney.app" -Recurse
