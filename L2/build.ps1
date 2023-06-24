@@ -59,45 +59,33 @@ if ($IsLinux) {
 }
 
 if ($IsMacOS) {
-    New-Item "$($location)/MacOS_Bundles/Laney_x86.app" -itemType Directory
-    New-Item "$($location)/MacOS_Bundles/Laney_macOS11_arm64.app" -itemType Directory
-    New-Item "$($location)/MacOS_Bundles/Laney_macOS12_arm64.app" -itemType Directory
+    New-Item "$($location)/MacOS_Bundles/x64/Laney.app" -itemType Directory
+    New-Item "$($location)/MacOS_Bundles/arm64/Laney.app" -itemType Directory
 
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "restore -r osx-x64";
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "restore -r osx.11.0-arm64";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "restore -r osx-arm64";
 
     $btagm1 = "$($currentversion)-macos-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm1;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-x64 -p:UseAppHost=true -p:PublishReadyToRun=true -p:Version=$($btagm1) -p:DefineConstants=MAC$($chstr)";
-    Copy-Item "$($projfolder)/Assets/Logo/Laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-x64 -p:UseAppHost=true -p:Version=$($btagm1) -p:DefineConstants=MAC$($chstr)";
+    Copy-Item "$($projfolder)/Assets/Logo/laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources";
     
     echo "Creating .app bundle file for macOS x86-64...";
-    Copy-Item -Path "$($location)/publish/Laney.app/*" -Destination "$($location)/MacOS_Bundles/Laney_x86.app" -Recurse
+    Copy-Item -Path "$($location)/publish/Laney.app/*" -Destination "$($location)/MacOS_Bundles/x64/Laney.app" -Recurse
     echo "Deleting publish folder...";
     Remove-Item -Path "$($location)/publish" -Recurse;
     echo "macOS x86-64 is done.$([Environment]::NewLine)";
 
-    $btagm2 = "$($currentversion)-macos11-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagm2 = "$($currentversion)-macos-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm2;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx.11.0-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC$($chstr)";
-    Copy-Item "$($projfolder)/Assets/Logo/Laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC$($chstr)";
+    Copy-Item "$($projfolder)/Assets/Logo/laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"
     
-    echo "Creating .app bundle file for macOS 11 arm64...";
-    Copy-Item -Path "$($location)/publish/Laney.app/*" -Destination "$($location)/MacOS_Bundles/Laney_macOS11_arm64.app" -Recurse
+    echo "Creating .app bundle file for macOS arm64...";
+    Copy-Item -Path "$($location)/publish/Laney.app/*" -Destination "$($location)/MacOS_Bundles/arm64/Laney.app" -Recurse
     echo "Deleting publish folder...";
     Remove-Item -Path "$($location)/publish" -Recurse;
     echo "macOS 11 arm64 is done.$([Environment]::NewLine)";
-
-    $btagm2 = "$($currentversion)-macos-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
-    echo $btagm2;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx.12-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC$($chstr)";
-    Copy-Item "$($projfolder)/Assets/Logo/Laney.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"
-        
-    echo "Creating .app bundle file for macOS 12 arm64...";
-    Copy-Item -Path "$($location)/publish/Laney.app/*" -Destination "$($location)/MacOS_Bundles/Laney_macOS12_arm64.app" -Recurse
-    echo "Deleting publish folder...";
-    Remove-Item -Path "$($location)/publish" -Recurse;
-    echo "macOS 12 arm64 is done.$([Environment]::NewLine)";
 }
 
 Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "build-server shutdown";

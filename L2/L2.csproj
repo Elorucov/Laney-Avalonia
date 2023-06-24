@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.423</AssemblyVersion>
-    <FileVersion>2.0.423</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.423-win-anycpu-devuser.devpc-230623-1753</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.423-linux-anycpu-devuser.devpc-230623-1753</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.423-macos-anycpu-devuser.devpc-230623-1753</Version>
+    <AssemblyVersion>2.0.425</AssemblyVersion>
+    <FileVersion>2.0.425</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.425-win-anycpu-devuser.devpc-230624-2108</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.425-linux-anycpu-devuser.devpc-230624-2108</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.425-macos-anycpu-devuser.devpc-230624-2108</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -22,12 +22,12 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.423</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.423</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.425</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.425</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Laney</CFBundleExecutable>
-    <CFBundleIconFile>test.icns</CFBundleIconFile>
+    <CFBundleIconFile>Assets/Logo/icon.icns</CFBundleIconFile>
     <NSPrincipalClass>NSApplication</NSPrincipalClass>
     <NSHighResolutionCapable>true</NSHighResolutionCapable>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
