@@ -5,10 +5,10 @@ using System;
 namespace ELOR.Laney.Execute.Objects {
     public class ChatInfoEx {
         [JsonProperty("chat_id")]
-        public int ChatId { get; set; }
+        public long ChatId { get; set; }
 
         [JsonProperty("peer_id")]
-        public int PeerId { get; set; }
+        public long PeerId { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -20,7 +20,7 @@ namespace ELOR.Laney.Execute.Objects {
         public Uri PhotoUri { get { return Uri.IsWellFormedUriString(Photo, UriKind.Absolute) ? new Uri(Photo) : null; } }
 
         [JsonProperty("owner_id")]
-        public int OwnerId { get; set; }
+        public long OwnerId { get; set; }
 
         [JsonProperty("is_casper_chat")]
         public bool IsCasperChat { get; set; }

@@ -79,8 +79,8 @@ namespace ELOR.Laney.Helpers {
 
             var session = VKSession.GetByDataContext(target);
 
-            bool canReplyPrivately = chat.PeerType == PeerType.Chat && message.SenderId > 0 && message.SenderId != session.Id;
-            if (message.SenderId > 0) {
+            bool canReplyPrivately = chat.PeerType == PeerType.Chat && message.SenderId.IsUser() && message.SenderId != session.Id;
+            if (message.SenderId.IsUser()) {
                 User sender = CacheManager.GetUser(message.SenderId);
                 if (sender != null) canReplyPrivately = sender.CanWritePrivateMessage;
             }
@@ -235,7 +235,7 @@ namespace ELOR.Laney.Helpers {
             if (ash.Items.Count > 0) ash.ShowAt(target, true);
         }
 
-        private static async void TryDeleteMessages(bool withoutConfirmation, VKSession session, int peerId, List<int> ids, bool canDeleteForAll) {
+        private static async void TryDeleteMessages(bool withoutConfirmation, VKSession session, long peerId, List<int> ids, bool canDeleteForAll) {
             if (withoutConfirmation) {
                 DeleteMessages(session, peerId, ids, false, false);
             } else {
@@ -257,7 +257,7 @@ namespace ELOR.Laney.Helpers {
             }
         }
 
-        private static async void DeleteMessages(VKSession session, int peerId, List<int> ids, bool forAll, bool spam) {
+        private static async void DeleteMessages(VKSession session, long peerId, List<int> ids, bool forAll, bool spam) {
             try {
                 var response = await session.API.Messages.DeleteAsync(session.GroupId, peerId, ids, spam, forAll);
                 int count = response.Where(r => r.Response == 1).Count();

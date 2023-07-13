@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ELOR.Laney.Execute.Objects {
     public class LongPollInfoForSession {
         [JsonProperty("session_id")]
-        public int SessionId { get; set; }
+        public long SessionId { get; set; }
 
         [JsonProperty("longpoll")]
         public LongPollServerInfo LongPoll { get; set; }

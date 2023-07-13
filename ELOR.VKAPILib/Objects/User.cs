@@ -1,13 +1,8 @@
-﻿using ELOR.VKAPILib.Objects.Groups;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects {
+
     [DataContract]
     public enum DeactivationState {
         No,
@@ -110,7 +105,7 @@ namespace ELOR.VKAPILib.Objects {
 
     public class UserCareer {
         [JsonProperty("group_id")]
-        public int GroupId { get; set; }
+        public long GroupId { get; set; }
 
         [JsonProperty("company")]
         public string Company { get; set; }
@@ -132,7 +127,7 @@ namespace ELOR.VKAPILib.Objects {
 
     public class User {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("first_name")]
         public string FirstName { get; set; }
@@ -248,15 +243,6 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonProperty("followers_count")]
         public long Followers { get; set; }
-
-        [JsonProperty("online")]
-        public int Online { get; set; }
-
-        [JsonProperty("online_mobile")]
-        public int OnlineMobile { get; set; }
-
-        [JsonProperty("online_app")]
-        public int OnlineAppId { get; set; }
 
         [JsonProperty("online_info")]
         public UserOnlineInfo OnlineInfo { get; set; }

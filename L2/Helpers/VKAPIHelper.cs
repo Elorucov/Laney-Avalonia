@@ -80,7 +80,7 @@ namespace ELOR.Laney.Helpers {
 
             if (msg.SenderId == VKSession.Main.UserId && msg.PeerId != VKSession.Main.UserId) {
                 sender = Localizer.Instance["you"];
-            } else if (msg.PeerId > 2000000000) {
+            } else if (msg.PeerId.IsChat()) {
                 sender = CacheManager.GetNameOnly(msg.SenderId, true);
             }
 
@@ -120,13 +120,13 @@ namespace ELOR.Laney.Helpers {
             return a.Length == 3 ? $"{dt.ToString("M")} {dt.Year}" : dt.ToString("M");
         }
 
-        public static string GetNameOrDefaultString(int ownerId, string defaultStr = null) {
+        public static string GetNameOrDefaultString(long ownerId, string defaultStr = null) {
             if (!String.IsNullOrEmpty(defaultStr)) return defaultStr;
             string from = "";
-            if (ownerId > 0) {
+            if (ownerId.IsUser()) {
                 User u = CacheManager.GetUser(ownerId);
                 from = u != null ? $"{Localizer.Instance["from"]} {u.FirstNameGen} {u.LastNameGen}" : "";
-            } else if (ownerId < 0) {
+            } else if (ownerId.IsGroup()) {
                 Group u = CacheManager.GetGroup(ownerId);
                 from = u != null ? $"{Localizer.Instance["from"]} \"{u.Name}\"" : "";
             }

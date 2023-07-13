@@ -28,14 +28,14 @@ namespace ELOR.Laney.Core {
         private int TimeStamp;
         private int PTS;
 
-        private int sessionId = 0;
-        private int groupId = 0;
+        private long sessionId = 0;
+        private long groupId = 0;
         private VKAPI API;
         private CancellationTokenSource cts;
         private bool isRunning = false;
         private Logger Log;
 
-        public LongPoll(VKAPI api, int sessionId, int groupId) {
+        public LongPoll(VKAPI api, long sessionId, long groupId) {
             API = api;
             this.sessionId = sessionId;
             this.groupId = groupId;
@@ -58,13 +58,13 @@ namespace ELOR.Laney.Core {
 
         #region Events
 
-        public delegate void MessageFlagsDelegate(LongPoll longPoll, int messageId, int flags, int peerId);
+        public delegate void MessageFlagsDelegate(LongPoll longPoll, int messageId, int flags, long peerId);
         public delegate void MessageReceivedDelegate(LongPoll longPoll, Message message, int flags);
-        public delegate void ConversationFlagsDelegate(LongPoll longPoll, int peerId, int flags);
-        public delegate void MentionDelegate(LongPoll longPoll, int peerId, int messageId, bool isSelfDestruct);
-        public delegate void ReadInfoDelegate(LongPoll longPoll, int peerId, int messageId, int count);
-        public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, int peerId, int extra);
-        public delegate void ActivityStatusDelegate(LongPoll longPoll, int peerId, List<LongPollActivityInfo> infos);
+        public delegate void ConversationFlagsDelegate(LongPoll longPoll, long peerId, int flags);
+        public delegate void MentionDelegate(LongPoll longPoll, long peerId, int messageId, bool isSelfDestruct);
+        public delegate void ReadInfoDelegate(LongPoll longPoll, long peerId, int messageId, int count);
+        public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, long peerId, long extra);
+        public delegate void ActivityStatusDelegate(LongPoll longPoll, long peerId, List<LongPollActivityInfo> infos);
 
         public event MessageFlagsDelegate MessageFlagSet; // 2
         public event MessageFlagsDelegate MessageFlagRemove; // 3
@@ -75,7 +75,7 @@ namespace ELOR.Laney.Core {
         public event ReadInfoDelegate OutgoingMessagesRead; // 7
         public event ConversationFlagsDelegate ConversationFlagReset; // 10
         public event ConversationFlagsDelegate ConversationFlagSet; // 12
-        public event EventHandler<int> ConversationRemoved; // 13 (решил упростить)
+        public event EventHandler<long> ConversationRemoved; // 13 (решил упростить)
         public event ConversationFlagsDelegate MajorIdChanged; // 20
         public event ConversationFlagsDelegate MinorIdChanged; // 21
         public event ConversationDataDelegate ConversationDataChanged; // 52
@@ -98,13 +98,14 @@ namespace ELOR.Laney.Core {
                     Log.Information($"Waiting... TS: {TimeStamp}; PTS: {PTS}");
                     StateChanged?.Invoke(this, LongPollState.Working);
 
-                    Dictionary<string, string> parameters = new Dictionary<string, string>();
-                    parameters.Add("act", "a_check");
-                    parameters.Add("key", Key);
-                    parameters.Add("ts", TimeStamp.ToString());
-                    parameters.Add("wait", WAIT_TIME.ToString());
-                    parameters.Add("mode", MODE.ToString());
-                    parameters.Add("version", VERSION.ToString());
+                    Dictionary<string, string> parameters = new Dictionary<string, string> {
+                        { "act", "a_check" },
+                        { "key", Key },
+                        { "ts", TimeStamp.ToString() },
+                        { "wait", WAIT_TIME.ToString() },
+                        { "mode", MODE.ToString() },
+                        { "version", VERSION.ToString() }
+                    };
 
                     HttpResponseMessage httpResponse = await LNet.PostAsync(new Uri($"https://{Server}"), parameters, cts: cts).ConfigureAwait(false);
                     httpResponse.EnsureSuccessStatusCode();
@@ -178,7 +179,7 @@ namespace ELOR.Laney.Core {
                     case 3:
                         int msgId = u[1].Value<int>();
                         int flags = u[2].Value<int>();
-                        int peerId = u[3].Value<int>();
+                        long peerId = u[3].Value<long>();
                         bool hasMessage = u.Count > 4; // удалённое у текущего юзера сообщение восстановилось
                         Log.Information($"EVENT {eventId}: msg={msgId}, flags={flags}, peer={peerId}, hasMessage={hasMessage}");
                         if (eventId == 3) MessageFlagRemove?.Invoke(this, msgId, flags, peerId);
@@ -187,14 +188,14 @@ namespace ELOR.Laney.Core {
                             Message msgFromHistory3 = messages?.Where(m => m.Id == msgId).FirstOrDefault();
                             if (msgFromHistory3 != null) {
                                 MessageReceived?.Invoke(this, msgFromHistory3, flags);
-                                if (u.Count > 6) CheckMentions(u[6], msgId, u[3].Value<int>());
+                                if (u.Count > 6) CheckMentions(u[6], msgId, u[3].Value<long>());
                             } else {
                                 bool isPartial = false;
                                 Exception ex = null;
                                 Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                                 if (ex == null && rmsg != null) {
                                     MessageReceived?.Invoke(this, rmsg, u[2].Value<int>());
-                                    if (u.Count > 6) CheckMentions(u[6], msgId, u[3].Value<int>());
+                                    if (u.Count > 6) CheckMentions(u[6], msgId, u[3].Value<long>());
                                     if (isPartial) {
                                         MessagesFromAPI.Add(msgId, true);
                                         MessagesFromAPIFlags.Add(msgId, u[2].Value<int>());
@@ -213,7 +214,7 @@ namespace ELOR.Laney.Core {
                         Message msgFromHistory = messages?.Where(m => m.Id == receivedMsgId).FirstOrDefault();
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, u[2].Value<int>());
-                            if (u.Count > 6) CheckMentions(u[6], receivedMsgId, u[3].Value<int>());
+                            if (u.Count > 6) CheckMentions(u[6], receivedMsgId, u[3].Value<long>());
                         } else {
                             bool isPartial = false;
                             Exception ex = null;
@@ -239,7 +240,7 @@ namespace ELOR.Laney.Core {
                         Log.Information($"EVENT {eventId}: msg={editedMsgId}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, u[2].Value<int>());
-                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, u[3].Value<int>());
+                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, u[3].Value<long>());
                         } else {
                             if (!MessagesFromAPI.ContainsKey(editedMsgId)) {
                                 MessagesFromAPI.Add(editedMsgId, true);
@@ -248,14 +249,14 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 6:
-                        int peerId6 = u[1].Value<int>();
+                        long peerId6 = u[1].Value<long>();
                         int msgId6 = u[2].Value<int>();
                         int count6 = u.Count > 3 ? u[3].Value<int>() : 0;
                         Log.Information($"EVENT {eventId}: peer={peerId6}, msg={msgId6}, count={count6}");
                         IncomingMessagesRead?.Invoke(this, peerId6, msgId6, count6);
                         break;
                     case 7:
-                        int peerId7 = u[1].Value<int>();
+                        long peerId7 = u[1].Value<long>();
                         int msgId7 = u[2].Value<int>();
                         int count7 = u.Count > 3 ? u[3].Value<int>() : 0;
                         Log.Information($"EVENT {eventId}: peer={peerId7}, msg={msgId7}, count={count7}");
@@ -263,20 +264,20 @@ namespace ELOR.Laney.Core {
                         break;
                     case 10:
                     case 12:
-                        int peerId10 = u[1].Value<int>();
+                        long peerId10 = u[1].Value<long>();
                         int flags10 = u[2].Value<int>();
                         Log.Information($"EVENT {eventId}: peer={peerId10}, flags={flags10}");
                         if (eventId == 10) ConversationFlagReset?.Invoke(this, peerId10, flags10);
                         else ConversationFlagSet?.Invoke(this, peerId10, flags10);
                         break;
                     case 13:
-                        int peerId13 = u[1].Value<int>();
+                        long peerId13 = u[1].Value<long>();
                         int msgId13 = u[2].Value<int>();
                         Log.Information($"EVENT {eventId}: peer={peerId13}, msg={msgId13}");
                         ConversationRemoved?.Invoke(this, peerId13);
                         break;
                     case 20:
-                        int peerId20 = u[1].Value<int>();
+                        long peerId20 = u[1].Value<long>();
                         int sortId = u[2].Value<int>();
                         Log.Information($"EVENT {eventId}: peer={peerId20}, major/minor={sortId}");
                         if (eventId == 20) MajorIdChanged?.Invoke(this, peerId20, sortId);
@@ -284,7 +285,7 @@ namespace ELOR.Laney.Core {
                         break;
                     case 52:
                         int updateType = u[1].Value<int>();
-                        int peerId52 = u[2].Value<int>();
+                        long peerId52 = u[2].Value<long>();
                         int extra = u[3].Value<int>();
                         Log.Information($"EVENT {eventId}: updateType={updateType}, peer={peerId52}, extra={extra}");
                         ConversationDataChanged?.Invoke(this, updateType, peerId52, extra);
@@ -295,8 +296,8 @@ namespace ELOR.Laney.Core {
                     case 66:
                     case 67:
                         LongPollActivityType type = GetLPActivityType(eventId);
-                        int peerId63 = u[1].Value<int>();
-                        int[] userIds = u[2].Value<JArray>().ToObject<int[]>();
+                        long peerId63 = u[1].Value<long>();
+                        long[] userIds = u[2].Value<JArray>().ToObject<long[]>();
                         int totalCount = u[3].Value<int>();
                         Log.Information($"EVENT {eventId}: peer={peerId63}, users={String.Join(", ", userIds)}, count={totalCount}");
 
@@ -330,7 +331,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        private void CheckMentions(JToken additional, int messageId, int peerId) {
+        private void CheckMentions(JToken additional, int messageId, long peerId) {
             try { 
                 JToken t = additional["marked_users"];
                 if (t != null) {
@@ -342,7 +343,7 @@ namespace ELOR.Laney.Core {
                             MentionReceived?.Invoke(this, peerId, messageId, isBomb);
                         } else {
                             JArray u1 = (JArray)o[1];
-                            if (Int32.Parse(u1.First.ToString()) == sessionId) MentionReceived?.Invoke(this, peerId, messageId, isBomb);
+                            if (Int64.Parse(u1.First.ToString()) == sessionId) MentionReceived?.Invoke(this, peerId, messageId, isBomb);
                         }
                     }
                 }
@@ -383,7 +384,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        private bool CheckIsCached(int id) {
+        private bool CheckIsCached(long id) {
             return CacheManager.GetUser(id) != null || CacheManager.GetGroup(id) != null;
         }
     }

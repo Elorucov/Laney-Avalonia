@@ -3,9 +3,9 @@
 namespace ELOR.VKAPILib.Objects {
     public class CreateChatResponse {
         [JsonProperty("chat_id")]
-        public int ChatId { get; set; }
+        public long ChatId { get; set; }
 
         [JsonProperty("peer_ids")]
-        public List<int> PeerIds { get; set; }
+        public List<long> PeerIds { get; set; }
     }
 }

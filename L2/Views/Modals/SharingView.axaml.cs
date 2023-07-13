@@ -33,7 +33,7 @@ namespace ELOR.Laney.Views.Modals {
                 CurrentViewModel?.OnDisplayed();
             };
 
-            var handler = new ListBoxItemClickHandler<Tuple<int, Uri, string>>(ChatsList, ItemClicked);
+            var handler = new ListBoxItemClickHandler<Tuple<long, Uri, string>>(ChatsList, ItemClicked);
 
             if (group != null) {
                 SessionSwitcherContainer.IsVisible = true;
@@ -46,8 +46,8 @@ namespace ELOR.Laney.Views.Modals {
             }
         }
 
-        private void ItemClicked(Tuple<int, Uri, string> chat) {
-            Close(new Tuple<VKSession, int, int>(CurrentViewModel.Session, chat.Item1, CurrentViewModel.GroupId));
+        private void ItemClicked(Tuple<long, Uri, string> chat) {
+            Close(new Tuple<VKSession, long, long>(CurrentViewModel.Session, chat.Item1, CurrentViewModel.GroupId));
         }
 
         private void OnSearchBoxKeyUp(object sender, KeyEventArgs e) {

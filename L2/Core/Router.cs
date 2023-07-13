@@ -57,18 +57,18 @@ namespace ELOR.Laney.Core {
             switch (type) {
                 case VKLinkType.User:
                     id = ids[0].Value;
-                    OpenPeerProfile(session, Int32.Parse(id));
+                    OpenPeerProfile(session, Int64.Parse(id));
                     break;
                 case VKLinkType.Group:
                     id = ids[0].Value;
-                    OpenPeerProfile(session, Int32.Parse(id) * -1);
+                    OpenPeerProfile(session, Int64.Parse(id) * -1);
                     break;
                 case VKLinkType.Wall: // TODO: Wallpost viewer in app
                     id = $"{ids[0].Value}_{ids[1].Value}";
                     Launcher.LaunchUrl(url);
                     break;
                 case VKLinkType.Poll:
-                    OpenPollViewer(session, Int32.Parse(ids[0].Value), Int32.Parse(ids[1].Value));
+                    OpenPollViewer(session, Int64.Parse(ids[0].Value), Int32.Parse(ids[1].Value));
                     Launcher.LaunchUrl(url);
                     break;
                 case VKLinkType.ConversationInvite:
@@ -85,7 +85,7 @@ namespace ELOR.Laney.Core {
                 case VKLinkType.Write:
                     var wr = writeIdReg.Match(url);
                     id = wr.Value;
-                    session.GetToChat(Int32.Parse(id));
+                    session.GetToChat(Int64.Parse(id));
                     break;
                 case VKLinkType.StickerPack:
                     string packName = spm[0].Groups[4].Value;
@@ -107,13 +107,13 @@ namespace ELOR.Laney.Core {
 
         #endregion
 
-        public static async void OpenPeerProfile(VKSession session, int peerId) {
+        public static async void OpenPeerProfile(VKSession session, long peerId) {
             if (DemoMode.IsEnabled) return;
             PeerProfile pp = new PeerProfile(session, peerId);
             await pp.ShowDialog(session.ModalWindow);
         }
 
-        public static async void OpenPollViewer(VKSession session, int ownerId, int id) {
+        public static async void OpenPollViewer(VKSession session, long ownerId, int id) {
             VKUIDialog alert = new VKUIDialog(Localizer.Instance["not_implemented"], Localizer.Instance["not_implemented_desc"] + $"\n\nOwner: {ownerId}, poll id: {id}");
             await alert.ShowDialog(session.ModalWindow);
         }

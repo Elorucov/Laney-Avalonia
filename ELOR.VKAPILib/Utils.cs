@@ -26,11 +26,19 @@ namespace ELOR.VKAPILib {
             return list == null || list.Count == 0;
         }
 
+        internal static bool IsNullOrEmpty(this List<long> list) {
+            return list == null || list.Count == 0;
+        }
+
         internal static bool IsNullOrEmpty(this List<string> list) {
             return list == null || list.Count == 0;
         }
 
         internal static string Combine(this List<int> items, char sym = ',') {
+            return String.Join(sym.ToString(), items);
+        }
+
+        internal static string Combine(this List<long> items, char sym = ',') {
             return String.Join(sym.ToString(), items);
         }
 

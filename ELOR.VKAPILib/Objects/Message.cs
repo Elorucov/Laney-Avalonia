@@ -71,10 +71,10 @@ namespace ELOR.VKAPILib.Objects {
         public string Type { get; internal set; }
 
         [JsonProperty("member_id")]
-        public int MemberId { get; internal set; }
+        public long MemberId { get; internal set; }
 
-        [JsonIgnore]
-        public int FromId { get; internal set; }
+        [JsonIgnore] // TODO: remove it.
+        public long FromId { get; internal set; }
 
         [JsonProperty("text")]
         public string Text { get; internal set; }
@@ -114,13 +114,13 @@ namespace ELOR.VKAPILib.Objects {
         public long UpdateTimeUnix { get; internal set; }
 
         [JsonProperty("peer_id")]
-        public int PeerId { get; internal set; }
+        public long PeerId { get; internal set; }
 
         [JsonProperty("from_id")]
-        public int FromId { get; internal set; }
+        public long FromId { get; internal set; }
 
         [JsonProperty("admin_author_id")]
-        public int AdminAuthorId { get; internal set; }
+        public long AdminAuthorId { get; internal set; }
 
         [JsonProperty("text")]
         public string Text { get; internal set; }
@@ -167,12 +167,12 @@ namespace ELOR.VKAPILib.Objects {
         [JsonIgnore]
         public bool IsPartial { get; private set; }
 
-        public static Message BuildFromLP(JArray msg, int currentUserId, Func<int, bool> infoCached, out bool needToGetFullMsgFromAPI, out Exception exception) {
+        public static Message BuildFromLP(JArray msg, long currentUserId, Func<long, bool> infoCached, out bool needToGetFullMsgFromAPI, out Exception exception) {
             exception = null;
             try {
                 int id = Convert.ToInt32(msg[1]);
                 int flags = Convert.ToInt32(msg[2]);
-                int peer = Convert.ToInt32(msg[3]);
+                long peer = Convert.ToInt64(msg[3]);
                 int timestamp = Convert.ToInt32(msg[4]);
                 string text = (string)msg[5];
                 JObject additional = msg[6].Value<JObject>();
@@ -197,7 +197,7 @@ namespace ELOR.VKAPILib.Objects {
 
                 if (additional.ContainsKey("from")) {
                     // ¯\_(ツ)_/¯
-                    message.FromId = Convert.ToInt32(additional["from"].Value<string>());
+                    message.FromId = Convert.ToInt64(additional["from"].Value<string>());
                 } else {
                     message.FromId = outbound ? currentUserId : peer;
                 }

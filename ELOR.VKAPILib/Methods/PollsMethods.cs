@@ -17,10 +17,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="backgroundId">background ID for the snippet.</param>
         /// <param name="ownerId">If a poll will be added to a communty it is required to send a negative group identifier. Current user by default.</param>
         [Method("create")]
-        public async Task<Poll> CreateAsync(string question, List<string> answers, bool isAnonymous = false, bool isMultiple = false, bool disableUnvote = false, long endDate = 0, int backgroundId = 0, int ownerId = 0) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("question", question);
-            parameters.Add("add_answers", JsonConvert.SerializeObject(answers));
+        public async Task<Poll> CreateAsync(string question, List<string> answers, bool isAnonymous = false, bool isMultiple = false, bool disableUnvote = false, long endDate = 0, int backgroundId = 0, long ownerId = 0) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "question", question },
+                { "add_answers", JsonConvert.SerializeObject(answers) }
+            };
             if (isAnonymous) parameters.Add("is_anonymous", "1");
             if (isMultiple) parameters.Add("is_multiple", "1");
             if (disableUnvote) parameters.Add("disable_unvote", "1");
@@ -43,10 +44,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true —  to return additional fields for users.</param>
         /// <param name="fields">Profile fields to return.</param>
         [Method("getById")]
-        public async Task<Poll> GetByIdAsync(int ownerId, int pollId, bool extended = false, List<string> fields = null) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("owner_id", ownerId.ToString());
-            parameters.Add("poll_id", pollId.ToString());
+        public async Task<Poll> GetByIdAsync(long ownerId, int pollId, bool extended = false, List<string> fields = null) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "owner_id", ownerId.ToString() },
+                { "poll_id", pollId.ToString() }
+            };
             if (extended) parameters.Add("extended", "1");
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             return await API.CallMethodAsync<Poll>(this, parameters);

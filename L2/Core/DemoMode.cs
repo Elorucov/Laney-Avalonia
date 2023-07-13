@@ -46,7 +46,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        public static DemoModeSession GetDemoSessionById(int id) {
+        public static DemoModeSession GetDemoSessionById(long id) {
             return DemoMode.Data.Sessions.Where(s => s.Id == id).FirstOrDefault();
         }
     }

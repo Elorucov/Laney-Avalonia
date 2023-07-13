@@ -1,13 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
 
-namespace ELOR.VKAPILib.Objects
-{
+namespace ELOR.VKAPILib.Objects {
     public class VideoFiles {
         [JsonProperty("external")]
         public string External { get; set; }

@@ -27,7 +27,7 @@ namespace ELOR.VKAPILib.Objects {
 
     public class ResolveScreenNameResult {
         [JsonProperty("object_id")]
-        public int ObjectId { get; internal set; }
+        public long ObjectId { get; internal set; }
 
         [JsonProperty("type")]
         public ScreenNameType Type { get; internal set; }

@@ -1,12 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects {
+
     [DataContract]
     public enum StoryType {
         [EnumMember(Value = "photo")]
@@ -70,7 +66,7 @@ namespace ELOR.VKAPILib.Objects {
         public int PostId { get; set; }
 
         [JsonProperty("post_owner_id")]
-        public int PostOwnerId { get; set; }
+        public long PostOwnerId { get; set; }
 
         [JsonProperty("owner_id")]
         public int OwnerId { get; set; }

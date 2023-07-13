@@ -1,26 +1,24 @@
 ﻿using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.DataModels {
     public enum VKActionObjectType { Member, ConversationMessage }
 
     public sealed class VKActionMessage {
-        public int InitiatorId { get; private set; }
+        public long InitiatorId { get; private set; }
         public string InitiatorDisplayName { get; private set; }
         public string ActionText { get; private set; }
         public VKActionObjectType ObjectType { get; private set; }
-        public int ObjectId { get; private set; }
+        public long ObjectId { get; private set; }
         public string ObjectDisplayName { get; private set; }
         public string MessageText { get; private set; }
         public string Suffix { get; private set; }
 
-        public VKActionMessage(ELOR.VKAPILib.Objects.Action act, int fromId = 0) {
+        public VKActionMessage(ELOR.VKAPILib.Objects.Action act, long fromId = 0) {
             string actionerName = "";
             Sex actionerSex = Sex.Male;
             string memberName = "";
@@ -29,22 +27,22 @@ namespace ELOR.Laney.DataModels {
 
             if (fromId == 0) fromId = act.FromId;
 
-            if (fromId > 0) {
+            if (fromId.IsUser()) {
                 User u = CacheManager.GetUser(fromId);
                 actionerName = u.FullName;
                 actionerSex = u.Sex;
-            } else if (fromId < 0) {
+            } else if (fromId.IsGroup()) {
                 Group g = CacheManager.GetGroup(fromId);
                 actionerName = g.Name;
             }
 
             if (act.MemberId != 0) ObjectId = act.MemberId;
-            if (act.MemberId > 0) {
+            if (act.MemberId.IsUser()) {
                 User u = CacheManager.GetUser(act.MemberId);
                 memberName = u.FullName;
                 memberNameGen = $"{u.FirstNameAcc} {u.LastNameAcc}";
                 memberSex = u.Sex;
-            } else if (act.MemberId < 0) {
+            } else if (act.MemberId.IsGroup()) {
                 Group g = CacheManager.GetGroup(act.MemberId);
                 memberName = g.Name;
                 memberNameGen = g.Name;

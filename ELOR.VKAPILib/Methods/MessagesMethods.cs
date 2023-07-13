@@ -100,23 +100,25 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="userId">ID of the user to be added to the chat.</param>
         /// <param name="visibleMessagesCount">Visible messages count.</param>
         [Method("addChatUser")]
-        public async Task<bool> AddChatUserAsync(int chatId, int userId, int visibleMessagesCount) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("chat_id", chatId.ToString());
-            parameters.Add("user_id", userId.ToString());
-            parameters.Add("visible_messages_count", visibleMessagesCount.ToString());
+        public async Task<bool> AddChatUserAsync(long chatId, long userId, int visibleMessagesCount) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "chat_id", chatId.ToString() },
+                { "user_id", userId.ToString() },
+                { "visible_messages_count", visibleMessagesCount.ToString() }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
 
         /// <remarks>This method is undocumented!</remarks>
-        /// <summary>Create new template.</summary>
+        /// <summary>Create a new template.</summary>
         /// <param name="groupId">Group ID.</param>
         [Method("addTemplate")]
-        public async Task<AddTemplateResponse> AddTemplateAsync(int groupId, string name, string text) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
-            parameters.Add("name", name);
-            parameters.Add("text", text);
+        public async Task<AddTemplateResponse> AddTemplateAsync(long groupId, string name, string text) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() },
+                { "name", name },
+                { "text", text }
+            };
             return await API.CallMethodAsync<AddTemplateResponse>(this, parameters);
         }
 
@@ -124,10 +126,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID.</param>
         /// <param name="key">Random string, can be used for the user identification. It returns with message_allow event in Callback API.</param>
         [Method("allowMessagesFromGroup")]
-        public async Task<bool> AllowMessagesFromGroupAsync(int groupId, string key = "") {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
-            parameters.Add("key", key);
+        public async Task<bool> AllowMessagesFromGroupAsync(long groupId, string key = "") {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() },
+                { "key", key }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
 
@@ -136,7 +139,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="userIds">IDs of the users to be added to the chat.</param>
         /// <param name="title">Chat title.</param>
         [Method("createChat")]
-        public async Task<CreateChatResponse> CreateChatAsync(int groupId, List<int> userIds, string title = "") {
+        public async Task<CreateChatResponse> CreateChatAsync(long groupId, List<long> userIds, string title = "") {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("user_ids", userIds.Combine());
@@ -150,7 +153,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="spam">true — to mark message as spam.</param>
         /// <param name="deleteForAll">true — to delete message for all (in 24 hours from the sending time).</param>
         [Method("delete")]
-        public async Task<Dictionary<string, int>> DeleteAsync(int groupId, List<int> messageIds, bool spam, bool deleteForAll) {
+        public async Task<Dictionary<string, int>> DeleteAsync(long groupId, List<int> messageIds, bool spam, bool deleteForAll) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("message_ids", messageIds.Combine());
@@ -166,7 +169,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="spam">true — to mark message as spam.</param>
         /// <param name="deleteForAll">true — to delete message for all (in 24 hours from the sending time).</param>
         [Method("delete")]
-        public async Task<List<MessageDeleteResponse>> DeleteAsync(int groupId, int peerId, List<int> cmids, bool spam, bool deleteForAll) {
+        public async Task<List<MessageDeleteResponse>> DeleteAsync(long groupId, long peerId, List<int> cmids, bool spam, bool deleteForAll) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -180,7 +183,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID.</param>
         /// <param name="chatId">Chat ID.</param>
         [Method("deleteChatPhoto")]
-        public async Task<SetChatPhotoResponse> DeleteChatPhotoAsync(int groupId, int chatId) {
+        public async Task<SetChatPhotoResponse> DeleteChatPhotoAsync(long groupId, long chatId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("chat_id", chatId.ToString());
@@ -190,9 +193,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Deletes private messages in a conversation.</summary>
         /// <param name="peerId">Destination ID.</param>
         [Method("deleteConversation")]
-        public async Task<DeleteConversationResponse> DeleteConversationAsync(int peerId) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("peer_id", peerId.ToString());
+        public async Task<DeleteConversationResponse> DeleteConversationAsync(long peerId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "peer_id", peerId.ToString() }
+            };
             return await API.CallMethodAsync<DeleteConversationResponse>(this, parameters);
         }
 
@@ -200,19 +204,21 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Delete template.</summary>
         /// <param name="groupId">Group ID.</param>
         [Method("deleteTemplate")]
-        public async Task<bool> DeleteTemplateAsync(int groupId, int templateId) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
-            parameters.Add("template_id", templateId.ToString());
+        public async Task<bool> DeleteTemplateAsync(long groupId, int templateId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() },
+                { "template_id", templateId.ToString() }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
 
         /// <summary>Denies sending message from community to the current user.</summary>
         /// <param name="groupId">Group ID.</param>
         [Method("denyMessagesFromGroup")]
-        public async Task<bool> DenyMessagesFromGroupAsync(int groupId) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
+        public async Task<bool> DenyMessagesFromGroupAsync(long groupId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
 
@@ -228,7 +234,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="keepSnippets">true — to keep attached snippets.</param>
         /// <param name="dontParseLinks">Don't parse links in message.</param>
         [Method("edit")]
-        public async Task<bool> EditAsync(int groupId, int peerId, int messageId, string message, double latitude, double longitude, List<string> attachment, bool keepForwardedMessages, bool keepSnippets, bool dontParseLinks) {
+        public async Task<bool> EditAsync(long groupId, long peerId, int messageId, string message, double latitude, double longitude, List<string> attachment, bool keepForwardedMessages, bool keepSnippets, bool dontParseLinks) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -248,9 +254,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="title">New title of the chat.</param>
         /// <param name="permissions">Permissions.</param>
         [Method("editChat")]
-        public async Task<bool> EditChatAsync(int chatId, string title, string permissions = null) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("chat_id", chatId.ToString());
+        public async Task<bool> EditChatAsync(long chatId, string title, string permissions = null) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "chat_id", chatId.ToString() }
+            };
             if (!String.IsNullOrEmpty(title)) parameters.Add("title", title);
             if (!String.IsNullOrEmpty(permissions)) parameters.Add("permissions", permissions);
             return await API.CallMethodAsync<bool>(this, parameters);
@@ -260,12 +267,13 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Edit template.</summary>
         /// <param name="groupId">Group ID.</param>
         [Method("editTemplate")]
-        public async Task<bool> EditTemplateAsync(int groupId, int templateId, string name, string text) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
-            parameters.Add("template_id", templateId.ToString());
-            parameters.Add("name", name);
-            parameters.Add("text", text);
+        public async Task<bool> EditTemplateAsync(long groupId, int templateId, string name, string text) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() },
+                { "template_id", templateId.ToString() },
+                { "name", name },
+                { "text", text }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
 
@@ -276,7 +284,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
         [Method("getByConversationMessageId")]
-        public async Task<VKList<Message>> GetByConversationMessageIdAsync(int groupId, int peerId, List<int> conversationMessageIds, bool extended = false, List<string> fields = null) {
+        public async Task<VKList<Message>> GetByConversationMessageIdAsync(long groupId, long peerId, List<int> conversationMessageIds, bool extended = false, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -292,7 +300,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
         [Method("getById")]
-        public async Task<VKList<Message>> GetByIdAsync(int groupId, List<int> messageIds, int previewLength, bool extended = false, List<string> fields = null) {
+        public async Task<VKList<Message>> GetByIdAsync(long groupId, List<int> messageIds, int previewLength, bool extended = false, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("message_ids", messageIds.Combine());
@@ -333,9 +341,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="fields">List of additional fields for users and communities.</param>
         [Method("getChatPreview")]
         public async Task<ChatPreviewResponse> GetChatPreviewAsync(string link, List<string> fields = null) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("link", link);
-            if(!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "link", link }
+            };
+            if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             return await API.CallMethodAsync<ChatPreviewResponse>(this, parameters);
         }
 
@@ -344,7 +353,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="peerId">Destination ID.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
         [Method("getConversationMembers")]
-        public async Task<VKList<ChatMember>> GetConversationMembersAsync(int groupId, int peerId, List<string> fields) {
+        public async Task<VKList<ChatMember>> GetConversationMembersAsync(long groupId, long peerId, List<string> fields) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if(groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -360,7 +369,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="offset">Offset needed to return a specific subset of conversations.</param>
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         [Method("getConversations")]
-        public async Task<ConversationsResponse> GetConversationsAsync(int groupId, List<string> fields, ConversationsFilter filter, bool extended = false, int count = 60, int offset = 0) {
+        public async Task<ConversationsResponse> GetConversationsAsync(long groupId, List<string> fields, ConversationsFilter filter, bool extended = false, int count = 60, int offset = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("filter", filter.ToEnumMemberAttribute());
@@ -377,7 +386,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
         [Method("getConversationsById")]
-        public async Task<VKList<Conversation>> GetConversationsByIdAsync(int groupId, List<int> peerIds, bool extended = false, List<string> fields = null) {
+        public async Task<VKList<Conversation>> GetConversationsByIdAsync(long groupId, List<long> peerIds, bool extended = false, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_ids", peerIds.Combine());
@@ -396,7 +405,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="fields">List of additional fields for users and communities.</param>
         /// <param name="rev">Sort order.</param>
         [Method("getHistory")]
-        public async Task<MessagesHistoryResponse> GetHistoryAsync(int groupId, int peerId, int offset, int count, int startMessageId, bool extended = false, List<string> fields = null, bool rev = false) {
+        public async Task<MessagesHistoryResponse> GetHistoryAsync(long groupId, long peerId, int offset, int count, int startMessageId, bool extended = false, List<string> fields = null, bool rev = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -420,7 +429,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="preserveOrder">Preserve order.</param>
         /// <param name="maxForwardsLevel">Preserve order.</param>
         [Method("getHistoryAttachments")]
-        public async Task<ConversationAttachmentsResponse> GetHistoryAttachmentsAsync(int groupId, int peerId, HistoryAttachmentMediaType mediaType, int startFrom, int count, bool photoSizes, bool preserveOrder = false, int maxForwardsLevel = 45, List<string> fields = null) {
+        public async Task<ConversationAttachmentsResponse> GetHistoryAttachmentsAsync(long groupId, long peerId, HistoryAttachmentMediaType mediaType, int startFrom, int count, bool photoSizes, bool preserveOrder = false, int maxForwardsLevel = 45, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -443,7 +452,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
         [Method("getImportantMessages")]
-        public async Task<VKList<Message>> GetImportantMessagesAsync(int groupId, int offset, int count, int startMessageId, int previewLength = 0, bool extended = false, List<string> fields = null) {
+        public async Task<VKList<Message>> GetImportantMessagesAsync(long groupId, int offset, int count, int startMessageId, int previewLength = 0, bool extended = false, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("offset", offset.ToString());
@@ -460,7 +469,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="peerId">Peer ID.</param>
         /// <param name="reset">true — to generate new link (revoke previous).</param>
         [Method("getInviteLink")]
-        public async Task<ChatLink> GetInviteLinkAsync(int groupId, int peerId, bool reset = false) {
+        public async Task<ChatLink> GetInviteLinkAsync(long groupId, long peerId, bool reset = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -471,9 +480,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Returns a user's current status and date of last activity.</summary>
         /// <param name="userId">User ID.</param>
         [Method("getLastActivity")]
-        public async Task<LastActivity> GetLastActivityAsync(int userId) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("user_id", userId.ToString());
+        public async Task<LastActivity> GetLastActivityAsync(long userId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "user_id", userId.ToString() }
+            };
             return await API.CallMethodAsync<LastActivity>(this, parameters);
         }
 
@@ -488,7 +498,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="msgsLimit">Maximum number of messages to return. (minimum 200)</param>
         /// <param name="maxMsgId">Maximum ID of the message among existing ones in the local copy.</param>
         [Method("getLongPollHistory")]
-        public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(int groupId, int ts, int pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null) {
+        public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(long groupId, int ts, int pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if(groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("lp_version", API.LongPollVersion.ToString());
@@ -508,7 +518,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="needPts">true — to return the pts field, needed for the GetLongPollHistoryAsync method.</param>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         [Method("getLongPollServer")]
-        public async Task<LongPollServerInfo> GetLongPollServerAsync(bool needPts, int groupId) {
+        public async Task<LongPollServerInfo> GetLongPollServerAsync(bool needPts, long groupId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             if (needPts) parameters.Add("need_pts", "1");
@@ -520,8 +530,9 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="limit">Group ID.</param>
         [Method("getRecentGraffities")]
         public async Task<List<Document>> GetRecentGraffitiesAsync(int limit = 20) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("limit", limit.ToString());
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "limit", limit.ToString() }
+            };
             return await API.CallMethodAsync<List<Document>>(this, parameters);
         }
 
@@ -536,9 +547,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Returns templates.</summary>
         /// <param name="groupId">Group ID.</param>
         [Method("getTemplates")]
-        public async Task<VKList<MessageTemplate>> GetTemplatesAsync(int groupId, int extended = 1) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
+        public async Task<VKList<MessageTemplate>> GetTemplatesAsync(long groupId, int extended = 1) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() }
+            };
             if (extended != 0) parameters.Add("extended", "1");
             return await API.CallMethodAsync<VKList<MessageTemplate>>(this, parameters);
         }
@@ -547,10 +559,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID.</param>
         /// <param name="userId">User ID.</param>
         [Method("isMessagesFromGroupAllowed")]
-        public async Task<IsAllowedResponse> IsMessagesFromGroupAllowedAsync(int groupId, int userId) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
-            parameters.Add("user_id", userId.ToString());
+        public async Task<IsAllowedResponse> IsMessagesFromGroupAllowedAsync(long groupId, long userId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() },
+                { "user_id", userId.ToString() }
+            };
             return await API.CallMethodAsync<IsAllowedResponse>(this, parameters);
         }
 
@@ -558,8 +571,9 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="link">Invitation link.</param>
         [Method("joinChatByInviteLink")]
         public async Task<JoinChatResponse> JoinChatByInviteLinkAsync(string link) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("link", link);
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "link", link }
+            };
             return await API.CallMethodAsync<JoinChatResponse>(this, parameters);
         }
 
@@ -568,7 +582,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="peerId">Peer ID.</param>
         /// <param name="answered">true — to mark conversation as answered, false — unmark.</param>
         [Method("markAsAnsweredConversation")]
-        public async Task<bool> MarkAsAnsweredConversationAsync(int groupId, int peerId, bool answered) {
+        public async Task<bool> MarkAsAnsweredConversationAsync(long groupId, long peerId, bool answered) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -593,7 +607,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="cmids">IDs of messages in conversation to mark as important.</param>
         /// <param name="important">true — to add a star (mark as important), false — to remove the star.</param>
         [Method("markAsImportant")]
-        public async Task<List<int>> MarkAsImportantAsync(int peerId, List<int> cmids, bool important) {
+        public async Task<List<int>> MarkAsImportantAsync(long peerId, List<int> cmids, bool important) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "peer_id", peerId.ToString() },
                 { "cmids", cmids.Combine() },
@@ -607,7 +621,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="peerId">Peer ID.</param>
         /// <param name="important">true — to mark conversation as important, false — unmark.</param>
         [Method("markAsImportantConversation")]
-        public async Task<bool> MarkAsImportantConversationAsync(int groupId, int peerId, bool important) {
+        public async Task<bool> MarkAsImportantConversationAsync(long groupId, long peerId, bool important) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -620,7 +634,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="startMessageId">IDs of messages to mark as read.</param>
         /// <param name="peerId">Destination ID.</param>
         [Method("markAsRead")]
-        public async Task<bool> MarkAsReadAsync(int groupId, int peerId, int startMessageId, bool markConversationAsRead = false) {
+        public async Task<bool> MarkAsReadAsync(long groupId, long peerId, int startMessageId, bool markConversationAsRead = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -635,7 +649,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Destination ID.</param>
         [Method("markAsUnreadConversation")]
-        public async Task<bool> MarkAsUnreadConversationAsync(int groupId, int peerId) {
+        public async Task<bool> MarkAsUnreadConversationAsync(long groupId, long peerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -647,7 +661,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="peerId">Destination ID.</param>
         /// <param name="conversationMessageId">ID of message in conv. to pin.</param>
         [Method("pin")]
-        public async Task<Message> PinAsync(int groupId, int peerId, int conversationMessageId) {
+        public async Task<Message> PinAsync(long groupId, long peerId, int conversationMessageId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -659,10 +673,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="chatId">Chat ID.</param>
         /// <param name="memberId">ID of the member to be removed.</param>
         [Method("removeChatUser")]
-        public async Task<bool> RemoveChatUserAsync(int chatId, int memberId) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("chat_id", chatId.ToString());
-            parameters.Add("member_id", memberId.ToString());
+        public async Task<bool> RemoveChatUserAsync(long chatId, long memberId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "chat_id", chatId.ToString() },
+                { "member_id", memberId.ToString() }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
 
@@ -670,7 +685,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="messageId">ID of a previously-deleted message to restore.</param>
         [Method("restore")]
-        public async Task<bool> RestoreAsync(int groupId, int messageId) {
+        public async Task<bool> RestoreAsync(long groupId, int messageId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("message_id", messageId.ToString());
@@ -688,7 +703,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true — to return additional profiles and groups array with users and communities objects.</param>
         /// <param name="fields">List of additional fields for profiles and communities to be returned.</param>
         [Method("search")]
-        public async Task<VKList<Message>> SearchAsync(int groupId, string query, int peerId, DateTime? date = null, int previewLength = 0, int offset = 0, int count = 20, bool extended = false, List<string> fields = null) {
+        public async Task<VKList<Message>> SearchAsync(long groupId, string query, long peerId, DateTime? date = null, int previewLength = 0, int offset = 0, int count = 20, bool extended = false, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("q", query);
@@ -709,7 +724,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true — return additional fields.</param>
         /// <param name="fields">List of additional fields for profiles and communities to be returned.</param>
         [Method("searchConversations")]
-        public async Task<VKList<Conversation>> SearchConversationsAsync(int groupId, string query, int count = 20, bool extended = false, List<string> fields = null) {
+        public async Task<VKList<Conversation>> SearchConversationsAsync(long groupId, string query, int count = 20, bool extended = false, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("q", query);
@@ -735,7 +750,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="dontParseLinks">true — links will not attach snippet.</param>
         /// <param name="disableMentions">true — mention of user will not generate notification for him.</param>
         [Method("send")]
-        public async Task<int> SendAsync(int groupId, int peerId, int randomId, string message, double latitude, double longitude, List<string> attachment, int replyTo, List<int> forwardMessages, List<string> groupForwardMessages, int stickerId, string keyboard = null, string payload = null, bool dontParseLinks = false, bool disableMentions = false, MessageIntent intent = MessageIntent.None) {
+        public async Task<int> SendAsync(long groupId, long peerId, int randomId, string message, double latitude, double longitude, List<string> attachment, int replyTo, List<int> forwardMessages, List<string> groupForwardMessages, int stickerId, string keyboard = null, string payload = null, bool dontParseLinks = false, bool disableMentions = false, MessageIntent intent = MessageIntent.None) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -763,9 +778,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="messageId">Message ID of bot-keyboard owner (if keyboard is inline).</param>
         /// <param name="authorId">Bot-keyboard's author ID (if it is conversation keyboard).</param>
         [Method("sendMessageEvent")]
-        public async Task<string> SendMessageEventAsync(int peerId, string payload, int messageId = 0, int authorId = 0) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("peer_id", peerId.ToString());
+        public async Task<string> SendMessageEventAsync(long peerId, string payload, int messageId = 0, long authorId = 0) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "peer_id", peerId.ToString() }
+            };
             if (messageId > 0) parameters.Add("message_id", messageId.ToString());
             if (authorId != 0) parameters.Add("author_id", authorId.ToString());
             parameters.Add("payload", payload.ToString());
@@ -777,7 +793,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="peerId">Destination ID.</param>
         /// <param name="type">Activity type (Typing — user has started to type, Audiomessage — user has started to record audiomessage).</param>
         [Method("setActivity")]
-        public async Task<bool> SetActivityAsync(int groupId, int peerId, ActivityType type) {
+        public async Task<bool> SetActivityAsync(long groupId, long peerId, ActivityType type) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -801,7 +817,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="memberId">Member ID.</param>
         /// <param name="role">Role (values: admin, member).</param>
         [Method("setMemberRole")]
-        public async Task<bool> SetMemberRoleAsync(int groupId, int peerId, int memberId, string role) {
+        public async Task<bool> SetMemberRoleAsync(long groupId, long peerId, long memberId, string role) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -814,7 +830,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Destination ID.</param>
         [Method("unpin")]
-        public async Task<int> UnpinAsync(int groupId, int peerId) {
+        public async Task<int> UnpinAsync(long groupId, long peerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if(groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());

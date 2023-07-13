@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects {
     public class ConversationAttachment {
@@ -14,7 +9,7 @@ namespace ELOR.VKAPILib.Objects {
         public int MessageId { get; set; }
 
         [JsonProperty("from_id")]
-        public int FromId { get; set; }
+        public long FromId { get; set; }
     }
 
     public class ConversationAttachmentsResponse : VKList<ConversationAttachment> {

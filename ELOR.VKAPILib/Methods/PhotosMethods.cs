@@ -12,7 +12,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="photoId">photo ID.</param>
         /// <param name="accessKey">special access key for private photos.</param>
         [Method("copy")]
-        public async Task<int> CopyAsync(int ownerId, int photoId, string accessKey = null) {
+        public async Task<int> CopyAsync(long ownerId, int photoId, string accessKey = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("owner_id", ownerId.ToString());
             parameters.Add("photo_id", photoId.ToString());
@@ -29,7 +29,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="needCovers">true — to return an additional ThumbSrc and Thumb fields.</param>
         /// <param name="photoSizes">true — to return PhotoSizes (instead ThumbSrc and Thumb).</param>
         [Method("getAlbums")]
-        public async Task<VKList<PhotoAlbum>> GetAlbumsAsync(int ownerId, List<int> albumIds = null, int offset = 0, int count = 0, bool needSystem = false, bool needCovers = false, bool photoSizes = false) {
+        public async Task<VKList<PhotoAlbum>> GetAlbumsAsync(long ownerId, List<int> albumIds = null, int offset = 0, int count = 0, bool needSystem = false, bool needCovers = false, bool photoSizes = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("owner_id", ownerId.ToString());
             if (!albumIds.IsNullOrEmpty()) parameters.Add("album_ids", albumIds.Combine());
@@ -51,7 +51,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="needHidden">true — to show information about photos being hidden from the block above the wall.</param>
         /// <param name="skipHidden">true — not to return photos being hidden from the block above the wall. Works only with ownerId > 0, noServiceAlbums is ignored.</param>
         [Method("getAll")]
-        public async Task<VKList<Photo>> GetAllAsync(int ownerId, bool extended, int offset = 0, int count = 0, bool photoSizes = false, bool noServiceAlbums = false, bool needHidden = false, bool skipHidden = false) {
+        public async Task<VKList<Photo>> GetAllAsync(long ownerId, bool extended, int offset = 0, int count = 0, bool photoSizes = false, bool noServiceAlbums = false, bool needHidden = false, bool skipHidden = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("owner_id", ownerId.ToString());
             if (extended) parameters.Add("extended", "1");
@@ -74,7 +74,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="count">Number of photos to return. </param>
         /// <param name="photoSizes">true — to return PhotoSizes.</param>
         [Method("get")]
-        public async Task<VKList<Photo>> GetAsync(int ownerId, int albumId, List<int> photoIds, bool rev, bool extended = false, int offset = 0, int count = 50, bool photoSizes = false) {
+        public async Task<VKList<Photo>> GetAsync(long ownerId, int albumId, List<int> photoIds, bool rev, bool extended = false, int offset = 0, int count = 50, bool photoSizes = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("owner_id", ownerId.ToString());
             parameters.Add("album_id", albumId.ToString());
@@ -90,7 +90,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Returns the server address for photo upload in a private message for a user.</summary>
         /// <param name="peerId">Peer ID (for community messages).</param>
         [Method("getMessagesUploadServer")]
-        public async Task<PhotoUploadServer> GetMessagesUploadServerAsync(int groupId, int peerId = 0) {
+        public async Task<PhotoUploadServer> GetMessagesUploadServerAsync(long groupId, long peerId = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             if (peerId > 0) parameters.Add("peer_id", peerId.ToString());
@@ -103,7 +103,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="count">Number of photos to return. </param>
         /// <param name="sort">true — sort by date the tag was added in ascending order, false — descending</param>
         [Method("getUserPhotos")]
-        public async Task<VKList<Photo>> GetUserPhotosAsync(int userId, int offset = 0, int count = 0, bool sort = false) {
+        public async Task<VKList<Photo>> GetUserPhotosAsync(long userId, int offset = 0, int count = 0, bool sort = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("user_id", userId.ToString());
             if (offset > 0) parameters.Add("offset", offset.ToString());
@@ -114,7 +114,7 @@ namespace ELOR.VKAPILib.Methods {
 
         /// <summary>Saves a photo after being successfully uploaded.</summary>
         [Method("saveMessagesPhoto")]
-        public async Task<List<PhotoSaveResult>> SaveMessagesPhotoAsync(int groupId, int server, string photo, string hash) {
+        public async Task<List<PhotoSaveResult>> SaveMessagesPhotoAsync(long groupId, int server, string photo, string hash) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("server", server.ToString());

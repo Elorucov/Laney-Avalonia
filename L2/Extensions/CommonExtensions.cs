@@ -126,5 +126,17 @@ namespace ELOR.Laney.Extensions {
             if (!String.IsNullOrEmpty(lastName)) lastName = lastName[0].ToString() + ".";
             return $"{user.FirstName} {lastName}".Trim();
         }
+
+        public static bool IsUser(this long id) {
+            return (id >= 1 && id < 1.9e9) || (id >= 200e9 && id < 100e10);
+        }
+
+        public static bool IsGroup(this long id) {
+            return id > -1e9 && id <= -1;
+        }
+
+        public static bool IsChat(this long id) {
+            return id > 2e9 && id < 2e9 + 1e8;
+        }
     }
 }

@@ -1,14 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ELOR.VKAPILib.Objects
-{
-    public class StickerImage
-    {
+namespace ELOR.VKAPILib.Objects {
+    public class StickerImage {
         [JsonProperty("url")]
         public string Url { get; set; }
 
@@ -41,8 +34,7 @@ namespace ELOR.VKAPILib.Objects
         public string CharacterId { get; set; }
     }
 
-    public class Sticker
-    {
+    public class Sticker {
         [JsonProperty("animation_url")]
         public string AnimationUrl { get; set; }
 

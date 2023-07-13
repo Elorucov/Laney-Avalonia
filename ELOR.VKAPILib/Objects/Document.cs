@@ -1,11 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects
 {
@@ -61,11 +55,5 @@ namespace ELOR.VKAPILib.Objects
 
         [JsonProperty("preview")]
         public DocumentPreview Preview { get; set; }
-
-        //[JsonIgnore]
-        //public Uri PreviewImageUri { get { return Preview.Photo.PreviewImageUri; } }
-
-        //[JsonIgnore]
-        //public Size PreviewImageSize { get { return Preview.Photo.PreviewImageSize; } }
     }
 }

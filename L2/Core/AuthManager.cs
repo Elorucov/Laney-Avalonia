@@ -18,26 +18,26 @@ namespace ELOR.Laney.Core {
         static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&redirect_uri=https://oauth.vk.com/blank.html&scope=995414&response_type=token&revoke=1&v={VKAPI.Version}");
         static Uri finalUri = new Uri("https://oauth.vk.com/blank.html");
 
-        public static async Task<Tuple<int, string>> AuthWithOAuthAsync() {
-            int userId = 0;
+        public static async Task<Tuple<long, string>> AuthWithOAuthAsync() {
+            long userId = 0;
             string accessToken = String.Empty;
 
             OAuthWindow window = new OAuthWindow(authUri, finalUri, Localizer.Instance["sign_in"], 784, 541); // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
             window.LocalDataPath = App.LocalDataPath;
             Uri url = await window.StartAuthenticationAsync();
-            if (url == null) return new Tuple<int, string>(userId, accessToken);
+            if (url == null) return new Tuple<long, string>(userId, accessToken);
 
             var queries = url.Fragment.Substring(1).ParseQuery();
             if (queries.ContainsKey("access_token") && queries.ContainsKey("user_id")) {
-                userId = Int32.Parse(queries["user_id"]);
+                userId = Int64.Parse(queries["user_id"]);
                 accessToken = queries["access_token"];
             }
 
-            return new Tuple<int, string>(userId, accessToken);
+            return new Tuple<long, string>(userId, accessToken);
         }
 
-        public static async Task<Tuple<int, string>> AuthWithTokenAsync(Window parentWindow, string errorText = null) {
-            int userId = 0;
+        public static async Task<Tuple<long, string>> AuthWithTokenAsync(Window parentWindow, string errorText = null) {
+            long userId = 0;
             string accessToken = String.Empty;
 
             string[] buttons = new string[] { "Continue", "Cancel" };
@@ -77,7 +77,7 @@ namespace ELOR.Laney.Core {
                 }
             }
 
-            return new Tuple<int, string>(userId, accessToken);
+            return new Tuple<long, string>(userId, accessToken);
         }
     }
 }

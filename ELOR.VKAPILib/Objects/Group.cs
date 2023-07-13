@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects {
     [DataContract]
@@ -57,7 +52,7 @@ namespace ELOR.VKAPILib.Objects {
 
     public class Group {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -142,7 +137,7 @@ namespace ELOR.VKAPILib.Objects {
     // Event object in messages attachments
     public class Event {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("text")]
         public string Text { get; set; }
@@ -154,6 +149,6 @@ namespace ELOR.VKAPILib.Objects {
         public string Address { get; set; }
 
         [JsonProperty("friends")]
-        public List<int> Friends { get; set; }
+        public List<long> Friends { get; set; }
     }
 }

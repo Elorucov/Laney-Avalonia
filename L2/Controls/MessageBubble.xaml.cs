@@ -35,7 +35,7 @@ namespace ELOR.Laney.Controls {
         #region Internal
 
         bool IsOutgoing => Message.IsOutgoing;
-        bool IsChat => Message.PeerId > 2000000000;
+        bool IsChat => Message.PeerId.IsChat();
 
 #if RELEASE
 #elif BETA

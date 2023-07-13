@@ -18,7 +18,7 @@ namespace ELOR.Laney.ViewModels {
     public sealed class ImViewModel : CommonViewModel {
         private VKSession session;
 
-        private SourceCache<ChatViewModel, int> _chats = new SourceCache<ChatViewModel, int>(c => c.PeerId);
+        private SourceCache<ChatViewModel, long> _chats = new SourceCache<ChatViewModel, long>(c => c.PeerId);
         private ReadOnlyObservableCollection<ChatViewModel> _sortedChats;
         private ChatViewModel _visualSelectedChat;
         private bool _isEmpty = true;
@@ -109,7 +109,7 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private async void LongPoll_ConversationRemoved(object sender, int peerId) {
+        private async void LongPoll_ConversationRemoved(object sender, long peerId) {
             await Dispatcher.UIThread.InvokeAsync(() => {
                 var lookup = _chats.Lookup(peerId);
                 if (lookup.HasValue) {

@@ -1,14 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ELOR.VKAPILib.Objects
-{
+namespace ELOR.VKAPILib.Objects {
     [DataContract]
     public enum PollBackgroundType {
         Unknown,
@@ -126,7 +119,7 @@ namespace ELOR.VKAPILib.Objects
         public bool CanShare { get; set; }
 
         [JsonProperty("author_id")]
-        public int AuthorId { get; set; }
+        public long AuthorId { get; set; }
 
         [JsonProperty("background")]
         public PollBackground Background { get; set; }

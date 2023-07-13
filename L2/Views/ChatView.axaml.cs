@@ -21,7 +21,7 @@ namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
         ChatViewModel Chat { get; set; }
         ScrollViewer MessagesListScrollViewer;         // peer id, first visible message id
-        Dictionary<int, int> ScrollPositions = new Dictionary<int, int>();
+        Dictionary<long, int> ScrollPositions = new Dictionary<long, int>();
         DispatcherTimer markReadTimer;
         bool canSaveScrollPosition = false;
         ListBoxCustomVirtualization msgsVirtualizer;

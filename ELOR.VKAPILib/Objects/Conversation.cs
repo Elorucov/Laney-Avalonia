@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects {
     public class ConversationsResponse : VKList<ConversationItem> {
@@ -64,13 +59,13 @@ namespace ELOR.VKAPILib.Objects {
 
     public class Peer {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("type")]
         public PeerType Type { get; set; }
 
         [JsonProperty("local_id")]
-        public int LocalId { get; set; }
+        public long LocalId { get; set; }
     }
 
     public class PushSettings {
@@ -179,10 +174,10 @@ namespace ELOR.VKAPILib.Objects {
         public ChatPhoto Photo { get; set; }
 
         [JsonProperty("active_ids")]
-        public List<int> ActiveIDs { get; set; }
+        public List<long> ActiveIDs { get; set; }
 
         [JsonProperty("admin_ids")]
-        public List<int> AdminIDs { get; set; }
+        public List<long> AdminIDs { get; set; }
 
         [JsonProperty("is_disappearing")]
         public bool IsDisappearing { get; set; }
@@ -254,7 +249,7 @@ namespace ELOR.VKAPILib.Objects {
 
     public class ChatMember {
         [JsonProperty("member_id")]
-        public int MemberId { get; set; }
+        public long MemberId { get; set; }
 
         [JsonProperty("join_date")]
         public int JoinDateUnix { get; set; }
@@ -263,7 +258,7 @@ namespace ELOR.VKAPILib.Objects {
         public DateTime JoinDate { get { return DateTimeOffset.FromUnixTimeSeconds(JoinDateUnix).DateTime.ToLocalTime(); } }
 
         [JsonProperty("invited_by")]
-        public int InvitedBy { get; set; }
+        public long InvitedBy { get; set; }
 
         [JsonProperty("can_kick")]
         public bool CanKick { get; set; }
@@ -274,7 +269,7 @@ namespace ELOR.VKAPILib.Objects {
 
     public class Chat {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("type")]
         public string Type { get; set; }
@@ -283,10 +278,10 @@ namespace ELOR.VKAPILib.Objects {
         public string Title { get; set; }
 
         [JsonProperty("admin_id")]
-        public int AdminId { get; set; }
+        public long AdminId { get; set; }
 
         [JsonProperty("users")]
-        public List<int> Users { get; set; }
+        public List<long> Users { get; set; }
 
         [JsonProperty("members_count")]
         public int MembersCount { get; set; }

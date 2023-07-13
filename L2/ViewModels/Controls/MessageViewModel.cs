@@ -27,14 +27,14 @@ namespace ELOR.Laney.ViewModels.Controls {
         private VKSession session;
 
         private int _id;
-        private int _peerId;
+        private long _peerId;
         private int _randomId;
         private int _conversationMessageId;
-        private int _senderId;
+        private long _senderId;
         private MessageVMSenderType _senderType;
         private string _senderName;
         private Uri _senderAvatar;
-        private int _adminAuthorId;
+        private long _adminAuthorId;
         private bool _isImportant;
         private DateTime _sentTime;
         private DateTime? _editTime;
@@ -60,14 +60,14 @@ namespace ELOR.Laney.ViewModels.Controls {
         private Uri _previewImageUri;
 
         public int Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
-        public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
+        public long PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
         public int RandomId { get { return _randomId; } private set { _randomId = value; OnPropertyChanged(); } }
         public int ConversationMessageId { get { return _conversationMessageId; } private set { _conversationMessageId = value; OnPropertyChanged(); } }
-        public int SenderId { get { return _senderId; } private set { _senderId = value; OnPropertyChanged(); } }
+        public long SenderId { get { return _senderId; } private set { _senderId = value; OnPropertyChanged(); } }
         public MessageVMSenderType SenderType { get { return _senderType; } private set { _senderType = value; OnPropertyChanged(); } }
         public string SenderName { get { return _senderName; } private set { _senderName = value; OnPropertyChanged(); } }
         public Uri SenderAvatar { get { return _senderAvatar; } private set { _senderAvatar = value; OnPropertyChanged(); } }
-        public int AdminAuthorId { get { return _adminAuthorId; } private set { _adminAuthorId = value; OnPropertyChanged(); } }
+        public long AdminAuthorId { get { return _adminAuthorId; } private set { _adminAuthorId = value; OnPropertyChanged(); } }
         public bool IsImportant { get { return _isImportant; } private set { _isImportant = value; OnPropertyChanged(); } }
         public DateTime SentTime { get { return _sentTime; } private set { _sentTime = value; OnPropertyChanged(); } }
         public DateTime? EditTime { get { return _editTime; } private set { _editTime = value; OnPropertyChanged(); } }
@@ -156,21 +156,16 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         private void SetSenderNameAndAvatar() {
-            if (SenderId > 0) {
+            if (SenderId.IsUser()) {
                 SenderType = MessageVMSenderType.User;
                 User u = CacheManager.GetUser(SenderId);
                 SenderName = u == null ? $"id{SenderId}" : u.FullName;
                 if (u != null) SenderAvatar = u.Photo;
-            } else if (SenderId < 0) {
-                if (SenderId < -2000000000) {
-                    SenderName = "E-Mail";
-                    SenderAvatar = null;
-                } else {
-                    SenderType = MessageVMSenderType.Group;
-                    Group g = CacheManager.GetGroup(SenderId);
-                    SenderName = g == null ? $"club{SenderId}" : g.Name;
-                    if (g != null) SenderAvatar = g.Photo;
-                }
+            } else if (SenderId.IsGroup()) {
+                SenderType = MessageVMSenderType.Group;
+                Group g = CacheManager.GetGroup(SenderId);
+                SenderName = g == null ? $"club{SenderId}" : g.Name;
+                if (g != null) SenderAvatar = g.Photo;
             }
         }
 
@@ -257,7 +252,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         public void UpdateSenderInfoView(bool? isPrevFromSameSender, bool? isNextFromSameSender) {
-            if (PeerId < 2000000000 || SenderId == VKSession.Main.Id) return;
+            if (!PeerId.IsChat() || SenderId == VKSession.Main.Id) return;
             if (isPrevFromSameSender.HasValue) IsSenderNameVisible = !isPrevFromSameSender.Value;
             if (isNextFromSameSender.HasValue) IsSenderAvatarVisible = !isNextFromSameSender.Value;
         }
@@ -278,7 +273,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             });
         }
 
-        private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, int peerId) {
+        private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, long peerId) {
             if (messageId != Id) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (flags.HasFlag(8)) { // Marked as important
@@ -287,7 +282,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             });
         }
 
-        private async void LongPoll_MessageFlagRemove(LongPoll longPoll, int messageId, int flags, int peerId) {
+        private async void LongPoll_MessageFlagRemove(LongPoll longPoll, int messageId, int flags, long peerId) {
             if (messageId != Id) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (flags.HasFlag(8)) { // Unmarked as important
@@ -296,7 +291,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             });
         }
 
-        private async void LongPoll_MessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+        private async void LongPoll_MessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (Id <= messageId) State = MessageVMState.Read;

@@ -1,14 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ELOR.VKAPILib.Objects
-{
-    public class LongPollServerInfo
-    {
+namespace ELOR.VKAPILib.Objects {
+    public class LongPollServerInfo {
         [JsonProperty("key")]
         public string Key { get; set; }
 
@@ -22,8 +15,7 @@ namespace ELOR.VKAPILib.Objects
         public int PTS { get; set; }
     }
 
-    public class LongPollFail
-    {
+    public class LongPollFail {
         [JsonProperty("failed")]
         public int FailCode { get; set; }
 
@@ -31,8 +23,7 @@ namespace ELOR.VKAPILib.Objects
         public string TS { get; set; }
     }
 
-    public class LongPollResponse
-    {
+    public class LongPollResponse {
         [JsonProperty("ts")]
         public string TS { get; set; }
 

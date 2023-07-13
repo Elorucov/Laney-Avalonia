@@ -12,10 +12,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="docId">Document ID.</param>
         /// <param name="accessKey">Access key. This parameter is required if access_key was returned with the document's data.</param>
         [Method("add")]
-        public async Task<int> AddAsync(int ownerId, int docId, string accessKey = null) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("owner_id", ownerId.ToString());
-            parameters.Add("doc_id", docId.ToString());
+        public async Task<int> AddAsync(long ownerId, int docId, string accessKey = null) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "owner_id", ownerId.ToString() },
+                { "doc_id", docId.ToString() }
+            };
             if (!String.IsNullOrEmpty(accessKey)) parameters.Add("access_key", accessKey);
             return await API.CallMethodAsync<int>(this, parameters);
         }
@@ -27,10 +28,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="count">Number of photos to return. </param>
         /// <param name="returnTags">true — to return tags.</param>
         [Method("get")]
-        public async Task<VKList<Document>> GetAsync(int ownerId, int type = 0, int offset = 0, int count = 50, bool returnTags = false) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("owner_id", ownerId.ToString());
-            parameters.Add("type", type.ToString());
+        public async Task<VKList<Document>> GetAsync(long ownerId, int type = 0, int offset = 0, int count = 50, bool returnTags = false) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "owner_id", ownerId.ToString() },
+                { "type", type.ToString() }
+            };
             if (offset > 0) parameters.Add("offset", offset.ToString());
             if (count > 0) parameters.Add("count", count.ToString());
             if (returnTags) parameters.Add("return_tags", "1");
@@ -40,7 +42,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Returns the server address for document upload.</summary>
         /// <param name="peerId">Destination ID.</param>
         [Method("getMessagesUploadServer")]
-        public async Task<VkUploadServer> GetMessagesUploadServerAsync(int groupId, int peerId, bool isAudioMessage = false) {
+        public async Task<VkUploadServer> GetMessagesUploadServerAsync(long groupId, long peerId, bool isAudioMessage = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             if (peerId > 0) parameters.Add("peer_id", peerId.ToString());
@@ -50,7 +52,7 @@ namespace ELOR.VKAPILib.Methods {
 
         /// <summary>Saves a document after uploading it to a server.</summary>
         [Method("save")]
-        public async Task<DocumentSaveResult> SaveAsync(int groupId, string file, string title = null, string tags = null) {
+        public async Task<DocumentSaveResult> SaveAsync(long groupId, string file, string title = null, string tags = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("file", file);

@@ -34,7 +34,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="fields">Profile fields to return.</param>
         /// <param name="nameCase">Case for declension of user name and surname.</param>
         [Method("get")]
-        public async Task<List<User>> GetAsync(List<int> ids, List<string> fields = null, NameCase nameCase = NameCase.Nom) {
+        public async Task<List<User>> GetAsync(List<long> ids, List<string> fields = null, NameCase nameCase = NameCase.Nom) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (!ids.IsNullOrEmpty()) parameters.Add("user_ids", ids.Combine());
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
@@ -47,7 +47,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="fields">Profile fields to return.</param>
         /// <param name="nameCase">Case for declension of user name and surname.</param>
         [Method("get")]
-        public async Task<User> GetAsync(int id = 0, List<string> fields = null, NameCase nameCase = NameCase.Nom) {
+        public async Task<User> GetAsync(long id = 0, List<string> fields = null, NameCase nameCase = NameCase.Nom) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (id != 0) parameters.Add("user_ids", id.ToString());
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());

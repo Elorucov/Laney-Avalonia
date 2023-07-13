@@ -3,7 +3,7 @@
 namespace ELOR.VKAPILib.Objects {
     public class MessageDeleteResponse {
         [JsonProperty("peer_id")]
-        public int PeerId { get; set; }
+        public long PeerId { get; set; }
 
         [JsonProperty("conversation_message_id")]
         public int ConversationMessageId { get; set; }

@@ -8,9 +8,10 @@ namespace ELOR.VKAPILib.Methods {
         internal AccountMethods(VKAPI api) : base(api) { }
 
         [Method("ban")]
-        public async Task<bool> BanAsync(int ownerId) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("owner_id", ownerId.ToString());
+        public async Task<bool> BanAsync(long ownerId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "owner_id", ownerId.ToString() }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
 
@@ -29,26 +30,29 @@ namespace ELOR.VKAPILib.Methods {
 
         [Method("setPrivacy")]
         public async Task<PrivacySettingValue> SetPrivacyAsync(string key, string value) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("key", key);
-            parameters.Add("value", value);
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "key", key },
+                { "value", value }
+            };
             return await API.CallMethodAsync<PrivacySettingValue>(this, parameters);
         }
 
 
         [Method("setSilenceMode")]
-        public async Task<bool> SetSilenceModeAsync(int time, int peerId, bool sound) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("time", time.ToString());
-            parameters.Add("peer_id", peerId.ToString());
-            parameters.Add("sound", sound ? "1" : "0");
+        public async Task<bool> SetSilenceModeAsync(int time, long peerId, bool sound) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "time", time.ToString() },
+                { "peer_id", peerId.ToString() },
+                { "sound", sound ? "1" : "0" }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
 
         [Method("unban")]
-        public async Task<bool> UnbanAsync(int ownerId) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("owner_id", ownerId.ToString());
+        public async Task<bool> UnbanAsync(long ownerId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "owner_id", ownerId.ToString() }
+            };
             return await API.CallMethodAsync<bool>(this, parameters);
         }
     }

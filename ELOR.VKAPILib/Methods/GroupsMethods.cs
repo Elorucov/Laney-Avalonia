@@ -15,10 +15,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="offset">Offset needed to return a specific subset of communities.</param>
         /// <param name="count">Number of communities to return.</param>
         [Method("get")]
-        public async Task<VKList<Group>> GetAsync(int userId, List<string> fields = null, List<string> filter = null, int offset = 0, int count = 1000) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("user_id", userId.ToString());
-            parameters.Add("extended", "1");
+        public async Task<VKList<Group>> GetAsync(long userId, List<string> fields = null, List<string> filter = null, int offset = 0, int count = 1000) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "user_id", userId.ToString() },
+                { "extended", "1" }
+            };
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             if (!filter.IsNullOrEmpty()) parameters.Add("filter", filter.Combine());
             parameters.Add("offset", offset.ToString());
@@ -32,11 +33,12 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="count">Number of communities to return.</param>
         /// <param name="fields">Group fields to return.</param>
         [Method("getBanned")]
-        public async Task<VKList<BannedMembers>> GetBannedAsync(int groupId, int offset = 0, int count = 20, List<string> fields = null) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
-            parameters.Add("offset", offset.ToString());
-            parameters.Add("count", count.ToString());
+        public async Task<VKList<BannedMembers>> GetBannedAsync(long groupId, int offset = 0, int count = 20, List<string> fields = null) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() },
+                { "offset", offset.ToString() },
+                { "count", count.ToString() }
+            };
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             return await API.CallMethodAsync<VKList<BannedMembers>>(this, parameters);
         }
@@ -45,9 +47,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupIds">Group IDs.</param>
         /// <param name="fields">Group fields to return.</param>
         [Method("getById")]
-        public async Task<GroupsResponse> GetByIdAsync(List<int> groupIds, List<string> fields = null) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_ids", groupIds.Combine());
+        public async Task<GroupsResponse> GetByIdAsync(List<long> groupIds, List<string> fields = null) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_ids", groupIds.Combine() }
+            };
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             return await API.CallMethodAsync<GroupsResponse>(this, parameters);
         }
@@ -56,9 +59,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID.</param>
         /// <param name="fields">Group fields to return.</param>
         [Method("getById")]
-        public async Task<GroupsResponse> GetByIdAsync(int groupId, List<string> fields = null) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("group_id", groupId.ToString());
+        public async Task<GroupsResponse> GetByIdAsync(long groupId, List<string> fields = null) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_id", groupId.ToString() }
+            };
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             return (await API.CallMethodAsync<GroupsResponse>(this, parameters));
         }

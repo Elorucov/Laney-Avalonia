@@ -138,7 +138,7 @@ namespace ELOR.Laney.Controls.Attachments {
             // Images
             if (previews.Count == 1) {
                 var preview = previews[0].GetSizeAndUriForThumbnail();
-                var size = preview.Size;
+                var size = new Size(preview.Width, preview.Height);
                 var uri = preview.Uri;
 
                 Button imgBtn = new Button {
@@ -157,7 +157,8 @@ namespace ELOR.Laney.Controls.Attachments {
             } else if (previews.Count > 1) {
                 List<Size> sizes = new List<Size>();
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
-                    sizes.Add(preview.GetSizeAndUriForThumbnail().Size.ToAvaloniaSize());
+                    var prevsize = preview.GetSizeAndUriForThumbnail();
+                    sizes.Add(new Size(prevsize.Width, prevsize.Height));
                 }
 
                 var layout = PhotoLayout.Create(new Size(imageFixedWidth, imageFixedWidth), sizes, 4);
@@ -541,7 +542,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             return new BasicAttachment {
                 Icon = call.Video ? VKIconNames.Icon24Videocam : VKIconNames.Icon24Phone,
-                Title = call.ReceiverId > 2000000000 ? Localizer.Instance["group_call_in_progress"] : title,
+                Title = call.ReceiverId.IsChat() ? Localizer.Instance["group_call_in_progress"] : title,
                 Subtitle = subtitle,
                 Name = "Call"
             };

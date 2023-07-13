@@ -115,7 +115,7 @@
 
   <!-- Дефолтный шаблон с аватаркой, именем и, опционально, subtitle и action.
        Используется для элементов в таких списках, как поиск чатов, список участников и т. п.
-       Tuple<int, Uri, string, string, Command> -->
+       Tuple<long, Uri, string, string, Command> -->
   <DataTemplate x:Key="DefaultEntityItemTemplate">
     <Grid Margin="12,6" ColumnDefinitions="Auto * Auto" MinHeight="40" Background="Transparent">
       <vkui:Avatar Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"

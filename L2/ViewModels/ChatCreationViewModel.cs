@@ -116,7 +116,7 @@ namespace ELOR.Laney.ViewModels {
 
         private async void CreateChat() {
             if (String.IsNullOrEmpty(ChatName) && SelectedFriends.Count == 0) return;
-            List<int> userIds = SelectedFriends.Select(u => u.Id).ToList();
+            List<long> userIds = SelectedFriends.Select(u => u.Id).ToList();
             if (userIds.Count == 0) userIds.Add(session.UserId);
 
             VKUIWaitDialog<CreateChatResponse> wd = new VKUIWaitDialog<CreateChatResponse>();

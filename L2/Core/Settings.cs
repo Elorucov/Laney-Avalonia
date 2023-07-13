@@ -39,7 +39,7 @@ namespace ELOR.Laney.Core {
                         _settings.Add(setting.Key, setting.Value.Value<string>());
                         break;
                     case JTokenType.Integer:
-                        _settings.Add(setting.Key, setting.Value.Value<int>());
+                        _settings.Add(setting.Key, setting.Value.Value<long>());
                         break;
                     case JTokenType.Float:
                         _settings.Add(setting.Key, setting.Value.Value<double>());
@@ -63,7 +63,7 @@ namespace ELOR.Laney.Core {
                     _settings.Add(key, jArray.ToObject<List<string>>());
                     break;
                 case JTokenType.Integer:
-                    _settings.Add(key, jArray.ToObject<List<int>>());
+                    _settings.Add(key, jArray.ToObject<List<long>>());
                     break;
                 case JTokenType.Float:
                     _settings.Add(key, jArray.ToObject<List<double>>());

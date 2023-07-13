@@ -46,7 +46,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         public Exception UploadException { get { return _uploadException; } private set { _uploadException = value; OnPropertyChanged(); } }
         public ObservableCollection<MessageViewModel> ForwardedMessages { get { return _forwardedMessages; } private set { _forwardedMessages = value; OnPropertyChanged(); } }
         public Tuple<double, double> Place { get { return _place; } private set { _place = value; OnPropertyChanged(); } }
-        public int ForwardedMessagesFromGroupId { get; private set; }
+        public long ForwardedMessagesFromGroupId { get; private set; }
 
 
         OutboundAttachmentUploadFileType uploadFileType = OutboundAttachmentUploadFileType.Doc;
@@ -84,7 +84,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             PrepareToUpload(type);
         }
 
-        public OutboundAttachmentViewModel(List<MessageViewModel> forwardedMessages, int groupId = 0) {
+        public OutboundAttachmentViewModel(List<MessageViewModel> forwardedMessages, long groupId = 0) {
             Log.Information($"Init outbound attachment for forwarded messages. Count: {forwardedMessages.Count}; group: {groupId}");
             ForwardedMessagesFromGroupId = groupId;
             Type = OutboundAttachmentType.ForwardedMessages;

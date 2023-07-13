@@ -26,7 +26,7 @@ namespace ELOR.Laney.ViewModels {
         private VKSession session;
 
         private PeerType _peerType;
-        private int _peerId;
+        private long _peerId;
         private string _title;
         private string _subtitle;
         private string _activityStatus;
@@ -57,14 +57,14 @@ namespace ELOR.Laney.ViewModels {
         private RelayCommand _goToLastMessageCommand;
 
         public PeerType PeerType { get { return _peerType; } private set { _peerType = value; OnPropertyChanged(); } }
-        public int PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
+        public long PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
         public string Title { get { return _title; } private set { _title = value; OnPropertyChanged(); OnPropertyChanged(nameof(Initials)); } }
         public string Subtitle { get { return _subtitle; } private set { _subtitle = value; OnPropertyChanged(); } }
         public string ActivityStatus { get { return _activityStatus; } set { _activityStatus = value; OnPropertyChanged(); } }
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
         public bool IsVerified { get { return _isVerified; } private set { _isVerified = value; OnPropertyChanged(); } }
         public UserOnlineInfo Online { get { return _online; } set { _online = value; OnPropertyChanged(); } }
-        public string Initials { get { return _title.GetInitials(PeerId < 0 || PeerId > 1000000000); } }
+        public string Initials { get { return _title.GetInitials(PeerId.IsChat() || PeerId.IsGroup()); } }
         public SortId SortId { get { return _sortId; } set { _sortId = value; OnPropertyChanged(); OnPropertyChanged(nameof(SortIndex)); } }
         public ulong SortIndex { get { return GetSortIndex(); } }
         public int UnreadMessagesCount { get { return _unreadMessagesCount; } private set { _unreadMessagesCount = value; OnPropertyChanged(); } }
@@ -108,7 +108,7 @@ namespace ELOR.Laney.ViewModels {
 
         Elapser<LongPollActivityInfo> ActivityStatusUsers = new Elapser<LongPollActivityInfo>();
 
-        public ChatViewModel(VKSession session, int peerId, Message lastMessage = null, bool needSetup = false) {
+        public ChatViewModel(VKSession session, long peerId, Message lastMessage = null, bool needSetup = false) {
             this.session = session;
             Composer = new ComposerViewModel(session, this);
             SetUpEvents();
@@ -150,7 +150,7 @@ namespace ELOR.Laney.ViewModels {
 
         private async void GetInfoFromAPIAndSetup() {
             try {
-                var response = await session.API.Messages.GetConversationsByIdAsync(session.GroupId, new List<int> { PeerId }, true, VKAPIHelper.Fields);
+                var response = await session.API.Messages.GetConversationsByIdAsync(session.GroupId, new List<long> { PeerId }, true, VKAPIHelper.Fields);
                 CacheManager.Add(response.Profiles);
                 CacheManager.Add(response.Groups);
                 Setup(response.Items.FirstOrDefault());
@@ -185,7 +185,7 @@ namespace ELOR.Laney.ViewModels {
             }
             if (c.CurrentKeyboard != null && c.CurrentKeyboard.Buttons.Count > 0) Composer.BotKeyboard = c.CurrentKeyboard;
 
-            if (PeerId > 0 && PeerId < 1000000000) { // User
+            if (PeerId.IsUser()) { // User
                 PeerType = PeerType.User;
                 PeerUser = CacheManager.GetUser(PeerId);
                 if (PeerId == session.Id) {
@@ -197,14 +197,14 @@ namespace ELOR.Laney.ViewModels {
                 }
                 IsVerified = PeerUser.Verified;
                 Online = PeerUser.OnlineInfo;
-            } else if (PeerId < 0 && PeerId > -1000000000) { // Group
+            } else if (PeerId.IsGroup()) { // Group
                 PeerType = PeerType.Group;
                 PeerGroup = CacheManager.GetGroup(PeerId);
                 Title = PeerGroup.Name;
                 Avatar = new Uri(PeerGroup.Photo200);
                 IsVerified = PeerGroup.Verified;
                 Subtitle = PeerGroup.Activity?.ToLowerInvariant();
-            } else if (PeerId > 2000000000) { // Chat
+            } else if (PeerId.IsChat()) { // Chat
                 PeerType = PeerType.Chat;
                 ChatSettings = c.ChatSettings;
                 Title = ChatSettings.Title;
@@ -507,7 +507,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         private void FixState(MessageViewModel msg) {
-            int senderId = session.Id;
+            long senderId = session.Id;
             bool isOutgoing = msg.SenderId == senderId;
             if (isOutgoing) {
                 msg.State = msg.Id > OutRead ? MessageVMState.Unread : MessageVMState.Read;
@@ -520,7 +520,7 @@ namespace ELOR.Laney.ViewModels {
 
         #region LongPoll events
 
-        private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, int peerId) {
+        private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, long peerId) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (flags.HasFlag(128)) { // Удаление сообщения
@@ -586,7 +586,7 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private void ParseActionMessage(int fromId, VKAPILib.Objects.Action action, List<Attachment> attachments) {
+        private void ParseActionMessage(long fromId, VKAPILib.Objects.Action action, List<Attachment> attachments) {
             switch (action.Type) {
                 case "chat_title_update":
                     Title = action.Text;
@@ -621,7 +621,7 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        private async void LongPoll_MentionReceived(LongPoll longPoll, int peerId, int messageId, bool isSelfDestruct) {
+        private async void LongPoll_MentionReceived(LongPoll longPoll, long peerId, int messageId, bool isSelfDestruct) {
             if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (!isSelfDestruct) {
@@ -634,7 +634,7 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private async void LongPoll_IncomingMessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+        private async void LongPoll_IncomingMessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
             if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 InRead = messageId;
@@ -642,7 +642,7 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private async void LongPoll_OutgoingMessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+        private async void LongPoll_OutgoingMessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
             if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 OutRead = messageId;
@@ -650,7 +650,8 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private void LongPoll_MessagesRead(LongPoll longPoll, int peerId, int messageId, int count) {
+        private void LongPoll_MessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
+            if (PeerId != peerId) return;
             UnreadMessagesCount = count;
 
             if (Mentions != null && Mentions.Count > 0) {
@@ -662,7 +663,7 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        private async void LongPoll_ConversationFlagReset(LongPoll longPoll, int peerId, int flags) {
+        private async void LongPoll_ConversationFlagReset(LongPoll longPoll, long peerId, int flags) {
             if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 bool mention = flags.HasFlag(1024); // Упоминаний больше нет
@@ -674,7 +675,7 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private async void LongPoll_ConversationFlagSet(LongPoll longPoll, int peerId, int flags) {
+        private async void LongPoll_ConversationFlagSet(LongPoll longPoll, long peerId, int flags) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 bool mention = flags.HasFlag(1024); // Наличие упоминания
@@ -689,7 +690,7 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private async void LongPoll_ConversationRemoved(object sender, int peerId) {
+        private async void LongPoll_ConversationRemoved(object sender, long peerId) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 DisplayedMessages?.Clear();
@@ -698,14 +699,14 @@ namespace ELOR.Laney.ViewModels {
         }
 
         // Если что, flags и есть major/minor_id.
-        private async void LongPoll_MajorIdChanged(LongPoll longPoll, int peerId, int flags) {
+        private async void LongPoll_MajorIdChanged(LongPoll longPoll, long peerId, int flags) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 UpdateSortId(flags, SortId.MinorId);
             });
         }
 
-        private async void LongPoll_MinorIdChanged(LongPoll longPoll, int peerId, int flags) {
+        private async void LongPoll_MinorIdChanged(LongPoll longPoll, long peerId, int flags) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 UpdateSortId(SortId.MajorId, flags);
@@ -720,21 +721,21 @@ namespace ELOR.Laney.ViewModels {
             };
         }
 
-        private async void LongPoll_ConversationDataChanged(LongPoll longPoll, int type, int peerId, int extra) {
+        private async void LongPoll_ConversationDataChanged(LongPoll longPoll, int type, long peerId, long extra) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 // TODO: 4 и 6
                 switch (type) {
                     case 3: // Назначен новый администратор
-                        if (ChatSettings.AdminIDs == null) ChatSettings.AdminIDs = new List<int>();
+                        if (ChatSettings.AdminIDs == null) ChatSettings.AdminIDs = new List<long>();
                         ChatSettings.AdminIDs?.Add(extra);
                         break;
                     case 7: // Выход из беседы
                     case 8: // Исключение из беседы
-                        if (extra > 0) {
+                        if (extra.IsUser()) {
                             User user = MembersUsers.Where(u => u.Id == extra).FirstOrDefault();
                             if (user != null) MembersUsers.Remove(user);
-                        } else if (extra < 0) {
+                        } else if (extra.IsGroup()) {
                             Group group = MembersGroups.Where(g => g.Id == -extra).FirstOrDefault();
                             if (group != null) MembersGroups.Remove(group);
                         }
@@ -752,7 +753,7 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private async void LongPoll_ActivityStatusChanged(LongPoll longPoll, int peerId, List<LongPollActivityInfo> infos) {
+        private async void LongPoll_ActivityStatusChanged(LongPoll longPoll, long peerId, List<LongPollActivityInfo> infos) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 double timeout = 7000;
@@ -811,7 +812,7 @@ namespace ELOR.Laney.ViewModels {
                             status += $"{act.Count} {actstr}";
                         } else {
                             if (status.Length != 0) status += ", ";
-                            List<int> ids = act.Select(s => s.MemberId).ToList();
+                            List<long> ids = act.Select(s => s.MemberId).ToList();
                             status += $"{GetNamesForActivityStatus(ids, act.Count, act.Count == 1)} {actstr}";
                         }
                     }
@@ -837,16 +838,16 @@ namespace ELOR.Laney.ViewModels {
             return String.Empty;
         }
 
-        private string GetNamesForActivityStatus(IReadOnlyList<int> ids, int count, bool showFullLastName) {
+        private string GetNamesForActivityStatus(IReadOnlyList<long> ids, int count, bool showFullLastName) {
             string r = String.Empty;
-            foreach (int id in ids) {
-                if (id > 0) {
+            foreach (long id in ids) {
+                if (id.IsUser()) {
                     User u = CacheManager.GetUser(id);
                     if (u != null) {
                         string lastName = showFullLastName ? u.LastName : u.LastName[0] + ".";
                         r = $"{u.FirstName} {lastName}";
                     }
-                } else if (id < 0) {
+                } else if (id.IsGroup()) {
                     var g = CacheManager.GetGroup(id);
                     if (g != null) {
                         r = $"\"{g.Name}\"";

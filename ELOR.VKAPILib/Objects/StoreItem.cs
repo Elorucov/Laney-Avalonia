@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 
-namespace ELOR.VKAPILib.Objects
-{
-    public class StoreProduct
-    {
+namespace ELOR.VKAPILib.Objects {
+    public class StoreProduct {
         [JsonProperty("id")]
         public int Id { get; set; }
 

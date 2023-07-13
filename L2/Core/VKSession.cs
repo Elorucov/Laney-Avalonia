@@ -35,9 +35,9 @@ namespace ELOR.Laney.Core {
         private WindowNotificationManager _notificationManager;
         private static ToastNotificationsManager _systemNotificationManager;
 
-        public int Id { get { return GroupId > 0 ? -GroupId : UserId; } }
-        public int UserId { get; private set; }
-        public int GroupId { get; private set; }
+        public long Id { get { return GroupId > 0 ? -GroupId : UserId; } }
+        public long UserId { get; private set; }
+        public long GroupId { get; private set; }
         public string Name { get { return _name; } private set { _name = value; OnPropertyChanged(); } }
         public Uri? Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
         public ImViewModel ImViewModel { get { return _imViewModel; } private set { _imViewModel = value; OnPropertyChanged(); } }
@@ -49,7 +49,7 @@ namespace ELOR.Laney.Core {
         public MainWindow Window { get; private set; }
         public Window ModalWindow { get => GetLastOpenedModalWindow(Window); }
 
-        public event EventHandler<int> CurrentOpenedChatChanged;
+        public event EventHandler<long> CurrentOpenedChatChanged;
 
         #region Binded from UI and tray menu
 
@@ -328,7 +328,7 @@ namespace ELOR.Laney.Core {
             TryOpenSessionWindow(sessionId);
         }
 
-        private static void TryOpenSessionWindow(int sessionId) {
+        private static void TryOpenSessionWindow(long sessionId) {
             VKSession session = _sessions.Where(s => s.Id == sessionId).FirstOrDefault();
 
             if (session.Window == null) {
@@ -378,7 +378,7 @@ namespace ELOR.Laney.Core {
 
         byte gcCollectTriggerCounter = 0;
 
-        public void GetToChat(int peerId, int messageId = -1) {
+        public void GetToChat(long peerId, int messageId = -1) {
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
             if (chat == null) {
                 chat = new ChatViewModel(this, peerId);
@@ -402,7 +402,7 @@ namespace ELOR.Laney.Core {
             SharingViewModel group = IsGroup ? new SharingViewModel(this, messages, 0) : null;
             SharingView dlg = new SharingView(user, group);
             // session, peer_id, group_id (if message from group to user session)
-            Tuple<VKSession, int, int>  result = await dlg.ShowDialog<Tuple<VKSession, int, int>>(ModalWindow);
+            Tuple<VKSession, long, long>  result = await dlg.ShowDialog<Tuple<VKSession, long, long>>(ModalWindow);
 
             if (result != null) {
                 result.Item1.ShowAndActivate();
@@ -423,7 +423,7 @@ namespace ELOR.Laney.Core {
         public static IReadOnlyList<VKSession> Sessions { get => _sessions.AsReadOnly(); }
         public static VKSession Main { get => _sessions.FirstOrDefault(); }
 
-        public static void StartUserSession(int userId, string accessToken) {
+        public static void StartUserSession(long userId, string accessToken) {
             VKSession session = new VKSession {
                 UserId = userId,
                 Name = "...",

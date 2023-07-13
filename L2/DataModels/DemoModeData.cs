@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ELOR.Laney.DataModels {
     public class DemoModeSession {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public long Id { get; private set; }
 
         [JsonProperty("conversations")]
         public List<ConversationItem> Conversations { get; private set; }
@@ -17,7 +17,7 @@ namespace ELOR.Laney.DataModels {
         public Dictionary<int, int> Times { get; private set; }
 
         [JsonProperty("activity_statuses")]
-        public Dictionary<int, List<LongPollActivityInfo>> ActivityStatuses { get; private set; }
+        public Dictionary<long, List<LongPollActivityInfo>> ActivityStatuses { get; private set; }
     }
 
     public class DemoModeData {

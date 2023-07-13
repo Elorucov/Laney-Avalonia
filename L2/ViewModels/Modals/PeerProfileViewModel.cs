@@ -19,12 +19,12 @@ using VKUI.Popups;
 namespace ELOR.Laney.ViewModels.Modals {
     public class PeerProfileViewModel : CommonViewModel {
 
-        private int _id;
+        private long _id;
         private string _header;
         private string _subhead;
         private Uri _avatar;
         private ObservableCollection<Tuple<string, string>> _information = new ObservableCollection<Tuple<string, string>>();
-        private ObservableCollection<Tuple<int, Uri, string, string, Command>> _displayedMembers;
+        private ObservableCollection<Tuple<long, Uri, string, string, Command>> _displayedMembers;
         private string _memberSearchQuery;
         
         private Command _firstCommand;
@@ -32,12 +32,12 @@ namespace ELOR.Laney.ViewModels.Modals {
         private Command _thirdCommand;
         private Command _moreCommand;
 
-        public int Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
+        public long Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
         public string Header { get { return _header; } private set { _header = value; OnPropertyChanged(); } }
         public string Subhead { get { return _subhead; } private set { _subhead = value; OnPropertyChanged(); } }
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
         public ObservableCollection<Tuple<string, string>> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
-        public ObservableCollection<Tuple<int, Uri, string, string, Command>> DisplayedMembers { get { return _displayedMembers; } private set { _displayedMembers = value; OnPropertyChanged(); } }
+        public ObservableCollection<Tuple<long, Uri, string, string, Command>> DisplayedMembers { get { return _displayedMembers; } private set { _displayedMembers = value; OnPropertyChanged(); } }
         public string MemberSearchQuery { get { return _memberSearchQuery; } set { _memberSearchQuery = value; OnPropertyChanged(); } }
 
         public Command FirstCommand { get { return _firstCommand; } private set { _firstCommand = value; OnPropertyChanged(); } }
@@ -46,10 +46,10 @@ namespace ELOR.Laney.ViewModels.Modals {
         public Command MoreCommand { get { return _moreCommand; } private set { _moreCommand = value; OnPropertyChanged(); } }
 
         private VKSession session;
-        private ObservableCollection<Tuple<int, Uri, string, string, Command>> allMembers = new ObservableCollection<Tuple<int, Uri, string, string, Command>>();
+        private ObservableCollection<Tuple<long, Uri, string, string, Command>> allMembers = new ObservableCollection<Tuple<long, Uri, string, string, Command>>();
         public event EventHandler CloseWindowRequested;
 
-        public PeerProfileViewModel(VKSession session, int peerId) {
+        public PeerProfileViewModel(VKSession session, long peerId) {
             this.session = session;
             Id = peerId;
             PropertyChanged += OnPropertyChanged;
@@ -65,19 +65,19 @@ namespace ELOR.Laney.ViewModels.Modals {
         }
 
         private void Setup() {
-            if (Id > 2000000000) {
+            if (Id.IsChat()) {
                 MemberSearchQuery = null;
                 GetChat(Id);
-            } else if (Id > 0 && Id < 1900000000) {
+            } else if (Id.IsUser()) {
                 GetUser(Id);
-            } else if (Id < 0) {
+            } else if (Id.IsGroup()) {
                 GetGroup(Id * -1);
             }
         }
 
         #region User-specific
 
-        private async void GetUser(int userId) {
+        private async void GetUser(long userId) {
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
@@ -244,7 +244,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
         }
 
-        private async void ToggleBan(int userId, bool unban) {
+        private async void ToggleBan(long userId, bool unban) {
             IsLoading = true;
             try {
                 bool result = unban ?
@@ -262,7 +262,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         #region Group-specific
 
-        private async void GetGroup(int groupId) {
+        private async void GetGroup(long groupId) {
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
@@ -361,7 +361,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
         }
 
-        private async void ToggleMessagesFromGroup(int groupId, bool allowed) {
+        private async void ToggleMessagesFromGroup(long groupId, bool allowed) {
             IsLoading = true;
             try {
                 bool result = allowed ? 
@@ -379,7 +379,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         #region Chat-specific
 
-        private async void GetChat(int peerId) {
+        private async void GetChat(long peerId) {
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
@@ -414,20 +414,20 @@ namespace ELOR.Laney.ViewModels.Modals {
             foreach (var member in CollectionsMarshal.AsSpan(chat.Members.Items)) {
                 string name = member.MemberId.ToString();
                 string desc = String.Empty;
-                int mid = member.MemberId;
-                int iid = member.InvitedBy;
+                long mid = member.MemberId;
+                long iid = member.InvitedBy;
                 Uri avatar = null;
 
                 string joinDate = member.JoinDate.ToHumanizedTimeOrDateString();
 
                 if (mid != iid) {
                     string invitedBy = String.Empty;
-                    if (iid > 0) {
+                    if (iid.IsUser()) {
                         var user = CacheManager.GetUser(iid);
                         if (user != null) {
                             invitedBy = Localizer.Instance.GetFormatted(user.Sex, "invited_by", user.NameWithFirstLetterSurname());
                         }
-                    } else if (iid < 0) {
+                    } else if (iid.IsGroup()) {
                         var group = CacheManager.GetGroup(iid);
                         if (group != null) {
                             invitedBy = Localizer.Instance.GetFormatted(Sex.Male, "invited_by", group.Name);
@@ -439,13 +439,13 @@ namespace ELOR.Laney.ViewModels.Modals {
                     desc = Localizer.Instance.Get("created_on", Sex.Male);
                 }
 
-                if (mid > 0) {
+                if (mid.IsUser()) {
                     var user = CacheManager.GetUser(member.MemberId);
                     if (user != null) {
                         name = user.FullName;
                         avatar = user.Photo;
                     }
-                } else if (mid < 0) {
+                } else if (mid.IsGroup()) {
                     var group = CacheManager.GetGroup(member.MemberId);
                     if (group != null) {
                         name = group.Name;
@@ -455,7 +455,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
                 Command command = SetUpMemberCommand(chat, member);
 
-                allMembers.Add(new Tuple<int, Uri, string, string, Command>(mid, avatar, name, desc, command));
+                allMembers.Add(new Tuple<long, Uri, string, string, Command>(mid, avatar, name, desc, command));
                 DisplayedMembers = allMembers;
             }
         }
@@ -570,7 +570,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             if (IsLoading) return;
             if (!String.IsNullOrWhiteSpace(MemberSearchQuery)) {
                 var foundMembers = allMembers.Where(m => m.Item3.ToLower().Contains(MemberSearchQuery.ToLower()));
-                DisplayedMembers = new ObservableCollection<Tuple<int, Uri, string, string, Command>>(foundMembers);
+                DisplayedMembers = new ObservableCollection<Tuple<long, Uri, string, string, Command>>(foundMembers);
             } else {
                 DisplayedMembers = allMembers;
             }
@@ -616,7 +616,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         }
 
-        private async void ToggleNotifications(bool enabled, int id) {
+        private async void ToggleNotifications(bool enabled, long id) {
             IsLoading = true;
             try {
                 var result = await session.API.Account.SetSilenceModeAsync(!enabled ? 0 : -1, id, true);

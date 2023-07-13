@@ -12,13 +12,13 @@ namespace ELOR.Laney.DataModels {
     public class LongPollActivityInfo {
         public LongPollActivityInfo() { }
 
-        public LongPollActivityInfo(int id, LongPollActivityType status) {
+        public LongPollActivityInfo(long id, LongPollActivityType status) {
             MemberId = id;
             Status = status;
         }
 
         [JsonProperty("member_id")]
-        public int MemberId { get; private set; }
+        public long MemberId { get; private set; }
 
         [JsonProperty("status")]
         public LongPollActivityType Status { get; private set; }
@@ -30,7 +30,7 @@ namespace ELOR.Laney.DataModels {
 
     public class LongPollPushNotificationData {
         [JsonProperty("peer_id")]
-        public int PeerId { get; private set; }
+        public long PeerId { get; private set; }
 
         [JsonProperty("sound")]
         public int Sound { get; private set; }
@@ -53,7 +53,7 @@ namespace ELOR.Laney.DataModels {
         public int AppId { get; private set; } // Type = "open_app"
 
         [JsonProperty("owner_id")]
-        public int OwnerId { get; private set; } // Type = "open_app"
+        public long OwnerId { get; private set; } // Type = "open_app"
 
         [JsonProperty("hash")]
         public string Hash { get; private set; } // Type = "open_app"
@@ -61,10 +61,10 @@ namespace ELOR.Laney.DataModels {
 
     public class LongPollCallbackResponse {
         [JsonProperty("peer_id")]
-        public int PeerId { get; private set; }
+        public long PeerId { get; private set; }
 
         [JsonProperty("owner_id")]
-        public int OwnerId { get; private set; }
+        public long OwnerId { get; private set; }
 
         [JsonProperty("event_id")]
         public string EventId { get; private set; }

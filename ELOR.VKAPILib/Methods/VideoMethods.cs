@@ -14,9 +14,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true — to return additional fields Count and Photo properties for each album.</param>
         /// <param name="needSystem">true — to return system albums.</param>
         [Method("getAlbums")]
-        public async Task<VKList<VideoAlbum>> GetAlbumsAsync(int ownerId, int offset = 0, int count = 0, bool extended = false, bool needSystem = false) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("owner_id", ownerId.ToString());
+        public async Task<VKList<VideoAlbum>> GetAlbumsAsync(long ownerId, int offset = 0, int count = 0, bool extended = false, bool needSystem = false) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "owner_id", ownerId.ToString() }
+            };
             if (offset > 0) parameters.Add("offset", offset.ToString());
             if (count > 0) parameters.Add("count", count.ToString());
             if (extended) parameters.Add("extended", "1");
@@ -31,9 +32,10 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="count">Number of videos to return.</param>
         /// <param name="extended">true — to return an extended response with additional fields.</param>
         [Method("get")]
-        public async Task<VKList<Video>> GetAsync(int ownerId, string videos = null, int albumId = 0, int offset = 0, int count = 50, bool extended = false) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("owner_id", ownerId.ToString());
+        public async Task<VKList<Video>> GetAsync(long ownerId, string videos = null, int albumId = 0, int offset = 0, int count = 50, bool extended = false) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "owner_id", ownerId.ToString() }
+            };
             if (!String.IsNullOrEmpty(videos)) parameters.Add("videos", videos);
             if (albumId > 0) parameters.Add("album_id", albumId.ToString());
             if (offset > 0) parameters.Add("offset", offset.ToString());
@@ -51,7 +53,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="link">URL for embedding the video from an external website.</param>
         /// <param name="albumId">ID of the album to which the saved video will be added.</param>
         [Method("save")]
-        public async Task<VideoUploadServer> SaveAsync(int groupId = 0, string name = null, string description = null, bool isPrivate = false, bool wallpost = false, string link = null, int albumId = 0) {
+        public async Task<VideoUploadServer> SaveAsync(long groupId = 0, string name = null, string description = null, bool isPrivate = false, bool wallpost = false, string link = null, int albumId = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             if (!String.IsNullOrEmpty(name)) parameters.Add("name", name);

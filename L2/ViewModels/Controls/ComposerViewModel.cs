@@ -56,8 +56,8 @@ namespace ELOR.Laney.ViewModels.Controls {
             SendCommand = new RelayCommand((o) => SendMessage());
             RecordAudioCommand = new RelayCommand((o) => RecordAudio());
 
-            Random = new Random(session.UserId);
-            RandomId = Random.Next(100000000, 999999999);
+            Random = new Random();
+            RandomId = Random.Next(Int32.MinValue, Int32.MaxValue);
         }
 
         private void CheckCanSendMessage() {
@@ -174,7 +174,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (favm != null) Attachments.Remove(favm);
         }
 
-        public void AddForwardedMessages(List<MessageViewModel> messages, int groupId = 0) {
+        public void AddForwardedMessages(List<MessageViewModel> messages, long groupId = 0) {
             if (messages == null || messages.Count == 0) return;
             var favm = Attachments.Where(a => a.Type == OutboundAttachmentType.ForwardedMessages).FirstOrDefault();
             if (favm != null) Attachments.Remove(favm);

@@ -7,6 +7,7 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;
@@ -55,14 +56,14 @@ namespace ELOR.Laney {
 
                 // Demo mode
                 if (DemoMode.Check()) {
-                    var usessions = DemoMode.Data.Sessions.Where(s => s.Id > 0);
+                    var usessions = DemoMode.Data.Sessions.Where(s => s.Id.IsUser());
                     int ucount = usessions.Count();
                     if (ucount == 0) throw new Exception("No user session found!");
                     if (ucount > 1) throw new Exception("There can be only 1 user session!");
                     VKSession.StartDemoSession(usessions.FirstOrDefault());
                     desktop.MainWindow = VKSession.Main.Window;
                 } else {
-                    int uid = Settings.Get<int>(Settings.VK_USER_ID);
+                    long uid = Settings.Get<long>(Settings.VK_USER_ID);
                     string token = Settings.Get<string>(Settings.VK_TOKEN);
                     if (uid > 0 && !String.IsNullOrEmpty(token)) {
                         Log.Information($"Authorized user: {uid}");

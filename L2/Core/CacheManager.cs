@@ -1,5 +1,6 @@
 ﻿using Avalonia.Platform.Storage;
 using ELOR.Laney.Core.Network;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
 using ELOR.VKAPILib.Objects;
 using Serilog;
@@ -14,7 +15,7 @@ namespace ELOR.Laney.Core {
     public static class CacheManager {
         private static List<User> CachedUsers = new List<User>();
         private static List<Group> CachedGroups = new List<Group>();
-        private static Dictionary<int, List<ChatViewModel>> CachedChats = new Dictionary<int, List<ChatViewModel>>();
+        private static Dictionary<long, List<ChatViewModel>> CachedChats = new Dictionary<long, List<ChatViewModel>>();
         public static void Add(IEnumerable<User> users) {
             if (users == null) return;
             foreach (User user in users) {
@@ -51,7 +52,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        public static void Add(int sessionId, ChatViewModel chat) {
+        public static void Add(long sessionId, ChatViewModel chat) {
             lock (CachedChats) {
                 if (!CachedChats.ContainsKey(sessionId)) CachedChats.Add(sessionId, new List<ChatViewModel>());
                 int index = CachedChats[sessionId].FindIndex(i => i.PeerId == chat.PeerId);
@@ -63,7 +64,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        public static User GetUser(int id) {
+        public static User GetUser(long id) {
             try {
                 return CachedUsers.FirstOrDefault(i => i.Id == id);
             } catch (Exception ex) {
@@ -72,7 +73,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        public static Group GetGroup(int id) {
+        public static Group GetGroup(long id) {
             try {
                 if (id < 0) id = id * -1;
                 return CachedGroups.FirstOrDefault(i => i.Id == id);
@@ -82,7 +83,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        public static ChatViewModel GetChat(int sessionId, int peerId) {
+        public static ChatViewModel GetChat(long sessionId, long peerId) {
             if (!CachedChats.ContainsKey(sessionId)) return null;
             try {
                 return CachedChats[sessionId].FirstOrDefault(i => i.PeerId == peerId);
@@ -93,15 +94,15 @@ namespace ELOR.Laney.Core {
         }
 
         // First name, last name, avatar
-        public static Tuple<string, string, Uri> GetNameAndAvatar(int id, bool shortLastName = false) {
-            if (id > 0) {
+        public static Tuple<string, string, Uri> GetNameAndAvatar(long id, bool shortLastName = false) {
+            if (id.IsUser()) {
                 User u = GetUser(id);
                 if (u == null) return null;
                 string lastName = u.LastName;
                 if (shortLastName && !String.IsNullOrEmpty(lastName) && lastName.Length > 1)
                     lastName = lastName[0].ToString();
                 return new Tuple<string, string, Uri>(u.FirstName, lastName, u.Photo);
-            } else if (id < 0) {
+            } else if (id.IsGroup()) {
                 Group g = GetGroup(id);
                 if (g == null) return null;
                 return new Tuple<string, string, Uri>(g.Name, null, g.Photo);
@@ -109,10 +110,10 @@ namespace ELOR.Laney.Core {
             return null;
         }
 
-        public static string GetNameOnly(int id, bool shortLastName = false) {
+        public static string GetNameOnly(long id, bool shortLastName = false) {
             var t = GetNameAndAvatar(id, shortLastName);
             if (t == null) return String.Empty;
-            return id > 0 ? $"{t.Item1} {t.Item2}" : t.Item1;
+            return id.IsUser() ? $"{t.Item1} {t.Item2}" : t.Item1;
         }
 
         #region Files

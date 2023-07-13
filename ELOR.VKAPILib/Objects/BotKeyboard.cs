@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects {
     [DataContract]
@@ -65,7 +60,7 @@ namespace ELOR.VKAPILib.Objects {
         public int AppId { get; set; }
 
         [JsonProperty("owner_id")]
-        public int OwnerId { get; set; }
+        public long OwnerId { get; set; }
 
         [JsonProperty("link")]
         public string Link { get; set; }
@@ -87,7 +82,7 @@ namespace ELOR.VKAPILib.Objects {
         public bool OneTime { get; set; }
 
         [JsonProperty("author_id")]
-        public int AuthorId { get; set; }
+        public long AuthorId { get; set; }
 
         [JsonProperty("inline")]
         public bool Inline { get; set; }

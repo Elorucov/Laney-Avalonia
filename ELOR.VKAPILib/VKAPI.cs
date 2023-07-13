@@ -40,13 +40,13 @@ namespace ELOR.VKAPILib {
 
         #region Fields & Properties
 
-        private int _userId;
+        private long _userId;
         private string _accessToken;
         private string _language;
         private string _domain;
         private static string _version = "5.204";
 
-        public int UserId { get { return _userId; } }
+        public long UserId { get { return _userId; } }
         public string AccessToken { get { return _accessToken; } }
         public string Language { get { return _language; } }
         public string Domain { get { return _domain; } }
@@ -66,7 +66,7 @@ namespace ELOR.VKAPILib {
 
         #endregion
 
-        public VKAPI(int userId, string accessToken, string language, string userAgent, string domain = "api.vk.com") {
+        public VKAPI(long userId, string accessToken, string language, string userAgent, string domain = "api.vk.com") {
             _userId = userId;
             _accessToken = accessToken;
             _language = language;

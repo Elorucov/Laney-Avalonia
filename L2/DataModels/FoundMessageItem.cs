@@ -8,7 +8,7 @@ using System;
 namespace ELOR.Laney.DataModels {
     public class FoundMessageItem {
         public int Id { get; private set; }
-        public int PeerId { get; private set; }
+        public long PeerId { get; private set; }
         public string PeerName { get; private set; }
         public Uri PeerAvatar { get; private set; }
         public string Text { get; private set; }

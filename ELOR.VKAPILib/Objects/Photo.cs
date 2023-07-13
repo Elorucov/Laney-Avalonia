@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects
 {
@@ -35,9 +30,6 @@ namespace ELOR.VKAPILib.Objects
         [JsonProperty("height")]
         public int Height { get; set; }
 
-        [JsonIgnore]
-        public Size Size { get { return new Size(Width, Height); } }
-
         public override string ToString() => $"{Type}:{Width}x{Height}";
     }
 
@@ -49,7 +41,7 @@ namespace ELOR.VKAPILib.Objects
         public int AlbumId { get; set; }
 
         [JsonProperty("user_id")]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         [JsonProperty("text")]
         public string Text { get; set; }
@@ -103,7 +95,7 @@ namespace ELOR.VKAPILib.Objects
                     p = Sizes.Last();
                 } else {
                     if (s.Width * s.Height > max) {
-                        max = (long)(s.Width * s.Height);
+                        max = s.Width * s.Height;
                         p = s;
                     }
                 }

@@ -55,10 +55,10 @@ namespace ELOR.Laney.Extensions {
             return lgb;
         }
 
-        public static LinearGradientBrush GetGradient(this int id) {
-            if (id < 0) id = id * -1;
-            int index = id % 6;
-            return gradients[index];
+        public static LinearGradientBrush GetGradient(this long id) {
+            if (id.IsGroup()) id = id * -1;
+            long index = id % 6;
+            return gradients[(int)index];
         }
 
         public static void RegisterThemeResource(this Control control, StyledProperty<IBrush> property, string resourceKey) {

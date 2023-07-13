@@ -31,7 +31,7 @@ namespace ELOR.Laney.Extensions {
             }
         }
 
-        public static bool CanEdit(this MessageViewModel m, int sessionId) {
+        public static bool CanEdit(this MessageViewModel m, long sessionId) {
             return m.SentTime.AddDays(1) > DateTime.Now && m.SenderId == sessionId && m.Action == null
                 && m.UIType != MessageUIType.Gift && m.UIType != MessageUIType.Sticker;
         }
