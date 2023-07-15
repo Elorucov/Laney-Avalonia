@@ -1,31 +1,33 @@
 ﻿using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace ELOR.Laney.Execute.Objects {
     public class MessagesHistoryEx {
-        [JsonProperty("conversation")]
+        public MessagesHistoryEx() {}
+
+        [JsonPropertyName("conversation")]
         public Conversation Conversation { get; set; }
 
-        [JsonProperty("messages")]
+        [JsonPropertyName("messages")]
         public List<Message> Messages { get; set; }
 
-        [JsonProperty("last_message")]
+        [JsonPropertyName("last_message")]
         public Message LastMessage { get; set; }
 
-        [JsonProperty("profiles")]
+        [JsonPropertyName("profiles")]
         public List<User> Profiles { get; set; }
 
-        [JsonProperty("groups")]
+        [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
 
-        [JsonProperty("mentioned_profiles")]
+        [JsonPropertyName("mentioned_profiles")]
         public List<User> MentionedProfiles { get; set; }
 
-        [JsonProperty("mentioned_groups")]
+        [JsonPropertyName("mentioned_groups")]
         public List<Group> MentionedGroups { get; set; }
 
-        [JsonProperty("online_info")]
+        [JsonPropertyName("online_info")]
         public UserOnlineInfoEx OnlineInfo { get; set; }
     }
 }

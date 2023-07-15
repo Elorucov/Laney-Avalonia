@@ -1,21 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace ELOR.VKAPILib.Objects
-{
+namespace ELOR.VKAPILib.Objects {
     public class Graffiti : AttachmentBase {
+        public Graffiti() {}
+
         [JsonIgnore]
         public override string ObjectType { get { return "doc"; } }
 
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
-        [JsonProperty("src")]
+        [JsonPropertyName("src")]
         public string Src { get; set; }
 
-        [JsonProperty("width")]
+        [JsonPropertyName("width")]
         public int Width { get; set; }
 
-        [JsonProperty("height")]
+        [JsonPropertyName("height")]
         public int Height { get; set; }
 
         [JsonIgnore]

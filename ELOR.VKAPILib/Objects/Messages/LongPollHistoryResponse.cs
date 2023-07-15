@@ -1,30 +1,29 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json.Serialization;
+using System.Text.Json.Nodes;
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class LongPollHistoryResponse {
-        [JsonProperty("messages")]
-        public VKList<Message> Messages { get; internal set; }
+        public LongPollHistoryResponse() {}
+            
+        [JsonPropertyName("messages")]
+        public VKList<Message> Messages { get; set; }
 
-        [JsonProperty("profiles")]
-        public List<User> Profiles { get; internal set; }
+        [JsonPropertyName("profiles")]
+        public List<User> Profiles { get; set; }
 
-        [JsonProperty("groups")]
-        public List<Group> Groups { get; internal set; }
+        [JsonPropertyName("groups")]
+        public List<Group> Groups { get; set; }
 
-        [JsonProperty("new_pts")]
-        public int NewPTS { get; internal set; }
+        [JsonPropertyName("new_pts")]
+        public int NewPTS { get; set; }
 
-        [JsonProperty("more")]
-        public bool More { get; internal set; }
+        [JsonPropertyName("more")]
+        public bool More { get; set; }
 
-        [JsonProperty("credentials")]
-        public LongPollServerInfo Credentials { get; internal set; }
+        [JsonPropertyName("credentials")]
+        public LongPollServerInfo Credentials { get; set; }
 
-        [JsonProperty("history")]
-        public JArray History { get; internal set; }
+        [JsonPropertyName("history")]
+        public JsonArray History { get; set; }
     }
 }

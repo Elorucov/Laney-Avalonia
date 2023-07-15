@@ -4,13 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
-    <AssemblyName>Laney</AssemblyName>
+    <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.427</AssemblyVersion>
-    <FileVersion>2.0.427</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.427-win-anycpu-devuser.devpc-230706-1843</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.427-linux-anycpu-devuser.devpc-230706-1843</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.427-macos-anycpu-devuser.devpc-230706-1843</Version>
+    <AssemblyVersion>2.0.500</AssemblyVersion>
+    <FileVersion>2.0.500</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.500-win-anycpu-devuser.devpc-230706-1843</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.500-linux-anycpu-devuser.devpc-230706-1843</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.500-macos-anycpu-devuser.devpc-230706-1843</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -22,11 +22,11 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.427</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.427</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.500</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.500</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
-    <CFBundleExecutable>Laney</CFBundleExecutable>
+    <CFBundleExecutable>laney</CFBundleExecutable>
     <CFBundleIconFile>Assets/Logo/icon.icns</CFBundleIconFile>
     <NSPrincipalClass>NSApplication</NSPrincipalClass>
     <NSHighResolutionCapable>true</NSHighResolutionCapable>
@@ -68,12 +68,7 @@
     <None Remove="Controls\PostUI.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Assets\Audio\bb2.mp3" />
-    <AvaloniaResource Include="Assets\i18n\en-US.json" />
-    <AvaloniaResource Include="Assets\i18n\ru-RU.json" />
-    <AvaloniaResource Include="Assets\i18n\uk-UA.json" />
-    <AvaloniaResource Include="Assets\Logo\Tray\t32mb.png" />
-    <AvaloniaResource Include="Assets\Logo\Tray\t32mw.png" />
+    <AvaloniaResource Include="Assets/**" />
     <AvaloniaResource Include="Controls\Attachments\BasicAttachment.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
@@ -99,7 +94,6 @@
     <PackageReference Include="jp2masa.Avalonia.Flexbox" Version="0.3.0-beta.4" />
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
@@ -120,10 +114,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\SettingsCategories\Appearance.axaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\Logo\icon.ico" />
-    <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ColorTextBlock.Avalonia">
@@ -184,7 +174,7 @@
       <DependentUpon>PostUI.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Modals\SharingView.axaml" />
-  </ItemGroup>
+  <!--<ItemGroup>
+    <RdXmlFile Include="Properties\Default.rd.xml" />
+  </ItemGroup>-->
 </Project>

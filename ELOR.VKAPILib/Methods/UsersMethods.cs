@@ -1,10 +1,11 @@
 ﻿using ELOR.VKAPILib.Attributes;
 using ELOR.VKAPILib.Objects;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Methods {
 
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum NameCase {
         [EnumMember(Value = "nom")]
         Nom,

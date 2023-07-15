@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Platform;
 using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +9,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Text.Json.Nodes;
 
 namespace ELOR.Laney.Core.Localization {
     public class Localizer : INotifyPropertyChanged {
@@ -26,11 +29,17 @@ namespace ELOR.Laney.Core.Localization {
 
         public bool LoadLanguage(string language) {
             Language = language;
+            m_Strings = new Dictionary<string, string>();
 
             Uri uri = new Uri($"avares://laney/Assets/i18n/{language}.json");
             if (AssetLoader.Exists(uri)) {
                 using (StreamReader sr = new StreamReader(AssetLoader.Open(uri), Encoding.UTF8)) {
-                    m_Strings = JsonConvert.DeserializeObject<Dictionary<string, string>>(sr.ReadToEnd());
+                    // m_Strings = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(sr.BaseStream);
+                    string str = sr.ReadToEnd();
+                    JsonDocument json = JsonDocument.Parse(str);
+                    foreach (var node in json.RootElement.EnumerateObject()) {
+                        m_Strings.Add(node.Name, node.Value.GetString());
+                    }
                 }
                 Invalidate();
 

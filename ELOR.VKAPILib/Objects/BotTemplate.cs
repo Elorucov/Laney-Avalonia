@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BotTemplateType {
         Unknown,
 
@@ -11,10 +12,13 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class BotTemplate {
-        [JsonProperty("type")]
+        public BotTemplate() {}
+            
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<BotTemplateType>))]
         public BotTemplateType Type { get; set; }
 
-        [JsonProperty("elements")]
+        [JsonPropertyName("elements")]
         public List<CarouselElement> Elements { get; set; }
     }
 }

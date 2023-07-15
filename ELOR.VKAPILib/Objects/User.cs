@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
 
-    [DataContract]
     public enum DeactivationState {
         No,
 
@@ -14,14 +14,12 @@ namespace ELOR.VKAPILib.Objects {
         Banned
     }
 
-    [DataContract]
     public enum Sex {
         Train = 0,
         Female = 1,
         Male = 2
     }
 
-    [DataContract]
     public enum FriendStatus {
         None = 0,
         RequestSent = 1,
@@ -29,7 +27,6 @@ namespace ELOR.VKAPILib.Objects {
         IsFriend = 3
     }
 
-    [DataContract]
     public enum UserOccupationType {
         [EnumMember(Value = "work")]
         Work,
@@ -41,7 +38,6 @@ namespace ELOR.VKAPILib.Objects {
         University,
     }
 
-    [DataContract]
     public enum UserOnlineStatus {
         Unknown,
 
@@ -62,173 +58,188 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class UserLastSeen {
-        [JsonProperty("time")]
+        public UserLastSeen() {}
+
+        [JsonPropertyName("time")]
         public long TimeUnix { get; set; }
 
         [JsonIgnore]
         public DateTime Time { get { return DateTimeOffset.FromUnixTimeSeconds(TimeUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("platform")]
+        [JsonPropertyName("platform")]
         public int Platform { get; set; }
     }
 
     public class UserOnlineInfo {
-        [JsonProperty("visible")]
+        public UserOnlineInfo() {}
+
+        [JsonPropertyName("visible")]
         public bool Visible { get; set; }
 
-        [JsonProperty("is_online")]
+        [JsonPropertyName("is_online")]
         public bool IsOnline { get; set; }
 
-        [JsonProperty("app_id")]
+        [JsonPropertyName("app_id")]
         public int AppId { get; set; }
 
-        [JsonProperty("is_mobile")]
+        [JsonPropertyName("is_mobile")]
         public bool IsMobile { get; set; }
 
-        [JsonProperty("last_seen")]
+        [JsonPropertyName("last_seen")]
         public long LastSeenUnix { get; set; }
 
         [JsonIgnore]
         public DateTime LastSeen { get { return DateTimeOffset.FromUnixTimeSeconds(LastSeenUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<UserOnlineStatus>))]
         public UserOnlineStatus Status { get; set; }
     }
 
     public class UserCountry {
-        [JsonProperty("id")]
+        public UserCountry() {}
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
     }
 
     public class UserCareer {
-        [JsonProperty("group_id")]
+        public UserCareer() {}
+
+        [JsonPropertyName("group_id")]
         public long GroupId { get; set; }
 
-        [JsonProperty("company")]
+        [JsonPropertyName("company")]
         public string Company { get; set; }
 
-        [JsonProperty("position")]
+        [JsonPropertyName("position")]
         public string Position { get; set; }
     }
 
     public class UserOccupation {
-        [JsonProperty("type")]
+        public UserOccupation() {}
+
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<UserOccupationType>))]
         public UserOccupationType Type { get; set; }
 
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public double Id { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
     }
 
     public class User {
-        [JsonProperty("id")]
+        public User() {}
+
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [JsonProperty("first_name_gen")]
+        [JsonPropertyName("first_name_gen")]
         public string FirstNameGen { get; set; }
 
-        [JsonProperty("first_name_dat")]
+        [JsonPropertyName("first_name_dat")]
         public string FirstNameDat { get; set; }
 
-        [JsonProperty("first_name_acc")]
+        [JsonPropertyName("first_name_acc")]
         public string FirstNameAcc { get; set; }
 
-        [JsonProperty("first_name_ins")]
+        [JsonPropertyName("first_name_ins")]
         public string FirstNameIns { get; set; }
 
-        [JsonProperty("first_name_abl")]
+        [JsonPropertyName("first_name_abl")]
         public string FirstNameAbl { get; set; }
 
-        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [JsonProperty("last_name_gen")]
+        [JsonPropertyName("last_name_gen")]
         public string LastNameGen { get; set; }
 
-        [JsonProperty("last_name_dat")]
+        [JsonPropertyName("last_name_dat")]
         public string LastNameDat { get; set; }
 
-        [JsonProperty("last_name_acc")]
+        [JsonPropertyName("last_name_acc")]
         public string LastNameAcc { get; set; }
 
-        [JsonProperty("last_name_ins")]
+        [JsonPropertyName("last_name_ins")]
         public string LastNameIns { get; set; }
 
-        [JsonProperty("last_name_abl")]
+        [JsonPropertyName("last_name_abl")]
         public string LastNameAbl { get; set; }
 
         [JsonIgnore]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
-        [JsonProperty("nickname")]
+        [JsonPropertyName("nickname")]
         public string NickName { get; set; }
 
-        [JsonProperty("is_closed")]
+        [JsonPropertyName("is_closed")]
         public bool IsClosed { get; set; }
 
-        [JsonProperty("can_access_closed")]
+        [JsonPropertyName("can_access_closed")]
         public bool CanAccessClosed { get; set; }
 
-        [JsonProperty("deactivated")]
+        [JsonPropertyName("deactivated")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<DeactivationState>))]
         public DeactivationState Deactivated { get; set; }
 
-        [JsonProperty("friend_status")]
+        [JsonPropertyName("friend_status")]
         public FriendStatus FriendStatus { get; set; }
 
-        [JsonProperty("bdate")]
+        [JsonPropertyName("bdate")]
         public string BirthDate { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public UserCountry City { get; set; }
 
-        [JsonProperty("country")]
+        [JsonPropertyName("country")]
         public UserCountry Country { get; set; }
 
-        [JsonProperty("career")]
+        [JsonPropertyName("career")]
         public List<UserCareer> Career { get; set; }
 
-        [JsonProperty("occupation")]
+        [JsonPropertyName("occupation")]
         public UserOccupation Occupation { get; set; }
 
-        [JsonProperty("blacklisted")]
-        public bool Blacklisted { get; set; }
+        [JsonPropertyName("blacklisted")]
+        public int Blacklisted { get; set; }
 
-        [JsonProperty("blacklisted_by_me")]
-        public bool BlacklistedByMe { get; set; }
+        [JsonPropertyName("blacklisted_by_me")]
+        public int BlacklistedByMe { get; set; }
 
-        [JsonProperty("can_send_friend_request")]
-        public bool CanSendFriendRequest { get; set; }
+        [JsonPropertyName("can_send_friend_request")]
+        public int CanSendFriendRequest { get; set; }
 
-        [JsonProperty("can_write_private_message")]
-        public bool CanWritePrivateMessage { get; set; }
+        [JsonPropertyName("can_write_private_message")]
+        public int CanWritePrivateMessage { get; set; }
 
-        [JsonProperty("last_seen")]
+        [JsonPropertyName("last_seen")]
         public UserLastSeen LastSeen { get; set; }
 
-        [JsonProperty("screen_name")]
+        [JsonPropertyName("screen_name")]
         public string ScreenName { get; set; }
 
-        [JsonProperty("domain")]
+        [JsonPropertyName("domain")]
         public string Domain { get; set; }
 
-        [JsonProperty("sex")]
+        [JsonPropertyName("sex")]
         public Sex Sex { get; set; }
 
-        [JsonProperty("photo_50")]
+        [JsonPropertyName("photo_50")]
         public string Photo50 { get; set; }
 
-        [JsonProperty("photo_100")]
+        [JsonPropertyName("photo_100")]
         public string Photo100 { get; set; }
 
-        [JsonProperty("photo_200")]
+        [JsonPropertyName("photo_200")]
         public string Photo200 { get; set; }
 
         [JsonIgnore]
@@ -241,22 +252,22 @@ namespace ELOR.VKAPILib.Objects {
             }
         }
 
-        [JsonProperty("followers_count")]
+        [JsonPropertyName("followers_count")]
         public long Followers { get; set; }
 
-        [JsonProperty("online_info")]
+        [JsonPropertyName("online_info")]
         public UserOnlineInfo OnlineInfo { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("site")]
+        [JsonPropertyName("site")]
         public string Site { get; set; }
 
-        [JsonProperty("mobile_phone")]
+        [JsonPropertyName("mobile_phone")]
         public string MobilePhone { get; set; }
 
-        [JsonProperty("verified")]
-        public bool Verified { get; set; }
+        [JsonPropertyName("verified")]
+        public int Verified { get; set; }
     }
 }

@@ -1,22 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
-    [DataContract]
     public enum GroupState {
         Open = 0,
         Closed = 1,
         Private = 2
     }
 
-    [DataContract]
     public enum AdminLevel {
         Moderator = 1,
         Editor = 2,
         Administrator = 3
     }
 
-    [DataContract]
     public enum GroupType {
         [EnumMember(Value = "group")]
         Group,
@@ -29,64 +27,71 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class GroupCoverImage {
-        [JsonProperty("url")]
+        public GroupCoverImage() {}
+
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
         [JsonIgnore]
         public Uri Uri { get { return new Uri(Url); } }
 
-        [JsonProperty("width")]
+        [JsonPropertyName("width")]
         public int Width { get; set; }
 
-        [JsonProperty("height")]
+        [JsonPropertyName("height")]
         public int Height { get; set; }
     }
 
     public class GroupCover {
-        [JsonProperty("enabled")]
+        public GroupCover() {}
+
+        [JsonPropertyName("enabled")]
         public int Enabled { get; set; }
 
-        [JsonProperty("images")]
+        [JsonPropertyName("images")]
         public List<GroupCoverImage> Images { get; set; }
     }
 
     public class Group {
-        [JsonProperty("id")]
+        public Group() {}
+
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("screen_name")]
+        [JsonPropertyName("screen_name")]
         public string ScreenName { get; set; }
 
-        [JsonProperty("is_closed")]
+        [JsonPropertyName("is_closed")]
         public GroupState State { get; set; }
 
-        [JsonProperty("deactivated")]
+        [JsonPropertyName("deactivated")]
         public DeactivationState Deactivated { get; set; }
 
-        [JsonProperty("is_admin")]
+        [JsonPropertyName("is_admin")]
         public int IsAdmin { get; set; }
 
-        [JsonProperty("verified")]
-        public bool Verified { get; set; }
+        [JsonPropertyName("verified")]
+        public int Verified { get; set; }
 
         // admin level
 
-        [JsonProperty("is_member")]
+        [JsonPropertyName("is_member")]
         public int IsMember { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<GroupType>))]
         public GroupType Type { get; set; }
 
-        [JsonProperty("photo_50")]
+        [JsonPropertyName("photo_50")]
         public string Photo50 { get; set; }
 
-        [JsonProperty("photo_100")]
+        [JsonPropertyName("photo_100")]
         public string Photo100 { get; set; }
 
-        [JsonProperty("photo_200")]
+        [JsonPropertyName("photo_200")]
         public string Photo200 { get; set; }
 
         [JsonIgnore]
@@ -98,57 +103,61 @@ namespace ELOR.VKAPILib.Objects {
             }
         }
 
-        [JsonProperty("activity")]
+        [JsonPropertyName("activity")]
         public string Activity { get; set; }
 
-        [JsonProperty("can_message")]
-        public bool CanMessage { get; set; }
+        [JsonPropertyName("can_message")]
+        public int CanMessage { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public UserCountry City { get; set; }
 
-        [JsonProperty("country")]
+        [JsonPropertyName("country")]
         public UserCountry Country { get; set; }
 
-        [JsonProperty("cover")]
+        [JsonPropertyName("cover")]
         public GroupCover Cover { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("members_count")]
+        [JsonPropertyName("members_count")]
         public long Members { get; set; }
 
-        [JsonProperty("site")]
+        [JsonPropertyName("site")]
         public string Site { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
     }
 
     public class GroupsResponse {
-        [JsonProperty("groups")]
+        public GroupsResponse() {}
+
+        [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
 
-        [JsonProperty("profiles")]
+        [JsonPropertyName("profiles")]
         public List<User> Profiles { get; set; }
     }
 
     // Event object in messages attachments
     public class Event {
-        [JsonProperty("id")]
+        public Event() {}
+
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
 
-        [JsonProperty("button_text")]
+        [JsonPropertyName("button_text")]
         public string ButtonText { get; set; }
 
-        [JsonProperty("address")]
+        [JsonPropertyName("address")]
         public string Address { get; set; }
 
-        [JsonProperty("friends")]
+        [JsonPropertyName("friends")]
         public List<long> Friends { get; set; }
     }
 }

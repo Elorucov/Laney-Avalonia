@@ -1,21 +1,25 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
     public class ConversationsResponse : VKList<ConversationItem> {
-        [JsonProperty("unread_count")]
+        public ConversationsResponse() {}
+
+        [JsonPropertyName("unread_count")]
         public int UnreadCount { get; set; }
     }
 
     public class ConversationItem {
-        [JsonProperty("conversation")]
+        public ConversationItem() {}
+
+        [JsonPropertyName("conversation")]
         public Conversation Conversation { get; set; }
 
-        [JsonProperty("last_message")]
+        [JsonPropertyName("last_message")]
         public Message LastMessage { get; set; }
     }
 
-    [DataContract]
     public enum PeerType {
         [EnumMember(Value = "user")]
         User,
@@ -33,7 +37,6 @@ namespace ELOR.VKAPILib.Objects {
         Contact
     }
 
-    [DataContract]
     public enum UserStateInChat {
         [EnumMember(Value = "in")]
         In,
@@ -45,7 +48,6 @@ namespace ELOR.VKAPILib.Objects {
         Left,
     }
 
-    [DataContract]
     public enum ChatSettingsChangers {
         [EnumMember(Value = "owner")]
         Owner,
@@ -58,43 +60,52 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Peer {
-        [JsonProperty("id")]
+        public Peer() {}
+
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<PeerType>))]
         public PeerType Type { get; set; }
 
-        [JsonProperty("local_id")]
+        [JsonPropertyName("local_id")]
         public long LocalId { get; set; }
     }
 
     public class PushSettings {
-        [JsonProperty("disabled_until")]
+        public PushSettings() {}
+
+        [JsonPropertyName("disabled_until")]
         public int DisabledUntil { get; set; }
 
-        [JsonProperty("disabled_forever")]
+        [JsonPropertyName("disabled_forever")]
         public bool DisabledForever { get; set; }
 
-        [JsonProperty("no_sound")]
+        [JsonPropertyName("no_sound")]
         public bool NoSound { get; set; }
     }
 
     public class CanWrite {
-        [JsonProperty("allowed")]
+        public CanWrite() {}
+
+        [JsonPropertyName("allowed")]
         public bool Allowed { get; set; }
 
-        [JsonProperty("reason")]
+        [JsonPropertyName("reason")]
         public int Reason { get; set; }
     }
 
     public class ChatPhoto {
-        [JsonProperty("photo_50")]
+        public ChatPhoto() {}
+
+        [JsonPropertyName("photo_50")]
         public string SmallUrl { get; set; }
 
-        [JsonProperty("photo_100")]
+        [JsonPropertyName("photo_100")]
         public string MediumUrl { get; set; }
 
-        [JsonProperty("photo_200")]
+        [JsonPropertyName("photo_200")]
         public string BigUrl { get; set; }
 
         [JsonIgnore]
@@ -109,198 +120,221 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ChatACL {
-        [JsonProperty("can_change_info")]
+        public ChatACL() {}
+
+        [JsonPropertyName("can_change_info")]
         public bool CanChangeInfo { get; set; }
 
-        [JsonProperty("can_change_invite_link")]
+        [JsonPropertyName("can_change_invite_link")]
         public bool CanChangeInviteLink { get; set; }
 
-        [JsonProperty("can_change_pin")]
+        [JsonPropertyName("can_change_pin")]
         public bool CanChangePin { get; set; }
 
-        [JsonProperty("can_invite")]
+        [JsonPropertyName("can_invite")]
         public bool CanInvite { get; set; }
 
-        [JsonProperty("can_promote_users")]
+        [JsonPropertyName("can_promote_users")]
         public bool CanPromoteUsers { get; set; }
 
-        [JsonProperty("can_see_invite_link")]
+        [JsonPropertyName("can_see_invite_link")]
         public bool CanSeeInviteLink { get; set; }
     }
 
     public class ChatPermissions {
-        [JsonProperty("invite")]
+        public ChatPermissions() {}
+
+        [JsonPropertyName("invite")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers Invite { get; set; }
 
-        [JsonProperty("change_info")]
+        [JsonPropertyName("change_info")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers ChangeInfo { get; set; }
 
-        [JsonProperty("change_pin")]
+        [JsonPropertyName("change_pin")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers ChangePin { get; set; }
 
-        [JsonProperty("use_mass_mentions")]
+        [JsonPropertyName("use_mass_mentions")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers UseMassMentions { get; set; }
 
-        [JsonProperty("see_invite_link")]
+        [JsonPropertyName("see_invite_link")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers SeeInviteLink { get; set; }
 
-        [JsonProperty("call")]
+        [JsonPropertyName("call")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers Call { get; set; }
 
-        [JsonProperty("change_admins")]
+        [JsonPropertyName("change_admins")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers ChangeAdmins { get; set; }
     }
 
     public class ChatSettings {
-        [JsonProperty("members_count")]
+        public ChatSettings() {}
+
+        [JsonPropertyName("members_count")]
         public int MembersCount { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("acl")]
+        [JsonPropertyName("acl")]
         public ChatACL ACL { get; set; }
 
-        [JsonProperty("is_group_channel")]
+        [JsonPropertyName("is_group_channel")]
         public bool IsGroupChannel { get; set; }
 
-        [JsonProperty("pinned_message")]
+        [JsonPropertyName("pinned_message")]
         public Message PinnedMessage { get; set; }
 
-        [JsonProperty("state")]
+        [JsonPropertyName("state")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<UserStateInChat>))]
         public UserStateInChat State { get; set; }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public ChatPhoto Photo { get; set; }
 
-        [JsonProperty("active_ids")]
+        [JsonPropertyName("active_ids")]
         public List<long> ActiveIDs { get; set; }
 
-        [JsonProperty("admin_ids")]
+        [JsonPropertyName("admin_ids")]
         public List<long> AdminIDs { get; set; }
 
-        [JsonProperty("is_disappearing")]
+        [JsonPropertyName("is_disappearing")]
         public bool IsDisappearing { get; set; }
 
-        [JsonProperty("permissions")]
+        [JsonPropertyName("permissions")]
         public ChatPermissions Permissions { get; set; }
 
-        [JsonProperty("theme")]
+        [JsonPropertyName("theme")]
         public string Theme { get; set; }
     }
 
     public class SortId {
-        [JsonProperty("major_id")]
+        public SortId() {}
+
+        [JsonPropertyName("major_id")]
         public int MajorId { get; set; }
 
-        [JsonProperty("minor_id")]
+        [JsonPropertyName("minor_id")]
         public int MinorId { get; set; }
     }
 
     public class Conversation {
+        public Conversation() {}
 
-        [JsonProperty("peer")]
+        [JsonPropertyName("peer")]
         public Peer Peer { get; set; }
 
-        [JsonProperty("in_read")]
+        [JsonPropertyName("in_read")]
         public int InRead { get; set; }
 
-        [JsonProperty("out_read")]
+        [JsonPropertyName("out_read")]
         public int OutRead { get; set; }
 
-        [JsonProperty("unread_count")]
+        [JsonPropertyName("unread_count")]
         public int UnreadCount { get; set; }
 
-        [JsonProperty("is_marked_unread")]
+        [JsonPropertyName("is_marked_unread")]
         public bool IsMarkedUnread { get; set; }
 
-        [JsonProperty("important")]
+        [JsonPropertyName("important")]
         public bool Important { get; set; }
 
-        [JsonProperty("unanswered")]
+        [JsonPropertyName("unanswered")]
         public bool Unanswered { get; set; }
 
-        [JsonProperty("sort_id")]
+        [JsonPropertyName("sort_id")]
         public SortId SortId { get; set; }
 
-        [JsonProperty("push_settings")]
+        [JsonPropertyName("push_settings")]
         public PushSettings PushSettings { get; set; }
 
-        [JsonProperty("can_write")]
+        [JsonPropertyName("can_write")]
         public CanWrite CanWrite { get; set; }
 
-        [JsonProperty("current_keyboard")]
+        [JsonPropertyName("current_keyboard")]
         public BotKeyboard CurrentKeyboard { get; set; }
 
-        [JsonProperty("chat_settings")]
+        [JsonPropertyName("chat_settings")]
         public ChatSettings ChatSettings { get; set; }
 
-        [JsonProperty("mentions")]
+        [JsonPropertyName("mentions")]
         public List<int> Mentions { get; set; }
 
-        [JsonProperty("expire_messages")]
+        [JsonPropertyName("expire_messages")]
         public List<int> ExpireMessages { get; set; }
 
-        [JsonProperty("expire_cmids")]
+        [JsonPropertyName("expire_cmids")]
         public List<int> ExpireConvMessageIds { get; set; }
     }
 
     // Chat
 
     public class ChatMember {
-        [JsonProperty("member_id")]
+        public ChatMember() {}
+
+        [JsonPropertyName("member_id")]
         public long MemberId { get; set; }
 
-        [JsonProperty("join_date")]
+        [JsonPropertyName("join_date")]
         public int JoinDateUnix { get; set; }
 
         [JsonIgnore]
         public DateTime JoinDate { get { return DateTimeOffset.FromUnixTimeSeconds(JoinDateUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("invited_by")]
+        [JsonPropertyName("invited_by")]
         public long InvitedBy { get; set; }
 
-        [JsonProperty("can_kick")]
+        [JsonPropertyName("can_kick")]
         public bool CanKick { get; set; }
 
-        [JsonProperty("is_admin")]
+        [JsonPropertyName("is_admin")]
         public bool IsAdmin { get; set; }
     }
 
     public class Chat {
-        [JsonProperty("id")]
+        public Chat() {}
+
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("admin_id")]
+        [JsonPropertyName("admin_id")]
         public long AdminId { get; set; }
 
-        [JsonProperty("users")]
+        [JsonPropertyName("users")]
         public List<long> Users { get; set; }
 
-        [JsonProperty("members_count")]
+        [JsonPropertyName("members_count")]
         public int MembersCount { get; set; }
 
-        [JsonProperty("push_settings")]
+        [JsonPropertyName("push_settings")]
         public PushSettings PushSettings { get; set; }
 
-        [JsonProperty("photo_200")]
+        [JsonPropertyName("photo_200")]
         public string Photo { get; set; }
 
-        [JsonProperty("left")]
+        [JsonPropertyName("left")]
         public bool Left { get; set; }
 
-        [JsonProperty("kicked")]
+        [JsonPropertyName("kicked")]
         public bool Kicked { get; set; }
     }
 
     public class ChatLink {
-        [JsonProperty("link")]
+        public ChatLink() {}
+
+        [JsonPropertyName("link")]
         public string Link { get; set; }
     }
 }

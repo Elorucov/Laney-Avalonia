@@ -1,19 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class DocumentUploadResult {
-        [JsonProperty("file")]
+        public DocumentUploadResult() {}
+        
+        [JsonPropertyName("file")]
         public string File { get; set; }
 
-        [JsonProperty("error")]
+        [JsonPropertyName("error")]
         public string Error { get; set; }
 
-        [JsonProperty("error_descr")]
+        [JsonPropertyName("error_descr")]
         public string ErrorDescription { get; set; }
     }
 }

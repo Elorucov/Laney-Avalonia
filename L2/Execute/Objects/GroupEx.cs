@@ -1,15 +1,17 @@
 ﻿using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.Execute.Objects {
     public class GroupEx : Group {
-        [JsonProperty("messages_count")]
-        public int MessagesCount { get; private set; }
+        public GroupEx() {}
 
-        [JsonProperty("notifications_disabled")]
-        public bool NotificationsDisabled { get; private set; }
+        [JsonPropertyName("messages_count")]
+        public int MessagesCount { get; set; }
 
-        [JsonProperty("messages_allowed")]
-        public bool MessagesAllowed { get; private set; }
+        [JsonPropertyName("notifications_disabled")]
+        public bool NotificationsDisabled { get; set; }
+
+        [JsonPropertyName("messages_allowed")]
+        public bool MessagesAllowed { get; set; }
     }
 }

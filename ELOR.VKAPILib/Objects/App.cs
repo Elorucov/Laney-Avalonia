@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class App {
-
-        [JsonProperty("id")]
+        public App() {}
+        
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
     }
 

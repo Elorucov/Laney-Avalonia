@@ -1,19 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class NarrativeCover {
-        [JsonProperty("cropped_sizes")]
+        public NarrativeCover() {}
+
+        [JsonPropertyName("cropped_sizes")]
         public List<PhotoSizes> CroppedSizes { get; set; }
     }
 
     public class Narrative : AttachmentBase {
+        public Narrative() {}
+
         [JsonIgnore]
         public override string ObjectType { get { return "narrative"; } }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("cover")]
+        [JsonPropertyName("cover")]
         public NarrativeCover Cover { get; set; }
     }
 }

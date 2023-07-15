@@ -1,35 +1,37 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class PhotoAlbum : Album {
-        [JsonProperty("thumb_id")]
+        public PhotoAlbum() {}
+
+        [JsonPropertyName("thumb_id")]
         public int ThumbId { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public long CreatedUnix { get; set; }
 
         [JsonIgnore]
         public DateTime Created { get { return DateTimeOffset.FromUnixTimeSeconds(CreatedUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("updated")]
+        [JsonPropertyName("updated")]
         public long UpdatedUnix { get; set; }
 
         [JsonIgnore]
         public DateTime Updated { get { return DateTimeOffset.FromUnixTimeSeconds(UpdatedUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("size")]
+        [JsonPropertyName("size")]
         public int Size { get; set; }
 
-        [JsonProperty("thumb_src")]
+        [JsonPropertyName("thumb_src")]
         public string ThumbSrc { get; set; }
 
         [JsonIgnore]
         public Uri Thumb { get { return new Uri(ThumbSrc); } }
 
-        [JsonProperty("sizes")]
+        [JsonPropertyName("sizes")]
         public List<PhotoSizes> Sizes { get; set; }
     }
 }

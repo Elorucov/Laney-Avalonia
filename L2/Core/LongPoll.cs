@@ -3,16 +3,15 @@ using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json.Linq;
 using Serilog;
 using Serilog.Core;
-using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -110,16 +109,16 @@ namespace ELOR.Laney.Core {
                     HttpResponseMessage httpResponse = await LNet.PostAsync(new Uri($"https://{Server}"), parameters, cts: cts).ConfigureAwait(false);
                     httpResponse.EnsureSuccessStatusCode();
                     string respstr = await httpResponse.Content.ReadAsStringAsync();
-                    JObject jr = JObject.Parse(respstr);
+                    JsonNode jr = JsonNode.Parse(respstr);
                     httpResponse.Dispose();
                     if (jr["updates"] != null) {
-                        TimeStamp = jr["ts"].Value<int>();
-                        PTS = jr["pts"].Value<int>();
-                        ParseUpdates(jr["updates"].Value<JArray>());
+                        TimeStamp = (int)jr["ts"];
+                        PTS = (int)jr["pts"];
+                        ParseUpdates(jr["updates"].AsArray());
                         await Task.Delay(1000).ConfigureAwait(false);
                     } else if (jr["failed"] != null) {
-                        int errCode = jr["failed"].Value<int>();
-                        string errText = jr["error"].Value<string>();
+                        int errCode = (int)jr["failed"];
+                        string errText = jr["error"].ToString();
                         Log.Error($"LongPoll error! Code {errCode}, message: {errText}. Restarting after {WAIT_AFTER_FAIL} sec...");
                         if (errCode != 1) {
                             StateChanged?.Invoke(this, LongPollState.Failed);
@@ -167,19 +166,19 @@ namespace ELOR.Laney.Core {
             Run();
         }
 
-        private void ParseUpdates(JArray updates, List<Message> messages = null) {
+        private void ParseUpdates(JsonArray updates, List<Message> messages = null) {
             // Message id, is edited.
             Dictionary<int, bool> MessagesFromAPI = new Dictionary<int, bool>();
             Dictionary<int, int> MessagesFromAPIFlags = new Dictionary<int, int>();
 
-            foreach (JArray u in updates) {
-                int eventId = u[0].Value<int>();
+            foreach (JsonArray u in updates) {
+                int eventId = (int)u[0];
                 switch (eventId) {
                     case 2:
                     case 3:
-                        int msgId = u[1].Value<int>();
-                        int flags = u[2].Value<int>();
-                        long peerId = u[3].Value<long>();
+                        int msgId = (int)u[1];
+                        int flags = (int)u[2];
+                        long peerId = (long)u[3];
                         bool hasMessage = u.Count > 4; // удалённое у текущего юзера сообщение восстановилось
                         Log.Information($"EVENT {eventId}: msg={msgId}, flags={flags}, peer={peerId}, hasMessage={hasMessage}");
                         if (eventId == 3) MessageFlagRemove?.Invoke(this, msgId, flags, peerId);
@@ -188,105 +187,105 @@ namespace ELOR.Laney.Core {
                             Message msgFromHistory3 = messages?.Where(m => m.Id == msgId).FirstOrDefault();
                             if (msgFromHistory3 != null) {
                                 MessageReceived?.Invoke(this, msgFromHistory3, flags);
-                                if (u.Count > 6) CheckMentions(u[6], msgId, u[3].Value<long>());
+                                if (u.Count > 6) CheckMentions(u[6], msgId, (long)u[3]);
                             } else {
                                 bool isPartial = false;
                                 Exception ex = null;
                                 Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                                 if (ex == null && rmsg != null) {
-                                    MessageReceived?.Invoke(this, rmsg, u[2].Value<int>());
-                                    if (u.Count > 6) CheckMentions(u[6], msgId, u[3].Value<long>());
+                                    MessageReceived?.Invoke(this, rmsg, (int)u[2]);
+                                    if (u.Count > 6) CheckMentions(u[6], msgId, (long)u[3]);
                                     if (isPartial) {
                                         MessagesFromAPI.Add(msgId, true);
-                                        MessagesFromAPIFlags.Add(msgId, u[2].Value<int>());
+                                        MessagesFromAPIFlags.Add(msgId, (int)u[2]);
                                     }
                                 } else {
-                                    Log.Error(ex, $"An error occured while building message from LP! Message ID: {u[1].Value<int>()}");
+                                    Log.Error(ex, $"An error occured while building message from LP! Message ID: {(int)u[1]}");
                                     MessagesFromAPI.Add(msgId, false);
-                                    MessagesFromAPIFlags.Add(msgId, u[2].Value<int>());
+                                    MessagesFromAPIFlags.Add(msgId, (int)u[2]);
                                 }
                             }
                         }
                         break;
                     case 4:
-                        int receivedMsgId = u[1].Value<int>();
+                        int receivedMsgId = (int)u[1];
                         Log.Information($"EVENT {eventId}: msg={receivedMsgId}");
                         Message msgFromHistory = messages?.Where(m => m.Id == receivedMsgId).FirstOrDefault();
                         if (msgFromHistory != null) {
-                            MessageReceived?.Invoke(this, msgFromHistory, u[2].Value<int>());
-                            if (u.Count > 6) CheckMentions(u[6], receivedMsgId, u[3].Value<long>());
+                            MessageReceived?.Invoke(this, msgFromHistory, (int)u[2]);
+                            if (u.Count > 6) CheckMentions(u[6], receivedMsgId, (long)u[3]);
                         } else {
                             bool isPartial = false;
                             Exception ex = null;
                             Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
-                                MessageReceived?.Invoke(this, rmsg, u[2].Value<int>());
-                                if (u.Count > 6) CheckMentions(u[6], receivedMsgId, u[3].Value<int>());
+                                MessageReceived?.Invoke(this, rmsg, (int)u[2]);
+                                if (u.Count > 6) CheckMentions(u[6], receivedMsgId, (int)u[3]);
                                 if (isPartial) {
                                     MessagesFromAPI.Add(receivedMsgId, true);
-                                    MessagesFromAPIFlags.Add(receivedMsgId, u[2].Value<int>());
+                                    MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                                 }
                             } else {
-                                Log.Error(ex, $"An error occured while building message from LP! Message ID: {u[1].Value<int>()}");
+                                Log.Error(ex, $"An error occured while building message from LP! Message ID: {(int)u[1]}");
                                 MessagesFromAPI.Add(receivedMsgId, false);
-                                MessagesFromAPIFlags.Add(receivedMsgId, u[2].Value<int>());
+                                MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                             }
                         }
                         break;
                     case 5:
                     case 18:
-                        int editedMsgId = u[1].Value<int>();
+                        int editedMsgId = (int)u[1];
                         Message editMsgFromHistory = messages?.Where(m => m.Id == editedMsgId).FirstOrDefault();
                         Log.Information($"EVENT {eventId}: msg={editedMsgId}");
                         if (editMsgFromHistory != null) {
-                            MessageEdited?.Invoke(this, editMsgFromHistory, u[2].Value<int>());
-                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, u[3].Value<long>());
+                            MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2]);
+                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, (long)u[3]);
                         } else {
                             if (!MessagesFromAPI.ContainsKey(editedMsgId)) {
                                 MessagesFromAPI.Add(editedMsgId, true);
-                                MessagesFromAPIFlags.Add(editedMsgId, u[2].Value<int>());
+                                MessagesFromAPIFlags.Add(editedMsgId, (int)u[2]);
                             }
                         }
                         break;
                     case 6:
-                        long peerId6 = u[1].Value<long>();
-                        int msgId6 = u[2].Value<int>();
-                        int count6 = u.Count > 3 ? u[3].Value<int>() : 0;
+                        long peerId6 = (long)u[1];
+                        int msgId6 = (int)u[2];
+                        int count6 = u.Count > 3 ? (int)u[3] : 0;
                         Log.Information($"EVENT {eventId}: peer={peerId6}, msg={msgId6}, count={count6}");
                         IncomingMessagesRead?.Invoke(this, peerId6, msgId6, count6);
                         break;
                     case 7:
-                        long peerId7 = u[1].Value<long>();
-                        int msgId7 = u[2].Value<int>();
-                        int count7 = u.Count > 3 ? u[3].Value<int>() : 0;
+                        long peerId7 = (long)u[1];
+                        int msgId7 = (int)u[2];
+                        int count7 = u.Count > 3 ? (int)u[3] : 0;
                         Log.Information($"EVENT {eventId}: peer={peerId7}, msg={msgId7}, count={count7}");
                         OutgoingMessagesRead?.Invoke(this, peerId7, msgId7, count7);
                         break;
                     case 10:
                     case 12:
-                        long peerId10 = u[1].Value<long>();
-                        int flags10 = u[2].Value<int>();
+                        long peerId10 = (long)u[1];
+                        int flags10 = (int)u[2];
                         Log.Information($"EVENT {eventId}: peer={peerId10}, flags={flags10}");
                         if (eventId == 10) ConversationFlagReset?.Invoke(this, peerId10, flags10);
                         else ConversationFlagSet?.Invoke(this, peerId10, flags10);
                         break;
                     case 13:
-                        long peerId13 = u[1].Value<long>();
-                        int msgId13 = u[2].Value<int>();
+                        long peerId13 = (long)u[1];
+                        int msgId13 = (int)u[2];
                         Log.Information($"EVENT {eventId}: peer={peerId13}, msg={msgId13}");
                         ConversationRemoved?.Invoke(this, peerId13);
                         break;
                     case 20:
-                        long peerId20 = u[1].Value<long>();
-                        int sortId = u[2].Value<int>();
+                        long peerId20 = (long)u[1];
+                        int sortId = (int)u[2];
                         Log.Information($"EVENT {eventId}: peer={peerId20}, major/minor={sortId}");
                         if (eventId == 20) MajorIdChanged?.Invoke(this, peerId20, sortId);
                         else MinorIdChanged?.Invoke(this, peerId20, sortId);
                         break;
                     case 52:
-                        int updateType = u[1].Value<int>();
-                        long peerId52 = u[2].Value<long>();
-                        int extra = u[3].Value<int>();
+                        int updateType = (int)u[1];
+                        long peerId52 = (long)u[2];
+                        int extra = (int)u[3];
                         Log.Information($"EVENT {eventId}: updateType={updateType}, peer={peerId52}, extra={extra}");
                         ConversationDataChanged?.Invoke(this, updateType, peerId52, extra);
                         break;
@@ -296,9 +295,9 @@ namespace ELOR.Laney.Core {
                     case 66:
                     case 67:
                         LongPollActivityType type = GetLPActivityType(eventId);
-                        long peerId63 = u[1].Value<long>();
-                        long[] userIds = u[2].Value<JArray>().ToObject<long[]>();
-                        int totalCount = u[3].Value<int>();
+                        long peerId63 = (long)u[1];
+                        long[] userIds = u[2].Deserialize<long[]>();
+                        int totalCount = (int)u[3];
                         Log.Information($"EVENT {eventId}: peer={peerId63}, users={String.Join(", ", userIds)}, count={totalCount}");
 
                         List<LongPollActivityInfo> acts = new List<LongPollActivityInfo>();
@@ -309,17 +308,17 @@ namespace ELOR.Laney.Core {
                         ActivityStatusChanged?.Invoke(this, peerId63, acts);
                         break;
                     case 80:
-                        int unreadCount = u[1].Value<int>();
+                        int unreadCount = (int)u[1];
                         Log.Information($"EVENT {eventId}: count={unreadCount}");
                         UnreadCounterUpdated?.Invoke(this, unreadCount);
                         break;
                     case 114:
-                        LongPollPushNotificationData data = u[1].ToObject<LongPollPushNotificationData>();
+                        LongPollPushNotificationData data = u[1].Deserialize<LongPollPushNotificationData>();
                         Log.Information($"EVENT {eventId}: peer={data.PeerId}, sound={data.Sound}, disabledUntil={data.DisabledUntil}");
                         NotificationsSettingsChanged?.Invoke(this, data);
                         break;
                     case 119:
-                        LongPollCallbackResponse cbData = u[1].ToObject<LongPollCallbackResponse>();
+                        LongPollCallbackResponse cbData = u[1].Deserialize<LongPollCallbackResponse>();
                         Log.Information($"EVENT {eventId}: peer={cbData.PeerId}, owner={cbData.OwnerId}, event={cbData.EventId} action={cbData.Action?.Type}");
                         CallbackReceived?.Invoke(this, cbData);
                         break;
@@ -331,19 +330,20 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        private void CheckMentions(JToken additional, int messageId, long peerId) {
-            try { 
-                JToken t = additional["marked_users"];
+        private void CheckMentions(JsonNode additional, int messageId, long peerId) {
+            try {
+                if (additional["marked_users"] == null) return;
+                JsonArray t = additional["marked_users"].AsArray();
                 if (t != null) {
-                    foreach (JArray o in (JArray)t) {
+                    foreach (JsonArray o in (JsonArray)t) {
                         int flag = Int32.Parse(o[0].ToString());
                         bool isBomb = flag == 2;
 
                         if (o[1].ToString() == "all") {
                             MentionReceived?.Invoke(this, peerId, messageId, isBomb);
                         } else {
-                            JArray u1 = (JArray)o[1];
-                            if (Int64.Parse(u1.First.ToString()) == sessionId) MentionReceived?.Invoke(this, peerId, messageId, isBomb);
+                            JsonArray u1 = o[1].AsArray();
+                            if (Int64.Parse(u1.FirstOrDefault().ToString()) == sessionId) MentionReceived?.Invoke(this, peerId, messageId, isBomb);
                         }
                     }
                 }

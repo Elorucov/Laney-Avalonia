@@ -1,38 +1,37 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class MessageTemplate {
-        [JsonProperty("id")]
+        public MessageTemplate() {}
+            
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("creator_id")]
-        public int CreatorId { get; set; }
+        [JsonPropertyName("creator_id")]
+        public long CreatorId { get; set; }
 
-        [JsonProperty("creation_time")]
+        [JsonPropertyName("creation_time")]
         public int CreationTimeUnix { get; set; }
 
         [JsonIgnore]
         public DateTime CreationTime { get { return DateTimeOffset.FromUnixTimeSeconds(CreationTimeUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
 
-        [JsonProperty("usages_all_time")]
+        [JsonPropertyName("usages_all_time")]
         public int UsagesAllTime { get; set; }
 
-        [JsonProperty("usages_week")]
+        [JsonPropertyName("usages_week")]
         public int UsagesWeek { get; set; }
 
-        [JsonProperty("editor_id")]
-        public int EditorId { get; set; }
+        [JsonPropertyName("editor_id")]
+        public long EditorId { get; set; }
 
-        [JsonProperty("update_time")]
+        [JsonPropertyName("update_time")]
         public int UpdateTimeUnix { get; set; }
 
         [JsonIgnore]
@@ -40,7 +39,9 @@ namespace ELOR.VKAPILib.Objects.Messages {
     }
 
     public class AddTemplateResponse {
-        [JsonProperty("template_id")]
+        public AddTemplateResponse() {}
+            
+        [JsonPropertyName("template_id")]
         public int TemplateId { get; set; }
     }
 }

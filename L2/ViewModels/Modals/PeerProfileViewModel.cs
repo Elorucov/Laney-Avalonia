@@ -108,10 +108,10 @@ namespace ELOR.Laney.ViewModels.Modals {
             Information.Add(new Tuple<string, string>(VKIconNames.Icon20BugOutline, user.Id.ToString()));
 
             // Banned/deleted/blocked...
-            if (user.Blacklisted) {
+            if (user.Blacklisted == 1) {
                 Information.Add(new Tuple<string, string>(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted", user.Sex)));
             }
-            if (user.BlacklistedByMe) {
+            if (user.BlacklistedByMe == 1) {
                 Information.Add(new Tuple<string, string>(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted_by_me", user.Sex)));
             }
 
@@ -166,7 +166,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             // и ему нельзя писать сообщение,
             // или если открыт чат с этим юзером,
             // то не будем добавлять эту кнопку
-            if ((user.CanWritePrivateMessage || user.MessagesCount > 0) && session.CurrentOpenedChat?.PeerId != user.Id) {
+            if ((user.CanWritePrivateMessage == 1 || user.MessagesCount > 0) && session.CurrentOpenedChat?.PeerId != user.Id) {
                 Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
                     CloseWindowRequested?.Invoke(this, null);
                     session.GetToChat(user.Id);
@@ -175,8 +175,8 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
 
             // Friend
-            if (session.UserId != user.Id && !user.Blacklisted && !user.BlacklistedByMe 
-                && user.Deactivated == DeactivationState.No && user.CanSendFriendRequest) {
+            if (session.UserId != user.Id && user.Blacklisted == 0 && user.BlacklistedByMe == 0
+                && user.Deactivated == DeactivationState.No && user.CanSendFriendRequest == 1) {
                 string ficon = VKIconNames.Icon20ServicesOutline;
                 string flabel = "";
 
@@ -215,10 +215,10 @@ namespace ELOR.Laney.ViewModels.Modals {
             commands.Add(openExternalCmd);
 
             // Ban/unban
-            if (session.UserId != user.Id && !user.Blacklisted) {
-                string banIcon = user.BlacklistedByMe ? VKIconNames.Icon20UnlockOutline : VKIconNames.Icon20BlockOutline;
-                string banLabel = Localizer.Instance[user.BlacklistedByMe ? "unblock" : "block"];
-                Command banCmd = new Command(banIcon, banLabel, true, (a) => ToggleBan(user.Id, user.BlacklistedByMe));
+            if (session.UserId != user.Id && user.Blacklisted == 0) {
+                string banIcon = user.BlacklistedByMe == 1 ? VKIconNames.Icon20UnlockOutline : VKIconNames.Icon20BlockOutline;
+                string banLabel = Localizer.Instance[user.BlacklistedByMe == 1 ? "unblock" : "block"];
+                Command banCmd = new Command(banIcon, banLabel, true, (a) => ToggleBan(user.Id, user.BlacklistedByMe == 1));
                 moreCommands.Add(banCmd);
             }
 
@@ -316,7 +316,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             List<Command> commands = new List<Command>();
             List<Command> moreCommands = new List<Command>();
 
-            if ((group.CanMessage || group.MessagesCount > 0) && session.CurrentOpenedChat.PeerId != -group.Id) {
+            if ((group.CanMessage == 1 || group.MessagesCount > 0) && session.CurrentOpenedChat.PeerId != -group.Id) {
                 Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
                     CloseWindowRequested?.Invoke(this, null);
                     session.GetToChat(-group.Id);

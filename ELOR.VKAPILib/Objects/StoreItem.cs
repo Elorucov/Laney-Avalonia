@@ -1,20 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class StoreProduct {
-        [JsonProperty("id")]
+        public StoreProduct() {}
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("stickers")]
+        [JsonPropertyName("stickers")]
         public List<Sticker> Stickers { get; set; }
 
-        [JsonProperty("previews")]
+        [JsonPropertyName("previews")]
         public List<StickerImage> Previews { get; set; }
     }
 }

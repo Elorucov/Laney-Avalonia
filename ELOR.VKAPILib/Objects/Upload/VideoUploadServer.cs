@@ -1,25 +1,22 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class VideoUploadServer : VkUploadServer {
-        [JsonProperty("video_id")]
+        public VideoUploadServer() {}
+            
+        [JsonPropertyName("video_id")]
         public int VideoId { get; set; }
 
-        [JsonProperty("owner_id")]
+        [JsonPropertyName("owner_id")]
         public int OwnerId { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("access_key")]
+        [JsonPropertyName("access_key")]
         public string AccessKey { get; set; }
     }
 }

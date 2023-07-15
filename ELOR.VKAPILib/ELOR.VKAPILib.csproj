@@ -6,9 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
+  <!--<ItemGroup>
+    <RdXmlFile Include="Properties\Default.rd.xml" />
+  </ItemGroup>-->
 </Project>

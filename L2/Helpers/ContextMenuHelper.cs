@@ -82,7 +82,7 @@ namespace ELOR.Laney.Helpers {
             bool canReplyPrivately = chat.PeerType == PeerType.Chat && message.SenderId.IsUser() && message.SenderId != session.Id;
             if (message.SenderId.IsUser()) {
                 User sender = CacheManager.GetUser(message.SenderId);
-                if (sender != null) canReplyPrivately = sender.CanWritePrivateMessage;
+                if (sender != null) canReplyPrivately = sender.CanWritePrivateMessage == 1;
             }
 
             bool isAdminInChat = false;

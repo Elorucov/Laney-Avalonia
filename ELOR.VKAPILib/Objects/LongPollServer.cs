@@ -1,36 +1,39 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class LongPollServerInfo {
-        [JsonProperty("key")]
+        public LongPollServerInfo() {}
+
+        [JsonPropertyName("key")]
         public string Key { get; set; }
 
-        [JsonProperty("server")]
+        [JsonPropertyName("server")]
         public string Server { get; set; }
 
-        [JsonProperty("ts")]
+        [JsonPropertyName("ts")]
         public int TS { get; set; }
 
-        [JsonProperty("pts")]
+        [JsonPropertyName("pts")]
         public int PTS { get; set; }
     }
 
     public class LongPollFail {
-        [JsonProperty("failed")]
+        public LongPollFail() {}
+
+        [JsonPropertyName("failed")]
         public int FailCode { get; set; }
 
-        [JsonProperty("ts")]
+        [JsonPropertyName("ts")]
         public string TS { get; set; }
     }
 
     public class LongPollResponse {
-        [JsonProperty("ts")]
+        public LongPollResponse() {}
+
+        [JsonPropertyName("ts")]
         public string TS { get; set; }
 
-        [JsonProperty("updates")]
+        [JsonPropertyName("updates")]
         public List<object[]> Updates { get; set; }
-
-        [JsonIgnore]
-        public string Raw { get; set; }
     }
 }

@@ -1,19 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 
 namespace ELOR.Laney.Execute.Objects {
     public class AlbumLite {
-        [JsonProperty("id")]
-        public int Id { get; private set; }
+        public AlbumLite() {}
 
-        [JsonProperty("title")]
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("size")]
-        public int Size { get; private set; }
+        [JsonPropertyName("size")]
+        public int Size { get; set; }
 
-        [JsonProperty("thumb")]
-        public string Thumb { get; private set; }
+        [JsonPropertyName("thumb")]
+        public string Thumb { get; set; }
 
         [JsonIgnore]
         public Uri ThumbUri => Uri.IsWellFormedUriString(Thumb, UriKind.Absolute) ? new Uri(Thumb) : null;

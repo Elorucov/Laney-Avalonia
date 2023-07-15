@@ -1,14 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class SetChatPhotoResponse {
-        [JsonProperty("message_id")]
-        public int MessageId { get; internal set; }
+        public SetChatPhotoResponse() {}
+        
+        [JsonPropertyName("message_id")]
+        public int MessageId { get; set; }
 
-        [JsonProperty("chat")]
-        public Chat Chat { get; internal set; }
+        [JsonPropertyName("chat")]
+        public Chat Chat { get; set; }
     }
 }

@@ -1,98 +1,111 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class MessagesHistoryResponse {
-        [JsonProperty("items")]
-        public List<Message> Items { get; internal set; }
+        public MessagesHistoryResponse() {}
 
-        [JsonProperty("count")]
-        public int Count { get; internal set; }
+        [JsonPropertyName("items")]
+        public List<Message> Items { get; set; }
 
-        [JsonProperty("profiles")]
-        public List<User> Profiles { get; internal set; }
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
 
-        [JsonProperty("groups")]
-        public List<Group> Groups { get; internal set; }
+        [JsonPropertyName("profiles")]
+        public List<User> Profiles { get; set; }
 
-        [JsonProperty("conversations")]
-        public List<Conversation> Conversations { get; internal set; }
+        [JsonPropertyName("groups")]
+        public List<Group> Groups { get; set; }
+
+        [JsonPropertyName("conversations")]
+        public List<Conversation> Conversations { get; set; }
     }
 
     //
 
     public class GeoCoordinates {
-        [JsonProperty("latitude")]
-        public double Latitude { get; internal set; }
+        public GeoCoordinates() {}
 
-        [JsonProperty("longitude")]
-        public double Longitude { get; internal set; }
+        [JsonPropertyName("latitude")]
+        public double Latitude { get; set; }
+
+        [JsonPropertyName("longitude")]
+        public double Longitude { get; set; }
     }
 
     public class GeoPlace {
-        [JsonProperty("id")]
-        public int Id { get; internal set; }
+        public GeoPlace() {}
 
-        [JsonProperty("title")]
-        public string Title { get; internal set; }
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
 
-        [JsonProperty("latitude")]
-        public double Latitude { get; internal set; }
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
 
-        [JsonProperty("longitude")]
-        public double Longitude { get; internal set; }
+        [JsonPropertyName("latitude")]
+        public double Latitude { get; set; }
 
-        [JsonProperty("created")]
-        public int Created { get; internal set; }
+        [JsonPropertyName("longitude")]
+        public double Longitude { get; set; }
 
-        [JsonProperty("icon")]
-        public string Icon { get; internal set; }
+        [JsonPropertyName("created")]
+        public int Created { get; set; }
 
-        [JsonProperty("country")]
-        public string Country { get; internal set; }
+        [JsonPropertyName("icon")]
+        public string Icon { get; set; }
 
-        [JsonProperty("city")]
-        public string City { get; internal set; }
+        [JsonPropertyName("country")]
+        public string Country { get; set; }
+
+        [JsonPropertyName("city")]
+        public string City { get; set; }
     }
 
     public class Geo {
-        [JsonProperty("type")]
-        public string Type { get; internal set; }
+        public Geo() {}
 
-        [JsonProperty("coordinates")]
-        public GeoCoordinates Coordinates { get; internal set; }
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
-        [JsonProperty("place")]
-        public GeoPlace Place { get; internal set; }
+        [JsonPropertyName("coordinates")]
+        public GeoCoordinates Coordinates { get; set; }
+
+        [JsonPropertyName("place")]
+        public GeoPlace Place { get; set; }
     }
 
     public class Action {
-        [JsonProperty("type")]
-        public string Type { get; internal set; }
+        public Action() {}
 
-        [JsonProperty("member_id")]
-        public long MemberId { get; internal set; }
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
+        [JsonPropertyName("member_id")]
+        public long MemberId { get; set; }
 
         [JsonIgnore] // TODO: remove it.
-        public long FromId { get; internal set; }
+        public long FromId { get; set; }
 
-        [JsonProperty("text")]
-        public string Text { get; internal set; }
+        [JsonPropertyName("text")]
+        public string Text { get; set; }
 
-        [JsonProperty("old_text")]
-        public string OldText { get; internal set; }
+        [JsonPropertyName("old_text")]
+        public string OldText { get; set; }
 
-        [JsonProperty("conversation_message_id")]
-        public int ConversationMessageId { get; internal set; }
+        [JsonPropertyName("conversation_message_id")]
+        public int ConversationMessageId { get; set; }
 
-        [JsonProperty("message")]
-        public string Message { get; internal set; }
+        [JsonPropertyName("message")]
+        public string Message { get; set; }
 
-        [JsonProperty("style")]
-        public string Style { get; internal set; }
+        [JsonPropertyName("style")]
+        public string Style { get; set; }
     }
 
     public class Message {
+        public Message() {}
+
         [JsonIgnore]
         public DateTime DateTime { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
 
@@ -101,85 +114,85 @@ namespace ELOR.VKAPILib.Objects {
 
         //
 
-        [JsonProperty("id")]
-        public int Id { get; internal set; }
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
 
-        [JsonProperty("conversation_message_id")]
-        public int ConversationMessageId { get; internal set; }
+        [JsonPropertyName("conversation_message_id")]
+        public int ConversationMessageId { get; set; }
 
-        [JsonProperty("date")]
-        public long DateUnix { get; internal set; }
+        [JsonPropertyName("date")]
+        public long DateUnix { get; set; }
 
-        [JsonProperty("update_time")]
-        public long UpdateTimeUnix { get; internal set; }
+        [JsonPropertyName("update_time")]
+        public long UpdateTimeUnix { get; set; }
 
-        [JsonProperty("peer_id")]
-        public long PeerId { get; internal set; }
+        [JsonPropertyName("peer_id")]
+        public long PeerId { get; set; }
 
-        [JsonProperty("from_id")]
-        public long FromId { get; internal set; }
+        [JsonPropertyName("from_id")]
+        public long FromId { get; set; }
 
-        [JsonProperty("admin_author_id")]
-        public long AdminAuthorId { get; internal set; }
+        [JsonPropertyName("admin_author_id")]
+        public long AdminAuthorId { get; set; }
 
-        [JsonProperty("text")]
-        public string Text { get; internal set; }
+        [JsonPropertyName("text")]
+        public string Text { get; set; }
 
-        [JsonProperty("random_id")]
-        public int RandomId { get; internal set; }
+        [JsonPropertyName("random_id")]
+        public int RandomId { get; set; }
 
-        [JsonProperty("attachments")]
-        public List<Attachment> Attachments { get; internal set; }
+        [JsonPropertyName("attachments")]
+        public List<Attachment> Attachments { get; set; }
 
-        [JsonProperty("important")]
-        public bool Important { get; internal set; }
+        [JsonPropertyName("important")]
+        public bool Important { get; set; }
 
-        [JsonProperty("geo")]
-        public Geo Geo { get; internal set; }
+        [JsonPropertyName("geo")]
+        public Geo Geo { get; set; }
 
-        [JsonProperty("payload")]
-        public string PayLoad { get; internal set; }
+        [JsonPropertyName("payload")]
+        public string PayLoad { get; set; }
 
-        [JsonProperty("keyboard")]
-        public BotKeyboard Keyboard { get; internal set; }
+        [JsonPropertyName("keyboard")]
+        public BotKeyboard Keyboard { get; set; }
 
-        [JsonProperty("fwd_messages")]
-        public List<Message> ForwardedMessages { get; internal set; }
+        [JsonPropertyName("fwd_messages")]
+        public List<Message> ForwardedMessages { get; set; }
 
-        [JsonProperty("reply_message")]
-        public Message ReplyMessage { get; internal set; }
+        [JsonPropertyName("reply_message")]
+        public Message ReplyMessage { get; set; }
 
-        [JsonProperty("action")]
-        public Action Action { get; internal set; }
+        [JsonPropertyName("action")]
+        public Action Action { get; set; }
 
-        [JsonProperty("template")]
-        public BotTemplate Template { get; internal set; }
+        [JsonPropertyName("template")]
+        public BotTemplate Template { get; set; }
 
-        [JsonProperty("expire_ttl")]
-        public int ExpireTTL { get; internal set; }
+        [JsonPropertyName("expire_ttl")]
+        public int ExpireTTL { get; set; }
 
-        [JsonProperty("ttl")]
-        public int TTL { get; internal set; }
+        [JsonPropertyName("ttl")]
+        public int TTL { get; set; }
 
-        [JsonProperty("is_expired")]
-        public bool IsExpired { get; internal set; }
+        [JsonPropertyName("is_expired")]
+        public bool IsExpired { get; set; }
 
         [JsonIgnore]
         public bool IsPartial { get; private set; }
 
-        public static Message BuildFromLP(JArray msg, long currentUserId, Func<long, bool> infoCached, out bool needToGetFullMsgFromAPI, out Exception exception) {
+        public static Message BuildFromLP(JsonArray msg, long currentUserId, Func<long, bool> infoCached, out bool needToGetFullMsgFromAPI, out Exception exception) {
             exception = null;
             try {
-                int id = Convert.ToInt32(msg[1]);
-                int flags = Convert.ToInt32(msg[2]);
-                long peer = Convert.ToInt64(msg[3]);
-                int timestamp = Convert.ToInt32(msg[4]);
+                int id = (int)msg[1];
+                int flags = (int)msg[2];
+                long peer = (long)msg[3];
+                int timestamp = (int)msg[4];
                 string text = (string)msg[5];
-                JObject additional = msg[6].Value<JObject>();
-                JObject attachments = msg[7].Value<JObject>();
-                int randomId = Convert.ToInt32(msg[8]);
-                int cmId = Convert.ToInt32(msg[9]);
-                int updateTimestamp = Convert.ToInt32(msg[10]);
+                JsonObject additional = msg[6].AsObject();
+                JsonObject attachments = msg[7].AsObject();
+                int randomId = (int)msg[8];
+                int cmId = (int)msg[9];
+                int updateTimestamp = (int)msg[10];
                 needToGetFullMsgFromAPI = false;
 
                 bool outbound = (2 & flags) != 0;
@@ -197,7 +210,7 @@ namespace ELOR.VKAPILib.Objects {
 
                 if (additional.ContainsKey("from")) {
                     // ¯\_(ツ)_/¯
-                    message.FromId = Convert.ToInt64(additional["from"].Value<string>());
+                    message.FromId = Convert.ToInt64((string)additional["from"]);
                 } else {
                     message.FromId = outbound ? currentUserId : peer;
                 }
@@ -209,19 +222,19 @@ namespace ELOR.VKAPILib.Objects {
                     message.Text = text.Replace("<br>", "\n").Replace("&quot;", "\"").Replace("&amp;", "&")
                                        .Replace("&lt;", "<").Replace("&gt;", ">");
 
-                if (additional.ContainsKey("payload")) message.PayLoad = additional["payload"].Value<string>();
-                if (additional.ContainsKey("expire_ttl")) message.ExpireTTL = additional["expire_ttl"].Value<int>();
-                if (additional.ContainsKey("ttl")) message.ExpireTTL = additional["ttl"].Value<int>();
+                if (additional.ContainsKey("payload")) message.PayLoad = additional["payload"].ToString();
+                if (additional.ContainsKey("expire_ttl")) message.ExpireTTL = (int)additional["expire_ttl"];
+                if (additional.ContainsKey("ttl")) message.ExpireTTL = (int)additional["ttl"];
                 if (additional.ContainsKey("is_expired")) message.IsExpired = true;
                 if (additional.ContainsKey("keyboard")) {
-                    message.Keyboard = additional["keyboard"].ToObject<BotKeyboard>();
+                    message.Keyboard = additional["keyboard"].Deserialize<BotKeyboard>();
                     message.Keyboard.AuthorId = message.FromId;
                 }
 
                 if (attachments.Count > 0) {
-                    if (attachments.ContainsKey("attach1_type") && attachments["attach1_type"].Value<string>() == "sticker") {
-                        if (attachments.ContainsKey("attachments_count") && attachments["attachments_count"].Value<int>() == 1) {
-                            var parsedAtchs = JsonConvert.DeserializeObject<List<Attachment>>(attachments["attachments"].Value<string>());
+                    if (attachments.ContainsKey("attach1_type") && attachments["attach1_type"].ToString() == "sticker") {
+                        if (attachments.ContainsKey("attachments_count") && (string)attachments["attachments_count"] == "1") {
+                            var parsedAtchs = JsonSerializer.Deserialize<List<Attachment>>((string)attachments["attachments"]);
                             if (parsedAtchs != null) message.Attachments = parsedAtchs;
                         } else {
                             needToGetFullMsgFromAPI = true;
@@ -232,14 +245,14 @@ namespace ELOR.VKAPILib.Objects {
                 }
                 if (additional.ContainsKey("source_act")) {
                     Action act = new Action {
-                        Type = additional["source_act"].Value<string>()
+                        Type = additional["source_act"].ToString()
                     };
                     act.FromId = message.FromId;
-                    if (additional.ContainsKey("source_text")) act.Text = additional["source_text"].Value<string>();
-                    if (additional.ContainsKey("source_old_text")) act.OldText = additional["source_old_text"].Value<string>();
-                    if (additional.ContainsKey("source_mid")) act.MemberId = additional["source_mid"].Value<int>();
-                    if (additional.ContainsKey("source_chat_local_id")) act.ConversationMessageId = additional["source_chat_local_id"].Value<int>();
-                    if (additional.ContainsKey("source_style")) act.Style = additional["source_style"].Value<string>();
+                    if (additional.ContainsKey("source_text")) act.Text = additional["source_text"].ToString();
+                    if (additional.ContainsKey("source_old_text")) act.OldText = additional["source_old_text"].ToString();
+                    if (additional.ContainsKey("source_mid")) act.MemberId = (long)additional["source_mid"];
+                    if (additional.ContainsKey("source_chat_local_id")) act.ConversationMessageId = (int)additional["source_chat_local_id"];
+                    if (additional.ContainsKey("source_style")) act.Style = additional["source_style"].ToString();
                     if (act.Type == "chat_photo_update") needToGetFullMsgFromAPI = true;
                     message.Action = act;
 

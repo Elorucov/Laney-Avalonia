@@ -195,14 +195,14 @@ namespace ELOR.Laney.ViewModels {
                     Title = PeerUser.FullName;
                     Avatar = new Uri(PeerUser.Photo200);
                 }
-                IsVerified = PeerUser.Verified;
+                IsVerified = PeerUser.Verified == 1;
                 Online = PeerUser.OnlineInfo;
             } else if (PeerId.IsGroup()) { // Group
                 PeerType = PeerType.Group;
                 PeerGroup = CacheManager.GetGroup(PeerId);
                 Title = PeerGroup.Name;
                 Avatar = new Uri(PeerGroup.Photo200);
-                IsVerified = PeerGroup.Verified;
+                IsVerified = PeerGroup.Verified == 1;
                 Subtitle = PeerGroup.Activity?.ToLowerInvariant();
             } else if (PeerId.IsChat()) { // Chat
                 PeerType = PeerType.Chat;
@@ -265,8 +265,8 @@ namespace ELOR.Laney.ViewModels {
                         if (PeerUser.Deactivated == DeactivationState.Banned) RestrictionReason = Localizer.Instance["user_blocked"];
                         break;
                     case 900:
-                        if (PeerUser.Blacklisted) RestrictionReason = Localizer.Instance.Get("user_blacklisted", PeerUser.Sex);
-                        if (PeerUser.BlacklistedByMe) RestrictionReason = Localizer.Instance.Get("user_blacklisted_by_me", PeerUser.Sex);
+                        if (PeerUser.Blacklisted == 1) RestrictionReason = Localizer.Instance.Get("user_blacklisted", PeerUser.Sex);
+                        if (PeerUser.BlacklistedByMe == 1) RestrictionReason = Localizer.Instance.Get("user_blacklisted_by_me", PeerUser.Sex);
                         break;
                     default:
                         RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Localizer.Instance["cannot_write"]);

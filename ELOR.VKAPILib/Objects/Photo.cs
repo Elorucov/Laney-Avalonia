@@ -1,22 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace ELOR.VKAPILib.Objects
-{
-    public class PhotoSizes
-    {
-        [JsonProperty("type")]
+namespace ELOR.VKAPILib.Objects {
+    public class PhotoSizes {
+        public PhotoSizes() {}
+
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
-        [JsonProperty("src")]
+        [JsonPropertyName("src")]
         public string Src { get; set; }
 
         [JsonIgnore]
-        public Uri Uri { 
+        public Uri Uri {
             get {
                 if (!String.IsNullOrEmpty(Url)) return new Uri(Url);
                 if (!String.IsNullOrEmpty(Src)) return new Uri(Src);
@@ -24,35 +24,37 @@ namespace ELOR.VKAPILib.Objects
             }
         }
 
-        [JsonProperty("width")]
+        [JsonPropertyName("width")]
         public int Width { get; set; }
 
-        [JsonProperty("height")]
+        [JsonPropertyName("height")]
         public int Height { get; set; }
 
         public override string ToString() => $"{Type}:{Width}x{Height}";
     }
 
     public class Photo : AttachmentBase, IPreview {
+        public Photo() {}
+
         [JsonIgnore]
         public override string ObjectType { get { return "photo"; } }
 
-        [JsonProperty("album_id")]
+        [JsonPropertyName("album_id")]
         public int AlbumId { get; set; }
 
-        [JsonProperty("user_id")]
+        [JsonPropertyName("user_id")]
         public long UserId { get; set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public int DateUnix { get; set; }
 
         [JsonIgnore]
         public DateTime Date { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("sizes")]
+        [JsonPropertyName("sizes")]
         public List<PhotoSizes> Sizes { get; set; }
 
         [JsonIgnore]
@@ -61,25 +63,25 @@ namespace ELOR.VKAPILib.Objects
         [JsonIgnore]
         public PhotoSizes MinimalSizedPhoto { get { return GetMinimalSizedPhoto(); } }
 
-        [JsonProperty("width")]
+        [JsonPropertyName("width")]
         public double Width { get; set; }
 
-        [JsonProperty("height")]
+        [JsonPropertyName("height")]
         public double Height { get; set; }
 
-        [JsonProperty("photo_50")]
+        [JsonPropertyName("photo_50")]
         public string Photo50Url { get; set; }
 
         [JsonIgnore]
         public Uri Photo50 { get { return new Uri(Photo50Url); } }
 
-        [JsonProperty("photo_100")]
+        [JsonPropertyName("photo_100")]
         public string Photo100Url { get; set; }
 
         [JsonIgnore]
         public Uri Photo100 { get { return new Uri(Photo100Url); } }
 
-        [JsonProperty("photo_200")]
+        [JsonPropertyName("photo_200")]
         public string Photo200Url { get; set; }
 
         [JsonIgnore]

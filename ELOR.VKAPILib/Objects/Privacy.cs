@@ -1,14 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
-using System.Text;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
 
-    [DataContract]
     public enum PrivacySettingValueType {
-
         [EnumMember(Value = "binary")]
         Binary,
 
@@ -17,69 +13,81 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PrivacySettingValueOwners {
-        [JsonProperty("allowed")]
+        public PrivacySettingValueOwners() {}
+
+        [JsonPropertyName("allowed")]
         public List<int> Allowed { get; set; }
     }
 
     public class PrivacySettingValue {
-        [JsonProperty("category")]
+        public PrivacySettingValue() {}
+
+        [JsonPropertyName("category")]
         public string Category { get; set; }
 
-        [JsonProperty("owners")]
+        [JsonPropertyName("owners")]
         public PrivacySettingValueOwners Owners { get; set; }
 
-        [JsonProperty("is_enabled")]
+        [JsonPropertyName("is_enabled")]
         public bool IsEnabled { get; set; }
     }
 
     public class PrivacySetting {
-        [JsonProperty("key")]
+        public PrivacySetting() {}
+
+        [JsonPropertyName("key")]
         public string Key { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("value")]
+        [JsonPropertyName("value")]
         public PrivacySettingValue Value { get; set; }
 
-        [JsonProperty("section")]
+        [JsonPropertyName("section")]
         public string Section { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<PrivacySettingValueType>))]
         public PrivacySettingValueType Type { get; set; }
 
-        [JsonProperty("supported_categories")]
+        [JsonPropertyName("supported_categories")]
         public List<string> SupportedCategories { get; set; }
     }
 
     public class PrivacySection {
+        public PrivacySection() {}
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
     }
 
     public class PrivacyCategory {
-        [JsonProperty("value")]
+        public PrivacyCategory() {}
+
+        [JsonPropertyName("value")]
         public string Value { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
     }
 
     public class PrivacyResponse {
-        [JsonProperty("settings")]
+        public PrivacyResponse() {}
+
+        [JsonPropertyName("settings")]
         public List<PrivacySetting> Settings { get; set; }
 
-        [JsonProperty("sections")]
+        [JsonPropertyName("sections")]
         public List<PrivacySection> Sections { get; set; }
 
-        [JsonProperty("supported_categories")]
+        [JsonPropertyName("supported_categories")]
         public List<PrivacyCategory> SupportedCategories { get; set; }
     }
 }

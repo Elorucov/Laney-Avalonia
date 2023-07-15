@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Messages {
+   
     public class JoinChatResponse {
-        [JsonProperty("chat_id")]
-        public int ChatId { get; set; }
+        public JoinChatResponse() { }
+
+        [JsonPropertyName("chat_id")]
+        public long ChatId { get; set; }
     }
 }

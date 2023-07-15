@@ -1,19 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class PhotoUploadResult {
-        [JsonProperty("server")]
+        public PhotoUploadResult() {}
+        
+        [JsonPropertyName("server")]
         public int Server { get; set; }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public string Photo { get; set; }
 
-        [JsonProperty("hash")]
+        [JsonPropertyName("hash")]
         public string Hash { get; set; }
     }
 }

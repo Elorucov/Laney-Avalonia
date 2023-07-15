@@ -1,33 +1,33 @@
 ﻿using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace ELOR.Laney.DataModels {
     public class DemoModeSession {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public long Id { get; private set; }
 
-        [JsonProperty("conversations")]
+        [JsonPropertyName("conversations")]
         public List<ConversationItem> Conversations { get; private set; }
 
-        [JsonProperty("messages")]
+        [JsonPropertyName("messages")]
         public List<Message> Messages { get; private set; }
 
-        [JsonProperty("times")]
+        [JsonPropertyName("times")]
         public Dictionary<int, int> Times { get; private set; }
 
-        [JsonProperty("activity_statuses")]
+        [JsonPropertyName("activity_statuses")]
         public Dictionary<long, List<LongPollActivityInfo>> ActivityStatuses { get; private set; }
     }
 
     public class DemoModeData {
-        [JsonProperty("sessions")]
+        [JsonPropertyName("sessions")]
         public List<DemoModeSession> Sessions { get; private set; }
 
-        [JsonProperty("profiles")]
+        [JsonPropertyName("profiles")]
         public List<User> Profiles { get; private set; }
 
-        [JsonProperty("groups")]
+        [JsonPropertyName("groups")]
         public List<Group> Groups { get; private set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.DataModels {
     public enum LongPollState {
@@ -17,10 +17,10 @@ namespace ELOR.Laney.DataModels {
             Status = status;
         }
 
-        [JsonProperty("member_id")]
+        [JsonPropertyName("member_id")]
         public long MemberId { get; private set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public LongPollActivityType Status { get; private set; }
 
         public override string ToString() {
@@ -29,47 +29,47 @@ namespace ELOR.Laney.DataModels {
     }
 
     public class LongPollPushNotificationData {
-        [JsonProperty("peer_id")]
+        [JsonPropertyName("peer_id")]
         public long PeerId { get; private set; }
 
-        [JsonProperty("sound")]
+        [JsonPropertyName("sound")]
         public int Sound { get; private set; }
 
-        [JsonProperty("disabled_until")]
+        [JsonPropertyName("disabled_until")]
         public int DisabledUntil { get; private set; }
     }
 
     public class LongPollCallbackAction {
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; private set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; private set; } // Type = "show_snackbar"
 
-        [JsonProperty("link")]
+        [JsonPropertyName("link")]
         public string Link { get; private set; } // Type = "open_link"
 
-        [JsonProperty("app_id")]
+        [JsonPropertyName("app_id")]
         public int AppId { get; private set; } // Type = "open_app"
 
-        [JsonProperty("owner_id")]
+        [JsonPropertyName("owner_id")]
         public long OwnerId { get; private set; } // Type = "open_app"
 
-        [JsonProperty("hash")]
+        [JsonPropertyName("hash")]
         public string Hash { get; private set; } // Type = "open_app"
     }
 
     public class LongPollCallbackResponse {
-        [JsonProperty("peer_id")]
+        [JsonPropertyName("peer_id")]
         public long PeerId { get; private set; }
 
-        [JsonProperty("owner_id")]
+        [JsonPropertyName("owner_id")]
         public long OwnerId { get; private set; }
 
-        [JsonProperty("event_id")]
+        [JsonPropertyName("event_id")]
         public string EventId { get; private set; }
 
-        [JsonProperty("action")]
+        [JsonPropertyName("action")]
         public LongPollCallbackAction Action { get; private set; }
     }
 }

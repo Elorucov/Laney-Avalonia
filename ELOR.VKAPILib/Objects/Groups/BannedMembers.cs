@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
+using ELOR.VKAPILib.Attributes;
+﻿using System.Text.Json.Serialization;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace ELOR.VKAPILib.Objects.Groups {
     public enum BanReason {
@@ -13,7 +12,6 @@ namespace ELOR.VKAPILib.Objects.Groups {
         IrrelevantMessages = 4
     }
 
-    [DataContract]
     public enum MemberType {
         [EnumMember(Value = "profile")]
         Profile,
@@ -23,22 +21,23 @@ namespace ELOR.VKAPILib.Objects.Groups {
     }
 
     public class BanInfo {
-        [JsonProperty("admin_id")]
-        public int AdminId { get; set; }
+        [JsonPropertyName("admin_id")]
+        public long AdminId { get; set; }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public int DateUnix { get; set; }
 
         [JsonIgnore]
         public DateTime Date { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("reason")]
+        [JsonPropertyName("reason")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<BanReason>))]
         public BanReason Reason { get; set; }
 
-        [JsonProperty("comment")]
+        [JsonPropertyName("comment")]
         public string Comment { get; set; }
 
-        [JsonProperty("end_date")]
+        [JsonPropertyName("end_date")]
         public int EndDateUnix { get; set; }
 
         [JsonIgnore]
@@ -46,16 +45,17 @@ namespace ELOR.VKAPILib.Objects.Groups {
     }
 
     public class BannedMembers {
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<MemberType>))]
         public MemberType Type { get; set; }
 
-        [JsonProperty("profile")]
+        [JsonPropertyName("profile")]
         public User Profile { get; set; }
 
-        [JsonProperty("group")]
+        [JsonPropertyName("group")]
         public Group Group { get; set; }
 
-        [JsonProperty("ban_info")]
+        [JsonPropertyName("ban_info")]
         public BanInfo BanInfo { get; set; }
     }
 }

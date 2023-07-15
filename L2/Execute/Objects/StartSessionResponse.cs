@@ -1,24 +1,28 @@
 ﻿using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace ELOR.Laney.Execute.Objects {
     public class LongPollInfoForSession {
-        [JsonProperty("session_id")]
+        public LongPollInfoForSession() {}
+
+        [JsonPropertyName("session_id")]
         public long SessionId { get; set; }
 
-        [JsonProperty("longpoll")]
+        [JsonPropertyName("longpoll")]
         public LongPollServerInfo LongPoll { get; set; }
     }
 
     public class StartSessionResponse {
-        [JsonProperty("user")]
+        public StartSessionResponse() {}
+
+        [JsonPropertyName("user")]
         public User User { get; set; }
 
-        [JsonProperty("groups")]
+        [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
 
-        [JsonProperty("longpolls")]
+        [JsonPropertyName("longpolls")]
         public List<LongPollInfoForSession> LongPolls { get; set; }
     }
 }

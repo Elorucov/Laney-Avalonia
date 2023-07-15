@@ -7,7 +7,7 @@ using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Upload;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using VKUI.Controls;
+using System.Text.Json;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public enum OutboundAttachmentType { Attachment, ForwardedMessages, Place }
@@ -215,7 +216,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         var pr = await uploader.UploadAsync();
                         if (pr == null) throw new ArgumentNullException("Upload error, no response!");
                         UploadProgress = 100;
-                        PhotoUploadResult pur = JsonConvert.DeserializeObject<PhotoUploadResult>(pr);
+                        PhotoUploadResult pur = JsonSerializer.Deserialize<PhotoUploadResult>(pr);
                         if (String.IsNullOrEmpty(pur.Photo)) throw new Exception("File is not uploaded!");
                         var presult = await session.API.Photos.SaveMessagesPhotoAsync(session.GroupId, pur.Server, pur.Photo, pur.Hash);
                         if (presult.Count > 0) {
@@ -234,7 +235,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         var dr = await uploader.UploadAsync();
                         if (dr == null) throw new ArgumentNullException("Upload error, no response!");
                         UploadProgress = 100;
-                        DocumentUploadResult dur = JsonConvert.DeserializeObject<DocumentUploadResult>(dr);
+                        DocumentUploadResult dur = JsonSerializer.Deserialize<DocumentUploadResult>(dr);
                         if (String.IsNullOrEmpty(dur.File)) {
                             throw new Exception(!String.IsNullOrEmpty(dur.ErrorDescription) ? dur.ErrorDescription : dur.Error);
                         }
@@ -256,7 +257,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         var vr = await uploader.UploadAsync();
                         if (vr == null) throw new ArgumentNullException("Upload error, no response!");
                         UploadProgress = 100;
-                        VideoUploadResult vur = JsonConvert.DeserializeObject<VideoUploadResult>(vr);
+                        VideoUploadResult vur = JsonSerializer.Deserialize<VideoUploadResult>(vr);
                         Video video = new Video { 
                             Id = vur.VideoId,
                             OwnerId = vur.OwnerId,

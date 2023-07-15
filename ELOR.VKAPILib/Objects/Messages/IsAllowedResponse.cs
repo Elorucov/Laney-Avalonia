@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class IsAllowedResponse {
-        [JsonProperty("is_allowed")]
-        public bool IsAllowed { get; internal set; }
+        public IsAllowedResponse() {}
+        
+        [JsonPropertyName("is_allowed")]
+        public bool IsAllowed { get; set; }
     }
 }

@@ -1,27 +1,29 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects
 {
     public class AudioMessage : AttachmentBase {
+        public AudioMessage() {}
+            
         [JsonIgnore]
         public override string ObjectType { get { return "doc"; } }
 
-        [JsonProperty("duration")]
+        [JsonPropertyName("duration")]
         public int Duration { get; set; }
 
         [JsonIgnore]
         public TimeSpan DurationTime { get { return TimeSpan.FromSeconds(Duration); } }
 
-        [JsonProperty("waveform")]
+        [JsonPropertyName("waveform")]
         public int[] WaveForm { get; set; }
 
-        [JsonProperty("link_mp3")]
+        [JsonPropertyName("link_mp3")]
         public string Link { get; set; }
 
         [JsonIgnore]
         public Uri Uri { get { return new Uri(Link); } }
 
-        [JsonProperty("transcript")]
+        [JsonPropertyName("transcript")]
         public string Transcript { get; set; }
     }
 }

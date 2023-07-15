@@ -1,13 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class VkUploadServer {
-        [JsonProperty("upload_url")]
+        public VkUploadServer() {}
+        
+        [JsonPropertyName("upload_url")]
         public string Url { get; set; }
 
         [JsonIgnore]

@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -152,26 +152,26 @@ namespace ELOR.Laney.Core.Network {
         }
 
         private static VKProxyConfig CheckProxiesFromResponse(string response) {
-            JObject root = JObject.Parse(response);
-            JObject configNetProxy = JObject.Parse(root["entries"]["config_network_proxy"].Value<string>());
-            JObject configNetProxyCerts = JObject.Parse(root["entries"]["config_network_proxy_certs"].Value<string>());
+            JsonNode root = JsonNode.Parse(response);
+            JsonNode configNetProxy = JsonNode.Parse(root["entries"]["config_network_proxy"].GetValue<string>());
+            JsonNode configNetProxyCerts = JsonNode.Parse(root["entries"]["config_network_proxy_certs"].GetValue<string>());
 
             var data = configNetProxy["data"];
-            JArray ips = (JArray)data["ip"];
-            JArray domains = (JArray)data["domains"];
-            JArray certs = (JArray)configNetProxyCerts["certs"];
+            JsonArray ips = data["ip"].AsArray();
+            JsonArray domains = data["domains"].AsArray();
+            JsonArray certs = configNetProxyCerts["certs"].AsArray();
             Log($"IP-addresses count: {ips.Count}. Certs count: {certs.Count}");
 
             // TODO: weight
 
-            List<string> ProxyServers = ips.Select(t => t.Value<string>()).ToList();
-            List<string> Domains = domains.Select(t => t.Value<string>()).ToList();
+            List<string> ProxyServers = ips.Select(t => t.GetValue<string>()).ToList();
+            List<string> Domains = domains.Select(t => t.GetValue<string>()).ToList();
             List<VKProxyCertificate> Certificates = new List<VKProxyCertificate>();
 
-            foreach (JObject c in certs) {
-                int id = c.Value<int>("id");
-                string hpkp = c.Value<string>("hpkp");
-                string cert = c.Value<string>("cert");
+            foreach (JsonObject c in certs) {
+                int id = (int)c["id"];
+                string hpkp = (string)c["hpkp"];
+                string cert = (string)c["cert"];
                 Certificates.Add(new VKProxyCertificate(id, cert));
             }
 

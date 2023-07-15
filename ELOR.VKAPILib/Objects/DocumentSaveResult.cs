@@ -1,17 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class DocumentSaveResult {
-        [JsonProperty("type")]
+        public DocumentSaveResult() {}
+
+        [JsonPropertyName("type")]
         public AttachmentType Type { get; set; }
 
-        [JsonProperty("graffiti")]
+        [JsonPropertyName("graffiti")]
         public Graffiti Graffiti { get; set; }
 
-        [JsonProperty("audio_message")]
+        [JsonPropertyName("audio_message")]
         public AudioMessage AudioMessage { get; set; }
 
-        [JsonProperty("doc")]
+        [JsonPropertyName("doc")]
         public Document Document { get; set; }
     }
 }

@@ -1,14 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class VideoAlbum : Album {
-        [JsonProperty("count")]
+        public VideoAlbum() {}
+
+        [JsonPropertyName("count")]
         public int Count { get; set; }
 
-        [JsonProperty("photo_320")]
+        [JsonPropertyName("photo_320")]
         public string Photo320 { get; set; }
 
-        [JsonProperty("photo_160")]
+        [JsonPropertyName("photo_160")]
         public string Photo160 { get; set; }
 
         [JsonIgnore]

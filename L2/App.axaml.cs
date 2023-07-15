@@ -84,9 +84,11 @@ namespace ELOR.Laney {
             base.OnFrameworkInitializationCompleted();
         }
 
-        private void Prepare() {
+        private async void Prepare() {
+            Debug.WriteLine("Getting and loading language...");
             string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
-            Localizer.Instance.LoadLanguage(lang);
+            bool langLoaded = Localizer.Instance.LoadLanguage(lang);
+            Debug.WriteLine("Language loaded!");
 
 #if RELEASE
 #else
@@ -95,6 +97,15 @@ namespace ELOR.Laney {
                 DesktopLifetime.MainWindow.Closed += (a, b) => Process.GetCurrentProcess().Kill();
                 DesktopLifetime.MainWindow.Show();
             }
+
+            // Checking all avalonia resources.
+            // Надо для сравнения между обычной компиляцией и AOT
+            var uris = AssetLoader.GetAssets(new Uri("avares://laney/"), new Uri("avares://laney/"));
+            Log.Information("Found resources:");
+            foreach (var uri in uris) {
+                Log.Information($"> {uri}");
+            }
+            
 #endif
 
             // Additional check
@@ -227,7 +238,6 @@ namespace ELOR.Laney {
             "Avalonia.Skia.Lottie by Wiesław Šoltés",
             "ColorTextBlock.Avalonia by whistyun",
             "jp2masa.Avalonia.Flexbox",
-            "Newtonsoft.Json",
             "PanAndZoom by Wiesław Šoltés",
             "Serilog",
             "Unicode.net",

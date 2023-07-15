@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum AttachmentType {
         Unknown,
 
@@ -77,16 +77,18 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class AttachmentBase {
+        public AttachmentBase() {}
+            
         [JsonIgnore]
         public virtual string ObjectType { get; set; }
 
-        [JsonProperty("owner_id")]
+        [JsonPropertyName("owner_id")]
         public long OwnerId { get; set; }
 
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("access_key")]
+        [JsonPropertyName("access_key")]
         public string AccessKey { get; set; }
 
         public override string ToString() {
@@ -96,73 +98,75 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Attachment {
-        [JsonProperty("type")]
+        public Attachment() {}
+            
+        [JsonPropertyName("type")]
         public string TypeString { get; set; }
 
         [JsonIgnore]
         public AttachmentType Type { get { return GetAttachmentEnum(); } }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public Photo Photo { get; set; }
 
-        [JsonProperty("video")]
+        [JsonPropertyName("video")]
         public Video Video { get; set; }
 
-        [JsonProperty("audio")]
+        [JsonPropertyName("audio")]
         public Audio Audio { get; set; }
 
-        [JsonProperty("audio_message")]
+        [JsonPropertyName("audio_message")]
         public AudioMessage AudioMessage { get; set; }
 
-        [JsonProperty("podcast")]
+        [JsonPropertyName("podcast")]
         public Podcast Podcast { get; set; }
 
-        [JsonProperty("doc")]
+        [JsonPropertyName("doc")]
         public Document Document { get; set; }
 
-        [JsonProperty("link")]
+        [JsonPropertyName("link")]
         public Link Link { get; set; }
 
-        [JsonProperty("market")]
+        [JsonPropertyName("market")]
         public Market Market { get; set; }
 
-        [JsonProperty("wall")]
+        [JsonPropertyName("wall")]
         public WallPost Wall { get; set; }
 
-        [JsonProperty("wall_reply")]
+        [JsonPropertyName("wall_reply")]
         public WallReply WallReply { get; set; }
 
-        [JsonProperty("sticker")]
+        [JsonPropertyName("sticker")]
         public Sticker Sticker { get; set; }
 
-        [JsonProperty("graffiti")]
+        [JsonPropertyName("graffiti")]
         public Graffiti Graffiti { get; set; }
 
-        [JsonProperty("story")]
+        [JsonPropertyName("story")]
         public Story Story { get; set; }
 
-        [JsonProperty("gift")]
+        [JsonPropertyName("gift")]
         public Gift Gift { get; set; }
 
-        [JsonProperty("call")]
+        [JsonPropertyName("call")]
         public Call Call { get; set; }
 
-        [JsonProperty("group_call_in_progress")]
+        [JsonPropertyName("group_call_in_progress")]
         public GroupCallInProgress GroupCallInProgress { get; set; }
 
-        [JsonProperty("poll")]
+        [JsonPropertyName("poll")]
         public Poll Poll { get; set; }
 
-        [JsonProperty("event")]
+        [JsonPropertyName("event")]
         public Event Event { get; set; }
 
-        [JsonProperty("curator")]
+        [JsonPropertyName("curator")]
         public Curator Curator { get; set; }
 
-        [JsonProperty("narrative")]
+        [JsonPropertyName("narrative")]
         public Narrative Narrative { get; set; }
 
-        [JsonProperty("textpost_publish")]
+        [JsonPropertyName("textpost_publish")]
         public TextpostPublish TextpostPublish { get; set; }
 
         private AttachmentType GetAttachmentEnum() {

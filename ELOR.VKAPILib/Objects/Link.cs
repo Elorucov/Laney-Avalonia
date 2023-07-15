@@ -1,60 +1,66 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace ELOR.VKAPILib.Objects
-{
-    public class LinkButtonAction
-    {
-        [JsonProperty("url")]
+namespace ELOR.VKAPILib.Objects {
+    public class LinkButtonAction {
+        public LinkButtonAction() { }
+
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
         [JsonIgnore]
         public Uri Uri { get { if (!String.IsNullOrEmpty(Url)) { return new Uri(Url); } else { return null; } } }
     }
 
-    public class LinkButton
-    {
-        [JsonProperty("title")]
+    public class LinkButton {
+        public LinkButton() { }
+
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("action")]
+        [JsonPropertyName("action")]
         public LinkButtonAction Action { get; set; }
     }
 
-    public class Link
-    {
-        [JsonProperty("url")]
+    public class Link {
+        public Link() { }
+
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
         [JsonIgnore]
         public Uri Uri { get { if (!String.IsNullOrEmpty(Url)) { return new Uri(Url); } else { return null; } } }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("caption")]
+        [JsonPropertyName("caption")]
         public string Caption { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public Photo Photo { get; set; }
 
-        [JsonProperty("button")]
+        [JsonPropertyName("button")]
         public LinkButton Button { get; set; }
 
-        [JsonProperty("preview_page")]
+        [JsonPropertyName("preview_page")]
         public string PreviewPage { get; set; }
 
-        [JsonProperty("preview_url")]
+        [JsonPropertyName("preview_url")]
         public string PreviewUrl { get; set; }
 
-        [JsonProperty("image_src")]
+        [JsonPropertyName("image_src")]
         public string ImageSrc { get; set; }
-        
+
         [JsonIgnore]
-        public Uri PreviewUri { get { if (!String.IsNullOrEmpty(PreviewUrl)) { return new Uri(PreviewUrl); } else {
+        public Uri PreviewUri {
+            get {
+                if (!String.IsNullOrEmpty(PreviewUrl)) { return new Uri(PreviewUrl); } else {
                     if (!String.IsNullOrEmpty(ImageSrc)) { return new Uri(ImageSrc); } else { return null; }
-                } } }
+                }
+            }
+        }
     }
 }

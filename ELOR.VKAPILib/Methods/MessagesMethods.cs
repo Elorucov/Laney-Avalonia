@@ -2,10 +2,11 @@
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Methods {
 
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ConversationsFilter {
         [EnumMember(Value = "all")]
         All,
@@ -26,7 +27,7 @@ namespace ELOR.VKAPILib.Methods {
         BusinessNotify
     }
 
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum HistoryAttachmentMediaType {
         [EnumMember(Value = "photo")]
         Photo,
@@ -59,7 +60,7 @@ namespace ELOR.VKAPILib.Methods {
         AudioMessage
     }
 
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum MessageIntent {
         None,
 
@@ -73,7 +74,7 @@ namespace ELOR.VKAPILib.Methods {
         BotAdPromo
     }
 
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ActivityType {
         [EnumMember(Value = "typing")]
         Typing,
@@ -641,7 +642,7 @@ namespace ELOR.VKAPILib.Methods {
             if (startMessageId > 0) parameters.Add("start_message_id", startMessageId.ToString());
             if (markConversationAsRead) parameters.Add("mark_conversation_as_read", "1");
 
-            return await API.CallMethodAsync<bool>(this, parameters);
+            return await API.CallMethodAsync<int>(this, parameters) == 1;
         }
 
         /// <remarks>This method is undocumented!</remarks>

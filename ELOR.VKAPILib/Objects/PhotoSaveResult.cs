@@ -1,23 +1,25 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class PhotoSaveResult {
-        [JsonProperty("id")]
+        public PhotoSaveResult() {}
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("pid")]
+        [JsonPropertyName("pid")]
         public int PhotoId { get; set; }
 
-        [JsonProperty("album_id")]
+        [JsonPropertyName("album_id")]
         public int AlbumId { get; set; }
 
-        [JsonProperty("owner_id")]
+        [JsonPropertyName("owner_id")]
         public long OwnerId { get; set; }
 
-        [JsonProperty("access_key")]
+        [JsonPropertyName("access_key")]
         public string AccessKey { get; set; }
 
-        [JsonProperty("sizes")]
+        [JsonPropertyName("sizes")]
         public List<PhotoSizes> Sizes { get; set; }
     }
 }

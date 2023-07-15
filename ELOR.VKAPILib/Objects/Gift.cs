@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace ELOR.VKAPILib.Objects
-{
-    public class Gift
-    {
-        [JsonProperty("id")]
+namespace ELOR.VKAPILib.Objects {
+    public class Gift {
+        public Gift() {}
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("thumb_256")]
+        [JsonPropertyName("thumb_256")]
         public string Thumb { get; set; }
 
         [JsonIgnore]

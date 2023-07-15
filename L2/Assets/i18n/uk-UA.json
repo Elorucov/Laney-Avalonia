@@ -193,7 +193,7 @@
   "msg_action_screenshot_f": "зробила скриншот",
   "msg_action_accepted_message_request_m": "прийняв ваш запит на листування",
   "msg_action_accepted_message_request_f": "прийняла ваш запит на листування",
-  "msg_action_invite_user_by_call": "", // это суффикс, он должен быть пустым
+  "msg_action_invite_user_by_call": "",
   "msg_action_invite_user_by_call_m": "запросив до дзвінка",
   "msg_action_invite_user_by_call_f": "запросила до дзвінка",
   "msg_action_invite_user_by_call_join_link_m": "приєднався до дзвінка за посиланням",

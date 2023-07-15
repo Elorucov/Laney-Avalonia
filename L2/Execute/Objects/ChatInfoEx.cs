@@ -1,55 +1,59 @@
 ﻿using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.Laney.Execute.Objects {
     public class ChatInfoEx {
-        [JsonProperty("chat_id")]
+        public ChatInfoEx() {}
+
+        [JsonPropertyName("chat_id")]
         public long ChatId { get; set; }
 
-        [JsonProperty("peer_id")]
+        [JsonPropertyName("peer_id")]
         public long PeerId { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public string Photo { get; set; }
 
         [JsonIgnore]
         public Uri PhotoUri { get { return Uri.IsWellFormedUriString(Photo, UriKind.Absolute) ? new Uri(Photo) : null; } }
 
-        [JsonProperty("owner_id")]
+        [JsonPropertyName("owner_id")]
         public long OwnerId { get; set; }
 
-        [JsonProperty("is_casper_chat")]
+        [JsonPropertyName("is_casper_chat")]
         public bool IsCasperChat { get; set; }
 
-        [JsonProperty("is_channel")]
+        [JsonPropertyName("is_channel")]
         public bool IsChannel { get; set; }
 
-        [JsonProperty("members_count")]
+        [JsonPropertyName("members_count")]
         public int MembersCount { get; set; }
 
-        [JsonProperty("online_count")]
+        [JsonPropertyName("online_count")]
         public int OnlineCount { get; set; }
 
-        [JsonProperty("push_settings")]
+        [JsonPropertyName("push_settings")]
         public PushSettings PushSettings { get; set; }
 
-        [JsonProperty("acl")]
+        [JsonPropertyName("acl")]
         public ChatACL ACL { get; set; }
 
-        [JsonProperty("permissions")]
+        [JsonPropertyName("permissions")]
         public ChatPermissions Permissions { get; set; }
 
-        [JsonProperty("state")]
+        [JsonPropertyName("state")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<UserStateInChat>))]
         public UserStateInChat State { get; set; }
 
-        [JsonProperty("members")]
+        [JsonPropertyName("members")]
         public VKList<ChatMember> Members { get; set; }
 
-        [JsonProperty("pinned_message")]
+        [JsonPropertyName("pinned_message")]
         public Message PinnedMessage { get; set; }
     }
 }

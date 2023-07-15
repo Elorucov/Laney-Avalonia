@@ -1,94 +1,98 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class VideoFiles {
-        [JsonProperty("external")]
+        public VideoFiles() {}
+
+        [JsonPropertyName("external")]
         public string External { get; set; }
 
-        [JsonProperty("mp4_240")]
+        [JsonPropertyName("mp4_240")]
         public string MP4p240 { get; set; }
 
-        [JsonProperty("mp4_360")]
+        [JsonPropertyName("mp4_360")]
         public string MP4p360 { get; set; }
 
-        [JsonProperty("mp4_480")]
+        [JsonPropertyName("mp4_480")]
         public string MP4p480 { get; set; }
 
-        [JsonProperty("mp4_720")]
+        [JsonPropertyName("mp4_720")]
         public string MP4p720 { get; set; }
 
-        [JsonProperty("mp4_1080")]
+        [JsonPropertyName("mp4_1080")]
         public string MP4p1080 { get; set; }
     }
 
     public class Video : AttachmentBase, IPreview {
+        public Video() {}
+
         [JsonIgnore]
         public override string ObjectType { get { return "video"; } }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("duration")]
+        [JsonPropertyName("duration")]
         public int Duration { get; set; }
 
         [JsonIgnore]
         public TimeSpan DurationTime { get { return TimeSpan.FromSeconds(Duration); } }
 
-        [JsonProperty("image")]
+        [JsonPropertyName("image")]
         public List<PhotoSizes> Image { get; set; }
 
-        [JsonProperty("width")]
+        [JsonPropertyName("width")]
         public double Width { get; set; }
 
-        [JsonProperty("height")]
+        [JsonPropertyName("height")]
         public double Height { get; set; }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public int DateUnix { get; set; }
 
         [JsonIgnore]
         public DateTime Date { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("adding_date")]
+        [JsonPropertyName("adding_date")]
         public int AddingDateUnix { get; set; }
 
         [JsonIgnore]
         public DateTime AddingDate { get { return DateTimeOffset.FromUnixTimeSeconds(AddingDateUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("files")]
+        [JsonPropertyName("files")]
         public VideoFiles Files { get; set; }
 
-        [JsonProperty("player")]
+        [JsonPropertyName("player")]
         public string Player { get; set; }
 
         [JsonIgnore]
         public Uri PlayerUri { get { return new Uri(Player); } }
 
-        [JsonProperty("first_frame")]
+        [JsonPropertyName("first_frame")]
         public List<PhotoSizes> FirstFrame { get; set; }
 
         [JsonIgnore]
         public PhotoSizes FirstFrameForStory { get { return GetFirstFrame(248); } }
 
-        [JsonProperty("platform")]
+        [JsonPropertyName("platform")]
         public string Platform { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("processing")]
+        [JsonPropertyName("processing")]
         public int Processing { get; set; }
 
-        [JsonProperty("live")]
+        [JsonPropertyName("live")]
         public int Live { get; set; }
 
-        [JsonProperty("upcoming")]
+        [JsonPropertyName("upcoming")]
         public int Upcoming { get; set; }
 
-        [JsonProperty("views")]
+        [JsonPropertyName("views")]
         public int Views { get; set; }
 
         private PhotoSizes GetFirstFrame(double maxWidth) {

@@ -1,41 +1,45 @@
 ﻿
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class ChatPreview {
-        [JsonProperty("admin_id")]
+        public ChatPreview() {}
+            
+        [JsonPropertyName("admin_id")]
         public long AdminId { get; set; }
 
-        [JsonProperty("members_count")]
+        [JsonPropertyName("members_count")]
         public int MembersCount { get; set; }
 
-        [JsonProperty("members")]
+        [JsonPropertyName("members")]
         public List<long> Members { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public Photo Photo { get; set; }
 
-        [JsonProperty("local_id")]
+        [JsonPropertyName("local_id")]
         public long LocalId { get; set; }
 
-        [JsonProperty("joined")]
+        [JsonPropertyName("joined")]
         public bool Joined { get; set; }
 
-        [JsonProperty("is_group_channel")]
+        [JsonPropertyName("is_group_channel")]
         public bool IsGroupChannel { get; set; }
     }
 
     public class ChatPreviewResponse {
-        [JsonProperty("preview")]
+        public ChatPreviewResponse() {}
+            
+        [JsonPropertyName("preview")]
         public ChatPreview Preview { get; set; }
 
-        [JsonProperty("profiles")]
+        [JsonPropertyName("profiles")]
         public List<User> Profiles { get; set; }
 
-        [JsonProperty("groups")]
+        [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
     }
 }

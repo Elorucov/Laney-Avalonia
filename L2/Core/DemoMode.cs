@@ -1,10 +1,12 @@
 ﻿using ELOR.Laney.DataModels;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Serilog;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
+using System.Text.Json;
 
 namespace ELOR.Laney.Core {
     public class DemoMode {
@@ -33,7 +35,7 @@ namespace ELOR.Laney.Core {
                     return false;
                 }
 
-                Data = JsonConvert.DeserializeObject<DemoModeData>(content);
+                Data = JsonSerializer.Deserialize<DemoModeData>(content);
                 Log.Information("File for demo mode is found and successfully loaded!");
                 IsEnabled = true;
                 return true;

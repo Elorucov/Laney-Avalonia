@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class CreateChatResponse {
-        [JsonProperty("chat_id")]
+        public CreateChatResponse() {}
+
+        [JsonPropertyName("chat_id")]
         public long ChatId { get; set; }
 
-        [JsonProperty("peer_ids")]
+        [JsonPropertyName("peer_ids")]
         public List<long> PeerIds { get; set; }
     }
 }

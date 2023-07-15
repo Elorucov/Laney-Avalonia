@@ -1,46 +1,50 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects
 {
     public class CallParticipants {
-        [JsonProperty("list")]
+        public CallParticipants() {}
+            
+        [JsonPropertyName("list")]
         public List<long> List { get; set; }
 
-        [JsonProperty("count")]
+        [JsonPropertyName("count")]
         public int Count { get; set; }
     }
 
     public class Call {
-        [JsonProperty("initiator_id")]
+        public Call() {}
+            
+        [JsonPropertyName("initiator_id")]
         public long InitiatorId { get; set; }
 
-        [JsonProperty("receiver_id")]
+        [JsonPropertyName("receiver_id")]
         public long ReceiverId { get; set; }
 
-        [JsonProperty("state")]
+        [JsonPropertyName("state")]
         public string State { get; set; }
 
-        [JsonProperty("duration")]
+        [JsonPropertyName("duration")]
         public int DurationSeconds { get; set; }
 
         [JsonIgnore]
         public TimeSpan Duration { get { return TimeSpan.FromSeconds(DurationSeconds); } }
 
-        [JsonProperty("video")]
+        [JsonPropertyName("video")]
         public bool Video { get; set; }
 
-        [JsonProperty("participants")]
+        [JsonPropertyName("participants")]
         public CallParticipants Participants { get; set; }
     }
 
     public class GroupCallInProgress {
-        [JsonProperty("initiator_id")]
+        [JsonPropertyName("initiator_id")]
         public long InitiatorId { get; set; }
 
-        [JsonProperty("participants")]
+        [JsonPropertyName("participants")]
         public CallParticipants Participants { get; set; }
 
-        [JsonProperty("join_link")]
+        [JsonPropertyName("join_link")]
         public string JoinLink { get; set; }
     }
 }

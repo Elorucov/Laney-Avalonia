@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
-    [DataContract]
     public enum PollBackgroundType {
         Unknown,
 
@@ -14,126 +14,137 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PollAnswer {
-        [JsonProperty("id")]
+        public PollAnswer() {}
+
+        [JsonPropertyName("id")]
         public ulong Id { get; set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
 
-        [JsonProperty("votes")]
+        [JsonPropertyName("votes")]
         public int Votes { get; set; }
 
-        [JsonProperty("rate")]
+        [JsonPropertyName("rate")]
         public double Rate { get; set; }
     }
 
     public class PollBackgroundGradientPosition {
-        [JsonProperty("position")]
+        public PollBackgroundGradientPosition() {}
+
+        [JsonPropertyName("position")]
         public double Position { get; set; }
 
-        [JsonProperty("color")]
+        [JsonPropertyName("color")]
         public string ColorHEX { get; set; }
     }
 
     public class PollBackground {
-        [JsonProperty("id")]
+        public PollBackground() {}
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<PollBackgroundType>))]
         public PollBackgroundType Type { get; set; }
 
-        [JsonProperty("angle")]
+        [JsonPropertyName("angle")]
         public int Angle { get; set; }
 
-        [JsonProperty("color")]
+        [JsonPropertyName("color")]
         public string ColorHEX { get; set; }
 
-        [JsonProperty("width")]
+        [JsonPropertyName("width")]
         public double Width { get; set; }
 
-        [JsonProperty("height")]
+        [JsonPropertyName("height")]
         public double Height { get; set; }
 
-        [JsonProperty("images")]
+        [JsonPropertyName("images")]
         public List<PhotoSizes> Images { get; set; }
 
-        [JsonProperty("points")]
+        [JsonPropertyName("points")]
         public List<PollBackgroundGradientPosition> Points { get; set; }
     }
 
     public class PollPhoto {
-        [JsonProperty("id")]
+        public PollPhoto() {}
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("color")]
+        [JsonPropertyName("color")]
         public string ColorHEX { get; set; }
 
-        [JsonProperty("images")]
+        [JsonPropertyName("images")]
         public List<PhotoSizes> Images { get; set; }
     }
 
     public class Poll : AttachmentBase {
+        public Poll() {}
+
         [JsonIgnore]
         public override string ObjectType { get { return "poll"; } }
 
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public int CreatedUnix { get; set; }
 
         [JsonIgnore]
         public DateTime Created { get { return DateTimeOffset.FromUnixTimeSeconds(CreatedUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("question")]
+        [JsonPropertyName("question")]
         public string Question { get; set; }
 
-        [JsonProperty("votes")]
+        [JsonPropertyName("votes")]
         public int Votes { get; set; }
 
-        [JsonProperty("answers")]
+        [JsonPropertyName("answers")]
         public List<PollAnswer> Answers { get; set; }
 
-        [JsonProperty("answer_ids")]
+        [JsonPropertyName("answer_ids")]
         public List<ulong> AnswerIds { get; set; }
 
-        [JsonProperty("anonymous")]
+        [JsonPropertyName("anonymous")]
         public bool Anonymous { get; set; }
 
-        [JsonProperty("multiple")]
+        [JsonPropertyName("multiple")]
         public bool Multiple { get; set; }
 
-        [JsonProperty("disable_unvote")]
+        [JsonPropertyName("disable_unvote")]
         public bool DisableUnvote { get; set; }
 
-        [JsonProperty("end_date")]
+        [JsonPropertyName("end_date")]
         public int EndDateUnix { get; set; }
 
         [JsonIgnore]
         public DateTime EndDate { get { return DateTimeOffset.FromUnixTimeSeconds(EndDateUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("closed")]
+        [JsonPropertyName("closed")]
         public bool Closed { get; set; }
 
-        [JsonProperty("can_vote")]
+        [JsonPropertyName("can_vote")]
         public bool CanVote { get; set; }
 
-        [JsonProperty("can_share")]
+        [JsonPropertyName("can_share")]
         public bool CanShare { get; set; }
 
-        [JsonProperty("author_id")]
+        [JsonPropertyName("author_id")]
         public long AuthorId { get; set; }
 
-        [JsonProperty("background")]
+        [JsonPropertyName("background")]
         public PollBackground Background { get; set; }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public PollPhoto Photo { get; set; }
 
-        [JsonProperty("friends")]
+        [JsonPropertyName("friends")]
         public List<User> Friends { get; set; }
 
-        [JsonProperty("profiles")]
+        [JsonPropertyName("profiles")]
         public List<User> Profiles { get; set; }
 
-        [JsonProperty("groups")]
+        [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
     }
 }

@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BotButtonColor {
         [EnumMember(Value = "secondary")]
         Default,
@@ -17,7 +18,7 @@ namespace ELOR.VKAPILib.Objects {
         Negative
     }
 
-    [DataContract]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BotButtonType {
         Unknown,
 
@@ -44,25 +45,28 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class BotButtonAction {
-        [JsonProperty("type")]
+        public BotButtonAction() {}
+            
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<BotButtonType>))]
         public BotButtonType Type { get; set; }
 
-        [JsonProperty("payload")]
+        [JsonPropertyName("payload")]
         public string Payload { get; set; }
 
-        [JsonProperty("label")]
+        [JsonPropertyName("label")]
         public string Label { get; set; }
 
-        [JsonProperty("hash")]
+        [JsonPropertyName("hash")]
         public string Hash { get; set; }
 
-        [JsonProperty("app_id")]
+        [JsonPropertyName("app_id")]
         public int AppId { get; set; }
 
-        [JsonProperty("owner_id")]
+        [JsonPropertyName("owner_id")]
         public long OwnerId { get; set; }
 
-        [JsonProperty("link")]
+        [JsonPropertyName("link")]
         public string Link { get; set; }
 
         [JsonIgnore]
@@ -70,24 +74,29 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class BotButton {
-        [JsonProperty("color")]
+        public BotButton() {}
+            
+        [JsonPropertyName("color")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<BotButtonColor>))]
         public BotButtonColor Color { get; set; }
 
-        [JsonProperty("action")]
+        [JsonPropertyName("action")]
         public BotButtonAction Action { get; set; }
     }
 
     public class BotKeyboard {
-        [JsonProperty("one_time")]
+        public BotKeyboard() {}
+            
+        [JsonPropertyName("one_time")]
         public bool OneTime { get; set; }
 
-        [JsonProperty("author_id")]
+        [JsonPropertyName("author_id")]
         public long AuthorId { get; set; }
 
-        [JsonProperty("inline")]
+        [JsonPropertyName("inline")]
         public bool Inline { get; set; }
 
-        [JsonProperty("buttons")]
+        [JsonPropertyName("buttons")]
         public List<List<BotButton>> Buttons { get; set; }
     }
 }

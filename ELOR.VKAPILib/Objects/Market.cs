@@ -1,51 +1,57 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class MarketPrice {
-        [JsonProperty("amount")]
+        public MarketPrice() {}
+
+        [JsonPropertyName("amount")]
         public int Amount { get; set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
     }
 
     public class MarketCategory {
-        [JsonProperty("id")]
+        public MarketCategory() {}
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
     }
 
     public class Market : AttachmentBase {
+        public Market() {}
+
         [JsonIgnore]
         public new string ObjectType { get { return "market"; } }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("price")]
+        [JsonPropertyName("price")]
         public MarketPrice Price { get; set; }
 
-        [JsonProperty("category")]
+        [JsonPropertyName("category")]
         public MarketCategory Category { get; set; }
 
-        [JsonProperty("thumb_photo")]
+        [JsonPropertyName("thumb_photo")]
         public string ThumbPhoto { get; set; }
 
         [JsonIgnore]
         public Uri ThumbPhotoUri { get { return new Uri(ThumbPhoto); } }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public int DateUnix { get; set; }
 
         [JsonIgnore]
         public DateTime Date { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("availability")]
+        [JsonPropertyName("availability")]
         public int Availability { get; set; }
     }
 }

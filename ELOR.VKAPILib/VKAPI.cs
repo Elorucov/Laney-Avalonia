@@ -2,12 +2,11 @@
 using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.HandlerDatas;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace ELOR.VKAPILib {
     public class VKAPI {
@@ -152,9 +151,9 @@ namespace ELOR.VKAPILib {
             if(parameters == null) parameters = new Dictionary<string, string>();
 
             string response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            JObject jr = JObject.Parse(response);
-            if(jr["error"] != null) {
-                APIException apiex = JsonConvert.DeserializeObject<APIException>(jr["error"].ToString(Formatting.None));
+            APIResponse<T> resp = JsonSerializer.Deserialize<APIResponse<T>>(response);
+            if(resp.Error != null) {
+                APIException apiex = resp.Error;
                 switch(apiex.Code) {
                     case 5: UserAuthorizationFailed?.Invoke(this, null); throw apiex;
                     case 14: return await HandleCaptchaRequest<T>(apiex, method, parameters).ConfigureAwait(false);
@@ -163,8 +162,8 @@ namespace ELOR.VKAPILib {
                     case 24: return await HandleActionConfirmationRequest<T>(apiex, method, parameters).ConfigureAwait(false);
                     default: throw apiex;
                 }
-            } else if(jr["response"] != null) {
-                return jr["response"].ToObject<T>();
+            } else if(resp.Response != null) {
+                return resp.Response;
             } else {
                 throw new Exception("Invalid response.");
             }

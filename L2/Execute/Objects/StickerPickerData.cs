@@ -1,13 +1,15 @@
 ﻿using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace ELOR.Laney.Execute.Objects {
     public class StickerPickerData {
-        [JsonProperty("recent_stickers")]
+        public StickerPickerData() {}
+
+        [JsonPropertyName("recent_stickers")]
         public List<Sticker> RecentStickers { get; set; }
 
-        [JsonProperty("favorite_stickers")]
+        [JsonPropertyName("favorite_stickers")]
         public List<Sticker> FavoriteStickers { get; set; }
     }
 }

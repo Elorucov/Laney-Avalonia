@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
-using System.Text;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
     public enum ScreenNameType {
@@ -26,10 +24,13 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ResolveScreenNameResult {
-        [JsonProperty("object_id")]
-        public long ObjectId { get; internal set; }
+        public ResolveScreenNameResult() {}
 
-        [JsonProperty("type")]
-        public ScreenNameType Type { get; internal set; }
+        [JsonPropertyName("object_id")]
+        public long ObjectId { get; set; }
+
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ScreenNameType>))]
+        public ScreenNameType Type { get; set; }
     }
 }

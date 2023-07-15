@@ -1,20 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class VKList<T> {
-        [JsonProperty("count")]
+        public VKList() {}
+
+        [JsonPropertyName("count")]
         public int Count { get; set; }
 
-        [JsonProperty("items")]
+        [JsonPropertyName("items")]
         public List<T> Items { get; set; }
 
-        [JsonProperty("profiles")]
+        [JsonPropertyName("profiles")]
         public List<User> Profiles { get; set; }
 
-        [JsonProperty("groups")]
+        [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
 
-        [JsonProperty("conversations")]
+        [JsonPropertyName("conversations")]
         public List<Conversation> Conversations { get; set; }
     }
 }

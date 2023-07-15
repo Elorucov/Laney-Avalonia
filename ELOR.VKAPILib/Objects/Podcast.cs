@@ -1,27 +1,33 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class PodcastCover {
-        [JsonProperty("sizes")]
+        public PodcastCover() {}
+
+        [JsonPropertyName("sizes")]
         public List<PhotoSizes> Sizes { get; set; }
     }
 
     public class PodcastInfo {
-        [JsonProperty("description")]
+        public PodcastInfo() {}
+
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("plays")]
+        [JsonPropertyName("plays")]
         public int Plays { get; set; }
 
-        [JsonProperty("cover")]
+        [JsonPropertyName("cover")]
         public PodcastCover Cover { get; set; } // Какой криворукий сотрудник ВК додумался впихнуть обложки как отдельный вложенный объект, бл*ть?
     }
 
     public class Podcast : Audio {
+        public Podcast() {}
+
         [JsonIgnore]
         public new string ObjectType { get { return "podcast"; } }
 
-        [JsonProperty("podcast_info")]
+        [JsonPropertyName("podcast_info")]
         public PodcastInfo Info { get; set; }
     }
 }

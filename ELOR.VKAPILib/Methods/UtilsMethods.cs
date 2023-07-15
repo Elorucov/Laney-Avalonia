@@ -1,6 +1,7 @@
 ﻿using ELOR.VKAPILib.Attributes;
 using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace ELOR.VKAPILib.Methods {
     [Section("utils")]
@@ -15,11 +16,11 @@ namespace ELOR.VKAPILib.Methods {
             // Знали бы разработчики VK API, какую боль в заднице испытывают программисты на строго-типизированных языках,
             // разрабатывая библиотеки для VK API...
             string response = await API.SendRequestAsync("utils.resolveScreenName", API.GetNormalizedParameters(parameters));
-            JObject jr = JObject.Parse(response);
-            if (jr["response"] is JArray) {
+            var jr = JsonNode.Parse(response);
+            if (jr["response"] is JsonArray) {
                 return null;
             } else {
-                return jr["response"].ToObject<ResolveScreenNameResult>();
+                return jr["response"].Deserialize<ResolveScreenNameResult>();
             }
         }
     }

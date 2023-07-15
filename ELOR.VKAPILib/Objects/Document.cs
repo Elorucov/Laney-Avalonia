@@ -1,11 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Runtime.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace ELOR.VKAPILib.Objects
-{
-    [DataContract]
-    public enum DocumentType
-    {
+namespace ELOR.VKAPILib.Objects {
+    public enum DocumentType {
         Text = 1,
         Archive = 2,
         GIF = 3,
@@ -16,44 +12,47 @@ namespace ELOR.VKAPILib.Objects
         Unknown = 8
     }
 
-    public class DocumentPreview
-    {
-        [JsonProperty("graffiti")]
+    public class DocumentPreview {
+        public DocumentPreview() {}
+
+        [JsonPropertyName("graffiti")]
         public Graffiti Graffiti { get; set; }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public Photo Photo { get; set; }
     }
 
     public class Document : AttachmentBase, IPreview {
+        public Document() {}
+
         [JsonIgnore]
         public override string ObjectType { get { return "doc"; } }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("size")]
+        [JsonPropertyName("size")]
         public ulong Size { get; set; }
 
-        [JsonProperty("ext")]
+        [JsonPropertyName("ext")]
         public string Extension { get; set; }
 
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
         [JsonIgnore]
         public Uri Uri { get { return new Uri(Url); } }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public long DateUnix { get; set; }
 
         [JsonIgnore]
         public DateTime DateTime { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public DocumentType Type { get; set; }
 
-        [JsonProperty("preview")]
+        [JsonPropertyName("preview")]
         public DocumentPreview Preview { get; set; }
     }
 }

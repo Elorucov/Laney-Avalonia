@@ -1,29 +1,33 @@
 ﻿using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.Execute.Objects {
     public class UserOnlineInfoEx : UserOnlineInfo {
-        [JsonProperty("app_name")]
+        public UserOnlineInfoEx() {}
+
+        [JsonPropertyName("app_name")]
         public string AppName { get; set; }
     }
 
     public class UserEx : User {
-        [JsonProperty("messages_count")]
-        public int MessagesCount { get; private set; }
+        public UserEx() {}
 
-        [JsonProperty("notifications_disabled")]
-        public bool NotificationsDisabled { get; private set; }
+        [JsonPropertyName("messages_count")]
+        public int MessagesCount { get; set; }
 
-        [JsonProperty("live_in")]
-        public string LiveIn { get; private set; }
+        [JsonPropertyName("notifications_disabled")]
+        public bool NotificationsDisabled { get; set; }
 
-        [JsonProperty("current_career")]
+        [JsonPropertyName("live_in")]
+        public string LiveIn { get; set; }
+
+        [JsonPropertyName("current_career")]
         public UserCareer CurrentCareer { get; set; }
 
-        [JsonProperty("current_education")]
+        [JsonPropertyName("current_education")]
         public string CurrentEducation { get; set; }
 
-        [JsonProperty("online_info")]
+        [JsonPropertyName("online_info")]
         public new UserOnlineInfoEx OnlineInfo { get; set; }
     }
 }

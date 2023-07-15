@@ -236,7 +236,7 @@ namespace ELOR.Laney.Core {
 
                     foreach (var group in info.Groups) {
                         CacheManager.Add(group);
-                        if (!group.CanMessage) continue;
+                        if (group.CanMessage == 0) continue;
 
                         VKSession gs = new VKSession {
                             UserId = info.User.Id,

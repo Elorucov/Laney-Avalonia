@@ -1,62 +1,70 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class StickerImage {
-        [JsonProperty("url")]
+        public StickerImage() {}
+
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
         [JsonIgnore]
         public Uri Uri { get { return new Uri(Url); } }
 
-        [JsonProperty("width")]
+        [JsonPropertyName("width")]
         public int Width { get; set; }
 
-        [JsonProperty("height")]
+        [JsonPropertyName("height")]
         public int Height { get; set; }
     }
 
     public class StickerRender {
-        [JsonProperty("id")]
+        public StickerRender() {}
+
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("images")]
+        [JsonPropertyName("images")]
         public List<StickerImage> Images { get; set; }
 
-        [JsonProperty("is_stub")]
+        [JsonPropertyName("is_stub")]
         public bool IsStub { get; set; }
 
-        [JsonProperty("is_rendering")]
+        [JsonPropertyName("is_rendering")]
         public bool IsRendering { get; set; }
     }
 
     public class StickerVmoji {
-        [JsonProperty("character_id")]
+        public StickerVmoji() {}
+
+        [JsonPropertyName("character_id")]
         public string CharacterId { get; set; }
     }
 
     public class Sticker {
-        [JsonProperty("animation_url")]
+        public Sticker() {}
+
+        [JsonPropertyName("animation_url")]
         public string AnimationUrl { get; set; }
 
-        [JsonProperty("product_id")]
+        [JsonPropertyName("product_id")]
         public int ProductId { get; set; }
 
-        [JsonProperty("sticker_id")]
+        [JsonPropertyName("sticker_id")]
         public int StickerId { get; set; }
 
-        [JsonProperty("is_allowed")]
+        [JsonPropertyName("is_allowed")]
         public bool IsAllowed { get; set; }
 
-        [JsonProperty("images")]
+        [JsonPropertyName("images")]
         public List<StickerImage> Images { get; set; }
 
-        [JsonProperty("images_with_background")]
+        [JsonPropertyName("images_with_background")]
         public List<StickerImage> ImagesWithBackground { get; set; }
 
-        [JsonProperty("render")]
+        [JsonPropertyName("render")]
         public StickerRender Render { get; set; }
 
-        [JsonProperty("vmoji")]
+        [JsonPropertyName("vmoji")]
         public StickerVmoji Vmoji { get; set; }
 
         [JsonIgnore]
@@ -64,10 +72,12 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class StickerDictionary {
-        [JsonProperty("words")]
+        public StickerDictionary() {}
+
+        [JsonPropertyName("words")]
         public List<string> Words { get; set; }
 
-        [JsonProperty("stickers")]
+        [JsonPropertyName("stickers")]
         public List<Sticker> Stickers { get; set; }
     }
 }

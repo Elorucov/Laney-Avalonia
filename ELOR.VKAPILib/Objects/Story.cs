@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
+using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
 
-    [DataContract]
     public enum StoryType {
         [EnumMember(Value = "photo")]
         Photo,
@@ -13,10 +13,12 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class StoryLink {
-        [JsonProperty("text")]
+        public StoryLink() {}
+
+        [JsonPropertyName("text")]
         public string Text { get; set; }
 
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
         [JsonIgnore]
@@ -24,112 +26,121 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ClickableStickerAreaPoints {
-        [JsonProperty("x")]
+        public ClickableStickerAreaPoints() {}
+
+        [JsonPropertyName("x")]
         public int X { get; set; }
 
-        [JsonProperty("y")]
+        [JsonPropertyName("y")]
         public int Y { get; set; }
     }
 
     public class ClickableSticker {
-        [JsonProperty("id")]
+        public ClickableSticker() {}
+
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("mention")]
+        [JsonPropertyName("mention")]
         public string Mention { get; set; }
 
-        [JsonProperty("hashtag")]
+        [JsonPropertyName("hashtag")]
         public string Hashtag { get; set; }
 
-        [JsonProperty("place_id")]
+        [JsonPropertyName("place_id")]
         public int PlaceId { get; set; }
 
-        [JsonProperty("market_item")]
+        [JsonPropertyName("market_item")]
         public Market MarketItem { get; set; }
 
-        [JsonProperty("poll")]
+        [JsonPropertyName("poll")]
         public Poll Poll { get; set; }
 
-        [JsonProperty("sticker_id")]
+        [JsonPropertyName("sticker_id")]
         public int StickerId { get; set; }
 
-        [JsonProperty("sticker_pack_id")]
+        [JsonPropertyName("sticker_pack_id")]
         public int StickerPackId { get; set; }
 
-        [JsonProperty("link_object")]
+        [JsonPropertyName("link_object")]
         public Link LinkObject { get; set; }
 
-        [JsonProperty("post_id")]
+        [JsonPropertyName("post_id")]
         public int PostId { get; set; }
 
-        [JsonProperty("post_owner_id")]
+        [JsonPropertyName("post_owner_id")]
         public long PostOwnerId { get; set; }
 
-        [JsonProperty("owner_id")]
-        public int OwnerId { get; set; }
+        [JsonPropertyName("owner_id")]
+        public long OwnerId { get; set; }
 
-        [JsonProperty("story_id")]
+        [JsonPropertyName("story_id")]
         public int StoryId { get; set; }
 
-        [JsonProperty("clickable_area")]
+        [JsonPropertyName("clickable_area")]
         public List<ClickableStickerAreaPoints> ClickableArea { get; set; }
     }
 
     public class ClickableStickersInfo {
-        [JsonProperty("original_height")]
+        public ClickableStickersInfo() {}
+
+        [JsonPropertyName("original_height")]
         public int OriginalHeight { get; set; }
 
-        [JsonProperty("original_width")]
+        [JsonPropertyName("original_width")]
         public int OriginalWidth { get; set; }
 
-        [JsonProperty("clickable_stickers")]
+        [JsonPropertyName("clickable_stickers")]
         public List<ClickableSticker> ClickableStickers { get; set; }
     }
 
     public class Story : AttachmentBase {
+        public Story() {}
+
         [JsonIgnore]
         public override string ObjectType { get { return "story"; } }
 
-        [JsonProperty("can_see")]
+        [JsonPropertyName("can_see")]
         public bool CanSee { get; set; }
 
-        [JsonProperty("can_like")]
+        [JsonPropertyName("can_like")]
         public bool CanLike { get; set; }
 
-        [JsonProperty("can_share")]
+        [JsonPropertyName("can_share")]
         public int CanShare { get; set; }
 
-        [JsonProperty("is_resricted")]
+        [JsonPropertyName("is_resricted")]
         public bool IsRestricted { get; set; }
 
-        [JsonProperty("is_expired")]
+        [JsonPropertyName("is_expired")]
         public bool IsExpired { get; set; }
 
-        [JsonProperty("is_deleted")]
+        [JsonPropertyName("is_deleted")]
         public bool IsDeleted { get; set; }
 
-        [JsonProperty("views")]
+        [JsonPropertyName("views")]
         public int Views { get; set; }
 
-        [JsonProperty("seen")]
+        [JsonPropertyName("seen")]
         public int Seen { get; set; }
 
-        [JsonProperty("link")]
+        [JsonPropertyName("link")]
         public StoryLink Link { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<StoryType>))]
         public StoryType Type { get; set; }
 
-        [JsonProperty("photo")]
+        [JsonPropertyName("photo")]
         public Photo Photo { get; set; }
 
-        [JsonProperty("video")]
+        [JsonPropertyName("video")]
         public Video Video { get; set; }
 
-        [JsonProperty("clickable_stickers")]
+        [JsonPropertyName("clickable_stickers")]
         public ClickableStickersInfo ClickableStickers { get; set; }
     }
 }

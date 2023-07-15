@@ -1,6 +1,7 @@
 ﻿using ELOR.VKAPILib.Attributes;
 using ELOR.VKAPILib.Objects;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Methods {
     [Section("polls")]
@@ -20,7 +21,7 @@ namespace ELOR.VKAPILib.Methods {
         public async Task<Poll> CreateAsync(string question, List<string> answers, bool isAnonymous = false, bool isMultiple = false, bool disableUnvote = false, long endDate = 0, int backgroundId = 0, long ownerId = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "question", question },
-                { "add_answers", JsonConvert.SerializeObject(answers) }
+                { "add_answers", JsonSerializer.Serialize(answers) }
             };
             if (isAnonymous) parameters.Add("is_anonymous", "1");
             if (isMultiple) parameters.Add("is_multiple", "1");
