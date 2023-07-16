@@ -2,11 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
              xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="128"
-             x:Class="ELOR.Laney.Controls.Composer">
+             x:Class="ELOR.Laney.Controls.Composer" x:DataType="vmc:ComposerViewModel">
   <UserControl.Styles>
     <!-- Composer buttons -->
     <Style Selector="Button.ComposerButton">

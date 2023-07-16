@@ -7,6 +7,8 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib {
     public class VKAPI {
@@ -132,29 +134,14 @@ namespace ELOR.VKAPILib {
             }
         }
 
-        public async Task<T> CallMethodAsync<T>(MethodsSectionBase methodClass, Dictionary<string, string> parameters = null, [CallerMemberName] string callerName = "") {
-            var s = methodClass.GetType().GetTypeInfo();
-            SectionAttribute si = s.GetCustomAttribute<SectionAttribute>();
-            MethodInfo m = null;
-            foreach (var mm in s.DeclaredMethods) {
-                if (mm.Name == callerName) {
-                    m = mm; break;
-                }
-            }
-            if (m == null) throw new Exception("Failed to get member info!");
-            MethodAttribute mi = m.GetCustomAttribute<MethodAttribute>();
-            string method = $"{si.Name}.{mi.Name}";
-            return await CallMethodAsync<T>(method, parameters);
-        }
-
-        public async Task<T> CallMethodAsync<T>(string method, Dictionary<string, string> parameters = null) {
+        public async Task<T> CallMethodAsync<T>(string method, Dictionary<string, string> parameters = null, JsonSerializerContext serializerContext = null) {
             if(parameters == null) parameters = new Dictionary<string, string>();
 
             string response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            APIResponse<T> resp = JsonSerializer.Deserialize<APIResponse<T>>(response);
-            if(resp.Error != null) {
-                APIException apiex = resp.Error;
-                switch(apiex.Code) {
+            JsonNode resp = JsonNode.Parse(response);
+            if (resp["error"] != null) {
+                APIException apiex = (APIException)resp["error"].Deserialize(typeof(APIException), BuildInJsonContext.Default);
+                switch (apiex.Code) {
                     case 5: UserAuthorizationFailed?.Invoke(this, null); throw apiex;
                     case 14: return await HandleCaptchaRequest<T>(apiex, method, parameters).ConfigureAwait(false);
                     case 17: ValidationRequired?.Invoke(this, apiex.RedirectUri); throw apiex;
@@ -162,10 +149,12 @@ namespace ELOR.VKAPILib {
                     case 24: return await HandleActionConfirmationRequest<T>(apiex, method, parameters).ConfigureAwait(false);
                     default: throw apiex;
                 }
-            } else if(resp.Response != null) {
-                return resp.Response;
+            } else if (resp["response"] != null) {
+                if (serializerContext == null) serializerContext = BuildInJsonContext.Default;
+                T apiresp = (T)resp["response"].Deserialize(typeof(T), serializerContext);
+                return apiresp;
             } else {
-                throw new Exception("Invalid response.");
+                throw new Exception("Invalid response from VK API backend!");
             }
         }
 

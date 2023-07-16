@@ -19,7 +19,7 @@ namespace ELOR.Laney.ViewModels {
     public class ChatCreationViewModel : ViewModelBase {
         private string _chatName;
         private Bitmap _chatPhotoPreview;
-        private ObservableCollection<GroupWithSelection<string, User>> _groupedFriends;
+        private ObservableCollection<AlphabeticalUsers> _groupedFriends;
         private ObservableCollection<User> _selectedFriends = new ObservableCollection<User>();
         private string _searchQuery;
         private bool _isLoading;
@@ -32,7 +32,7 @@ namespace ELOR.Laney.ViewModels {
 
         public string ChatName { get { return _chatName; } set { _chatName = value; OnPropertyChanged(); } }
         public Bitmap ChatPhotoPreview { get { return _chatPhotoPreview; } set { _chatPhotoPreview = value; OnPropertyChanged(); } }
-        public ObservableCollection<GroupWithSelection<string, User>> GroupedFriends { get { return _groupedFriends; } private set { _groupedFriends = value; OnPropertyChanged(); } }
+        public ObservableCollection<AlphabeticalUsers> GroupedFriends { get { return _groupedFriends; } private set { _groupedFriends = value; OnPropertyChanged(); } }
         public ObservableCollection<User> SelectedFriends { get { return _selectedFriends; } set { _selectedFriends = value; OnPropertyChanged(); } }
         public string SearchQuery { get { return _searchQuery; } set { _searchQuery = value; OnPropertyChanged(); } }
         public bool IsLoading { get { return _isLoading; } private set { _isLoading = value; OnPropertyChanged(); } }
@@ -88,9 +88,9 @@ namespace ELOR.Laney.ViewModels {
 
         private void GroupFriends() {
             // TODO: сделать отдельный класс или метод для группировки по алфавиту
-            GroupedFriends = new ObservableCollection<GroupWithSelection<string, User>>(Friends.GroupBy(f => 
+            GroupedFriends = new ObservableCollection<AlphabeticalUsers>(Friends.GroupBy(f => 
                 !String.IsNullOrEmpty(f.FirstName) ? f.FirstName[0].ToString().ToUpper() : "~")
-                .Select(g => new GroupWithSelection<string, User>(g, FriendsSelectionChanged)));
+                .Select(g => new AlphabeticalUsers(g, FriendsSelectionChanged)));
         }
 
         private void FriendsSelectionChanged(object sender, SelectionModelSelectionChangedEventArgs<User> e) {

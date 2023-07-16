@@ -1,16 +1,16 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
-    public class APIResponse<T> {
+    //public class APIResponse<T> {
 
-        public APIResponse() {}
+    //    public APIResponse() {}
 
-        [JsonPropertyName("response")]
-        public T Response { get; set; }
+    //    [JsonPropertyName("response")]
+    //    public T Response { get; set; }
 
-        [JsonPropertyName("error")]
-        public APIException Error { get; set; }
-    }
+    //    [JsonPropertyName("error")]
+    //    public APIException Error { get; set; }
+    //}
 
     public class APIException : Exception {
         public APIException() {}

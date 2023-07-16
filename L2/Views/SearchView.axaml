@@ -5,8 +5,9 @@
              xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:vm="using:ELOR.Laney.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ELOR.Laney.Views.SearchView" Loaded="SearchView_Loaded">
+             x:Class="ELOR.Laney.Views.SearchView" x:DataType="vm:SearchViewModel" Loaded="SearchView_Loaded">
   <Grid RowDefinitions="Auto *">
     <vkui:PanelHeader IsSeparatorVisible="False">
       <vkui:PanelHeader.LeftButtons>

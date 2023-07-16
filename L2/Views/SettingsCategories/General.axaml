@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vkui="using:VKUI.Controls"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:vm="using:ELOR.Laney.ViewModels.SettingsCategories"
+             xmlns:mdl="using:ELOR.Laney.DataModels"
              mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="450"
-             x:Class="ELOR.Laney.Views.SettingsCategories.General">
+             x:Class="ELOR.Laney.Views.SettingsCategories.General" x:DataType="vm:GeneralViewModel">
   <ScrollViewer>
     <StackPanel>
       <Border Classes="Group" VerticalAlignment="Top">
@@ -14,7 +16,7 @@
             <vkui:Cell.After>
               <ComboBox Classes="Alternate" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
-                  <DataTemplate>
+                  <DataTemplate x:DataType="mdl:TwoStringTuple">
                     <TextBlock Text="{Binding Item2}"/>
                   </DataTemplate>
                 </ComboBox.ItemTemplate>

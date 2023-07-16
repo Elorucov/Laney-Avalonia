@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
         xmlns:vke="using:ELOR.Laney.Execute.Objects"
@@ -9,7 +10,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="612"
-        x:Class="ELOR.Laney.Views.Modals.AttachmentPicker"
+        x:Class="ELOR.Laney.Views.Modals.AttachmentPicker" x:DataType="vm:AttachmentPickerViewModel"
         Title="{i18n:Localize wnd_attachmentpicker}">
   <vkw:DialogWindow.Resources>
     <DataTemplate x:Key="PhotoAlbumTemplate" x:DataType="vke:AlbumLite">
@@ -30,11 +31,11 @@
       </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="PhotoTemplate">
+    <DataTemplate x:Key="PhotoTemplate" x:DataType="vko:Photo">
       <Rectangle Margin="2" RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Converter={StaticResource vpsc}, ConverterParameter=130}"/>
     </DataTemplate>
     
-    <DataTemplate x:Key="VideoTemplate">
+    <DataTemplate x:Key="VideoTemplate" x:DataType="vko:Video">
       <Grid ColumnDefinitions="Auto *">
         <Grid Width="118" Height="78">
           <Rectangle RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Converter={StaticResource vpsc}, ConverterParameter=118}"/>
@@ -46,7 +47,7 @@
       </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="DocTemplate">
+    <DataTemplate x:Key="DocTemplate" x:DataType="vko:Document">
       <Grid ColumnDefinitions="Auto *">
         <ContentPresenter Width="48" Height="48" Content="{Binding Converter={StaticResource dic}}"/>
         <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">

@@ -1,29 +1,10 @@
-﻿using ELOR.VKAPILib.Attributes;
-using ELOR.VKAPILib.Objects;
+﻿using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Upload;
 
 namespace ELOR.VKAPILib.Methods {
-    [Section("video")]
+
     public class VideoMethods : MethodsSectionBase {
         internal VideoMethods(VKAPI api) : base(api) { }
-
-        /// <summary>Returns a list of video albums owned by a user or community.</summary>
-        /// <param name="ownerId">ID of the user or community that owns the video albums.</param>
-        /// <param name="offset">Offset needed to return a specific subset of video albums.</param>
-        /// <param name="count">Number of video albums to return.</param>
-        /// <param name="extended">true — to return additional fields Count and Photo properties for each album.</param>
-        /// <param name="needSystem">true — to return system albums.</param>
-        [Method("getAlbums")]
-        public async Task<VKList<VideoAlbum>> GetAlbumsAsync(long ownerId, int offset = 0, int count = 0, bool extended = false, bool needSystem = false) {
-            Dictionary<string, string> parameters = new Dictionary<string, string> {
-                { "owner_id", ownerId.ToString() }
-            };
-            if (offset > 0) parameters.Add("offset", offset.ToString());
-            if (count > 0) parameters.Add("count", count.ToString());
-            if (extended) parameters.Add("extended", "1");
-            if (needSystem) parameters.Add("need_system", "1");
-            return await API.CallMethodAsync<VKList<VideoAlbum>>(this, parameters);
-        }
 
         /// <summary>Returns a list of a user's or community's videos.</summary>
         /// <param name="ownerId">ID of the user or community that owns the videos.</param>
@@ -31,8 +12,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="offset">Offset needed to return a specific subset of videos.</param>
         /// <param name="count">Number of videos to return.</param>
         /// <param name="extended">true — to return an extended response with additional fields.</param>
-        [Method("get")]
-        public async Task<VKList<Video>> GetAsync(long ownerId, string videos = null, int albumId = 0, int offset = 0, int count = 50, bool extended = false) {
+        public async Task<VideosList> GetAsync(long ownerId, string videos = null, int albumId = 0, int offset = 0, int count = 50, bool extended = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "owner_id", ownerId.ToString() }
             };
@@ -41,7 +21,7 @@ namespace ELOR.VKAPILib.Methods {
             if (offset > 0) parameters.Add("offset", offset.ToString());
             if (count > 0) parameters.Add("count", count.ToString());
             if (extended) parameters.Add("extended", "1");
-            return await API.CallMethodAsync<VKList<Video>>(this, parameters);
+            return await API.CallMethodAsync<VideosList>("video.get", parameters);
         }
 
         /// <summary>Returns a server address (required for upload) and video data.</summary>
@@ -52,7 +32,6 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="wallpost">true — to post the saved video on a user's wall.</param>
         /// <param name="link">URL for embedding the video from an external website.</param>
         /// <param name="albumId">ID of the album to which the saved video will be added.</param>
-        [Method("save")]
         public async Task<VideoUploadServer> SaveAsync(long groupId = 0, string name = null, string description = null, bool isPrivate = false, bool wallpost = false, string link = null, int albumId = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
@@ -62,7 +41,7 @@ namespace ELOR.VKAPILib.Methods {
             if (wallpost) parameters.Add("wallpost", "1");
             if (!String.IsNullOrEmpty(link)) parameters.Add("link", link);
             if (albumId > 0) parameters.Add("album_id", albumId.ToString());
-            return await API.CallMethodAsync<VideoUploadServer>(this, parameters);
+            return await API.CallMethodAsync<VideoUploadServer>("video.save", parameters);
         }
     }
 }

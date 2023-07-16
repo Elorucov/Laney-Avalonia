@@ -5,9 +5,12 @@
              xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:vm="using:ELOR.Laney.ViewModels"
+             xmlns:mdl="using:ELOR.Laney.DataModels"
+             xmlns:vk="using:ELOR.VKAPILib.Objects"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="640"
              x:Name="Root"
-             x:Class="ELOR.Laney.Views.ChatCreationView" Loaded="ChatCreationView_Loaded">
+             x:Class="ELOR.Laney.Views.ChatCreationView" Loaded="ChatCreationView_Loaded" x:DataType="vm:ChatCreationViewModel">
   <Grid RowDefinitions="Auto Auto Auto *">
     <vkui:PanelHeader Content="{i18n:Localize chat_creation_title}">
       <vkui:PanelHeader.LeftButtons>
@@ -43,7 +46,7 @@
           <WrapLayout HorizontalSpacing="4" VerticalSpacing="4" Orientation="Horizontal"/>
         </ItemsRepeater.Layout>
         <ItemsRepeater.ItemTemplate>
-          <DataTemplate>
+          <DataTemplate x:DataType="vk:User">
             <Border Height="28" Background="{DynamicResource VKBackgroundLightBrush}" BorderBrush="{DynamicResource VKBackgroundHighlightedBrush}" BorderThickness="1" CornerRadius="6">
               <Grid ColumnDefinitions="Auto Auto Auto">
                 <vkui:Avatar Width="20" Height="20" Margin="8,0,-2,0" VerticalAlignment="Center" Initials="{Binding FullName, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Photo}"/>
@@ -62,7 +65,7 @@
     <ScrollViewer Grid.Row="3">
       <ItemsRepeater ItemsSource="{Binding GroupedFriends}" Margin="0,-1,0,0">
         <ItemsRepeater.ItemTemplate>
-          <DataTemplate>
+          <DataTemplate x:DataType="mdl:AlphabeticalUsers">
             <StackPanel>
               <Grid>
                 <Separator Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>

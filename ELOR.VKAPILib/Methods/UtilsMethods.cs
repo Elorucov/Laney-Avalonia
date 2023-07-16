@@ -1,10 +1,8 @@
-﻿using ELOR.VKAPILib.Attributes;
-using ELOR.VKAPILib.Objects;
+﻿using ELOR.VKAPILib.Objects;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace ELOR.VKAPILib.Methods {
-    [Section("utils")]
     public class UtilsMethods : MethodsSectionBase {
         internal UtilsMethods(VKAPI api) : base(api) { }
 

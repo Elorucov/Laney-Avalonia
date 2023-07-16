@@ -25,7 +25,7 @@ namespace ELOR.VKAPILib.Objects {
         public Market() {}
 
         [JsonIgnore]
-        public new string ObjectType { get { return "market"; } }
+        public override string ObjectType { get { return "market"; } }
 
         [JsonPropertyName("title")]
         public string Title { get; set; }
@@ -36,20 +36,11 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("price")]
         public MarketPrice Price { get; set; }
 
-        [JsonPropertyName("category")]
-        public MarketCategory Category { get; set; }
-
         [JsonPropertyName("thumb_photo")]
         public string ThumbPhoto { get; set; }
 
-        [JsonIgnore]
-        public Uri ThumbPhotoUri { get { return new Uri(ThumbPhoto); } }
-
         [JsonPropertyName("date")]
         public int DateUnix { get; set; }
-
-        [JsonIgnore]
-        public DateTime Date { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
 
         [JsonPropertyName("availability")]
         public int Availability { get; set; }

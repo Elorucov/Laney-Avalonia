@@ -13,16 +13,18 @@ namespace ELOR.Laney.Core.Localization {
         public string Context { get; set; }
 
         public override object ProvideValue(IServiceProvider serviceProvider) {
-            var keyToUse = Key;
-            if (!string.IsNullOrWhiteSpace(Context))
-                keyToUse = $"{Context}/{Key}";
+            //var keyToUse = Key;
+            //if (!string.IsNullOrWhiteSpace(Context))
+            //    keyToUse = $"{Context}/{Key}";
 
-            var binding = new ReflectionBindingExtension($"[{keyToUse}]") {
-                Mode = BindingMode.OneWay,
-                Source = Localizer.Instance,
-            };
+            //var binding = new ReflectionBindingExtension($"[{keyToUse}]") {
+            //    Mode = BindingMode.OneWay,
+            //    Source = Localizer.Instance,
+            //};
 
-            return binding.ProvideValue(serviceProvider);
+            //return binding.ProvideValue(serviceProvider);
+
+            return Localizer.Instance[Key];
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using ELOR.VKAPILib.Attributes;
-using ELOR.VKAPILib.Objects;
+﻿using ELOR.VKAPILib.Objects;
 using System.Runtime.Serialization;
 
 namespace ELOR.VKAPILib.Methods {
@@ -17,21 +16,18 @@ namespace ELOR.VKAPILib.Methods {
         Name,
     }
 
-    [Section("friends")]
     public class FriendsMethods : MethodsSectionBase {
         internal FriendsMethods(VKAPI api) : base(api) { }
 
-        [Method("add")]
         public async Task<int> AddAsync(long userId, string text = null, bool follow = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("user_id", userId.ToString());
             if (!String.IsNullOrEmpty(text)) parameters.Add("text", text);
             if (follow) parameters.Add("follow", "1");
-            return await API.CallMethodAsync<int>(this, parameters);
+            return await API.CallMethodAsync<int>("friends.add", parameters);
         }
 
-        [Method("get")]
-        public async Task<VKList<User>> GetAsync(List<string> fields, long userId = 0, FriendsOrder order = FriendsOrder.Hints, int listId = 0, int count = 5000, int offset = 0, NameCase nameCase = NameCase.Nom) {
+        public async Task<UsersList> GetAsync(List<string> fields, long userId = 0, FriendsOrder order = FriendsOrder.Hints, int listId = 0, int count = 5000, int offset = 0, NameCase nameCase = NameCase.Nom) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (userId > 0) parameters.Add("user_id", userId.ToString());
             parameters.Add("order", order.ToEnumMemberAttribute());
@@ -40,11 +36,10 @@ namespace ELOR.VKAPILib.Methods {
             if (offset > 0) parameters.Add("offset", offset.ToString());
             parameters.Add("fields", fields.Combine());
             parameters.Add("name_case", nameCase.ToEnumMemberAttribute());
-            return await API.CallMethodAsync<VKList<User>>(this, parameters);
+            return await API.CallMethodAsync<UsersList>("friends.get", parameters);
         }
 
-        [Method("search")]
-        public async Task<VKList<User>> SearchAsync(long userId, string query, int count = 1000, int offset = 0, List<string> fields = null, NameCase nameCase = NameCase.Nom) {
+        public async Task<UsersList> SearchAsync(long userId, string query, int count = 1000, int offset = 0, List<string> fields = null, NameCase nameCase = NameCase.Nom) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "user_id", userId.ToString() },
                 { "q", query },
@@ -53,7 +48,7 @@ namespace ELOR.VKAPILib.Methods {
             if (offset > 0) parameters.Add("offset", offset.ToString());
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             parameters.Add("name_case", nameCase.ToEnumMemberAttribute());
-            return await API.CallMethodAsync<VKList<User>>(this, parameters);
+            return await API.CallMethodAsync<UsersList>("friends.search", parameters);
         }
     }
 }

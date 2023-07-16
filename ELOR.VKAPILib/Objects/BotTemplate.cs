@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BotTemplateType {
         Unknown,
 

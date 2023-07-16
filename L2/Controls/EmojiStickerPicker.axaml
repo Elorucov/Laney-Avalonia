@@ -4,19 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vkui="using:VKUI.Controls"
              xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
              x:Name="PickerRoot"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="438"
              Loaded="EmojiStickerPicker_Loaded"
-             x:Class="ELOR.Laney.Controls.EmojiStickerPicker">
+             x:Class="ELOR.Laney.Controls.EmojiStickerPicker" x:DataType="vmc:EmojiStickerPickerViewModel">
   <UserControl.Resources>
     <DataTemplate x:Key="EmojiTabTemplate">
-      <ScrollViewer>
-        <ItemsRepeater x:Name="emojiList" ItemsSource="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}">
+      <ScrollViewer x:DataType="vmc:EmojiStickerPickerViewModel">
+        <ItemsRepeater x:Name="emojiList" ItemsSource="{Binding SelectedTab.Content, Mode=OneWay}">
           <ItemsRepeater.Layout>
             <StackLayout/>
           </ItemsRepeater.Layout>
-          <ItemsRepeater.ItemTemplate>
-            <DataTemplate>
+          <!--<ItemsRepeater.ItemTemplate>
+            <DataTemplate x:DataType="vmc:EmojiStickerPickerViewModel">
               <StackPanel>
                 <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding Key}"/>
                 <ItemsRepeater ItemsSource="{Binding}" Margin="12,0">
@@ -33,26 +34,26 @@
                 </ItemsRepeater>
               </StackPanel>
             </DataTemplate>
-          </ItemsRepeater.ItemTemplate>
+          </ItemsRepeater.ItemTemplate>-->
         </ItemsRepeater>
       </ScrollViewer>
     </DataTemplate>
     <DataTemplate x:Key="StickersTabTemplate">
-      <Grid RowDefinitions="Auto *">
-        <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding DataContext.SelectedTab.Label, Mode=OneWay, ElementName=PickerRoot}"/>
-        <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding DataContext.SelectedTab.Content, Mode=OneWay, ElementName=PickerRoot}" KeyUp="StickersListBox_KeyUp">
+      <Grid RowDefinitions="Auto *" x:DataType="vmc:EmojiStickerPickerViewModel">
+        <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding SelectedTab.Label, Mode=OneWay}"/>
+        <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding SelectedTab.Content, Mode=OneWay}" KeyUp="StickersListBox_KeyUp">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <WrapPanel Margin="8,0,8,8" ItemWidth="96" ItemHeight="96" Width="384"/>
             </ItemsPanelTemplate>
           </ListBox.ItemsPanel>
-          <ListBox.ItemTemplate>
+          <!--<ListBox.ItemTemplate>
             <DataTemplate>
               <Border Width="96" Height="96" Background="Transparent" Tapped="StickersListBoxItem_Tapped">
                 <Image Width="96" Height="96" controls:ImageLoader.Source="{Binding Converter={StaticResource vpsc}, ConverterParameter=96}"/>
               </Border>
             </DataTemplate>
-          </ListBox.ItemTemplate>
+          </ListBox.ItemTemplate>-->
         </ListBox>
       </Grid>
     </DataTemplate>

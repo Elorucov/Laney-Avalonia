@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Text.Json.Nodes;
+using ELOR.Laney.DataModels;
 
 namespace ELOR.Laney.Core.Localization {
     public class Localizer : INotifyPropertyChanged {
@@ -19,10 +20,10 @@ namespace ELOR.Laney.Core.Localization {
         private const string IndexerArrayName = "Item[]";
         private Dictionary<string, string> m_Strings;
 
-        public static readonly ObservableCollection<Tuple<string, string>> SupportedLanguages = new ObservableCollection<Tuple<string, string>> {
-            new Tuple<string, string>("en-US", "English"),
-            new Tuple<string, string>("ru-RU", "Русский"),
-            new Tuple<string, string>("uk-UA", "Українська"),
+        public static readonly ObservableCollection<TwoStringTuple> SupportedLanguages = new ObservableCollection<TwoStringTuple> {
+            new TwoStringTuple("en-US", "English"),
+            new TwoStringTuple("ru-RU", "Русский"),
+            new TwoStringTuple("uk-UA", "Українська"),
         };
 
         public Localizer() { }
@@ -34,7 +35,6 @@ namespace ELOR.Laney.Core.Localization {
             Uri uri = new Uri($"avares://laney/Assets/i18n/{language}.json");
             if (AssetLoader.Exists(uri)) {
                 using (StreamReader sr = new StreamReader(AssetLoader.Open(uri), Encoding.UTF8)) {
-                    // m_Strings = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(sr.BaseStream);
                     string str = sr.ReadToEnd();
                     JsonDocument json = JsonDocument.Parse(str);
                     foreach (var node in json.RootElement.EnumerateObject()) {

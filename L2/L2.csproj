@@ -6,24 +6,25 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.500</AssemblyVersion>
-    <FileVersion>2.0.500</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.500-win-anycpu-devuser.devpc-230706-1843</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.500-linux-anycpu-devuser.devpc-230706-1843</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.500-macos-anycpu-devuser.devpc-230706-1843</Version>
+    <AssemblyVersion>2.0.501</AssemblyVersion>
+    <FileVersion>2.0.501</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.501-win-anycpu-devuser.devpc-230716-0902</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.501-linux-anycpu-devuser.devpc-230716-0902</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.501-macos-anycpu-devuser.devpc-230716-0902</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
     <Platforms>AnyCPU</Platforms>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
     <TrimMode>copyused</TrimMode>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <PropertyGroup>
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.500</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.500</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.501</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.501</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>

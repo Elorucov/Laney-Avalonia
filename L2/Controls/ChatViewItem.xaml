@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
         xmlns:atch="using:ELOR.Laney.Controls.Attachments"
         xmlns:vkui="using:VKUI.Controls">
 
@@ -11,7 +12,7 @@
     </Border>
   </DataTemplate>
   
-  <DataTemplate x:Key="TemporaryServiceMessageTemplate">
+  <DataTemplate x:Key="TemporaryServiceMessageTemplate" x:DataType="vmc:MessageViewModel">
     <Border Margin="0,4" HorizontalAlignment="Center" CornerRadius="13">
       <TextBlock Classes="Subhead" Margin="8,4" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding}"/>
     </Border>

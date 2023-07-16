@@ -3,8 +3,20 @@ using System.Runtime.Serialization;
 using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
-    public class ConversationsResponse : VKList<ConversationItem> {
+    public class ConversationsResponse {
         public ConversationsResponse() {}
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("items")]
+        public List<ConversationItem> Items { get; set; }
+
+        [JsonPropertyName("profiles")]
+        public List<User> Profiles { get; set; }
+
+        [JsonPropertyName("groups")]
+        public List<Group> Groups { get; set; }
 
         [JsonPropertyName("unread_count")]
         public int UnreadCount { get; set; }

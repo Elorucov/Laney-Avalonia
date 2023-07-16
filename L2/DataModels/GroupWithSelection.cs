@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls.Selection;
+using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,5 +20,9 @@ namespace ELOR.Laney.DataModels {
             };
             Selected.SelectionChanged += (a, b) => selectionChanged?.Invoke(a, b);
         }
+    }
+
+    public class AlphabeticalUsers : GroupWithSelection<string, User> {
+        public AlphabeticalUsers(IGrouping<string, User> grouping, EventHandler<SelectionModelSelectionChangedEventArgs<User>> selectionChanged) : base(grouping, selectionChanged) {}
     }
 }

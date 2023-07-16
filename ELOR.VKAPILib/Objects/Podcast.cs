@@ -25,7 +25,7 @@ namespace ELOR.VKAPILib.Objects {
         public Podcast() {}
 
         [JsonIgnore]
-        public new string ObjectType { get { return "podcast"; } }
+        public override string ObjectType { get { return "podcast"; } }
 
         [JsonPropertyName("podcast_info")]
         public PodcastInfo Info { get; set; }

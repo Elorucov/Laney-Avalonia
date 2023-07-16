@@ -1,10 +1,14 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
+                    xmlns:sys="using:System"
                     xmlns:controls="using:ELOR.Laney.Controls"
+                    xmlns:mdl="using:ELOR.Laney.DataModels"
+                    xmlns:vm="using:ELOR.Laney.ViewModels"
+                    xmlns:vk="using:ELOR.VKAPILib.Objects"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <!-- Шаблон для элементов списка бесед (двухстрочный) -->
-  <DataTemplate x:Key="ChatItemTemplate2Row">
+  <DataTemplate x:Key="ChatItemTemplate2Row" x:DataType="vm:ChatViewModel">
     <Grid Height="64" ColumnDefinitions="Auto *" Background="Transparent">
       <vkui:Avatar Width="48" Height="48" Margin="12,8,0,8" VerticalAlignment="Top" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding Avatar}"/>
       <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,8"/>
@@ -50,7 +54,7 @@
   </DataTemplate>
 
   <!-- Шаблон для элементов списка бесед (трёхстрочный) -->
-  <DataTemplate x:Key="ChatItemTemplate3Row">
+  <DataTemplate x:Key="ChatItemTemplate3Row" x:DataType="vm:ChatViewModel">
     <Grid Height="72" ColumnDefinitions="Auto *" Background="Transparent">
       <vkui:Avatar Width="48" Height="48" Margin="12,6,0,6" VerticalAlignment="Top" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding Avatar}"/>
       <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,44,2,0"/>
@@ -97,7 +101,7 @@
   </DataTemplate>
 
   <!-- Категории настроек -->
-  <DataTemplate x:Key="CellItemTemplate">
+  <DataTemplate x:Key="CellItemTemplate" x:DataType="mdl:SettingsCategory">
     <vkui:Cell Header="{Binding Title}">
       <vkui:Cell.Before>
         <vkui:VKIcon Id="{Binding IconId}"/>
@@ -105,8 +109,8 @@
     </vkui:Cell>
   </DataTemplate>
 
-  <!-- Шаблон с инфой в PeerProfile (Tuple<string, string>) -->
-  <DataTemplate x:Key="PeerInfoTemplate">
+  <!-- Шаблон с инфой в PeerProfile (TwoStringTuple) -->
+  <DataTemplate x:Key="PeerInfoTemplate" x:DataType="mdl:TwoStringTuple">
     <Grid Margin="12,6" ColumnDefinitions="Auto *" MinHeight="20" Background="Transparent">
       <vkui:VKIcon Margin="0,0,12,0" VerticalAlignment="Top" Foreground="{DynamicResource VKIconSecondaryBrush}" Id="{Binding Item1}"/>
       <TextBlock Grid.Column="1" Margin="0,1,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Item2}"/>
@@ -115,8 +119,8 @@
 
   <!-- Дефолтный шаблон с аватаркой, именем и, опционально, subtitle и action.
        Используется для элементов в таких списках, как поиск чатов, список участников и т. п.
-       Tuple<long, Uri, string, string, Command> -->
-  <DataTemplate x:Key="DefaultEntityItemTemplate">
+       Entity -->
+  <DataTemplate x:Key="DefaultEntityItemTemplate" x:DataType="mdl:Entity">
     <Grid Margin="12,6" ColumnDefinitions="Auto * Auto" MinHeight="40" Background="Transparent">
       <vkui:Avatar Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"
                    Initials="{Binding Item3, Converter={StaticResource ic}}"
@@ -135,7 +139,7 @@
   <!-- Дефолтный шаблон для юзера с аватаркой и именем.
        Используется в списке друзей (создание чата, приглашение в чат)
        User -->
-  <DataTemplate x:Key="DefaultUserItemTemplate">
+  <DataTemplate x:Key="DefaultUserItemTemplate" x:DataType="vk:User">
     <Grid Margin="12,6" ColumnDefinitions="Auto *" MinHeight="40" Background="Transparent">
       <vkui:Avatar Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"
                    Initials="{Binding FullName, Converter={StaticResource ic}}"
@@ -146,7 +150,7 @@
   </DataTemplate>
 
   <!-- Шаблон для элемента сообщений в глобальном поиске (класс FoundMessageItem) -->
-  <DataTemplate x:Key="FoundMessageTemplate">
+  <DataTemplate x:Key="FoundMessageTemplate" x:DataType="mdl:FoundMessageItem">
     <Grid MinHeight="64" ColumnDefinitions="Auto *" Background="Transparent">
       <vkui:Avatar Width="48" Height="48" Margin="12,6,0,6" VerticalAlignment="Top" Initials="{Binding PeerName}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding PeerAvatar}"/>
       <StackPanel x:Name="Info" Grid.Column="1" Margin="12,6,0,0">

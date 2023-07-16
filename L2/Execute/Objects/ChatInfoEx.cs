@@ -2,8 +2,28 @@
 using System.Text.Json.Serialization;
 using System;
 using ELOR.VKAPILib.Attributes;
+using System.Collections.Generic;
 
 namespace ELOR.Laney.Execute.Objects {
+    public class ChatMembersList : IVKList<ChatMember> {
+        public ChatMembersList() { }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("items")]
+        public List<ChatMember> Items { get; set; }
+
+        [JsonPropertyName("profiles")]
+        public List<User> Profiles { get; set; }
+
+        [JsonPropertyName("groups")]
+        public List<Group> Groups { get; set; }
+
+        [JsonPropertyName("conversations")]
+        public List<Conversation> Conversations { get; set; }
+    }
+
     public class ChatInfoEx {
         public ChatInfoEx() {}
 
@@ -51,7 +71,7 @@ namespace ELOR.Laney.Execute.Objects {
         public UserStateInChat State { get; set; }
 
         [JsonPropertyName("members")]
-        public VKList<ChatMember> Members { get; set; }
+        public ChatMembersList Members { get; set; }
 
         [JsonPropertyName("pinned_message")]
         public Message PinnedMessage { get; set; }

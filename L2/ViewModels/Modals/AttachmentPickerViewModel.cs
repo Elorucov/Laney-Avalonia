@@ -6,11 +6,9 @@ using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace ELOR.Laney.ViewModels.Modals {
     public class AttachmentPickerViewModel : ViewModelBase {
@@ -68,8 +66,8 @@ namespace ELOR.Laney.ViewModels.Modals {
             Photos.Placeholder = null;
             Photos.IsLoading = true;
 
-            var albums = await session.API.GetPhotoAlbumsAsync(session.Id);
             try {
+                var albums = await session.API.GetPhotoAlbumsAsync(session.Id);
                 if (albums.Count > 0) albums[0].Title = Localizer.Instance["all"];
                 PhotoAlbums = new ObservableCollection<AlbumLite>(albums);
                 Photos.IsLoading = false;
@@ -85,20 +83,20 @@ namespace ELOR.Laney.ViewModels.Modals {
             Photos.Placeholder = null;
             Photos.IsLoading = true;
 
-            VKList<Photo> photos = null;
-            switch (SelectedPhotoAlbum.Id) {
-                case 0:
-                    photos = await session.API.Photos.GetAllAsync(session.Id, true, Photos.Items.Count, 100);
-                    break;
-                case -9000:
-                    photos = await session.API.Photos.GetUserPhotosAsync(session.Id, Photos.Items.Count, 100);
-                    break;
-                default:
-                    photos = await session.API.Photos.GetAsync(session.Id, SelectedPhotoAlbum.Id, null, true, false, Photos.Items.Count, 100);
-                    break;
-            }
-
+            PhotosList photos = null;
             try {
+                switch (SelectedPhotoAlbum.Id) {
+                    case 0:
+                        photos = await session.API.Photos.GetAllAsync(session.Id, true, Photos.Items.Count, 100);
+                        break;
+                    case -9000:
+                        photos = await session.API.Photos.GetUserPhotosAsync(session.Id, Photos.Items.Count, 100);
+                        break;
+                    default:
+                        photos = await session.API.Photos.GetAsync(session.Id, SelectedPhotoAlbum.Id, null, true, false, Photos.Items.Count, 100);
+                        break;
+                }
+
                 noMorePhotos = photos.Items.Count == 0;
                 photos.Items.ForEach(Photos.Items.Add);
             } catch (Exception ex) {
@@ -120,8 +118,8 @@ namespace ELOR.Laney.ViewModels.Modals {
             Videos.Placeholder = null;
             Videos.IsLoading = true;
 
-            var albums = await session.API.GetVideoAlbumsAsync(session.Id);
             try {
+                var albums = await session.API.GetVideoAlbumsAsync(session.Id);
                 VideoAlbums = new ObservableCollection<AlbumLite>(albums);
                 Videos.IsLoading = false;
                 SelectedVideoAlbum = VideoAlbums.First();
@@ -136,9 +134,8 @@ namespace ELOR.Laney.ViewModels.Modals {
             Videos.Placeholder = null;
             Videos.IsLoading = true;
 
-            VKList<Video> videos = await session.API.Video.GetAsync(session.Id, null, SelectedVideoAlbum.Id, Videos.Items.Count, 50, true);
-
             try {
+                VideosList videos = await session.API.Video.GetAsync(session.Id, null, SelectedVideoAlbum.Id, Videos.Items.Count, 50, true);
                 noMoreVideos = videos.Items.Count == 0;
                 videos.Items.ForEach(Videos.Items.Add);
             } catch (Exception ex) {
@@ -161,7 +158,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             Documents.IsLoading = true;
 
             try {
-                VKList<Document> docs = await session.API.Docs.GetAsync(session.Id, DocumentTypeIndex, Documents.Items.Count, 50);
+                DocumentsList docs = await session.API.Docs.GetAsync(session.Id, DocumentTypeIndex, Documents.Items.Count, 50);
                 docs.Items.ForEach(d => Documents.Items.Add(d));
             } catch (Exception ex) {
                 if (Documents.Items.Count == 0) {

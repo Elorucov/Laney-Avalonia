@@ -13,7 +13,7 @@ namespace ELOR.Laney.ViewModels {
 
         private int _currentTab;
         private string _query;
-        private ObservableCollection<Tuple<long, Uri, string>> _foundChats;
+        private ObservableCollection<Entity> _foundChats;
         private ObservableCollection<FoundMessageItem> _foundMessages;
         private bool _isChatsLoading;
         private bool _isMessagesLoading;
@@ -22,7 +22,7 @@ namespace ELOR.Laney.ViewModels {
 
         public int CurrentTab { get { return _currentTab; } set { _currentTab = value; OnPropertyChanged(); } }
         public string Query { get { return _query; } set { _query = value; OnPropertyChanged(); } }
-        public ObservableCollection<Tuple<long, Uri, string>> FoundChats { get { return _foundChats; } set { _foundChats = value; OnPropertyChanged(); } }
+        public ObservableCollection<Entity> FoundChats { get { return _foundChats; } set { _foundChats = value; OnPropertyChanged(); } }
         public ObservableCollection<FoundMessageItem> FoundMessages { get { return _foundMessages; } set { _foundMessages = value; OnPropertyChanged(); } }
         public bool IsChatsLoading { get { return _isChatsLoading; } set { _isChatsLoading = value; OnPropertyChanged(); } }
         public bool IsMessagesLoading { get { return _isMessagesLoading; } set { _isMessagesLoading = value; OnPropertyChanged(); } }
@@ -66,7 +66,7 @@ namespace ELOR.Laney.ViewModels {
                     return;
                 }
 
-                if (FoundChats == null) FoundChats = new ObservableCollection<Tuple<long, Uri, string>>();
+                if (FoundChats == null) FoundChats = new ObservableCollection<Entity>();
                 foreach (var chat in response.Items) {
                     long id = chat.Peer.Id;
                     string name = $"{chat.Peer.Type} {chat.Peer.LocalId}";
@@ -89,7 +89,7 @@ namespace ELOR.Laney.ViewModels {
                         avatar = chat.ChatSettings?.Photo?.Uri;
                     }
 
-                    Tuple<long, Uri, string> item = new Tuple<long, Uri, string>(id, avatar, name);
+                    Entity item = new Entity(id, avatar, name, null, null);
                     FoundChats.Add(item);
 
                 }

@@ -5,6 +5,7 @@
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vkui="using:VKUI.Controls"
+        xmlns:mdl="using:ELOR.Laney.DataModels"
         mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
         x:Class="ELOR.Laney.Views.SignInWindow"
         Width="420" Height="540"
@@ -28,7 +29,7 @@
     <Grid Grid.Row="2" ColumnDefinitions="Auto *" Margin="24,0,24,18" VerticalAlignment="Center">
       <ComboBox x:Name="LangPicker" Classes="Alternate">
         <ComboBox.ItemTemplate>
-          <DataTemplate>
+          <DataTemplate x:DataType="mdl:TwoStringTuple">
             <TextBlock Classes="Subhead" Text="{Binding Item2}"/>
           </DataTemplate>
         </ComboBox.ItemTemplate>

@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 using ELOR.VKAPILib.Attributes;
 
 namespace ELOR.VKAPILib.Objects {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BotButtonColor {
         [EnumMember(Value = "secondary")]
         Default,
@@ -17,8 +16,7 @@ namespace ELOR.VKAPILib.Objects {
         [EnumMember(Value = "negative")]
         Negative
     }
-
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+	
     public enum BotButtonType {
         Unknown,
 

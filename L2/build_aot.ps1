@@ -37,14 +37,17 @@ if ($IsWindows) {
     $location = "$(Get-Location)\bin\Release\net7.0";
 }
 
+$uname = [Environment]::UserName.Replace("-", "_");
+$hname = "$(hostname)".Replace("-", "_");
+
 if ($IsWindows) {
-    $btagw1 = "$($currentversion)-win-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagw1 = "$($currentversion)-win-x64-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw1;
     $proc1 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-x64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:ServerGarbageCollection=true -p:PublishReadyToRun=true -p:Version=$($btagw1) -p:DefineConstants=WIN$($chstr)";
     $proc1.WaitForExit();
 	echo "Win x86-64 is done.$([Environment]::NewLine)";
 
-    $btagw3 = "$($currentversion)-win-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagw3 = "$($currentversion)-win-arm64-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw3;
     $proc2 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-arm64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:ServerGarbageCollection=true -p:PublishReadyToRun=true -p:Version=$($btagw3) -p:DefineConstants=WIN$($chstr)";
     $proc2.WaitForExit();
@@ -52,7 +55,7 @@ if ($IsWindows) {
 }
 
 if ($IsLinux) {
-	$btagl1 = "$($currentversion)-linux-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+	$btagl1 = "$($currentversion)-linux-x64-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagl1;
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r linux-x64 -p:EnableCompressionInSingleFile=true -p:ServerGarbageCollection=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:Version=$($btagl1) -p:DefineConstants=LINUX$($chstr)";
     echo "Linux x86-64 is done.$([Environment]::NewLine)";
@@ -65,7 +68,7 @@ if ($IsMacOS) {
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "restore -r osx-x64";
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "restore -r osx-arm64";
 
-    $btagm1 = "$($currentversion)-macos-x64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagm1 = "$($currentversion)-macos-x64-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm1;
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-x64 -p:UseAppHost=true -p:Version=$($btagm1) -p:DefineConstants=MAC$($chstr)";
     Copy-Item "$($projfolder)/Assets/Logo/icon.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources";
@@ -76,7 +79,7 @@ if ($IsMacOS) {
     Remove-Item -Path "$($location)/publish" -Recurse;
     echo "macOS x86-64 is done.$([Environment]::NewLine)";
 
-    $btagm2 = "$($currentversion)-macos-arm64-$([Environment]::UserName).$(hostname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagm2 = "$($currentversion)-macos-arm64-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm2;
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=osx-arm64 -p:UseAppHost=true -p:Version=$($btagm2) -p:DefineConstants=MAC$($chstr)";
     Copy-Item "$($projfolder)/Assets/Logo/icon.icns" -Destination "$($location)/publish/Laney.app/Contents/Resources"

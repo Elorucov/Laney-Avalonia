@@ -2,9 +2,11 @@
         xmlns:vkui="using:VKUI.Controls"
         xmlns:views="using:ELOR.Laney.Views"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:core="using:ELOR.Laney.Core"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:DataType="core:VKSession"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" UseLayoutRounding="True"
         x:Class="ELOR.Laney.Views.MainWindow" MinWidth="400" MinHeight="540" WindowState="Maximized"
         Icon="avares://laney/Assets/Logo/icon.ico">

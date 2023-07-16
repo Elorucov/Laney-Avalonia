@@ -6,7 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-  <!--<ItemGroup>
-    <RdXmlFile Include="Properties\Default.rd.xml" />
-  </ItemGroup>-->
 </Project>

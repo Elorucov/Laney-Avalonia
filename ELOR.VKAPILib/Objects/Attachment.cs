@@ -2,7 +2,6 @@
 using System.Runtime.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum AttachmentType {
         Unknown,
 
@@ -99,12 +98,12 @@ namespace ELOR.VKAPILib.Objects {
 
     public class Attachment {
         public Attachment() {}
-            
+
         [JsonPropertyName("type")]
         public string TypeString { get; set; }
 
         [JsonIgnore]
-        public AttachmentType Type { get { return GetAttachmentEnum(); } }
+        public AttachmentType Type { get { return GetAttachmentEnum(TypeString); } }
 
         [JsonPropertyName("photo")]
         public Photo Photo { get; set; }
@@ -169,8 +168,8 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("textpost_publish")]
         public TextpostPublish TextpostPublish { get; set; }
 
-        private AttachmentType GetAttachmentEnum() {
-            switch(TypeString) {
+        private static AttachmentType GetAttachmentEnum(string type) {
+            switch (type) {
                 case "photo": return AttachmentType.Photo;
                 case "album": return AttachmentType.Album;
                 case "video": return AttachmentType.Video;

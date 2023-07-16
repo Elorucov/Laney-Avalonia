@@ -23,8 +23,8 @@ namespace ELOR.Laney.ViewModels.Modals {
         private string _header;
         private string _subhead;
         private Uri _avatar;
-        private ObservableCollection<Tuple<string, string>> _information = new ObservableCollection<Tuple<string, string>>();
-        private ObservableCollection<Tuple<long, Uri, string, string, Command>> _displayedMembers;
+        private ObservableCollection<TwoStringTuple> _information = new ObservableCollection<TwoStringTuple>();
+        private ObservableCollection<Entity> _displayedMembers;
         private string _memberSearchQuery;
         
         private Command _firstCommand;
@@ -36,8 +36,8 @@ namespace ELOR.Laney.ViewModels.Modals {
         public string Header { get { return _header; } private set { _header = value; OnPropertyChanged(); } }
         public string Subhead { get { return _subhead; } private set { _subhead = value; OnPropertyChanged(); } }
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
-        public ObservableCollection<Tuple<string, string>> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
-        public ObservableCollection<Tuple<long, Uri, string, string, Command>> DisplayedMembers { get { return _displayedMembers; } private set { _displayedMembers = value; OnPropertyChanged(); } }
+        public ObservableCollection<TwoStringTuple> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
+        public ObservableCollection<Entity> DisplayedMembers { get { return _displayedMembers; } private set { _displayedMembers = value; OnPropertyChanged(); } }
         public string MemberSearchQuery { get { return _memberSearchQuery; } set { _memberSearchQuery = value; OnPropertyChanged(); } }
 
         public Command FirstCommand { get { return _firstCommand; } private set { _firstCommand = value; OnPropertyChanged(); } }
@@ -46,7 +46,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         public Command MoreCommand { get { return _moreCommand; } private set { _moreCommand = value; OnPropertyChanged(); } }
 
         private VKSession session;
-        private ObservableCollection<Tuple<long, Uri, string, string, Command>> allMembers = new ObservableCollection<Tuple<long, Uri, string, string, Command>>();
+        private ObservableCollection<Entity> allMembers = new ObservableCollection<Entity>();
         public event EventHandler CloseWindowRequested;
 
         public PeerProfileViewModel(VKSession session, long peerId) {
@@ -105,53 +105,53 @@ namespace ELOR.Laney.ViewModels.Modals {
         private void SetupInfo(UserEx user) {
             Information.Clear();
 
-            Information.Add(new Tuple<string, string>(VKIconNames.Icon20BugOutline, user.Id.ToString()));
+            Information.Add(new TwoStringTuple(VKIconNames.Icon20BugOutline, user.Id.ToString()));
 
             // Banned/deleted/blocked...
             if (user.Blacklisted == 1) {
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted", user.Sex)));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted", user.Sex)));
             }
             if (user.BlacklistedByMe == 1) {
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted_by_me", user.Sex)));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted_by_me", user.Sex)));
             }
 
             // Domain
-            Information.Add(new Tuple<string, string>(VKIconNames.Icon20MentionOutline, user.Domain));
+            Information.Add(new TwoStringTuple(VKIconNames.Icon20MentionOutline, user.Domain));
 
             // Private profile
             if (user.IsClosed && !user.CanAccessClosed)
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20LockOutline, Localizer.Instance["user_private"]));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20LockOutline, Localizer.Instance["user_private"]));
 
             // Status
             if (!String.IsNullOrEmpty(user.Status))
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20ArticleOutline, user.Status.Trim()));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20ArticleOutline, user.Status.Trim()));
 
             // Birthday
             if (!String.IsNullOrEmpty(user.BirthDate))
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20GiftOutline, VKAPIHelper.GetNormalizedBirthDate(user.BirthDate)));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20GiftOutline, VKAPIHelper.GetNormalizedBirthDate(user.BirthDate)));
 
             // Live in
             if (!String.IsNullOrWhiteSpace(user.LiveIn))
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20HomeOutline, user.LiveIn.Trim()));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20HomeOutline, user.LiveIn.Trim()));
 
             // Work
             if (user.CurrentCareer != null) {
                 var c = user.CurrentCareer;
                 string h = c.Company.Trim();
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20WorkOutline, String.IsNullOrWhiteSpace(c.Position) ? h : $"{h} — {c.Position.Trim()}"));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20WorkOutline, String.IsNullOrWhiteSpace(c.Position) ? h : $"{h} — {c.Position.Trim()}"));
             }
 
             // Education
             if (!String.IsNullOrWhiteSpace(user.CurrentEducation))
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20EducationOutline, user.CurrentEducation.Trim()));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20EducationOutline, user.CurrentEducation.Trim()));
 
             // Site
             if (!String.IsNullOrWhiteSpace(user.Site))
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20LinkCircleOutline, user.Site.Trim()));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20LinkCircleOutline, user.Site.Trim()));
 
             // Followers
             if (user.Followers > 0)
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20FollowersOutline, Localizer.Instance.GetDeclensionFormatted(user.Followers, "follower")));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20FollowersOutline, Localizer.Instance.GetDeclensionFormatted(user.Followers, "follower")));
         }
 
         private void SetupCommands(UserEx user) {
@@ -283,29 +283,29 @@ namespace ELOR.Laney.ViewModels.Modals {
         private void SetupInfo(GroupEx group) {
             Information.Clear();
 
-            Information.Add(new Tuple<string, string>(VKIconNames.Icon20BugOutline, group.Id.ToString()));
+            Information.Add(new TwoStringTuple(VKIconNames.Icon20BugOutline, group.Id.ToString()));
 
             // Domain
-            Information.Add(new Tuple<string, string>(VKIconNames.Icon20MentionOutline, !String.IsNullOrEmpty(group.ScreenName) ? group.ScreenName : $"club{group.Id}"));
+            Information.Add(new TwoStringTuple(VKIconNames.Icon20MentionOutline, !String.IsNullOrEmpty(group.ScreenName) ? group.ScreenName : $"club{group.Id}"));
 
             // Status
             if (!String.IsNullOrEmpty(group.Status))
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20ArticleOutline, group.Status.Trim()));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20ArticleOutline, group.Status.Trim()));
 
             // City
             string cc = null;
             if (group.City != null) cc = group.City.Title.Trim();
             if (group.Country != null) cc += !String.IsNullOrEmpty(cc) ? $", {group.Country.Title.Trim()}" : group.Country.Title.Trim();
             if (!String.IsNullOrEmpty(cc))
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20HomeOutline, cc));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20HomeOutline, cc));
 
             // Site
             if (!String.IsNullOrWhiteSpace(group.Site))
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20LinkCircleOutline, group.Site.Trim()));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20LinkCircleOutline, group.Site.Trim()));
 
             // Members
             if (group.Members > 0)
-                Information.Add(new Tuple<string, string>(VKIconNames.Icon20FollowersOutline, Localizer.Instance.GetDeclensionFormatted(group.Members, "members_sub")));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20FollowersOutline, Localizer.Instance.GetDeclensionFormatted(group.Members, "members_sub")));
         }
 
         private void SetupCommands(GroupEx group) {
@@ -455,7 +455,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
                 Command command = SetUpMemberCommand(chat, member);
 
-                allMembers.Add(new Tuple<long, Uri, string, string, Command>(mid, avatar, name, desc, command));
+                allMembers.Add(new Entity(mid, avatar, name, desc, command));
                 DisplayedMembers = allMembers;
             }
         }
@@ -570,7 +570,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             if (IsLoading) return;
             if (!String.IsNullOrWhiteSpace(MemberSearchQuery)) {
                 var foundMembers = allMembers.Where(m => m.Item3.ToLower().Contains(MemberSearchQuery.ToLower()));
-                DisplayedMembers = new ObservableCollection<Tuple<long, Uri, string, string, Command>>(foundMembers);
+                DisplayedMembers = new ObservableCollection<Entity>(foundMembers);
             } else {
                 DisplayedMembers = allMembers;
             }

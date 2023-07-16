@@ -6,7 +6,7 @@ namespace ELOR.VKAPILib.Objects.Messages {
         public LongPollHistoryResponse() {}
             
         [JsonPropertyName("messages")]
-        public VKList<Message> Messages { get; set; }
+        public MessagesList Messages { get; set; }
 
         [JsonPropertyName("profiles")]
         public List<User> Profiles { get; set; }

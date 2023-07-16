@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:vkui="using:VKUI.Controls"
+             xmlns:vm="using:ELOR.Laney.ViewModels.SettingsCategories"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ELOR.Laney.Views.SettingsCategories.Appearance">
+             x:Class="ELOR.Laney.Views.SettingsCategories.Appearance" x:DataType="vm:AppearanceViewModel">
   <ScrollViewer>
     <StackPanel>
       <Border Classes="Group" VerticalAlignment="Top">

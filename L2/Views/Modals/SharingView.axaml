@@ -4,10 +4,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="640"
-        x:Class="ELOR.Laney.Views.Modals.SharingView"
+        x:Class="ELOR.Laney.Views.Modals.SharingView" x:DataType="vm:SharingViewModel"
         Width="540" Height="620"
         Title="Sharing UI">
   <Grid x:Name="Root" RowDefinitions="Auto *">
