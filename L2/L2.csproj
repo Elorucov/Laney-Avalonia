@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.501</AssemblyVersion>
-    <FileVersion>2.0.501</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.501-win-anycpu-devuser.devpc-230716-0902</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.501-linux-anycpu-devuser.devpc-230716-0902</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.501-macos-anycpu-devuser.devpc-230716-0902</Version>
+    <AssemblyVersion>2.0.503</AssemblyVersion>
+    <FileVersion>2.0.503</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.503-win-anycpu-devuser.devpc-230717-0734</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.503-linux-anycpu-devuser.devpc-230717-0734</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.503-macos-anycpu-devuser.devpc-230717-0734</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -23,8 +23,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.501</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.501</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.503</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.503</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
@@ -175,7 +175,4 @@
       <DependentUpon>PostUI.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <!--<ItemGroup>
-    <RdXmlFile Include="Properties\Default.rd.xml" />
-  </ItemGroup>-->
 </Project>

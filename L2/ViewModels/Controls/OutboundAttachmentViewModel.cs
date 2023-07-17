@@ -16,6 +16,7 @@ using System.IO;
 using System.Threading.Tasks;
 using VKUI.Controls;
 using System.Text.Json;
+using ELOR.VKAPILib;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public enum OutboundAttachmentType { Attachment, ForwardedMessages, Place }
@@ -216,7 +217,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         var pr = await uploader.UploadAsync();
                         if (pr == null) throw new ArgumentNullException("Upload error, no response!");
                         UploadProgress = 100;
-                        PhotoUploadResult pur = JsonSerializer.Deserialize<PhotoUploadResult>(pr);
+                        PhotoUploadResult pur = (PhotoUploadResult)JsonSerializer.Deserialize(pr, typeof(PhotoUploadResult), BuildInJsonContext.Default);
                         if (String.IsNullOrEmpty(pur.Photo)) throw new Exception("File is not uploaded!");
                         var presult = await session.API.Photos.SaveMessagesPhotoAsync(session.GroupId, pur.Server, pur.Photo, pur.Hash);
                         if (presult.Count > 0) {
@@ -235,7 +236,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         var dr = await uploader.UploadAsync();
                         if (dr == null) throw new ArgumentNullException("Upload error, no response!");
                         UploadProgress = 100;
-                        DocumentUploadResult dur = JsonSerializer.Deserialize<DocumentUploadResult>(dr);
+                        DocumentUploadResult dur = (DocumentUploadResult)JsonSerializer.Deserialize(dr, typeof(DocumentUploadResult), BuildInJsonContext.Default); ;
                         if (String.IsNullOrEmpty(dur.File)) {
                             throw new Exception(!String.IsNullOrEmpty(dur.ErrorDescription) ? dur.ErrorDescription : dur.Error);
                         }
@@ -257,7 +258,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         var vr = await uploader.UploadAsync();
                         if (vr == null) throw new ArgumentNullException("Upload error, no response!");
                         UploadProgress = 100;
-                        VideoUploadResult vur = JsonSerializer.Deserialize<VideoUploadResult>(vr);
+                        VideoUploadResult vur = (VideoUploadResult)JsonSerializer.Deserialize(vr, typeof(VideoUploadResult), BuildInJsonContext.Default); ;
                         Video video = new Video { 
                             Id = vur.VideoId,
                             OwnerId = vur.OwnerId,
