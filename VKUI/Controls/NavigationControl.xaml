@@ -46,8 +46,7 @@
                 />
             </DockPanel>
           </Border>
-          <TransitioningContentControl Name="PART_ContentPresenter"
-                          PageTransition="{TemplateBinding PageTransition}"
+          <ContentControl Name="PART_ContentPresenter"
                           Background="{TemplateBinding Background}"
                           BorderBrush="{TemplateBinding BorderBrush}"
                           BorderThickness="{TemplateBinding BorderThickness}"

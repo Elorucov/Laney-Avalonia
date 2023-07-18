@@ -52,7 +52,7 @@ namespace ELOR.Laney.Views {
             CheckAdaptivity(e.EffectiveViewport.Width);
         }
 
-        private void MainWindow_Activated(object? sender, EventArgs e) {
+        private async void MainWindow_Activated(object? sender, EventArgs e) {
             Program.StopStopwatch();
             Log.Information($"{nameof(MainWindow)} activated. Launch time: {Program.LaunchTime} ms.");
             Activated -= MainWindow_Activated;
@@ -60,7 +60,7 @@ namespace ELOR.Laney.Views {
             VKSession.GetByDataContext(this).PropertyChanged += SessionPropertyChanged;
             Title = $"{VKSession.GetByDataContext(this).Name} - Laney";
 
-            LeftNav.NavigationRouter.NavigateToAsync(new ImView());
+            await LeftNav.NavigationRouter.NavigateToAsync(new ImView());
         }
 
         private void SessionPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {

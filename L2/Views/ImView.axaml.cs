@@ -21,11 +21,12 @@ namespace ELOR.Laney.Views {
             AvatarButton.Click += (a, b) => {
                 Session.ShowSessionPopup(AvatarButton);
             };
-            NewConvButton.Click += (a, b) => {
-                NavigationRouter.NavigateToAsync(new ChatCreationView());
+            NewConvButton.Click += async (a, b) => {
+                await NavigationRouter.NavigateToAsync(new ChatCreationView());
             };
-            SearchButton.Click += (a, b) => {
-                NavigationRouter.NavigateToAsync(new SearchView());
+            SearchButton.Click += async (a, b) => {
+                // await NavigationRouter.NavigateToAsync(new SearchView());
+                await NavigationRouter.NavigateToAsync(new TestNavView());
             };
 
             ChatsList.Loaded += ChatsList_Loaded;

@@ -37,8 +37,8 @@ if ($IsWindows) {
     $location = "$(Get-Location)\bin\Release\net7.0";
 }
 
-$uname = [Environment]::UserName.Replace("-", "_");
-$hname = "$(hostname)".Replace("-", "_");
+$uname = [Environment]::UserName.Replace("-", "");
+$hname = "$(hostname)".Replace("-", "");
 
 if ($IsWindows) {
     $btagw1 = "$($currentversion)-win-x64-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";

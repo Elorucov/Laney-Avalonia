@@ -11,11 +11,11 @@ namespace ELOR.Laney.Views {
 
         public ChatCreationView() {
             InitializeComponent();
-            BackButton.Click += (a, b) => NavigationRouter.BackAsync();
+            BackButton.Click += async (a, b) => await NavigationRouter.BackAsync();
         }
 
         private void ChatCreationView_Loaded(object sender, RoutedEventArgs e) {
-            DataContext = new ChatCreationViewModel(VKSession.GetByDataContext(this), () => NavigationRouter.BackAsync());
+            DataContext = new ChatCreationViewModel(VKSession.GetByDataContext(this), async () => await NavigationRouter.BackAsync());
         }
 
         private void OnFriendRemoveButtonClick(object sender, RoutedEventArgs e) {

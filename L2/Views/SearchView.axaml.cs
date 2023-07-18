@@ -14,7 +14,7 @@ namespace ELOR.Laney.Views {
 
         public SearchView() {
             InitializeComponent();
-            BackButton.Click += (a, b) => NavigationRouter.BackAsync();
+            BackButton.Click += async (a, b) => await NavigationRouter.BackAsync();
         }
 
         private void SearchView_Loaded(object sender, RoutedEventArgs e) {
