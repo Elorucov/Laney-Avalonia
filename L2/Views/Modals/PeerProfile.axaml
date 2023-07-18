@@ -10,7 +10,7 @@
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="640"
         x:Class="ELOR.Laney.Views.Modals.PeerProfile" x:DataType="vm:PeerProfileViewModel"
         Width="540" Height="640"
-        Title="i18n:Localize wnd_peerprofile">
+        Title="{i18n:Localize wnd_peerprofile}">
   <vkw:DialogWindow.Resources>
     <DataTemplate x:Key="UserGroupInfoContentTemplate" x:DataType="vm:PeerProfileViewModel">
       <ScrollViewer>
@@ -56,25 +56,25 @@
             <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
           </Style>
         </Grid.Styles>
-        <Button Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding FirstCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+        <Button x:Name="FirstButton" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding FirstCommand.Action}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <vkui:VKIcon Margin="0,0,6,0" Id="{Binding FirstCommand.IconId}"/>
             <TextBlock Classes="Default Caption1" Text="{Binding FirstCommand.Label}"/>
           </StackPanel>
         </Button>
-        <Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding SecondCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" IsVisible="{Binding SecondCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <Button x:Name="SecondButton" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding SecondCommand.Action}" IsVisible="{Binding SecondCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <vkui:VKIcon Margin="0,0,6,0" Id="{Binding SecondCommand.IconId}"/>
             <TextBlock Classes="Default Caption1" Text="{Binding SecondCommand.Label}"/>
           </StackPanel>
         </Button>
-        <Button Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding ThirdCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" IsVisible="{Binding ThirdCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <Button x:Name="ThirdButton" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding ThirdCommand.Action}" IsVisible="{Binding ThirdCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <vkui:VKIcon Margin="0,0,6,0" Id="{Binding ThirdCommand.IconId}"/>
             <TextBlock Classes="Default Caption1" Text="{Binding ThirdCommand.Label}"/>
           </StackPanel>
         </Button>
-        <Button Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="0" Width="44" Command="{Binding MoreCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" IsVisible="{Binding MoreCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <Button x:Name="MoreButton" Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="0" Width="44" Command="{Binding MoreCommand.Action}" IsVisible="{Binding MoreCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28MoreHorizontal}"/>
           </StackPanel>

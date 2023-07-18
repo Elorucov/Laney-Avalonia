@@ -23,9 +23,18 @@ namespace ELOR.Laney.Views.Modals {
             DataContext = new PeerProfileViewModel(session, peerId);
             ViewModel.CloseWindowRequested += ViewModel_CloseWindowRequested;
 
+            // RelativeSource is not working when CompiledBindings=true!
+            FirstButton.CommandParameter = FirstButton;
+            SecondButton.CommandParameter = SecondButton;
+            ThirdButton.CommandParameter = ThirdButton;
+            MoreButton.CommandParameter = MoreButton;
 #if LINUX
             TitleBar.IsVisible = false;
 #endif
+        }
+
+        private void MoreButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            //if (MoreButton.CommandParameter != null)
         }
 
         private void ViewModel_CloseWindowRequested(object sender, EventArgs e) {

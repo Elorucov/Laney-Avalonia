@@ -25,8 +25,7 @@ namespace ELOR.Laney.Views {
                 await NavigationRouter.NavigateToAsync(new ChatCreationView());
             };
             SearchButton.Click += async (a, b) => {
-                // await NavigationRouter.NavigateToAsync(new SearchView());
-                await NavigationRouter.NavigateToAsync(new TestNavView());
+                await NavigationRouter.NavigateToAsync(new SearchView());
             };
 
             ChatsList.Loaded += ChatsList_Loaded;
