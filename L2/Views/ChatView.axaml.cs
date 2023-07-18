@@ -333,7 +333,7 @@ namespace ELOR.Laney.Views {
 
         bool isMarking = false;
         private async void TryMarkAsRead(MessageViewModel msg) {
-            if (isMarking || msg == null || msg.State != MessageVMState.Unread) return;
+            if (isMarking || msg == null || msg.IsOutgoing || msg.State != MessageVMState.Unread) return;
             isMarking = true;
 
             try {
