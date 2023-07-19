@@ -31,13 +31,13 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<PrivacySettingValue>("account.setPrivacy", parameters);
         }
 
-        public async Task<bool> SetSilenceModeAsync(int time, long peerId, bool sound) {
+        public async Task<int> SetSilenceModeAsync(int time, long peerId, bool sound) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "time", time.ToString() },
                 { "peer_id", peerId.ToString() },
                 { "sound", sound ? "1" : "0" }
             };
-            return await API.CallMethodAsync<bool>("account.setSilenceMode", parameters);
+            return await API.CallMethodAsync<int>("account.setSilenceMode", parameters);
         }
 
         public async Task<bool> UnbanAsync(long ownerId) {
