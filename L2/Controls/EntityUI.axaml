@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vkui="using:VKUI.Controls"
+             xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:mdl="using:ELOR.Laney.DataModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ELOR.Laney.Controls.EntityUI">
+  <Grid ColumnDefinitions="Auto * Auto" MinHeight="40" Background="Transparent" x:DataType="mdl:Entity">
+    <vkui:Avatar Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"
+                 Initials="{Binding Item3, Converter={StaticResource ic}}"
+                 Background="{Binding Item1, Converter={StaticResource agc}}"
+                 controls:ImageLoader.Image="{Binding Item2}"/>
+    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+      <TextBlock Text="{Binding Item3}" Classes="Default" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+      <TextBlock Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{Binding Item4, Converter={x:Static ObjectConverters.IsNotNull}, TargetNullValue=False, FallbackValue=False}" Text="{Binding Item4}"/>
+    </StackPanel>
+    <Button x:Name="CommandButton" Grid.Column="2" Classes="Tertiary" Padding="0" Width="32" Height="32" IsVisible="{Binding Item5, Converter={x:Static ObjectConverters.IsNotNull}}" ToolTip.Tip="{Binding Item5.Label}" Command="{Binding Item5.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+      <vkui:VKIcon Id="{Binding Item5.IconId}"/>
+    </Button>
+  </Grid>
+</UserControl>

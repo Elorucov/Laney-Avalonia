@@ -16,8 +16,9 @@ namespace ELOR.Laney.Views.Modals {
             InitializeComponent();
 
             if (peerId.IsChat()) {
-                FirstTab.Header = Localizer.Instance["members"];
-                FirstTabContent.ContentTemplate = (DataTemplate)Resources["ChatMembersContentTemplate"];
+                Tabs.Items.Remove(UserInfoTab);
+            } else {
+                Tabs.Items.Remove(ChatMembersTab);
             }
 
             DataContext = new PeerProfileViewModel(session, peerId);

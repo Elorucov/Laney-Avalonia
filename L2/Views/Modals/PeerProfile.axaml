@@ -11,26 +11,7 @@
         x:Class="ELOR.Laney.Views.Modals.PeerProfile" x:DataType="vm:PeerProfileViewModel"
         Width="540" Height="640"
         Title="{i18n:Localize wnd_peerprofile}">
-  <vkw:DialogWindow.Resources>
-    <DataTemplate x:Key="UserGroupInfoContentTemplate" x:DataType="vm:PeerProfileViewModel">
-      <ScrollViewer>
-        <ItemsControl Margin="0,-3,0,6" ItemsSource="{Binding Information}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>
-      </ScrollViewer>
-    </DataTemplate>
-    <DataTemplate x:Key="ChatMembersContentTemplate" x:DataType="vm:PeerProfileViewModel">
-      <Grid RowDefinitions="Auto *">
-        <TextBox Classes="Search" Margin="12,2,12,0" Text="{Binding MemberSearchQuery}" Watermark="{i18n:Localize pp_search_members}"/>
-        <ScrollViewer Grid.Row="1">
-          <ItemsRepeater Margin="0,6" ItemsSource="{Binding DisplayedMembers}" ItemTemplate="{StaticResource DefaultEntityItemTemplate}">
-            <ItemsRepeater.Layout>
-              <StackLayout/>
-            </ItemsRepeater.Layout>
-          </ItemsRepeater>
-        </ScrollViewer>
-      </Grid>
-    </DataTemplate>
-  </vkw:DialogWindow.Resources>
-    
+   
   <Grid x:Name="Root" Grid.RowDefinitions="Auto Auto *">
     <Grid x:Name="PeerInfo" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="24" ColumnDefinitions="Auto *">
       <vkui:Avatar x:Name="PeerAva" Width="80" Height="80" Margin="0,0,20,0" Initials="{Binding Header, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Avatar}"/>
@@ -82,9 +63,23 @@
       </Grid>
     </Border>
 
-    <TabControl Grid.Row="2" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,14,0,0" Classes="Accent">
-      <TabItem x:Name="FirstTab" Header="{i18n:Localize info}">
-        <ContentControl x:Name="FirstTabContent" ContentTemplate="{StaticResource UserGroupInfoContentTemplate}"/>
+    <TabControl x:Name="Tabs" Grid.Row="2" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,14,0,0" Classes="Accent">
+      <TabItem x:Name="UserInfoTab" Header="{i18n:Localize info}">
+        <ScrollViewer>
+          <ItemsControl Margin="0,-3,0,6" ItemsSource="{Binding Information}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem x:Name="ChatMembersTab" Header="{i18n:Localize members}">
+        <Grid RowDefinitions="Auto *">
+          <TextBox Classes="Search" Margin="12,2,12,0" Text="{Binding MemberSearchQuery}" Watermark="{i18n:Localize pp_search_members}"/>
+          <ScrollViewer Grid.Row="1">
+            <ItemsRepeater Margin="0,6" ItemsSource="{Binding DisplayedMembers}" ItemTemplate="{StaticResource DefaultEntityItemTemplate}">
+              <ItemsRepeater.Layout>
+                <StackLayout/>
+              </ItemsRepeater.Layout>
+            </ItemsRepeater>
+          </ScrollViewer>
+        </Grid>
       </TabItem>
       <TabItem IsVisible="False" Header="{i18n:Localize photo}">
 
