@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json;
+using ELOR.Laney.Execute.Objects;
 
 namespace ELOR.Laney.Core {
     public class DemoMode {
@@ -35,7 +36,7 @@ namespace ELOR.Laney.Core {
                     return false;
                 }
 
-                Data = JsonSerializer.Deserialize<DemoModeData>(content);
+                Data = (DemoModeData)JsonSerializer.Deserialize(content, typeof(DemoModeData), L2JsonSerializerContext.Default);
                 Log.Information("File for demo mode is found and successfully loaded!");
                 IsEnabled = true;
                 return true;

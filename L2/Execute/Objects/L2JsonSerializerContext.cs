@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ELOR.Laney.DataModels;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.Execute.Objects {
@@ -11,6 +12,10 @@ namespace ELOR.Laney.Execute.Objects {
     [JsonSerializable(typeof(UserEx))]
     [JsonSerializable(typeof(GroupEx))]
     [JsonSerializable(typeof(ChatInfoEx))]
-    public partial class ExecuteJsonSerializerContext : JsonSerializerContext {
+    [JsonSerializable(typeof(DemoModeData))]
+    [JsonSerializable(typeof(long[]))]
+    [JsonSerializable(typeof(LongPollPushNotificationData))]
+    [JsonSerializable(typeof(LongPollCallbackResponse))]
+    public partial class L2JsonSerializerContext : JsonSerializerContext {
     }
 }

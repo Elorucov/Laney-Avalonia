@@ -227,14 +227,14 @@ namespace ELOR.VKAPILib.Objects {
                 if (additional.ContainsKey("ttl")) message.ExpireTTL = (int)additional["ttl"];
                 if (additional.ContainsKey("is_expired")) message.IsExpired = true;
                 if (additional.ContainsKey("keyboard")) {
-                    message.Keyboard = additional["keyboard"].Deserialize<BotKeyboard>();
+                    message.Keyboard = additional["keyboard"].Deserialize(typeof(BotKeyboard), BuildInJsonContext.Default);
                     message.Keyboard.AuthorId = message.FromId;
                 }
 
                 if (attachments.Count > 0) {
                     if (attachments.ContainsKey("attach1_type") && attachments["attach1_type"].ToString() == "sticker") {
                         if (attachments.ContainsKey("attachments_count") && (string)attachments["attachments_count"] == "1") {
-                            var parsedAtchs = JsonSerializer.Deserialize<List<Attachment>>((string)attachments["attachments"]);
+                            var parsedAtchs = (List<Attachment>)JsonSerializer.Deserialize((string)attachments["attachments"], typeof(List<Attachment>), BuildInJsonContext.Default);
                             if (parsedAtchs != null) message.Attachments = parsedAtchs;
                         } else {
                             needToGetFullMsgFromAPI = true;

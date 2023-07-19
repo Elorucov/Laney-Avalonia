@@ -12,7 +12,7 @@ namespace ELOR.Laney.Execute {
                 { "lp_version", Core.LongPoll.VERSION.ToString() },
                 { "fields", string.Join(",", VKAPIHelper.Fields) }
             };
-            return await API.CallMethodAsync<StartSessionResponse>("execute.l2StartSession", parameters, ExecuteJsonSerializerContext.Default);
+            return await API.CallMethodAsync<StartSessionResponse>("execute.l2StartSession", parameters, L2JsonSerializerContext.Default);
         }
 
         public static async Task<MessagesHistoryEx> GetHistoryWithMembersAsync(this VKAPI API, long groupId, long peerId, int offset, int count, int startMessageId, bool rev, List<string> fields, bool dontReturnMembers = false) {
@@ -26,28 +26,28 @@ namespace ELOR.Laney.Execute {
             if (dontReturnMembers) parameters.Add("do_not_return_members", "1");
             parameters.Add("fields", string.Join(",", fields));
             parameters.Add("func_v", "5");
-            return await API.CallMethodAsync<MessagesHistoryEx>("execute.getHistoryWithMembers", parameters, ExecuteJsonSerializerContext.Default);
+            return await API.CallMethodAsync<MessagesHistoryEx>("execute.getHistoryWithMembers", parameters, L2JsonSerializerContext.Default);
         }
 
         public static async Task<List<AlbumLite>> GetPhotoAlbumsAsync(this VKAPI API, long ownerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "owner_id", ownerId.ToString() }
             };
-            return await API.CallMethodAsync<List<AlbumLite>>("execute.getPhotoAlbums", parameters, ExecuteJsonSerializerContext.Default);
+            return await API.CallMethodAsync<List<AlbumLite>>("execute.getPhotoAlbums", parameters, L2JsonSerializerContext.Default);
         }
 
         public static async Task<List<AlbumLite>> GetVideoAlbumsAsync(this VKAPI API, long ownerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "owner_id", ownerId.ToString() }
             };
-            return await API.CallMethodAsync<List<AlbumLite>>("execute.getVideoAlbums", parameters, ExecuteJsonSerializerContext.Default);
+            return await API.CallMethodAsync<List<AlbumLite>>("execute.getVideoAlbums", parameters, L2JsonSerializerContext.Default);
         }
 
         public static async Task<StickerPickerData> GetRecentStickersAndGraffitiesAsync(this VKAPI API) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "func_v", "2" }
             };
-            return await API.CallMethodAsync<StickerPickerData>("execute.getRecentStickersAndGraffities", parameters, ExecuteJsonSerializerContext.Default);
+            return await API.CallMethodAsync<StickerPickerData>("execute.getRecentStickersAndGraffities", parameters, L2JsonSerializerContext.Default);
         }
 
         public static async Task<UserEx> GetUserCardAsync(this VKAPI API, long userId) {
@@ -55,14 +55,14 @@ namespace ELOR.Laney.Execute {
                 { "user_id", userId.ToString() },
                 { "func_v", "3" }
             };
-            return await API.CallMethodAsync<UserEx>("execute.getUserCard", parameters, ExecuteJsonSerializerContext.Default);
+            return await API.CallMethodAsync<UserEx>("execute.getUserCard", parameters, L2JsonSerializerContext.Default);
         }
 
         public static async Task<GroupEx> GetGroupCardAsync(this VKAPI API, long groupId) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "group_id", groupId.ToString() }
             };
-            return await API.CallMethodAsync<GroupEx>("execute.getGroupCard", parameters, ExecuteJsonSerializerContext.Default);
+            return await API.CallMethodAsync<GroupEx>("execute.getGroupCard", parameters, L2JsonSerializerContext.Default);
         }
 
         public static async Task<ChatInfoEx> GetChatAsync(this VKAPI API, long chatId, List<string> fields) {
@@ -71,7 +71,7 @@ namespace ELOR.Laney.Execute {
                 { "fields", string.Join(",", fields) },
                 { "func_v", "2" }
             };
-            return await API.CallMethodAsync<ChatInfoEx>("execute.getChatInfoWithMembers", parameters, ExecuteJsonSerializerContext.Default);
+            return await API.CallMethodAsync<ChatInfoEx>("execute.getChatInfoWithMembers", parameters, L2JsonSerializerContext.Default);
         }
     }
 }

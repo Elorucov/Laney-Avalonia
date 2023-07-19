@@ -11,6 +11,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(APIException))]
     [JsonSerializable(typeof(App))]
     [JsonSerializable(typeof(AppsList))]
+    [JsonSerializable(typeof(BotKeyboard))]
     [JsonSerializable(typeof(ConversationsList))]
     [JsonSerializable(typeof(DocumentsList))]
     [JsonSerializable(typeof(LongList))]
@@ -49,5 +50,6 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(List<User>))]
     [JsonSerializable(typeof(VideoUploadResult))]
     [JsonSerializable(typeof(VideoUploadServer))]
+    [JsonSerializable(typeof(List<Attachment>))]
     public partial class BuildInJsonContext : JsonSerializerContext { }
 }

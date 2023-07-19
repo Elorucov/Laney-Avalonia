@@ -1,5 +1,6 @@
 ﻿using ELOR.Laney.Core.Network;
 using ELOR.Laney.DataModels;
+using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
@@ -296,7 +297,7 @@ namespace ELOR.Laney.Core {
                     case 67:
                         LongPollActivityType type = GetLPActivityType(eventId);
                         long peerId63 = (long)u[1];
-                        long[] userIds = u[2].Deserialize<long[]>();
+                        long[] userIds = (long[])u[2].Deserialize(typeof(long[]), L2JsonSerializerContext.Default);
                         int totalCount = (int)u[3];
                         Log.Information($"EVENT {eventId}: peer={peerId63}, users={String.Join(", ", userIds)}, count={totalCount}");
 
@@ -313,12 +314,12 @@ namespace ELOR.Laney.Core {
                         UnreadCounterUpdated?.Invoke(this, unreadCount);
                         break;
                     case 114:
-                        LongPollPushNotificationData data = u[1].Deserialize<LongPollPushNotificationData>();
+                        var data = (LongPollPushNotificationData)u[1].Deserialize(typeof(LongPollPushNotificationData), L2JsonSerializerContext.Default);
                         Log.Information($"EVENT {eventId}: peer={data.PeerId}, sound={data.Sound}, disabledUntil={data.DisabledUntil}");
                         NotificationsSettingsChanged?.Invoke(this, data);
                         break;
                     case 119:
-                        LongPollCallbackResponse cbData = u[1].Deserialize<LongPollCallbackResponse>();
+                        var cbData = (LongPollCallbackResponse)u[1].Deserialize(typeof(LongPollCallbackResponse), L2JsonSerializerContext.Default);
                         Log.Information($"EVENT {eventId}: peer={cbData.PeerId}, owner={cbData.OwnerId}, event={cbData.EventId} action={cbData.Action?.Type}");
                         CallbackReceived?.Invoke(this, cbData);
                         break;
