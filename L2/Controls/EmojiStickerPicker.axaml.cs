@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml.Templates;
+using ELOR.Laney.DataModels;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using NeoSmart.Unicode;
@@ -42,10 +43,12 @@ namespace ELOR.Laney.Controls {
         }
 
         private void ChangeTabContentTemplate() {
-            if (ViewModel.SelectedTab.Content is ObservableCollection<IGrouping<string, SingleEmoji>>) {
-                TabContent.ContentTemplate = (DataTemplate)Resources["EmojiTabTemplate"];
+            if (ViewModel.SelectedTab.Content is ObservableCollection<EmojiGroup>) {
+                StickersTabContent.IsVisible = false;
+                EmojisTabContent.IsVisible = true;
             } else if (ViewModel.SelectedTab.Content is ObservableCollection<Sticker>) {
-                TabContent.ContentTemplate = (DataTemplate)Resources["StickersTabTemplate"];
+                EmojisTabContent.IsVisible = false;
+                StickersTabContent.IsVisible = true;
             }
         }
 

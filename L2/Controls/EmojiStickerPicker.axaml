@@ -5,61 +5,60 @@
              xmlns:vkui="using:VKUI.Controls"
              xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
+             xmlns:vko="using:ELOR.VKAPILib.Objects"
+             xmlns:mdl="using:ELOR.Laney.DataModels"
+             xmlns:nuc="using:NeoSmart.Unicode"
              x:Name="PickerRoot"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="438"
              Loaded="EmojiStickerPicker_Loaded"
              x:Class="ELOR.Laney.Controls.EmojiStickerPicker" x:DataType="vmc:EmojiStickerPickerViewModel">
-  <UserControl.Resources>
-    <DataTemplate x:Key="EmojiTabTemplate">
-      <ScrollViewer x:DataType="vmc:EmojiStickerPickerViewModel">
-        <ItemsRepeater x:Name="emojiList" ItemsSource="{Binding SelectedTab.Content, Mode=OneWay}">
-          <ItemsRepeater.Layout>
-            <StackLayout/>
-          </ItemsRepeater.Layout>
-          <!--<ItemsRepeater.ItemTemplate>
-            <DataTemplate x:DataType="vmc:EmojiStickerPickerViewModel">
-              <StackPanel>
-                <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding Key}"/>
-                <ItemsRepeater ItemsSource="{Binding}" Margin="12,0">
-                  <ItemsRepeater.Layout>
-                    <UniformGridLayout MinItemWidth="24" MinItemHeight="24" MaximumRowsOrColumns="16" ItemsJustification="Start" ItemsStretch="None"/>
-                  </ItemsRepeater.Layout>
-                  <ItemsRepeater.ItemTemplate>
-                    <DataTemplate>
-                      <Border Focusable="True" Width="24" Height="24" Background="Transparent" Tapped="EmojiListBoxItem_Tapped">
-                        <TextBlock FontSize="16" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding}"/>
-                      </Border>
-                    </DataTemplate>
-                  </ItemsRepeater.ItemTemplate>
-                </ItemsRepeater>
-              </StackPanel>
-            </DataTemplate>
-          </ItemsRepeater.ItemTemplate>-->
-        </ItemsRepeater>
-      </ScrollViewer>
-    </DataTemplate>
-    <DataTemplate x:Key="StickersTabTemplate">
-      <Grid RowDefinitions="Auto *" x:DataType="vmc:EmojiStickerPickerViewModel">
-        <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding SelectedTab.Label, Mode=OneWay}"/>
-        <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding SelectedTab.Content, Mode=OneWay}" KeyUp="StickersListBox_KeyUp">
-          <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-              <WrapPanel Margin="8,0,8,8" ItemWidth="96" ItemHeight="96" Width="384"/>
-            </ItemsPanelTemplate>
-          </ListBox.ItemsPanel>
-          <!--<ListBox.ItemTemplate>
-            <DataTemplate>
-              <Border Width="96" Height="96" Background="Transparent" Tapped="StickersListBoxItem_Tapped">
-                <Image Width="96" Height="96" controls:ImageLoader.Source="{Binding Converter={StaticResource vpsc}, ConverterParameter=96}"/>
-              </Border>
-            </DataTemplate>
-          </ListBox.ItemTemplate>-->
-        </ListBox>
-      </Grid>
-    </DataTemplate>
-  </UserControl.Resources>
+ 
   <Grid RowDefinitions="* Auto">
-    <ContentPresenter x:Name="TabContent"/>
+    <ScrollViewer x:Name="EmojisTabContent" IsVisible="False">
+      <ItemsRepeater x:Name="emojiList" ItemsSource="{Binding SelectedTab.Content, Mode=OneWay}">
+        <ItemsRepeater.Layout>
+          <StackLayout/>
+        </ItemsRepeater.Layout>
+        <ItemsRepeater.ItemTemplate>
+          <DataTemplate x:DataType="mdl:EmojiGroup">
+            <StackPanel>
+              <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding Key}"/>
+              <ItemsRepeater ItemsSource="{Binding}" Margin="12,0">
+                <ItemsRepeater.Layout>
+                  <UniformGridLayout MinItemWidth="24" MinItemHeight="24" MaximumRowsOrColumns="16" ItemsJustification="Start" ItemsStretch="None"/>
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                  <DataTemplate x:DataType="nuc:SingleEmoji">
+                    <Border Focusable="True" Width="24" Height="24" Background="Transparent" Tapped="EmojiListBoxItem_Tapped">
+                      <TextBlock FontSize="16" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding}"/>
+                    </Border>
+                  </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+              </ItemsRepeater>
+            </StackPanel>
+          </DataTemplate>
+        </ItemsRepeater.ItemTemplate>
+      </ItemsRepeater>
+    </ScrollViewer>
+
+    <Grid x:Name="StickersTabContent" IsVisible="False" RowDefinitions="Auto *">
+      <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="12" Text="{Binding SelectedTab.Label, Mode=OneWay}"/>
+      <ListBox Classes="GridView" Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding SelectedTab.Content, Mode=OneWay}" KeyUp="StickersListBox_KeyUp">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Margin="8,0,8,8" ItemWidth="96" ItemHeight="96" Width="384"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="vko:Sticker">
+            <Border Width="96" Height="96" Background="Transparent" Tapped="StickersListBoxItem_Tapped">
+              <Image Width="96" Height="96" controls:ImageLoader.Source="{Binding Converter={StaticResource vpsc}, ConverterParameter=96}"/>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+    
     <Border Grid.Row="1" Height="44" BoxShadow="0 0 2 #14000000, 0 -8 16 #14000000">
       <Border.Styles>
         <Style Selector="ListBoxItem">

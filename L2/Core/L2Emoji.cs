@@ -1,4 +1,5 @@
-﻿using NeoSmart.Unicode;
+﻿using ELOR.Laney.DataModels;
+using NeoSmart.Unicode;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -6,10 +7,10 @@ namespace ELOR.Laney.Core {
 
     // Название такое чтобы не конфликтовался с классом NeoSmart.Unicode.Emoji.
     public class L2Emoji {
-        static ObservableCollection<IGrouping<string, SingleEmoji>> _cached;
-        public static ObservableCollection<IGrouping<string, SingleEmoji>> All { get => GetEmojis(); }
+        static ObservableCollection<EmojiGroup> _cached;
+        public static ObservableCollection<EmojiGroup> All { get => GetEmojis(); }
 
-        private static ObservableCollection<IGrouping<string, SingleEmoji>> GetEmojis() {
+        private static ObservableCollection<EmojiGroup> GetEmojis() {
             if (_cached != null) return _cached;
 
             var flagsEmojis = Emoji.All.Where(e => e.Group == "Flags");
@@ -19,7 +20,7 @@ namespace ELOR.Laney.Core {
                 basicEmojis.Add(emoji);
             }
 
-            _cached = new ObservableCollection<IGrouping<string, SingleEmoji>>(basicEmojis.GroupBy(e => e.Group));
+            _cached = new ObservableCollection<EmojiGroup>(basicEmojis.GroupBy(e => e.Group).Select(g => new EmojiGroup(g)));
             basicEmojis.Clear();
             return _cached;
         }
