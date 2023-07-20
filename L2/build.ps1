@@ -62,8 +62,8 @@ if ($IsLinux) {
 }
 
 if ($IsMacOS) {
-    New-Item "$($location)/MacOS_Bundles/x64/Laney.app" -itemType Directory
-    New-Item "$($location)/MacOS_Bundles/arm64/Laney.app" -itemType Directory
+    New-Item "$($location)/MacOS_Bundles/x64/Laney.app" -itemType Directory -Force
+    New-Item "$($location)/MacOS_Bundles/arm64/Laney.app" -itemType Directory -Force
 
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "restore -r osx-x64";
     Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "restore -r osx-arm64";
