@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json;
+using ELOR.Laney.Helpers;
+using Serilog;
 
 namespace ELOR.Laney.Core {
     public static class Settings {
@@ -19,12 +21,13 @@ namespace ELOR.Laney.Core {
         #region Initialization
 
         public static void Initialize() {
-            FilePath = Path.Combine(App.LocalDataPath, "settings.json");
+            FilePath = Path.Combine(App.LocalDataPath, "settings.xml");
             _file = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 4096);
-            
-            if (App.Platform != OSPlatform.OSX) {
-                _file.Lock(0, 0);
-            }
+
+#if MAC
+#else
+            _file.Lock(0, 0);
+#endif
 
             byte[] fileBytes = new byte[_file.Length];
             _file.Read(fileBytes, 0, fileBytes.Length);
@@ -33,51 +36,14 @@ namespace ELOR.Laney.Core {
             string content = enc.GetString(fileBytes);
 
             if (content.Length == 0) return;
-            var json = JsonDocument.Parse(content);
-            foreach (var setting in json.RootElement.EnumerateObject()) {
-                switch (setting.Value.ValueKind) {
-                    case JsonValueKind.String:
-                        _settings.Add(setting.Name, setting.Value.GetString());
-                        break;
-                    case JsonValueKind.Number:
-                        long int64;
-                        double dbl;
-                        var bl = setting.Value.TryGetInt64(out int64);
-                        var bd = setting.Value.TryGetDouble(out dbl);
-                        if (bl) _settings.Add(setting.Name, int64);
-                        else if (bd) _settings.Add(setting.Name, dbl); break;
-                    case JsonValueKind.True:
-                        _settings.Add(setting.Name, true);
-                        break;
-                    case JsonValueKind.False:
-                        _settings.Add(setting.Name, false);
-                        break;
-                    //case JsonValueKind.Array:
-                    //    CheckJsonArray(setting.Name, setting.Value.Value<JArray>());
-                    //    break;
-                    // TODO: Date, TimeSpan, GUID, Uri
-                }
+            try {
+                _settings = ElorPrefs.Deserialize(content);
+            } catch (Exception ex) {
+                Log.Error(ex, "An error occured while reading settings file!");
             }
         }
-
-        //private static void CheckJsonArray(string key, JArray? jArray) {
-        //    if (jArray == null || jArray.Count == 0) return;
-        //    JTokenType type = jArray[0].Type;
-        //    switch (type) {
-        //        case JTokenType.String:
-        //            _settings.Add(key, jArray.ToObject<List<string>>());
-        //            break;
-        //        case JTokenType.Integer:
-        //            _settings.Add(key, jArray.ToObject<List<long>>());
-        //            break;
-        //        case JTokenType.Float:
-        //            _settings.Add(key, jArray.ToObject<List<double>>());
-        //            break;
-        //    }
-        //}
-
         private static async void UpdateFile() {
-            string content = JsonSerializer.Serialize(_settings);
+            string content = ElorPrefs.SerializeToXML(_settings);
             byte[] bytes = Encoding.UTF8.GetBytes(content);
 
             _file.Position = 0;
@@ -86,7 +52,7 @@ namespace ELOR.Laney.Core {
             await _file.FlushAsync();
         }
 
-        #endregion
+#endregion
 
         #region Getter/setter
 
