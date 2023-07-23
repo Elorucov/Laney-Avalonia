@@ -227,7 +227,7 @@ namespace ELOR.VKAPILib.Objects {
                 if (additional.ContainsKey("ttl")) message.ExpireTTL = (int)additional["ttl"];
                 if (additional.ContainsKey("is_expired")) message.IsExpired = true;
                 if (additional.ContainsKey("keyboard")) {
-                    message.Keyboard = additional["keyboard"].Deserialize(typeof(BotKeyboard), BuildInJsonContext.Default);
+                    message.Keyboard = (BotKeyboard)additional["keyboard"].Deserialize(typeof(BotKeyboard), BuildInJsonContext.Default);
                     message.Keyboard.AuthorId = message.FromId;
                 }
 
