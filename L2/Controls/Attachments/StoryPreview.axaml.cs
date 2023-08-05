@@ -40,7 +40,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 return;
             }
 
-            if (!story.CanSee) {
+            if (story.CanSee == 0) {
                 SetRestrictionInfo(Localizer.Instance["stp_private"]);
                 return;
             }

@@ -363,7 +363,7 @@ namespace ELOR.Laney.Controls.Attachments {
             } else {
                 foreach (Story st in stories) {
                     string def = VKAPIHelper.GetNameOrDefaultString(st.OwnerId);
-                    if (st.IsExpired || st.IsDeleted || st.IsRestricted || !st.CanSee) {
+                    if (st.IsExpired || st.IsDeleted || st.IsRestricted || st.CanSee == 0) {
                         BasicAttachment ba = new BasicAttachment {
                             Margin = new Thickness(0, 0, 0, 8),
                             Icon = VKIconNames.Icon24Story,
