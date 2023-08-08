@@ -1,11 +1,8 @@
-﻿using ELOR.VKAPILib.Attributes;
-using ELOR.VKAPILib.Methods;
+﻿using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.HandlerDatas;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -45,7 +42,7 @@ namespace ELOR.VKAPILib {
         private string _accessToken;
         private string _language;
         private string _domain;
-        private static string _version = "5.204";
+        private static string _version = "5.217";
 
         public long UserId { get { return _userId; } }
         public string AccessToken { get { return _accessToken; } }
