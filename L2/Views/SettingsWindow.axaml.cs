@@ -10,9 +10,9 @@ namespace ELOR.Laney.Views {
 
         public SettingsWindow() {
             InitializeComponent();
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
-                TitleBar.IsVisible = false;
-            }
+#if LINUX
+            TitleBar.IsVisible = false;
+#endif
 
             DataContext = new SettingsViewModel();
         }

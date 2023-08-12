@@ -1,0 +1,49 @@
+<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:vkw="using:VKUI.Windows"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:core="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vm="using:ELOR.Laney.ViewModels"
+        xmlns:vmm="using:ELOR.Laney.ViewModels.Modals"
+        xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
+        mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="576"
+        x:Class="ELOR.Laney.Views.Modals.SearchInChatWindow"
+        Topmost="True" CanResize="False" x:DataType="vmm:SearchInChatViewModel"
+        Width="360" Height="576" Loaded="SearchInChatWindow_Loaded"
+        Title="{i18n:Localize search}">
+  <Grid x:Name="Root" RowDefinitions="Auto Auto *" x:DataType="vmm:SearchInChatViewModel">
+    <TextBox x:Name="SearchBox" Grid.Row="1" Margin="12,0" Classes="Search" Watermark="{i18n:Localize search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
+    <Grid Grid.Row="2">
+      <ScrollViewer x:Name="MessagesSV">
+        <ItemsRepeater x:Name="MessagesList" Margin="0,6" ItemsSource="{Binding Messages}">
+          <ItemsRepeater.ItemTemplate>
+            <DataTemplate x:DataType="vmc:MessageViewModel">
+              <Button Classes="Tertiary" Padding="12,6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" FontWeight="Regular" Click="OnMessageSelected">
+                <controls:PostUI Post="{Binding}" IsHitTestVisible="False"/>
+              </Button>
+            </DataTemplate>
+          </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+      </ScrollViewer>
+      <Rectangle VerticalAlignment="Top" Grid.Row="2" Height="16" IsHitTestVisible="False" Fill="{DynamicResource ContentToTransparentGradientBrush}"/>
+      
+      <Grid x:Name="EmptyMessagesListContainer" IsVisible="{Binding Messages, Mode=OneWay, Converter={x:Static ObjectConverters.IsNull}}">
+        <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
+        <vkui:Placeholder VerticalAlignment="Center"
+                              IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                              Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                              Header="{Binding Placeholder.Header, Mode=OneWay}"
+                              Text="{Binding Placeholder.Text, Mode=OneWay}">
+          <vkui:Placeholder.Action>
+            <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButtonFunc, Mode=OneWay, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+          </vkui:Placeholder.Action>
+        </vkui:Placeholder>
+      </Grid>
+    </Grid>
+  <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="True" CanMove="True"/>
+  </Grid>
+</vkw:DialogWindow>

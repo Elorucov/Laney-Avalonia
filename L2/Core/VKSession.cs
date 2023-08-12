@@ -469,6 +469,7 @@ namespace ELOR.Laney.Core {
                     session = s;
                 } else {
                     control = (Control)control.Parent;
+                    if (control == null) return null;
                 }
             } while (session == null && control.GetType() != typeof(Window));
             return session;

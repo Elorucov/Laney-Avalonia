@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using ELOR.Laney.Core;
@@ -52,8 +53,12 @@ namespace ELOR.Laney.Controls.Attachments {
             base.OnApplyTemplate(e);
             StandartAttachments = e.NameScope.Find<StackPanel>(nameof(StandartAttachments));
             isUILoaded = true;
-            session = VKSession.GetByDataContext(this);
             RenderAttachments();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e) {
+            base.OnLoaded(e);
+            session = VKSession.GetByDataContext(Parent as Control);
         }
 
         #endregion

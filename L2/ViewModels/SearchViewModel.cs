@@ -22,12 +22,12 @@ namespace ELOR.Laney.ViewModels {
 
         public int CurrentTab { get { return _currentTab; } set { _currentTab = value; OnPropertyChanged(); } }
         public string Query { get { return _query; } set { _query = value; OnPropertyChanged(); } }
-        public ObservableCollection<Entity> FoundChats { get { return _foundChats; } set { _foundChats = value; OnPropertyChanged(); } }
-        public ObservableCollection<FoundMessageItem> FoundMessages { get { return _foundMessages; } set { _foundMessages = value; OnPropertyChanged(); } }
+        public ObservableCollection<Entity> FoundChats { get { return _foundChats; } private set { _foundChats = value; OnPropertyChanged(); } }
+        public ObservableCollection<FoundMessageItem> FoundMessages { get { return _foundMessages; } private set { _foundMessages = value; OnPropertyChanged(); } }
         public bool IsChatsLoading { get { return _isChatsLoading; } set { _isChatsLoading = value; OnPropertyChanged(); } }
-        public bool IsMessagesLoading { get { return _isMessagesLoading; } set { _isMessagesLoading = value; OnPropertyChanged(); } }
-        public PlaceholderViewModel ChatsPlaceholder { get { return _chatsPlaceholder; } set { _chatsPlaceholder = value; OnPropertyChanged(); } }
-        public PlaceholderViewModel MessagesPlaceholder { get { return _messagesPlaceholder; } set { _messagesPlaceholder = value; OnPropertyChanged(); } }
+        public bool IsMessagesLoading { get { return _isMessagesLoading; } private set { _isMessagesLoading = value; OnPropertyChanged(); } }
+        public PlaceholderViewModel ChatsPlaceholder { get { return _chatsPlaceholder; } private set { _chatsPlaceholder = value; OnPropertyChanged(); } }
+        public PlaceholderViewModel MessagesPlaceholder { get { return _messagesPlaceholder; } private set { _messagesPlaceholder = value; OnPropertyChanged(); } }
 
         public SearchViewModel(VKSession session) {
             this.session = session;

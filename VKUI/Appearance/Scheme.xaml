@@ -247,6 +247,12 @@
           <GradientStop Offset="100" Color="{StaticResource VKWhiteColor}"/>
         </LinearGradientBrush.GradientStops>
       </LinearGradientBrush>
+      <LinearGradientBrush x:Key="ContentToTransparentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+        <LinearGradientBrush.GradientStops>
+          <GradientStop Offset="0" Color="{StaticResource VKWhiteColor}"/>
+          <GradientStop Offset="100" Color="Transparent"/>
+        </LinearGradientBrush.GradientStops>
+      </LinearGradientBrush>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -492,7 +498,13 @@
       <LinearGradientBrush x:Key="TransparentToContentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
         <LinearGradientBrush.GradientStops>
           <GradientStop Offset="0" Color="#19191A00"/>
-          <GradientStop Offset="1" Color="{StaticResource VKGray900Color}"/>
+          <GradientStop Offset="100" Color="{StaticResource VKGray900Color}"/>
+        </LinearGradientBrush.GradientStops>
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="ContentToTransparentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+        <LinearGradientBrush.GradientStops>
+          <GradientStop Offset="0" Color="{StaticResource VKGray900Color}"/>
+          <GradientStop Offset="100" Color="#19191A00"/>
         </LinearGradientBrush.GradientStops>
       </LinearGradientBrush>
     </ResourceDictionary>

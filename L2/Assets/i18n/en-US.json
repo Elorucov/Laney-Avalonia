@@ -347,5 +347,9 @@
 
   "sharing_messages": "Forward messages",
   "sharing_user": "In private message",
-  "sharing_group": "To community messages"
+  "sharing_group": "To community messages",
+
+  "msg_search_user": "Search in chat with {0} {1}",
+  "msg_search_group": "Search in chat with \"{0}\"",
+  "msg_search_chat": "Search in chat \"{0}\""
 }

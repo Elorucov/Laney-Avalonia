@@ -347,5 +347,9 @@
 
   "sharing_messages": "Переслати повідомлення",
   "sharing_user": "В приватні повідомлення",
-  "sharing_group": "В повідомлення спільноти"
+  "sharing_group": "В повідомлення спільноти",
+
+  "msg_search_user": "Пошук у чаті з {0} {1}",
+  "msg_search_group": "Пошук у чаті з «{0}»",
+  "msg_search_chat": "Пошук у чаті «{0}»"
 }

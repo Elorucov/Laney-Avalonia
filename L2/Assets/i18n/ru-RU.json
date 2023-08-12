@@ -347,5 +347,9 @@
 
   "sharing_messages": "Переслать сообщения",
   "sharing_user": "В личные сообщения",
-  "sharing_group": "В сообщения сообщества"
+  "sharing_group": "В сообщения сообщества",
+
+  "msg_search_user": "Поиск в чате с {0} {1}",
+  "msg_search_group": "Поиск в чате с «{0}»",
+  "msg_search_chat": "Поиск в чате «{0}»"
 }

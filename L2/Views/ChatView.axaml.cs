@@ -8,6 +8,8 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
 using ELOR.Laney.ViewModels.Controls;
+using ELOR.Laney.ViewModels.Modals;
+using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -305,12 +307,8 @@ namespace ELOR.Laney.Views {
             TopDateContainer.IsVisible = true;
         }
 
-        private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {
-            Chat.GoToMessage(Chat.PinnedMessage);
-        }
-
         private void LoadingSpinner_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
-            if (e.Property == VKUI.Controls.Spinner.IsVisibleProperty) {
+            if (e.Property == Spinner.IsVisibleProperty) {
                 TopDateContainer.IsVisible = !LoadingSpinner.IsVisible;
                 HopNavContainer.IsVisible = !LoadingSpinner.IsVisible;
                 if (!LoadingSpinner.IsVisible) CheckFirstAndLastDisplayedMessages();
@@ -324,6 +322,21 @@ namespace ELOR.Laney.Views {
                 if (!MessagesCommandsRoot.Classes.Contains("CompactMsgCmd")) MessagesCommandsRoot.Classes.Add("CompactMsgCmd");
             }
         }
+
+        #region Buttons events
+
+        private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {
+            Chat.GoToMessage(Chat.PinnedMessage);
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e) {
+            Window mainWindow = TopLevel.GetTopLevel(this) as Window;
+            SearchInChatWindow window = new SearchInChatWindow(VKSession.GetByDataContext(this), Chat.PeerId, mainWindow);
+            window.Show();
+        }
+
+        #endregion
+
 
         #region Mark message as read
 

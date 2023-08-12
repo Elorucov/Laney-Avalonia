@@ -11,7 +11,6 @@ using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using System;
 using VKUI.Controls;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ELOR.Laney.Controls {
     public class PostUI : TemplatedControl {
@@ -100,6 +99,7 @@ namespace ELOR.Laney.Controls {
             Map.Height = Map.Width / 2;
             Map.IsVisible = message.Location != null;
 
+            ForwardedMessagesStack.Children.Clear();
             ForwardedMessagesContainer.IsVisible = message.ReplyMessage != null || message.ForwardedMessages.Count > 0;
             var fmcmargin = ForwardedMessagesContainer.Margin;
             var fmcborder = ForwardedMessagesContainer.BorderThickness;
