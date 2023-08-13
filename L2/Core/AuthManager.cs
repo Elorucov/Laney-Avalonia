@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib;
@@ -37,6 +38,21 @@ namespace ELOR.Laney.Core {
                     userId = Int32.Parse(finalQueries["user_id"]);
                     accessToken = finalQueries["access_token"];
                 }
+            }
+
+            return new Tuple<long, string>(userId, accessToken);
+        }
+
+        public static async Task<Tuple<long, string>> AuthViaExternalBrowserAsync() {
+            long userId = 0;
+            string accessToken = String.Empty;
+
+            Launcher.LaunchUrl("https://id.vk.com/auth?app_id=6614620&state=&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A52639&redirect_uri_hash=7cffb58e0529406e09&code_challenge=&code_challenge_method=&return_auth_hash=83320eb1d84c794f0c&scope=995414&force_hash=");
+            string response = await Task.Factory.StartNew(LServer.StartAndReturnQueryFromClient);
+            var queries = response.Substring(1).ParseQuery();
+            if (queries.ContainsKey("access_token") && queries.ContainsKey("user_id")) {
+                userId = Int64.Parse(queries["user_id"]);
+                accessToken = queries["access_token"];
             }
 
             return new Tuple<long, string>(userId, accessToken);

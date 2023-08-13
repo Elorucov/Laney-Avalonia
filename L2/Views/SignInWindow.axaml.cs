@@ -40,11 +40,17 @@ namespace ELOR.Laney.Views {
             button.IsEnabled = false;
 
             // var result = await AuthManager.AuthWithTokenAsync(this);
+            Tuple<long, string> result = new Tuple<long, string>(0, String.Empty);
+            if (ExternalBrowserCB.IsChecked.Value) {
+                result = await AuthManager.AuthViaExternalBrowserAsync();
+            } else {
 #if WIN
-            var result = await AuthManager.AuthWithOAuthAsync();
+                result = await AuthManager.AuthWithOAuthAsync();
 #else
-            var result = await AuthManager.AuthWithOAuthAsync(AuthWorkaroundCB.IsChecked.Value);
+                result = await AuthManager.AuthWithOAuthAsync(AuthWorkaroundCB.IsChecked.Value);
 #endif
+            }
+
             if (result.Item1 != 0) {
                 Settings.SetBatch(new Dictionary<string, object> {
                     { Settings.VK_USER_ID, result.Item1 },

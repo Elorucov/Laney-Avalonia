@@ -25,6 +25,7 @@
         </Grid>
       </Button>
       <CheckBox x:Name="AuthWorkaroundCB" HorizontalAlignment="Center" Content="Fix auth for non-VKID"/>
+      <CheckBox x:Name="ExternalBrowserCB" HorizontalAlignment="Center" Content="Authorize via browser"/>
     </StackPanel>
 
     <Grid Grid.Row="2" ColumnDefinitions="Auto *" Margin="24,0,24,18" VerticalAlignment="Center">
