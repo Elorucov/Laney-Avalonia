@@ -29,6 +29,10 @@ namespace ELOR.Laney.Views {
 
             VersionInfo.Text = $"v. {App.BuildInfo}";
             // VersionInfo.Text += $"\nApp folder: {App.LocalDataPath}";
+
+#if WIN
+            (AuthWorkaroundCB.Parent as Panel).Children.Remove(AuthWorkaroundCB);
+#endif
         }
 
         private async void SignIn(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
@@ -36,7 +40,11 @@ namespace ELOR.Laney.Views {
             button.IsEnabled = false;
 
             // var result = await AuthManager.AuthWithTokenAsync(this);
+#if WIN
             var result = await AuthManager.AuthWithOAuthAsync();
+#else
+            var result = await AuthManager.AuthWithOAuthAsync(AuthWorkaroundCB.IsChecked.Value);
+#endif
             if (result.Item1 != 0) {
                 Settings.SetBatch(new Dictionary<string, object> {
                     { Settings.VK_USER_ID, result.Item1 },

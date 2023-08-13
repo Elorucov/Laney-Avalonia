@@ -7,8 +7,6 @@ using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
 using OAuthWebView;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -17,20 +15,28 @@ namespace ELOR.Laney.Core {
         const int APP_ID = 6614620;
         static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&redirect_uri=https://oauth.vk.com/blank.html&scope=995414&response_type=token&revoke=1&v={VKAPI.Version}");
         static Uri finalUri = new Uri("https://oauth.vk.com/blank.html");
+        static Uri finalUriOauth = new Uri("https://oauth.vk.com/auth_redirect");
 
-        public static async Task<Tuple<long, string>> AuthWithOAuthAsync() {
+        public static async Task<Tuple<long, string>> AuthWithOAuthAsync(bool oauthWorkaround = false) {
             long userId = 0;
             string accessToken = String.Empty;
 
-            OAuthWindow window = new OAuthWindow(authUri, finalUri, Localizer.Instance["sign_in"], 784, 541); // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
+            OAuthWindow window = new OAuthWindow(authUri, oauthWorkaround ? finalUriOauth : finalUri, Localizer.Instance["sign_in"], 784, 541); // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
             window.LocalDataPath = App.LocalDataPath;
             Uri url = await window.StartAuthenticationAsync();
             if (url == null) return new Tuple<long, string>(userId, accessToken);
 
             var queries = url.Fragment.Substring(1).ParseQuery();
-            if (queries.ContainsKey("access_token") && queries.ContainsKey("user_id")) {
+            if (!oauthWorkaround && queries.ContainsKey("access_token") && queries.ContainsKey("user_id")) {
                 userId = Int64.Parse(queries["user_id"]);
                 accessToken = queries["access_token"];
+            } else if (oauthWorkaround && queries.ContainsKey("authorize_url")) {
+                Uri finalUri = new Uri(WebUtility.UrlDecode(queries["authorize_url"]));
+                var finalQueries = finalUri.Fragment.Substring(1).ParseQuery();
+                if (finalQueries.ContainsKey("access_token") && finalQueries.ContainsKey("user_id")) {
+                    userId = Int32.Parse(finalQueries["user_id"]);
+                    accessToken = finalQueries["access_token"];
+                }
             }
 
             return new Tuple<long, string>(userId, accessToken);

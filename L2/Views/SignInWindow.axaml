@@ -24,6 +24,7 @@
           <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Text="{i18n:Localize sign_in_vk_id}"/>
         </Grid>
       </Button>
+      <CheckBox x:Name="AuthWorkaroundCB" HorizontalAlignment="Center" Content="Fix auth for non-VKID"/>
     </StackPanel>
 
     <Grid Grid.Row="2" ColumnDefinitions="Auto *" Margin="24,0,24,18" VerticalAlignment="Center">
