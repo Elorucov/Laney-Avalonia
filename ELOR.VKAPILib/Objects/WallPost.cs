@@ -50,8 +50,8 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("attachments")]
         public List<Attachment> Attachments { get; set; }
 
-        [JsonPropertyName("geo")]
-        public Geo Geo { get; set; }
+        //[JsonPropertyName("geo")]
+        //public Geo Geo { get; set; }
 
         [JsonPropertyName("signer_id")]
         public long SignerId { get; set; }

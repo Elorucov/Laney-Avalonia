@@ -249,17 +249,14 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             IsLoading = true;
 
-            //VKUIDialog elor = new VKUIDialog("Send", $"Peer id: {Chat.PeerId}\nRandom id: {RandomId}\nEditing message id: {EditingMessageId}\nReply to: {replyTo}\nText: {text}\nAttachments: {attachments}\nForwarded messages: {String.Join(',', forwardedMessages)}\nSticker: {StickerId}\nDPL: {dontParseLinks}\nDM: {disableMentions}");
-            //await elor.ShowDialog(session.Window);
-
             try {
                 if (EditingMessageId == 0) {
                     Log.Verbose($"Sending message: session={session.Id}; peer_id={Chat.PeerId}, random={RandomId}");
-                    int response = await session.API.Messages.SendAsync(session.GroupId, Chat.PeerId, RandomId, text,
+                    var response = await session.API.Messages.SendAsync(session.GroupId, Chat.PeerId, RandomId, text,
                         0, 0, attachments, replyTo, forwardedMessages, forwardedMessagesFromGroup, StickerId,
                         dontParseLinks: dontParseLinks, disableMentions: disableMentions);
                     RandomId = Random.Next(Int32.MinValue, Int32.MaxValue);
-                    Log.Verbose($"Sending message result: {response}; new random={RandomId}");
+                    Log.Verbose($"Sending message result: {response.MessageId}; new random={RandomId}");
                 } else {
                     bool response = await session.API.Messages.EditAsync(session.GroupId, Chat.PeerId, EditingMessageId, 
                         text, 0, 0, attachments, forwardedMessages.Count > 0, true, dontParseLinks); 

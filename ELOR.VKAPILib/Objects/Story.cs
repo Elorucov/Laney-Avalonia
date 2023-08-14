@@ -106,8 +106,8 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("can_see")]
         public int CanSee { get; set; }
 
-        [JsonPropertyName("can_like")]
-        public bool CanLike { get; set; }
+        //[JsonPropertyName("can_like")]
+        //public bool CanLike { get; set; }
 
         [JsonPropertyName("can_share")]
         public int CanShare { get; set; }

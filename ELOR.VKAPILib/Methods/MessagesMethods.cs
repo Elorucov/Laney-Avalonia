@@ -512,25 +512,25 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Marks and unmarks messages as important (starred).</summary>
         /// <param name="ids">IDs of messages to mark as important.</param>
         /// <param name="important">true — to add a star (mark as important), false — to remove the star.</param>
-        public async Task<List<int>> MarkAsImportantAsync(List<int> ids, bool important) {
+        public async Task<MarkAsImportantResponse> MarkAsImportantAsync(List<int> ids, bool important) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "message_ids", ids.Combine() },
                 { "important", important ? "1" : "0" }
             };
-            return await API.CallMethodAsync<List<int>>("messages.markAsImportant", parameters);
+            return await API.CallMethodAsync<MarkAsImportantResponse>("messages.markAsImportant", parameters);
         }
 
         /// <summary>Marks and unmarks messages as important (starred). Only from 5.217</summary>
         /// <param name="peerId">Peer ID.</param>
         /// <param name="cmids">IDs of messages in conversation to mark as important.</param>
         /// <param name="important">true — to add a star (mark as important), false — to remove the star.</param>
-        public async Task<List<int>> MarkAsImportantAsync(long peerId, List<int> cmids, bool important) {
+        public async Task<MarkAsImportantResponse> MarkAsImportantAsync(long peerId, List<int> cmids, bool important) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "peer_id", peerId.ToString() },
                 { "cmids", cmids.Combine() },
                 { "important", important ? "1" : "0" }
             };
-            return await API.CallMethodAsync<List<int>>("messages.markAsImportant", parameters);
+            return await API.CallMethodAsync<MarkAsImportantResponse>("messages.markAsImportant", parameters);
         }
 
         /// <summary>Marks/unmarks the conversation as important.</summary>
@@ -658,7 +658,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="payload">Payload of message.</param>
         /// <param name="dontParseLinks">true — links will not attach snippet.</param>
         /// <param name="disableMentions">true — mention of user will not generate notification for him.</param>
-        public async Task<int> SendAsync(long groupId, long peerId, int randomId, string message, double latitude, double longitude, List<string> attachment, int replyTo, List<int> forwardMessages, List<string> groupForwardMessages, int stickerId, string keyboard = null, string payload = null, bool dontParseLinks = false, bool disableMentions = false, MessageIntent intent = MessageIntent.None) {
+        public async Task<MessageSendResponse> SendAsync(long groupId, long peerId, int randomId, string message, double latitude, double longitude, List<string> attachment, int replyTo, List<int> forwardMessages, List<string> groupForwardMessages, int stickerId, string keyboard = null, string payload = null, bool dontParseLinks = false, bool disableMentions = false, MessageIntent intent = MessageIntent.None) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -675,7 +675,7 @@ namespace ELOR.VKAPILib.Methods {
             if (!String.IsNullOrEmpty(payload)) parameters.Add("payload", payload);
             if (dontParseLinks) parameters.Add("dont_parse_links", "1");
             if (disableMentions) parameters.Add("disable_mentions", "1");
-            return await API.CallMethodAsync<int>("messages.send", parameters);
+            return await API.CallMethodAsync<MessageSendResponse>("messages.send", parameters);
         }
 
         /// <remarks>This method is undocumented!</remarks>
