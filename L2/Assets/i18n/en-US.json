@@ -30,11 +30,14 @@
   "unblock": "Unblock",
   "open_profile": "Open profile",
   "more": "More",
+  "wait": "Please wait...",
   "sign_in": "Sign in",
   "sign_in_vk_id": "Sign in with VK ID",
+  "go_back": "Go back",
 
   "landing_title": "This is Laney",
   "landing_subtitle": "The messenger of VK social network",
+  "landing_auth_in_progress": "Authorization. Please allow access to your account.",
 
   "not_implemented": "Not implemented yet",
   "not_implemented_desc": "This feature will coming in the next beta-versions of Laney.",
@@ -48,6 +51,7 @@
   "err_network_timeout": "Connection timed out.",
   "captcha_title": "Enter captcha",
   "captcha_placeholder": "Enter the code",
+  "ls_done": "Go back to Laney.",
 
   "emoji": "Emoji",
   "recent": "Recent",

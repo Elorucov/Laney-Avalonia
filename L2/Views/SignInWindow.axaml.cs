@@ -5,6 +5,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace ELOR.Laney.Views {
     public sealed partial class SignInWindow : Window {
@@ -35,6 +36,8 @@ namespace ELOR.Laney.Views {
 #endif
         }
 
+        CancellationTokenSource cts = null;
+
         private async void SignIn(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
             Button button = sender as Button;
             button.IsEnabled = false;
@@ -42,7 +45,10 @@ namespace ELOR.Laney.Views {
             // var result = await AuthManager.AuthWithTokenAsync(this);
             Tuple<long, string> result = new Tuple<long, string>(0, String.Empty);
             if (ExternalBrowserCB.IsChecked.Value) {
-                result = await AuthManager.AuthViaExternalBrowserAsync();
+                FirstStep.IsVisible = false;
+                SecondStep.IsVisible = true;
+                cts = new CancellationTokenSource();
+                result = await AuthManager.AuthViaExternalBrowserAsync(cts);
             } else {
 #if WIN
                 result = await AuthManager.AuthWithOAuthAsync();
@@ -52,6 +58,8 @@ namespace ELOR.Laney.Views {
             }
 
             if (result.Item1 != 0) {
+                Show();
+                Activate();
                 Settings.SetBatch(new Dictionary<string, object> {
                     { Settings.VK_USER_ID, result.Item1 },
                     { Settings.VK_TOKEN, result.Item2 }
@@ -61,7 +69,14 @@ namespace ELOR.Laney.Views {
                 Close();
             }
 
+            SecondStep.IsVisible = false;
+            FirstStep.IsVisible = true;
+
             button.IsEnabled = true;
+        }
+
+        private void CancelAuth(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            if (ExternalBrowserCB.IsChecked.Value) cts.Cancel();
         }
     }
 }

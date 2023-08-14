@@ -30,11 +30,14 @@
   "unblock": "Разблокировать",
   "open_profile": "Открыть профиль",
   "more": "Ещё",
+  "wait": "Подождите...",
   "sign_in": "Войти",
   "sign_in_vk_id": "Войти через VK ID",
+  "go_back": "Вернуться назад",
 
   "landing_title": "Это Laney",
   "landing_subtitle": "Мессенджер социальной сети ВКонтакте",
+  "landing_auth_in_progress": "Авторизация. Пожалуйста, разрешите доступ к вашему аккаунту.",
 
   "not_implemented": "Пока не реализовано",
   "not_implemented_desc": "Функция появится в следующих бета-версиях Laney.",
@@ -48,6 +51,7 @@
   "err_network_timeout": "Время ожидания ответа от сервера истекло.",
   "captcha_title": "Введите код с картинки",
   "captcha_placeholder": "Введите код",
+  "ls_done": "Вернитесь в Laney.",
 
   "emoji": "Эмодзи",
   "recent": "Недавние",
