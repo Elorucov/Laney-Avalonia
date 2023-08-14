@@ -120,7 +120,7 @@
     <Setter Property="Cursor" Value="Hand"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Grid x:Name="RootGrid" ColumnDefinitions="20,*">
+        <Grid x:Name="RootGrid" Background="Transparent" ColumnDefinitions="20,*">
           <Border x:Name="PART_Border"
                   Grid.ColumnSpan="2"
                   Background="{TemplateBinding Background}"
