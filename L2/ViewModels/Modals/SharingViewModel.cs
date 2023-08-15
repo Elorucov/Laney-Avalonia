@@ -1,5 +1,6 @@
 ﻿using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using System;
@@ -11,16 +12,16 @@ namespace ELOR.Laney.ViewModels.Modals {
 
     public class SharingViewModel : CommonViewModel {
         private string _query;
-        private ObservableCollection<Tuple<long, Uri, string>> _chats = new ObservableCollection<Tuple<long, Uri, string>>();
+        private ObservableCollection<Entity> _chats = new ObservableCollection<Entity>();
 
         public string Query { get { return _query; } set { _query = value; } }
-        public ObservableCollection<Tuple<long, Uri, string>> Chats { get { return _chats; } set { _chats = value; } }
+        public ObservableCollection<Entity> Chats { get { return _chats; } set { _chats = value; } }
 
         public SharingContentType Type { get; private set; }
         public long GroupId { get; private set; } // необходим для user-сессии при пересылке сообщений из группы в личку.
         public VKSession Session { get; private set; }
 
-        public SharingViewModel(VKSession session, List<MessageViewModel> messages, long groupId) {
+        public SharingViewModel(VKSession session, long groupId) {
             Type = SharingContentType.Messages;
             GroupId = groupId;
             Session = session;
@@ -33,7 +34,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         private void SetCurrentLoadedChats() {
             Chats.Clear();
             foreach (var c in Session.ImViewModel.SortedChats) {
-                Chats.Add(new Tuple<long, Uri, string>(c.PeerId, c.Avatar, c.Title));
+                Chats.Add(new Entity(c.PeerId, c.Avatar, c.Title, null, null));
             }
         }
 
@@ -70,7 +71,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                     name = String.Join(" ", new string[] { info.Item1, info.Item2 });
                     avatar = info.Item3;
 
-                    Tuple<long, Uri, string> item = new Tuple<long, Uri, string>(id, avatar, name);
+                    Entity item = new Entity(id, avatar, name, null, null);
                     Chats.Add(item);
                 }
             } catch (Exception ex) {

@@ -256,10 +256,10 @@ namespace ELOR.Laney.ViewModels.Controls {
                         0, 0, attachments, replyTo, forwardedMessages, forwardedMessagesFromGroup, StickerId,
                         dontParseLinks: dontParseLinks, disableMentions: disableMentions);
                     RandomId = Random.Next(Int32.MinValue, Int32.MaxValue);
-                    Log.Verbose($"Sending message result: {response.MessageId}; new random={RandomId}");
+                    Log.Verbose($"Sending message result: {response.MessageId}; new random: {RandomId}");
                 } else {
-                    bool response = await session.API.Messages.EditAsync(session.GroupId, Chat.PeerId, EditingMessageId, 
-                        text, 0, 0, attachments, forwardedMessages.Count > 0, true, dontParseLinks); 
+                    var response = await session.API.Messages.EditAsync(session.GroupId, Chat.PeerId, EditingMessageId, 
+                        text, 0, 0, attachments, forwardedMessages.Count > 0, true, dontParseLinks);
                     // TODO: keep snippets и сделать недоступным добавление пересланных, если активен режим редактирования. 
                 }
                 Clear();

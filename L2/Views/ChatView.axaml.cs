@@ -33,6 +33,7 @@ namespace ELOR.Laney.Views {
 
         public ChatView() {
             InitializeComponent();
+            MultiMsgContextButton.CommandParameter = MultiMsgContextButton;
 
             MessagesList.Loaded += (a, b) => {
                 MessagesListScrollViewer = MessagesList.Scroll as ScrollViewer;

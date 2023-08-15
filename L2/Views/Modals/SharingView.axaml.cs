@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Modals;
@@ -33,7 +34,7 @@ namespace ELOR.Laney.Views.Modals {
                 CurrentViewModel?.OnDisplayed();
             };
 
-            var handler = new ListBoxItemClickHandler<Tuple<long, Uri, string>>(ChatsList, ItemClicked);
+            var handler = new ListBoxItemClickHandler<Entity>(ChatsList, ItemClicked);
 
             if (group != null) {
                 SessionSwitcherContainer.IsVisible = true;
@@ -46,7 +47,7 @@ namespace ELOR.Laney.Views.Modals {
             }
         }
 
-        private void ItemClicked(Tuple<long, Uri, string> chat) {
+        private void ItemClicked(Entity chat) {
             Close(new Tuple<VKSession, long, long>(CurrentViewModel.Session, chat.Item1, CurrentViewModel.GroupId));
         }
 

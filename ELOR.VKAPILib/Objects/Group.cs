@@ -68,6 +68,7 @@ namespace ELOR.VKAPILib.Objects {
         public GroupState State { get; set; }
 
         [JsonPropertyName("deactivated")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<DeactivationState>))]
         public DeactivationState Deactivated { get; set; }
 
         [JsonPropertyName("is_admin")]

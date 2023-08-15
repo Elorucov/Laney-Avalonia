@@ -28,6 +28,7 @@ namespace ELOR.Laney.Core {
             Uri url = await window.StartAuthenticationAsync();
             if (url == null) return new Tuple<long, string>(userId, accessToken);
 
+            if (url.Fragment.Length <= 1) return new Tuple<long, string>(userId, accessToken);
             var queries = url.Fragment.Substring(1).ParseQuery();
             if (!oauthWorkaround && queries.ContainsKey("access_token") && queries.ContainsKey("user_id")) {
                 userId = Int64.Parse(queries["user_id"]);

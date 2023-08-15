@@ -187,7 +187,7 @@
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Classes="Tertiary Medium MessagesCommands" Command="{Binding ShowContextMenuForSelectedMessages}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+            <Button x:Name="MultiMsgContextButton" Classes="Tertiary Medium MessagesCommands" Command="{Binding ShowContextMenuForSelectedMessages}">
               <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon24MoreHorizontal}"/>
             </Button>
           </StackPanel>

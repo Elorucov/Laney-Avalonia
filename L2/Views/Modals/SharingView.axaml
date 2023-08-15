@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:mdl="using:ELOR.Laney.DataModels"
         xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
@@ -21,7 +22,13 @@
         </ComboBox>
       </Grid>
       <TextBox Classes="Search" Grid.Row="1" Margin="12,0,12,6" Watermark="{i18n:Localize search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
-      <ListBox x:Name="ChatsList" Classes="FixMargin" Grid.Row="2" Background="Transparent" ItemsSource="{Binding Chats}" ItemTemplate="{StaticResource DefaultEntityItemTemplate}"/>
+      <ListBox x:Name="ChatsList" Classes="FixMargin" Grid.Row="2" Background="Transparent" ItemsSource="{Binding Chats}">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="mdl:Entity">
+            <controls:EntityUI Margin="12,6" Entity="{Binding Mode=OneWay}"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
       <Grid x:Name="EmptyChatsListContainer" Grid.Row="2" VerticalAlignment="Center">
         <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
         <vkui:Placeholder VerticalAlignment="Center"

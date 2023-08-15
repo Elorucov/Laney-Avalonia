@@ -733,11 +733,11 @@ namespace ELOR.Laney.ViewModels {
                     case 7: // Выход из беседы
                     case 8: // Исключение из беседы
                         if (extra.IsUser()) {
-                            User user = MembersUsers.Where(u => u.Id == extra).FirstOrDefault();
-                            if (user != null) MembersUsers.Remove(user);
+                            User user = MembersUsers?.Where(u => u.Id == extra).FirstOrDefault();
+                            if (user != null) MembersUsers?.Remove(user);
                         } else if (extra.IsGroup()) {
-                            Group group = MembersGroups.Where(g => g.Id == -extra).FirstOrDefault();
-                            if (group != null) MembersGroups.Remove(group);
+                            Group group = MembersGroups?.Where(g => g.Id == -extra).FirstOrDefault();
+                            if (group != null) MembersGroups?.Remove(group);
                         }
                         if (extra == session.Id) {
                             ChatSettings.State = type == 8 ? UserStateInChat.Kicked : UserStateInChat.Left;

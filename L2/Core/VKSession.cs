@@ -398,8 +398,8 @@ namespace ELOR.Laney.Core {
         }
 
         public async void Share(List<MessageViewModel> messages) {
-            SharingViewModel user = new SharingViewModel(Main, messages, GroupId);
-            SharingViewModel group = IsGroup ? new SharingViewModel(this, messages, 0) : null;
+            SharingViewModel user = new SharingViewModel(Main, GroupId);
+            SharingViewModel group = IsGroup ? new SharingViewModel(this, 0) : null;
             SharingView dlg = new SharingView(user, group);
             // session, peer_id, group_id (if message from group to user session)
             Tuple<VKSession, long, long>  result = await dlg.ShowDialog<Tuple<VKSession, long, long>>(ModalWindow);

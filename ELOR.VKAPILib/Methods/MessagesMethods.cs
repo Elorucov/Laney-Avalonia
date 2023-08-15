@@ -218,7 +218,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="keepForwardedMessages">true — to keep forwarded, messages.</param>
         /// <param name="keepSnippets">true — to keep attached snippets.</param>
         /// <param name="dontParseLinks">Don't parse links in message.</param>
-        public async Task<bool> EditAsync(long groupId, long peerId, int messageId, string message, double latitude, double longitude, List<string> attachment, bool keepForwardedMessages, bool keepSnippets, bool dontParseLinks) {
+        public async Task<int> EditAsync(long groupId, long peerId, int messageId, string message, double latitude, double longitude, List<string> attachment, bool keepForwardedMessages, bool keepSnippets, bool dontParseLinks) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -230,7 +230,7 @@ namespace ELOR.VKAPILib.Methods {
             if (keepForwardedMessages) parameters.Add("keep_forward_messages", "1");
             if (keepSnippets) parameters.Add("keep_snippets", "1");
             if (dontParseLinks) parameters.Add("dont_parse_links", "1");
-            return await API.CallMethodAsync<bool>("messages.edit", parameters);
+            return await API.CallMethodAsync<int>("messages.edit", parameters);
         }
 
         /// <summary>Edits the title of a chat.</summary>
