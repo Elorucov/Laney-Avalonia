@@ -238,7 +238,6 @@ namespace ELOR.Laney {
             "Avalonia.Skia.Lottie by Wiesław Šoltés",
             "ColorTextBlock.Avalonia by whistyun",
             "jp2masa.Avalonia.Flexbox",
-            "PanAndZoom by Wiesław Šoltés",
             "Serilog",
             "Unicode.net",
         };
