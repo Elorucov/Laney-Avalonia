@@ -75,7 +75,7 @@ namespace ELOR.Laney {
                     }
                 }
 
-                DPI = desktop.MainWindow.Screens.All.Select(s => s.Scaling).Max();
+                DPI = desktop.MainWindow.DesktopScaling;
                 Log.Information($"Maximal DPI: {DPI}");
 
                 PlatformSettings.ColorValuesChanged += (a, b) => UpdateTrayIcon();

@@ -56,7 +56,7 @@
                     <TextBlock Margin="0,4,0,0" Classes="Caption1" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{Binding DisplayName}"/>
                   </StackPanel>
 
-                  <Rectangle x:Name="Preview" RadiusX="8" RadiusY="8" IsVisible="{Binding PreviewImage, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <Rectangle x:Name="Preview" RadiusX="8" RadiusY="8" Width="88" Height="88" IsVisible="{Binding PreviewImage, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <Rectangle.Fill>
                       <ImageBrush Source="{Binding PreviewImage}" AlignmentX="Center" AlignmentY="Center" Stretch="UniformToFill"/>
                     </Rectangle.Fill>
