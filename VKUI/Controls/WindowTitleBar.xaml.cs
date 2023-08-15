@@ -93,7 +93,7 @@ namespace VKUI.Controls {
                 WindowTitle.Classes.Add("Default");
                 CloseButton.IsVisible = true;
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
-                TitleBar.Height = 22;
+                TitleBar.Height = 27; // 22 for old macos...
                 WindowTitle.Classes.Add("Mac");
             }
 

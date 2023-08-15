@@ -25,6 +25,7 @@ using Avalonia.Controls.Notifications;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.ViewModels.Modals;
 using ToastNotifications.Avalonia;
+using Avalonia.Dialogs;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -102,7 +103,10 @@ namespace ELOR.Laney.Core {
                 About aw = new About();
                 await aw.ShowDialog(Window);
             };
-            logout.Click += async (a, b) => {
+            about.ContextRequested += async (a, b) => {
+                await new AboutAvaloniaDialog().ShowDialog(Window);
+            };
+            logout.Click += (a, b) => {
                 ExceptionHelper.ShowNotImplementedDialogAsync(Window);
             };
 

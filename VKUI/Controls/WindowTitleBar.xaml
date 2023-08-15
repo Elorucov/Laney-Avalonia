@@ -22,7 +22,7 @@
     </Setter>
 
     <Style Selector="^ /template/ TextBlock.Mac">
-      <Setter Property="Margin" Value="68,3"/>
+      <Setter Property="Margin" Value="68,5,68,4"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="LineHeight" Value="18"/>
       <Setter Property="Foreground" Value="{DynamicResource VKTextSubheadBrush}"/>
