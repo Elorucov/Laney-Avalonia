@@ -1,4 +1,5 @@
 ﻿using ELOR.VKAPILib.Objects;
+using ELOR.VKAPILib.Objects.Auth;
 using ELOR.VKAPILib.Objects.Messages;
 using ELOR.VKAPILib.Objects.Upload;
 using System.Text.Json.Serialization;
@@ -53,5 +54,6 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(VideoUploadResult))]
     [JsonSerializable(typeof(VideoUploadServer))]
     [JsonSerializable(typeof(List<Attachment>))]
+    [JsonSerializable(typeof(DirectAuthResponse))]
     public partial class BuildInJsonContext : JsonSerializerContext { }
 }

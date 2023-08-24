@@ -16,12 +16,12 @@ namespace VKUI.Controls {
     [TemplatePart("PART_NavigationBar", typeof(Border))]
     [TemplatePart("PART_BackButton", typeof(Button))]
     [TemplatePart("PART_ForwardButton", typeof(Button))]
-    [TemplatePart("PART_ContentPresenter", typeof(ContentControl))]
+    [TemplatePart("PART_ContentPresenter", typeof(TransitioningContentControl))]
     public class NavigationControl : ContentControl {
         private Button? _backButton;
         private Button? _forwardButton;
         private INavigationRouter? _navigationRouter;
-        private ContentControl? _contentPresenter;
+        private TransitioningContentControl? _contentPresenter;
 
         /// <summary>
         /// Defines the <see cref="CanGoBack"/> property.
@@ -215,7 +215,7 @@ namespace VKUI.Controls {
 
             ForwardButton = e.NameScope.Get<Button>("PART_ForwardButton");
 
-            _contentPresenter = e.NameScope.Get<ContentControl>("PART_ContentPresenter");
+            _contentPresenter = e.NameScope.Get<TransitioningContentControl>("PART_ContentPresenter");
 
             _contentPresenter.TemplateApplied += ContentPresenter_TemplateApplied;
 

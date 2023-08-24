@@ -10,5 +10,4 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("title")]
         public string Title { get; set; }
     }
-
 }

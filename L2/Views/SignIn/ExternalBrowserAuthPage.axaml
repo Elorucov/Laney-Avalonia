@@ -1,0 +1,28 @@
+<vkui:Page xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vkui="using:VKUI.Controls"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:vm="using:ELOR.Laney.ViewModels"
+             xmlns:mdl="using:ELOR.Laney.DataModels"
+             xmlns:vk="using:ELOR.VKAPILib.Objects"
+             mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
+             x:Class="ELOR.Laney.Views.SignIn.ExternalBrowserAuthPage">
+  <Grid RowDefinitions="Auto * Auto">
+    <vkui:PanelHeader IsSeparatorVisible="False">
+      <vkui:PanelHeader.LeftButtons>
+        <Button x:Name="BackButton" Click="BackButton_Click">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}"/>
+        </Button>
+      </vkui:PanelHeader.LeftButtons>
+    </vkui:PanelHeader>
+    <StackPanel Grid.Row="1" Margin="24,12">
+      <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="0,0,0,12" Source="{StaticResource Logo}"/>
+      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="Авторизация"/>
+      <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="Сейчас откроется браузер. Пожалуйста, предоставьте доступ к вашему аккаунту."/>
+      <vkui:Spinner HorizontalAlignment="Center" Width="44" Height="44"/>
+    </StackPanel>
+  </Grid>
+</vkui:Page>

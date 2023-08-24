@@ -14,6 +14,7 @@ namespace ELOR.VKAPILib {
 
         public AccountMethods Account { get; private set; }
         public AppsMethods Apps { get; private set; }
+        public AuthMethods Auth { get; private set; }
         public DocsMethods Docs { get; private set; }
         public FriendsMethods Friends { get; private set; }
         public GroupsMethods Groups { get; private set; }
@@ -81,6 +82,7 @@ namespace ELOR.VKAPILib {
 
             Account = new AccountMethods(this);
             Apps = new AppsMethods(this);
+            Auth = new AuthMethods(this);
             Docs = new DocsMethods(this);
             Friends = new FriendsMethods(this);
             Groups = new GroupsMethods(this);
@@ -110,21 +112,22 @@ namespace ELOR.VKAPILib {
 
         public async Task<string> SendRequestAsync(string method, Dictionary<string, string> parameters = null) {
             string requestUri = $@"https://{Domain}/method/{method}";
+            return await SendRequestAsync(new Uri(requestUri), parameters);
+        }
 
+        internal async Task<string> SendRequestAsync(Uri uri, Dictionary<string, string> parameters = null) {
             if (WebRequestCallback != null) {
                 Dictionary<string, string> headers = new Dictionary<string, string> {
                     { "Accept-Encoding", "gzip,deflate" }
                 };
                 if (!String.IsNullOrEmpty(UserAgent)) headers.Add("User-Agent", UserAgent);
 
-                var resp = await WebRequestCallback.Invoke(new Uri(requestUri), parameters, headers);
-                resp.EnsureSuccessStatusCode();
+                var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
                 return await resp.Content.ReadAsStringAsync();
             } else {
-                using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, new Uri(requestUri))) {
+                using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri)) {
                     hmsg.Content = new FormUrlEncodedContent(parameters);
                     using (var resp = await HttpClient.SendAsync(hmsg)) {
-                        resp.EnsureSuccessStatusCode();
                         return await resp.Content.ReadAsStringAsync();
                     }
                 }

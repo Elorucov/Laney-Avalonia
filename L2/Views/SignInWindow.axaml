@@ -13,41 +13,5 @@
         WindowStartupLocation="CenterScreen"
         Icon="avares://laney/Assets/Logo/icon.ico"
         Title="Laney">
-  <Grid RowDefinitions="Auto * 48">
-    <StackPanel Grid.Row="1" Margin="24,48" VerticalAlignment="Center">
-      <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="12" Source="{StaticResource Logo}"/>
-      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
-      <TextBlock Classes="Headline" TextWrapping="Wrap" Margin="0,8,0,0" TextAlignment="Center" Text="{i18n:Localize landing_subtitle}"/>
-      <StackPanel x:Name="FirstStep" Margin="0,32,0,0">
-        <Button x:Name="SignInBtn" Classes="Large" Background="#0077ff" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Click="SignIn">
-          <Grid ColumnDefinitions="44 * 44">
-            <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28LogoVk}" Foreground="White" Margin="8"/>
-            <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Text="{i18n:Localize sign_in_vk_id}"/>
-          </Grid>
-        </Button>
-        <CheckBox x:Name="AuthWorkaroundCB" HorizontalAlignment="Center" Content="Fix auth for non-VK ID"/>
-        <CheckBox x:Name="ExternalBrowserCB" HorizontalAlignment="Center" Content="Authorize via browser"/>
-      </StackPanel>
-      <StackPanel x:Name="SecondStep" Margin="0,32,0,0" IsVisible="False">
-        <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" TextAlignment="Center" Text="{i18n:Localize landing_auth_in_progress}"/>
-        <Button Classes="Large" Margin="0,12,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Click="CancelAuth">
-          <Grid ColumnDefinitions="44 * 44">
-            <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}" Margin="8"/>
-            <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="{i18n:Localize go_back}"/>
-          </Grid>
-        </Button>
-      </StackPanel>
-    </StackPanel>
-
-    <Grid Grid.Row="2" ColumnDefinitions="Auto *" Margin="24,0,24,18" VerticalAlignment="Center">
-      <ComboBox x:Name="LangPicker" Classes="Alternate">
-        <ComboBox.ItemTemplate>
-          <DataTemplate x:DataType="mdl:TwoStringTuple">
-            <TextBlock Classes="Subhead" Text="{Binding Item2}"/>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
-      <TextBlock x:Name="VersionInfo" Grid.Column="1" TextAlignment="Right" Classes="Subhead" Margin="0,3,0,0" Foreground="{DynamicResource VKTextSubheadBrush}"/>
-    </Grid>
-  </Grid>
+  <vkui:NavigationControl x:Name="AuthFlow"/>
 </Window>

@@ -17,7 +17,7 @@
 	<PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="Bildstein.SpiderEye.Core" Version="1.0.0-beta.5" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('Linux'))" Include="Bildstein.SpiderEye.Linux" Version="1.0.0-beta.5" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="Bildstein.SpiderEye.Mac" Version="1.0.0-beta.5" />
-    <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="Microsoft.Web.WebView2" Version="1.0.1587.40" />
+    <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="Microsoft.Web.WebView2" Version="1.0.1901.177" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="Vanara.PInvoke.Kernel32" Version="3.4.16" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="Vanara.PInvoke.User32" Version="3.4.16" />
   </ItemGroup>

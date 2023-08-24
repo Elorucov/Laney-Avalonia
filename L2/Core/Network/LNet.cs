@@ -247,7 +247,9 @@ namespace ELOR.Laney.Core.Network {
                 };
             }
 
-            HttpRequestMessage hrm = new HttpRequestMessage(httpMethod, fixedUri);
+            HttpRequestMessage hrm = new HttpRequestMessage(httpMethod, fixedUri) {
+                Version = new Version(2, 0)
+            };
             if (!String.IsNullOrEmpty(host)) hrm.Headers.Host = host;
             if (headers != null) foreach (var header in headers) {
                     hrm.Headers.Add(header.Key, header.Value);

@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.509</AssemblyVersion>
-    <FileVersion>2.0.509</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.509-win-anycpu-devuser.devpc-230814-1038</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.509-linux-anycpu-devuser.devpc-230814-1038</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.509-macos-anycpu-devuser.devpc-230814-1038</Version>
+    <AssemblyVersion>2.0.512</AssemblyVersion>
+    <FileVersion>2.0.512</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.512-win-anycpu-devuser.devpc-230815-1308</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.512-linux-anycpu-devuser.devpc-230815-1308</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.512-macos-anycpu-devuser.devpc-230815-1308</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -23,8 +23,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.509</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.509</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.512</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.512</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
@@ -83,15 +83,14 @@
     </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.3" />
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.3" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.3" />
+    <PackageReference Include="Avalonia" Version="11.0.4" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.4" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.4" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.3" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.4" />
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.3" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.4" />
     <PackageReference Include="DynamicData" Version="7.14.2" />
-    <PackageReference Include="jp2masa.Avalonia.Flexbox" Version="0.3.0-beta.4" />
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
@@ -103,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELOR.VKAPILib\ELOR.VKAPILib.csproj" />
-    <ProjectReference Include="..\OAuthWebView\OAuthWebView.csproj" />
     <ProjectReference Include="..\ToastNotifications.Avalonia\ToastNotifications.Avalonia.csproj" />
     <ProjectReference Include="..\VKUI\VKUI.csproj" />
   </ItemGroup>

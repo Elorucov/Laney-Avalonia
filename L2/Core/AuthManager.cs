@@ -6,8 +6,10 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
-using OAuthWebView;
+using Serilog;
+//using OAuthWebView;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,37 +21,57 @@ namespace ELOR.Laney.Core {
         static Uri finalUri = new Uri("https://oauth.vk.com/blank.html");
         static Uri finalUriOauth = new Uri("https://oauth.vk.com/auth_redirect");
 
-        public static async Task<Tuple<long, string>> AuthWithOAuthAsync(bool oauthWorkaround = false) {
-            long userId = 0;
-            string accessToken = String.Empty;
+        //public static async Task<Tuple<long, string>> AuthWithOAuthAsync(bool oauthWorkaround = false) {
+        //    long userId = 0;
+        //    string accessToken = String.Empty;
 
-            OAuthWindow window = new OAuthWindow(authUri, oauthWorkaround ? finalUriOauth : finalUri, Localizer.Instance["sign_in"], 784, 541); // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
-            window.LocalDataPath = App.LocalDataPath;
-            Uri url = await window.StartAuthenticationAsync();
-            if (url == null) return new Tuple<long, string>(userId, accessToken);
+        //    OAuthWindow window = new OAuthWindow(authUri, oauthWorkaround ? finalUriOauth : finalUri, Localizer.Instance["sign_in"], 784, 541); // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
+        //    window.LocalDataPath = App.LocalDataPath;
+        //    Uri url = await window.StartAuthenticationAsync();
+        //    if (url == null) return new Tuple<long, string>(userId, accessToken);
 
-            if (url.Fragment.Length <= 1) return new Tuple<long, string>(userId, accessToken);
-            var queries = url.Fragment.Substring(1).ParseQuery();
-            if (!oauthWorkaround && queries.ContainsKey("access_token") && queries.ContainsKey("user_id")) {
-                userId = Int64.Parse(queries["user_id"]);
-                accessToken = queries["access_token"];
-            } else if (oauthWorkaround && queries.ContainsKey("authorize_url")) {
-                Uri finalUri = new Uri(WebUtility.UrlDecode(queries["authorize_url"]));
-                var finalQueries = finalUri.Fragment.Substring(1).ParseQuery();
-                if (finalQueries.ContainsKey("access_token") && finalQueries.ContainsKey("user_id")) {
-                    userId = Int32.Parse(finalQueries["user_id"]);
-                    accessToken = finalQueries["access_token"];
+        //    if (url.Fragment.Length <= 1) return new Tuple<long, string>(userId, accessToken);
+        //    var queries = url.Fragment.Substring(1).ParseQuery();
+        //    if (!oauthWorkaround && queries.ContainsKey("access_token") && queries.ContainsKey("user_id")) {
+        //        userId = Int64.Parse(queries["user_id"]);
+        //        accessToken = queries["access_token"];
+        //    } else if (oauthWorkaround && queries.ContainsKey("authorize_url")) {
+        //        Uri finalUri = new Uri(WebUtility.UrlDecode(queries["authorize_url"]));
+        //        var finalQueries = finalUri.Fragment.Substring(1).ParseQuery();
+        //        if (finalQueries.ContainsKey("access_token") && finalQueries.ContainsKey("user_id")) {
+        //            userId = Int32.Parse(finalQueries["user_id"]);
+        //            accessToken = finalQueries["access_token"];
+        //        }
+        //    }
+
+        //    return new Tuple<long, string>(userId, accessToken);
+        //}
+
+        public static async Task<string> GetOauthHashAsync() {
+            Dictionary<string, string> headers = new Dictionary<string, string> {
+                { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/115.0.1901.203" }
+            };
+
+            try {
+                var resp = await LNet.GetAsync(authUri, headers: headers);
+                var q = resp.RequestMessage.RequestUri.Query.Substring(1).ParseQuery();
+                if (q.ContainsKey("return_auth_hash")) {
+                    Log.Information($"GetOauthHashAsync: successfully fetch a return_auth_hash: {q["return_auth_hash"]}.");
+                    return q["return_auth_hash"];
                 }
+                Log.Error($"GetOauthHashAsync: return_auth_hash is not found in url!");
+                return null;
+            } catch (Exception ex) {
+                Log.Information($"GetOauthHashAsync: failed to fetch a return_auth_hash! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}");
+                return null;
             }
-
-            return new Tuple<long, string>(userId, accessToken);
         }
 
-        public static async Task<Tuple<long, string>> AuthViaExternalBrowserAsync(CancellationTokenSource cts) {
+        public static async Task<Tuple<long, string>> AuthViaExternalBrowserAsync(CancellationTokenSource cts, string hash) {
             long userId = 0;
             string accessToken = String.Empty;
 
-            Launcher.LaunchUrl("https://id.vk.com/auth?app_id=6614620&state=&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A52639&redirect_uri_hash=7cffb58e0529406e09&code_challenge=&code_challenge_method=&return_auth_hash=83320eb1d84c794f0c&scope=995414&force_hash=");
+            Launcher.LaunchUrl($"https://id.vk.com/auth?app_id=6614620&state=&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A52639&redirect_uri_hash=7cffb58e0529406e09&code_challenge=&code_challenge_method=&return_auth_hash={hash}&scope=995414&force_hash=");
             string response = await LServer.StartAndReturnQueryFromClient(cts.Token);
             if (response.Length <= 1) return new Tuple<long, string>(userId, accessToken);
             var queries = response.Substring(1).ParseQuery();
