@@ -54,6 +54,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(VideoUploadResult))]
     [JsonSerializable(typeof(VideoUploadServer))]
     [JsonSerializable(typeof(List<Attachment>))]
+    [JsonSerializable(typeof(OauthResponse))]
     [JsonSerializable(typeof(DirectAuthResponse))]
     public partial class BuildInJsonContext : JsonSerializerContext { }
 }

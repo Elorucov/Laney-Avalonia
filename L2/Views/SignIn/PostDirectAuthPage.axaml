@@ -1,0 +1,11 @@
+<vkui:Page xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vkui="using:VKUI.Controls"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:controls="using:ELOR.Laney.Controls"
+             mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
+             x:Class="ELOR.Laney.Views.SignIn.PostDirectAuthPage">
+  <vkui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="44" Height="44"/>
+</vkui:Page>

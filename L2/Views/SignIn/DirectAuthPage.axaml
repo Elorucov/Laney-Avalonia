@@ -6,7 +6,7 @@
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:controls="using:ELOR.Laney.Controls"
              mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
-             x:Class="ELOR.Laney.Views.SignIn.ExternalBrowserAuthPage">
+             x:Class="ELOR.Laney.Views.SignIn.DirectAuthPage">
   <Grid RowDefinitions="Auto * Auto">
     <vkui:PanelHeader IsSeparatorVisible="False">
       <vkui:PanelHeader.LeftButtons>
@@ -17,9 +17,14 @@
     </vkui:PanelHeader>
     <StackPanel Grid.Row="1" Margin="24,12">
       <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="0,0,0,12" Source="{StaticResource Logo}"/>
-      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="{i18n:Localize landing_auth_in_progress_title}"/>
-      <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="{i18n:Localize landing_auth_in_progress}"/>
-      <vkui:Spinner HorizontalAlignment="Center" Width="44" Height="44"/>
+      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
+      <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="{i18n:Localize landing_subtitle}"/>
+      <TextBox x:Name="LoginBox" Margin="0,0,0,12" Watermark="{i18n:Localize da_login}"/>
+      <TextBox x:Name="PassBox" Margin="0,0,0,12" PasswordChar="*" Watermark="{i18n:Localize da_password}"/>
+    </StackPanel>
+    <StackPanel Margin="12" Grid.Row="2">
+      <TextBlock x:Name="ErrorInfo" Margin="12" Foreground="{DynamicResource VKDestructiveBrush}"/>
+      <Button x:Name="SignInButton" Classes="Primary Large" Margin="12" HorizontalAlignment="Stretch" Content="{i18n:Localize sign_in}" Click="SignIn_Click"/>
     </StackPanel>
   </Grid>
 </vkui:Page>

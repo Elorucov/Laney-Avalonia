@@ -1,13 +1,11 @@
 ﻿using ELOR.VKAPILib.Objects.Auth;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib {
     public class DirectAuth {
-        public static async Task<DirectAuthResponse> AuthAsync(VKAPI api, string lang, int clientId, string clientSecret, int scope, string username, string password, string code = null, string captchaSid = null, string captchaKey = null) {
+        public static async Task<DirectAuthResponse> AuthAsync(VKAPI api, int clientId, string clientSecret, int scope, string username, string password, string code = null, string captchaSid = null, string captchaKey = null) {
             Dictionary<string, string> p = new Dictionary<string, string> {
-                { "lang", lang },
+                { "lang", api.Language },
                 { "grant_type", "password" },
                 { "client_id", clientId.ToString() },
                 { "client_secret", clientSecret },
@@ -19,11 +17,10 @@ namespace ELOR.VKAPILib {
             };
             if (!String.IsNullOrEmpty(code)) p.Add("code", code);
             if (!String.IsNullOrEmpty(captchaSid)) p.Add("captcha_sid", captchaSid);
-            if (!String.IsNullOrEmpty(captchaSid)) p.Add("captcha_key", captchaKey);
+            if (!String.IsNullOrEmpty(captchaKey)) p.Add("captcha_key", captchaKey);
 
-            string response = await api.SendRequestAsync("https://oauth.vk.com/token", p);
-
-            DirectAuthResponse das = JsonSerializer.Deserialize(response, typeof(DirectAuthResponse), BuildInJsonContext.Default) as DirectAuthResponse;
+            string response = await api.SendRequestAsync(new Uri("https://oauth.vk.com/token"), p);
+            DirectAuthResponse das = (DirectAuthResponse)JsonSerializer.Deserialize(response, typeof(DirectAuthResponse), BuildInJsonContext.Default);
             return das;
         }
     }

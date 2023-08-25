@@ -295,35 +295,7 @@ namespace ELOR.Laney.Core {
         }
 
         private async Task<string> ShowCaptcha(CaptchaHandlerData arg) {
-            return await Task.Factory.StartNew(() => {
-                string code = null;
-
-                Dispatcher.UIThread.InvokeAsync(async () => {
-                    Image captchaImg = new Image {
-                        Width = 130,
-                        Height = 50
-                    };
-                    captchaImg.SetUriSourceAsync(arg.Image, Convert.ToInt32(captchaImg.Width));
-                    TextBox codeTxt = new TextBox {
-                        Width = 130,
-                        MaxLength = 10,
-                        Margin = new Thickness(0, 12, 0, 0)
-                    };
-
-                    StackPanel panel = new StackPanel {
-                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
-                    };
-                    panel.Children.Add(captchaImg);
-                    panel.Children.Add(codeTxt);
-
-                    VKUIDialog dialog = new VKUIDialog("Enter code", null);
-                    dialog.DialogContent = panel;
-                    int result = await dialog.ShowDialog<int>(ModalWindow);
-                    if (result == 1) code = codeTxt.Text;
-                }).Wait();
-
-                return code;
-            });
+            return await ShowCaptchaAsync(Window, arg.Image);
         }
 
         private static void TryOpenSessionWindow(object? sender, RoutedEventArgs e) {
@@ -417,6 +389,38 @@ namespace ELOR.Laney.Core {
 
         public void ShowNotification(Notification notification) {
             _notificationManager?.Show(notification);
+        }
+
+        public static async Task<string> ShowCaptchaAsync(Window parent, Uri image) {
+            return await Task.Factory.StartNew(() => {
+                string code = null;
+
+                Dispatcher.UIThread.InvokeAsync(async () => {
+                    Image captchaImg = new Image {
+                        Width = 130,
+                        Height = 50
+                    };
+                    captchaImg.SetUriSourceAsync(image, Convert.ToInt32(captchaImg.Width));
+                    TextBox codeTxt = new TextBox {
+                        Width = 130,
+                        MaxLength = 10,
+                        Margin = new Thickness(0, 12, 0, 0)
+                    };
+
+                    StackPanel panel = new StackPanel {
+                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
+                    };
+                    panel.Children.Add(captchaImg);
+                    panel.Children.Add(codeTxt);
+
+                    VKUIDialog dialog = new VKUIDialog("Enter code", null);
+                    dialog.DialogContent = panel;
+                    int result = await dialog.ShowDialog<int>(parent);
+                    if (result == 1) code = codeTxt.Text;
+                }).Wait();
+
+                return code;
+            });
         }
 
         #endregion

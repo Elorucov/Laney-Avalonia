@@ -125,7 +125,9 @@ namespace ELOR.VKAPILib {
                 var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
                 return await resp.Content.ReadAsStringAsync();
             } else {
-                using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri)) {
+                using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri) { 
+                    Version = new Version(2, 0)
+                }) {
                     hmsg.Content = new FormUrlEncodedContent(parameters);
                     using (var resp = await HttpClient.SendAsync(hmsg)) {
                         return await resp.Content.ReadAsStringAsync();

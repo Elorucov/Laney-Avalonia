@@ -28,7 +28,7 @@ namespace ELOR.Laney.Views.SignIn {
         }
 
         private void GoToDirectAuthPage(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-
+            NavigationRouter.NavigateToAsync(new DirectAuthPage());
         }
     }
 }

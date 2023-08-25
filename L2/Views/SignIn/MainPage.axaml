@@ -23,7 +23,7 @@
         </Grid>
       </Button>
       <Button x:Name="SignInBtnDirect" Classes="Large" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="12" Margin="0,0,0,12" Click="GoToDirectAuthPage">
-        <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="Sign in with login and password"/>
+        <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="{i18n:Localize sign_in_direct}"/>
       </Button>
     </StackPanel>
     <Grid Grid.Row="2" ColumnDefinitions="Auto *" Margin="24,0,24,18" VerticalAlignment="Center">
