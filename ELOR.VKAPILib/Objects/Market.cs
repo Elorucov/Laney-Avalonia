@@ -5,7 +5,7 @@ namespace ELOR.VKAPILib.Objects {
         public MarketPrice() {}
 
         [JsonPropertyName("amount")]
-        public int Amount { get; set; }
+        public string Amount { get; set; }
 
         [JsonPropertyName("text")]
         public string Text { get; set; }
