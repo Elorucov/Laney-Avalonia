@@ -13,7 +13,7 @@
   <vkui:Page.Resources>
     <!-- Шаблон для элементов списка бесед (двухстрочный) -->
     <DataTemplate x:Key="ChatItemTemplate2Row" x:DataType="vm:ChatViewModel">
-      <Grid Height="64" ColumnDefinitions="Auto *" Background="Transparent" ContextRequested="ChatContextRequested">
+      <Grid Height="64" ColumnDefinitions="Auto *" Background="Transparent" ContextRequested="ChatContextRequested" PointerPressed="ChatPointerPressed" PointerReleased="ChatPointerReleased">
         <vkui:Avatar Width="48" Height="48" Margin="12,8,0,8" VerticalAlignment="Top" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding Avatar}"/>
         <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,8"/>
         <StackPanel x:Name="Info" Grid.Column="1" Margin="12,11,0,11">

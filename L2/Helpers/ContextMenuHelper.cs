@@ -111,8 +111,8 @@ namespace ELOR.Laney.Helpers {
             if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
             if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
 
-            if (chat.UnreadMessagesCount > 0) ash.Items.Add(read);
-            if (chat.UnreadMessagesCount == 0) ash.Items.Add(unread);
+            if (chat.UnreadMessagesCount > 0 || chat.IsMarkedAsUnread) ash.Items.Add(read);
+            if (chat.UnreadMessagesCount == 0 || !chat.IsMarkedAsUnread) ash.Items.Add(unread);
 
             if (chat.PeerId != session.Id) {
                 if (!notificationsDisabled) ash.Items.Add(notifoff);
