@@ -50,7 +50,8 @@ namespace ELOR.Laney.Core {
         }
 
         public void SetUp(LongPollServerInfo info) {
-            Server = info.Server;
+            // Server = info.Server;
+            Server = info.Server.Replace("im.vk.com/nim", "api.vk.com/ruim"); // TODO: параметр в настройках как в старом Laney
             Key = info.Key;
             TimeStamp = info.TS;
             PTS = info.PTS;
