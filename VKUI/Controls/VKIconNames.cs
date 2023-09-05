@@ -44,6 +44,7 @@
         public const string Icon20LockOutline = "Icon20LockOutline";
         public const string Icon20MentionOutline = "Icon20MentionOutline";
         public const string Icon20MessageOutline = "Icon20MessageOutline";
+        public const string Icon20MessageUnreadTopOutline = "Icon20MessageUnreadTopOutline";
         public const string Icon20More = "Icon20More";
         public const string Icon20NotificationOutline = "Icon20NotificationOutline";
         public const string Icon20NotificationSlashOutline = "Icon20NotificationSlashOutline";

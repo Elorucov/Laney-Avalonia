@@ -3,12 +3,108 @@
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:core="using:ELOR.Laney.Core"
+             xmlns:vm="using:ELOR.Laney.ViewModels"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ELOR.Laney.Views.ImView"
              x:DataType="core:VKSession">
+  <vkui:Page.Resources>
+    <!-- Шаблон для элементов списка бесед (двухстрочный) -->
+    <DataTemplate x:Key="ChatItemTemplate2Row" x:DataType="vm:ChatViewModel">
+      <Grid Height="64" ColumnDefinitions="Auto *" Background="Transparent" ContextRequested="ChatContextRequested">
+        <vkui:Avatar Width="48" Height="48" Margin="12,8,0,8" VerticalAlignment="Top" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding Avatar}"/>
+        <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,8"/>
+        <StackPanel x:Name="Info" Grid.Column="1" Margin="12,11,0,11">
+          <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
+            <DockPanel x:Name="ChatNameContainer" HorizontalAlignment="Left">
+              <TextBlock x:Name="ChatName" Margin="0,0,22,0" Classes="Default" FontWeight="SemiBold" Text="{Binding Title}" MaxLines="1" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="-16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </DockPanel>
+            <StackPanel x:Name="TopRight" Grid.Column="1" Orientation="Horizontal" Margin="0,0,12,0">
+              <Border x:Name="ReadIndicator" IsVisible="{Binding LastMessage, Converter={StaticResource rivc}}" VerticalAlignment="Top" Margin="0,2,8,0">
+                <vkui:VKIcon Id="{Binding LastMessage.State, Converter={StaticResource ric}}"/>
+              </Border>
+              <TextBlock x:Name="LastMessageTime" Classes="Subhead" Margin="0,2" FontWeight="Regular" Foreground="{DynamicResource VKTextTertiaryBrush}" MaxLines="1" Text="{Binding LastMessage.SentTime, Converter={StaticResource dc}, ConverterParameter=t}"/>
+            </StackPanel>
+          </Grid>
+
+          <Grid x:Name="SecondLine" Margin="0,2,0,0" Height="18" ColumnDefinitions="* Auto">
+            <!--<TextBlock x:Name="LastMessage" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="20" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Foreground="{DynamicResource VKTextSubheadBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="1" Inlines="{Binding LastMessage, Converter={StaticResource micc}}"/>-->
+            <Grid x:Name="LastMessage" ColumnDefinitions="Auto *" Height="18" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+              <TextBlock x:Name="LastMessageSender" Grid.Column="0" Classes="Subhead" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding LastMessage, Converter={StaticResource msnc}}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+              <TextBlock x:Name="LastMessageText" Grid.Column="1" Classes="Subhead" Margin="0,0,8,0" FontWeight="Regular" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding LastMessage}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+            </Grid>
+            <TextBlock x:Name="ActivityStatusText" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding ActivityStatus}" TextTrimming="CharacterEllipsis"/>
+
+            <Path x:Name="PinIndicator" Grid.Column="1" IsVisible="{Binding IsPinned}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="1,1,13,1" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
+            <StackPanel x:Name="Indicators" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,12,0">
+              <Grid x:Name="MentionIndicatorContainer" IsVisible="{Binding MentionIconId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,0,8,0">
+                <Border x:Name="MentionIndicator" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
+                  <vkui:VKIcon Margin="3" Id="{Binding MentionIconId}" Foreground="{DynamicResource VKCounterPrimaryTextBrush}"/>
+                </Border>
+              </Grid>
+              <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}">
+                <Border x:Name="UnreadMessagesIndicator" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9">
+                  <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
+                </Border>
+              </Grid>
+              <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="0,0,8,0" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}"/>
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+    <!-- Шаблон для элементов списка бесед (трёхстрочный) -->
+    <DataTemplate x:Key="ChatItemTemplate3Row" x:DataType="vm:ChatViewModel">
+      <Grid Height="72" ColumnDefinitions="Auto *" Background="Transparent" ContextRequested="ChatContextRequested" PointerPressed="ChatPointerPressed" PointerReleased="ChatPointerReleased">
+        <vkui:Avatar Width="48" Height="48" Margin="12,6,0,6" VerticalAlignment="Top" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding Avatar}"/>
+        <ContentControl ContentTemplate="{Binding Online, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,44,2,0"/>
+        <StackPanel x:Name="Info" Grid.Column="1" Margin="12,6,0,0">
+          <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
+            <DockPanel x:Name="ChatNameContainer" HorizontalAlignment="Left">
+              <TextBlock x:Name="ChatName" Margin="0,0,22,0" Classes="Default" FontWeight="SemiBold" Text="{Binding Title}" MaxLines="1" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="-16,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </DockPanel>
+            <StackPanel x:Name="TopRight" Grid.Column="1" Orientation="Horizontal" Margin="0,0,12,0">
+              <Border x:Name="ReadIndicator" IsVisible="{Binding LastMessage, Converter={StaticResource rivc}}" VerticalAlignment="Top" Margin="0,2,8,0">
+                <vkui:VKIcon Id="{Binding LastMessage.State, Converter={StaticResource ric}}"/>
+              </Border>
+              <TextBlock x:Name="LastMessageTime" Classes="Subhead" Margin="0,2" FontWeight="Regular" Foreground="{DynamicResource VKTextTertiaryBrush}" MaxLines="1" Text="{Binding LastMessage.SentTime, Converter={StaticResource dc}, ConverterParameter=t}"/>
+            </StackPanel>
+          </Grid>
+
+          <Grid x:Name="SecondLine" Margin="0,2,0,0" ColumnDefinitions="* Auto">
+            <Grid.Styles>
+              <Style Selector="Run.Accent">
+                <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+              </Style>
+            </Grid.Styles>
+            <TextBlock x:Name="LastMessage" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" Margin="0,0,12,0" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Foreground="{DynamicResource VKTextSubheadBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Inlines="{Binding LastMessage, Converter={StaticResource micc}}"/>
+            <TextBlock x:Name="ActivityStatusText" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Foreground="{DynamicResource VKAccentBrush}" TextWrapping="Wrap" Text="{Binding ActivityStatus}" MaxLines="2" TextTrimming="CharacterEllipsis"/>
+
+            <Path x:Name="PinIndicator" Grid.Column="1" IsVisible="{Binding IsPinned}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="1,1,13,1" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
+            <StackPanel x:Name="Indicators" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,12,0">
+              <Grid x:Name="MentionIndicatorContainer" IsVisible="{Binding MentionIconId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,0,8,0">
+                <Border x:Name="MentionIndicator" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}">
+                  <vkui:VKIcon Margin="3" Id="{Binding MentionIconId}" Foreground="{DynamicResource VKCounterPrimaryTextBrush}"/>
+                </Border>
+              </Grid>
+              <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}">
+                <Border x:Name="UnreadMessagesIndicator" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9">
+                  <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
+                </Border>
+              </Grid>
+              <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="0,0,8,0" Width="18" Height="18" CornerRadius="9" Background="{DynamicResource VKCounterPrimaryBackgroundBrush}"/>
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+  </vkui:Page.Resources>
+  
   <Grid RowDefinitions="Auto *">
     <vkui:PanelHeader VerticalAlignment="Top" Content="{i18n:Localize chats}">
       <vkui:PanelHeader.LeftButtons>

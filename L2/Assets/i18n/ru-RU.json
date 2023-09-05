@@ -244,6 +244,11 @@
   "mark_spam": "Отметить как спам",
   "chat_clear_history": "Очистить историю",
 
+  "mark_read": "Отметить прочитанным",
+  "mark_unread": "Отметить непрочитанным",
+  "notifications_enable": "Включить уведомления",
+  "notifications_disable": "Отключить уведомления",
+
   "lp_act_typing_multi": "печатают",
   "lp_act_typing_single": "печатает",
   "lp_act_voice_multi": "записывают аудио",

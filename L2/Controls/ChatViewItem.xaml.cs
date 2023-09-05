@@ -49,14 +49,9 @@ namespace ELOR.Laney.Controls {
                 Log.Verbose($"ChatViewItem init. ({Message.PeerId}_{Message.ConversationMessageId})");
             }
 
-            Initialized += ChatViewItem_Initialized;
             PointerPressed += ChatViewItem_PointerPressed;
             PointerReleased += ChatViewItem_PointerReleased;
             Unloaded += ChatViewItem_Unloaded;
-        }
-
-        private void ChatViewItem_Initialized(object sender, EventArgs e) {
-            int i = 0;
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {

@@ -244,6 +244,11 @@
   "mark_spam": "Mark as spam",
   "chat_clear_history": "Clear message history",
 
+  "mark_read": "Mark as read",
+  "mark_unread": "Mark as unread",
+  "notifications_enable": "Enable notifications",
+  "notifications_disable": "Disable notifications",
+
   "lp_act_typing_multi": "is typing",
   "lp_act_typing_single": "is typing",
   "lp_act_voice_multi": "recording audio",

@@ -89,7 +89,7 @@ namespace ELOR.VKAPILib.Objects {
         public PushSettings() {}
 
         [JsonPropertyName("disabled_until")]
-        public int DisabledUntil { get; set; }
+        public long DisabledUntil { get; set; }
 
         [JsonPropertyName("disabled_forever")]
         public bool DisabledForever { get; set; }

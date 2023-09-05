@@ -10,15 +10,131 @@ using ELOR.VKAPILib.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using Avalonia.Interactivity;
 using ELOR.Laney.Views.Modals;
 using Avalonia.Controls.Notifications;
-using Tmds.DBus.Protocol;
 
 namespace ELOR.Laney.Helpers {
     public class ContextMenuHelper {
+        #region For chat
 
-#region For message
+        public static void ShowForChat(ChatViewModel chat, Control target) {
+            ActionSheet ash = new ActionSheet();
+
+            ActionSheetItem debug = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
+                Header = $"ID: {chat.PeerId} ({chat.PeerType})"
+            };
+            ActionSheetItem read = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20MessageOutline },
+                Header = Localizer.Instance["mark_read"],
+            };
+            ActionSheetItem unread = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20MessageUnreadTopOutline },
+                Header = Localizer.Instance["mark_unread"],
+            };
+            ActionSheetItem notifon = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20NotificationOutline },
+                Header = Localizer.Instance["notifications_enable"],
+            };
+            ActionSheetItem notifoff = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20NotificationSlashOutline },
+                Header = Localizer.Instance["notifications_disable"],
+            };
+            ActionSheetItem clear = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
+                Header = Localizer.Instance["chat_clear_history"],
+            };
+            ActionSheetItem leave = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20DoorArrowRightOutline },
+                Header = Localizer.Instance[chat.ChatSettings?.IsGroupChannel == true ? "pp_exit_channel" : "pp_exit_chat"],
+            };
+            ActionSheetItem creturn = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20DoorEnterArrowRightOutline },
+                Header = Localizer.Instance[chat.ChatSettings?.IsGroupChannel == true ? "pp_return_channel" : "pp_return_chat"],
+            };
+            ActionSheetItem gdeny = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20BlockOutline },
+                Header = Localizer.Instance["pp_deny"],
+            };
+
+            clear.Classes.Add("Destructive");
+            leave.Classes.Add("Destructive");
+            gdeny.Classes.Add("Destructive");
+
+            // Conditions
+
+            var session = VKSession.GetByDataContext(target);
+
+            bool notificationsDisabled = chat.PushSettings.DisabledForever || chat.PushSettings.DisabledUntil > DateTimeOffset.Now.ToUnixTimeSeconds();
+
+            // Actions
+
+            notifon.Click += async (a, b) => {
+                try {
+                    var result = await session.API.Account.SetSilenceModeAsync(0, chat.PeerId, true);
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
+                }
+            };
+
+            notifoff.Click += async (a, b) => {
+                try {
+                    var result = await session.API.Account.SetSilenceModeAsync(-1, chat.PeerId, true);
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
+                }
+            };
+
+            read.Click += async (a, b) => {
+                try {
+                    var result = await session.API.Messages.MarkAsReadAsync(session.GroupId, chat.PeerId, chat.LastMessage.Id, true);
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
+                }
+            };
+
+            unread.Click += async (a, b) => {
+                try {
+                    var result = await session.API.Messages.MarkAsUnreadConversationAsync(session.GroupId, chat.PeerId);
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
+                }
+            };
+
+            clear.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+            leave.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+            creturn.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+            gdeny.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+
+            // ¯\_(ツ)_/¯
+
+            if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
+            if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
+
+            if (chat.UnreadMessagesCount > 0) ash.Items.Add(read);
+            if (chat.UnreadMessagesCount == 0) ash.Items.Add(unread);
+
+            if (chat.PeerId != session.Id) {
+                if (!notificationsDisabled) ash.Items.Add(notifoff);
+                if (notificationsDisabled) ash.Items.Add(notifon);
+            }
+
+            if (!session.IsGroup && chat.PeerType == PeerType.Chat && chat.ChatSettings != null) {
+                if (chat.ChatSettings.State == UserStateInChat.In) ash.Items.Add(leave);
+                if (chat.ChatSettings.State == UserStateInChat.Left) ash.Items.Add(creturn);
+            }
+
+            // TODO: Запретить сообщения для диалога с группой.
+
+            if (chat.PeerId != session.Id) ash.Items.Add(clear);
+
+            if (ash.Items.Count > 0) ash.ShowAt(target, true);
+        }
+
+        #endregion
+
+
+        #region For message
 
         public static void ShowForMessage(MessageViewModel message, ChatViewModel chat, Control target) {
             if (chat.PeerId != message.PeerId) return;
@@ -26,7 +142,7 @@ namespace ELOR.Laney.Helpers {
 
             ActionSheetItem debug = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
-                Header = $"{message.Id} - {message.ConversationMessageId}"
+                Header = $"ID: {message.Id}, CMID: {message.ConversationMessageId}"
             };
             ActionSheetItem reply = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ReplyOutline },

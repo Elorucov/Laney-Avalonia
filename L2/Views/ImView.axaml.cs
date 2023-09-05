@@ -30,14 +30,14 @@ namespace ELOR.Laney.Views {
 
             ChatsList.Loaded += ChatsList_Loaded;
 
-            ChatsList.ItemTemplate = App.GetResource<DataTemplate>(Settings.ChatItemMoreRows ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row");
+            ChatsList.ItemTemplate = this.Resources[Settings.ChatItemMoreRows ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
             Settings.SettingChanged += Settings_SettingChanged;
         }
 
         private void Settings_SettingChanged(string key, object value) {
             switch (key) {
                 case Settings.CHAT_ITEM_MORE_ROWS:
-                    DataTemplate template = App.GetResource<DataTemplate>((bool)value ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row");
+                    DataTemplate template = this.Resources[(bool)value ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
                     ChatsList.ItemTemplate = template;
 
                     // Костыль для того, чтобы шаблон действительно сменился.
@@ -76,6 +76,31 @@ namespace ELOR.Laney.Views {
             ChatViewModel cvm = e.AddedItems[0] as ChatViewModel;
             if (cvm == null) return;
             Session.GetToChat(cvm.PeerId);
+        }
+
+        private void ChatContextRequested(object sender, ContextRequestedEventArgs e) {
+            Grid g = sender as Grid;
+            ChatViewModel chat = g?.DataContext as ChatViewModel;
+            if (chat == null) return;
+
+            ContextMenuHelper.ShowForChat(chat, g);
+        }
+
+        // Необходимо для того, чтобы при ПКМ не пробрасывалось
+        // событие нажатия к ListBox.
+
+        // Для мыши
+        private void ChatPointerPressed(object sender, Avalonia.Input.PointerPressedEventArgs e) {
+            if (e.Pointer.Type == Avalonia.Input.PointerType.Touch) return;
+            bool isRight = !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
+            if (isRight) e.Handled = true;
+        }
+
+        // Для тачскрина
+        private void ChatPointerReleased(object sender, Avalonia.Input.PointerReleasedEventArgs e) {
+            if (e.Pointer.Type != Avalonia.Input.PointerType.Touch) return;
+            bool isRight = !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
+            if (isRight) e.Handled = true;
         }
     }
 }
