@@ -30,6 +30,9 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("height")]
         public int Height { get; set; }
 
+        [JsonPropertyName("without_padding")]
+        public bool WithoutPadding { get; set; }
+
         public override string ToString() => $"{Type}:{Width}x{Height}";
     }
 

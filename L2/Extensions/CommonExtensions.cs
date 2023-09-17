@@ -68,7 +68,7 @@ namespace ELOR.Laney.Extensions {
                 }
                 foreach (PhotoSizes s in CollectionsMarshal.AsSpan(v.Image)) {
                     ps = s;
-                    if (s.Width >= maxWidth) break;
+                    if (s.Width >= maxWidth && s.WithoutPadding) break;
                 }
             } else if (preview is Document d && d.Preview != null) {
                 if (d.Preview.Photo.Sizes == null || d.Preview.Photo.Sizes.Count == 0) {
