@@ -206,7 +206,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             // Notifications
             if (session.UserId != user.Id) {
                 string notifIcon = user.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-                Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ToggleNotifications(!user.NotificationsDisabled, user.Id));
+                Command notifsCmd = new Command(notifIcon, Localizer.Instance[user.NotificationsDisabled ? "disabled" : "enabled"], false, (a) => ToggleNotifications(!user.NotificationsDisabled, user.Id));
                 commands.Add(notifsCmd);
             }
 
@@ -326,7 +326,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Notifications
             string notifIcon = group.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ToggleNotifications(!group.NotificationsDisabled, -group.Id));
+            Command notifsCmd = new Command(notifIcon, Localizer.Instance[group.NotificationsDisabled ? "disabled" : "enabled"], false, (a) => ToggleNotifications(!group.NotificationsDisabled, -group.Id));
             commands.Add(notifsCmd);
 
             // Open in browser
@@ -522,7 +522,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             // Notifications
             bool notifsDisabled = chat.PushSettings != null && chat.PushSettings.DisabledUntil != 0;
             string notifIcon = notifsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-            Command notifsCmd = new Command(notifIcon, Localizer.Instance["settings_notifications"], false, (a) => ToggleNotifications(!notifsDisabled, chat.PeerId));
+            Command notifsCmd = new Command(notifIcon, Localizer.Instance[notifsDisabled ? "disabled" : "enabled"], false, (a) => ToggleNotifications(!notifsDisabled, chat.PeerId));
             commands.Add(notifsCmd);
 
             // Link
