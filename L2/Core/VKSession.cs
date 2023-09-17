@@ -300,7 +300,7 @@ namespace ELOR.Laney.Core {
 
         private static void TryOpenSessionWindow(object? sender, RoutedEventArgs e) {
             ActionSheetItem item = sender as ActionSheetItem;
-            int sessionId = (int)item.Tag;
+            long sessionId = (long)item.Tag;
             TryOpenSessionWindow(sessionId);
         }
 
