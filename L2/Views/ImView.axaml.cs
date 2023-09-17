@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml.Templates;
 using ELOR.Laney.Core;
@@ -90,17 +91,23 @@ namespace ELOR.Laney.Views {
         // событие нажатия к ListBox.
 
         // Для мыши
-        private void ChatPointerPressed(object sender, Avalonia.Input.PointerPressedEventArgs e) {
-            if (e.Pointer.Type == Avalonia.Input.PointerType.Touch) return;
+        private void ChatPointerPressed(object sender, PointerPressedEventArgs e) {
+            if (e.Pointer.Type == PointerType.Touch) return;
             bool isRight = !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
-            if (isRight) e.Handled = true;
+            if (isRight) {
+                e.Route = RoutingStrategies.Direct;
+                e.Handled = true;
+            }
         }
 
         // Для тачскрина
-        private void ChatPointerReleased(object sender, Avalonia.Input.PointerReleasedEventArgs e) {
-            if (e.Pointer.Type != Avalonia.Input.PointerType.Touch) return;
+        private void ChatPointerReleased(object sender, PointerReleasedEventArgs e) {
+            if (e.Pointer.Type != PointerType.Touch) return;
             bool isRight = !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
-            if (isRight) e.Handled = true;
+            if (isRight) {
+                e.Route = RoutingStrategies.Direct;
+                e.Handled = true;
+            }
         }
     }
 }
