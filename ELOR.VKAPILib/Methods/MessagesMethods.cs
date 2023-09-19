@@ -387,7 +387,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="previewLength">Preview length.</param>
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
-        public async Task<MessagesList> GetImportantMessagesAsync(long groupId, int offset, int count, int startMessageId, int previewLength = 0, bool extended = false, List<string> fields = null) {
+        public async Task<ImportantMessagesResponse> GetImportantMessagesAsync(long groupId, int offset, int count, int startMessageId, int previewLength = 0, bool extended = false, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("offset", offset.ToString());
@@ -396,7 +396,7 @@ namespace ELOR.VKAPILib.Methods {
             if (previewLength > 0) parameters.Add("preview_length", previewLength.ToString());
             if (extended) parameters.Add("extended", "1");
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
-            return await API.CallMethodAsync<MessagesList>("messages.getImportantMessages", parameters);
+            return await API.CallMethodAsync<ImportantMessagesResponse>("messages.getImportantMessages", parameters);
         }
 
         /// <summary>Receives a link to invite a user to the chat.</summary>

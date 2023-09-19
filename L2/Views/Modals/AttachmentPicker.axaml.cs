@@ -1,19 +1,13 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Platform;
 using Avalonia.Platform.Storage;
-using Avalonia.Platform.Storage.FileIO;
-using DynamicData;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Modals;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using VKUI.Windows;
 
 namespace ELOR.Laney.Views.Modals {

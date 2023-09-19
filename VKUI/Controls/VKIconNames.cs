@@ -23,6 +23,7 @@
 
         public const string Icon20ArticleOutline = "Icon20ArticleOutline";
         public const string Icon20BlockOutline = "Icon20BlockOutline";
+        public const string Icon20BookmarkOutline = "Icon20BookmarkOutline";
         public const string Icon20BugOutline = "Icon20BugOutline";
         public const string Icon20CameraOutline = "Icon20CameraOutline";
         public const string Icon20Check = "Icon20Check";
@@ -43,6 +44,7 @@
         public const string Icon20LinkCircleOutline = "Icon20LinkCircleOutline";
         public const string Icon20LockOutline = "Icon20LockOutline";
         public const string Icon20MentionOutline = "Icon20MentionOutline";
+        public const string Icon20MessageArrowRightOutline = "Icon20MessageArrowRightOutline";
         public const string Icon20MessageOutline = "Icon20MessageOutline";
         public const string Icon20MessageUnreadTopOutline = "Icon20MessageUnreadTopOutline";
         public const string Icon20More = "Icon20More";

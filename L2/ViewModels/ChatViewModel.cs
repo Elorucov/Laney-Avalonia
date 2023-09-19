@@ -140,7 +140,7 @@ namespace ELOR.Laney.ViewModels {
         // Вызывается при отображении беседы на окне
         public void OnDisplayed(int messageId = -1) {
             bool isDisplayedMessagesEmpty = DisplayedMessages == null || DisplayedMessages.Count == 0;
-            Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}", PeerId, isDisplayedMessagesEmpty);
+            Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}, messageId: {2}", PeerId, isDisplayedMessagesEmpty, messageId);
             if (isDisplayedMessagesEmpty || messageId >= 0) {
                 GoToMessage(messageId);
             } else {
@@ -426,7 +426,7 @@ namespace ELOR.Laney.ViewModels {
 
             int count = Constants.MessagesCount;
             try {
-                Log.Information("LoadMessages peer: {0}, count: {1}", PeerId, count);
+                Log.Information("LoadMessages peer: {0}, count: {1}, startMessageId: {2}", PeerId, count, startMessageId);
                 IsLoading = true;
                 int offset = -count / 2;
                 MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, offset, count, startMessageId, false, VKAPIHelper.Fields);

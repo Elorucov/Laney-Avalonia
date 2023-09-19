@@ -175,4 +175,7 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Modals\SearchInChatWindow.axaml" />
   </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Modals\ImportantMessages.axaml" />
+  </ItemGroup>
 </Project>

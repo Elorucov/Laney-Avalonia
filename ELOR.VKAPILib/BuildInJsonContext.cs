@@ -15,6 +15,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(BotKeyboard))]
     [JsonSerializable(typeof(ConversationsList))]
     [JsonSerializable(typeof(DocumentsList))]
+    [JsonSerializable(typeof(ImportantMessagesResponse))]
     [JsonSerializable(typeof(LongList))]
     [JsonSerializable(typeof(MarkAsImportantResponse))]
     [JsonSerializable(typeof(MessagesList))]

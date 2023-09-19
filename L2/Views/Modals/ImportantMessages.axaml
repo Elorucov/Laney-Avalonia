@@ -1,0 +1,59 @@
+<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
+        xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
+        xmlns:vkw="using:VKUI.Windows"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:vko="using:ELOR.VKAPILib.Objects"
+        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="612"
+        x:Class="ELOR.Laney.Views.Modals.ImportantMessages"
+        x:DataType="vm:ImportantMessagesViewModel"
+        Title="{i18n:Localize important_messages}">
+  <Grid RowDefinitions="Auto * Auto">
+    <vkui:WindowTitleBar x:Name="TitleBar"/>
+  
+    <ScrollViewer x:Name="MessagesListSV" Grid.Row="1">
+      <ItemsRepeater x:Name="MessagesList" Margin="0,6" ItemsSource="{Binding Messages}">
+          <ItemsRepeater.ItemTemplate>
+            <DataTemplate x:DataType="vmc:MessageViewModel">
+              <Button Classes="Tertiary" Padding="12,6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" FontWeight="Regular" ContextRequested="MessageContextRequested">
+                <controls:PostUI Post="{Binding}"/>
+              </Button>
+            </DataTemplate>
+          </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+    </ScrollViewer>
+    
+    <Separator Grid.Row="1" VerticalAlignment="Bottom"/>
+    
+    <Border Grid.Row="1" IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <vkui:Placeholder VerticalAlignment="Center"
+                              Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                              Header="{Binding Placeholder.Header, Mode=OneWay}"
+                              Text="{Binding Placeholder.Text, Mode=OneWay}">
+        <vkui:Placeholder.Action>
+          <Button Classes="Primary" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+        </vkui:Placeholder.Action>
+      </vkui:Placeholder>
+    </Border>
+  
+    <Grid Grid.Row="2" Height="48" ColumnDefinitions="* Auto">
+      <vkui:Spinner HorizontalAlignment="Left" IsVisible="{Binding IsLoading}" Margin="12" Width="24" Height="24"/>
+      <StackPanel Orientation="Horizontal" Margin="12" VerticalAlignment="Center" IsVisible="{Binding !IsLoading}">
+        <TextBlock IsVisible="{Binding Count}" Margin="0,0,6,0" Text="{i18n:Localize count}"/>
+        <TextBlock IsVisible="{Binding Count}" Text="{Binding Count, Mode=OneWay}"/>
+      </StackPanel>
+      
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="6,12">
+        <TextBlock Margin="6,0,0,0" VerticalAlignment="Center" Text="{i18n:Localize offset}"/>
+        <TextBlock Margin="0,0,6,0" VerticalAlignment="Center" Text=":"/>
+        <TextBox x:Name="MessagesOffset" Width="64" Margin="0" Padding="6,5" MinHeight="34"/>
+        <Button Classes="Primary Medium" Margin="6,0" Content="{i18n:Localize go}" Click="GoToOffset"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</vkw:DialogWindow>

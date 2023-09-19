@@ -81,6 +81,15 @@ namespace ELOR.Laney.Core {
 
             if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
 
+            ActionSheetItem favorites = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20BookmarkOutline },
+                Header = Localizer.Instance["favorite_messages"],
+            };
+            ActionSheetItem important = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20FavoriteOutline },
+                Header = Localizer.Instance["important_messages"],
+            };
+
             ActionSheetItem settings = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
                 Header = Localizer.Instance["settings"],
@@ -94,6 +103,13 @@ namespace ELOR.Laney.Core {
                 Header = Localizer.Instance["log_out"],
             };
             logout.Classes.Add("Destructive");
+
+            favorites.Click += (a, b) => GetToChat(UserId);
+            important.Click += async (a, b) => {
+                ImportantMessages im = new ImportantMessages(this);
+                var result = await im.ShowDialog<Tuple<long, int>>(Window);
+                if (result != null) GetToChat(result.Item1, result.Item2);
+            };
 
             settings.Click += async (a, b) => {
                 SettingsWindow sw = new SettingsWindow();
@@ -110,6 +126,11 @@ namespace ELOR.Laney.Core {
                 ExceptionHelper.ShowNotImplementedDialogAsync(Window);
             };
 
+            if (!IsGroup) {
+                ash.Items.Add(important);
+                ash.Items.Add(favorites);
+                ash.Items.Add(new ActionSheetItem());
+            }
             ash.Items.Add(settings);
             ash.Items.Add(about);
             ash.Items.Add(logout);
@@ -356,6 +377,7 @@ namespace ELOR.Laney.Core {
 
         public void GetToChat(long peerId, int messageId = -1) {
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
+            Log.Information("VKSession: getting to chat {0}. messageId: {1}; cached: {2}", peerId, messageId, chat != null);
             if (chat == null) {
                 chat = new ChatViewModel(this, peerId);
                 CacheManager.Add(Id, chat);

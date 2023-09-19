@@ -74,6 +74,9 @@ namespace ELOR.Laney.Views {
                 ChatsList.SelectedItem = Session.CurrentOpenedChat;
                 return;
             }
+            var selected = ChatsList.SelectedItem as ChatViewModel;
+            if (selected != null && selected.PeerId == Session.CurrentOpenedChat.PeerId) return;
+
             ChatViewModel cvm = e.AddedItems[0] as ChatViewModel;
             if (cvm == null) return;
             Session.GetToChat(cvm.PeerId);

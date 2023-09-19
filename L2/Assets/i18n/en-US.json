@@ -35,6 +35,9 @@
   "disable": "Disable",
   "enabled": "Enabled",
   "disabled": "Disabled",
+  "offset": "Offset",
+  "count": "Count",
+  "go": "Go",
   "sign_in_direct": "Sign in using login and password",
   "sign_in_vk_id": "Sign in with VK ID",
   "sign_in": "Sign in",
@@ -70,6 +73,9 @@
   "recent": "Recent",
   "favorites": "Favorites",
   "info": "Information",
+
+  "important_messages": "Important messages",
+  "favorite_messages": "Favorite messages",
   "settings": "Settings",
   "about": "About",
   "log_out": "Log out",
@@ -245,6 +251,7 @@
   "edit": "Edit",
   "pin": "Pin",
   "unpin": "Unpin",
+  "go_to_message": "Go to message",
   "mark_spam": "Mark as spam",
   "chat_clear_history": "Clear message history",
 

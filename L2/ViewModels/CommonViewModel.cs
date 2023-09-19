@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
-    public class CommonViewModel : ViewModelBase {
+    public class ClosableViewModel : ViewModelBase {
+        public event EventHandler<object> CloseRequested;
+    }
+
+    public class CommonViewModel : ClosableViewModel {
         private bool _isLoading;
         private PlaceholderViewModel _placeholder;
 
