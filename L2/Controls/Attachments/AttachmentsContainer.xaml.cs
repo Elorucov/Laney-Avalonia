@@ -549,6 +549,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 Icon = call.Video ? VKIconNames.Icon24Videocam : VKIconNames.Icon24Phone,
                 Title = call.ReceiverId.IsChat() ? Localizer.Instance["group_call_in_progress"] : title,
                 Subtitle = subtitle,
+                Margin = new Thickness(0, 0, 0, 8),
                 Name = "Call"
             };
         }
@@ -564,6 +565,7 @@ namespace ELOR.Laney.Controls.Attachments {
             return new ExtendedAttachment {
                 Title = Localizer.Instance["group_call_in_progress"],
                 Subtitle = subtitle,
+                Margin = new Thickness(0, 0, 0, 8),
                 Name = "GroupCallInProgress"
             };
         }

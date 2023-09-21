@@ -226,7 +226,7 @@ namespace ELOR.Laney.Views {
 
                 MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
                 try {
-                    if (MessagesListScrollViewer.CheckAccess()) {
+                    if (CheckAccess()) {
                         while (MessagesListScrollViewer.Offset.Y != newpos) {
                             MessagesListScrollViewer.Offset = new Vector(MessagesListScrollViewer.Offset.X, newpos);
                             await Task.Delay(32).ConfigureAwait(false);
