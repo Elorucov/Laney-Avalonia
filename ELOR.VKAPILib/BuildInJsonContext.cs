@@ -47,6 +47,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(List<PollBackground>))]
     [JsonSerializable(typeof(PrivacyResponse))]
     [JsonSerializable(typeof(PrivacySettingValue))]
+    [JsonSerializable(typeof(QueueSubscribeResponse))]
     [JsonSerializable(typeof(ResolveScreenNameResult))]
     [JsonSerializable(typeof(SetChatPhotoResponse))]
     [JsonSerializable(typeof(StoreProductsList))]

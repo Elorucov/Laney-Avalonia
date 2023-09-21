@@ -313,6 +313,8 @@ namespace ELOR.Laney.ViewModels {
                 session.LongPoll.ConversationDataChanged += LongPoll_ConversationDataChanged;
                 session.LongPoll.ActivityStatusChanged += LongPoll_ActivityStatusChanged;
                 session.LongPoll.NotificationsSettingsChanged += LongPoll_NotificationsSettingsChanged;
+
+                if (!session.IsGroup) VKQueue.Online += VKQueue_Online;
             }
 
             ActivityStatusUsers.Elapsed += (a, b) => UpdateActivityStatus();
@@ -871,6 +873,18 @@ namespace ELOR.Laney.ViewModels {
                     NoSound = e.Sound == 0
                 };
                 PushSettings = ps;
+            });
+        }
+
+        private async void VKQueue_Online(object sender, DataModels.VKQueue.OnlineEvent e) {
+            if (PeerId != e.UserId) return;
+            Log.Verbose($"ChatViewModel > Online event. User: {e.UserId}; IsOnline: {e.Online}; Platform: {e.Platform}; App: {e.AppId}; LastSeen: {e.LastSeen}");
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                Online.IsOnline = e.Online;
+                Online.IsMobile = e.Platform != 6 && e.Platform != 7;
+                Online.AppId = e.AppId;
+                Online.LastSeenUnix = e.LastSeenUnix;
+                OnPropertyChanged(nameof(Online));
             });
         }
 

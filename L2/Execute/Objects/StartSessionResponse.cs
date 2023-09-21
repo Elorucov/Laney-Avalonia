@@ -24,5 +24,8 @@ namespace ELOR.Laney.Execute.Objects {
 
         [JsonPropertyName("longpolls")]
         public List<LongPollInfoForSession> LongPolls { get; set; }
+
+        [JsonPropertyName("queue_config")]
+        public QueueSubscribeResponse QueueConfig { get; set; }
     }
 }

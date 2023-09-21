@@ -283,6 +283,8 @@ namespace ELOR.Laney.Core {
 
                     Name = currentUser.FullName;
                     Avatar = new Uri(currentUser.Photo100);
+
+                    VKQueue.Init(info.QueueConfig);
                 } else {
                     var currentGroup = _sessions.Where(s => s.Id == Id).FirstOrDefault();
                     Name = currentGroup.Name;
