@@ -334,9 +334,9 @@ namespace ELOR.Laney.ViewModels.Modals {
             commands.Add(openExternalCmd);
 
             // Allow/deny messages from group
-            string banIcon = group.MessagesAllowed ? VKIconNames.Icon20BlockOutline : VKIconNames.Icon20Check;
+            string banIcon = group.MessagesAllowed == 1 ? VKIconNames.Icon20BlockOutline : VKIconNames.Icon20Check;
             string banLabel = Localizer.Instance[group.MessagesAllowed ? "pp_deny" : "pp_allow"];
-            Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed, (a) => ToggleMessagesFromGroup(group.Id, group.MessagesAllowed));
+            Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed == 1, (a) => ToggleMessagesFromGroup(group.Id, group.MessagesAllowed == 1));
             moreCommands.Add(banCmd);
 
             // Clear history
@@ -520,7 +520,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
 
             // Notifications
-            bool notifsDisabled = chat.PushSettings != null && chat.PushSettings.DisabledUntil != 0;
+            bool notifsDisabled = chat.PushSettings != null && chat.PushSettings.DisabledForever;
             string notifIcon = notifsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
             Command notifsCmd = new Command(notifIcon, Localizer.Instance[notifsDisabled ? "disabled" : "enabled"], false, (a) => ToggleNotifications(!notifsDisabled, chat.PeerId));
             commands.Add(notifsCmd);

@@ -12,6 +12,6 @@ namespace ELOR.Laney.Execute.Objects {
         public bool NotificationsDisabled { get; set; }
 
         [JsonPropertyName("messages_allowed")]
-        public bool MessagesAllowed { get; set; }
+        public int MessagesAllowed { get; set; }
     }
 }

@@ -73,8 +73,7 @@ namespace ELOR.Laney.Core {
                     var response = JsonNode.Parse(respstr).AsObject();
                     if (response.ContainsKey("failed")) {
                         int failed = response!["failed"].GetValue<int>();
-                        int err = response!["err"].GetValue<int>();
-                        throw new Exception($"Got error from queue, code {failed}, err: {err}.");
+                        throw new Exception($"Got error from queue, code {failed}.");
                     } else if (response.ContainsKey("events")) {
                         TimeStamp = response!["ts"].GetValue<string>();
                         var events = response!["events"].AsArray();
