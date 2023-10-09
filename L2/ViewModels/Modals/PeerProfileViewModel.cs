@@ -335,7 +335,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Allow/deny messages from group
             string banIcon = group.MessagesAllowed == 1 ? VKIconNames.Icon20BlockOutline : VKIconNames.Icon20Check;
-            string banLabel = Localizer.Instance[group.MessagesAllowed ? "pp_deny" : "pp_allow"];
+            string banLabel = Localizer.Instance[group.MessagesAllowed == 1 ? "pp_deny" : "pp_allow"];
             Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed == 1, (a) => ToggleMessagesFromGroup(group.Id, group.MessagesAllowed == 1));
             moreCommands.Add(banCmd);
 
