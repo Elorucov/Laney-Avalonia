@@ -328,7 +328,8 @@ namespace ELOR.Laney.ViewModels {
                 Command fwdhere = new Command(VKIconNames.Icon24ReplyOutline, Localizer.Instance["forward_here"], false, ForwardHereCommand);
                 Command forward = new Command(VKIconNames.Icon24ShareOutline, Localizer.Instance["forward"], false, ForwardCommand);
 
-                MessagesCommands.Add(SelectedMessagesCount == 1 ? reply : fwdhere);
+                bool isChannel = ChatSettings != null && ChatSettings.IsGroupChannel;
+                if (!isChannel) MessagesCommands.Add(SelectedMessagesCount == 1 ? reply : fwdhere);
                 MessagesCommands.Add(forward);
             }
         }

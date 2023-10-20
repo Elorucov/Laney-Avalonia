@@ -396,7 +396,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                     Subhead = Localizer.Instance[chat.State == UserStateInChat.Left ? "chat_left" : "chat_kicked"].ToLowerInvariant();
                 }
 
-                SetupMembers(chat);
+                if (!chat.IsChannel) SetupMembers(chat);
                 SetupCommands(chat);
             } catch (Exception ex) {
                 Header = null; // чтобы содержимое окна было скрыто

@@ -153,16 +153,23 @@
 
     <Border x:Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="894" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
       <Grid>
-        <Grid x:Name="ComposerContainer" IsVisible="{Binding !SelectedMessagesCount}">
-          <DockPanel x:Name="RestrictionInfoContainer" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" MinHeight="44" HorizontalAlignment="Center">
-            <vkui:VKIcon Margin="8,8,0,8" Foreground="{DynamicResource VKDestructiveBrush}" Id="{x:Static vkui:VKIconNames.Icon28ErrorOutline}"/>
-            <TextBlock x:Name="RestrictionReason" Margin="8" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
-          </DockPanel>
+        <Grid x:Name="GenericChatComposerRoot" IsVisible="{Binding !ChatSettings.IsGroupChannel}">
+          <Grid x:Name="ComposerContainer" IsVisible="{Binding !SelectedMessagesCount}">
+            <DockPanel x:Name="RestrictionInfoContainer" IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" MinHeight="44" HorizontalAlignment="Center">
+              <vkui:VKIcon Margin="8,8,0,8" Foreground="{DynamicResource VKDestructiveBrush}" Id="{x:Static vkui:VKIconNames.Icon28ErrorOutline}"/>
+              <TextBlock x:Name="RestrictionReason" Margin="8" Classes="Caption1" VerticalAlignment="Center" TextWrapping="Wrap" MaxLines="3" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding RestrictionReason}"/>
+            </DockPanel>
 
-          <Grid IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNullOrEmpty}}">
-            <controls:Composer DataContext="{Binding Composer}"/>
+            <Grid IsVisible="{Binding RestrictionReason, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+              <controls:Composer DataContext="{Binding Composer}"/>
+            </Grid>
           </Grid>
         </Grid>
+
+        <Grid x:Name="ChannelComposerRoot" MinHeight="44" IsVisible="{Binding ChatSettings.IsGroupChannel}">
+          
+        </Grid>
+        
         <Grid x:Name="MessagesCommandsRoot" IsVisible="{Binding !!SelectedMessagesCount}" VerticalAlignment="Bottom" MinHeight="44" ColumnDefinitions="* Auto">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="3,0,0,0">
             <Button Classes="Tertiary Medium MessagesCommands" Command="{Binding ClearSelectedMessages}">

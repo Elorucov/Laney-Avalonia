@@ -62,7 +62,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 CacheManager.Add(response.Groups);
 
                 foreach (var chat in response.Items) {
-                    if (!chat.CanWrite.Allowed) continue;
+                    if (!chat.CanWrite.Allowed || chat.ChatSettings.IsGroupChannel) continue;
                     long id = chat.Peer.Id;
                     string name = $"{chat.Peer.Type} {chat.Peer.LocalId}";
                     Uri avatar = null;
