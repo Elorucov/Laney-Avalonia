@@ -8,7 +8,6 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
 using ELOR.Laney.ViewModels.Controls;
-using ELOR.Laney.ViewModels.Modals;
 using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;

@@ -14,6 +14,7 @@
         public const string Icon16DeleteOutline = "Icon16DeleteOutline";
         public const string Icon16Gift = "Icon16Gift";
         public const string Icon16Mention = "Icon16Mention";
+        public const string Icon16Muted = "Icon16Muted";
         public const string Icon16Pin = "Icon16Pin";
         public const string Icon16SearchOutline = "Icon16SearchOutline";
         public const string Icon16Spinner = "Icon16Spinner";
