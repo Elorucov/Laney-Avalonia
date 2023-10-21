@@ -81,19 +81,19 @@
           </ScrollViewer>
         </Grid>
       </TabItem>
-      <TabItem IsVisible="False" Header="{i18n:Localize photo}">
+      <TabItem Header="{i18n:Localize photo}">
 
       </TabItem>
-      <TabItem IsVisible="False" Header="{i18n:Localize video}">
+      <TabItem Header="{i18n:Localize video}">
 
       </TabItem>
-      <TabItem IsVisible="False" Header="{i18n:Localize doc}">
+      <TabItem Header="{i18n:Localize doc}">
 
       </TabItem>
-      <TabItem IsVisible="False" Header="{i18n:Localize audio}">
+      <TabItem Header="{i18n:Localize audio}">
 
       </TabItem>
-      <TabItem IsVisible="False" Header="{i18n:Localize links}">
+      <TabItem Header="{i18n:Localize links}">
 
       </TabItem>
     </TabControl>

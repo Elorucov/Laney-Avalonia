@@ -26,7 +26,8 @@ namespace ELOR.Laney.ViewModels.Modals {
         private ObservableCollection<TwoStringTuple> _information = new ObservableCollection<TwoStringTuple>();
         private ObservableCollection<Entity> _displayedMembers;
         private string _memberSearchQuery;
-        
+
+
         private Command _firstCommand;
         private Command _secondCommand;
         private Command _thirdCommand;
@@ -39,7 +40,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         public ObservableCollection<TwoStringTuple> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
         public ObservableCollection<Entity> DisplayedMembers { get { return _displayedMembers; } private set { _displayedMembers = value; OnPropertyChanged(); } }
         public string MemberSearchQuery { get { return _memberSearchQuery; } set { _memberSearchQuery = value; OnPropertyChanged(); } }
-
+        
         public Command FirstCommand { get { return _firstCommand; } private set { _firstCommand = value; OnPropertyChanged(); } }
         public Command SecondCommand { get { return _secondCommand; } private set { _secondCommand = value; OnPropertyChanged(); } }
         public Command ThirdCommand { get { return _thirdCommand; } private set { _thirdCommand = value; OnPropertyChanged(); } }
