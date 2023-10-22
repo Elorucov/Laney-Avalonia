@@ -18,8 +18,21 @@ using VKUI.Controls;
 
 namespace ELOR.Laney.Extensions {
     public static class LNetExtensions {
-        static Dictionary<string, Bitmap> cachedImages = new Dictionary<string, Bitmap>();
-        const int cachesLimit = 500;
+        static Dictionary<string, WriteableBitmap> cachedImages = new Dictionary<string, WriteableBitmap>();
+        static Dictionary<string, ManualResetEventSlim> nowLoading = new Dictionary<string, ManualResetEventSlim>();
+        const int cachesLimit = 100;
+
+        public static void ClearCachedImages() {
+            lock (cachedImages) {
+                foreach (var ci in cachedImages) {
+                    ci.Value.Dispose();
+                }
+            }
+            cachedImages.Clear();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
 
         public static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri, int decodeWidth = 0) {
             if (uri == null) return null;
@@ -34,29 +47,49 @@ namespace ELOR.Laney.Extensions {
                 : url;
 
             if (!cachedImages.ContainsKey(key)) {
-                Bitmap bitmap = null;
+                WriteableBitmap bitmap = null;
                 if (uri.Scheme == "avares") {
-                    bitmap = await AssetsManager.GetBitmapFromUri(uri, decodeWidth);
-                    if (cachedImages.Count == cachesLimit) cachedImages.Remove(cachedImages.First().Key);
+                    bitmap = AssetsManager.GetWBitmapFromUri(uri, decodeWidth);
+                    if (cachedImages.Count == cachesLimit) {
+                        var first = cachedImages.First();
+                        first.Value.Dispose();
+                        cachedImages.Remove(first.Key);
+                    }
                     if (!cachedImages.ContainsKey(key)) {
                         cachedImages.Add(key, bitmap);
                     }
                     return bitmap;
                 } else {
+                    if (nowLoading.ContainsKey(key)) {
+                        Log.Information($"TryGetCachedBitmapAsync: The bitmap with key {key} is currently downloading by another instance. Waiting...");
+                        await Task.Factory.StartNew(() => {
+                            nowLoading[key].Wait();
+                        }).ConfigureAwait(true);
+                        Log.Information($"TryGetCachedBitmapAsync: The bitmap with key {key} is downloaded.");
+                        return cachedImages[key];
+                    }
+                    ManualResetEventSlim mres = new ManualResetEventSlim();
+                    nowLoading.Add(key, mres);
                     var response = await LNet.GetAsync(uri);
                     var bytes = await response.Content.ReadAsByteArrayAsync();
                     Stream stream = new MemoryStream(bytes);
                     if (bytes.Length == 0) throw new Exception("Image length is 0!");
 
                     bitmap = decodeWidth > 0
-                        ? await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality))
-                        : new Bitmap(stream);
+                        ? await Task.Run(() => WriteableBitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality))
+                        : WriteableBitmap.Decode(stream);
 
-                    if (cachedImages.Count == cachesLimit) cachedImages.Remove(cachedImages.First().Key);
+                    if (cachedImages.Count == cachesLimit) {
+                        var first = cachedImages.First();
+                        first.Value.Dispose();
+                        cachedImages.Remove(first.Key);
+                    }
                     if (!cachedImages.ContainsKey(key)) {
                         cachedImages.Add(key, bitmap);
                     }
                     await stream.FlushAsync();
+                    nowLoading.Remove(key);
+                    mres.Set();
                     return bitmap;
                 }
             } else {

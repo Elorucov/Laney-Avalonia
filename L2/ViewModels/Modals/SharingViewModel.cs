@@ -2,9 +2,7 @@
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
-using ELOR.Laney.ViewModels.Controls;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ELOR.Laney.ViewModels.Modals {

@@ -10,11 +10,16 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class AssetsManager {
-         public static async Task<Bitmap> GetBitmapFromUri(Uri uri, int decodeWidth = 0) {
+        public static async Task<Bitmap> GetBitmapFromUri(Uri uri, int decodeWidth = 0) {
             Stream stream = OpenAsset(uri);
             return decodeWidth > 0
                 ? await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.HighQuality))
                 : new Bitmap(stream);
+        }
+
+        public static WriteableBitmap GetWBitmapFromUri(Uri uri, int decodeWidth = 0) {
+            Stream stream = OpenAsset(uri);
+            return WriteableBitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality);
         }
 
         public static Stream OpenAsset(Uri uri) {

@@ -1,4 +1,4 @@
-using ELOR.Laney.Core;
+﻿using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Modals;
 using System;
@@ -23,6 +23,7 @@ namespace ELOR.Laney.Views.Modals {
             }
 
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            Tabs.SelectionChanged += Tabs_SelectionChanged;
 
             // RelativeSource is not working when CompiledBindings=true!
             FirstButton.CommandParameter = FirstButton;
@@ -43,8 +44,16 @@ namespace ELOR.Laney.Views.Modals {
             }
         }
 
-        private void MoreButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            //if (MoreButton.CommandParameter != null)
+        private void Tabs_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e) {
+            if (Tabs == null) return; // Без этого произойдёт краш при открытии Peer profile, фиг знает кто вызывает это событие, если Tabs == null...
+            switch (Tabs.SelectedIndex) {
+                case 1:
+                    ViewModel.LoadPhotos();
+                    break;
+                case 2:
+                    ViewModel.LoadVideos();
+                    break;
+            }
         }
 
         private void ViewModel_CloseWindowRequested(object sender, EventArgs e) {

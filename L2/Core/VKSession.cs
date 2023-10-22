@@ -177,6 +177,13 @@ namespace ELOR.Laney.Core {
                     _systemNotificationManager?.Show(t);
                 };
                 devmenu.Add(snotif);
+
+                ActionSheetItem imgc = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
+                    Header = "Clear images cache",
+                };
+                imgc.Click += (a, b) => LNetExtensions.ClearCachedImages();
+                devmenu.Add(imgc);
             }
 
             if (devmenu.Count > 0) {

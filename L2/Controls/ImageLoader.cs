@@ -5,6 +5,7 @@ using Avalonia.Media;
 using ELOR.Laney.Extensions;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using VKUI.Controls;
 
@@ -33,6 +34,7 @@ namespace ELOR.Laney.Controls {
                 : await LNetExtensions.TryGetCachedBitmapAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
                 if (GetSource(sender) != uri) return;
                 sender.Source = bitmap;
+                sender.Unloaded += Sender_Unloaded;
             } catch (Exception ex) {
                 Log.Error(ex, "Cannot set bitmap to Image!");
                 sender.Source = null;
@@ -40,20 +42,40 @@ namespace ELOR.Laney.Controls {
 
             // SetIsLoading(sender, false);
         }
-
         private static async void OnBackgroundSourceChanged(Border sender, Uri uri) {
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
             await sender.SetImageBackgroundAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
+            sender.Unloaded += Sender_Unloaded;
         }
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {
             sender.Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
             sender.SetImageFillAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
+            sender.Unloaded += Sender_Unloaded;
         }
 
         private static void OnImageChanged(Avatar sender, Uri uri) {
             sender.SetImageAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
+            sender.Unloaded += Sender_Unloaded;
         }
+
+        private static void Sender_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            Debug.WriteLine($"Unloading image UI: {sender.GetType()}");
+            if (sender is Image img) {
+                img.Unloaded -= Sender_Unloaded;
+                img.Source = null;
+            } else if (sender is Border b) {
+                b.Unloaded -= Sender_Unloaded;
+                b.Background = null;
+            } else if (sender is Shape s) {
+                s.Unloaded -= Sender_Unloaded;
+                s.Fill = null;
+            } else if (sender is Avatar ava) {
+                ava.Unloaded -= Sender_Unloaded;
+                ava.Image = null;
+            }
+        }
+
 
         public static readonly AttachedProperty<Uri?> SourceProperty = AvaloniaProperty.RegisterAttached<Image, Uri?>("Source", typeof(ImageLoader));
 

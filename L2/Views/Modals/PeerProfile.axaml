@@ -5,13 +5,49 @@
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
+        xmlns:vko="using:ELOR.VKAPILib.Objects"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="640"
         x:Class="ELOR.Laney.Views.Modals.PeerProfile" x:DataType="vm:PeerProfileViewModel"
         Width="540" Height="640"
         Title="{i18n:Localize wnd_peerprofile}">
-   
+
+  <vkw:DialogWindow.Resources>
+    <DataTemplate x:Key="PhotoTemplate" x:DataType="vko:ConversationAttachment">
+      <Button Classes="Tertiary" Margin="2" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Rectangle Width="126" Height="84" RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Attachment.Photo, Converter={StaticResource vpsc}, ConverterParameter=130}"/>
+      </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="VideoTemplate" x:DataType="vko:ConversationAttachment">
+      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+        <Grid ColumnDefinitions="Auto *" Margin="0,6">
+          <Grid Width="128" Height="72">
+            <Rectangle RadiusX="12" RadiusY="12" controls:ImageLoader.FillSource="{Binding Attachment.Video, Converter={StaticResource vpsc}, ConverterParameter=128}"/>
+            <Border Background="#66000000" Padding="6,3,6,1" CornerRadius="4" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+              <TextBlock Foreground="White" LineHeight="11" FontSize="11" Text="{Binding Attachment.Video.DurationTime}"/>
+            </Border>
+          </Grid>
+          <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+            <TextBlock Classes="Subhead" TextWrapping="Wrap" MaxLines="2" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Attachment.Video.Title}"/>
+            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextLinkBrush}" Text="{Binding FromId}"/>
+          </StackPanel>
+        </Grid>
+      </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DocTemplate" x:DataType="vko:Document">
+      <Grid ColumnDefinitions="Auto *">
+        <ContentPresenter Width="48" Height="48" Content="{Binding Converter={StaticResource dic}}"/>
+        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+          <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Title}"/>
+          <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Size, Converter={StaticResource fsc}}"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+  </vkw:DialogWindow.Resources>
+  
   <Grid x:Name="Root" Grid.RowDefinitions="Auto Auto *">
     <Grid x:Name="PeerInfo" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="24" ColumnDefinitions="Auto *">
       <vkui:Avatar x:Name="PeerAva" Width="80" Height="80" Margin="0,0,20,0" Initials="{Binding Header, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Avatar}"/>
@@ -63,7 +99,7 @@
       </Grid>
     </Border>
 
-    <TabControl x:Name="Tabs" Grid.Row="2" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,14,0,0" Classes="Accent">
+    <TabControl x:Name="Tabs" Grid.Row="2" SelectionChanged="Tabs_SelectionChanged" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,14,0,0" Classes="Accent">
       <TabItem x:Name="UserInfoTab" Header="{i18n:Localize info}">
         <ScrollViewer>
           <ItemsControl Margin="0,-3,0,6" ItemsSource="{Binding Information}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>
@@ -82,10 +118,56 @@
         </Grid>
       </TabItem>
       <TabItem Header="{i18n:Localize photo}">
+        <ScrollViewer x:Name="PhotosSV" DataContext="{Binding Photos}" Grid.Row="1">
+          <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
+            <ItemsRepeater x:Name="PhotosList" MaxWidth="520" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource PhotoTemplate}">
+              <ItemsRepeater.Layout>
+                <WrapLayout/>
+              </ItemsRepeater.Layout>
+            </ItemsRepeater>
 
+            <Border MinHeight="32">
+              <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+            </Border>
+
+            <Border IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKBackgroundContentBrush}">
+              <vkui:Placeholder VerticalAlignment="Center"
+                                      Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                                      Header="{Binding Placeholder.Header, Mode=OneWay}"
+                                      Text="{Binding Placeholder.Text, Mode=OneWay}">
+                <vkui:Placeholder.Action>
+                  <Button Classes="Primary" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+                </vkui:Placeholder.Action>
+              </vkui:Placeholder>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
       </TabItem>
       <TabItem Header="{i18n:Localize video}">
+        <ScrollViewer x:Name="VideosSV" DataContext="{Binding Videos}" Grid.Row="1">
+          <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
+            <ItemsRepeater x:Name="VideosList" MaxWidth="520" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource VideoTemplate}">
+              <ItemsRepeater.Layout>
+                <StackLayout/>
+              </ItemsRepeater.Layout>
+            </ItemsRepeater>
 
+            <Border MinHeight="32">
+              <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+            </Border>
+
+            <Border IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKBackgroundContentBrush}">
+              <vkui:Placeholder VerticalAlignment="Center"
+                                      Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                                      Header="{Binding Placeholder.Header, Mode=OneWay}"
+                                      Text="{Binding Placeholder.Text, Mode=OneWay}">
+                <vkui:Placeholder.Action>
+                  <Button Classes="Primary" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+                </vkui:Placeholder.Action>
+              </vkui:Placeholder>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
       </TabItem>
       <TabItem Header="{i18n:Localize doc}">
 
