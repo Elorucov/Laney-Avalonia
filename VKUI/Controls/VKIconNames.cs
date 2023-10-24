@@ -89,6 +89,7 @@
         public const string Icon24Gallery = "Icon24Gallery";
         public const string Icon24KeyboardBotsOutline = "Icon24KeyboardBotsOutline";
         public const string Icon24Link = "Icon24Link";
+        public const string Icon24LinkedOutline = "Icon24LinkedOutline";
         public const string Icon24MessagesOutline = "Icon24MessagesOutline";
         public const string Icon24MoreHorizontal = "Icon24MoreHorizontal";
         public const string Icon24Music = "Icon24Music";

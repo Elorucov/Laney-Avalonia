@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -50,7 +51,8 @@ namespace ELOR.Laney.Extensions {
         public static PhotoSizes GetSizeAndUriForThumbnail(this IPreview preview, int maxWidth = 360) {
             maxWidth = Convert.ToInt32(maxWidth * App.Current.DPI);
             PhotoSizes ps = new PhotoSizes {
-                Url = "avares://laney/Assets/blank.png"
+                // Url = "avares://laney/Assets/blank.png"
+                Url = null
             };
             if (preview is Photo p) {
                 if (p.Sizes == null || p.Sizes.Count == 0) {
@@ -66,9 +68,11 @@ namespace ELOR.Laney.Extensions {
                     Log.Warning($"Preview for {v} have no sizes and links!");
                     return ps;
                 }
-                foreach (PhotoSizes s in CollectionsMarshal.AsSpan(v.Image)) {
+                var vprevs = v.Image.Where(vi => vi.WithPadding == 0).ToList();
+                if (vprevs.Count == 0) vprevs = v.Image;
+                foreach (PhotoSizes s in CollectionsMarshal.AsSpan(vprevs)) {
                     ps = s;
-                    if (s.Width >= maxWidth && s.WithoutPadding) break;
+                    if (s.Width >= maxWidth) break;
                 }
             } else if (preview is Document d && d.Preview != null) {
                 if (d.Preview.Photo.Sizes == null || d.Preview.Photo.Sizes.Count == 0) {

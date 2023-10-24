@@ -112,7 +112,7 @@ namespace ELOR.Laney.Core {
 
         public static string GetNameOnly(long id, bool shortLastName = false) {
             var t = GetNameAndAvatar(id, shortLastName);
-            if (t == null) return String.Empty;
+            if (t == null) return id.ToString();
             return id.IsUser() ? $"{t.Item1} {t.Item2}" : t.Item1;
         }
 

@@ -61,16 +61,16 @@ namespace ELOR.Laney.Extensions {
                     return bitmap;
                 } else {
                     if (nowLoading.ContainsKey(key)) {
+                        var lmres = nowLoading[key];
                         Log.Information($"TryGetCachedBitmapAsync: The bitmap with key {key} is currently downloading by another instance. Waiting...");
-                        await Task.Factory.StartNew(() => {
-                            nowLoading[key].Wait();
-                        }).ConfigureAwait(true);
+                        await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
                         Log.Information($"TryGetCachedBitmapAsync: The bitmap with key {key} is downloaded.");
                         return cachedImages[key];
                     }
                     ManualResetEventSlim mres = new ManualResetEventSlim();
                     nowLoading.Add(key, mres);
                     var response = await LNet.GetAsync(uri);
+                    response.EnsureSuccessStatusCode();
                     var bytes = await response.Content.ReadAsByteArrayAsync();
                     Stream stream = new MemoryStream(bytes);
                     if (bytes.Length == 0) throw new Exception("Image length is 0!");
@@ -90,6 +90,7 @@ namespace ELOR.Laney.Extensions {
                     await stream.FlushAsync();
                     nowLoading.Remove(key);
                     mres.Set();
+                    // mres.Dispose();
                     return bitmap;
                 }
             } else {
@@ -98,10 +99,21 @@ namespace ELOR.Laney.Extensions {
         }
 
         public static async Task<Bitmap> GetBitmapAsync(Uri source, int decodeWidth = 0) {
+            if (source == null) return null; // Бывают всякие аватарки и фотки без url)))
+
+            string key = decodeWidth > 0
+                ? Convert.ToBase64String(Encoding.UTF8.GetBytes(source.AbsoluteUri)) + "||" + decodeWidth
+                : source.AbsoluteUri;
+
             try {
                 return await TryGetCachedBitmapAsync(source, decodeWidth);
             } catch (Exception ex) {
-                Log.Error(ex, "GetBitmapAsync error!");
+                if (nowLoading.ContainsKey(key)) {
+                    nowLoading[key].Set();
+                    nowLoading[key].Dispose();
+                    nowLoading.Remove(key);
+                }
+                Log.Error(ex, $"GetBitmapAsync error! Source: {source.AbsoluteUri},(dw: {decodeWidth})");
                 return null;
             }
         }

@@ -22,7 +22,7 @@
 
     <DataTemplate x:Key="VideoTemplate" x:DataType="vko:ConversationAttachment">
       <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-        <Grid ColumnDefinitions="Auto *" Margin="0,6">
+        <Grid ColumnDefinitions="Auto *" Margin="12,6">
           <Grid Width="128" Height="72">
             <Rectangle RadiusX="12" RadiusY="12" controls:ImageLoader.FillSource="{Binding Attachment.Video, Converter={StaticResource vpsc}, ConverterParameter=128}"/>
             <Border Background="#66000000" Padding="6,3,6,1" CornerRadius="4" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
@@ -31,20 +31,37 @@
           </Grid>
           <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
             <TextBlock Classes="Subhead" TextWrapping="Wrap" MaxLines="2" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Attachment.Video.Title}"/>
-            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextLinkBrush}" Text="{Binding FromId}"/>
+            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextLinkBrush}" Text="{Binding FromId, Converter={StaticResource onc}}"/>
           </StackPanel>
         </Grid>
       </Button>
     </DataTemplate>
 
-    <DataTemplate x:Key="DocTemplate" x:DataType="vko:Document">
-      <Grid ColumnDefinitions="Auto *">
-        <ContentPresenter Width="48" Height="48" Content="{Binding Converter={StaticResource dic}}"/>
-        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-          <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Title}"/>
-          <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Size, Converter={StaticResource fsc}}"/>
-        </StackPanel>
-      </Grid>
+    <DataTemplate x:Key="DocTemplate" x:DataType="vko:ConversationAttachment">
+      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+        <Grid Margin="12,6" ColumnDefinitions="Auto *">
+          <ContentPresenter Width="48" Height="48" Content="{Binding Attachment.Document, Converter={StaticResource dic}}"/>
+          <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+            <TextBlock TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Attachment.Document.Title}"/>
+            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Attachment.Document.Size, Converter={StaticResource fsc}}"/>
+          </StackPanel>
+        </Grid>
+      </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LinkTemplate" x:DataType="vko:ConversationAttachment">
+      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+        <Grid Margin="12,6" ColumnDefinitions="Auto *">
+          <Border Width="48" Height="48" CornerRadius="4" Background="{DynamicResource VKImBubbleIncomingBrush}">
+            <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24LinkedOutline}" Foreground="{DynamicResource VKContentPlaceholderIconBrush}"/>
+          </Border>
+          <Rectangle RadiusX="4" RadiusY="4" Width="48" Height="48" controls:ImageLoader.FillSource="{Binding Attachment.Link.Photo, Converter={StaticResource vpsc}, ConverterParameter=48}"/>
+          <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+            <TextBlock TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxLines="1" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Attachment.Link.Title}"/>
+            <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Attachment.Link.Url}"/>
+          </StackPanel>
+        </Grid>
+      </Button>
     </DataTemplate>
   </vkw:DialogWindow.Resources>
   
@@ -117,6 +134,7 @@
           </ScrollViewer>
         </Grid>
       </TabItem>
+      
       <TabItem Header="{i18n:Localize photo}">
         <ScrollViewer x:Name="PhotosSV" DataContext="{Binding Photos}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
@@ -136,17 +154,18 @@
                                       Header="{Binding Placeholder.Header, Mode=OneWay}"
                                       Text="{Binding Placeholder.Text, Mode=OneWay}">
                 <vkui:Placeholder.Action>
-                  <Button Classes="Primary" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+                  <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButton, Mode=OneWay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
                 </vkui:Placeholder.Action>
               </vkui:Placeholder>
             </Border>
           </StackPanel>
         </ScrollViewer>
       </TabItem>
+      
       <TabItem Header="{i18n:Localize video}">
         <ScrollViewer x:Name="VideosSV" DataContext="{Binding Videos}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
-            <ItemsRepeater x:Name="VideosList" MaxWidth="520" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource VideoTemplate}">
+            <ItemsRepeater x:Name="VideosList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource VideoTemplate}">
               <ItemsRepeater.Layout>
                 <StackLayout/>
               </ItemsRepeater.Layout>
@@ -162,21 +181,70 @@
                                       Header="{Binding Placeholder.Header, Mode=OneWay}"
                                       Text="{Binding Placeholder.Text, Mode=OneWay}">
                 <vkui:Placeholder.Action>
-                  <Button Classes="Primary" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+                  <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButton, Mode=OneWay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
                 </vkui:Placeholder.Action>
               </vkui:Placeholder>
             </Border>
           </StackPanel>
         </ScrollViewer>
       </TabItem>
-      <TabItem Header="{i18n:Localize doc}">
-
-      </TabItem>
+      
       <TabItem Header="{i18n:Localize audio}">
-
+        <vkui:Placeholder VerticalAlignment="Center" Header="{i18n:Localize not_implemented}" Text="{i18n:Localize not_implemented_desc}"/>
       </TabItem>
-      <TabItem Header="{i18n:Localize links}">
+      
+      <TabItem Header="{i18n:Localize doc}">
+        <ScrollViewer x:Name="DocsSV" DataContext="{Binding Documents}" Grid.Row="1">
+          <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
+            <ItemsRepeater x:Name="DocsList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource DocTemplate}">
+              <ItemsRepeater.Layout>
+                <StackLayout/>
+              </ItemsRepeater.Layout>
+            </ItemsRepeater>
 
+            <Border MinHeight="32">
+              <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+            </Border>
+
+            <Border IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKBackgroundContentBrush}">
+              <vkui:Placeholder VerticalAlignment="Center"
+                                      Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                                      Header="{Binding Placeholder.Header, Mode=OneWay}"
+                                      Text="{Binding Placeholder.Text, Mode=OneWay}">
+                <vkui:Placeholder.Action>
+                  <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButton, Mode=OneWay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+                </vkui:Placeholder.Action>
+              </vkui:Placeholder>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+      
+      <TabItem Header="{i18n:Localize links}">
+        <ScrollViewer x:Name="LinksSV" DataContext="{Binding Share}" Grid.Row="1">
+          <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
+            <ItemsRepeater x:Name="LinksList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource LinkTemplate}">
+              <ItemsRepeater.Layout>
+                <StackLayout/>
+              </ItemsRepeater.Layout>
+            </ItemsRepeater>
+
+            <Border MinHeight="32">
+              <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+            </Border>
+
+            <Border IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKBackgroundContentBrush}">
+              <vkui:Placeholder VerticalAlignment="Center"
+                                      Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                                      Header="{Binding Placeholder.Header, Mode=OneWay}"
+                                      Text="{Binding Placeholder.Text, Mode=OneWay}">
+                <vkui:Placeholder.Action>
+                  <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButton, Mode=OneWay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+                </vkui:Placeholder.Action>
+              </vkui:Placeholder>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
       </TabItem>
     </TabControl>
 

@@ -33,6 +33,9 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("without_padding")]
         public bool WithoutPadding { get; set; }
 
+        [JsonPropertyName("with_padding")]
+        public int WithPadding { get; set; }
+
         public override string ToString() => $"{Type}:{Width}x{Height}";
     }
 

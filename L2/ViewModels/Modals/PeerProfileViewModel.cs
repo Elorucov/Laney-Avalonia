@@ -693,6 +693,14 @@ namespace ELOR.Laney.ViewModels.Modals {
                 } else {
                     if (ivm.Items.Count > 0) ivm.End = true;
                 }
+
+                if (ivm.Items.Count == 0) {
+                    ivm.Placeholder = new PlaceholderViewModel {
+                        Text = Localizer.Instance[$"pp_attachments_{type}".ToLower()],
+                        ActionButton = null
+                    };
+                    ivm.End = true;
+                }
             } catch (Exception ex) {
                 if (ivm.Items.Count == 0) {
                     ivm.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadVM(ivm, type));
@@ -701,6 +709,10 @@ namespace ELOR.Laney.ViewModels.Modals {
                 }
             }
             ivm.IsLoading = false;
+        }
+
+        private string GetEmptyTextForTab(HistoryAttachmentMediaType type) {
+            return "Empty";
         }
 
         #endregion
