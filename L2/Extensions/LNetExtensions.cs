@@ -7,6 +7,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Network;
 using Serilog;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,8 +19,8 @@ using VKUI.Controls;
 
 namespace ELOR.Laney.Extensions {
     public static class LNetExtensions {
-        static Dictionary<string, WriteableBitmap> cachedImages = new Dictionary<string, WriteableBitmap>();
-        static Dictionary<string, ManualResetEventSlim> nowLoading = new Dictionary<string, ManualResetEventSlim>();
+        static ConcurrentDictionary<string, WriteableBitmap> cachedImages = new ConcurrentDictionary<string, WriteableBitmap>();
+        static ConcurrentDictionary<string, ManualResetEventSlim> nowLoading = new ConcurrentDictionary<string, ManualResetEventSlim>();
         const int cachesLimit = 300;
 
         public static void ClearCachedImages() {
@@ -54,13 +55,14 @@ namespace ELOR.Laney.Extensions {
                 } else {
                     if (nowLoading.ContainsKey(key)) {
                         var lmres = nowLoading[key];
-                        Log.Information($"TryGetCachedBitmapAsync: The bitmap with key {key} is currently downloading by another instance. Waiting...");
+                        Log.Information($"TryGetCachedBitmapAsync: The bitmap with key \"{key}\" is currently downloading by another instance. Waiting...");
                         await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
-                        Log.Information($"TryGetCachedBitmapAsync: The bitmap with key {key} is downloaded.");
+                        Log.Information($"TryGetCachedBitmapAsync: The bitmap with key \"{key}\" is downloaded.");
                         return cachedImages[key];
                     }
                     ManualResetEventSlim mres = new ManualResetEventSlim();
-                    nowLoading.Add(key, mres);
+                    bool isAdded = nowLoading.TryAdd(key, mres);
+                    if (!isAdded) Log.Warning($"TryGetCachedBitmapAsync: cannot add MRES \"{key}\"!");
                     var response = await LNet.GetAsync(uri);
                     response.EnsureSuccessStatusCode();
                     var bytes = await response.Content.ReadAsByteArrayAsync();
@@ -74,14 +76,19 @@ namespace ELOR.Laney.Extensions {
 
                     if (cachedImages.Count == cachesLimit) {
                         var first = cachedImages.First();
-                        cachedImages.Remove(first.Key);
+                        WriteableBitmap outwb = null;
+                        bool isRemoved = cachedImages.Remove(first.Key, out outwb);
+                        if (!isRemoved) Log.Warning($"TryGetCachedBitmapAsync: cannot remove bitmap \"{first.Key}\"!");
                         first.Value.Dispose();
                     }
                     if (!cachedImages.ContainsKey(key)) {
-                        cachedImages.Add(key, bitmap);
+                        bool isAdded2 = cachedImages.TryAdd(key, bitmap);
+                        if (!isAdded2) Log.Warning($"TryGetCachedBitmapAsync: cannot add bitmap \"{key}\"!");
                     }
                     await stream.FlushAsync();
-                    nowLoading.Remove(key);
+                    ManualResetEventSlim outmres = null;
+                    bool isRemoved2 = nowLoading.Remove(key, out outmres);
+                    if (!isRemoved2) Log.Warning($"TryGetCachedBitmapAsync: cannot remove MRES \"{key}\"!");
                     mres.Set();
                     // mres.Dispose();
                     return bitmap;
@@ -104,7 +111,9 @@ namespace ELOR.Laney.Extensions {
                 if (nowLoading.ContainsKey(key)) {
                     nowLoading[key].Set();
                     nowLoading[key].Dispose();
-                    nowLoading.Remove(key);
+                    ManualResetEventSlim outmres = null;
+                    bool isRemoved2 = nowLoading.Remove(key, out outmres);
+                    if (!isRemoved2) Log.Warning($"GetBitmapAsync: cannot remove MRES \"{key}\"!");
                 }
                 Log.Error(ex, $"GetBitmapAsync error! Source: {source.AbsoluteUri},(dw: {decodeWidth})");
                 return null;
