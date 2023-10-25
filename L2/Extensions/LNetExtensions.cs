@@ -20,7 +20,7 @@ namespace ELOR.Laney.Extensions {
     public static class LNetExtensions {
         static Dictionary<string, WriteableBitmap> cachedImages = new Dictionary<string, WriteableBitmap>();
         static Dictionary<string, ManualResetEventSlim> nowLoading = new Dictionary<string, ManualResetEventSlim>();
-        const int cachesLimit = 100;
+        const int cachesLimit = 300;
 
         public static void ClearCachedImages() {
             lock (cachedImages) {
@@ -49,16 +49,8 @@ namespace ELOR.Laney.Extensions {
             if (!cachedImages.ContainsKey(key)) {
                 WriteableBitmap bitmap = null;
                 if (uri.Scheme == "avares") {
-                    bitmap = AssetsManager.GetWBitmapFromUri(uri, decodeWidth);
-                    if (cachedImages.Count == cachesLimit) {
-                        var first = cachedImages.First();
-                        first.Value.Dispose();
-                        cachedImages.Remove(first.Key);
-                    }
-                    if (!cachedImages.ContainsKey(key)) {
-                        cachedImages.Add(key, bitmap);
-                    }
-                    return bitmap;
+                    var lbitmap = await AssetsManager.GetBitmapFromUri(uri, decodeWidth);
+                    return lbitmap;
                 } else {
                     if (nowLoading.ContainsKey(key)) {
                         var lmres = nowLoading[key];
@@ -75,14 +67,15 @@ namespace ELOR.Laney.Extensions {
                     Stream stream = new MemoryStream(bytes);
                     if (bytes.Length == 0) throw new Exception("Image length is 0!");
 
-                    bitmap = decodeWidth > 0
-                        ? await Task.Run(() => WriteableBitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality))
-                        : WriteableBitmap.Decode(stream);
+                    //bitmap = decodeWidth > 0
+                    //    ? await Task.Run(() => WriteableBitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.HighQuality))
+                    //    : WriteableBitmap.Decode(stream);
+                    bitmap = WriteableBitmap.Decode(stream);
 
                     if (cachedImages.Count == cachesLimit) {
                         var first = cachedImages.First();
-                        first.Value.Dispose();
                         cachedImages.Remove(first.Key);
+                        first.Value.Dispose();
                     }
                     if (!cachedImages.ContainsKey(key)) {
                         cachedImages.Add(key, bitmap);

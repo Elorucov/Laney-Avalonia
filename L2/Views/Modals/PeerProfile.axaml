@@ -15,13 +15,13 @@
 
   <vkw:DialogWindow.Resources>
     <DataTemplate x:Key="PhotoTemplate" x:DataType="vko:ConversationAttachment">
-      <Button Classes="Tertiary" Margin="2" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Button Classes="Tertiary" Margin="2" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ContextRequested="OnAttachmentContextRequested" Click="OnAttachmentClick">
         <Rectangle Width="126" Height="84" RadiusX="4" RadiusY="4" controls:ImageLoader.FillSource="{Binding Attachment.Photo, Converter={StaticResource vpsc}, ConverterParameter=130}"/>
       </Button>
     </DataTemplate>
 
     <DataTemplate x:Key="VideoTemplate" x:DataType="vko:ConversationAttachment">
-      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" ContextRequested="OnAttachmentContextRequested" Click="OnAttachmentClick">
         <Grid ColumnDefinitions="Auto *" Margin="12,6">
           <Grid Width="128" Height="72">
             <Rectangle RadiusX="12" RadiusY="12" controls:ImageLoader.FillSource="{Binding Attachment.Video, Converter={StaticResource vpsc}, ConverterParameter=128}"/>
@@ -38,7 +38,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="DocTemplate" x:DataType="vko:ConversationAttachment">
-      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" ContextRequested="OnAttachmentContextRequested" Click="OnAttachmentClick">
         <Grid Margin="12,6" ColumnDefinitions="Auto *">
           <ContentPresenter Width="48" Height="48" Content="{Binding Attachment.Document, Converter={StaticResource dic}}"/>
           <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
@@ -50,7 +50,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="LinkTemplate" x:DataType="vko:ConversationAttachment">
-      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" ContextRequested="OnAttachmentContextRequested" Click="OnAttachmentClick">
         <Grid Margin="12,6" ColumnDefinitions="Auto *">
           <Border Width="48" Height="48" CornerRadius="4" Background="{DynamicResource VKImBubbleIncomingBrush}">
             <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24LinkedOutline}" Foreground="{DynamicResource VKContentPlaceholderIconBrush}"/>

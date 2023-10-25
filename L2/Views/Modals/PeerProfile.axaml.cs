@@ -1,21 +1,27 @@
-﻿using Avalonia.Controls.Shapes;
-using Avalonia.Media;
+﻿using Avalonia.Controls;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Modals;
+using ELOR.Laney.Views.Media;
 using ELOR.VKAPILib.Objects;
 using System;
+using System.Collections.Generic;
+using VKUI.Controls;
+using VKUI.Popups;
 using VKUI.Windows;
 
 namespace ELOR.Laney.Views.Modals {
     public partial class PeerProfile : DialogWindow {
         PeerProfileViewModel ViewModel { get => DataContext as PeerProfileViewModel; }
+        VKSession session;
 
         public PeerProfile() { }
 
         public PeerProfile(VKSession session, long peerId) {
             InitializeComponent();
+            this.session = session;
 
             DataContext = new PeerProfileViewModel(session, peerId);
             ViewModel.CloseWindowRequested += ViewModel_CloseWindowRequested;
@@ -75,6 +81,42 @@ namespace ELOR.Laney.Views.Modals {
         private void ViewModel_CloseWindowRequested(object sender, EventArgs e) {
             (sender as PeerProfileViewModel).CloseWindowRequested -= ViewModel_CloseWindowRequested;
             Close();
+        }
+
+        private void OnAttachmentContextRequested(object sender, ContextRequestedEventArgs e) {
+            Button b = sender as Button;
+            ConversationAttachment a = b.DataContext as ConversationAttachment;
+            
+            ActionSheet ash = new ActionSheet();
+            ActionSheetItem gotomsg = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20MessageArrowRightOutline },
+                Header = Localizer.Instance["go_to_message"]
+            };
+            gotomsg.Click += (b, c) => {
+                session.GetToChat(ViewModel.Id, a.MessageId);
+                Close();
+            };
+            ash.Items.Add(gotomsg);
+            ash.ShowAt(b, true);
+        }
+
+        private void OnAttachmentClick(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            Button b = sender as Button;
+            ConversationAttachment a = b.DataContext as ConversationAttachment;
+            
+            switch (a.Attachment.Type) {
+                case AttachmentType.Photo:
+                    if (a.Attachment.Photo != null) Gallery.Show(new List<IPreview> { a.Attachment.Photo }, a.Attachment.Photo);
+                    break;
+                case AttachmentType.Document:
+                    if (a.Attachment.Document.Type == DocumentType.Image || a.Attachment.Document.Type == DocumentType.GIF) {
+                        if (a.Attachment.Document != null) Gallery.Show(new List<IPreview> { a.Attachment.Document }, a.Attachment.Document);
+                    }
+                    break;
+                case AttachmentType.Link:
+                    Router.LaunchLink(session, a.Attachment.Link.Uri);
+                    break;
+            }
         }
     }
 }

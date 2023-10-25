@@ -375,6 +375,7 @@ namespace ELOR.VKAPILib.Methods {
             if (photoSizes) parameters.Add("photo_sizes", "1");
             if (preserveOrder) parameters.Add("preserve_order", "1");
             parameters.Add("max_forwards_level", maxForwardsLevel.ToString());
+            parameters.Add("extended", "1");
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             return await API.CallMethodAsync<ConversationAttachmentsResponse>("messages.getHistoryAttachments", parameters);
         }

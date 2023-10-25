@@ -36,11 +36,14 @@ namespace ELOR.Laney.Views.Media {
             AttachmentBase attachment = GalleryItems.SelectedItem as AttachmentBase;
             if (attachment != null) {
                 var owner = CacheManager.GetNameAndAvatar(attachment.OwnerId);
-                string name = string.Join(" ", new string[] { owner.Item1, owner.Item2 });
-                OwnerName.Text = name;
-                OwnerAvatar.Background = attachment.OwnerId.GetGradient();
-                OwnerAvatar.Initials = name;
-                OwnerAvatar.SetImageAsync(owner.Item3);
+                OwnerAvatar.IsVisible = owner != null;
+                if (owner != null) {
+                    string name = string.Join(" ", new string[] { owner.Item1, owner.Item2 });
+                    OwnerName.Text = name;
+                    OwnerAvatar.Background = attachment.OwnerId.GetGradient();
+                    OwnerAvatar.Initials = name;
+                    OwnerAvatar.SetImageAsync(owner.Item3);
+                }
 
                 if (attachment is Photo photo) {
                     Date.Text = photo.Date.ToHumanizedString(true);
@@ -56,6 +59,12 @@ namespace ELOR.Laney.Views.Media {
 
         private async void Gallery_Activated(object sender, System.EventArgs e) {
             Activated -= Gallery_Activated;
+            if (items == null || items.Count == 0) {
+                Close();
+                return;
+            }
+            target = target != null ? target : items[0];
+
             GalleryItems.ItemsSource = items;
             await Task.Delay(100); // required.
             GalleryItems.SelectedItem = target;

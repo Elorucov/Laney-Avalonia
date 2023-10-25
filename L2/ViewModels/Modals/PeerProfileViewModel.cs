@@ -686,7 +686,9 @@ namespace ELOR.Laney.ViewModels.Modals {
             ivm.Placeholder = null;
             ivm.IsLoading = true;
             try {
-                ConversationAttachmentsResponse resp = await session.API.Messages.GetHistoryAttachmentsAsync(session.GroupId, Id, type, ivm.StartFrom, 60, true);
+                ConversationAttachmentsResponse resp = await session.API.Messages.GetHistoryAttachmentsAsync(session.GroupId, Id, type, ivm.StartFrom, 60, true, fields: VKAPIHelper.Fields);
+                CacheManager.Add(resp.Profiles);
+                CacheManager.Add(resp.Groups);
                 resp.Items.ForEach(ivm.Items.Add);
                 if (!String.IsNullOrEmpty(resp.NextFrom)) {
                     ivm.StartFrom = Int32.Parse(resp.NextFrom.Split('/')[0]) - 1;
