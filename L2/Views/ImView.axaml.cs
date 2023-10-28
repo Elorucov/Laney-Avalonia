@@ -62,6 +62,7 @@ namespace ELOR.Laney.Views {
         private async void TryRegisterIncrementalLoadingEvent() {
             await Task.Delay(1000);
             try {
+                if (Session.ImViewModel == null) TryRegisterIncrementalLoadingEvent();
                 (ChatsList.Scroll as ScrollViewer)?.RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);
             } catch (Exception ex) {
                 Log.Error(ex, $"A problem has occured while registering incremental loading event for ChatsList!");

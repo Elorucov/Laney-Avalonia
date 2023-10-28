@@ -137,7 +137,8 @@ namespace ELOR.Laney.Views {
             CheckFirstAndLastDisplayedMessages();
         }
 
-        private void ChatView_DataContextChanged(object sender, EventArgs e) {
+        private async void ChatView_DataContextChanged(object sender, EventArgs e) {
+            if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
             sw = null;
             totalDisplayedMessagesForScrollFix = 0;
             if (Chat != null) {
@@ -150,6 +151,9 @@ namespace ELOR.Laney.Views {
             Chat.ScrollToMessageRequested += ScrollToMessage;
             Chat.MessagesChunkLoaded += TrySaveScroll;
             Chat.ReceivedMessages.CollectionChanged += ReceivedMessages_CollectionChanged;
+
+            await Task.Delay(100); // при смене DataContext скролл летит к 0 и может срабатываться загрузка старых сообщений до восстановления скролла
+            if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
         }
 
         private async void ReceivedMessages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
@@ -223,17 +227,24 @@ namespace ELOR.Laney.Views {
                 double diff = h - oldScrollViewerHeight;
                 double newpos = y + diff;
 
+                int tries = 10;
                 MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
-                try {
-                    if (CheckAccess()) {
-                        while (MessagesListScrollViewer.Offset.Y != newpos) {
+                await Dispatcher.UIThread.InvokeAsync(async () => {
+                    try {
+                        while (MessagesListScrollViewer.Offset.Y != newpos || tries > 0) {
                             MessagesListScrollViewer.Offset = new Vector(MessagesListScrollViewer.Offset.X, newpos);
                             await Task.Delay(32).ConfigureAwait(false);
+                            tries = tries - 1;
                         }
+                        if (MessagesListScrollViewer.Offset.Y != newpos) {
+                            Log.Error("CheckScroll: Unable to save scroll position 10 times!");
+                        } else {
+                            Log.Information("CheckScroll: Scroll position saved successfully!");
+                        }
+                    } catch (Exception ex) {
+                        Log.Error(ex, "CheckScroll: Unable to save scroll position!");
                     }
-                } catch (Exception ex) {
-                    Log.Error(ex, "Unable to save scroll position after old messages are loaded!");
-                }
+                });
                 MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
 
                 needToSaveScroll = false;
@@ -271,6 +282,9 @@ namespace ELOR.Laney.Views {
 
         private async void ScrollToMessage(object sender, int messageId) {
             if (Chat.DisplayedMessages == null) return;
+            int index = Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId));
+            Log.Information($"ScrollToMessage: Message id: {messageId}; index: {index}");
+            await Task.Delay(32);
             MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
             if (Settings.MessagesListVirtualization) {
                 await Task.Delay(200);

@@ -399,6 +399,7 @@ namespace ELOR.Laney.Core {
                 gcCollectTriggerCounter = 0;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
+                GC.Collect();
             } else {
                 gcCollectTriggerCounter++;
             }
