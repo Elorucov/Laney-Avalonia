@@ -123,7 +123,7 @@ namespace ELOR.Laney.ViewModels {
             try {
                 CreateChatResponse response = await wd.ShowAsync(session.ModalWindow, session.API.Messages.CreateChatAsync(0, userIds, ChatName));
                 GoToBackAction?.Invoke();
-                session.GetToChat(2000000000 + response.ChatId);
+                session.GoToChat(2000000000 + response.ChatId);
             } catch (Exception ex) {
                 if (await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex)) CreateChat();
             }

@@ -28,12 +28,12 @@ namespace ELOR.Laney.Views {
 
         private void OnChatSelected(object sender, RoutedEventArgs e) {
             Tuple<int, Uri, string> item = (sender as Control).DataContext as Tuple<int, Uri, string>;
-            VKSession.GetByDataContext(this).GetToChat(item.Item1);
+            VKSession.GetByDataContext(this).GoToChat(item.Item1);
         }
 
         private void OnMessageSelected(object sender, RoutedEventArgs e) {
             FoundMessageItem item = (sender as Control).DataContext as FoundMessageItem;
-            VKSession.GetByDataContext(this).GetToChat(item.PeerId, item.Id);
+            VKSession.GetByDataContext(this).GoToChat(item.PeerId, item.Id);
         }
     }
 }

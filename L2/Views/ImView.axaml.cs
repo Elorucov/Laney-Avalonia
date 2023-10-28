@@ -80,7 +80,7 @@ namespace ELOR.Laney.Views {
 
             ChatViewModel cvm = e.AddedItems[0] as ChatViewModel;
             if (cvm == null) return;
-            Session.GetToChat(cvm.PeerId);
+            Session.GoToChat(cvm.PeerId);
         }
 
         private void ChatContextRequested(object sender, ContextRequestedEventArgs e) {

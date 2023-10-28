@@ -219,7 +219,7 @@ namespace ELOR.Laney.Helpers {
             reply.Click += (a, b) => chat.Composer.AddReply(message);
 
             repriv.Click += (a, b) => {
-                session.GetToChat(message.SenderId);
+                session.GoToChat(message.SenderId);
                 session.CurrentOpenedChat.Composer.AddForwardedMessages(new List<MessageViewModel> { message });
             };
 

@@ -93,7 +93,7 @@ namespace ELOR.Laney.Views.Modals {
                 Header = Localizer.Instance["go_to_message"]
             };
             gotomsg.Click += (b, c) => {
-                session.GetToChat(ViewModel.Id, a.MessageId);
+                session.GoToChat(ViewModel.Id, a.MessageId);
                 Close();
             };
             ash.Items.Add(gotomsg);

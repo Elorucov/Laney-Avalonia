@@ -89,7 +89,7 @@ namespace ELOR.Laney.Views.Modals {
 
         private void OnMessageSelected(object sender, RoutedEventArgs e) {
             MessageViewModel item = (sender as Control).DataContext as MessageViewModel;
-            session.GetToChat(item.PeerId, item.Id);
+            session.GoToChat(item.PeerId, item.Id);
         }
     }
 }

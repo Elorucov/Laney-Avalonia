@@ -85,7 +85,7 @@ namespace ELOR.Laney.Core {
                 case VKLinkType.Write:
                     var wr = writeIdReg.Match(url);
                     id = wr.Value;
-                    session.GetToChat(Int64.Parse(id));
+                    session.GoToChat(Int64.Parse(id));
                     break;
                 case VKLinkType.StickerPack:
                     string packName = spm[0].Groups[4].Value;

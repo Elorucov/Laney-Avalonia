@@ -190,7 +190,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             if ((user.CanWritePrivateMessage == 1 || user.MessagesCount > 0) && session.CurrentOpenedChat?.PeerId != user.Id) {
                 Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
                     CloseWindowRequested?.Invoke(this, null);
-                    session.GetToChat(user.Id);
+                    session.GoToChat(user.Id);
                 });
                 commands.Add(messageCmd);
             }
@@ -340,7 +340,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             if ((group.CanMessage == 1 || group.MessagesCount > 0) && session.CurrentOpenedChat.PeerId != -group.Id) {
                 Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
                     CloseWindowRequested?.Invoke(this, null);
-                    session.GetToChat(-group.Id);
+                    session.GoToChat(-group.Id);
                 });
                 commands.Add(messageCmd);
             }

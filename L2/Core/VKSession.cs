@@ -104,11 +104,11 @@ namespace ELOR.Laney.Core {
             };
             logout.Classes.Add("Destructive");
 
-            favorites.Click += (a, b) => GetToChat(UserId);
+            favorites.Click += (a, b) => GoToChat(UserId);
             important.Click += async (a, b) => {
                 ImportantMessages im = new ImportantMessages(this);
                 var result = await im.ShowDialog<Tuple<long, int>>(Window);
-                if (result != null) GetToChat(result.Item1, result.Item2);
+                if (result != null) GoToChat(result.Item1, result.Item2);
             };
 
             settings.Click += async (a, b) => {
@@ -384,7 +384,7 @@ namespace ELOR.Laney.Core {
 
         byte gcCollectTriggerCounter = 0;
 
-        public void GetToChat(long peerId, int messageId = -1) {
+        public void GoToChat(long peerId, int messageId = -1) {
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
             Log.Information("VKSession: getting to chat {0}. messageId: {1}; cached: {2}", peerId, messageId, chat != null);
             if (chat == null) {
@@ -414,7 +414,7 @@ namespace ELOR.Laney.Core {
 
             if (result != null) {
                 result.Item1.ShowAndActivate();
-                result.Item1.GetToChat(result.Item2);
+                result.Item1.GoToChat(result.Item2);
                 result.Item1.CurrentOpenedChat.Composer.AddForwardedMessages(messages, result.Item3);
             }
         }
