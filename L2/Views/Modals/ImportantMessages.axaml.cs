@@ -71,7 +71,7 @@ namespace ELOR.Laney.Views.Modals {
             };
 
             go.Click += (a, b) => {
-                Close(new Tuple<long, int>(message.PeerId, message.Id));
+                Close(new Tuple<long, int>(message.PeerId, message.ConversationMessageId));
             };
 
             unmark.Click += async (a, b) => {

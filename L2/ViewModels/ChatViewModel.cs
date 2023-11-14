@@ -139,7 +139,7 @@ namespace ELOR.Laney.ViewModels {
         // Вызывается при отображении беседы на окне
         public void OnDisplayed(int messageId = -1) {
             bool isDisplayedMessagesEmpty = DisplayedMessages == null || DisplayedMessages.Count == 0;
-            Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}, messageId: {2}", PeerId, isDisplayedMessagesEmpty, messageId);
+            Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}, CMID: {2}", PeerId, isDisplayedMessagesEmpty, messageId);
             if (isDisplayedMessagesEmpty || messageId >= 0) {
                 GoToMessage(messageId);
             } else {
@@ -163,8 +163,8 @@ namespace ELOR.Laney.ViewModels {
             if (SortId?.MajorId != c.SortId.MajorId || SortId?.MinorId != c.SortId.MinorId) SortId = c.SortId; // чтобы не дёргался listbox.
             UnreadMessagesCount = c.UnreadCount;
             CanWrite = c.CanWrite;
-            InRead = c.InRead;
-            OutRead = c.OutRead;
+            InRead = c.InReadCMID;
+            OutRead = c.OutReadCMID;
             PushSettings = c.PushSettings;
             IsMarkedAsUnread = c.IsMarkedUnread;
             IsPinned = SortId.MajorId > 0 && SortId.MajorId % 16 == 0;
@@ -342,12 +342,12 @@ namespace ELOR.Laney.ViewModels {
         private void GoToLastMessage(object obj) {
             if (IsLoading) return;
 
-            if (DisplayedMessages?.Last?.Id == LastMessage?.Id) {
+            if (DisplayedMessages?.Last?.ConversationMessageId == LastMessage?.ConversationMessageId) {
                 GoToMessage(LastMessage);
             } else {
                 Log.Information($"GoToLastMessage: last message in chat is not displayed. Showing ReceivedMessages...");
                 DisplayedMessages = new MessagesCollection(ReceivedMessages.ToList());
-                ScrollToMessageRequested?.Invoke(this, LastMessage.Id);
+                ScrollToMessageRequested?.Invoke(this, LastMessage.ConversationMessageId);
                 if (ReceivedMessages.Count < 20) {
                     Log.Information($"GoToLastMessage: need get more messages from API to display.");
                     MessagesChunkLoaded += PrevMessagesLoaded;
@@ -359,7 +359,7 @@ namespace ELOR.Laney.ViewModels {
         private void PrevMessagesLoaded(object sender, bool next) {
             if (next) return;
             MessagesChunkLoaded -= PrevMessagesLoaded;
-            ScrollToMessageRequested?.Invoke(this, LastMessage.Id);
+            ScrollToMessageRequested?.Invoke(this, LastMessage.ConversationMessageId);
         }
 
         public void ClearSelectedMessages() {
@@ -391,8 +391,8 @@ namespace ELOR.Laney.ViewModels {
 
         public void GoToMessage(MessageViewModel message) {
             if (message == null) return;
-            if (message.Id > 0) {
-                GoToMessage(message.Id);
+            if (message.ConversationMessageId > 0) {
+                GoToMessage(message.ConversationMessageId);
             } else {
                 ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
             }
@@ -404,7 +404,7 @@ namespace ELOR.Laney.ViewModels {
                 LoadMessages(id);
                 return;
             }
-            MessageViewModel msg = (from m in DisplayedMessages where m.Id == id select m).FirstOrDefault();
+            MessageViewModel msg = (from m in DisplayedMessages where m.ConversationMessageId == id select m).FirstOrDefault();
             // TODO: искать ещё и в received messages.
             if (msg != null) {
                 ScrollToMessageRequested?.Invoke(this, id);
@@ -461,7 +461,7 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadPreviousMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages?.Count);
                 IsLoading = true;
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.Id, false, VKAPIHelper.Fields, true);
+                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, false, VKAPIHelper.Fields, true);
                 CacheManager.Add(mhr.MentionedProfiles);
                 CacheManager.Add(mhr.MentionedGroups);
                 mhr.Messages.Reverse();
@@ -488,7 +488,7 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadNextMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages.Count);
                 IsLoading = true;
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.Id, false, VKAPIHelper.Fields, false);
+                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, false, VKAPIHelper.Fields, false);
                 CacheManager.Add(mhr.MentionedProfiles);
                 CacheManager.Add(mhr.MentionedGroups);
                 mhr.Messages.Reverse();
@@ -512,9 +512,9 @@ namespace ELOR.Laney.ViewModels {
             long senderId = session.Id;
             bool isOutgoing = msg.SenderId == senderId;
             if (isOutgoing) {
-                msg.State = msg.Id > OutRead ? MessageVMState.Unread : MessageVMState.Read;
+                msg.State = msg.ConversationMessageId > OutRead ? MessageVMState.Unread : MessageVMState.Read;
             } else {
-                msg.State = msg.Id > InRead ? MessageVMState.Unread : MessageVMState.Read;
+                msg.State = msg.ConversationMessageId > InRead ? MessageVMState.Unread : MessageVMState.Read;
             }
         }
 
@@ -528,19 +528,26 @@ namespace ELOR.Laney.ViewModels {
                 if (flags.HasFlag(128)) { // Удаление сообщения
                     if (messageId > InRead && UnreadMessagesCount > 0) UnreadMessagesCount--;
 
-                    if (ReceivedMessages.LastOrDefault()?.Id == SortId.MinorId && (ChatSettings != null && !ChatSettings.IsDisappearing)) {
-                        if (ReceivedMessages.Count > 1) {
-                            MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
-                            UpdateSortId(SortId.MajorId, prev.Id);
-                        } else {
-                            Log.Warning("Cannot update minor_id after last message is deleted!");
-                        }
+                    // TODO: обновление sort id после удаления сообщения
+                    //if (ReceivedMessages.LastOrDefault()?.Id == SortId.MinorId && (ChatSettings != null && !ChatSettings.IsDisappearing)) {
+                    //    if (ReceivedMessages.Count > 1) {
+                    //        MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
+                    //        UpdateSortId(SortId.MajorId, prev.Id);
+                    //    } else {
+                    //        Log.Warning("Cannot update minor_id after last message is deleted!");
+                    //    }
+                    //}
+                    if (ReceivedMessages.Count > 1) {
+                        MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
+                        UpdateSortId(SortId.MajorId, prev.Id);
+                    } else {
+                        Log.Warning("Cannot update minor_id after last message is deleted!");
                     }
 
-                    MessageViewModel msg = ReceivedMessages.Where(m => m.Id == messageId).FirstOrDefault();
+                    MessageViewModel msg = ReceivedMessages.Where(m => m.ConversationMessageId == messageId).FirstOrDefault();
                     if (msg != null) ReceivedMessages.Remove(msg);
 
-                    MessageViewModel dmsg = DisplayedMessages?.Where(m => m.Id == messageId).FirstOrDefault();
+                    MessageViewModel dmsg = DisplayedMessages?.Where(m => m.ConversationMessageId == messageId).FirstOrDefault();
                     if (dmsg != null) DisplayedMessages.Remove(dmsg);
                 }
             });
@@ -556,7 +563,7 @@ namespace ELOR.Laney.ViewModels {
                     msg.State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
                 }
 
-                bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.Id == ReceivedMessages.LastOrDefault()?.Id;
+                bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.ConversationMessageId == ReceivedMessages.LastOrDefault()?.ConversationMessageId;
                 ReceivedMessages.Add(msg);
                 if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
                 if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
@@ -578,7 +585,7 @@ namespace ELOR.Laney.ViewModels {
         private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
             if (PeerId != message.PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(async () => {
-                if (LastMessage?.Id == message.Id) {
+                if (LastMessage?.ConversationMessageId == message.ConversationMessageId) {
                     // нужно для корректной обработки смены фото чата.
                     if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
 

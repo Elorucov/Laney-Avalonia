@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
         ChatViewModel Chat { get; set; }
-        ScrollViewer MessagesListScrollViewer;         // peer id, first visible message id
+        ScrollViewer MessagesListScrollViewer;         // peer id, first visible cmid
         Dictionary<long, int> ScrollPositions = new Dictionary<long, int>();
         DispatcherTimer markReadTimer;
         bool canSaveScrollPosition = false;
@@ -111,9 +111,9 @@ namespace ELOR.Laney.Views {
 
             if (ScrollPositions.ContainsKey(Chat.PeerId)) {
                 var fvi = ScrollPositions[Chat.PeerId];
-                Log.Information($"Trying to restore scroll position for chat {Chat.PeerId}. First visible message ID: {fvi}");
+                Log.Information($"Trying to restore scroll position for chat {Chat.PeerId}. First visible CMID: {fvi}");
 
-                var fvm = Chat.DisplayedMessages.Where(m => m.Id == fvi).FirstOrDefault();
+                var fvm = Chat.DisplayedMessages.Where(m => m.ConversationMessageId == fvi).FirstOrDefault();
                 if (fvm != null) {
                     int index = Chat.DisplayedMessages.IndexOf(fvm);
 
@@ -126,9 +126,9 @@ namespace ELOR.Laney.Views {
                         if (MessagesListScrollViewer.Offset.Y == y) break;
                         y = MessagesListScrollViewer.Offset.Y;
                     }
-                    if (y != MessagesListScrollViewer.Offset.Y) Log.Warning($"Cannot scroll to old position! FVI: {fvi}");
+                    if (y != MessagesListScrollViewer.Offset.Y) Log.Warning($"Cannot scroll to old position! First visible CMID: {fvi}");
                 } else {
-                    Log.Warning($"Cannot find a message {fvi} in displayed messages! (required to scroll to old position)");
+                    Log.Warning($"Cannot find a message with cmid {fvi} in displayed messages! (required to scroll to old position)");
                 }
 
                 //ForceScroll(scrollPos.Item2);
@@ -161,9 +161,9 @@ namespace ELOR.Laney.Views {
             if (e.Action == NotifyCollectionChangedAction.Add && autoScrollToLastMessage && Chat.DisplayedMessages != null && Chat.DisplayedMessages.Count > 0) {
                 ObservableCollection<MessageViewModel> received = sender as ObservableCollection<MessageViewModel>;
                 await Task.Delay(10); // ибо id-ы разные почему-то...
-                int lastReceivedId = received.LastOrDefault()?.Id ?? 0;
+                int lastReceivedId = received.LastOrDefault()?.ConversationMessageId ?? 0;
                 var lastDisplayed = Chat.DisplayedMessages.LastOrDefault();
-                int lastDisplayedId = lastDisplayed?.Id ?? 0;
+                int lastDisplayedId = lastDisplayed?.ConversationMessageId ?? 0;
                 if (lastReceivedId == lastDisplayedId && lastDisplayedId > 0) {
                     // MessagesList.ScrollIntoView(Chat.DisplayedMessages.Count - 1);
                     double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
@@ -184,14 +184,14 @@ namespace ELOR.Laney.Views {
 
                 await Task.Delay(10); // нужно, ибо без этого высота скролла старая.
 
-                int lastReceivedId = Chat.ReceivedMessages.LastOrDefault()?.Id ?? 0;
-                if (msg.Id == lastReceivedId) {
+                int lastReceivedId = Chat.ReceivedMessages.LastOrDefault()?.ConversationMessageId ?? 0;
+                if (msg.ConversationMessageId == lastReceivedId) {
                     // Принудительно скроллим вниз
                     double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
                     ForceScroll(h);
                     // MessagesListScrollViewer.ScrollToEnd();
 
-                    Log.Information($"Scroll to message\"{msg.Id}\" done.");
+                    Log.Information($"Scroll to message\"{msg.ConversationMessageId}\" done.");
                 }
             }
         }
@@ -227,19 +227,19 @@ namespace ELOR.Laney.Views {
                 double diff = h - oldScrollViewerHeight;
                 double newpos = y + diff;
 
-                int tries = 10;
+                int tries = 0;
                 MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
                 await Dispatcher.UIThread.InvokeAsync(async () => {
                     try {
-                        while (MessagesListScrollViewer.Offset.Y != newpos || tries > 0) {
+                        while (MessagesListScrollViewer.Offset.Y != newpos || tries < 10) {
                             MessagesListScrollViewer.Offset = new Vector(MessagesListScrollViewer.Offset.X, newpos);
-                            await Task.Delay(32).ConfigureAwait(false);
-                            tries = tries - 1;
+                            await Task.Delay(16).ConfigureAwait(false);
+                            tries++;
                         }
                         if (MessagesListScrollViewer.Offset.Y != newpos) {
                             Log.Error("CheckScroll: Unable to save scroll position 10 times!");
                         } else {
-                            Log.Information("CheckScroll: Scroll position saved successfully!");
+                            Log.Information($"CheckScroll: Scroll position saved successfully! Tries: {tries}");
                         }
                     } catch (Exception ex) {
                         Log.Error(ex, "CheckScroll: Unable to save scroll position!");
@@ -256,11 +256,11 @@ namespace ELOR.Laney.Views {
             if (y < trigger) {
                 // canSaveScrollPosition — признак того, что
                 // data context сменился, а интерфейс не прогрузился.
-                if (canSaveScrollPosition) Chat.LoadPreviousMessages();
+                if (canSaveScrollPosition && !needToSaveScroll) Chat.LoadPreviousMessages();
                 autoScrollToLastMessage = false;
             } else if (y > h - trigger) {
                 if (Chat.DisplayedMessages.Last == null || Chat.LastMessage == null) return;
-                bool needLoadNextMessages = Chat.DisplayedMessages.Last.Id != Chat.LastMessage.Id;
+                bool needLoadNextMessages = Chat.DisplayedMessages.Last.ConversationMessageId != Chat.LastMessage.ConversationMessageId;
                 if (needLoadNextMessages) {
                     Chat.LoadNextMessages();
                 } else {
@@ -282,10 +282,11 @@ namespace ELOR.Laney.Views {
 
         private async void ScrollToMessage(object sender, int messageId) {
             if (Chat.DisplayedMessages == null) return;
-            int index = Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId));
-            Log.Information($"ScrollToMessage: Message id: {messageId}; index: {index}");
-            await Task.Delay(32);
-            MessagesList.ScrollIntoView(Chat.DisplayedMessages.IndexOf(Chat.DisplayedMessages?.GetById(messageId)));
+            var msg = Chat.DisplayedMessages?.GetById(messageId);
+            int index = Chat.DisplayedMessages.IndexOf(msg);
+            Log.Information($"ScrollToMessage: cmid: {messageId}; index: {index}");
+            // await Task.Delay(32);
+            MessagesList.ScrollIntoView(index);
             if (Settings.MessagesListVirtualization) {
                 await Task.Delay(200);
                 msgsVirtualizer.EnforceProcessVirtualization();
@@ -296,19 +297,19 @@ namespace ELOR.Laney.Views {
             MessageViewModel fv = FirstVisible;
             MessageViewModel lv = LastVisible;
             if (Settings.ShowDebugCounters) {
-                tmsgId.Text = fv?.Id.ToString() ?? "N/A";
-                bmsgId.Text = lv?.Id.ToString() ?? "N/A";
+                tmsgId.Text = fv?.ConversationMessageId.ToString() ?? "N/A";
+                bmsgId.Text = lv?.ConversationMessageId.ToString() ?? "N/A";
             }
 
             if (canSaveScrollPosition && fv != null) {
                 if (ScrollPositions.ContainsKey(Chat.PeerId)) {
-                    ScrollPositions[Chat.PeerId] = fv.Id;
+                    ScrollPositions[Chat.PeerId] = fv.ConversationMessageId;
                 } else {
-                    ScrollPositions.Add(Chat.PeerId, fv.Id);
+                    ScrollPositions.Add(Chat.PeerId, fv.ConversationMessageId);
                 }
             }
             UpdateDateUnderHeader(fv);
-            HopNavContainer.IsVisible = lv == null || Chat?.LastMessage?.Id != lv.Id;
+            HopNavContainer.IsVisible = lv == null || Chat?.LastMessage?.ConversationMessageId != lv.ConversationMessageId;
         }
 
         private void UpdateDateUnderHeader(MessageViewModel msg) {
@@ -365,10 +366,10 @@ namespace ELOR.Laney.Views {
 
             try {
                 var session = VKSession.GetByDataContext(this);
-                bool result = await session.API.Messages.MarkAsReadAsync(session.GroupId, Chat.PeerId, msg.Id);
+                bool result = await session.API.Messages.MarkAsReadAsync(session.GroupId, Chat.PeerId, msg.ConversationMessageId);
                 await Task.Delay(1000);
             } catch (Exception ex) {
-                Log.Error(ex, $"Unable to mark message (id {msg.Id}) as read!");
+                Log.Error(ex, $"Unable to mark message (cmid {msg.ConversationMessageId}) as read!");
             } finally {
                 isMarking = false;
             }

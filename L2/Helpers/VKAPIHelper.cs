@@ -9,6 +9,7 @@ using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using VKUI.Controls;
 
@@ -132,6 +133,68 @@ namespace ELOR.Laney.Helpers {
             }
             return from;
         }
+
+        #region Execute
+
+        public static string BuildCodeForGetMessagesByCMID(long groupId, List<KeyValuePair<long, int>> peerMessagePair, List<string> fields) {
+            string forks = "", waits = "", items = "", profiles = "", groups = "";
+            int i = 1;
+
+            foreach (var pm in peerMessagePair) {
+                string fork = $"var f{i} = fork(API.messages.getByConversationMessageId({{\"group_id\": {groupId}, \"peer_id\": {pm.Key}, \"conversation_message_ids\": {pm.Value}, \"extended\": 1, \"fields\": \"{String.Join(',', fields)}\"}}));\n";
+                forks += fork;
+
+                string wait = $"var w{i} = wait(f{i});\n";
+                waits += wait;
+
+                string item = $"response.items.push(w{i}.items[0]);\n";
+                items += item;
+
+                string profile = $@"if (w{i}.profiles) {{
+  var pi{i} = 0;
+  while (pi{i} < w{i}.profiles.length) {{
+    response.profiles.push(w{i}.profiles[pi1]);
+    pi{i} = pi{i} + 1;
+  }}
+}}";
+                profiles += profile + "\n";
+
+                string group = $@"if (w{i}.groups) {{
+  var gi{i} = 0;
+  while (gi{i} < w{i}.groups.length) {{
+    response.groups.push(w{i}.groups[gi1]);
+    gi{i} = gi{i} + 1;
+  }}
+}}";
+                groups += group + "\n";
+
+                i++;
+            }
+
+            string code = $@"
+var response = {{items: [],
+  profiles: [],
+  groups: []
+}};
+
+{forks}
+
+{waits}
+
+{items}
+
+{profiles}
+
+{groups}
+
+return response;
+";
+            return code;
+        }
+
+        #endregion
+
+        // TODO: убрать методы кнопок ботов в отдельный класс.
 
         internal static void GenerateButtons(StackPanel root, List<List<BotButton>> buttons) {
             bool isFirstRow = true;

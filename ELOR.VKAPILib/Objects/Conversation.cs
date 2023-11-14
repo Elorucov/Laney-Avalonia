@@ -248,6 +248,12 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("out_read")]
         public int OutRead { get; set; }
 
+        [JsonPropertyName("in_read_cmid")]
+        public int InReadCMID { get; set; }
+
+        [JsonPropertyName("out_read_cmid")]
+        public int OutReadCMID { get; set; }
+
         [JsonPropertyName("unread_count")]
         public int UnreadCount { get; set; }
 

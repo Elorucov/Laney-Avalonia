@@ -248,7 +248,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         public int CompareTo(object obj) {
             MessageViewModel mvm = obj as MessageViewModel;
-            return Id.CompareTo(mvm.Id);
+            return ConversationMessageId.CompareTo(mvm.ConversationMessageId);
         }
 
         public void UpdateSenderInfoView(bool? isPrevFromSameSender, bool? isNextFromSameSender) {
@@ -264,7 +264,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         #region LongPoll events
 
         private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
-            if (message.Id != Id) return;
+            if (message.ConversationMessageId != ConversationMessageId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 Setup(message);
                 bool isUnread = flags.HasFlag(1);
@@ -274,7 +274,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, long peerId) {
-            if (messageId != Id) return;
+            if (messageId != ConversationMessageId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (flags.HasFlag(8)) { // Marked as important
                     IsImportant = true;
@@ -283,7 +283,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         private async void LongPoll_MessageFlagRemove(LongPoll longPoll, int messageId, int flags, long peerId) {
-            if (messageId != Id) return;
+            if (messageId != ConversationMessageId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (flags.HasFlag(8)) { // Unmarked as important
                     IsImportant = false;
@@ -294,7 +294,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private async void LongPoll_MessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                if (Id <= messageId) State = MessageVMState.Read;
+                if (ConversationMessageId <= messageId) State = MessageVMState.Read;
             });
         }
 
@@ -308,7 +308,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (!String.IsNullOrEmpty(Text)) return TextParser.GetParsedText(Text);
             if (_attachments.Count > 0) {
                 int count = _attachments.Count;
-                if (_attachments.Any(a => a.Type == _attachments[0].Type) && Location == null) {
+                if (_attachments.All(a => a.Type == _attachments[0].Type) && Location == null) {
                     string type = _attachments[0].TypeString;
                     switch (_attachments[0].Type) {
                         case AttachmentType.Audio:

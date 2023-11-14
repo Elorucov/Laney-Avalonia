@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace ELOR.Laney.Core {
     public sealed class LongPoll {
         public const int WAIT_AFTER_FAIL = 3;
-        public const int VERSION = 11;
+        public const int VERSION = 19;
         public const int WAIT_TIME = 25;
         public const int MODE = 234;
 
@@ -169,15 +169,15 @@ namespace ELOR.Laney.Core {
         }
 
         private void ParseUpdates(JsonArray updates, List<Message> messages = null) {
-            // Message id, is edited.
-            Dictionary<int, bool> MessagesFromAPI = new Dictionary<int, bool>();
+            // peer id, CMID, is edited.
+            List<Tuple<long, int, bool>> MessagesFromAPI = new List<Tuple<long, int, bool>>();
             Dictionary<int, int> MessagesFromAPIFlags = new Dictionary<int, int>();
 
             foreach (JsonArray u in updates) {
                 int eventId = (int)u[0];
                 switch (eventId) {
-                    case 2:
-                    case 3:
+                    case 10002:
+                    case 10003:
                         int msgId = (int)u[1];
                         int flags = (int)u[2];
                         long peerId = (long)u[3];
@@ -191,72 +191,62 @@ namespace ELOR.Laney.Core {
                                 MessageReceived?.Invoke(this, msgFromHistory3, flags);
                                 if (u.Count > 6) CheckMentions(u[6], msgId, (long)u[3]);
                             } else {
-                                bool isPartial = false;
-                                Exception ex = null;
-                                Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
-                                if (ex == null && rmsg != null) {
-                                    MessageReceived?.Invoke(this, rmsg, (int)u[2]);
-                                    if (u.Count > 6) CheckMentions(u[6], msgId, (long)u[3]);
-                                    if (isPartial) {
-                                        MessagesFromAPI.Add(msgId, true);
-                                        MessagesFromAPIFlags.Add(msgId, (int)u[2]);
-                                    }
-                                } else {
-                                    Log.Error(ex, $"An error occured while building message from LP! Message ID: {(int)u[1]}");
-                                    MessagesFromAPI.Add(msgId, false);
-                                    MessagesFromAPIFlags.Add(msgId, (int)u[2]);
-                                }
+                                MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId, msgId, false));
+                                MessagesFromAPIFlags.Add(msgId, (int)u[2]);
                             }
                         }
                         break;
-                    case 4:
+                    case 10004:
                         int receivedMsgId = (int)u[1];
-                        Log.Information($"EVENT {eventId}: msg={receivedMsgId}");
-                        Message msgFromHistory = messages?.Where(m => m.Id == receivedMsgId).FirstOrDefault();
+                        long peerId4 = (long)u[4];
+                        Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}");
+                        Message msgFromHistory = messages?.Where(m => m.ConversationMessageId == receivedMsgId).FirstOrDefault();
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, (int)u[2]);
-                            if (u.Count > 6) CheckMentions(u[6], receivedMsgId, (long)u[3]);
+                            if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
                         } else {
                             bool isPartial = false;
                             Exception ex = null;
                             Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
                                 MessageReceived?.Invoke(this, rmsg, (int)u[2]);
-                                if (u.Count > 6) CheckMentions(u[6], receivedMsgId, (int)u[3]);
+                                if (u.Count > 6) CheckMentions(u[7], receivedMsgId, peerId4);
                                 if (isPartial) {
-                                    MessagesFromAPI.Add(receivedMsgId, true);
+                                    MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, true));
                                     MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                                 }
                             } else {
                                 Log.Error(ex, $"An error occured while building message from LP! Message ID: {(int)u[1]}");
-                                MessagesFromAPI.Add(receivedMsgId, false);
+                                MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, false));
                                 MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                             }
                         }
                         break;
-                    case 5:
-                    case 18:
+                    case 10005:
+                    case 10018:
                         int editedMsgId = (int)u[1];
-                        Message editMsgFromHistory = messages?.Where(m => m.Id == editedMsgId).FirstOrDefault();
-                        Log.Information($"EVENT {eventId}: msg={editedMsgId}");
+                        long peerId5 = (long)u[3];
+                        Message editMsgFromHistory = messages?.Where(m => m.ConversationMessageId == editedMsgId).FirstOrDefault();
+                        Log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2]);
-                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, (long)u[3]);
+                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, peerId5);
                         } else {
-                            if (!MessagesFromAPI.ContainsKey(editedMsgId)) {
-                                MessagesFromAPI.Add(editedMsgId, true);
+                            bool contains = MessagesFromAPI.Where(m => m.Item2 == editedMsgId).FirstOrDefault() != null;
+                            if (!contains) {
+                                MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId5, editedMsgId, false));
                                 MessagesFromAPIFlags.Add(editedMsgId, (int)u[2]);
                             }
                         }
                         break;
-                    case 6:
+                    case 10006:
                         long peerId6 = (long)u[1];
                         int msgId6 = (int)u[2];
                         int count6 = u.Count > 3 ? (int)u[3] : 0;
                         Log.Information($"EVENT {eventId}: peer={peerId6}, msg={msgId6}, count={count6}");
                         IncomingMessagesRead?.Invoke(this, peerId6, msgId6, count6);
                         break;
-                    case 7:
+                    case 10007:
                         long peerId7 = (long)u[1];
                         int msgId7 = (int)u[2];
                         int count7 = u.Count > 3 ? (int)u[3] : 0;
@@ -271,7 +261,7 @@ namespace ELOR.Laney.Core {
                         if (eventId == 10) ConversationFlagReset?.Invoke(this, peerId10, flags10);
                         else ConversationFlagSet?.Invoke(this, peerId10, flags10);
                         break;
-                    case 13:
+                    case 10013:
                         long peerId13 = (long)u[1];
                         int msgId13 = (int)u[2];
                         Log.Information($"EVENT {eventId}: peer={peerId13}, msg={msgId13}");
@@ -364,17 +354,30 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        private async void GetMessagesFromAPI(Dictionary<int, bool> messagesFromAPI, Dictionary<int, int> flags) {
+        private async void GetMessagesFromAPI(List<Tuple<long, int, bool>> messagesFromAPI, Dictionary<int, int> flags) {
+            string debugPairs = "N/A";
             try {
-                var msgIds = messagesFromAPI.Keys.ToList();
-                Log.Information($"Need to get this messages from API: {String.Join(", ", msgIds)}.");
-                var response = await API.Messages.GetByIdAsync(groupId, msgIds, 0, true, VKAPIHelper.Fields);
-                if (response.Count > 0) {
+                List<KeyValuePair<long, int>> peerMessagePair = new List<KeyValuePair<long, int>>();
+                Dictionary<string, bool> isEditedCMIDs = new Dictionary<string, bool>();
+
+                foreach (var pair in messagesFromAPI) {
+                    peerMessagePair.Add(new KeyValuePair<long, int>(pair.Item1, pair.Item2));
+                    isEditedCMIDs.Add($"{pair.Item1}_{pair.Item2}", pair.Item3);
+                }
+                debugPairs = String.Join(", ", isEditedCMIDs.Keys.ToList());
+                Log.Information($"Need to get this messages from API: {debugPairs}.");
+
+                string code = VKAPIHelper.BuildCodeForGetMessagesByCMID(groupId, peerMessagePair, VKAPIHelper.Fields);
+
+                MessagesList response = await API.CallMethodAsync<MessagesList>("execute", new Dictionary<string, string> {
+                    { "code", code }
+                });
+                if (response.Items.Count > 0) {
                     CacheManager.Add(response.Profiles);
                     CacheManager.Add(response.Groups);
                     foreach (Message msg in response.Items) {
-                        int flag = flags[msg.Id];
-                        if (messagesFromAPI[msg.Id]) {
+                        int flag = flags[msg.ConversationMessageId];
+                        if (isEditedCMIDs[$"{msg.PeerId}_{msg.ConversationMessageId}"]) {
                             MessageEdited?.Invoke(this, msg, flag);
                         } else {
                             MessageReceived?.Invoke(this, msg, flag);
@@ -382,7 +385,7 @@ namespace ELOR.Laney.Core {
                     }
                 }
             } catch (Exception ex) {
-                Log.Error(ex, $"An error occured while getting messages from API! Messages: {String.Join(", ", messagesFromAPI.Keys.ToList())}.");
+                Log.Error(ex, $"An error occured while getting messages from API! Messages: {debugPairs}.");
             }
         }
 

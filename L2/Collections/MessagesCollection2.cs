@@ -45,7 +45,7 @@ namespace ELOR.Laney.Collections {
         public void Insert(MessageViewModel message) {
             int idx = 0;
 
-            var q = Items.Where(obj => obj is MessageViewModel msg && msg.Id == message.Id).FirstOrDefault();
+            var q = Items.Where(obj => obj is MessageViewModel msg && msg.ConversationMessageId == message.ConversationMessageId).FirstOrDefault();
             if (q != null && q is MessageViewModel old) {
                 idx = Items.IndexOf(old);
                 RemoveAt(idx);
@@ -100,7 +100,7 @@ namespace ELOR.Laney.Collections {
         }
 
         public MessageViewModel GetById(int messageId) {
-            return this.Where(m => m.Id == messageId).FirstOrDefault();
+            return this.Where(m => m.ConversationMessageId == messageId).FirstOrDefault();
         }
 
         public void RemoveById(int messageId) {

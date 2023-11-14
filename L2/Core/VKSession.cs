@@ -386,7 +386,7 @@ namespace ELOR.Laney.Core {
 
         public void GoToChat(long peerId, int messageId = -1) {
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
-            Log.Information("VKSession: getting to chat {0}. messageId: {1}; cached: {2}", peerId, messageId, chat != null);
+            Log.Information("VKSession: getting to chat {0}. cmid: {1}; cached: {2}", peerId, messageId, chat != null);
             if (chat == null) {
                 chat = new ChatViewModel(this, peerId);
                 CacheManager.Add(Id, chat);

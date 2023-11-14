@@ -183,16 +183,17 @@ namespace ELOR.VKAPILib.Objects {
         public static Message BuildFromLP(JsonArray msg, long currentUserId, Func<long, bool> infoCached, out bool needToGetFullMsgFromAPI, out Exception exception) {
             exception = null;
             try {
-                int id = (int)msg[1];
+                int cmId = (int)msg[1];
                 int flags = (int)msg[2];
-                long peer = (long)msg[3];
-                int timestamp = (int)msg[4];
-                string text = (string)msg[5];
-                JsonObject additional = msg[6].AsObject();
-                JsonObject attachments = msg[7].AsObject();
-                int randomId = (int)msg[8];
-                int cmId = (int)msg[9];
-                int updateTimestamp = (int)msg[10];
+                int minor = (int)msg[3];
+                long peer = (long)msg[4];
+                int timestamp = (int)msg[5];
+                string text = (string)msg[6];
+                JsonObject additional = msg[7].AsObject();
+                JsonObject attachments = msg[8].AsObject();
+                int randomId = (int)msg[9];
+                int id = (int)msg[10];
+                int updateTimestamp = (int)msg[11];
                 needToGetFullMsgFromAPI = false;
 
                 bool outbound = (2 & flags) != 0;

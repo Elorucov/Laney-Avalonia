@@ -10,6 +10,9 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("message_id")]
         public int MessageId { get; set; }
 
+        [JsonPropertyName("cmid")]
+        public int CMID { get; set; }
+
         [JsonPropertyName("from_id")]
         public long FromId { get; set; }
     }
