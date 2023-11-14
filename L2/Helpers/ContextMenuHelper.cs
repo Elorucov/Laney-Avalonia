@@ -220,14 +220,14 @@ namespace ELOR.Laney.Helpers {
 
             repriv.Click += (a, b) => {
                 session.GoToChat(message.SenderId);
-                session.CurrentOpenedChat.Composer.AddForwardedMessages(new List<MessageViewModel> { message });
+                session.CurrentOpenedChat.Composer.AddForwardedMessages(chat.PeerId, new List<MessageViewModel> { message });
             };
 
-            forward.Click += (a, b) => session.Share(new List<MessageViewModel> { message });
+            forward.Click += (a, b) => session.Share(chat.PeerId, new List<MessageViewModel> { message });
 
             forwardHere.Click += (a, b) => {
                 chat.Composer.Clear();
-                chat.Composer.AddForwardedMessages(new List<MessageViewModel> { message });
+                chat.Composer.AddForwardedMessages(chat.PeerId, new List<MessageViewModel> { message });
             };
 
             edit.Click += (a, b) => chat.Composer.StartEditing(message);

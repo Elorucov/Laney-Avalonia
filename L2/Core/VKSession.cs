@@ -405,7 +405,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        public async void Share(List<MessageViewModel> messages) {
+        public async void Share(long fromPeerId, List<MessageViewModel> messages) {
             SharingViewModel user = new SharingViewModel(Main, GroupId);
             SharingViewModel group = IsGroup ? new SharingViewModel(this, 0) : null;
             SharingView dlg = new SharingView(user, group);
@@ -415,7 +415,7 @@ namespace ELOR.Laney.Core {
             if (result != null) {
                 result.Item1.ShowAndActivate();
                 result.Item1.GoToChat(result.Item2);
-                result.Item1.CurrentOpenedChat.Composer.AddForwardedMessages(messages, result.Item3);
+                result.Item1.CurrentOpenedChat.Composer.AddForwardedMessages(fromPeerId, messages, result.Item3);
             }
         }
 

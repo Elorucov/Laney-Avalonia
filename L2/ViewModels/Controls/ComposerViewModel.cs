@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using VKUI.Controls;
 using VKUI.Popups;
@@ -174,17 +176,17 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (favm != null) Attachments.Remove(favm);
         }
 
-        public void AddForwardedMessages(List<MessageViewModel> messages, long groupId = 0) {
+        public void AddForwardedMessages(long fromPeerId, List<MessageViewModel> messages, long groupId = 0) {
             if (messages == null || messages.Count == 0) return;
             var favm = Attachments.Where(a => a.Type == OutboundAttachmentType.ForwardedMessages).FirstOrDefault();
             if (favm != null) Attachments.Remove(favm);
-            Attachments.Insert(0, new OutboundAttachmentViewModel(messages, groupId));
+            Attachments.Insert(0, new OutboundAttachmentViewModel(fromPeerId, messages, groupId));
             Reply = null;
         }
 
         public void StartEditing(MessageViewModel message) {
             Clear();
-            EditingMessageId = message.Id;
+            EditingMessageId = message.ConversationMessageId;
 
             Text = message.Text;
             Reply = message.ReplyMessage;
@@ -196,7 +198,8 @@ namespace ELOR.Laney.ViewModels.Controls {
                 }
             }
 
-            AddForwardedMessages(message.ForwardedMessages);
+            // TODO: удаление пересланных сообщений
+            // AddForwardedMessages(message.ForwardedMessages);
         }
 
         public void DeleteReply() {
@@ -230,20 +233,41 @@ namespace ELOR.Laney.ViewModels.Controls {
             var attachments = Attachments.Where(a => a.Type == OutboundAttachmentType.Attachment)
                 .Select(a => a.Attachment.ToString()).ToList();
 
-            List<int> forwardedMessages = new List<int>();
-            List<string> forwardedMessagesFromGroup = new List<string>();
+
             var favm = Attachments.Where(a => a.Type == OutboundAttachmentType.ForwardedMessages).FirstOrDefault();
-            if (favm != null) {
+            int replyTo = Reply?.ConversationMessageId ?? 0;
+            string forward = String.Empty;
+
+            if (replyTo > 0) {
+                object fwd = new { 
+                    peer_id = Chat.PeerId,
+                    conversation_message_ids = new List<int> { replyTo },
+                    is_reply = true
+                };
+                forward = JsonSerializer.Serialize(fwd);
+            } else if (favm != null) {
+                List<int> cmids = new List<int>();
                 if (favm.ForwardedMessagesFromGroupId > 0) {
-                    foreach (var m in favm.ForwardedMessages) {
-                        forwardedMessagesFromGroup.Add($"-{favm.ForwardedMessagesFromGroupId}_{m.Id}");
-                    }
+                    long ownerId = favm.ForwardedMessagesFromGroupId * -1;
+                    foreach (var m in favm.ForwardedMessages) cmids.Add(m.ConversationMessageId);
+
+                    object fwd = new {
+                        owner_id = ownerId,
+                        peer_id = favm.ForwardedMessagesFromPeerId,
+                        conversation_message_ids = cmids
+                    };
+                    forward = JsonSerializer.Serialize(fwd);
                 } else {
-                    forwardedMessages = favm.ForwardedMessages.Select(m => m.Id).ToList();
+                    cmids = favm.ForwardedMessages.Select(m => m.ConversationMessageId).ToList();
+
+                    object fwd = new {
+                        peer_id = favm.ForwardedMessagesFromPeerId,
+                        conversation_message_ids = cmids
+                    };
+                    forward = JsonSerializer.Serialize(fwd);
                 }
             }
 
-            int replyTo = Reply?.Id ?? 0;
             bool dontParseLinks = Settings.DontParseLinks;
             bool disableMentions = Settings.DisableMentions;
 
@@ -252,15 +276,16 @@ namespace ELOR.Laney.ViewModels.Controls {
             try {
                 if (EditingMessageId == 0) {
                     Log.Verbose($"Sending message: session={session.Id}; peer_id={Chat.PeerId}, random={RandomId}");
-                    var response = await session.API.Messages.SendAsync(session.GroupId, Chat.PeerId, RandomId, text,
-                        0, 0, attachments, replyTo, forwardedMessages, forwardedMessagesFromGroup, StickerId,
+                    var response = await session.API.Messages.SendAsync(session.GroupId,
+                        Chat.PeerId, RandomId, text, 0, 0, attachments, forward, StickerId,
                         dontParseLinks: dontParseLinks, disableMentions: disableMentions);
                     RandomId = Random.Next(Int32.MinValue, Int32.MaxValue);
                     Log.Verbose($"Sending message result: {response.MessageId}; new random: {RandomId}");
                 } else {
                     var response = await session.API.Messages.EditAsync(session.GroupId, Chat.PeerId, EditingMessageId, 
-                        text, 0, 0, attachments, forwardedMessages.Count > 0, true, dontParseLinks);
+                        text, 0, 0, attachments, true, true, dontParseLinks);
                     // TODO: keep snippets и сделать недоступным добавление пересланных, если активен режим редактирования. 
+                    // TODO: удаление пересланных сообщений
                 }
                 Clear();
                 IsLoading = false;

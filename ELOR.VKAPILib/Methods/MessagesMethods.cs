@@ -196,7 +196,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Edits the message. You can edit sent message during 24 hours.</summary>
         /// <param name="groupId">Group ID.</param>
         /// <param name="peerId">Destination ID.</param>
-        /// <param name="messageId">Message ID.</param>
+        /// <param name="cmid">Message ID in conversation.</param>
         /// <param name="message">(Required if attachment parameter is null.) Text of the message.</param>
         /// <param name="latitude">Geographical latitude of a check-in, in degrees (from -90 to 90).</param>
         /// <param name="longitude">Geographical longitude of a check-in, in degrees (from -180 to 180).</param>
@@ -204,11 +204,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="keepForwardedMessages">true — to keep forwarded, messages.</param>
         /// <param name="keepSnippets">true — to keep attached snippets.</param>
         /// <param name="dontParseLinks">Don't parse links in message.</param>
-        public async Task<int> EditAsync(long groupId, long peerId, int messageId, string message, double latitude, double longitude, List<string> attachment, bool keepForwardedMessages, bool keepSnippets, bool dontParseLinks) {
+        public async Task<int> EditAsync(long groupId, long peerId, int cmid, string message, double latitude, double longitude, List<string> attachment, bool keepForwardedMessages, bool keepSnippets, bool dontParseLinks) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
-            parameters.Add("message_id", messageId.ToString());
+            parameters.Add("conversation_message_id", cmid.ToString());
             if (!String.IsNullOrEmpty(message)) parameters.Add("message", message);
             if (latitude > 0) parameters.Add("lat", latitude.ToString());
             if (longitude > 0) parameters.Add("long", longitude.ToString());
@@ -634,7 +634,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="payload">Payload of message.</param>
         /// <param name="dontParseLinks">true — links will not attach snippet.</param>
         /// <param name="disableMentions">true — mention of user will not generate notification for him.</param>
-        public async Task<MessageSendResponse> SendAsync(long groupId, long peerId, int randomId, string message, double latitude, double longitude, List<string> attachment, int replyTo, List<int> forwardMessages, List<string> groupForwardMessages, int stickerId, string keyboard = null, string payload = null, bool dontParseLinks = false, bool disableMentions = false, MessageIntent intent = MessageIntent.None) {
+        public async Task<MessageSendResponse> SendAsync(long groupId, long peerId, int randomId, string message, double latitude, double longitude, List<string> attachment, string forward, int stickerId, string keyboard = null, string payload = null, bool dontParseLinks = false, bool disableMentions = false, MessageIntent intent = MessageIntent.None) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -643,9 +643,7 @@ namespace ELOR.VKAPILib.Methods {
             if (latitude > 0) parameters.Add("lat", latitude.ToString().Replace(",", "."));
             if (longitude > 0) parameters.Add("long", longitude.ToString().Replace(",", "."));
             if (!attachment.IsNullOrEmpty()) parameters.Add("attachment", attachment.Combine());
-            if (replyTo > 0) parameters.Add("reply_to", replyTo.ToString());
-            if (!forwardMessages.IsNullOrEmpty()) parameters.Add("forward_messages", forwardMessages.Combine());
-            if (!groupForwardMessages.IsNullOrEmpty()) parameters.Add("group_forward_messages", groupForwardMessages.Combine());
+            if (!String.IsNullOrEmpty(forward)) parameters.Add("forward", forward);
             if (stickerId > 0) parameters.Add("sticker_id", stickerId.ToString());
             if (!String.IsNullOrEmpty(keyboard)) parameters.Add("keyboard", keyboard); // TODO for bots: Parse keyboard object instead of string
             if (!String.IsNullOrEmpty(payload)) parameters.Add("payload", payload);

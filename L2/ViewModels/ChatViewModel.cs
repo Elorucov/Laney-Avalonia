@@ -373,12 +373,12 @@ namespace ELOR.Laney.ViewModels {
 
         private void ForwardHereCommand(object o) {
             Composer.Clear();
-            Composer.AddForwardedMessages(SelectedMessages.SelectedItems.ToList(), session.GroupId);
+            Composer.AddForwardedMessages(PeerId, SelectedMessages.SelectedItems.ToList(), session.GroupId);
             SelectedMessages.Clear();
         }
 
         private void ForwardCommand(object o) {
-            session.Share(SelectedMessages.SelectedItems.ToList());
+            session.Share(PeerId, SelectedMessages.SelectedItems.ToList());
         }
 
         public void ShowContextMenuForSelectedMessages(object p) {
