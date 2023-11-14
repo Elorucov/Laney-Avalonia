@@ -234,7 +234,7 @@ namespace ELOR.Laney.Helpers {
 
             mark.Click += async (a, b) => {
                 try {
-                    var response = await session.API.Messages.MarkAsImportantAsync(new List<int> { message.Id }, true);
+                    var response = await session.API.Messages.MarkAsImportantAsync(message.PeerId, new List<int> { message.ConversationMessageId }, true);
                 } catch (Exception ex) {
                     await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
                 }
@@ -242,7 +242,7 @@ namespace ELOR.Laney.Helpers {
 
             unmark.Click += async (a, b) => {
                 try {
-                    var response = await session.API.Messages.MarkAsImportantAsync(new List<int> { message.Id }, false);
+                    var response = await session.API.Messages.MarkAsImportantAsync(message.PeerId, new List<int> { message.ConversationMessageId }, false);
                 } catch (Exception ex) {
                     await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
                 }
@@ -324,14 +324,14 @@ namespace ELOR.Laney.Helpers {
 
             mark.Click += async (a, b) => {
                 try {
-                    var response = await session.API.Messages.MarkAsImportantAsync(messages.Select(m => m.Id).ToList(), true);
+                    var response = await session.API.Messages.MarkAsImportantAsync(chat.PeerId, messages.Select(m => m.ConversationMessageId).ToList(), true);
                 } catch (Exception ex) {
                     await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
                 }
             };
             unmark.Click += async (a, b) => {
                 try {
-                    var response = await session.API.Messages.MarkAsImportantAsync(messages.Select(m => m.Id).ToList(), false);
+                    var response = await session.API.Messages.MarkAsImportantAsync(chat.PeerId, messages.Select(m => m.ConversationMessageId).ToList(), false);
                 } catch (Exception ex) {
                     await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
                 }

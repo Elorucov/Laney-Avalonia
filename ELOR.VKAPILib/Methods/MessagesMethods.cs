@@ -140,20 +140,6 @@ namespace ELOR.VKAPILib.Methods {
 
         /// <summary>Deletes one or more messages.</summary>
         /// <param name="groupId">Group ID.</param>
-        /// <param name="messageIds">Message IDs.</param>
-        /// <param name="spam">true — to mark message as spam.</param>
-        /// <param name="deleteForAll">true — to delete message for all (in 24 hours from the sending time).</param>
-        public async Task<Dictionary<string, int>> DeleteAsync(long groupId, List<int> messageIds, bool spam, bool deleteForAll) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
-            parameters.Add("message_ids", messageIds.Combine());
-            if (spam) parameters.Add("spam", "1");
-            if (deleteForAll) parameters.Add("delete_for_all", "1");
-            return await API.CallMethodAsync<Dictionary<string, int>>("messages.delete", parameters);
-        }
-
-        /// <summary>Deletes one or more messages.</summary>
-        /// <param name="groupId">Group ID.</param>
         /// <param name="peerId">Peer ID.</param>
         /// <param name="cmids">Message IDs in conversation.</param>
         /// <param name="spam">true — to mark message as spam.</param>
@@ -510,17 +496,6 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<bool>("messages.markAsAnsweredConversation", parameters);
         }
 
-        /// <summary>Marks and unmarks messages as important (starred).</summary>
-        /// <param name="ids">IDs of messages to mark as important.</param>
-        /// <param name="important">true — to add a star (mark as important), false — to remove the star.</param>
-        public async Task<MarkAsImportantResponse> MarkAsImportantAsync(List<int> ids, bool important) {
-            Dictionary<string, string> parameters = new Dictionary<string, string> {
-                { "message_ids", ids.Combine() },
-                { "important", important ? "1" : "0" }
-            };
-            return await API.CallMethodAsync<MarkAsImportantResponse>("messages.markAsImportant", parameters);
-        }
-
         /// <summary>Marks and unmarks messages as important (starred). Only from 5.217</summary>
         /// <param name="peerId">Peer ID.</param>
         /// <param name="cmids">IDs of messages in conversation to mark as important.</param>
@@ -548,7 +523,7 @@ namespace ELOR.VKAPILib.Methods {
 
         /// <summary>Marks messages as read.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
-        /// <param name="upToCMID">Conversation message IDs of messages to mark as read.</param>
+        /// <param name="upToCMID">IDs of messages in conversation to mark as read.</param>
         /// <param name="peerId">Destination ID.</param>
         public async Task<bool> MarkAsReadAsync(long groupId, long peerId, int upToCMID, bool markConversationAsRead = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();

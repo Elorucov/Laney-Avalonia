@@ -38,7 +38,7 @@ namespace ELOR.Laney.DataModels {
                 Text = youSign + msg.ToString();
             }
 
-            Id = message.Id;
+            Id = message.ConversationMessageId;
             PeerId = message.PeerId;
             SentDate = message.DateTime;
         }

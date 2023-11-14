@@ -153,7 +153,7 @@ namespace ELOR.Laney.Helpers {
                 string profile = $@"if (w{i}.profiles) {{
   var pi{i} = 0;
   while (pi{i} < w{i}.profiles.length) {{
-    response.profiles.push(w{i}.profiles[pi1]);
+    response.profiles.push(w{i}.profiles[pi{i}]);
     pi{i} = pi{i} + 1;
   }}
 }}";
@@ -162,7 +162,7 @@ namespace ELOR.Laney.Helpers {
                 string group = $@"if (w{i}.groups) {{
   var gi{i} = 0;
   while (gi{i} < w{i}.groups.length) {{
-    response.groups.push(w{i}.groups[gi1]);
+    response.groups.push(w{i}.groups[gi{i}]);
     gi{i} = gi{i} + 1;
   }}
 }}";
