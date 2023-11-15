@@ -156,7 +156,7 @@ namespace ELOR.Laney.Core {
                 devmenu.Add(captcha);
 
                 ActionSheetItem notif = new ActionSheetItem {
-                    Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
+                    Before = new VKIcon { Id = VKIconNames.Icon20ArticleOutline },
                     Header = "Show in-app notification",
                 };
                 notif.Click += (a, b) => {
@@ -165,7 +165,7 @@ namespace ELOR.Laney.Core {
                 devmenu.Add(notif);
 
                 ActionSheetItem snotif = new ActionSheetItem {
-                    Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
+                    Before = new VKIcon { Id = VKIconNames.Icon20NotificationOutline },
                     Header = "Show system notification",
                 };
                 snotif.Click += async (a, b) => {
@@ -179,11 +179,32 @@ namespace ELOR.Laney.Core {
                 devmenu.Add(snotif);
 
                 ActionSheetItem imgc = new ActionSheetItem {
-                    Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
+                    Before = new VKIcon { Id = VKIconNames.Icon20BlockOutline },
                     Header = "Clear images cache",
                 };
                 imgc.Click += (a, b) => LNetExtensions.ClearCachedImages();
                 devmenu.Add(imgc);
+
+                ActionSheetItem stemw = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
+                    Header = "Open emoji/stickers panel in separated window",
+                };
+                stemw.Click += (a, b) => {
+                    Window stemwnd = new Window {
+                        CanResize = false,
+                        Width = 400,
+                        Height = 438,
+                        Content = new Controls.EmojiStickerPicker {
+                            Width = 400,
+                            Height = 438,
+                            DataContext = new EmojiStickerPickerViewModel(this)
+                        },
+                        Title = "Emoji & stickers"
+                    };
+                    stemwnd.Show();
+                    stemwnd.AttachDevTools();
+                };
+                devmenu.Add(stemw);
             }
 
             if (devmenu.Count > 0) {

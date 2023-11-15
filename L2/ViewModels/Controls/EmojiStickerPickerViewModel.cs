@@ -44,8 +44,9 @@ namespace ELOR.Laney.ViewModels.Controls {
                     TabItem<object> spTab = new TabItem<object>(product.Title, new ObservableCollection<Sticker>(product.Stickers), image: product.Previews.FirstOrDefault().Uri);
                     Tabs.Add(spTab);
                 }
+                Log.Information($"EmojiStickerPickerVM: loaded {req2.Items.Count} sticker packs");
             } catch(Exception ex) {
-                Log.Error(ex, "Cannot get stickers!");
+                Log.Error(ex, "EmojiStickerPickerVM: Cannot get stickers!");
                 // TODO: snackbar.
             }
         }

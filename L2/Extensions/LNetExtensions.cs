@@ -21,7 +21,7 @@ namespace ELOR.Laney.Extensions {
     public static class LNetExtensions {
         static ConcurrentDictionary<string, WriteableBitmap> cachedImages = new ConcurrentDictionary<string, WriteableBitmap>();
         static ConcurrentDictionary<string, ManualResetEventSlim> nowLoading = new ConcurrentDictionary<string, ManualResetEventSlim>();
-        const int cachesLimit = 300;
+        const int cachesLimit = 500;
 
         public static void ClearCachedImages() {
             lock (cachedImages) {

@@ -89,7 +89,7 @@
           <DataTemplate>
             <Grid Width="28" Height="28">
               <vkui:VKIcon Id="{Binding IconId}" IsVisible="{Binding IconId, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-              <Image Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" controls:ImageLoader.Source="{Binding Image}"/>
+              <Image Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" DataContextChanged="PackImage_DataContextChanged"/>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

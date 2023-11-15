@@ -1,14 +1,17 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Media.Imaging;
+using ELOR.Laney.Core.Network;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using NeoSmart.Unicode;
+using Serilog;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 
 namespace ELOR.Laney.Controls {
@@ -43,10 +46,11 @@ namespace ELOR.Laney.Controls {
         }
 
         private void ChangeTabContentTemplate() {
-            if (ViewModel.SelectedTab.Content is ObservableCollection<EmojiGroup>) {
+            var content = ViewModel.SelectedTab.Content;
+            if (content is ObservableCollection<EmojiGroup>) {
                 StickersTabContent.IsVisible = false;
                 EmojisTabContent.IsVisible = true;
-            } else if (ViewModel.SelectedTab.Content is ObservableCollection<Sticker>) {
+            } else if (content is ObservableCollection<Sticker>) {
                 EmojisTabContent.IsVisible = false;
                 StickersTabContent.IsVisible = true;
             }
@@ -77,6 +81,25 @@ namespace ELOR.Laney.Controls {
                 ListBox lb = sender as ListBox;
                 Sticker sticker = (Sticker)lb.SelectedItem;
                 StickerPicked?.Invoke(this, sticker);
+            }
+        }
+
+        // TODO: method to download images without caching
+        private async void PackImage_DataContextChanged(object? sender, EventArgs e) {
+            if (sender is Image img && img.DataContext is TabItem<object> tab) {
+                if (tab.Image != null) {
+                    try {
+                        var response = await LNet.GetAsync(tab.Image);
+                        response.EnsureSuccessStatusCode();
+                        var bytes = await response.Content.ReadAsByteArrayAsync();
+                        Stream stream = new MemoryStream(bytes);
+                        if (bytes.Length == 0) throw new Exception("Image length is 0!");
+                        var bitmap = WriteableBitmap.DecodeToWidth(stream, 22, BitmapInterpolationMode.MediumQuality);
+                        img.Source = bitmap;
+                    } catch (Exception ex) {
+                        Log.Error(ex, $"EmojiStickerPickerUI: cannot load a sticker pack icon!");
+                    }
+                }
             }
         }
     }
