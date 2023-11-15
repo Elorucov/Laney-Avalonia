@@ -32,9 +32,9 @@ if ($channel -ne "") {
 
 echo "Current build: $($currentbuild)";
 
-$location = "$(Get-Location)/bin/Release/net7.0";
+$location = "$(Get-Location)/bin/Release/net8.0";
 if ($IsWindows) {
-    $location = "$(Get-Location)\bin\Release\net7.0";
+    $location = "$(Get-Location)\bin\Release\net8.0";
 }
 
 $uname = [Environment]::UserName.Replace("-", "");
@@ -43,13 +43,13 @@ $hname = "$(hostname)".Replace("-", "");
 if ($IsWindows) {
     $btagw1 = "$($currentversion)-win-x64-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw1;
-    $proc1 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-x64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:ServerGarbageCollection=true -p:PublishReadyToRun=true -p:Version=$($btagw1) -p:DefineConstants=WIN$($chstr)";
+    $proc1 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win-x64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:ServerGarbageCollection=true -p:PublishReadyToRun=true -p:Version=$($btagw1) -p:DefineConstants=WIN$($chstr)";
     $proc1.WaitForExit();
 	echo "Win x86-64 is done.$([Environment]::NewLine)";
 
     $btagw3 = "$($currentversion)-win-arm64-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw3;
-    $proc2 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win10-arm64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:ServerGarbageCollection=true -p:PublishReadyToRun=true -p:Version=$($btagw3) -p:DefineConstants=WIN$($chstr)";
+    $proc2 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win-arm64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:ServerGarbageCollection=true -p:PublishReadyToRun=true -p:Version=$($btagw3) -p:DefineConstants=WIN$($chstr)";
     $proc2.WaitForExit();
 	echo "Win arm64 is done.$([Environment]::NewLine)";
 }

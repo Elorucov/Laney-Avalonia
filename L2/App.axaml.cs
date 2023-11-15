@@ -224,6 +224,7 @@ namespace ELOR.Laney {
             string ver = BuildInfoFull;
             string[] sections = ver.Split('-');
             string datetime = $"{sections[4]}-{sections[5]}";
+            if (datetime.Contains('+')) datetime = datetime.Split('+')[0];
             var date = DateTime.ParseExact(datetime, "yyMMdd-HHmm", CultureInfo.InvariantCulture);
             return date;
         }
