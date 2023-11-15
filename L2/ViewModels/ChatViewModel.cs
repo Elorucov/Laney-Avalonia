@@ -566,7 +566,7 @@ namespace ELOR.Laney.ViewModels {
                 bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.ConversationMessageId == ReceivedMessages.LastOrDefault()?.ConversationMessageId;
                 ReceivedMessages.Add(msg);
                 if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
-                if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
+                // if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
                 if (msg.SenderId != session.Id) UnreadMessagesCount++;
                 if (canAddToDisplayedMessages) {
                     if (DisplayedMessages == null) {
@@ -716,7 +716,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         private async void LongPoll_MinorIdChanged(LongPoll longPoll, long peerId, int flags) {
-            if (peerId != PeerId) return;
+            if (peerId != PeerId || flags == 0) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 UpdateSortId(SortId.MajorId, flags);
             });

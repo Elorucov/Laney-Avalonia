@@ -173,6 +173,7 @@ namespace ELOR.Laney.Core {
             List<Tuple<long, int, bool>> MessagesFromAPI = new List<Tuple<long, int, bool>>();
             Dictionary<int, int> MessagesFromAPIFlags = new Dictionary<int, int>();
 
+            // TODO: для каждого события (кроме 10004, 10005 и 10018) создать отдельный метод.
             foreach (JsonArray u in updates) {
                 int eventId = (int)u[0];
                 switch (eventId) {
@@ -198,6 +199,7 @@ namespace ELOR.Laney.Core {
                         break;
                     case 10004:
                         int receivedMsgId = (int)u[1];
+                        int minor = (int)u[3];
                         long peerId4 = (long)u[4];
                         Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}");
                         Message msgFromHistory = messages?.Where(m => m.ConversationMessageId == receivedMsgId).FirstOrDefault();
@@ -221,6 +223,7 @@ namespace ELOR.Laney.Core {
                                 MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                             }
                         }
+                        MinorIdChanged?.Invoke(this, peerId4, minor);
                         break;
                     case 10005:
                     case 10018:
