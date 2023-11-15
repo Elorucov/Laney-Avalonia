@@ -675,6 +675,7 @@ namespace ELOR.Laney.ViewModels {
         private async void LongPoll_ConversationFlagReset(LongPoll longPoll, long peerId, int flags) {
             if (PeerId != peerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
+                if (flags.HasFlag(1048576)) IsMarkedAsUnread = false;
                 bool mention = flags.HasFlag(1024); // Упоминаний больше нет
                 bool mark = flags.HasFlag(16384); // Маркированного сообщения больше нет
                 if (mark) {
@@ -687,6 +688,7 @@ namespace ELOR.Laney.ViewModels {
         private async void LongPoll_ConversationFlagSet(LongPoll longPoll, long peerId, int flags) {
             if (peerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
+                if (flags.HasFlag(1048576)) IsMarkedAsUnread = true;
                 bool mention = flags.HasFlag(1024); // Наличие упоминания
                 bool mark = flags.HasFlag(16384); // Наличие маркированного сообщения
                 if (mark) {

@@ -87,7 +87,7 @@ namespace ELOR.Laney.Helpers {
 
             read.Click += async (a, b) => {
                 try {
-                    var result = await session.API.Messages.MarkAsReadAsync(session.GroupId, chat.PeerId, chat.LastMessage.Id, true);
+                    var result = await session.API.Messages.MarkAsReadAsync(session.GroupId, chat.PeerId, chat.LastMessage.ConversationMessageId, true);
                 } catch (Exception ex) {
                     await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
                 }
@@ -112,7 +112,7 @@ namespace ELOR.Laney.Helpers {
             if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
 
             if (chat.UnreadMessagesCount > 0 || chat.IsMarkedAsUnread) ash.Items.Add(read);
-            if (chat.UnreadMessagesCount == 0 || !chat.IsMarkedAsUnread) ash.Items.Add(unread);
+            if (chat.UnreadMessagesCount == 0 && !chat.IsMarkedAsUnread) ash.Items.Add(unread);
 
             if (chat.PeerId != session.Id) {
                 if (!notificationsDisabled) ash.Items.Add(notifoff);
