@@ -45,5 +45,6 @@
       </Grid>
     </Grid>
   <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="True" CanMove="True"/>
+  <Rectangle x:Name="SearchBoxTopMarginForLinux" Height="12"/>
   </Grid>
 </vkw:DialogWindow>

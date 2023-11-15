@@ -43,6 +43,9 @@ namespace ELOR.Laney.Views.Modals {
             } else {
                 Grid.SetRow(Content, 1);
                 TitleBar.CanShowTitle = true;
+#if LINUX
+            TitleBar.IsVisible = false;
+#endif
                 DataContext = user;
             }
         }
