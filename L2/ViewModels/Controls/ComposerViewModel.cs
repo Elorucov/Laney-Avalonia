@@ -239,32 +239,18 @@ namespace ELOR.Laney.ViewModels.Controls {
             string forward = String.Empty;
 
             if (replyTo > 0) {
-                object fwd = new { 
-                    peer_id = Chat.PeerId,
-                    conversation_message_ids = new List<int> { replyTo },
-                    is_reply = true
-                };
-                forward = JsonSerializer.Serialize(fwd);
+                forward = $"{{\"peer_id\":{Chat.PeerId},\"conversation_message_ids\":[{replyTo}],\"is_reply\":true}}";
             } else if (favm != null) {
                 List<int> cmids = new List<int>();
                 if (favm.ForwardedMessagesFromGroupId > 0) {
                     long ownerId = favm.ForwardedMessagesFromGroupId * -1;
                     foreach (var m in favm.ForwardedMessages) cmids.Add(m.ConversationMessageId);
-
-                    object fwd = new {
-                        owner_id = ownerId,
-                        peer_id = favm.ForwardedMessagesFromPeerId,
-                        conversation_message_ids = cmids
-                    };
-                    forward = JsonSerializer.Serialize(fwd);
+                    string cmidstr = String.Join(',', cmids);
+                    forward = $"{{\"owner_id\":{ownerId},\"peer_id\":{favm.ForwardedMessagesFromPeerId},\"conversation_message_ids\":[{cmidstr}]}}";
                 } else {
                     cmids = favm.ForwardedMessages.Select(m => m.ConversationMessageId).ToList();
-
-                    object fwd = new {
-                        peer_id = favm.ForwardedMessagesFromPeerId,
-                        conversation_message_ids = cmids
-                    };
-                    forward = JsonSerializer.Serialize(fwd);
+                    string cmidstr = String.Join(',', cmids);
+                    forward = $"{{\"peer_id\":{favm.ForwardedMessagesFromPeerId},\"conversation_message_ids\":[{cmidstr}]}}";
                 }
             }
 
