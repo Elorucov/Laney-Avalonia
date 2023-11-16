@@ -21,7 +21,7 @@ namespace ELOR.Laney.Converters {
                 };
                 if (d.Preview != null) {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    b.SetImageBackgroundAsync(d.GetSizeAndUriForThumbnail(48).Uri, 48, 48);
+                    b.SetImageBackgroundAsync(d.GetSizeAndUriForThumbnail(b.Width, b.Height).Uri, b.Width, b.Height);
 #pragma warning restore CS4014
                 } else {
                     b.Child = new VKIcon {

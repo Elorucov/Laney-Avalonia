@@ -142,8 +142,11 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Images
             if (previews.Count == 1) {
-                var preview = previews[0].GetSizeAndUriForThumbnail();
-                var size = new Size(preview.Width, preview.Height);
+                var size = previews[0].GetOriginalSize();
+                double w = imageFixedWidth;
+                double h = size.Height == 0 ? w : Math.Min(w / size.Width * size.Height, w / 9 * 16);
+
+                var preview = previews[0].GetSizeAndUriForThumbnail(w, h);
                 var uri = preview.Uri;
 
                 Button imgBtn = new Button {
@@ -151,9 +154,8 @@ namespace ELOR.Laney.Controls.Attachments {
                     Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
                     Padding = new Thickness(0),
                     CornerRadius = new CornerRadius(NoMargins ? 4 : 14),
-                    Width = imageFixedWidth,
-                    Height = size.Width == 0 || size.Height == 0 ? imageFixedWidth :
-                        Math.Min(imageFixedWidth / size.Width * size.Height, imageFixedWidth / 9 * 16),
+                    Width = w,
+                    Height = h,
                     Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4)
                 };
                 if (uri != null) _ = imgBtn.SetImageBackgroundAsync(uri, Width, Height);
@@ -162,7 +164,8 @@ namespace ELOR.Laney.Controls.Attachments {
             } else if (previews.Count > 1) {
                 List<Size> sizes = new List<Size>();
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
-                    var prevsize = preview.GetSizeAndUriForThumbnail();
+                    // var prevsize = preview.GetSizeAndUriForThumbnail(imageFixedWidth, imageFixedWidth);
+                    var prevsize = preview.GetOriginalSize();
                     sizes.Add(new Size(prevsize.Width, prevsize.Height));
                 }
 
@@ -185,7 +188,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 int i = 0;
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
                     Rect rect = thumbRects[i];
-                    var p = preview.GetSizeAndUriForThumbnail();
+                    var p = preview.GetSizeAndUriForThumbnail(rect.Width, rect.Height);
                     bool[] corner = corners[i];
 
                     double tl = !NoMargins && corner[0] ? 14 : 4;
@@ -279,7 +282,7 @@ namespace ELOR.Laney.Controls.Attachments {
                         ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link.Button.Action.Url);
                     }
                     if (!String.IsNullOrEmpty(link.Description)) ToolTip.SetTip(ea, link.Description);
-                    if (link.Photo != null) ea.Preview = link.Photo.GetSizeAndUriForThumbnail().Uri;
+                    if (link.Photo != null) ea.Preview = link.Photo.GetSizeAndUriForThumbnail(Constants.ExtendedAttachmentPreviewSize, Constants.ExtendedAttachmentPreviewSize).Uri;
                     ea.Click += (a, b) => Launcher.LaunchUrl(link.Url);
                     StandartAttachments.Children.Add(ea);
                 } else {
@@ -383,7 +386,7 @@ namespace ELOR.Laney.Controls.Attachments {
                             Margin = new Thickness(0, 0, 0, 8),
                             Title = Localizer.Instance["story"],
                             Subtitle = def,
-                            Preview = st.Video != null ? st.Video.FirstFrameForStory.Uri : st.Photo.GetSizeAndUriForThumbnail().Uri,
+                            Preview = st.Video != null ? st.Video.FirstFrameForStory.Uri : st.Photo.GetSizeAndUriForThumbnail(Constants.ExtendedAttachmentPreviewSize, Constants.ExtendedAttachmentPreviewSize).Uri,
                             ActionButtonText = Localizer.Instance["watch"],
                             Name = st.ObjectType
                         };

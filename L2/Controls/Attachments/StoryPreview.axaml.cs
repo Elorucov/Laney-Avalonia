@@ -45,10 +45,9 @@ namespace ELOR.Laney.Controls.Attachments {
                 return;
             }
 
-            int width = Convert.ToInt32(PreviewRoot.Width);
             Uri preview = null;
             switch (story.Type) {
-                case StoryType.Photo: preview = story.Photo.GetSizeAndUriForThumbnail(width).Uri; break;
+                case StoryType.Photo: preview = story.Photo.GetSizeAndUriForThumbnail(PreviewRoot.Width, PreviewRoot.Height).Uri; break;
                 case StoryType.Video: preview = story.Video.FirstFrameForStory.Uri; break;
             }
 

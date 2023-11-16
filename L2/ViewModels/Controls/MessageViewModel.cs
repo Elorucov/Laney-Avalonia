@@ -240,11 +240,11 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (_imagesCount > 0) {
                 Attachment a = images.FirstOrDefault();
                 if (a.Photo != null) {
-                    PreviewImageUri = a.Photo.GetSizeAndUriForThumbnail().Uri;
+                    PreviewImageUri = a.Photo.GetSizeAndUriForThumbnail(Constants.CompactMessagePreviewSize, Constants.CompactMessagePreviewSize).Uri;
                 } else if (a.Video != null) {
-                    PreviewImageUri = a.Video.GetSizeAndUriForThumbnail().Uri;
+                    PreviewImageUri = a.Video.GetSizeAndUriForThumbnail(Constants.CompactMessagePreviewSize, Constants.CompactMessagePreviewSize).Uri;
                 } else if (a.Photo != null) {
-                    PreviewImageUri = a.Document.Preview?.Photo?.GetSizeAndUriForThumbnail().Uri;
+                    PreviewImageUri = a.Document.Preview?.Photo?.GetSizeAndUriForThumbnail(Constants.CompactMessagePreviewSize, Constants.CompactMessagePreviewSize).Uri;
                 }
             }
         }

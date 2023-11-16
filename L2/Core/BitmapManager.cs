@@ -1,5 +1,6 @@
 ﻿using Avalonia.Media.Imaging;
 using ELOR.Laney.Core.Network;
+using ELOR.Laney.Helpers;
 using Serilog;
 using System;
 using System.Collections.Concurrent;
@@ -101,18 +102,12 @@ namespace ELOR.Laney.Core {
                 return bitmap;
             }
 
-
-            double sw = 0, sh = 0;
-            sw = dw / iw;
-            sh = dh / ih;
-            double zf = Math.Max(sw, sh); // zoom
-
-            double rw = Math.Ceiling(iw * zf);
-            double rh = Math.Ceiling(ih * zf);
+            double rw = 0, rh = 0;
+            ElorMath.Resize(iw, ih, dw, dh, out rw, out rh);
 
             Log.Verbose($"GetResizedBitmap: bitmap size is {iw}x{ih}, container size is {dw}x{dh}, resized to {rw}x{rh}.");
 
-            // github.com/AvaloniaUI/Avalonia/issues/8444
+            // https://github.com/AvaloniaUI/Avalonia/issues/8444
             return bitmap.CreateScaledBitmap(new Avalonia.PixelSize((int)rw, (int)rh));
         }
 

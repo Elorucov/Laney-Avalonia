@@ -103,14 +103,14 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private async void SetUp(Photo p) {
             IconId = VKIconNames.Icon24Gallery;
-            PreviewImage = await BitmapManager.GetBitmapAsync(p.GetSizeAndUriForThumbnail(width).Uri, width, height);
+            PreviewImage = await BitmapManager.GetBitmapAsync(p.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
             Attachment = p;
         }
 
         private async void SetUp(Video v) {
             IconId = VKIconNames.Icon24Video;
             DisplayName = v.Title;
-            if (v.Image != null) PreviewImage = await BitmapManager.GetBitmapAsync(v.GetSizeAndUriForThumbnail(width).Uri, width, height);
+            if (v.Image != null) PreviewImage = await BitmapManager.GetBitmapAsync(v.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
             ExtraInfo = v.DurationTime.ToString(@"h\:mm\:ss");
             Attachment = v;
         }
@@ -118,7 +118,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private async void SetUp(Document d) {
             IconId = VKIconNames.Icon24Document;
             if (d.Preview != null) {
-                PreviewImage = await BitmapManager.GetBitmapAsync(d.GetSizeAndUriForThumbnail(width).Uri, width, height);
+                PreviewImage = await BitmapManager.GetBitmapAsync(d.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
                 ExtraInfo = d.Extension.ToUpper();
             } else {
                 DisplayName = d.Title;

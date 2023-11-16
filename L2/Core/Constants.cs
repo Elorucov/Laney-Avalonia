@@ -7,6 +7,9 @@
         // For attachment picker
         public const int OutboundAttachmentUIWidth = 88;
         public const int OutboundAttachmentUIHeight = 88;
+        public const double CompactMessagePreviewSize = 36;
+        public const double ChatHeaderAvatarSize = 36;
+        public const double ExtendedAttachmentPreviewSize = 80;
         public const int PhotoUploadCommand = 0;
         public const int VideoUploadCommand = 1;
         public const int FileUploadCommand = 2;

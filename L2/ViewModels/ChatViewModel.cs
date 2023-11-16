@@ -601,7 +601,7 @@ namespace ELOR.Laney.ViewModels {
                     Title = action.Text;
                     break;
                 case "chat_photo_update":
-                    if (attachments != null) Avatar = attachments[0].Photo.GetSizeAndUriForThumbnail().Uri;
+                    if (attachments != null) Avatar = attachments[0].Photo.GetSizeAndUriForThumbnail(Constants.ChatHeaderAvatarSize, Constants.ChatHeaderAvatarSize).Uri;
                     break;
                 case "chat_photo_remove":
                     Avatar = new Uri("https://vk.com/images/icons/im_multichat_200.png");
