@@ -177,6 +177,9 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("is_expired")]
         public bool IsExpired { get; set; }
 
+        [JsonPropertyName("is_unavailable")]
+        public bool IsUnavailable { get; set; }
+
         [JsonIgnore]
         public bool IsPartial { get; private set; }
 

@@ -49,6 +49,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private string _payload;
         private int _ttl;
         private bool _isExpired;
+        private bool _isUnavailable;
         private MessageVMState _state;
 
         private bool _isSenderNameVisible;
@@ -82,6 +83,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         public string Payload { get { return _payload; } private set { _payload = value; OnPropertyChanged(); } }
         public int TTL { get { return _ttl; } private set { _ttl = value; OnPropertyChanged(); } }
         public bool IsExpired { get { return _isExpired; } private set { _isExpired = value; OnPropertyChanged(); } }
+        public bool IsUnavailable { get { return _isUnavailable; } private set { _isUnavailable = value; OnPropertyChanged(); } }
         public MessageVMState State { get { return _state; } set { _state = value; OnPropertyChanged(); } }
         public bool IsOutgoing { get { return session.Id == SenderId; } }
 
@@ -129,6 +131,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             Payload = msg.PayLoad;
             TTL = Math.Max(msg.ExpireTTL, msg.TTL);
             IsExpired = msg.IsExpired;
+            IsUnavailable = msg.IsUnavailable;
 
             if (msg.ForwardedMessages != null) {
                 ForwardedMessages.Clear();

@@ -391,7 +391,7 @@ namespace ELOR.Laney.ViewModels {
 
         public void GoToMessage(MessageViewModel message) {
             if (message == null) return;
-            if (message.ConversationMessageId > 0) {
+            if (message.ConversationMessageId > 0 && !message.IsUnavailable) {
                 GoToMessage(message.ConversationMessageId);
             } else {
                 ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
