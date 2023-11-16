@@ -313,7 +313,7 @@ namespace ELOR.Laney.Controls {
                 var glat = Message.Location.Coordinates.Latitude.ToString().Replace(",", ".");
                 var w = Map.Width * App.Current.DPI;
                 var h = Map.Height * App.Current.DPI;
-                Map.SetImageFillAsync(new Uri($"https://static-maps.yandex.ru/1.x/?ll={glong},{glat}&size={w},{h}&z=12&lang=ru_RU&l=pmap&pt={glong},{glat},vkbkm"), Convert.ToInt32(Map.Width));
+                Map.SetImageFillAsync(new Uri($"https://static-maps.yandex.ru/1.x/?ll={glong},{glat}&size={w},{h}&z=12&lang=ru_RU&l=pmap&pt={glong},{glat},vkbkm"), Map.Width, Map.Height);
             }
 
             // Time & indicator class

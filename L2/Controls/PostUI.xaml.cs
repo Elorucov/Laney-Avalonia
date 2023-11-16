@@ -80,7 +80,7 @@ namespace ELOR.Laney.Controls {
         private void RenderElement(MessageViewModel message) {
             Avatar.Background = message.SenderId.GetGradient();
             Avatar.Initials = message.SenderName.GetInitials();
-            Avatar.SetImageAsync(message.SenderAvatar, Convert.ToInt32(Avatar.Width));
+            Avatar.SetImageAsync(message.SenderAvatar, Avatar.Width, Avatar.Height);
 
             Author.Text = message.SenderName;
             PostInfo.Text = message.SentTime.ToHumanizedString(true);

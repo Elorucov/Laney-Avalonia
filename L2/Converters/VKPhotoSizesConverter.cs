@@ -11,8 +11,14 @@ namespace ELOR.Laney.Converters {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             if (value != null) {
                 if (value is IPreview preview) {
-                    int width = 360;
-                    Int32.TryParse((string)parameter, out width);
+                    int width = 0, height = 0;
+
+                    if (parameter is string size) {
+                        var s = size.Split('x');
+                        Int32.TryParse(s[0], out width);
+                        Int32.TryParse(s[1], out height);
+                    }
+
                     return preview.GetSizeAndUriForThumbnail(width).Uri;
                 } else if (value is Sticker sticker) {
                     double width = MessageBubble.BUBBLE_FIXED_WIDTH;

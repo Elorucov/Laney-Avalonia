@@ -65,7 +65,7 @@
             </Style>
           </Grid.Styles>
         <Button x:Name="AvatarButton" Classes="Tertiary" Padding="0" VerticalAlignment="Bottom" Margin="0,0,8,2" Width="32" Height="32">
-            <vkui:Avatar x:Name="SenderAvatar" Foreground="White"
+            <vkui:Avatar x:Name="SenderAvatar" Foreground="White" Width="32" Height="32"
                        Initials="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ic}}"
                        Background="{Binding Message.SenderId, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource agc}}"
                        controls:ImageLoader.Image="{Binding Message.SenderAvatar, RelativeSource={RelativeSource TemplatedParent}}"/>

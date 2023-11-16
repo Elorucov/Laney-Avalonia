@@ -156,7 +156,7 @@ namespace ELOR.Laney.Controls.Attachments {
                         Math.Min(imageFixedWidth / size.Width * size.Height, imageFixedWidth / 9 * 16),
                     Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4)
                 };
-                if (uri != null) _ = imgBtn.SetImageBackgroundAsync(uri, Convert.ToInt32(imageFixedWidth));
+                if (uri != null) _ = imgBtn.SetImageBackgroundAsync(uri, Width, Height);
                 imgBtn.Click += ImgBtn_Click;
                 StandartAttachments.Children.Add(imgBtn);
             } else if (previews.Count > 1) {
@@ -203,7 +203,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     };
                     Canvas.SetLeft(imgBtn, rect.Left);
                     Canvas.SetTop(imgBtn, rect.Top);
-                    if (p.Uri != null) _ = imgBtn.SetImageBackgroundAsync(p.Uri, Convert.ToInt32(rect.Width));
+                    if (p.Uri != null) _ = imgBtn.SetImageBackgroundAsync(p.Uri, rect.Width, rect.Height);
                     imgBtn.Click += ImgBtn_Click;
                     canvas.Children.Add(imgBtn);
                     i++;
@@ -233,7 +233,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     RadiusX = 14, RadiusY = 14,
                     Name = graffiti.ObjectType
                 };
-                grImage.SetImageFillAsync(graffiti.Uri);
+                grImage.SetImageFillAsync(graffiti.Uri, grImage.Width, grImage.Height);
                 StandartAttachments.Children.Add(grImage);
             }
 

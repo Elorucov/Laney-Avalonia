@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using Serilog;
 using System;
@@ -28,10 +29,13 @@ namespace ELOR.Laney.Controls {
         private static async void OnSourceChanged(Image sender, Uri? uri) {
             // SetIsLoading(sender, true);
 
+            double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
+            double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
+
             try {
                 var bitmap = uri == null
                 ? null
-                : await LNetExtensions.TryGetCachedBitmapAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
+                : await BitmapManager.GetBitmapAsync(uri, dw, dh);
                 if (GetSource(sender) != uri) return;
                 sender.Source = bitmap;
                 sender.Unloaded += Sender_Unloaded;
@@ -42,20 +46,30 @@ namespace ELOR.Laney.Controls {
 
             // SetIsLoading(sender, false);
         }
+
         private static async void OnBackgroundSourceChanged(Border sender, Uri uri) {
+            double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
+            double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
+
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            await sender.SetImageBackgroundAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
+            await sender.SetImageBackgroundAsync(uri, dw, dh);
             sender.Unloaded += Sender_Unloaded;
         }
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {
+            double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
+            double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
+
             sender.Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            sender.SetImageFillAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
+            sender.SetImageFillAsync(uri, dw, dh);
             sender.Unloaded += Sender_Unloaded;
         }
 
         private static void OnImageChanged(Avatar sender, Uri uri) {
-            sender.SetImageAsync(uri, sender.Width != 0 ? (int)sender.Width : (int)sender.DesiredSize.Width);
+            double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
+            double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
+
+            sender.SetImageAsync(uri, dw, dh);
             sender.Unloaded += Sender_Unloaded;
         }
 

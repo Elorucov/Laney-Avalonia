@@ -54,7 +54,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             if (preview == null) return;
 
-            await PreviewRoot.SetImageBackgroundAsync(preview, width);
+            await PreviewRoot.SetImageBackgroundAsync(preview, PreviewRoot.Width, PreviewRoot.Height);
         }
 
         private void SetRestrictionInfo(string info) {

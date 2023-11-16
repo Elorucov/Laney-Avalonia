@@ -51,7 +51,6 @@ namespace ELOR.Laney.Extensions {
         public static PhotoSizes GetSizeAndUriForThumbnail(this IPreview preview, int maxWidth = 360) {
             maxWidth = Convert.ToInt32(maxWidth * App.Current.DPI);
             PhotoSizes ps = new PhotoSizes {
-                // Url = "avares://laney/Assets/blank.png"
                 Url = null
             };
             if (preview is Photo p) {

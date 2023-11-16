@@ -42,7 +42,7 @@ namespace ELOR.Laney.Views.Media {
                     OwnerName.Text = name;
                     OwnerAvatar.Background = attachment.OwnerId.GetGradient();
                     OwnerAvatar.Initials = name;
-                    OwnerAvatar.SetImageAsync(owner.Item3);
+                    OwnerAvatar.SetImageAsync(owner.Item3, OwnerAvatar.Width, OwnerAvatar.Height);
                 }
 
                 if (attachment is Photo photo) {

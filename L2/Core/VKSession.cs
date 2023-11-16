@@ -69,7 +69,7 @@ namespace ELOR.Laney.Core {
                     Width = 20,
                     Height = 20
                 };
-                ava.SetImageAsync(session.Avatar);
+                ava.SetImageAsync(session.Avatar, ava.Width, ava.Height);
                 ActionSheetItem item = new ActionSheetItem {
                     Before = ava,
                     Header = session.Name,
@@ -169,7 +169,7 @@ namespace ELOR.Laney.Core {
                     Header = "Show system notification",
                 };
                 snotif.Click += async (a, b) => {
-                    var ava = await LNetExtensions.GetBitmapAsync(this.Avatar);
+                    var ava = await BitmapManager.GetBitmapAsync(this.Avatar);
                     var t = new ToastNotification(true, Name, "Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog!", "Caption", ava);
                     t.OnClick += async () => {
                         await new VKUIDialog("Result", t.AssociatedObject.ToString()).ShowDialog<int>(ModalWindow);
@@ -182,7 +182,7 @@ namespace ELOR.Laney.Core {
                     Before = new VKIcon { Id = VKIconNames.Icon20BlockOutline },
                     Header = "Clear images cache",
                 };
-                imgc.Click += (a, b) => LNetExtensions.ClearCachedImages();
+                imgc.Click += (a, b) => BitmapManager.ClearCachedImages();
                 devmenu.Add(imgc);
 
                 ActionSheetItem stemw = new ActionSheetItem {
@@ -221,7 +221,7 @@ namespace ELOR.Laney.Core {
 
         public static NativeMenu TrayMenu { get; private set; }
 
-        private static async void SetUpTrayMenu() {
+        private static void SetUpTrayMenu() {
             TrayMenu = new NativeMenu();
 
             foreach (var session in VKSession.Sessions) {
@@ -248,7 +248,7 @@ namespace ELOR.Laney.Core {
             TrayMenu.Items.Add(exit);
 
             TrayIcon icon = new TrayIcon {
-                Icon = new WindowIcon(await AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon()))),
+                Icon = new WindowIcon(AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon()))),
                 Menu = TrayMenu,
                 IsVisible = true,
                 ToolTipText = "Laney"
@@ -453,7 +453,7 @@ namespace ELOR.Laney.Core {
                         Width = 130,
                         Height = 50
                     };
-                    captchaImg.SetUriSourceAsync(image, Convert.ToInt32(captchaImg.Width));
+                    captchaImg.SetUriSourceAsync(image, captchaImg.Width, captchaImg.Height);
                     TextBox codeTxt = new TextBox {
                         Width = 130,
                         MaxLength = 10,

@@ -33,7 +33,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
         private async void CarouselElementUI_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
             if (e.Property == ElementProperty && Element != null) {
-                await CardImage.SetImageBackgroundAsync(Element.Photo.GetSizeAndUriForThumbnail(270).Uri, 270);
+                await CardImage.SetImageBackgroundAsync(Element.Photo.GetSizeAndUriForThumbnail(270).Uri, 270, 270);
 
                 Buttons.Children.Clear();
                 VKAPIHelper.GenerateButtons(Buttons, Element.Buttons);

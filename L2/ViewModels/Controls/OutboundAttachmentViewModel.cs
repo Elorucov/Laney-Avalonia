@@ -7,7 +7,6 @@ using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Upload;
-using System.Text.Json.Serialization;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -100,17 +99,18 @@ namespace ELOR.Laney.ViewModels.Controls {
         #region Setup
 
         int width = Constants.OutboundAttachmentUIWidth;
+        int height = Constants.OutboundAttachmentUIHeight;
 
         private async void SetUp(Photo p) {
             IconId = VKIconNames.Icon24Gallery;
-            PreviewImage = await LNetExtensions.GetBitmapAsync(p.GetSizeAndUriForThumbnail(width).Uri, width);
+            PreviewImage = await BitmapManager.GetBitmapAsync(p.GetSizeAndUriForThumbnail(width).Uri, width, height);
             Attachment = p;
         }
 
         private async void SetUp(Video v) {
             IconId = VKIconNames.Icon24Video;
             DisplayName = v.Title;
-            if (v.Image != null) PreviewImage = await LNetExtensions.GetBitmapAsync(v.GetSizeAndUriForThumbnail(width).Uri, width);
+            if (v.Image != null) PreviewImage = await BitmapManager.GetBitmapAsync(v.GetSizeAndUriForThumbnail(width).Uri, width, height);
             ExtraInfo = v.DurationTime.ToString(@"h\:mm\:ss");
             Attachment = v;
         }
@@ -118,7 +118,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private async void SetUp(Document d) {
             IconId = VKIconNames.Icon24Document;
             if (d.Preview != null) {
-                PreviewImage = await LNetExtensions.GetBitmapAsync(d.GetSizeAndUriForThumbnail(width).Uri, width);
+                PreviewImage = await BitmapManager.GetBitmapAsync(d.GetSizeAndUriForThumbnail(width).Uri, width, height);
                 ExtraInfo = d.Extension.ToUpper();
             } else {
                 DisplayName = d.Title;

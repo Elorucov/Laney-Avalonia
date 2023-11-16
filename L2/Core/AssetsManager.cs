@@ -1,25 +1,21 @@
 ﻿using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Styling;
 using ELOR.Laney.Core.Localization;
 using System;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class AssetsManager {
-        public static async Task<Bitmap> GetBitmapFromUri(Uri uri, int decodeWidth = 0) {
+        public static Bitmap GetBitmapFromUri(Uri uri) {
             Stream stream = OpenAsset(uri);
-            return decodeWidth > 0
-                ? await Task.Run(() => Bitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.HighQuality))
-                : new Bitmap(stream);
+            return new Bitmap(stream);
         }
 
-        public static WriteableBitmap GetWBitmapFromUri(Uri uri, int decodeWidth = 0) {
+        public static WriteableBitmap GetWBitmapFromUri(Uri uri) {
             Stream stream = OpenAsset(uri);
-            return WriteableBitmap.DecodeToWidth(stream, decodeWidth, BitmapInterpolationMode.MediumQuality);
+            return WriteableBitmap.Decode(stream);
         }
 
         public static Stream OpenAsset(Uri uri) {

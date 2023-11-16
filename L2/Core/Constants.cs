@@ -6,6 +6,7 @@
 
         // For attachment picker
         public const int OutboundAttachmentUIWidth = 88;
+        public const int OutboundAttachmentUIHeight = 88;
         public const int PhotoUploadCommand = 0;
         public const int VideoUploadCommand = 1;
         public const int FileUploadCommand = 2;

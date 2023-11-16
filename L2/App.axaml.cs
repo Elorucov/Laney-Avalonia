@@ -124,11 +124,11 @@ namespace ELOR.Laney {
             t.Start();
         }
 
-        private static async void UpdateTrayIcon() {
+        private static void UpdateTrayIcon() {
             TrayIcons icons = Application.Current.GetValue(TrayIcon.IconsProperty);
             if (icons != null && icons.Count > 0) {
                 TrayIcon icon = icons[0];
-                icon.Icon = new WindowIcon(await AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon())));
+                icon.Icon = new WindowIcon(AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon())));
             }
         }
 
