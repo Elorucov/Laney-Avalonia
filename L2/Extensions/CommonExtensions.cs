@@ -52,7 +52,8 @@ namespace ELOR.Laney.Extensions {
 
         public static Size GetOriginalSize(this IPreview preview) {
             if (preview is Photo p) {
-                return new Size(p.Width, p.Height);
+                var msp = p.MaximalSizedPhoto;
+                return new Size(msp.Width, msp.Height);
             } else if (preview is Video v) {
                 return new Size(v.Width, v.Height);
             } else if (preview is Document d && d.Preview?.Photo != null && d.Preview.Photo.Sizes.Count > 0) {
