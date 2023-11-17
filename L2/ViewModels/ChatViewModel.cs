@@ -439,7 +439,7 @@ namespace ELOR.Laney.ViewModels {
                 MembersUsers = mhr.Profiles;
                 MembersGroups = mhr.Groups;
                 Setup(mhr.Conversation);
-                mhr.Messages.Reverse();
+                mhr.Messages?.Reverse();
                 DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
 
                 await Task.Delay(32);

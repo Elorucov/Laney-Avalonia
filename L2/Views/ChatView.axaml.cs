@@ -309,7 +309,11 @@ namespace ELOR.Laney.Views {
                 }
             }
             UpdateDateUnderHeader(fv);
-            HopNavContainer.IsVisible = lv == null || Chat?.LastMessage?.ConversationMessageId != lv.ConversationMessageId;
+            if (Chat.DisplayedMessages.Count > 0) {
+                HopNavContainer.IsVisible = lv == null || Chat?.LastMessage?.ConversationMessageId != lv.ConversationMessageId;
+            } else {
+                HopNavContainer.IsVisible = false;
+            }
         }
 
         private void UpdateDateUnderHeader(MessageViewModel msg) {

@@ -13,11 +13,8 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static bool IsLargeOrEqualThanMax(double width, double height, double maxWidth, double maxHeight) {
-            //if (width > maxWidth && height > maxHeight) return true;
-            //if (width < maxWidth && height < maxHeight) return false;
             double rw = 0, rh = 0;
             double zoom = Resize(width, height, maxWidth, maxHeight, out rw, out rh);
-
             return zoom < 1;
         }
     }

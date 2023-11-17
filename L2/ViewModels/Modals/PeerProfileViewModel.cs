@@ -713,10 +713,6 @@ namespace ELOR.Laney.ViewModels.Modals {
             ivm.IsLoading = false;
         }
 
-        private string GetEmptyTextForTab(HistoryAttachmentMediaType type) {
-            return "Empty";
-        }
-
         #endregion
     }
 }

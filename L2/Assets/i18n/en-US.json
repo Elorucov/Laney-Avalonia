@@ -309,7 +309,7 @@
   "pp_attachments_video": "Videos from the chat will be displayed here",
   "pp_attachments_audio": "Music from the chat will be displayed here",
   "pp_attachments_doc": "Files from the chat will be displayed here",
-  "pp_attachments_link": "Links from the chat will be displayed here",
+  "pp_attachments_share": "Links from the chat will be displayed here",
 
   "admin": "admin",
   "created_on_m": "created this chat",

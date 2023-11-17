@@ -14,7 +14,8 @@
                  controls:ImageLoader.Image="{Binding Item2}"/>
     <StackPanel Grid.Column="1" VerticalAlignment="Center">
       <TextBlock Text="{Binding Item3}" Classes="Default" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
-      <TextBlock Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{Binding Item4, Converter={x:Static ObjectConverters.IsNotNull}, TargetNullValue=False, FallbackValue=False}" Text="{Binding Item4}"/>
+      <!--<TextBlock Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{Binding Item4, Converter={x:Static StringConverters.IsNotNullOrEmpty}, TargetNullValue=False, FallbackValue=False}" Text="{Binding Item4}"/>-->
+      <TextBlock x:Name="Subtitle" Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Item4}"/>
     </StackPanel>
     <Button x:Name="CommandButton" Grid.Column="2" Classes="Tertiary" Padding="0" Width="32" Height="32" IsVisible="{Binding Item5, Converter={x:Static ObjectConverters.IsNotNull}}" ToolTip.Tip="{Binding Item5.Label}" Command="{Binding Item5.Action}">
       <vkui:VKIcon Id="{Binding Item5.IconId}"/>
