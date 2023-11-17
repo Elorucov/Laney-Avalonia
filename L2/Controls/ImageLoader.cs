@@ -38,7 +38,7 @@ namespace ELOR.Laney.Controls {
                 : await BitmapManager.GetBitmapAsync(uri, dw, dh);
                 if (GetSource(sender) != uri) return;
                 sender.Source = bitmap;
-                sender.Unloaded += Sender_Unloaded;
+                // sender.Unloaded += Sender_Unloaded;
             } catch (Exception ex) {
                 Log.Error(ex, "Cannot set bitmap to Image!");
                 sender.Source = null;
@@ -53,7 +53,7 @@ namespace ELOR.Laney.Controls {
 
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
             await sender.SetImageBackgroundAsync(uri, dw, dh);
-            sender.Unloaded += Sender_Unloaded;
+            // sender.Unloaded += Sender_Unloaded;
         }
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {
@@ -62,7 +62,7 @@ namespace ELOR.Laney.Controls {
 
             sender.Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
             sender.SetImageFillAsync(uri, dw, dh);
-            sender.Unloaded += Sender_Unloaded;
+            // sender.Unloaded += Sender_Unloaded;
         }
 
         private static void OnImageChanged(Avatar sender, Uri uri) {
@@ -70,7 +70,7 @@ namespace ELOR.Laney.Controls {
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
             sender.SetImageAsync(uri, dw, dh);
-            sender.Unloaded += Sender_Unloaded;
+            // sender.Unloaded += Sender_Unloaded;
         }
 
         private static void Sender_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

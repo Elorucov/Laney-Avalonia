@@ -7,10 +7,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Network;
 using Serilog;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,52 +15,42 @@ using VKUI.Controls;
 
 namespace ELOR.Laney.Extensions {
     public static class LNetExtensions {
-        public static void SetUriSourceAsync(this Image image, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
+        public static async void SetUriSourceAsync(this Image image, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
             try {
-                new Thread(async () => {
-                    Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
-                    await Dispatcher.UIThread.InvokeAsync(() => image.Source = bitmap);
-                }).Start();
+                Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
+                image.Source = bitmap;
             } catch (Exception ex) {
                 Log.Error(ex, "SetUriSourceAsync error!");
             }
         }
 
-        public static void SetUriSourceAsync(this ImageBrush imageBrush, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
+        public static async void SetUriSourceAsync(this ImageBrush imageBrush, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
             try {
-                new Thread(async () => {
-                    Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
-                    await Dispatcher.UIThread.InvokeAsync(() => imageBrush.Source = bitmap);
-                }).Start();
+                Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
+                imageBrush.Source = bitmap;
             } catch (Exception ex) {
                 Log.Error(ex, "SetUriSourceAsync error!");
             }
         }
 
-        public static void SetImageAsync(this Avatar avatar, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
+        public static async void SetImageAsync(this Avatar avatar, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
             try {
                 avatar.Image = null;
-                new Thread(async () => {
-                    Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
-                    await Dispatcher.UIThread.InvokeAsync(() => avatar.Image = bitmap);
-                }).Start();
+                Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
+                avatar.Image = bitmap;
             } catch (Exception ex) {
                 Log.Error(ex, "SetImageAsync error!");
             }
         }
 
-        public static void SetImageFillAsync(this Shape shape, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
+        public static async void SetImageFillAsync(this Shape shape, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
             try {
-                new Thread(async () => {
-                    Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
-                    await Dispatcher.UIThread.InvokeAsync(() => {
-                        shape.Fill = new ImageBrush(bitmap) {
-                            AlignmentX = AlignmentX.Center,
-                            AlignmentY = AlignmentY.Center,
-                            Stretch = Stretch.UniformToFill
-                        };
-                    });
-                }).Start();
+                Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
+                shape.Fill = new ImageBrush(bitmap) {
+                    AlignmentX = AlignmentX.Center,
+                    AlignmentY = AlignmentY.Center,
+                    Stretch = Stretch.UniformToFill
+                };
             } catch (Exception ex) {
                 Log.Error(ex, "SetImageFillAsync error!");
             }

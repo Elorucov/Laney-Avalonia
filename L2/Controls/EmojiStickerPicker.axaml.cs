@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
+using ELOR.Laney.Core;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.ViewModels.Controls;
@@ -29,8 +30,7 @@ namespace ELOR.Laney.Controls {
         private void EmojiStickerPicker_Unloaded(object sender, RoutedEventArgs e) {
             Unloaded -= EmojiStickerPicker_Unloaded;
             ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            BitmapManager.ClearCachedImages();
         }
 
         private void EmojiStickerPicker_Loaded(object sender, RoutedEventArgs e) {

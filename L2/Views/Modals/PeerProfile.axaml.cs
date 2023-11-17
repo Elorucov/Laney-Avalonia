@@ -35,6 +35,8 @@ namespace ELOR.Laney.Views.Modals {
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
             Tabs.SelectionChanged += Tabs_SelectionChanged;
 
+            Unloaded += (a, b) => BitmapManager.ClearCachedImages();
+
             new IncrementalLoader(PhotosSV, ViewModel.LoadPhotos);
             new IncrementalLoader(VideosSV, ViewModel.LoadVideos);
             // TODO: Audios here

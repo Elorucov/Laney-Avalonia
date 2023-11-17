@@ -18,6 +18,10 @@ namespace ELOR.Laney.Core {
         const int cachesLimit = 500;
 
         public static void ClearCachedImages() {
+            long ram1 = System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64;
+            double ram1mb = (double)ram1 / 1048576;
+            // RAMInfo.Text = $"{Math.Round(rammb, 1)} Mb";
+
             lock (cachedImages) {
                 foreach (var ci in cachedImages) {
                     ci.Value.Dispose();
@@ -27,6 +31,11 @@ namespace ELOR.Laney.Core {
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
+
+            long ram2 = System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64;
+            double ram2mb = (double)ram2 / 1048576;
+
+            Log.Information($"ClearCachedImages: RAM usage before cleaning is {Math.Round(ram1mb, 1)} Mb, after cleaning is {Math.Round(ram2mb, 1)} Mb.");
         }
 
         public static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri, double decodeWidth = 0, double decodeHeight = 0) {
@@ -46,7 +55,7 @@ namespace ELOR.Laney.Core {
             if (!cachedImages.ContainsKey(key)) {
                 if (uri.Scheme == "avares") {
                     var lbitmap = AssetsManager.GetBitmapFromUri(uri);
-                    return needResize ? GetResizedBitmap(lbitmap, decodeWidth, decodeHeight) : lbitmap;
+                    return needResize ? await GetResizedBitmap(lbitmap, decodeWidth, decodeHeight) : lbitmap;
                 } else {
                     // WriteableBitmap bitmap = null;
                     Bitmap bitmap = null;
@@ -54,11 +63,12 @@ namespace ELOR.Laney.Core {
                         var lmres = nowLoading[key];
                         Log.Information($"TryGetCachedBitmapAsync: The bitmap with key \"{key}\" is currently downloading by another instance. Waiting...");
                         await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
-                        return needResize ? GetResizedBitmap(cachedImages[key], decodeWidth, decodeHeight) : cachedImages[key];
+                        return needResize ? await GetResizedBitmap(cachedImages[key], decodeWidth, decodeHeight) : cachedImages[key];
                     }
                     ManualResetEventSlim mres = new ManualResetEventSlim();
                     bool isAdded = nowLoading.TryAdd(key, mres);
                     if (!isAdded) Log.Warning($"TryGetCachedBitmapAsync: cannot add MRES \"{key}\"!");
+
                     var response = await LNet.GetAsync(uri);
                     response.EnsureSuccessStatusCode();
                     var bytes = await response.Content.ReadAsByteArrayAsync();
@@ -86,14 +96,14 @@ namespace ELOR.Laney.Core {
                     if (!isRemoved2) Log.Warning($"TryGetCachedBitmapAsync: cannot remove MRES \"{key}\"!");
                     mres.Set();
                     // mres.Dispose();
-                    return needResize ? GetResizedBitmap(bitmap, decodeWidth, decodeHeight) : bitmap;
+                    return needResize ? await GetResizedBitmap(bitmap, decodeWidth, decodeHeight) : bitmap;
                 }
             } else {
-                return needResize ? GetResizedBitmap(cachedImages[key], decodeWidth, decodeHeight) : cachedImages[key];
+                return needResize ? await GetResizedBitmap(cachedImages[key], decodeWidth, decodeHeight) : cachedImages[key];
             }
         }
 
-        private static Bitmap GetResizedBitmap(Bitmap bitmap, double dw, double dh) {
+        private static async Task<Bitmap> GetResizedBitmap(Bitmap bitmap, double dw, double dh) {
             var iw = bitmap.Size.Width;
             var ih = bitmap.Size.Height;
 
@@ -108,7 +118,11 @@ namespace ELOR.Laney.Core {
             Log.Verbose($"GetResizedBitmap: bitmap size is {iw}x{ih}, container size is {dw}x{dh}, resized to {rw}x{rh}.");
 
             // https://github.com/AvaloniaUI/Avalonia/issues/8444
-            return bitmap.CreateScaledBitmap(new Avalonia.PixelSize((int)rw, (int)rh));
+            Bitmap rbitmap = null;
+            await Task.Factory.StartNew(() => {
+                rbitmap = bitmap.CreateScaledBitmap(new Avalonia.PixelSize((int)rw, (int)rh));
+            }).WaitAsync(new CancellationTokenSource().Token);
+            return rbitmap;
         }
 
         public static async Task<Bitmap> GetBitmapAsync(Uri source, double decodeWidth = 0, double decodeHeight = 0) {

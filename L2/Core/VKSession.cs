@@ -418,9 +418,7 @@ namespace ELOR.Laney.Core {
             Window.SwitchToSide(true);
             if (gcCollectTriggerCounter >= 2) {
                 gcCollectTriggerCounter = 0;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
+                BitmapManager.ClearCachedImages();
             } else {
                 gcCollectTriggerCounter++;
             }

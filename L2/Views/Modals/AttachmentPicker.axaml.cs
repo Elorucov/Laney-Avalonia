@@ -21,6 +21,8 @@ namespace ELOR.Laney.Views.Modals {
 
         public AttachmentPicker(VKSession session, int limit, int tab = 0) {
             InitializeComponent();
+            Unloaded += (a, b) => BitmapManager.ClearCachedImages();
+
             Limit = limit;
             DataContext = new AttachmentPickerViewModel(session, this);
             this.FixDialogWindows(TitleBar, Tabs);
