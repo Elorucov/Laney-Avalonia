@@ -137,7 +137,9 @@ namespace ELOR.Laney.Views {
             CheckFirstAndLastDisplayedMessages();
         }
 
+        bool canTriggerLoadingMessages = false;
         private async void ChatView_DataContextChanged(object sender, EventArgs e) {
+            canTriggerLoadingMessages = false;
             if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
             sw = null;
             totalDisplayedMessagesForScrollFix = 0;
@@ -152,8 +154,12 @@ namespace ELOR.Laney.Views {
             Chat.MessagesChunkLoaded += TrySaveScroll;
             Chat.ReceivedMessages.CollectionChanged += ReceivedMessages_CollectionChanged;
 
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+            });
+
             await Task.Delay(100); // при смене DataContext скролл летит к 0 и может срабатываться загрузка старых сообщений до восстановления скролла
-            if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+            canTriggerLoadingMessages = true;
         }
 
         private async void ReceivedMessages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
@@ -230,19 +236,19 @@ namespace ELOR.Laney.Views {
                 int tries = 0;
                 MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
                 await Dispatcher.UIThread.InvokeAsync(async () => {
-                    try {
-                        while (MessagesListScrollViewer.Offset.Y != newpos || tries < 10) {
-                            MessagesListScrollViewer.Offset = new Vector(MessagesListScrollViewer.Offset.X, newpos);
-                            await Task.Delay(16).ConfigureAwait(false);
-                            tries++;
+                    while (tries < 10) {
+                        try {
+                            ForceScroll(newpos);
+                        } catch (Exception ex) {
+                            Log.Error(ex, "CheckScroll: Unable to save scroll position!");
                         }
-                        if (MessagesListScrollViewer.Offset.Y != newpos) {
-                            Log.Error("CheckScroll: Unable to save scroll position 10 times!");
-                        } else {
-                            Log.Information($"CheckScroll: Scroll position saved successfully! Tries: {tries}");
-                        }
-                    } catch (Exception ex) {
-                        Log.Error(ex, "CheckScroll: Unable to save scroll position!");
+                        await Task.Yield();
+                        tries++;
+                    }
+                    if (MessagesListScrollViewer.Offset.Y != newpos) {
+                        Log.Error("CheckScroll: Unable to save scroll position after 10 times!");
+                    } else {
+                        Log.Information($"CheckScroll: Scroll position saved successfully! Tries: {tries}");
                     }
                 });
                 MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
@@ -256,13 +262,13 @@ namespace ELOR.Laney.Views {
             if (y < trigger) {
                 // canSaveScrollPosition — признак того, что
                 // data context сменился, а интерфейс не прогрузился.
-                if (canSaveScrollPosition && !needToSaveScroll) Chat.LoadPreviousMessages();
+                if (canSaveScrollPosition && canTriggerLoadingMessages) Chat.LoadPreviousMessages();
                 autoScrollToLastMessage = false;
             } else if (y > h - trigger) {
                 if (Chat.DisplayedMessages.Last == null || Chat.LastMessage == null) return;
                 bool needLoadNextMessages = Chat.DisplayedMessages.Last.ConversationMessageId != Chat.LastMessage.ConversationMessageId;
                 if (needLoadNextMessages) {
-                    Chat.LoadNextMessages();
+                    if (canTriggerLoadingMessages) Chat.LoadNextMessages();
                 } else {
                     autoScrollToLastMessage = true;
                 }
@@ -271,7 +277,7 @@ namespace ELOR.Laney.Views {
             }
             dbgScrAuto.Text = $"{autoScrollToLastMessage}";
 
-            await Task.Delay(32); // надо
+            // await Task.Delay(32); // надо
             CheckFirstAndLastDisplayedMessages();
         }
 
