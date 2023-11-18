@@ -62,6 +62,7 @@
     </ContentControl>
 
     <!-- <Rectangle x:Name="Separator" Grid.RowSpan="2" HorizontalAlignment="Right" Width="1" VerticalAlignment="Stretch" Fill="{DynamicResource VKSeparatorAlphaBrush}"/> -->
+    <Rectangle x:Name="SearchBoxTopMarginForLinux" Height="12"/>
     <vkui:WindowTitleBar x:Name="TitleBar" Grid.ColumnSpan="2" CanShowTitle="True" CanMove="True"/>
   </Grid>
 </vkw:DialogWindow>

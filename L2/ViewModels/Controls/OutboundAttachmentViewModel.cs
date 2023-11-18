@@ -103,12 +103,14 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private async void SetUp(Photo p) {
             IconId = VKIconNames.Icon24Gallery;
+            Type = OutboundAttachmentType.Attachment;
             PreviewImage = await BitmapManager.GetBitmapAsync(p.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
             Attachment = p;
         }
 
         private async void SetUp(Video v) {
             IconId = VKIconNames.Icon24Video;
+            Type = OutboundAttachmentType.Attachment;
             DisplayName = v.Title;
             if (v.Image != null) PreviewImage = await BitmapManager.GetBitmapAsync(v.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
             ExtraInfo = v.DurationTime.ToString(@"h\:mm\:ss");
@@ -117,6 +119,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private async void SetUp(Document d) {
             IconId = VKIconNames.Icon24Document;
+            Type = OutboundAttachmentType.Attachment;
             if (d.Preview != null) {
                 PreviewImage = await BitmapManager.GetBitmapAsync(d.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
                 ExtraInfo = d.Extension.ToUpper();
@@ -128,36 +131,42 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private void SetUp(Poll p) {
             IconId = VKIconNames.Icon24Poll;
+            Type = OutboundAttachmentType.Attachment;
             DisplayName = p.Question;
             Attachment = p;
         }
 
         private void SetUp(AudioMessage a) {
             IconId = VKIconNames.Icon24Voice;
+            Type = OutboundAttachmentType.Attachment;
             DisplayName = a.DurationTime.ToString(@"h\:mm\:ss");
             Attachment = a;
         }
 
         private void SetUp(Audio a) {
             IconId = VKIconNames.Icon24Music;
+            Type = OutboundAttachmentType.Attachment;
             DisplayName = a.Title;
             Attachment = a;
         }
 
         private void SetUp(Podcast p) {
             IconId = VKIconNames.Icon24Music;
+            Type = OutboundAttachmentType.Attachment;
             DisplayName = p.Title;
             Attachment = p;
         }
 
         private void SetUp(Graffiti g) {
             IconId = VKIconNames.Icon24BrushOutline;
+            Type = OutboundAttachmentType.Attachment;
             DisplayName = Localizer.Instance["atch_graffiti"];
             Attachment = g;
         }
 
         private void SetUp(Story s) {
             IconId = VKIconNames.Icon24Story;
+            Type = OutboundAttachmentType.Attachment;
             DisplayName = Localizer.Instance["atch_story"];
             Attachment = s;
         }

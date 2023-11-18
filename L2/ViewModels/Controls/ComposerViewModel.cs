@@ -231,7 +231,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             string text = !String.IsNullOrEmpty(Text) ? Text.Replace("\r\n", "\r").Replace("\r", "\r\n").Trim() : null;
 
             var attachments = Attachments.Where(a => a.Type == OutboundAttachmentType.Attachment)
-                .Select(a => a.Attachment.ToString()).ToList();
+                .Select(a => a?.Attachment?.ToString()).ToList();
 
 
             var favm = Attachments.Where(a => a.Type == OutboundAttachmentType.ForwardedMessages).FirstOrDefault();
