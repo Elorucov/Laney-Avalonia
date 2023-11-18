@@ -246,21 +246,26 @@ namespace ELOR.Laney.Core {
                 App.Current.DesktopLifetime.Shutdown();
             };
 
-            if (!DemoMode.IsEnabled) TrayMenu.Items.Add(ft);
+#if !RELEASE && !BETA
+            TrayMenu.Items.Add(ft);
+#endif
             TrayMenu.Items.Add(exit);
 
-            TrayIcon icon = new TrayIcon {
-                Icon = new WindowIcon(AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon()))),
-                Menu = TrayMenu,
-                IsVisible = true,
-                ToolTipText = "Laney"
-            };
+            TrayIcons icons = Application.Current.GetValue<TrayIcons>(TrayIcon.IconsProperty);
 
-            TrayIcons icons = new TrayIcons {
-                icon
-            };
+            if (icons != null && icons.Count == 1) {
+                icons[0].Menu = TrayMenu;
+            } else {
+                TrayIcon icon = new TrayIcon {
+                    Icon = new WindowIcon(AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon()))),
+                    Menu = TrayMenu,
+                    IsVisible = true,
+                    ToolTipText = "Laney"
+                };
 
-            Application.Current.SetValue(TrayIcon.IconsProperty, icons);
+                icons = new TrayIcons { icon };
+                Application.Current.SetValue(TrayIcon.IconsProperty, icons);
+            }
         }
 
         #endregion
