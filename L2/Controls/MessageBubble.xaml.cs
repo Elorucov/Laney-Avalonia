@@ -92,11 +92,7 @@ namespace ELOR.Laney.Controls {
 
         bool isUILoaded = false;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
-#if RELEASE
-#elif BETA
-#else
-            Log.Verbose($"> MessageBubble OnApplyTemplate exec. ({Message.PeerId}_{Message.ConversationMessageId})");
-#endif
+            if (Settings.MessageRenderingLogs) Log.Verbose($"> MessageBubble OnApplyTemplate exec. ({Message.PeerId}_{Message.ConversationMessageId})");
 
             base.OnApplyTemplate(e);
             BubbleRoot = e.NameScope.Find<Grid>(nameof(BubbleRoot));
@@ -188,9 +184,9 @@ namespace ELOR.Laney.Controls {
             switch (e.PropertyName) {
                 case nameof(MessageViewModel.Text):
                     if (isUILoaded && Message.CanShowInUI) {
-                        Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
+                        if (Settings.MessageRenderingLogs) Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
                         SetText(Message.Text);
-                        Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
+                        if (Settings.MessageRenderingLogs) Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
                     }
                     break;
                 case nameof(MessageViewModel.State):
@@ -198,9 +194,9 @@ namespace ELOR.Laney.Controls {
                 case nameof(MessageViewModel.EditTime):
                 case nameof(MessageViewModel.IsSenderNameVisible):
                 case nameof(MessageViewModel.IsSenderAvatarVisible):
-                    Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
+                    if (Settings.MessageRenderingLogs) Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
                     ChangeUI();
-                    Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
+                    if (Settings.MessageRenderingLogs) Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.IsSenderAvatarVisible prop changed.");
                     break;
             }
         }
@@ -212,7 +208,7 @@ namespace ELOR.Laney.Controls {
         private void RenderElement() {
             if (!isUILoaded || !Message.CanShowInUI) return;
 
-            Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendering...");
+            if (Settings.MessageRenderingLogs) Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendering...");
             var sw = Stopwatch.StartNew();
 
             // Outgoing
@@ -334,14 +330,14 @@ namespace ELOR.Laney.Controls {
             ChangeUI();
 
             sw.Stop();
-            Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendered. ({sw.ElapsedMilliseconds} ms.)");
-            if (sw.ElapsedMilliseconds > ((double)1000 / (double)30)) {
+            if (Settings.MessageRenderingLogs) Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendered. ({sw.ElapsedMilliseconds} ms.)");
+            if (sw.ElapsedMilliseconds > (1000.0 / 30.0)) {
                 Log.Warning($"MessageBubble: rendering {Message.PeerId}_{Message.ConversationMessageId} took too long! ({sw.ElapsedMilliseconds} ms.)");
             }
         }
 
         private void SetText(string text) {
-            Log.Verbose($">>> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} setting text...");
+            if (Settings.MessageRenderingLogs) Log.Verbose($">>> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} setting text...");
             TextParser.SetText(text, MessageText, OnLinkClicked);
 
             // Empty space for sent time/status
@@ -355,7 +351,7 @@ namespace ELOR.Laney.Controls {
                     FontSize = 12
                 });
             }
-            Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} text rendered.");
+            if (Settings.MessageRenderingLogs) Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} text rendered.");
         }
 
         private void OnLinkClicked(string link) {
@@ -369,7 +365,7 @@ namespace ELOR.Laney.Controls {
         private void ChangeUI() {
             if (!isUILoaded || !Message.CanShowInUI) return;
 
-            Log.Verbose($">>> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} exec ChangeUI...");
+            if (Settings.MessageRenderingLogs) Log.Verbose($">>> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} exec ChangeUI...");
 
             // Avatar visibility
             SenderAvatar.Opacity = Message.IsSenderAvatarVisible ? 1 : 0;
@@ -433,7 +429,7 @@ namespace ELOR.Laney.Controls {
             var fwm = ForwardedMessagesContainer.Margin;
             ForwardedMessagesContainer.Margin = new Thickness(fwm.Left, fwdTopMargin, fwm.Right, fwm.Bottom);
 
-            Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} ChangeUI completed.");
+            if (Settings.MessageRenderingLogs) Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} ChangeUI completed.");
         }
 
         #region Template events

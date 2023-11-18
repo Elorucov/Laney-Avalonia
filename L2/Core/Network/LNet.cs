@@ -57,11 +57,8 @@ namespace ELOR.Laney.Core.Network {
 
         public static event EventHandler<string> DebugLog;
         private static void Log(string text) {
-#if RELEASE
-#else
             Debug.WriteLine($"LNet: {text}");
             DebugLog?.Invoke(null, text);
-#endif
         }
 
         public static async Task<bool> InitConnectionAsync(CancellationTokenSource cts, bool forceProxy = false) {
@@ -70,20 +67,21 @@ namespace ELOR.Laney.Core.Network {
             try {
                 if (forceProxy) return await TryConnectToProxyServerAsync(cts);
                 bool isMatch = await PingAsync(cts);
-                Log(isMatch ? $"VK ping successed. No proxy needed" : "Ping hash mismatch!");
+                Log(isMatch ? $"InitConnectionAsync: VK ping successed. No proxy needed" : "InitConnectionAsync: Ping hash mismatch!");
                 if (isMatch) {
                     return false;
                 } else {
                     return await TryConnectToProxyServerAsync(cts);
                 }
             } catch (HttpRequestException httpex) {
-                Log($"HttpRequestException: StatusCode = {httpex.StatusCode}!");
+                Log($"InitConnectionAsync: HttpRequestException: StatusCode = {httpex.StatusCode}!");
                 return await TryConnectToProxyServerAsync(cts);
             } catch (TimeoutException tex) {
-                Log($"TimeoutException!");
+                Log($"InitConnectionAsync: TimeoutException!");
                 return await TryConnectToProxyServerAsync(cts);
             } catch (Exception ex) {
-                throw ex;
+                Log($"InitConnectionAsync: {ex.Message}");
+                return false;
             }
         }
 
@@ -276,18 +274,23 @@ namespace ELOR.Laney.Core.Network {
             if (parameters != null) {
                 foreach (var p in parameters) {
                     if (p.Key == "access_token") continue;
-                    paramstr += $"{p.Key}={p.Value}; ";
+                    paramstr += $"{p.Key}={p.Value.Replace("\n", "")}; ";
                 }
             } else {
                 paramstr = String.Empty;
             }
 #endif
-            Log($"=> {fixedUri.AbsoluteUri} | {httpMethod.Method}{paramstr}");
+#if !RELEASE
+            if (Settings.LNetLogs) Log($"=> {fixedUri.AbsoluteUri} | {httpMethod.Method}{paramstr}");
+#endif
             var stopwatch = Stopwatch.StartNew();
             var result = cts == null ? await cc.SendAsync(hrm, HttpCompletionOption.ResponseHeadersRead) : await cc.SendAsync(hrm, HttpCompletionOption.ResponseHeadersRead, cts.Token);
             stopwatch.Stop();
 
-            Log($"<= {fixedUri.AbsoluteUri} | Code: {result.StatusCode} | {stopwatch.ElapsedMilliseconds} ms.");
+#if !RELEASE
+            if (Settings.LNetLogs) Log($"<= {fixedUri.AbsoluteUri} | Code: {result.StatusCode} | {stopwatch.ElapsedMilliseconds} ms.");
+#endif
+
             return result;
         }
 

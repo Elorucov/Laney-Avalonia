@@ -1,4 +1,5 @@
-﻿using ELOR.Laney.Core.Localization;
+﻿using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.ViewModels.SettingsCategories;
 using ELOR.Laney.Views.SettingsCategories;
@@ -25,6 +26,11 @@ namespace ELOR.Laney.ViewModels {
                 new SettingsCategory(VKIconNames.Icon28BugOutline, "Debug", new DebugPage(), null)
 #endif
             };
+
+#if RELEASE
+            if (Settings.Get("god", false)) Categories.Add(new SettingsCategory(VKIconNames.Icon28BugOutline, "Debug", new DebugPage(), null));
+#endif
+
             SelectedCategory = Categories.FirstOrDefault();
         }
     }

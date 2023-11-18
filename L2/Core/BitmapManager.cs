@@ -17,7 +17,7 @@ namespace ELOR.Laney.Core {
         static ConcurrentDictionary<string, ManualResetEventSlim> nowLoading = new ConcurrentDictionary<string, ManualResetEventSlim>();
         const int cachesLimit = 500;
 
-        public static void ClearCachedImages() {
+        public static async void ClearCachedImages() {
             long ram1 = System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64;
             double ram1mb = (double)ram1 / 1048576;
             // RAMInfo.Text = $"{Math.Round(rammb, 1)} Mb";
@@ -32,10 +32,14 @@ namespace ELOR.Laney.Core {
             GC.WaitForPendingFinalizers();
             GC.Collect();
 
+            await Task.Delay(250); // память может уменьшаться не сразу, и в лог попадёт неверное значение, если не прописать Delay.
+
             long ram2 = System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64;
             double ram2mb = (double)ram2 / 1048576;
 
+#if !MAC
             Log.Information($"ClearCachedImages: RAM usage before cleaning is {Math.Round(ram1mb, 1)} Mb, after cleaning is {Math.Round(ram2mb, 1)} Mb.");
+#endif
         }
 
         public static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri, double decodeWidth = 0, double decodeHeight = 0) {
@@ -61,7 +65,7 @@ namespace ELOR.Laney.Core {
                     Bitmap bitmap = null;
                     if (nowLoading.ContainsKey(key)) {
                         var lmres = nowLoading[key];
-                        Log.Information($"TryGetCachedBitmapAsync: The bitmap with key \"{key}\" is currently downloading by another instance. Waiting...");
+                        if (Settings.BitmapManagerLogs) Log.Information($"TryGetCachedBitmapAsync: The bitmap with key \"{key}\" is currently downloading by another instance. Waiting...");
                         await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
                         return needResize ? await GetResizedBitmap(cachedImages[key], decodeWidth, decodeHeight) : cachedImages[key];
                     }
@@ -104,18 +108,18 @@ namespace ELOR.Laney.Core {
         }
 
         private static async Task<Bitmap> GetResizedBitmap(Bitmap bitmap, double dw, double dh) {
-            var iw = bitmap.Size.Width;
-            var ih = bitmap.Size.Height;
+            var iw = bitmap == null ? 0 : bitmap.Size.Width;
+            var ih = bitmap == null ? 0 : bitmap.Size.Height;
 
             if (dw == 0 || dh == 0 || iw == 0 || ih == 0) {
-                Log.Verbose($"GetResizedBitmap: bitmap size is {iw}x{ih}, container size is {dw}x{dh}. One of these parameters is zero, returning original bitmap");
+                if (Settings.BitmapManagerLogs) Log.Information($"GetResizedBitmap: bitmap size is {iw}x{ih}, container size is {dw}x{dh}. One of these parameters is zero, returning original bitmap.");
                 return bitmap;
             }
 
             double rw = 0, rh = 0;
             ElorMath.Resize(iw, ih, dw, dh, out rw, out rh);
 
-            Log.Verbose($"GetResizedBitmap: bitmap size is {iw}x{ih}, container size is {dw}x{dh}, resized to {rw}x{rh}.");
+            if (Settings.BitmapManagerLogs) Log.Information($"GetResizedBitmap: bitmap size is {iw}x{ih}, container size is {dw}x{dh}, resized to {rw}x{rh}.");
 
             // https://github.com/AvaloniaUI/Avalonia/issues/8444
             Bitmap rbitmap = null;

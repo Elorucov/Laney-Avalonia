@@ -111,6 +111,9 @@ namespace ELOR.Laney.Core {
 
         public const string DEBUG_LOGS_CORE = "log_to_file_core";
         public const string DEBUG_LOGS_LP = "log_to_file_lp";
+        public const string DEBUG_LOGS_BITMAPMANAGER = "log_to_file_bm";
+        public const string DEBUG_LOGS_LNET = "log_to_file_lnet";
+        public const string DEBUG_LOGS_MESSAGERENDERING = "log_to_file_msgui";
 
         public const string DEBUG_MARK_AS_READ_OFF = "no_mark_as_read";
 
@@ -171,6 +174,21 @@ namespace ELOR.Laney.Core {
         public static bool EnableLongPollLogs {
             get => Get(DEBUG_LOGS_CORE, false);
             set => Set(DEBUG_LOGS_CORE, value);
+        }
+
+        public static bool BitmapManagerLogs {
+            get => Get(DEBUG_LOGS_BITMAPMANAGER, false);
+            set => Set(DEBUG_LOGS_BITMAPMANAGER, value);
+        }
+
+        public static bool LNetLogs {
+            get => Get(DEBUG_LOGS_LNET, false);
+            set => Set(DEBUG_LOGS_LNET, value);
+        }
+
+        public static bool MessageRenderingLogs {
+            get => Get(DEBUG_LOGS_MESSAGERENDERING, false);
+            set => Set(DEBUG_LOGS_MESSAGERENDERING, value);
         }
 
         public static bool ShowFPS {
