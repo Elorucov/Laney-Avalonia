@@ -281,11 +281,8 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("chat_settings")]
         public ChatSettings ChatSettings { get; set; }
 
-        [JsonPropertyName("mentions")]
+        [JsonPropertyName("mention_cmids")]
         public List<int> Mentions { get; set; }
-
-        [JsonPropertyName("expire_messages")]
-        public List<int> ExpireMessages { get; set; }
 
         [JsonPropertyName("expire_cmids")]
         public List<int> ExpireConvMessageIds { get; set; }

@@ -271,6 +271,7 @@ namespace ELOR.Laney.Core {
                         ConversationRemoved?.Invoke(this, peerId13);
                         break;
                     case 20:
+					case 21:
                         long peerId20 = (long)u[1];
                         int sortId = (int)u[2];
                         Log.Information($"EVENT {eventId}: peer={peerId20}, major/minor={sortId}");
