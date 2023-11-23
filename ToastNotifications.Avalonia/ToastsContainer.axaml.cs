@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Threading;
@@ -6,24 +7,38 @@ namespace ToastNotifications.Avalonia {
     internal partial class ToastsContainer : Window {
         internal ToastsContainer() {
             InitializeComponent();
+            #if DEBUG
+            this.AttachDevTools();
+            #endif
             SetPosition();
-            SizeChanged += ToastContaner_SizeChanged;
+            SizeChanged += NotificationItems_SizeChanged;
         }
 
-        private void ToastContaner_SizeChanged(object sender, SizeChangedEventArgs e) {
+        bool topAligned = false;
+        bool leftAligned = false;
+
+        private void NotificationItems_SizeChanged(object sender, SizeChangedEventArgs e) {
             SetPosition();
-            if (e.NewSize.Height <= NotificationItems.Margin.Top + NotificationItems.Margin.Bottom) IsVisible = false;
         }
 
         private void SetPosition() {
             var screen = Screens.ScreenFromWindow(this);
+            if (screen == null) {
+                Debug.WriteLine("ToastContainer: Cannot get screen!");
+                return;
+            }
+
             var working = screen.WorkingArea;
             MaxHeight = working.Height;
+            Width = 384;
+            NotificationItems.Measure(new Size(Width, working.Height));
+            Height = NotificationItems.DesiredSize.Height;
 
-            bool topAligned = screen.Bounds.Height > working.Height && working.Y != 0;
-            bool leftAligned = screen.Bounds.Width > working.Width && working.X != 0;
+            topAligned = screen.Bounds.Height > working.Height && working.Y != 0;
+            leftAligned = screen.Bounds.Width > working.Width && working.X != 0;
             int posx = leftAligned ? working.X : working.Width - Convert.ToInt32(Width);
-            int posy = topAligned ? working.Y : working.Height - Convert.ToInt32(DesiredSize.Height);
+            int posy = topAligned ? working.Y : working.Height - Convert.ToInt32(NotificationItems.DesiredSize.Height);
+            if (topAligned) posy = posy + 9;
 
             Position = new PixelPoint(posx, posy);
         }
@@ -35,32 +50,37 @@ namespace ToastNotifications.Avalonia {
                 Body = notification.Message,
                 Avatar = notification.Avatar,
                 Image = notification.Image,
-                Margin = new Thickness(12, 6, 12, 6)
+                Margin = new Thickness(12, 3, 12, 9)
             };
             
-
-            NotificationItems.Children.Add(toast);
             IsVisible = true;
+            NotificationItems.Children.Add(toast);
+            SetPosition();
 
             DispatcherTimer timer = new DispatcherTimer { 
                 Interval = notification.Expiration,
             };
             timer.Tick += (a, b) => {
                 timer.Stop();
-                NotificationItems.Children.Remove(toast);
+                RemoveToast(toast);
             };
             timer.Start();
 
             toast.CloseButtonClick += (a, b) => {
                 timer.Stop();
                 notification.OnClose?.Invoke();
-                NotificationItems.Children.Remove(toast);
+                RemoveToast(toast);
             };
             toast.Click += (a, b) => {
                 timer.Stop();
                 notification.OnClick?.Invoke();
-                NotificationItems.Children.Remove(toast);
+                RemoveToast(toast);
             };
+        }
+
+        private void RemoveToast(Toast toast) {
+            NotificationItems.Children.Remove(toast);
+            // if (NotificationItems.Children.Count == 0) IsVisible = false;
         }
     }
 }

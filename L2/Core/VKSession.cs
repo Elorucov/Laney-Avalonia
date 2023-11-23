@@ -54,6 +54,7 @@ namespace ELOR.Laney.Core {
 
         #region Binded from UI and tray menu
 
+        int sysNotifTest = 0;
         public void ShowSessionPopup(Button owner) {
             ActionSheet ash = new ActionSheet {
                 Placement = PlacementMode.BottomEdgeAlignedLeft
@@ -169,8 +170,9 @@ namespace ELOR.Laney.Core {
                     Header = "Show system notification",
                 };
                 snotif.Click += async (a, b) => {
+                    sysNotifTest++;
                     var ava = await BitmapManager.GetBitmapAsync(this.Avatar);
-                    var t = new ToastNotification(true, Name, "Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog!", "Caption", ava);
+                    var t = new ToastNotification(sysNotifTest, Name + $" ({sysNotifTest})", "Hurray for bunny Gex!", "He sure is a funny Gex!", ava);
                     t.OnClick += async () => {
                         await new VKUIDialog("Result", t.AssociatedObject.ToString()).ShowDialog<int>(ModalWindow);
                     };

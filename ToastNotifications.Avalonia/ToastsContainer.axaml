@@ -5,6 +5,6 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ToastNotifications.Avalonia.ToastsContainer"
         Background="Transparent" TransparencyLevelHint="Transparent" ShowInTaskbar="False"
-        Width="384" SystemDecorations="None" Topmost="True" SizeToContent="Height" Title="Toast notifications host">
-  <StackPanel x:Name="NotificationItems" Spacing="6" Margin="0,12"/>
+        Height="0" SystemDecorations="None" Topmost="True" Title="Toast notifications host">
+  <StackPanel x:Name="NotificationItems" Width="384" Margin="0"/>
 </Window>

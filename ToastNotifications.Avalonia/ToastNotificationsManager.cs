@@ -14,7 +14,7 @@ namespace ToastNotifications.Avalonia {
             }
 
             if (notification is ToastNotification tn) {
-                if (tn.Expiration == null || tn.Expiration.TotalMilliseconds == 0) tn.Expiration = TimeSpan.FromMilliseconds(ExpirationMilliseconds);
+                if (tn.Expiration.TotalMilliseconds == 0) tn.Expiration = TimeSpan.FromMilliseconds(ExpirationMilliseconds);
                 Container.AddToastToContainer(tn);
             } else {
                 throw new ArgumentException($"ToastNotification required!");
