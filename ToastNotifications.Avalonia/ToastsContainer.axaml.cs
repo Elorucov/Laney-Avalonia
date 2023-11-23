@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Threading;
@@ -11,15 +12,10 @@ namespace ToastNotifications.Avalonia {
             this.AttachDevTools();
             #endif
             SetPosition();
-            SizeChanged += NotificationItems_SizeChanged;
         }
 
         bool topAligned = false;
         bool leftAligned = false;
-
-        private void NotificationItems_SizeChanged(object sender, SizeChangedEventArgs e) {
-            SetPosition();
-        }
 
         private void SetPosition() {
             var screen = Screens.ScreenFromWindow(this);
@@ -29,18 +25,24 @@ namespace ToastNotifications.Avalonia {
             }
 
             var working = screen.WorkingArea;
-            MaxHeight = working.Height;
             Width = 384;
             NotificationItems.Measure(new Size(Width, working.Height));
-            Height = NotificationItems.DesiredSize.Height;
+            double height = NotificationItems.DesiredSize.Height;
 
             topAligned = screen.Bounds.Height > working.Height && working.Y != 0;
             leftAligned = screen.Bounds.Width > working.Width && working.X != 0;
             int posx = leftAligned ? working.X : working.Width - Convert.ToInt32(Width);
-            int posy = topAligned ? working.Y : working.Height - Convert.ToInt32(NotificationItems.DesiredSize.Height);
+            int posy = topAligned ? working.Y : working.Height - Convert.ToInt32(height);
             if (topAligned) posy = posy + 9;
 
             Position = new PixelPoint(posx, posy);
+            Height = height;
+
+            // In Windows, minimum window height forced to 39, so we hide window.
+            // On other platforms, hiding window cause some strange bugs.
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                IsVisible = height > 0;
+            }
         }
 
         internal void AddToastToContainer(ToastNotification notification) {
@@ -80,7 +82,7 @@ namespace ToastNotifications.Avalonia {
 
         private void RemoveToast(Toast toast) {
             NotificationItems.Children.Remove(toast);
-            // if (NotificationItems.Children.Count == 0) IsVisible = false;
+            SetPosition();
         }
     }
 }

@@ -8,7 +8,6 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using ELOR.Laney.Helpers;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
