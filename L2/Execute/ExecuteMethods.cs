@@ -6,13 +6,22 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Execute {
     public static class ExecuteMethods {
-        public static async Task<StartSessionResponse> StartSessionAsync(this VKAPI API) {
+        public static async Task<StartSessionResponse> StartSessionAsync(this VKAPI API, List<long> groupIds) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "func_v", "2" },
+                { "group_ids", string.Join(',', groupIds) },
                 { "lp_version", Core.LongPoll.VERSION.ToString() },
-                { "fields", string.Join(",", VKAPIHelper.Fields) }
+                { "fields", string.Join(',', VKAPIHelper.Fields) }
             };
             return await API.CallMethodAsync<StartSessionResponse>("execute.l2StartSession", parameters, L2JsonSerializerContext.Default);
+        }
+
+        public static async Task<StartSessionResponse> GetGroupsWithLongPollAsync(this VKAPI API, List<long> groupIds) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "group_ids", string.Join(',', groupIds) },
+                { "lp_version", Core.LongPoll.VERSION.ToString() }
+            };
+            return await API.CallMethodAsync<StartSessionResponse>("execute.l2GetGroupsAndLP", parameters, L2JsonSerializerContext.Default);
         }
 
         public static async Task<MessagesHistoryEx> GetHistoryWithMembersAsync(this VKAPI API, long groupId, long peerId, int offset, int count, int startCMID, bool rev, List<string> fields, bool dontReturnMembers = false) {

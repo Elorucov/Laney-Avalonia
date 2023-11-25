@@ -1,0 +1,37 @@
+<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:vkw="using:VKUI.Windows"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vmm="using:ELOR.Laney.ViewModels.Modals"
+        mc:Ignorable="d" d:DesignWidth="512" d:DesignHeight="600"
+        x:Class="ELOR.Laney.Views.Modals.GroupsPicker" Width="512" Height="600"
+        x:DataType="vmm:GroupsPickerViewModel"
+        Title="{i18n:Localize groups_management}">
+  <Grid RowDefinitions="Auto Auto * Auto">
+    <TextBlock Grid.Row="1" Margin="12,0,12,12" TextWrapping="Wrap" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{i18n:Localize group_management_desc}"/>
+
+    <ListBox Grid.Row="2" ItemTemplate="{StaticResource DefaultGroupItemTemplate}" ItemsSource="{Binding Groups}" SelectionMode="Multiple,Toggle" Selection="{Binding SelectedGroups}"/>
+    <vkui:Spinner Grid.Row="2" HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>
+    <vkui:Placeholder Grid.Row="2" VerticalAlignment="Center"
+                          IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
+                          Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                          Header="{Binding Placeholder.Header, Mode=OneWay}"
+                          Text="{Binding Placeholder.Text, Mode=OneWay}">
+      <vkui:Placeholder.Action>
+        <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButtonFunc, Mode=OneWay, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+      </vkui:Placeholder.Action>
+    </vkui:Placeholder>
+    
+    <Separator Grid.Row="2" VerticalAlignment="Bottom"/>
+    <Grid Grid.Row="3">
+      <Button Classes="Primary Medium" Margin="12" HorizontalAlignment="Right" Click="Button_Click" Content="{i18n:Localize save}"/>
+    </Grid>
+    
+    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="True" CanMove="True"/>
+    <Rectangle x:Name="TopMarginForLinux" Height="12"/>
+  </Grid>
+</vkw:DialogWindow>

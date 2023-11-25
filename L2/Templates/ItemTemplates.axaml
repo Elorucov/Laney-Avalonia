@@ -45,6 +45,19 @@
     </Grid>
   </DataTemplate>
 
+  <!-- Дефолтный шаблон для группы с аватаркой и именем.
+       Используется в окне выбора групп
+       Group -->
+  <DataTemplate x:Key="DefaultGroupItemTemplate" x:DataType="vk:Group">
+    <Grid ColumnDefinitions="Auto *" MinHeight="40" Background="Transparent">
+      <vkui:Avatar Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"
+                   Initials="{Binding Name, Converter={StaticResource ic}}"
+                   Background="{Binding Id, Converter={StaticResource agc}}"
+                   controls:ImageLoader.Image="{Binding Photo}"/>
+      <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name}" Classes="Default" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+    </Grid>
+  </DataTemplate>
+
   <!-- Шаблон для элемента сообщений в глобальном поиске (класс FoundMessageItem) -->
   <DataTemplate x:Key="FoundMessageTemplate" x:DataType="mdl:FoundMessageItem">
     <Grid MinHeight="64" ColumnDefinitions="Auto *" Background="Transparent">

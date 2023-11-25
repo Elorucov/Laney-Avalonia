@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.Selection;
+﻿using Avalonia.Controls.Selection;
 using Avalonia.Media.Imaging;
 using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
@@ -10,21 +9,15 @@ using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
-    public class ChatCreationViewModel : ViewModelBase {
+    public class ChatCreationViewModel : CommonViewModel {
         private string _chatName;
         private Bitmap _chatPhotoPreview;
         private ObservableCollection<AlphabeticalUsers> _groupedFriends;
         private ObservableCollection<User> _selectedFriends = new ObservableCollection<User>();
         private string _searchQuery;
-        private bool _isLoading;
-        private PlaceholderViewModel _placeholder;
-        private bool _canCreateChat;
 
         private RelayCommand _chatPhotoSetCommand;
         private RelayCommand _customizeChatSettingsCommand;
@@ -35,8 +28,6 @@ namespace ELOR.Laney.ViewModels {
         public ObservableCollection<AlphabeticalUsers> GroupedFriends { get { return _groupedFriends; } private set { _groupedFriends = value; OnPropertyChanged(); } }
         public ObservableCollection<User> SelectedFriends { get { return _selectedFriends; } set { _selectedFriends = value; OnPropertyChanged(); } }
         public string SearchQuery { get { return _searchQuery; } set { _searchQuery = value; OnPropertyChanged(); } }
-        public bool IsLoading { get { return _isLoading; } private set { _isLoading = value; OnPropertyChanged(); } }
-        public PlaceholderViewModel Placeholder { get { return _placeholder; } private set { _placeholder = value; OnPropertyChanged(); } }
         public bool CanCreateChat { get { return !String.IsNullOrEmpty(ChatName) || SelectedFriends.Count > 0; } }
 
         public RelayCommand ChatPhotoSetCommand { get { return _chatPhotoSetCommand; } private set { _chatPhotoSetCommand = value; OnPropertyChanged(); } }

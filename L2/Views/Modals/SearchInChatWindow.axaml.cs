@@ -27,7 +27,6 @@ namespace ELOR.Laney.Views.Modals {
 
 #if LINUX
             TitleBar.IsVisible = false;
-
 #endif
 
             DataContext = session;

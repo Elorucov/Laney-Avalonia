@@ -34,6 +34,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(DeleteConversationResponse))]
     [JsonSerializable(typeof(DocumentUploadResult))]
     [JsonSerializable(typeof(DocumentSaveResult))]
+    [JsonSerializable(typeof(GroupsList))]
     [JsonSerializable(typeof(IsAllowedResponse))]
     [JsonSerializable(typeof(JoinChatResponse))]
     [JsonSerializable(typeof(LongPollHistoryResponse))]

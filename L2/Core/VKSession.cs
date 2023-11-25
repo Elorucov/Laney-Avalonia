@@ -61,7 +61,6 @@ namespace ELOR.Laney.Core {
             };
 
             foreach (var session in VKSession.Sessions) {
-                // if (session.GroupId == 142317063 || session.GroupId == 176011438) continue; // Temporary
                 if (session.Id == Id) continue;
                 Avatar ava = new Avatar {
                     Initials = session.Name.GetInitials(session.IsGroup),
@@ -79,6 +78,17 @@ namespace ELOR.Laney.Core {
                 item.Click += TryOpenSessionWindow;
                 ash.Items.Add(item);
             }
+
+            if (!IsGroup) {
+                ActionSheetItem chooseGroups = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20More },
+                    Header = Localizer.Instance["groups_management"],
+                };
+                chooseGroups.Click += ChooseGroups_Click;
+                ash.Items.Add(chooseGroups);
+            }
+
+            //
 
             if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
 
@@ -229,8 +239,6 @@ namespace ELOR.Laney.Core {
             TrayMenu = new NativeMenu();
 
             foreach (var session in VKSession.Sessions) {
-                // if (session.GroupId == 142317063 || session.GroupId == 176011438) continue; // Temporary
-
                 var item = new NativeMenuItem { Header = session.Name };
                 item.Click += (a, b) => TryOpenSessionWindow(session.Id);
                 TrayMenu.Items.Add(item);
@@ -288,7 +296,8 @@ namespace ELOR.Laney.Core {
                 if (API.WebRequestCallback == null) API.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
 
                 List<VKSession> sessions = new List<VKSession>();
-                StartSessionResponse info = await API.StartSessionAsync();
+                List<long> savedGroupIds = GetAddedGroupIds();
+                StartSessionResponse info = await API.StartSessionAsync(savedGroupIds);
 
                 // Условие должно выполниться всего один раз после запуска первой сессии
                 // (обязательно юзер, а не сообщество), здесь происходит создание списка сессий
@@ -358,6 +367,15 @@ namespace ELOR.Laney.Core {
             return await ShowCaptchaAsync(Window, arg.Image);
         }
 
+        private async void ChooseGroups_Click(object sender, RoutedEventArgs e) {
+            GroupsPicker gp = new GroupsPicker(this);
+            List<long> selectedGroupIds = await gp.ShowDialog<List<long>>(Window);
+            if (selectedGroupIds == null) return;
+            Settings.Set(Settings.GROUPS, String.Join(',', selectedGroupIds));
+
+            UpdateGroupSessions(selectedGroupIds);
+        }
+
         private static void TryOpenSessionWindow(object? sender, RoutedEventArgs e) {
             ActionSheetItem item = sender as ActionSheetItem;
             long sessionId = (long)item.Tag;
@@ -386,7 +404,8 @@ namespace ELOR.Laney.Core {
 
         private Window GetLastOpenedModalWindow(Window window) {
             // В приложении главное окно может иметь только одно дочернее (диалоговое) окно.
-            var ows = window.OwnedWindows;
+            var ows = window?.OwnedWindows;
+            if (ows == null) return null;
             if (ows.Count == 0) return window;
             if (ows.Count > 1) throw new ArgumentException("Session's main window cannot have 2 and more child windows!");
 
@@ -394,13 +413,54 @@ namespace ELOR.Laney.Core {
             return GetLastOpenedModalWindow(fow);
         }
 
+        private async void UpdateGroupSessions(List<long> groupIds) {
+            try {
+                foreach (VKSession s in _sessions) {
+                    if (s.IsGroup) { // TODO: Shutdown method for VKSession.
+                        s.LongPoll.Stop();
+                        s.ModalWindow?.Close();
+                        s.Window?.Close();
+                        s.Window = null;
+                        s.CurrentOpenedChat = null;
+                        BitmapManager.ClearCachedImages(); // free RAM.
+                    }
+                }
+
+                List<VKSession> sessions = new List<VKSession> { Main };
+
+                var wd = new VKUIWaitDialog<StartSessionResponse>();
+                StartSessionResponse response = await wd.ShowAsync(Window, API.GetGroupsWithLongPollAsync(groupIds));
+
+                foreach (var group in response.Groups) {
+                    CacheManager.Add(group);
+                    if (group.CanMessage == 0) continue;
+
+                    VKSession gs = new VKSession {
+                        UserId = Main.Id,
+                        GroupId = group.Id,
+                        Name = group.Name,
+                        Avatar = new Uri(group.Photo100),
+                        API = new VKAPI(Main.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent),
+                    };
+                    gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
+                    sessions.Add(gs);
+                }
+
+                _sessions = sessions;
+                SetUpTrayMenu();
+            } catch (Exception ex) {
+                if (await ExceptionHelper.ShowErrorDialogAsync(Window, ex)) UpdateGroupSessions(groupIds);
+            }
+        }
+
         #endregion
 
         #region Events
 
-        private async void LongPoll_StateChanged(object sender, DataModels.LongPollState e) {
+        private async void LongPoll_StateChanged(object sender, LongPollState e) {
+            if (Window == null) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                if (e == DataModels.LongPollState.Working) {
+                if (e == LongPollState.Working) {
                     Name = Name; // заставит триггерить PropertyChanged в главном окне.
                 } else {
                     Window.Title = e.ToString();
@@ -451,38 +511,6 @@ namespace ELOR.Laney.Core {
             _notificationManager?.Show(notification);
         }
 
-        public static async Task<string> ShowCaptchaAsync(Window parent, Uri image) {
-            return await Task.Factory.StartNew(() => {
-                string code = null;
-
-                Dispatcher.UIThread.InvokeAsync(async () => {
-                    Image captchaImg = new Image {
-                        Width = 130,
-                        Height = 50
-                    };
-                    captchaImg.SetUriSourceAsync(image, captchaImg.Width, captchaImg.Height);
-                    TextBox codeTxt = new TextBox {
-                        Width = 130,
-                        MaxLength = 10,
-                        Margin = new Thickness(0, 12, 0, 0)
-                    };
-
-                    StackPanel panel = new StackPanel {
-                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
-                    };
-                    panel.Children.Add(captchaImg);
-                    panel.Children.Add(codeTxt);
-
-                    VKUIDialog dialog = new VKUIDialog("Enter code", null);
-                    dialog.DialogContent = panel;
-                    int result = await dialog.ShowDialog<int>(parent);
-                    if (result == 1) code = codeTxt.Text;
-                }).Wait();
-
-                return code;
-            });
-        }
-
         #endregion
 
         #region Static
@@ -525,6 +553,54 @@ namespace ELOR.Laney.Core {
                 }
             }
             SetUpTrayMenu();
+        }
+
+
+        public static async Task<string> ShowCaptchaAsync(Window parent, Uri image) {
+            return await Task.Factory.StartNew(() => {
+                string code = null;
+
+                Dispatcher.UIThread.InvokeAsync(async () => {
+                    Image captchaImg = new Image {
+                        Width = 130,
+                        Height = 50
+                    };
+                    captchaImg.SetUriSourceAsync(image, captchaImg.Width, captchaImg.Height);
+                    TextBox codeTxt = new TextBox {
+                        Width = 130,
+                        MaxLength = 10,
+                        Margin = new Thickness(0, 12, 0, 0)
+                    };
+
+                    StackPanel panel = new StackPanel {
+                        HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center
+                    };
+                    panel.Children.Add(captchaImg);
+                    panel.Children.Add(codeTxt);
+
+                    VKUIDialog dialog = new VKUIDialog("Enter code", null);
+                    dialog.DialogContent = panel;
+                    int result = await dialog.ShowDialog<int>(parent);
+                    if (result == 1) code = codeTxt.Text;
+                }).Wait();
+
+                return code;
+            });
+        }
+
+        public static List<long> GetAddedGroupIds() {
+            List<long> ids = new List<long>();
+            try {
+                string str = Settings.Get(Settings.GROUPS, "");
+                var split = str.Split(',');
+                foreach (string sid in split) {
+                    long gid = 0;
+                    if (Int64.TryParse(sid, out gid)) ids.Add(gid);
+                }
+            } catch (Exception ex) {
+                Log.Error(ex, "VKSession: cannot get added groups!");
+            }
+            return ids;
         }
 
         // Т. к. мы привязываем VKSession к окну, то

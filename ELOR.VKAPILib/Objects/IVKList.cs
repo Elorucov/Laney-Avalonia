@@ -85,6 +85,16 @@ namespace ELOR.VKAPILib.Objects {
         public List<User> Items { get; set; }
     }
 
+    public class GroupsList {
+        public GroupsList() { }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("items")]
+        public List<Group> Items { get; set; }
+    }
+
     public class ImportantMessagesResponse {
         [JsonPropertyName("profiles")]
         public List<User> Profiles { get; set; }

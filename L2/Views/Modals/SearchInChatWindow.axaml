@@ -5,7 +5,6 @@
         xmlns:vkui="using:VKUI.Controls"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
-        xmlns:core="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vm="using:ELOR.Laney.ViewModels"
         xmlns:vmm="using:ELOR.Laney.ViewModels.Modals"
