@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.554</AssemblyVersion>
-    <FileVersion>2.0.554</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.554-win-anycpu-devuser.devpc-231118-1848</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.554-linux-anycpu-devuser.devpc-231118-1848</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.554-macos-anycpu-devuser.devpc-231118-1848</Version>
+    <AssemblyVersion>2.0.555</AssemblyVersion>
+    <FileVersion>2.0.555</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.555-win-anycpu-devuser.devpc-231127-1811</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.555-linux-anycpu-devuser.devpc-231127-1811</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.555-macos-anycpu-devuser.devpc-231127-1811</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -23,8 +23,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.554</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.554</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.555</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.555</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
