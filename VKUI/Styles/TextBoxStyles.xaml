@@ -162,19 +162,19 @@
 
   <Style Selector="TextBox.WriteBar">
     <Setter Property="CornerRadius" Value="18"/>
-    <Setter Property="Padding" Value="12,7,12,5"/>
+    <Setter Property="Padding" Value="12,8,12,5"/>
     <Setter Property="MinHeight" Value="36"/>
     <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>
-    <Setter Property="FontSize" Value="17"/>
+    <Setter Property="FontSize" Value="15"/>
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
   </Style>
 
   <Style Selector="TextBox.WriteBar /template/ TextPresenter#PART_TextPresenter">
-    <Setter Property="MinHeight" Value="22"/>
+    <Setter Property="MinHeight" Value="20"/>
   </Style>
 
   <Style Selector="TextBox.WriteBar /template/ TextBlock#PART_Watermark, TextBox.WriteBar /template/ TextBlock#PART_FloatingWatermark">
-    <Setter Property="FontSize" Value="17"/>
+    <Setter Property="FontSize" Value="15"/>
     <Setter Property="Foreground" Value="{DynamicResource VKFieldTextPlaceholderBrush}" />
   </Style>
 

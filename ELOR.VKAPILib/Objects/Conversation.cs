@@ -58,6 +58,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [EnumMember(Value = "left")]
         Left,
+
+        [EnumMember(Value = "out")]
+        Out
     }
 
     public enum ChatSettingsChangers {

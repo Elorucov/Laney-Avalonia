@@ -180,8 +180,14 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("is_unavailable")]
         public bool IsUnavailable { get; set; }
 
+        [JsonPropertyName("is_silent")]
+        public bool IsSilent { get; set; }
+
         [JsonIgnore]
         public bool IsPartial { get; private set; }
+
+        [JsonIgnore]
+        public List<long> MentionedUsers { get; private set; }
 
         public static Message BuildFromLP(JsonArray msg, long currentUserId, Func<long, bool> infoCached, out bool needToGetFullMsgFromAPI, out Exception exception) {
             exception = null;
@@ -230,9 +236,27 @@ namespace ELOR.VKAPILib.Objects {
                 if (additional.ContainsKey("expire_ttl")) message.ExpireTTL = (int)additional["expire_ttl"];
                 if (additional.ContainsKey("ttl")) message.ExpireTTL = (int)additional["ttl"];
                 if (additional.ContainsKey("is_expired")) message.IsExpired = true;
+                if (additional.ContainsKey("is_silent")) message.IsSilent = true;
                 if (additional.ContainsKey("keyboard")) {
                     message.Keyboard = (BotKeyboard)additional["keyboard"].Deserialize(typeof(BotKeyboard), BuildInJsonContext.Default);
                     message.Keyboard.AuthorId = message.FromId;
+                }
+                if (additional.ContainsKey("marked_users")) {
+                    var markedUsers = additional["marked_users"].AsArray();
+                    foreach (var node in markedUsers) {
+                        var markedroot = node.AsArray();
+                        if ((int)markedroot[0] == 1 && markedroot.Count > 1) {
+                            if (markedroot[1].GetValueKind() == JsonValueKind.String) { // all & online
+                                message.MentionedUsers = new List<long>(); // пустой список — признак пуша всех
+                            } else if (markedroot[1].AsArray() is JsonArray markedIds) {
+                                message.MentionedUsers = new List<long>();
+                                foreach (var mids in markedIds) {
+                                    long mid = (long)mids;
+                                    if (mid != 0) message.MentionedUsers.Add(mid);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if (attachments.Count > 0) {

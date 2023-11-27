@@ -389,6 +389,7 @@
   "msg_search_user": "Search in chat with {0} {1}",
   "msg_search_group": "Search in chat with \"{0}\"",
   "msg_search_chat": "Search in chat \"{0}\"",
+  "in_chat": "in chat \"{0}\"",
 
   "group_management_desc": "Add Laney to your groups to stay in touch with their members and receive notifications when new messages arrive."
 }

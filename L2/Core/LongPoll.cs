@@ -43,8 +43,10 @@ namespace ELOR.Laney.Core {
             var loggerConfig = new LoggerConfiguration()
                 .MinimumLevel.Information();
 
-            if (Settings.EnableLongPollLogs)
-                loggerConfig = loggerConfig.WriteTo.File(Path.Combine(App.LocalDataPath, "logs", "L2_LP_.log"), rollingInterval: RollingInterval.Hour, retainedFileCountLimit: 10);
+            if (Settings.EnableLongPollLogs) {
+                long lid = groupId == 0 ? sessionId : -groupId;
+                loggerConfig = loggerConfig.WriteTo.File(Path.Combine(App.LocalDataPath, "logs", $"L2_LP_{lid}_.log"), rollingInterval: RollingInterval.Hour, retainedFileCountLimit: 10);
+            }
 
             Log = loggerConfig.CreateLogger();
         }
@@ -67,16 +69,16 @@ namespace ELOR.Laney.Core {
         public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, long peerId, long extra);
         public delegate void ActivityStatusDelegate(LongPoll longPoll, long peerId, List<LongPollActivityInfo> infos);
 
-        public event MessageFlagsDelegate MessageFlagSet; // 2
-        public event MessageFlagsDelegate MessageFlagRemove; // 3
-        public event MessageReceivedDelegate MessageReceived; // 4
-        public event MessageReceivedDelegate MessageEdited; // 5, 18
-        public event MentionDelegate MentionReceived; // 5, 18
-        public event ReadInfoDelegate IncomingMessagesRead; // 6
-        public event ReadInfoDelegate OutgoingMessagesRead; // 7
+        public event MessageFlagsDelegate MessageFlagSet; // 10002
+        public event MessageFlagsDelegate MessageFlagRemove; // 10003
+        public event MessageReceivedDelegate MessageReceived; // 10004
+        public event MessageReceivedDelegate MessageEdited; // 10005, 10018
+        public event MentionDelegate MentionReceived; // 10005, 10018
+        public event ReadInfoDelegate IncomingMessagesRead; // 10006
+        public event ReadInfoDelegate OutgoingMessagesRead; // 10007
         public event ConversationFlagsDelegate ConversationFlagReset; // 10
         public event ConversationFlagsDelegate ConversationFlagSet; // 12
-        public event EventHandler<long> ConversationRemoved; // 13 (решил упростить)
+        public event EventHandler<long> ConversationRemoved; // 10013 (решил упростить)
         public event ConversationFlagsDelegate MajorIdChanged; // 20
         public event ConversationFlagsDelegate MinorIdChanged; // 21
         public event ConversationDataDelegate ConversationDataChanged; // 52

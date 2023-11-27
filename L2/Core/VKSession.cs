@@ -26,6 +26,7 @@ using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.ViewModels.Modals;
 using ToastNotifications.Avalonia;
 using Avalonia.Dialogs;
+using ELOR.VKAPILib.Objects;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -33,6 +34,7 @@ namespace ELOR.Laney.Core {
         private Uri? _avatar;
         private ImViewModel _imViewModel;
         private ChatViewModel _currentOpenedChat;
+
         private WindowNotificationManager _notificationManager;
         private static ToastNotificationsManager _systemNotificationManager;
 
@@ -181,10 +183,14 @@ namespace ELOR.Laney.Core {
                 };
                 snotif.Click += async (a, b) => {
                     sysNotifTest++;
-                    var ava = await BitmapManager.GetBitmapAsync(this.Avatar);
-                    var t = new ToastNotification(sysNotifTest, Name + $" ({sysNotifTest})", "Hurray for bunny Gex!", "He sure is a funny Gex!", ava);
+                    var ava = await BitmapManager.GetBitmapAsync(new Uri("https://elor.top/res/images/rez_ava.png"));
+					var img = await BitmapManager.GetBitmapAsync(new Uri("https://elor.top/res/images/gex_holmes.png"));
+                    var t = new ToastNotification(sysNotifTest, Name, $"Rez ({sysNotifTest})", "Hurray for bunny Gex!\nHe sure is a funny Gex!", "in chat\"Geckos\"", ava, img);
                     t.OnClick += async () => {
                         await new VKUIDialog("Result", t.AssociatedObject.ToString()).ShowDialog<int>(ModalWindow);
+                    };
+                    t.OnSendClick += async (text) => {
+                        await new VKUIDialog("Sending message", t.AssociatedObject.ToString() + "\nText: " + text).ShowDialog<int>(ModalWindow);
                     };
                     _systemNotificationManager?.Show(t);
                 };
@@ -238,7 +244,7 @@ namespace ELOR.Laney.Core {
         private static void SetUpTrayMenu() {
             TrayMenu = new NativeMenu();
 
-            foreach (var session in VKSession.Sessions) {
+            foreach (var session in Sessions) {
                 var item = new NativeMenuItem { Header = session.Name };
                 item.Click += (a, b) => TryOpenSessionWindow(session.Id);
                 TrayMenu.Items.Add(item);
@@ -289,7 +295,7 @@ namespace ELOR.Laney.Core {
                 Window.Activated += Window_Activated;
 
                 if (DemoMode.IsEnabled) {
-                    ImViewModel = new ImViewModel(this);
+                    ImViewModel.LoadConversations();
                     return;
                 }
                 API.CaptchaHandler = ShowCaptcha;
@@ -317,7 +323,11 @@ namespace ELOR.Laney.Core {
                             API = new VKAPI(info.User.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent),
                         };
                         gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
+                        gs.ImViewModel = new ImViewModel(gs);
                         sessions.Add(gs);
+
+                        var glp = info.LongPolls.Where(lps => lps.SessionId == gs.Id).FirstOrDefault();
+                        gs.SetUpLongPoll(glp);
                     }
 
                     _sessions = sessions;
@@ -337,14 +347,12 @@ namespace ELOR.Laney.Core {
                     Avatar = currentGroup.Avatar;
                 }
 
-                // System notifications
-                if (_systemNotificationManager == null) _systemNotificationManager = new ToastNotificationsManager();
-
                 var lp = info.LongPolls.Where(lps => lps.SessionId == Id).FirstOrDefault();
-                if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId);
-                LongPoll.SetUp(lp.LongPoll);
-                LongPoll.StateChanged += LongPoll_StateChanged;
-                LongPoll.Run();
+                SetUpLongPoll(lp);
+
+                // Notifications
+                var appLogo = await BitmapManager.GetBitmapAsync(new Uri("avares://laney/Assets/Logo/Tray/t32cw.png"), 16, 16);
+                if (_systemNotificationManager == null) _systemNotificationManager = new ToastNotificationsManager(appLogo);
 
                 SetUpTrayMenu(); // обновляем tray menu, отображая уже все загружнные сессии
             } catch (Exception ex) {
@@ -353,7 +361,14 @@ namespace ELOR.Laney.Core {
                 Init(dontUpdateSessionsList);
             }
 
-            if (ImViewModel == null) ImViewModel = new ImViewModel(this);
+            ImViewModel.LoadConversations();
+        }
+
+        private void SetUpLongPoll(LongPollInfoForSession lp) {
+            if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId);
+            LongPoll.SetUp(lp.LongPoll);
+            LongPoll.StateChanged += LongPoll_StateChanged;
+            LongPoll.Run();
         }
 
         private void Window_Activated(object sender, EventArgs e) {
@@ -507,8 +522,16 @@ namespace ELOR.Laney.Core {
             }
         }
 
+        public void TryOpenWindow() {
+            TryOpenSessionWindow(Id);
+        }
+
         public void ShowNotification(Notification notification) {
             _notificationManager?.Show(notification);
+        }
+
+        public void ShowSystemNotification(ToastNotification notification) {
+            _systemNotificationManager?.Show(notification);
         }
 
         #endregion
@@ -529,6 +552,7 @@ namespace ELOR.Laney.Core {
             session.LongPoll = new LongPoll(session.API, session.Id, session.GroupId);
             _sessions.Add(session);
             session.Window.DataContext = session;
+            session.ImViewModel = new ImViewModel(session);
             session.Init();
             session.Window.Show();
         }

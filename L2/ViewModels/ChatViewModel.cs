@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using ToastNotifications.Avalonia;
 using VKUI.Controls;
 
 namespace ELOR.Laney.ViewModels {
@@ -108,20 +109,24 @@ namespace ELOR.Laney.ViewModels {
         Elapser<LongPollActivityInfo> ActivityStatusUsers = new Elapser<LongPollActivityInfo>();
 
         public ChatViewModel(VKSession session, long peerId, Message lastMessage = null, bool needSetup = false) {
+            int cmid = lastMessage != null ? lastMessage.ConversationMessageId : 0;
+            Log.Information($"New ChatViewModel for peer {peerId}. Last message: {cmid}, need setup: {needSetup}");
+
             this.session = session;
             Composer = new ComposerViewModel(session, this);
             SetUpEvents();
             PeerId = peerId;
             Title = peerId.ToString();
+            MessageViewModel msg = null;
             if (lastMessage != null) {
-                MessageViewModel msg = new MessageViewModel(lastMessage, session);
-                FixState(msg);
+                msg = new MessageViewModel(lastMessage, session);
+                if (!lastMessage.IsPartial) FixState(msg);
                 if (SortId == null) SortId = new SortId { MajorId = 0, MinorId = lastMessage.Id };
                 ReceivedMessages.Add(msg);
             }
             // needSetup нужен в случае, когда мы не переходим в беседу и не загружаем сообщения,
             // но надо загрузить инфу о чате, которую можно получить при загрузке сообщений.
-            if (needSetup) GetInfoFromAPIAndSetup();
+            if (needSetup) GetInfoFromAPIAndSetup(lastMessage, msg);
         }
 
         public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
@@ -147,14 +152,35 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        private async void GetInfoFromAPIAndSetup() {
+        private async void GetInfoFromAPIAndSetup(Message message, MessageViewModel msg) {
             try {
                 var response = await session.API.Messages.GetConversationsByIdAsync(session.GroupId, new List<long> { PeerId }, true, VKAPIHelper.Fields);
                 CacheManager.Add(response.Profiles);
                 CacheManager.Add(response.Groups);
                 Setup(response.Items.FirstOrDefault());
+
+                // Если чат новый, то нам надо отобразить уведомление о новом сообщении,
+                // т. к. обычно уведомления отправляет метод LongPoll_MessageReceived.
+                if (message == null || msg == null) return;
+
+                bool isMention = false;
+                if (!message.IsSilent && message.MentionedUsers != null) {
+                    if (message.MentionedUsers.Count == 0) { // признак того, что пушнули всех (@all)
+                        isMention = true;
+                    } else {
+                        isMention = message.MentionedUsers.Contains(session.Id);
+                    }
+                }
+
+                // Если сообщение неполное даже после получения инфы о чате, то добавляем сообщение в pending.
+                if (msg.State == MessageVMState.Loading) {
+                    Log.Information($"Adding message {message.PeerId}_{message.ConversationMessageId} to pending for notification... (by new chat)");
+                    if (!message.IsSilent) pendingMessages.Add(message.ConversationMessageId, isMention);
+                } else {
+                    if (!message.IsSilent) ShowSystemNotification(msg, isMention);
+                }
             } catch (Exception ex) {
-                Log.Error(ex, $"Cannot get conv from API! peer={PeerId}");
+                Log.Error(ex, $"Cannot get conversation from API! Peer={PeerId}");
             }
         }
 
@@ -553,14 +579,32 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
+        Dictionary<int, bool> pendingMessages = new Dictionary<int, bool>();
+
         private async void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
             if (message.PeerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 MessageViewModel msg = new MessageViewModel(message, session);
-                
+
+                bool isMention = false;
+                if (!message.IsSilent && message.MentionedUsers != null) { 
+                    if (message.MentionedUsers.Count == 0) { // признак того, что пушнули всех (@all)
+                        isMention = true;
+                    } else {
+                        isMention = message.MentionedUsers.Contains(session.Id);
+                    }
+                }
+
                 if (!message.IsPartial) {
                     bool isUnread = flags.HasFlag(1) && !flags.HasFlag(8388608);
                     msg.State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
+                    if (!message.IsSilent) ShowSystemNotification(msg, isMention);
+                } else {
+
+                    if (!message.IsSilent) {
+                        Log.Information($"Adding message {message.PeerId}_{message.ConversationMessageId} to pending for notification... (by longpoll)");
+                        pendingMessages.Add(message.ConversationMessageId, isMention);
+                    }
                 }
 
                 bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.ConversationMessageId == ReceivedMessages.LastOrDefault()?.ConversationMessageId;
@@ -584,7 +628,16 @@ namespace ELOR.Laney.ViewModels {
 
         private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
             if (PeerId != message.PeerId) return;
+            bool isFullReceived = pendingMessages.ContainsKey(message.ConversationMessageId);
+
             await Dispatcher.UIThread.InvokeAsync(async () => {
+                if (isFullReceived) {
+                    bool isMention = pendingMessages[message.ConversationMessageId];
+                    pendingMessages.Remove(message.ConversationMessageId);
+                    MessageViewModel msg = ReceivedMessages.Where(m => m.ConversationMessageId == message.ConversationMessageId).FirstOrDefault();
+                    if (msg != null) ShowSystemNotification(msg, isMention);
+                }
+
                 if (LastMessage?.ConversationMessageId == message.ConversationMessageId) {
                     // нужно для корректной обработки смены фото чата.
                     if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
@@ -898,6 +951,37 @@ namespace ELOR.Laney.ViewModels {
         }
 
         #endregion
+
+        #region Notification
+
+        private async void ShowSystemNotification(MessageViewModel message, bool isMention) {
+            bool canNotify = isMention ? true : CanNotify(message);
+            Log.Information($"ChatViewModel: about to show new message notification ({message.PeerId}_{message.ConversationMessageId}). Is mention: {isMention}, can notify: {canNotify}.");
+            if (message.IsOutgoing || !canNotify) return;
+
+            string text = message.ToString();
+            string chatName = PeerType == PeerType.Chat ? Localizer.Instance.GetFormatted("in_chat", Title) : null;
+
+            var ava = await BitmapManager.GetBitmapAsync(message.SenderAvatar, 56, 56);
+            var t = new ToastNotification(message, session.Name, message.SenderName, text, chatName, ava);
+            t.OnClick += () => {
+                Log.Information($"ChatViewModel: clicked on message {message.PeerId}_{message.ConversationMessageId}");
+                session.TryOpenWindow();
+                session.GoToChat(message.PeerId, message.ConversationMessageId);
+            };
+            //if (CanWrite.Allowed) t.OnSendClick += (text) => {
+            //    // TODO: send message from toast
+            //};
+            session.ShowSystemNotification(t);
+        }
+
+        private bool CanNotify(MessageViewModel message) {
+            if (PushSettings.DisabledForever) return false;
+            return PushSettings.DisabledUntil == 0 || PushSettings.DisabledUntil < DateTimeOffset.Now.ToUnixTimeSeconds();
+        }
+
+        #endregion
+
 
         private ulong GetSortIndex() {
             if (SortId.MajorId == 0) return (ulong)SortId.MinorId;

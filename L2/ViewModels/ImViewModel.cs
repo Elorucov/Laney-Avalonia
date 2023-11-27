@@ -8,6 +8,7 @@ using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -44,8 +45,6 @@ namespace ELOR.Laney.ViewModels {
                     IsEmpty = _chats.Count == 0;
                     Debug.WriteLine($"Chats count: {_chats.Count}; sorted count: {_sortedChats.Count}");
                 });
-
-            LoadConversations();
 
             if (!DemoMode.IsEnabled) {
                 session.LongPoll.MessageReceived += LongPoll_MessageReceived;

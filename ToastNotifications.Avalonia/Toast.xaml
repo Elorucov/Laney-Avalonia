@@ -3,11 +3,9 @@
         xmlns:controls="using:ToastNotifications.Avalonia"
         xmlns:vkui="using:VKUI.Controls">
   <Design.PreviewWith>
-    <StackPanel Spacing="6" Margin="0,12">
-      <controls:Toast Width="360" Margin="12,6"
-                    Header="Sender" Body="Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog"/>
-      <controls:Toast Width="360" Margin="12,6"
-                    Header="Sender" Body="Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog."/>
+    <StackPanel Spacing="6" Background="#797979">
+      <controls:Toast Width="360" Margin="12" Header="Название группы" Footnote="в чат «Чаепитие»"
+                    Title="Elchin Orujov" Body="Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog. Lorem ipsum dolor sit amet, the quick brown fox jumps over the lazy dog."/>
     </StackPanel>
   </Design.PreviewWith>
 
@@ -16,7 +14,7 @@
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource VKSeparatorAlphaBrush}"/>
     <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="CornerRadius" Value="12" />
     <Setter Property="Padding" Value="12"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -27,11 +25,19 @@
                 Padding="{TemplateBinding Padding}"
                 CornerRadius="{TemplateBinding CornerRadius}"
                 BoxShadow="{StaticResource VKElevation3}">
-          <Grid ColumnDefinitions="Auto *" RowDefinitions="Auto Auto">
-            <Ellipse x:Name="CircleAvatar" IsHitTestVisible="False" IsVisible="False" VerticalAlignment="Top" Margin="0,0,12,0" Width="56" Height="56" Fill="Red"/>
-            <StackPanel x:Name="ToastContent" IsHitTestVisible="False" Grid.Column="1">
+          <Grid ColumnDefinitions="Auto *" RowDefinitions="Auto Auto Auto Auto">
+            <Grid Grid.ColumnSpan="2" ColumnDefinitions="Auto * Auto" Margin="-12,-12,-12,0" Height="40">
+              <Rectangle x:Name="AppLogoArea" IsVisible="False" Margin="12,8,0,8" Width="16" Height="16" RadiusX="4" RadiusY="4" Fill="#007acc"/>
+              <TextBlock Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource VKTextSubheadBrush}" Classes="Subhead" Text="{TemplateBinding Header}"/>
+              <Button x:Name="CloseButton" Classes="Tertiary" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" IsVisible="True" Width="24" Height="24" MinHeight="24" CornerRadius="12" Margin="8" Padding="4">
+                <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}" Foreground="{DynamicResource VKIconOutlineMediumBrush}"/>
+              </Button>
+            </Grid>
+            
+            <Ellipse x:Name="CircleAvatar" IsHitTestVisible="False" IsVisible="False" Grid.Row="1" VerticalAlignment="Top" Margin="0,0,12,0" Width="56" Height="56"/>
+            <StackPanel x:Name="ToastContent" IsHitTestVisible="False" Grid.Column="1" Grid.Row="1">
               <TextBlock x:Name="HeaderTB"
-                         Text="{TemplateBinding Header}"
+                         Text="{TemplateBinding Title}"
                          Classes="Default"
                          FontWeight="SemiBold"
                          TextWrapping="Wrap"
@@ -45,11 +51,24 @@
                          MaxLines="5"
                          Foreground="{DynamicResource VKTextSubheadBrush}"
                          TextTrimming="CharacterEllipsis"/>
+              <TextBlock x:Name="FootnoteTB"
+                         Text="{TemplateBinding Footnote}"
+                         Classes="Subhead"
+                         TextWrapping="Wrap"
+                         MaxLines="2"
+                         Foreground="{DynamicResource VKTextLinkBrush}"
+                         TextTrimming="CharacterEllipsis"
+                         IsVisible="{TemplateBinding Footnote, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
             </StackPanel>
-            <Image x:Name="ImageControl" IsHitTestVisible="False" IsVisible="False" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,12,0,0" MaxHeight="180"/>
-            <Button x:Name="CloseButton" Classes="Tertiary" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" IsVisible="True" Width="24" Height="24" MinHeight="24" CornerRadius="12" Margin="0,-4,-4,0" Padding="4">
-              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}" Foreground="{DynamicResource VKIconOutlineMediumBrush}"/>
-            </Button>
+
+            <Image x:Name="ImageArea" Grid.Row="2" Grid.ColumnSpan="2" IsVisible="False" Margin="0,12,0,0" MaxHeight="180" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="Both"/>
+            
+            <Grid x:Name="WriteBar" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,12,0,0" ColumnDefinitions="* Auto" IsVisible="{TemplateBinding IsWriteBarVisible}">
+              <TextBox x:Name="TextArea" Classes="WriteBar" TextWrapping="Wrap" MaxHeight="70" Watermark="{TemplateBinding InputWatermark}"/>
+              <Button x:Name="SendButton" Classes="Tertiary" VerticalAlignment="Bottom" Grid.Column="1" Padding="4" Margin="12,0,0,0">
+                <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28Send}"/>
+              </Button>
+            </Grid>
           </Grid>
         </Border>
       </ControlTemplate>

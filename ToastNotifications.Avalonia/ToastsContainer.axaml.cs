@@ -47,11 +47,14 @@ namespace ToastNotifications.Avalonia {
 
         internal void AddToastToContainer(ToastNotification notification) {
             if (NotificationItems.Children.Count >= 4) NotificationItems.Children.RemoveAt(0);
-            Toast toast = new Toast() { 
-                Header = notification.Title,
+            Toast toast = new Toast() {
+                Header = notification.Header,
+                Title = notification.Title,
                 Body = notification.Message,
+                Footnote = notification.Footnote,
                 Avatar = notification.Avatar,
                 Image = notification.Image,
+                IsWriteBarVisible = notification.OnSendClick != null,
                 Margin = new Thickness(12, 3, 12, 9)
             };
             
@@ -68,9 +71,21 @@ namespace ToastNotifications.Avalonia {
             };
             timer.Start();
 
+            toast.GotFocus += (a, b) => {
+                timer.Stop();
+            };
+            toast.LostFocus += (a, b) => {
+                timer.Start();
+            };
+
             toast.CloseButtonClick += (a, b) => {
                 timer.Stop();
                 notification.OnClose?.Invoke();
+                RemoveToast(toast);
+            };
+            toast.SendButtonClick += (a, b) => {
+                timer.Stop();
+                notification.OnSendClick?.Invoke(b);
                 RemoveToast(toast);
             };
             toast.Click += (a, b) => {
