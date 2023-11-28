@@ -955,6 +955,7 @@ namespace ELOR.Laney.ViewModels {
         #region Notification
 
         private async void ShowSystemNotification(MessageViewModel message, bool isMention) {
+            await Task.Delay(20); // имя отправителя может не оказаться в кеше вовремя.
             bool canNotify = isMention ? true : CanNotify(message);
             Log.Information($"ChatViewModel: about to show new message notification ({message.PeerId}_{message.ConversationMessageId}). Is mention: {isMention}, can notify: {canNotify}.");
             if (message.IsOutgoing || !canNotify) return;

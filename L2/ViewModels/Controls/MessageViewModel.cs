@@ -5,8 +5,10 @@ using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -162,11 +164,13 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (SenderId.IsUser()) {
                 SenderType = MessageVMSenderType.User;
                 User u = CacheManager.GetUser(SenderId);
+                if (u == null) Log.Warning($"MessageViewModel: user with id {SenderId} was not found in cache!");
                 SenderName = u == null ? $"id{SenderId}" : u.FullName;
                 if (u != null) SenderAvatar = u.Photo;
             } else if (SenderId.IsGroup()) {
                 SenderType = MessageVMSenderType.Group;
                 Group g = CacheManager.GetGroup(SenderId);
+                if (g == null) Log.Warning($"MessageViewModel: group with id {SenderId} was not found in cache!");
                 SenderName = g == null ? $"club{SenderId}" : g.Name;
                 if (g != null) SenderAvatar = g.Photo;
             }
@@ -267,7 +271,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         #region LongPoll events
 
         private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
-            if (message.ConversationMessageId != ConversationMessageId) return;
+            bool isCurrentMessage = message.PeerId == PeerId && message.ConversationMessageId == ConversationMessageId;
+            if (!isCurrentMessage) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
                 Setup(message);
                 bool isUnread = flags.HasFlag(1);

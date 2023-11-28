@@ -116,6 +116,11 @@ namespace ELOR.Laney.Core {
             return id.IsUser() ? $"{t.Item1} {t.Item2}" : t.Item1;
         }
 
+        public static void ClearUsersAndGroupsCache() {
+            CachedUsers.Clear();
+            CachedGroups.Clear();
+        }
+
         #region Files
 
         // TODO: TaskCompletionSource

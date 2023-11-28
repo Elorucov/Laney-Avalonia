@@ -197,11 +197,20 @@ namespace ELOR.Laney.Core {
                 devmenu.Add(snotif);
 
                 ActionSheetItem imgc = new ActionSheetItem {
-                    Before = new VKIcon { Id = VKIconNames.Icon20BlockOutline },
+                    Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
                     Header = "Clear images cache",
                 };
                 imgc.Click += (a, b) => BitmapManager.ClearCachedImages();
                 devmenu.Add(imgc);
+
+                ActionSheetItem csc = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
+                    Header = "Clear cached user/group names",
+                };
+                csc.Click += (a, b) => {
+                    CacheManager.ClearUsersAndGroupsCache();
+                };
+                devmenu.Add(csc);
 
                 ActionSheetItem stemw = new ActionSheetItem {
                     Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },

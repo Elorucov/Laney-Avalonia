@@ -8,6 +8,7 @@ using Serilog;
 using Serilog.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -216,6 +217,7 @@ namespace ELOR.Laney.Core {
                                 MessageReceived?.Invoke(this, rmsg, (int)u[2]);
                                 if (u.Count > 6) CheckMentions(u[7], receivedMsgId, peerId4);
                                 if (isPartial) {
+                                    Log.Information($"Received message ({peerId4}_{receivedMsgId}) is partial. Added to queue for getting these from API.");
                                     MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, true));
                                     MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                                 }
@@ -383,7 +385,9 @@ namespace ELOR.Laney.Core {
                     CacheManager.Add(response.Groups);
                     foreach (Message msg in response.Items) {
                         int flag = flags[msg.ConversationMessageId];
-                        if (isEditedCMIDs[$"{msg.PeerId}_{msg.ConversationMessageId}"]) {
+                        bool isEdited = isEditedCMIDs[$"{msg.PeerId}_{msg.ConversationMessageId}"];
+                        Log.Information($"Successfully received message ({msg.PeerId}_{msg.ConversationMessageId}) from API. Is edited: {isEdited}");
+                        if (isEdited) {
                             MessageEdited?.Invoke(this, msg, flag);
                         } else {
                             MessageReceived?.Invoke(this, msg, flag);
@@ -396,7 +400,9 @@ namespace ELOR.Laney.Core {
         }
 
         private bool CheckIsCached(long id) {
-            return CacheManager.GetUser(id) != null || CacheManager.GetGroup(id) != null;
+            bool isCached = CacheManager.GetUser(id) != null || CacheManager.GetGroup(id) != null;
+            Log.Information($"Is sender name for {id} exist in cache: {isCached}");
+            return isCached;
         }
     }
 }
