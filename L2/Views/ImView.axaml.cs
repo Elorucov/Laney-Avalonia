@@ -113,10 +113,10 @@ namespace ELOR.Laney.Views {
         private void ChatPointerReleased(object sender, PointerReleasedEventArgs e) {
             if (e.Pointer.Type != PointerType.Touch) return;
             bool isRight = !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
-            if (isRight) {
-                e.Route = RoutingStrategies.Direct;
-                e.Handled = true;
-            }
+            //if (isRight) {
+            //    e.Route = RoutingStrategies.Direct;
+            //    e.Handled = true;
+            //}
         }
     }
 }

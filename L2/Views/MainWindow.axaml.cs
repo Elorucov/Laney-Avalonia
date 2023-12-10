@@ -58,16 +58,24 @@ namespace ELOR.Laney.Views {
             Activated -= MainWindow_Activated;
             Closing += MainWindow_Closing;
             VKSession.GetByDataContext(this).PropertyChanged += SessionPropertyChanged;
-            Title = $"{VKSession.GetByDataContext(this).Name} - Laney";
+            SetSessionNameInWindowTitle(VKSession.GetByDataContext(this).Name);
 
             await LeftNav.NavigationRouter.NavigateToAsync(new ImView());
         }
 
         private void SessionPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
             VKSession session = sender as VKSession;
-            if (e.PropertyName == nameof(VKSession.Name)) {
-                Title = $"{session.Name} - Laney";
-            }
+            if (e.PropertyName == nameof(VKSession.Name)) SetSessionNameInWindowTitle(session.Name);
+        }
+
+        private void SetSessionNameInWindowTitle(string name) {
+#if RELEASE
+            Title = $"{name} - Laney";
+#elif BETA
+            Title = $"{name} - Laney beta";
+#else
+            Title = $"{name} - Laney dev";
+#endif
         }
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e) {

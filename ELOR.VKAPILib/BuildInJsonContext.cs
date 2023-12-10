@@ -56,6 +56,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(List<User>))]
     [JsonSerializable(typeof(VideoUploadResult))]
     [JsonSerializable(typeof(VideoUploadServer))]
+    [JsonSerializable(typeof(VkUploadServer))]
     [JsonSerializable(typeof(List<Attachment>))]
     [JsonSerializable(typeof(OauthResponse))]
     [JsonSerializable(typeof(DirectAuthResponse))]

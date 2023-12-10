@@ -1,0 +1,108 @@
+name: Publish
+
+on:
+  push:
+    branches: [ "master", "beta", "production" ]
+
+jobs:
+  release:
+    name: Release
+    strategy:
+      matrix:
+        kind: ['linux', 'windows', 'macOS']
+        include:
+          - kind: linux
+            define: LINUX
+            os: ubuntu-latest
+            target: linux-x64
+          - kind: windows
+            define: WIN
+            os: windows-latest
+            target: win-x64
+          - kind: windows-arm
+            define: WIN
+            os: windows-latest
+            target: win-arm64
+          - kind: macOS
+            define: MAC
+            os: macos-latest
+            target: osx-x64
+          - kind: macOS-arm64
+            define: MAC
+            os: macos-latest
+            target: osx-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.100
+      - name: Setting channel to DEV, if needed
+        shell: bash
+        if: ${{ github.ref == 'refs/heads/master' }}
+        run: echo "channel=DEV" >> "$GITHUB_ENV" 
+      - name: Setting channel to RELEASE, if needed
+        shell: bash
+        if: ${{ github.ref == 'refs/heads/production' }}
+        run: echo "channel=RELEASE" >> "$GITHUB_ENV" 
+      - name: Setting channel to BETA, if needed
+        if: ${{ github.ref == 'refs/heads/beta' }}
+        shell: bash
+        run: echo "channel=BETA" >> "$GITHUB_ENV"
+      - name: Preparation
+        id: prep
+        shell: pwsh
+        run: |
+          $location = Get-Location;
+          $file = "$($location)/L2/L2.csproj";
+          [xml]$proj = Get-Content -Path $($file);
+          $version = $proj.Project.FirstChild.AssemblyVersion;
+          $channel = "${{ env.channel }}";
+
+          echo "INSTALLER_BACKGROUND=$($location)/L2/Assets/macos_installer_background.png" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo "INSTALLER_ICON=$($location)/L2/Assets/Logo/icon.icns" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+
+          echo "Channel: $($channel)";
+          echo "Current version: $($version)";
+          echo "VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Build
+        shell: pwsh
+        run: |
+          $version = "${{ env.VERSION }}";
+          $channel = "${{ env.channel }}";
+          $target = "${{ matrix.target }}";
+          $location = Get-Location;
+          $output = '{0}/pub_${{ matrix.target }}' -f $location;
+          echo "BINFOLDER=$output" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          & $location/L2/build_ci.ps1 -appname Laney -channel ${{ env.channel }} -ctarget ${{ matrix.target }} -output $output;
+      - name: Clean-up output folder and make zip
+        if: ${{ matrix.define != 'MAC' }}
+        shell: bash
+        run: |
+          filename=Laney_${{ matrix.target }}_${{ env.VERSION }}_${{ env.channel }};
+          if [ "${{ matrix.define }}" == "WIN" ]; then
+            for f in $(find ${{ env.BINFOLDER }}/ -name '*.pdb'); do rm $f; done
+            7z a -tzip "${filename}.zip" "${{ env.BINFOLDER }}/*"
+            echo "${filename}.zip" >> $env:BINARCHIVE
+          else
+            for f in $(find ${{ env.BINFOLDER }}/ -name '*.dbg'); do rm $f; done
+            tar -czvf ${filename}.tgz -C "${{ env.BINFOLDER }}" $(ls ${{ env.BINFOLDER }})
+            echo "${filename}.tgz" >> $env:BINARCHIVE
+          fi
+      - name: Make DMG
+        if: ${{ matrix.define == 'MAC' }}
+        shell: bash
+        run: |
+          brew install create-dmg;
+          create-dmg --volname "Laney Installer" --background "${{ env.INSTALLER_BACKGROUND }}" --window-pos 400 220 --window-size 360 548 --icon-size 128 --icon "Laney_${{ matrix.target }}.app" 180 134 --app-drop-link 180 366 "Laney_"${{ matrix.target }}".dmg" "${{ env.BINFOLDER }}/MacOS_Bundles/Laney_${{ matrix.target }}.app"
+          echo ${{ env.BINFOLDER }}/MacOS_Bundles/Laney_${{ matrix.target }}.app >> $env:BINARCHIVE
+      - name: Release to Github
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "Laney_*"
+          tag_name: "v${{ env.VERSION }}-${{ env.channel }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
