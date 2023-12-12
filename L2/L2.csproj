@@ -53,11 +53,13 @@
     <None Remove="Assets\i18n\en-US.json" />
     <None Remove="Assets\i18n\ru-RU.json" />
     <None Remove="Assets\i18n\uk-UA.json" />
+    <None Remove="Assets\Logo\icon.icns" />
     <None Remove="Assets\Logo\icon.ico" />
     <None Remove="Assets\Logo\Laney.png" />
     <None Remove="Assets\Logo\Tray\t32cw.png" />
     <None Remove="Assets\Logo\Tray\t32mb.png" />
     <None Remove="Assets\Logo\Tray\t32mw.png" />
+    <None Remove="Assets\macos_installer_background.png" />
     <None Remove="Controls\Attachments\AttachmentsContainer.xaml" />
     <None Remove="Controls\Attachments\BasicAttachment.xaml" />
     <None Remove="Controls\Attachments\ExtendedAttachment.xaml" />
@@ -71,6 +73,8 @@
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets/**" />
+    <AvaloniaResource Remove="Assets\Logo\icon.icns" />
+    <AvaloniaResource Remove="Assets\macos_installer_background.png" />
     <AvaloniaResource Include="Controls\Attachments\BasicAttachment.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
