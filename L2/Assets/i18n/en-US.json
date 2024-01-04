@@ -44,6 +44,7 @@
   "sign_in": "Sign in",
   "go_back": "Go back",
   "continue": "Continue",
+  "customize": "Customize",
 
   "landing_title": "This is Laney",
   "landing_subtitle": "The messenger of VK social network",
@@ -391,5 +392,7 @@
   "msg_search_chat": "Search in chat \"{0}\"",
   "in_chat": "in chat \"{0}\"",
 
-  "group_management_desc": "Add Laney to your groups to stay in touch with their members and receive notifications when new messages arrive."
+  "group_management_desc": "Add Laney to your groups to stay in touch with their members and receive notifications when new messages arrive.",
+
+  "templates": "Templates"
 }

@@ -87,6 +87,10 @@ namespace ELOR.Laney.Controls {
             BotKeyboardToggle.IsChecked = !BotKeyboardToggle.IsChecked;
         }
 
+        private void ShowTemplatesFlyout(object sender, RoutedEventArgs e) {
+            ViewModel.ShowGroupTemplates(sender as Button);
+        }
+
         private void ShowStickersFlyout(object sender, RoutedEventArgs e) {
             ViewModel.ShowEmojiStickerPicker(sender as Button);
         }

@@ -152,6 +152,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("items")]
         public List<MessageTemplate> Items { get; set; }
+
+        [JsonPropertyName("group_id")]
+        public long GroupId { get; set; } // needed for some "execute" methods.
     }
 
     public class PhotosList : IVKList<Photo> {

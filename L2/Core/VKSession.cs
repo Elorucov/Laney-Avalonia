@@ -27,6 +27,7 @@ using ELOR.Laney.ViewModels.Modals;
 using ToastNotifications.Avalonia;
 using Avalonia.Dialogs;
 using ELOR.VKAPILib.Objects;
+using ELOR.VKAPILib.Objects.Messages;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -34,9 +35,6 @@ namespace ELOR.Laney.Core {
         private Uri? _avatar;
         private ImViewModel _imViewModel;
         private ChatViewModel _currentOpenedChat;
-
-        private WindowNotificationManager _notificationManager;
-        private static ToastNotificationsManager _systemNotificationManager;
 
         public long Id { get { return GroupId > 0 ? -GroupId : UserId; } }
         public long UserId { get; private set; }
@@ -53,6 +51,11 @@ namespace ELOR.Laney.Core {
         public Window ModalWindow { get => GetLastOpenedModalWindow(Window); }
 
         public event EventHandler<long> CurrentOpenedChatChanged;
+
+        private WindowNotificationManager _notificationManager;
+        private static ToastNotificationsManager _systemNotificationManager;
+
+        public List<MessageTemplate> MessageTemplates { get; private set; } = new List<MessageTemplate>();
 
         #region Binded from UI and tray menu
 
@@ -329,14 +332,25 @@ namespace ELOR.Laney.Core {
                             GroupId = group.Id,
                             Name = group.Name,
                             Avatar = new Uri(group.Photo100),
-                            API = new VKAPI(info.User.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent),
+                            API = new VKAPI(info.User.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent)
                         };
                         gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
                         gs.ImViewModel = new ImViewModel(gs);
                         sessions.Add(gs);
 
-                        var glp = info.LongPolls.Where(lps => lps.SessionId == gs.Id).FirstOrDefault();
-                        gs.SetUpLongPoll(glp);
+                        var tmp = info.Templates.Where(tmps => tmps.GroupId == group.Id).FirstOrDefault();
+                        if (tmp != null) {
+                            gs.MessageTemplates = tmp.Items;
+                        } else {
+                            Log.Warning($"VKSession > Init: Message templates for group {group.Id} not found in response!");
+                        }
+
+                        var glp = info.LongPolls.Where(lps => lps.SessionId == group.Id).FirstOrDefault();
+                        if (glp != null) {
+                            gs.SetUpLongPoll(glp);
+                        } else {
+                            Log.Warning($"VKSession > Init: LongPoll for group {group.Id} not found in response!");
+                        }
                     }
 
                     _sessions = sessions;
@@ -468,6 +482,20 @@ namespace ELOR.Laney.Core {
                     };
                     gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
                     sessions.Add(gs);
+
+                    var tmp = response.Templates.Where(tmps => tmps.GroupId == group.Id).FirstOrDefault();
+                    if (tmp != null) {
+                        gs.MessageTemplates = tmp.Items;
+                    } else {
+                        Log.Warning($"VKSession > UpdateGroupSessions: Message templates for group {group.Id} not found in response!");
+                    }
+
+                    var glp = response.LongPolls.Where(lps => lps.SessionId == group.Id).FirstOrDefault();
+                    if (glp != null) {
+                        gs.SetUpLongPoll(glp);
+                    } else {
+                        Log.Warning($"VKSession > UpdateGroupSessions: LongPoll for group {group.Id} not found in response!");
+                    }
                 }
 
                 _sessions = sessions;

@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.555</AssemblyVersion>
-    <FileVersion>2.0.555</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.555-win-anycpu-devuser.devpc-231127-1811</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.555-linux-anycpu-devuser.devpc-231127-1811</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.555-macos-anycpu-devuser.devpc-231127-1811</Version>
+    <AssemblyVersion>2.0.259</AssemblyVersion>
+    <FileVersion>2.0.259</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.259-win-anycpu-devuser.devpc-231127-1811</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.259-linux-anycpu-devuser.devpc-231127-1811</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.259-macos-anycpu-devuser.devpc-231127-1811</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -23,8 +23,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.555</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.555</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.259</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.259</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
@@ -95,7 +95,7 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6" />
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.6" />
-    <PackageReference Include="DynamicData" Version="8.1.1" />
+    <PackageReference Include="DynamicData" Version="8.3.27" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
@@ -185,5 +185,8 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Modals\ImportantMessages.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\GroupMessageTemplates.axaml" />
   </ItemGroup>
 </Project>

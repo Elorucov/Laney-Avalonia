@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:vkobj="using:ELOR.VKAPILib.Objects.Messages"
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="320"
+             x:Class="ELOR.Laney.GroupMessageTemplates">
+  <Grid RowDefinitions="Auto *">
+    <Grid x:Name="Header" ColumnDefinitions="* Auto" Margin="12,12,12,8">
+      <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{i18n:Localize templates}"/>
+      <Button Grid.Column="1" Classes="Link" Click="OpenTemplatesEditorModal">
+        <TextBlock Classes="Caption1" Text="{i18n:Localize customize}"/>
+      </Button>
+    </Grid>
+  
+    <ScrollViewer Grid.Row="1">
+      <ItemsRepeater x:Name="TemplatesList">
+        <ItemsRepeater.ItemTemplate>
+          <DataTemplate x:DataType="vkobj:MessageTemplate">
+            <Button Classes="Tertiary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0,8,0,10" Click="OnTemplateClicked">
+              <StackPanel Margin="12,0">
+                <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextPrimaryBrush}" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{Binding Name}"/>
+                <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" MaxLines="3" TextTrimming="CharacterEllipsis" Text="{Binding Text}"/>
+              </StackPanel>
+            </Button>
+          </DataTemplate>
+        </ItemsRepeater.ItemTemplate>
+      </ItemsRepeater>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

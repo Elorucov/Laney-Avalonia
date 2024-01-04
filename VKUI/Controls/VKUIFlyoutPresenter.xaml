@@ -34,7 +34,7 @@
   <ControlTheme x:Key="{x:Type controls:VKUIFlyoutPresenter}" TargetType="controls:VKUIFlyoutPresenter">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border x:Name="FlyoutPresenterRoot" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
+        <Border x:Name="FlyoutPresenterRoot" Cursor="Arrow" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
           <ContentPresenter Content="{TemplateBinding Content}"/>
         </Border>
       </ControlTemplate>

@@ -27,5 +27,8 @@ namespace ELOR.Laney.Execute.Objects {
 
         [JsonPropertyName("queue_config")]
         public QueueSubscribeResponse QueueConfig { get; set; }
+
+        [JsonPropertyName("templates")]
+        public List<MessageTemplatesList> Templates { get; set; }
     }
 }

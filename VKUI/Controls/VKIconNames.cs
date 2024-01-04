@@ -43,6 +43,7 @@
         public const string Icon20HomeOutline = "Icon20HomeOutline";
         public const string Icon20InfoCircleOutline = "Icon20InfoCircleOutline";
         public const string Icon20LinkCircleOutline = "Icon20LinkCircleOutline";
+        public const string Icon20ListBulletOutline = "Icon20ListBulletOutline";
         public const string Icon20LockOutline = "Icon20LockOutline";
         public const string Icon20MentionOutline = "Icon20MentionOutline";
         public const string Icon20MessageArrowRightOutline = "Icon20MessageArrowRightOutline";
@@ -90,6 +91,7 @@
         public const string Icon24KeyboardBotsOutline = "Icon24KeyboardBotsOutline";
         public const string Icon24Link = "Icon24Link";
         public const string Icon24LinkedOutline = "Icon24LinkedOutline";
+        public const string Icon24ListBulletOutline = "Icon24ListBulletOutline";
         public const string Icon24MessagesOutline = "Icon24MessagesOutline";
         public const string Icon24MoreHorizontal = "Icon24MoreHorizontal";
         public const string Icon24Music = "Icon24Music";

@@ -24,6 +24,9 @@
           </StackPanel>
         </Button>
         <Button Margin="8" Classes="ListItem Selected" Content="In list selected"/>
+        <Button Margin="8" Classes="Link">
+          <TextBlock Classes="Caption1" Text="Manage"/>
+        </Button>
       </StackPanel>
     </Design.PreviewWith>
 
@@ -172,6 +175,15 @@
     <Setter Property="LineHeight" Value="20"/>
   </Style>
 
+  <!-- Link button -->
+  <Style Selector="Button.Link">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource VKTextLinkBrush}"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="MinWidth" Value="0"/>
+    <Setter Property="MinHeight" Value="0"/>
+  </Style>
+  
   <!-- Flip view & horizontal scroll button styles -->
   <Style Selector="Button.FVNav">
     <Setter Property="Width" Value="48"/>

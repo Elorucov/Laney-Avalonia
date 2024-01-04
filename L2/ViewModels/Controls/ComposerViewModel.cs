@@ -23,6 +23,7 @@ namespace ELOR.Laney.ViewModels.Controls {
     public class ComposerViewModel : CommonViewModel {
         private VKSession session;
         
+        private bool _isGroupSession;
         private bool _canSendMessage;
         private int _editingMessageId;
         private string _text;
@@ -34,6 +35,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private RelayCommand _sendCommand;
         private RelayCommand _recordAudioCommand;
 
+        public bool IsGroupSession { get { return _isGroupSession; } private set { _isGroupSession = value; OnPropertyChanged(); } }
         public bool CanSendMessage { get { return _canSendMessage; } private set { _canSendMessage = value; OnPropertyChanged(); } }
         public int EditingMessageId { get { return _editingMessageId; } private set { _editingMessageId = value; OnPropertyChanged(); } }
         public string Text { get { return _text; } set { _text = value; OnPropertyChanged(); CheckCanSendMessage(); } }
@@ -53,6 +55,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         public ComposerViewModel(VKSession session, ChatViewModel chat) {
             this.session = session;
+            IsGroupSession = session.IsGroup;
             Chat = chat;
             Attachments.CollectionChanged += (a, b) => CheckCanSendMessage();
             SendCommand = new RelayCommand((o) => SendMessage());
@@ -112,6 +115,24 @@ namespace ELOR.Laney.ViewModels.Controls {
             ash.Items.Add(file);
             ash.Items.Add(poll);
             ash.ShowAt(target);
+        }
+
+        public void ShowGroupTemplates(Button target) {
+            var picker = new GroupMessageTemplates(session) {
+                Width = 320,
+                Height = 320
+            };
+
+            VKUIFlyout flyout = new VKUIFlyout {
+                Content = picker
+            };
+
+            picker.TemplateSelected += (a, b) => {
+                flyout.Hide();
+                Text = b;
+            };
+
+            flyout.ShowAt(target);
         }
 
         public void ShowEmojiStickerPicker(Control target) {
