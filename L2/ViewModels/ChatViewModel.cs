@@ -186,7 +186,15 @@ namespace ELOR.Laney.ViewModels {
 
         private void Setup(Conversation c) {
             PeerId = c.Peer.Id;
-            if (SortId?.MajorId != c.SortId.MajorId || SortId?.MinorId != c.SortId.MinorId) SortId = c.SortId; // чтобы не дёргался listbox.
+
+            // В сообщениях сообщества minor_id в getHistory 0, хотя в getConversations всё ок.
+            // Явный баг в API вызывает баги с сортировкой в Laney, поэтому и есть этот костыль.
+            if (session.IsGroup && SortId?.MinorId > 0 && c.SortId.MinorId == 0) {
+                Log.Warning($"getHistory returns a 0 in conversation.sort_id.major_id!");
+            } else {
+                if (SortId?.MajorId != c.SortId.MajorId || SortId?.MinorId != c.SortId.MinorId) SortId = c.SortId; // чтобы не дёргался listbox.
+            }
+
             UnreadMessagesCount = c.UnreadCount;
             CanWrite = c.CanWrite;
             InRead = c.InReadCMID;
