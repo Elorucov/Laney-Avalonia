@@ -417,14 +417,13 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="eventsLimit">Maximum number of events to return. (minimum 1000)</param>
         /// <param name="msgsLimit">Maximum number of messages to return. (minimum 200)</param>
         /// <param name="maxMsgId">Maximum ID of the message among existing ones in the local copy.</param>
-        public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(long groupId, int ts, int pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null) {
+        public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(long groupId, int version, int ts, int pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if(groupId > 0) parameters.Add("group_id", groupId.ToString());
-            parameters.Add("lp_version", API.LongPollVersion.ToString());
+            parameters.Add("lp_version", version.ToString());
             parameters.Add("ts", ts.ToString());
             parameters.Add("pts", pts.ToString());
             if (previewLength > 0) parameters.Add("preview_length", previewLength.ToString());
-            if (onlines) parameters.Add("onlines", "1");
             parameters.Add("events_limit", eventsLimit.ToString());
             parameters.Add("msgs_limit", msgsLimit.ToString());
             if (maxMsgId > 0) parameters.Add("mmax_msg_id", maxMsgId.ToString());
@@ -436,11 +435,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Returns data required for connection to a Long Poll server.</summary>
         /// <param name="needPts">true — to return the pts field, needed for the GetLongPollHistoryAsync method.</param>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
-        public async Task<LongPollServerInfo> GetLongPollServerAsync(bool needPts, long groupId) {
+        public async Task<LongPollServerInfo> GetLongPollServerAsync(bool needPts, int version, long groupId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             if (needPts) parameters.Add("need_pts", "1");
-            parameters.Add("lp_version", API.LongPollVersion.ToString());
+            parameters.Add("lp_version", version.ToString());
             return await API.CallMethodAsync<LongPollServerInfo>("messages.getLongPollServer", parameters);
         }
 

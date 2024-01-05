@@ -153,7 +153,7 @@ namespace ELOR.Laney.Core {
             while (trying) {
                 try {
                     Log.Information("Getting LongPoll history...");
-                    var response = await API.Messages.GetLongPollHistoryAsync(groupId, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
+                    var response = await API.Messages.GetLongPollHistoryAsync(groupId, LongPoll.VERSION, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
                     CacheManager.Add(response.Profiles);
                     CacheManager.Add(response.Groups);
                     // TODO: кешировать беседы.
