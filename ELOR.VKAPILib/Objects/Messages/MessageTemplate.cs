@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Messages {
-    public class MessageTemplate {
+    public class MessageTemplate : ICloneable {
         public MessageTemplate() {}
             
         [JsonPropertyName("id")]
@@ -36,6 +36,10 @@ namespace ELOR.VKAPILib.Objects.Messages {
 
         [JsonIgnore]
         public DateTime UpdateTime { get { return DateTimeOffset.FromUnixTimeSeconds(UpdateTimeUnix).DateTime.ToLocalTime(); } }
+
+        public object Clone() {
+            return (MessageTemplate)MemberwiseClone();
+        }
     }
 
     public class AddTemplateResponse {

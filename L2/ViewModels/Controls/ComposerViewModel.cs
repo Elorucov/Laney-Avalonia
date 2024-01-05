@@ -118,7 +118,12 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         public void ShowGroupTemplates(Button target) {
-            var picker = new GroupMessageTemplates(session) {
+            if (Chat.PeerType != PeerType.User || !session.IsGroup) return;
+            var currentChatUser = CacheManager.GetUser(Chat.PeerId);
+            var currentAdmin = CacheManager.GetUser(VKSession.Main.Id);
+            var groupName = CacheManager.GetGroup(session.GroupId).Name;
+
+            var picker = new GroupMessageTemplates(session, currentChatUser, currentAdmin, groupName) {
                 Width = 320,
                 Height = 320
             };

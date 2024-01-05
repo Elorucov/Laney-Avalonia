@@ -394,5 +394,6 @@
 
   "group_management_desc": "Add Laney to your groups to stay in touch with their members and receive notifications when new messages arrive.",
 
-  "templates": "Templates"
+  "templates": "Templates",
+  "commtemplate_greeting": "Hi"
 }
