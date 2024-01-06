@@ -13,9 +13,10 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class CacheManager {
-        private static List<User> CachedUsers = new List<User>();
-        private static List<Group> CachedGroups = new List<Group>();
+        private static Dictionary<long, User> CachedUsers = new Dictionary<long, User>();
+        private static Dictionary<long, Group> CachedGroups = new Dictionary<long, Group>();
         private static Dictionary<long, List<ChatViewModel>> CachedChats = new Dictionary<long, List<ChatViewModel>>();
+        
         public static void Add(IEnumerable<User> users) {
             if (users == null) return;
             foreach (User user in users) {
@@ -31,24 +32,18 @@ namespace ELOR.Laney.Core {
         }
 
         public static void Add(User user) {
-            lock (CachedUsers) {
-                int index = CachedUsers.FindIndex(i => i.Id == user.Id);
-                if (index >= 0) {
-                    CachedUsers[index] = user;
-                } else {
-                    CachedUsers.Add(user);
-                }
+            if (CachedUsers.ContainsKey(user.Id)) {
+                CachedUsers[user.Id] = user;
+            } else {
+                CachedUsers.Add(user.Id, user);
             }
         }
 
         public static void Add(Group group) {
-            lock (CachedGroups) {
-                int index = CachedGroups.FindIndex(i => i.Id == group.Id);
-                if (index >= 0) {
-                    CachedGroups[index] = group;
-                } else {
-                    CachedGroups.Add(group);
-                }
+            if (CachedGroups.ContainsKey(group.Id)) {
+                CachedGroups[group.Id] = group;
+            } else {
+                CachedGroups.Add(group.Id, group);
             }
         }
 
@@ -66,21 +61,21 @@ namespace ELOR.Laney.Core {
 
         public static User GetUser(long id) {
             try {
-                return CachedUsers.FirstOrDefault(i => i.Id == id);
+                if (CachedUsers.ContainsKey(id)) return CachedUsers[id];
             } catch (Exception ex) {
                 Log.Error(ex, $"Error while getting user with id {id} from cache!");
-                return null;
             }
+            return null;
         }
 
         public static Group GetGroup(long id) {
             try {
                 if (id < 0) id = id * -1;
-                return CachedGroups.FirstOrDefault(i => i.Id == id);
+                if (CachedGroups.ContainsKey(id)) return CachedGroups[id];
             } catch (Exception ex) {
                 Log.Error(ex, $"Error while getting group with id {id} from cache!");
-                return null;
             }
+            return null;
         }
 
         public static ChatViewModel GetChat(long sessionId, long peerId) {
