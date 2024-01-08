@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform;
 using Avalonia.Styling;
@@ -108,11 +107,11 @@ namespace ELOR.Laney {
 
             // Checking all avalonia resources.
             // Надо для сравнения между обычной компиляцией и AOT
-            var uris = AssetLoader.GetAssets(new Uri("avares://laney/"), new Uri("avares://laney/"));
-            Log.Information("Found resources:");
-            foreach (var uri in uris) {
-                Log.Information($"> {uri}");
-            }
+            // var uris = AssetLoader.GetAssets(new Uri("avares://laney/"), new Uri("avares://laney/"));
+            // Log.Information("Found resources:");
+            // foreach (var uri in uris) {
+            //     Log.Information($"> {uri}");
+            // }
             
 #endif
 
