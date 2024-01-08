@@ -63,14 +63,22 @@ namespace ELOR.Laney {
                     VKSession.StartDemoSession(usessions.FirstOrDefault());
                     desktop.MainWindow = VKSession.Main.Window;
                 } else {
-                    long uid = Settings.Get<long>(Settings.VK_USER_ID);
-                    string token = Settings.Get<string>(Settings.VK_TOKEN);
-                    if (uid > 0 && !String.IsNullOrEmpty(token)) {
-                        Log.Information($"Authorized user: {uid}");
-                        VKSession.StartUserSession(uid, token);
-                        desktop.MainWindow = VKSession.Main.Window;
-                    } else {
-                        Log.Information($"Not authorized. Opening sign in window...");
+                    try {
+                        long uid = Settings.Get<long>(Settings.VK_USER_ID);
+                        string token = Settings.Get<string>(Settings.VK_TOKEN);
+                        string nonce = Settings.Get<string>(Settings.VK_TOKEN + "1");
+                        string tag = Settings.Get<string>(Settings.VK_TOKEN + "2");
+                        string dt = Encryption.Decrypt(AssetsManager.BinaryPayload.Skip(576).Take(32).OrderDescending().ToArray(), token, nonce, tag);
+                        if (uid > 0 && !String.IsNullOrEmpty(dt)) {
+                            Log.Information($"Authorized user: {uid}");
+                            VKSession.StartUserSession(uid, dt);
+                            desktop.MainWindow = VKSession.Main.Window;
+                        } else {
+                            Log.Information($"Not authorized. Opening sign in window...");
+                            desktop.MainWindow = new Views.SignInWindow();
+                        }
+                    } catch (Exception ex) {
+                        Log.Error(ex, $"Cannot check authorization. Opening sign in window...");
                         desktop.MainWindow = new Views.SignInWindow();
                     }
                 }

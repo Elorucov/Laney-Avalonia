@@ -20,7 +20,13 @@ namespace ELOR.Laney.Views.SignIn {
                 NavigationRouter.NavigateToAsync(new MainPage(), NavigationMode.Clear);
             };
 
-            VersionInfo.Text = $"v. {App.BuildInfo}";
+#if RELEASE
+            VersionInfo.Text = $"v{App.BuildInfo}";
+#elif BETA
+            VersionInfo.Text = $"v{App.BuildInfo} (BETA)";
+#else
+            VersionInfo.Text = $"v{App.BuildInfo} (DEV)";
+#endif
         }
 
         private void GoToExternalAuthPage(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

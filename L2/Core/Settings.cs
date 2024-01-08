@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using ELOR.Laney.Helpers;
 using Serilog;
@@ -78,7 +79,14 @@ namespace ELOR.Laney.Core {
 
         private static void AddOrReplace(string key, object value) {
             if (_settings.ContainsKey(key)) {
-                _settings[key] = value;
+                if (key == VK_TOKEN) {
+                    var result = Encryption.Encrypt(AssetsManager.BinaryPayload.Skip(576).Take(32).OrderDescending().ToArray(), (string)value);
+                    _settings[key] = result.Item1;
+                    _settings[key + "1"] = result.Item2;
+                    _settings[key + "2"] = result.Item3;
+                } else {
+                    _settings[key] = value;
+                }
             } else {
                 _settings.Add(key, value);
             }
