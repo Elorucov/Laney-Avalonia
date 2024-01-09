@@ -11,6 +11,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.Json;
@@ -32,26 +33,29 @@ namespace ELOR.Laney.ViewModels.Controls {
         private ObservableCollection<OutboundAttachmentViewModel> _attachments = new ObservableCollection<OutboundAttachmentViewModel>();
         private MessageViewModel _reply;
         private BotKeyboard _botKeyboard;
+        private List<Sticker> _suggestedStickers;
+
         private RelayCommand _sendCommand;
         private RelayCommand _recordAudioCommand;
 
         public bool IsGroupSession { get { return _isGroupSession; } private set { _isGroupSession = value; OnPropertyChanged(); } }
         public bool CanSendMessage { get { return _canSendMessage; } private set { _canSendMessage = value; OnPropertyChanged(); } }
         public int EditingMessageId { get { return _editingMessageId; } private set { _editingMessageId = value; OnPropertyChanged(); } }
-        public string Text { get { return _text; } set { _text = value; OnPropertyChanged(); CheckCanSendMessage(); } }
+        public string Text { get { return _text; } set { _text = value; OnPropertyChanged(); } }
         public int TextSelectionStart { get { return _textSelectionStart; } set { _textSelectionStart = value; OnPropertyChanged(); } }
         public int TextSelectionEnd { get { return _textSelectionEnd; } set { _textSelectionEnd = value; OnPropertyChanged(); } }
         public ObservableCollection<OutboundAttachmentViewModel> Attachments { get { return _attachments; } private set { _attachments = value; OnPropertyChanged(); } }
         public MessageViewModel Reply { get { return _reply; } private set { _reply = value; OnPropertyChanged(); } }
         public BotKeyboard BotKeyboard { get { return _botKeyboard; } set { _botKeyboard = value; OnPropertyChanged(); } }
+        public List<Sticker> SuggestedStickers { get { return _suggestedStickers; } set { _suggestedStickers = value; OnPropertyChanged(); } }
+
+        public RelayCommand SendCommand { get { return _sendCommand; } private set { _sendCommand = value; OnPropertyChanged(); } }
+        public RelayCommand RecordAudioCommand { get { return _recordAudioCommand; } private set { _recordAudioCommand = value; OnPropertyChanged(); } }
 
         ChatViewModel Chat;
         Random Random = null;
         int RandomId = 0;
         int StickerId = 0;
-
-        public RelayCommand SendCommand { get { return _sendCommand; } private set { _sendCommand = value; OnPropertyChanged(); } }
-        public RelayCommand RecordAudioCommand { get { return _recordAudioCommand; } private set { _recordAudioCommand = value; OnPropertyChanged(); } }
 
         public ComposerViewModel(VKSession session, ChatViewModel chat) {
             this.session = session;
@@ -63,6 +67,15 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             Random = new Random();
             RandomId = Random.Next(Int32.MinValue, Int32.MaxValue);
+
+            PropertyChanged += OnPropertyChanged;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+            if (e.PropertyName == nameof(Text)) {
+                CheckCanSendMessage();
+                CheckStickersSuggestions();
+            }
         }
 
         private void CheckCanSendMessage() {
@@ -154,9 +167,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             picker.EmojiPicked += Picker_EmojiPicked;
             picker.StickerPicked += (a, b) => {
                 flyout.Hide();
-                StickerId = b.StickerId;
-                CheckCanSendMessage();
-                SendMessage();
+                SendSticker(b.StickerId);
             };
 
             flyout.ShowAt(target);
@@ -307,6 +318,12 @@ namespace ELOR.Laney.ViewModels.Controls {
             }
         }
 
+        public void SendSticker(int stickerId) {
+            StickerId = stickerId;
+            CheckCanSendMessage();
+            SendMessage();
+        }
+
         public void RecordAudio() {
             ExceptionHelper.ShowNotImplementedDialogAsync(session.Window);
         }
@@ -317,6 +334,15 @@ namespace ELOR.Laney.ViewModels.Controls {
             Text = null;
             Attachments.Clear();
             StickerId = 0;
+        }
+
+        // Подсказки стикеров
+
+        private void CheckStickersSuggestions() {
+            if (!Settings.SuggestStickers) return;
+
+            var stickers = StickersManager.GetStickersByWord(Text);
+            SuggestedStickers = stickers;
         }
     }
 }

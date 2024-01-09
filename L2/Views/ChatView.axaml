@@ -7,8 +7,9 @@
              xmlns:dm="using:ELOR.Laney.DataModels"
              xmlns:vm="using:ELOR.Laney.ViewModels"
              xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
+             xmlns:vko="using:ELOR.VKAPILib.Objects"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
-             mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="480"
+             mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="480"
              SizeChanged="ChatView_SizeChanged"
              x:Class="ELOR.Laney.Views.ChatView"
              x:DataType="vm:ChatViewModel" x:CompileBindings="True">
@@ -150,6 +151,23 @@
         <TextBlock FontSize="12" LineHeight="12" Margin="4,2,4,0" TextAlignment="Center" Text="{Binding UnreadMessagesCount}"/>
       </Border>
     </Grid>
+
+    <Border x:Name="SuggestedStickersContainer" Grid.Row="2" IsVisible="{Binding !!Composer.SuggestedStickers, Mode=OneWay}" Height="72" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12" CornerRadius="12" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
+      <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+        <ItemsRepeater x:Name="SuggestedStickersList" Margin="4" ItemsSource="{Binding Composer.SuggestedStickers, Mode=OneWay}">
+          <ItemsRepeater.Layout>
+            <StackLayout Orientation="Horizontal" Spacing="4"/>
+          </ItemsRepeater.Layout>
+          <ItemsRepeater.ItemTemplate>
+            <DataTemplate x:DataType="vko:Sticker">
+              <Button Classes="Tertiary" Padding="0" Width="64" Height="64" Click="OnSuggestedStickerClicked">
+                <Image Width="64" Height="64" controls:ImageLoader.Source="{Binding Converter={StaticResource vpsc}, ConverterParameter=64}"/>
+              </Button>
+            </DataTemplate>
+          </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+      </ScrollViewer>
+    </Border>
 
     <Border x:Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="894" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
       <Grid>

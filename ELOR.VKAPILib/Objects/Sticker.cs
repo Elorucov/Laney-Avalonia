@@ -72,12 +72,27 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class StickerDictionary {
-        public StickerDictionary() {}
-
         [JsonPropertyName("words")]
         public List<string> Words { get; set; }
 
-        [JsonPropertyName("stickers")]
-        public List<Sticker> Stickers { get; set; }
+        [JsonPropertyName("user_stickers")]
+        public List<Sticker> UserStickers { get; set; }
+
+        [JsonPropertyName("promoted_stickers")]
+        public List<Sticker> PromotedStickers { get; set; }
+    }
+
+    public class StickersKeywordsResponse {
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("chunks_count")]
+        public int ChunksCount { get; set; }
+
+        [JsonPropertyName("chunks_hash")]
+        public string ChunksHash { get; set; }
+
+        [JsonPropertyName("dictionary")]
+        public List<StickerDictionary> Dictionary { get; set; }
     }
 }

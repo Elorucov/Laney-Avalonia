@@ -9,6 +9,7 @@ using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Views.Modals;
+using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -360,8 +361,15 @@ namespace ELOR.Laney.Views {
             window.Show();
         }
 
-        #endregion
+        private void OnSuggestedStickerClicked(object? sender, RoutedEventArgs e) {
+            Button button = sender as Button;
+            Sticker sticker = button.DataContext as Sticker;
+            if (sticker == null) return;
 
+            Chat?.Composer.SendSticker(sticker.StickerId);
+        }
+
+        #endregion
 
         #region Mark message as read
 

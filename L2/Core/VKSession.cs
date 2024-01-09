@@ -579,7 +579,7 @@ namespace ELOR.Laney.Core {
         public static IReadOnlyList<VKSession> Sessions { get => _sessions.AsReadOnly(); }
         public static VKSession Main { get => _sessions.FirstOrDefault(); }
 
-        public static void StartUserSession(long userId, string accessToken) {
+        public static async void StartUserSession(long userId, string accessToken) {
             VKSession session = new VKSession {
                 UserId = userId,
                 Name = "...",
@@ -592,6 +592,9 @@ namespace ELOR.Laney.Core {
             session.ImViewModel = new ImViewModel(session);
             session.Init();
             session.Window.Show();
+
+            await Task.Delay(1000); // чтобы метод api не выполнялся одновременно с другими и не поймать ошибку 6.
+            StickersManager.InitKeywords();
         }
 
         public static void StartDemoSession(DemoModeSession mainSession) {
