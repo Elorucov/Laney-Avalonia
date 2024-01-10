@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Platform;
 using Avalonia.Styling;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
@@ -96,6 +95,8 @@ namespace ELOR.Laney {
             string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
             bool langLoaded = Localizer.Instance.LoadLanguage(lang);
             Debug.WriteLine("Language loaded!");
+
+            AudioPlayer.InitInstances();
 
 #if RELEASE
 #else
@@ -246,6 +247,7 @@ namespace ELOR.Laney {
             "Avalonia.Skia.Lottie by Wiesław Šoltés",
             "ColorTextBlock.Avalonia by whistyun",
             "jp2masa.Avalonia.Flexbox",
+            "ManagedBass",
             "Serilog",
             "Unicode.net",
         };

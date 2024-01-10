@@ -956,7 +956,8 @@ namespace ELOR.Laney.ViewModels {
 
         private async void ShowSystemNotification(MessageViewModel message, bool isMention) {
             await Task.Delay(20); // имя отправителя может не оказаться в кеше вовремя.
-            bool canNotify = isMention ? true : CanNotify(message);
+            bool sound = !PushSettings.NoSound;
+            bool canNotify = isMention ? true : CanNotify();
             Log.Information($"ChatViewModel: about to show new message notification ({message.PeerId}_{message.ConversationMessageId}). Is mention: {isMention}, can notify: {canNotify}.");
             if (message.IsOutgoing || !canNotify) return;
 
@@ -974,9 +975,13 @@ namespace ELOR.Laney.ViewModels {
             //    // TODO: send message from toast
             //};
             session.ShowSystemNotification(t);
+            if (sound) {
+                var bb2 = AssetsManager.OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
+                AudioPlayer.SFX?.Play(bb2);
+            }
         }
 
-        private bool CanNotify(MessageViewModel message) {
+        private bool CanNotify() {
             if (PushSettings.DisabledForever) return false;
             return PushSettings.DisabledUntil == 0 || PushSettings.DisabledUntil < DateTimeOffset.Now.ToUnixTimeSeconds();
         }

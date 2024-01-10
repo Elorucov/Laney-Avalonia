@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.263</AssemblyVersion>
-    <FileVersion>2.0.263</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.263-win-anycpu-devuser.devpc-231127-1811</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.263-linux-anycpu-devuser.devpc-231127-1811</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.263-macos-anycpu-devuser.devpc-231127-1811</Version>
+    <AssemblyVersion>2.0.264</AssemblyVersion>
+    <FileVersion>2.0.264</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.264-win-anycpu-devuser.devpc-240110-0936</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.264-linux-anycpu-devuser.devpc-240110-0936</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.264-macos-anycpu-devuser.devpc-240110-0936</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -23,8 +23,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.263</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.263</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.264</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.264</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
@@ -96,6 +96,7 @@
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.6" />
     <PackageReference Include="DynamicData" Version="8.3.27" />
+    <PackageReference Include="ManagedBass" Version="3.1.1" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
@@ -110,11 +111,12 @@
     <ProjectReference Include="..\ToastNotifications.Avalonia\ToastNotifications.Avalonia.csproj" />
     <ProjectReference Include="..\VKUI\VKUI.csproj" />
   </ItemGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties />
-    </VisualStudio>
-  </ProjectExtensions>
+  <ItemGroup>
+    <None Condition="$([MSBuild]::IsOSPlatform('Windows')) And $([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == X64" Include="..\Libraries\BASS\lib_x86-64\bass.dll" CopyToOutputDirectory="PreserveNewest"/>
+    <None Condition="$([MSBuild]::IsOSPlatform('Windows')) And $([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == Arm64" Include="..\Libraries\BASS\lib_arm64\bass.dll" CopyToOutputDirectory="PreserveNewest"/>
+    <None Condition="$([MSBuild]::IsOSPlatform('Linux')) And $([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == X64" Include="..\Libraries\BASS\lib_x86-64\libbass.so" CopyToOutputDirectory="PreserveNewest"/>
+    <None Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="..\Libraries\BASS\libbass.dylib" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\SettingsCategories\Appearance.axaml" />
   </ItemGroup>

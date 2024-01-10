@@ -31,9 +31,10 @@ namespace ELOR.Laney.Core {
         }
 
         public static void Check(out string result) {
-            var a = AssetsManager.OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
+            var a = OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
             byte[] b = new byte[a.Length];
             a.Read(b);
+            a.Dispose();
 
             byte[] e = null;
             byte[] f = null;

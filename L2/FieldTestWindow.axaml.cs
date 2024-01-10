@@ -70,8 +70,8 @@ namespace ELOR.Laney {
         }
 
         private void w1_Click(object? sender, RoutedEventArgs e) {
-            this.Width = 360;
-            this.Height = 640;
+            var bb2 = AssetsManager.OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
+            AudioPlayer.SFX?.Play(bb2);
         }
     }
 }
