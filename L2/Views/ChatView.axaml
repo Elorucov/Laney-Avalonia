@@ -152,7 +152,7 @@
       </Border>
     </Grid>
 
-    <Border x:Name="SuggestedStickersContainer" Grid.Row="2" IsVisible="{Binding !!Composer.SuggestedStickers, Mode=OneWay}" Height="72" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12" CornerRadius="12" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
+    <Border x:Name="SuggestedStickersContainer" Grid.Row="2" IsVisible="{Binding !!Composer.SuggestedStickers, Mode=OneWay}" Height="72" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12" CornerRadius="12" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="{StaticResource VKElevation3}">
       <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
         <ItemsRepeater x:Name="SuggestedStickersList" Margin="4" ItemsSource="{Binding Composer.SuggestedStickers, Mode=OneWay}">
           <ItemsRepeater.Layout>

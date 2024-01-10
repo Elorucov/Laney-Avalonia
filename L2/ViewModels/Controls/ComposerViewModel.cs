@@ -339,7 +339,10 @@ namespace ELOR.Laney.ViewModels.Controls {
         // Подсказки стикеров
 
         private void CheckStickersSuggestions() {
-            if (!Settings.SuggestStickers) return;
+            if (!Settings.SuggestStickers) {
+                SuggestedStickers = null;
+                return;
+            }
 
             var stickers = StickersManager.GetStickersByWord(Text);
             SuggestedStickers = stickers;
