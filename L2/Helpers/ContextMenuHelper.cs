@@ -364,7 +364,7 @@ namespace ELOR.Laney.Helpers {
                 }
                 subtitle = canDeleteForAll ? String.Empty : Localizer.Instance.GetDeclensionFormatted(ids.Count, "msg_delete_dialog_text");
 
-                VKUIDialog dlg = new VKUIDialog(title, subtitle, new string[] { Localizer.Instance["yes"], Localizer.Instance["no"] }, 2);
+                VKUIDialog dlg = new VKUIDialog(title, subtitle, [Localizer.Instance["yes"], Localizer.Instance["no"]], 2);
                 CheckBox forAll = new CheckBox { Content = Localizer.Instance["delete_for_all"] };
 
                 if (canDeleteForAll) dlg.DialogContent = forAll;

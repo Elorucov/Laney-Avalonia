@@ -83,6 +83,7 @@
   "settings": "Settings",
   "about": "About",
   "log_out": "Log out",
+  "log_out_confirm": "Are you sure you want to log out?",
   "exit": "Exit",
   "app_version": "Version",
   "build_time": "Build time",

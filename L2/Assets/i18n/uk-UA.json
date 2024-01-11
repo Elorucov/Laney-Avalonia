@@ -83,6 +83,7 @@
   "settings": "Налаштування",
   "about": "Про додаток",
   "log_out": "Вийти з акаунту",
+  "log_out_confirm": "Ви впевнені, що хочете вийти з Вашого акаунту?",
   "exit": "Вийти",
   "app_version": "Версiя",
   "build_time": "Build time",

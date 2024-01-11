@@ -28,6 +28,7 @@ using ToastNotifications.Avalonia;
 using Avalonia.Dialogs;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;
+using System.Diagnostics;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -138,8 +139,12 @@ namespace ELOR.Laney.Core {
             about.ContextRequested += async (a, b) => {
                 await new AboutAvaloniaDialog().ShowDialog(Window);
             };
-            logout.Click += (a, b) => {
-                ExceptionHelper.ShowNotImplementedDialogAsync(Window);
+            logout.Click += async (a, b) => {
+                string[] buttons = [Localizer.Instance["yes"], Localizer.Instance["no"]];
+                VKUIDialog dlg = new VKUIDialog(Localizer.Instance["log_out"], Localizer.Instance["log_out_confirm"], buttons, 2);
+                int result = await dlg.ShowDialog<int>(Window);
+
+                if (result == 1) LogOut();
             };
 
             if (!IsGroup) {
@@ -626,6 +631,17 @@ namespace ELOR.Laney.Core {
             SetUpTrayMenu();
         }
 
+        public static async void LogOut() {
+            Settings.SetBatch(new Dictionary<string, object> {
+                { Settings.VK_USER_ID, null },
+                { Settings.VK_TOKEN, null }
+            });
+
+            var cprc = Process.GetCurrentProcess();
+            Process.Start(cprc.MainModule.FileName, Environment.CommandLine.Replace(" -delay=1000", "") + " -delay=1000");
+            await Task.Delay(200);
+            App.Current.DesktopLifetime.Shutdown(-1);
+        }
 
         public static async Task<string> ShowCaptchaAsync(Window parent, Uri image) {
             return await Task.Factory.StartNew(() => {

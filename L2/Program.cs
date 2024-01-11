@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using ELOR.Laney.Core;
@@ -18,21 +19,15 @@ namespace ELOR.Laney {
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
-        [STAThread]
-        public static void Main(string[] args) {
+        public static async Task Main(string[] args) {
             stopwatch = Stopwatch.StartNew();
+            int delay = 0;
 
             // Создаём локальную папку для хранения настроек и данных.
             string localDataPath = App.LocalDataPath;
             if (!Directory.Exists(localDataPath)) Directory.CreateDirectory(localDataPath);
 
-            // в macOS нельзя вроде запустить более одного процесса одной программы.
-            if (App.Platform == OSPlatform.OSX) {
-                Settings.Initialize();
-            } else {
-                if (!Design.IsDesignMode && IsAlreadyRunning()) Process.GetCurrentProcess().Kill();
-            }
-
+            // Logger
             var loggerConfig = new LoggerConfiguration()
 #if RELEASE
                 .MinimumLevel.Information();
@@ -48,6 +43,24 @@ namespace ELOR.Laney {
             Log.Logger = loggerConfig.CreateLogger();
             Log.Information("Laney is starting up. Build tag: {0}", App.BuildInfoFull);
             Log.Information("Local data folder: {0}", localDataPath);
+
+
+            // Delay (нужен при перезапуске приложения)
+            Int32.TryParse(App.GetCmdLineValue("delay"), out delay);
+            if (delay > 0) {
+                await Task.Delay(delay);
+                Log.Information("Launched with delay flag ({0} ms)", delay);
+            }
+
+            // в macOS нельзя вроде запустить более одного процесса одной программы.
+            if (App.Platform == OSPlatform.OSX) {
+                Settings.Initialize();
+            } else {
+                if (!Design.IsDesignMode && IsAlreadyRunning()) {
+                    Log.Warning("Laney is already launched, quitting.");
+                    Process.GetCurrentProcess().Kill();
+                }
+            }
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 #if RELEASE
@@ -69,6 +82,7 @@ namespace ELOR.Laney {
 
             Log.Fatal(ex, "App crashed!\n");
             Log.CloseAndFlush();
+            Process.GetCurrentProcess().Kill();
         }
 
         private static bool IsAlreadyRunning() {

@@ -78,6 +78,17 @@ namespace ELOR.Laney.Core {
         }
 
         private static void AddOrReplace(string key, object value) {
+            if (value == null) {
+                if (_settings.ContainsKey(key)) {
+                    _settings.Remove(key);
+                    if (key == VK_TOKEN) {
+                        _settings.Remove(key + "1");
+                        _settings.Remove(key + "2");
+                    }
+                }
+                return;
+            }
+
             if (_settings.ContainsKey(key)) {
                 if (key == VK_TOKEN) {
                     var result = Encryption.Encrypt(AssetsManager.BinaryPayload.Skip(576).Take(32).OrderDescending().ToArray(), (string)value);
@@ -88,7 +99,14 @@ namespace ELOR.Laney.Core {
                     _settings[key] = value;
                 }
             } else {
-                _settings.Add(key, value);
+                if (key == VK_TOKEN) {
+                    var result = Encryption.Encrypt(AssetsManager.BinaryPayload.Skip(576).Take(32).OrderDescending().ToArray(), (string)value);
+                    _settings.Add(key, result.Item1);
+                    _settings.Add(key + "1", result.Item2);
+                    _settings.Add(key + "2", result.Item3);
+                } else {
+                    _settings.Add(key, value);
+                }
             }
         }
 

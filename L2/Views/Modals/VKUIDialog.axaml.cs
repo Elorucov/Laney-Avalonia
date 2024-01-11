@@ -22,7 +22,7 @@ namespace ELOR.Laney.Views.Modals {
         public VKUIDialog(string header, string text) {
             InitializeComponent();
             this.FixDialogWindows(TitleBar, ContentRoot);
-            Setup(header, text, new string[] { "OK" });
+            Setup(header, text, ["OK"]);
         }
 
         public VKUIDialog(string header, string text, string[] buttons, int primaryButton = 0) {
