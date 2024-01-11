@@ -38,6 +38,7 @@
   "disabled": "Disabled",
   "offset": "Offset",
   "count": "Count",
+  "sound": "Sound",
   "go": "Go",
   "sign_in_direct": "Sign in using login and password",
   "sign_in_vk_id": "Sign in with VK ID",
@@ -89,6 +90,8 @@
   "dotnet_version": ".NET version",
 
   "chats": "Chats",
+  "private_messages": "Private messages",
+  "group_chats": "Group chats",
   "chatview_placeholder": "Select a chat or create a new one",
 
   "members": "Members",

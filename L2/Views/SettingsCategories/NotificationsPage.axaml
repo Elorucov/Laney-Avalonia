@@ -4,9 +4,46 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:vkui="using:VKUI.Controls"
+             xmlns:vm="using:ELOR.Laney.ViewModels.SettingsCategories"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ELOR.Laney.Views.SettingsCategories.NotificationsPage">
-  <Border Classes="Group" VerticalAlignment="Top">
-    <vkui:Cell Header="{i18n:Localize not_implemented_desc}" Subtitle="Notifications"/>
-  </Border>
+             x:Class="ELOR.Laney.Views.SettingsCategories.NotificationsPage" x:DataType="vm:NotificationsViewModel">
+  <ScrollViewer>
+    <StackPanel>
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <Grid Classes="GroupHeader">
+            <TextBlock Text="{i18n:Localize !private_messages}"/>
+          </Grid>
+          <vkui:Cell Header="{i18n:Localize settings_notifications}">
+            <vkui:Cell.After>
+              <ToggleSwitch IsChecked="{Binding Private, Mode=TwoWay}"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+          <vkui:Cell IsVisible="{Binding Private, Mode=OneWay}" Header="{i18n:Localize sound}">
+            <vkui:Cell.After>
+              <ToggleSwitch IsChecked="{Binding PrivateSound, Mode=TwoWay}"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel>
+          <Grid Classes="GroupHeader">
+            <TextBlock Text="{i18n:Localize !group_chats}"/>
+          </Grid>
+          <vkui:Cell Header="{i18n:Localize settings_notifications}">
+            <vkui:Cell.After>
+              <ToggleSwitch IsChecked="{Binding GroupChat, Mode=TwoWay}"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+          <vkui:Cell IsVisible="{Binding GroupChat, Mode=OneWay}" Header="{i18n:Localize sound}">
+            <vkui:Cell.After>
+              <ToggleSwitch IsChecked="{Binding GroupChatSound, Mode=TwoWay}"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

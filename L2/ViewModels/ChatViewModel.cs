@@ -955,11 +955,15 @@ namespace ELOR.Laney.ViewModels {
         #region Notification
 
         private async void ShowSystemNotification(MessageViewModel message, bool isMention) {
-            await Task.Delay(20); // имя отправителя может не оказаться в кеше вовремя.
-            bool sound = !PushSettings.NoSound;
+            bool notifsEnabled = PeerType == PeerType.Chat ? Settings.NotificationsGroupChat : Settings.NotificationsPrivate;
+            if (!notifsEnabled) return;
+
+            bool soundSettings = PeerType == PeerType.Chat ? Settings.NotificationsGroupChatSound : Settings.NotificationsPrivateSound;
+            bool sound = !PushSettings.NoSound && soundSettings;
             bool canNotify = isMention ? true : CanNotify();
             Log.Information($"ChatViewModel: about to show new message notification ({message.PeerId}_{message.ConversationMessageId}). Is mention: {isMention}, can notify: {canNotify}.");
             if (message.IsOutgoing || !canNotify) return;
+            await Task.Delay(20); // имя отправителя может не оказаться в кеше вовремя.
 
             string text = message.ToString();
             string chatName = PeerType == PeerType.Chat ? Localizer.Instance.GetFormatted("in_chat", Title) : null;

@@ -38,6 +38,7 @@
   "disabled": "Вимкнені",
   "offset": "Зміщення",
   "count": "Всього",
+  "sound": "Звук",
   "go": "Перейти",
   "sign_in_direct": "Вхід за логіном та паролем",
   "sign_in_vk_id": "Увійти через VK ID",
@@ -89,6 +90,8 @@
   "dotnet_version": "Версiя .NET",
 
   "chats": "Чати",
+  "private_messages": "Приватні повідомлення",
+  "group_chats": "Группові чати",
   "chatview_placeholder": "Виберіть чат або створіть новий",
 
   "members": "Учасники",

@@ -118,6 +118,11 @@ namespace ELOR.Laney.Core {
         public const string THEME = "theme";
         public const string CHAT_ITEM_MORE_ROWS = "chat_item_more_rows";
 
+        public const string NOTIF_PRIVATE = "notifications_private";
+        public const string NOTIF_PRIVATE_SOUND = "notifications_private_sound";
+        public const string NOTIF_GCHAT = "notifications_group_chat";
+        public const string NOTIF_GCHAT_SOUND = "notifications_group_chat_sound";
+
         public const string DEBUG_LOGS_CORE = "log_to_file_core";
         public const string DEBUG_LOGS_LP = "log_to_file_lp";
         public const string DEBUG_LOGS_BITMAPMANAGER = "log_to_file_bm";
@@ -171,6 +176,28 @@ namespace ELOR.Laney.Core {
         public static bool ChatItemMoreRows {
             get => Get(CHAT_ITEM_MORE_ROWS, false);
             set => Set(CHAT_ITEM_MORE_ROWS, value);
+        }
+
+        // Notifications
+
+        public static bool NotificationsPrivate {
+            get => Get(NOTIF_PRIVATE, true);
+            set => Set(NOTIF_PRIVATE, value);
+        }
+
+        public static bool NotificationsPrivateSound {
+            get => Get(NOTIF_PRIVATE_SOUND, true);
+            set => Set(NOTIF_PRIVATE_SOUND, value);
+        }
+
+        public static bool NotificationsGroupChat {
+            get => Get(NOTIF_GCHAT, true);
+            set => Set(NOTIF_GCHAT, value);
+        }
+
+        public static bool NotificationsGroupChatSound {
+            get => Get(NOTIF_GCHAT_SOUND, true);
+            set => Set(NOTIF_GCHAT_SOUND, value);
         }
 
         // Debug

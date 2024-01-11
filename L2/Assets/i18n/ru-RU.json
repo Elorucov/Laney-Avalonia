@@ -38,6 +38,7 @@
   "disabled": "Отключены",
   "offset": "Смещение",
   "count": "Всего",
+  "sound": "Звук",
   "go": "Перейти",
   "sign_in_direct": "Вход по логину и паролю",
   "sign_in_vk_id": "Войти через VK ID",
@@ -89,6 +90,8 @@
   "dotnet_version": "Версия .NET",
 
   "chats": "Чаты",
+  "private_messages": "Личные сообщения",
+  "group_chats": "Групповые чаты",
   "chatview_placeholder": "Выберите чат или создайте новый",
 
   "members": "Участники",

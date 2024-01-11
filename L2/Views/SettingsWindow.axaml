@@ -19,7 +19,7 @@
           <Setter Property="Padding" Value="0"/>
         </Style>
       </Grid.Styles>
-      <ListBox x:Name="CategoriesList" Margin="12,0,0,0" ItemTemplate="{StaticResource CellItemTemplate}" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" SelectionMode="Toggle" SelectionChanged="CategoriesList_SelectionChanged"/>
+      <ListBox x:Name="CategoriesList" Margin="8,0,0,0" ItemTemplate="{StaticResource CellItemTemplate}" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" SelectionMode="Toggle" SelectionChanged="CategoriesList_SelectionChanged"/>
     </Grid>
     <ContentControl x:Name="ContentPanel" Grid.Column="1" Grid.Row="1">
       <ContentControl.Styles>
