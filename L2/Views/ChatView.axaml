@@ -92,9 +92,9 @@
         <Button x:Name="SearchInChatButton" Click="SearchButton_Click">
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28SearchOutline}"/>
         </Button>
-        <Button x:Name="ContextMenuInChatButton">
+        <!--<Button x:Name="ContextMenuInChatButton">
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28MoreHorizontal}"/>
-        </Button>
+        </Button>-->
       </vkui:PanelHeader.RightButtons>
     </vkui:PanelHeader>
     

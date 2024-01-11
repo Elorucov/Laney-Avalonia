@@ -120,7 +120,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                 AddAttachments(await ap.ShowDialog<object>(session.Window));
             };
             poll.Click += (a, b) => {
-                
+                ExceptionHelper.ShowNotImplementedDialogAsync(session.Window);
             };
 
             ash.Items.Add(photo);
