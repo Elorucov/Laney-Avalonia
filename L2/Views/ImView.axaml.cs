@@ -57,6 +57,10 @@ namespace ELOR.Laney.Views {
             new ItemsPresenterWidthFixer(ChatsList);
             new ListBoxAutoScrollHelper(ChatsList);
 
+            Session.CurrentOpenedChatChanged += (a, b) => {
+                if (b == 0) ChatsList.SelectedItem = null;
+            };
+
             bool isRegistered = false;
             while (isRegistered) {
                 isRegistered = await TryRegisterIncrementalLoadingEvent();

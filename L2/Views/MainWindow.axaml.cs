@@ -173,7 +173,7 @@ namespace ELOR.Laney.Views {
         }
 
         private void ChatView_BackButtonClick(object? sender, EventArgs e) {
-            SwitchToSide(false);
+            Session.GoToChat(0);
         }
 
         #endregion

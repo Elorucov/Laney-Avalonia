@@ -151,9 +151,11 @@ namespace ELOR.Laney.Views {
             }
 
             Chat = DataContext as ChatViewModel;
-            Chat.ScrollToMessageRequested += ScrollToMessage;
-            Chat.MessagesChunkLoaded += TrySaveScroll;
-            Chat.ReceivedMessages.CollectionChanged += ReceivedMessages_CollectionChanged;
+            if (Chat != null) {
+                Chat.ScrollToMessageRequested += ScrollToMessage;
+                Chat.MessagesChunkLoaded += TrySaveScroll;
+                Chat.ReceivedMessages.CollectionChanged += ReceivedMessages_CollectionChanged;
+            }
 
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;

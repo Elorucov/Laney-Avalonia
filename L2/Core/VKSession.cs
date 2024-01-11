@@ -527,6 +527,13 @@ namespace ELOR.Laney.Core {
         byte gcCollectTriggerCounter = 0;
 
         public void GoToChat(long peerId, int messageId = -1) {
+            if (peerId == 0) {
+                CurrentOpenedChat = null;
+                CurrentOpenedChatChanged?.Invoke(this, 0);
+                Window.SwitchToSide(false);
+                return;
+            }
+
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
             Log.Information("VKSession: getting to chat {0}. cmid: {1}; cached: {2}", peerId, messageId, chat != null);
             if (chat == null) {
