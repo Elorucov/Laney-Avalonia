@@ -59,6 +59,9 @@ namespace ELOR.Laney.Controls {
         const string BACKGROUND_BORDER = "BorderMessageBackground";
         const string BACKGROUND_TRANSPARENT = "TransparentMessageBackground";
 
+        const string MSG_INCOMING = "Incoming";
+        const string MSG_OUTGOING = "Outgoing";
+
         const string INDICATOR_DEFAULT = "DefaultIndicator";
         const string INDICATOR_IMAGE = "ImageIndicator";
         const string INDICATOR_COMPLEX_IMAGE = "ComplexImageIndicator";
@@ -234,6 +237,15 @@ namespace ELOR.Laney.Controls {
                 bbc.Add(BACKGROUND_GIFT);
             } else {
                 bbc.Add(IsOutgoing ? BACKGROUND_OUTGOING : BACKGROUND_INCOMING);
+            }
+
+            // Other classes
+            var acc = MessageAttachments.Classes;
+            acc.Clear();
+            if (uiType == MessageUIType.Gift) {
+                // acc.Add(MSG_GIFT);
+            } else {
+                acc.Add(IsOutgoing ? MSG_OUTGOING : MSG_INCOMING);
             }
 
             // Avatar

@@ -26,7 +26,6 @@ using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.ViewModels.Modals;
 using ToastNotifications.Avalonia;
 using Avalonia.Dialogs;
-using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;
 using System.Diagnostics;
 

@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.ThemeDictionaries>
+    
+    <!-- Some colors taken from vkui-tokens and web.vk.me css, and missing from Palette.xaml -->
+    
+    <ResourceDictionary x:Key="Default">
+      <SolidColorBrush x:Key="MessageBubbleDefaultIncomingBrush" Color="{StaticResource VKWhiteColor}"/>
+      <SolidColorBrush x:Key="MessageBubbleDefaultOutgoingBrush" Color="{StaticResource VKWhiteBlue20Color}"/>
+      <SolidColorBrush x:Key="MessageBubbleOutgoingTextSecondaryBrush" Color="#2688eb"/>
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="Dark">
+      <SolidColorBrush x:Key="MessageBubbleDefaultIncomingBrush" Color="{StaticResource VKGray800Color}"/>
+      <SolidColorBrush x:Key="MessageBubbleDefaultOutgoingBrush" Color="#1e2f42"/>
+      <SolidColorBrush x:Key="MessageBubbleOutgoingTextSecondaryBrush" Color="#529ef4"/>
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

@@ -9,6 +9,7 @@
   <Application.Resources>
     <ResourceDictionary>      
       <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="/Styles/ChatViewDefaultResources.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/AttachmentsContainer.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/BasicAttachment.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/ExtendedAttachment.xaml"/>

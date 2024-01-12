@@ -70,6 +70,7 @@
     <None Remove="Controls\CompactMessage.xaml" />
     <None Remove="Controls\MessageBubble.xaml" />
     <None Remove="Controls\PostUI.xaml" />
+    <None Remove="Styles\ChatViewDefaultResources.xaml" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets/**" />
@@ -85,6 +86,9 @@
     <AvaloniaResource Include="Controls\Attachments\StickerPresenter.xaml" />
     <AvaloniaResource Include="Controls\BotKeyboardUI.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Styles\ChatViewDefaultResources.xaml">
+      <Generator></Generator>
     </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>

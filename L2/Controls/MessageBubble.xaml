@@ -13,11 +13,11 @@
         <Grid x:Name="MessageUIRoot" ColumnDefinitions="Auto *" Margin="12,4" MaxWidth="894">
           <Grid.Styles>
             <Style Selector="Border.IncomingMessageBackground">
-              <Setter Property="Background" Value="{DynamicResource VKImBubbleIncomingAlternateBrush}"/>
+              <Setter Property="Background" Value="{DynamicResource MessageBubbleDefaultIncomingBrush}"/>
             </Style>
 
             <Style Selector="Border.OutgoingMessageBackground">
-              <Setter Property="Background" Value="{DynamicResource VKImBubbleOutgoingBrush}"/>
+              <Setter Property="Background" Value="{DynamicResource MessageBubbleDefaultOutgoingBrush}"/>
             </Style>
 
             <Style Selector="Border.GiftMessageBackground">
@@ -28,6 +28,20 @@
               <Setter Property="Background" Value="{DynamicResource VKBackgroundContentBrush}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource VKImageBorderBrush}"/>
               <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+
+            <!-- Colors for controls in bubble -->
+            <Style Selector="atch|AttachmentsContainer.Incoming atch|BasicAttachment /template/ vkui|VKIcon#BAIcon">
+              <Setter Property="Foreground" Value="{DynamicResource MessageBubbleDefaultIncomingBrush}"/>
+            </Style>
+            <Style Selector="atch|AttachmentsContainer.Outgoing atch|BasicAttachment /template/ vkui|VKIcon#BAIcon">
+              <Setter Property="Foreground" Value="{DynamicResource MessageBubbleDefaultOutgoingBrush}"/>
+            </Style>
+            <Style Selector="atch|AttachmentsContainer.Outgoing atch|BasicAttachment /template/ TextBlock#BASub">
+              <Setter Property="Foreground" Value="{DynamicResource MessageBubbleOutgoingTextSecondaryBrush}"/>
+            </Style>
+            <Style Selector="atch|AttachmentsContainer.Outgoing atch|ExtendedAttachment /template/ TextBlock#EASub">
+              <Setter Property="Foreground" Value="{DynamicResource MessageBubbleOutgoingTextSecondaryBrush}"/>
             </Style>
 
             <!-- Time & indicators -->
@@ -83,7 +97,7 @@
                 </DockPanel>
               </Button>
               <atch:GiftUI x:Name="Gift" Margin="4,4,4,0"/>
-              <ctb:CTextBlock x:Name="MessageText" Margin="12,0,12,8" FontSize="16" LineHeight="20" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+              <ctb:CTextBlock x:Name="MessageText" Margin="12,0,12,8" FontSize="15" LineHeight="20" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
               <atch:AttachmentsContainer x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
               <Rectangle x:Name="Map" Margin="4,0,4,4" IsVisible="{Binding Message.Location, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" RadiusX="14" RadiusY="14"/>
               <Border x:Name="ForwardedMessagesContainer" Margin="12,8,12,22" IsVisible="False" BorderBrush="{DynamicResource VKImForwardLineTintBrush}" BorderThickness="2,0,0,0">
