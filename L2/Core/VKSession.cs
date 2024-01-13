@@ -304,6 +304,7 @@ namespace ELOR.Laney.Core {
 
         #region Internal
 
+        bool isFirstTimeChatsLoaded = false;
         private async void Init(bool dontUpdateSessionsList = false) {
             try {
                 Log.Information("Init session ({0})", Id);
@@ -388,7 +389,11 @@ namespace ELOR.Laney.Core {
                 Init(dontUpdateSessionsList);
             }
 
-            ImViewModel.LoadConversations();
+            // Load chats
+            if (!isFirstTimeChatsLoaded) {
+                ImViewModel.LoadConversations();
+                isFirstTimeChatsLoaded = true;
+            }
         }
 
         private void SetUpLongPoll(LongPollInfoForSession lp) {

@@ -152,19 +152,21 @@ namespace ELOR.Laney.Controls.Attachments {
                 Button imgBtn = new Button {
                     Tag = new Tuple<List<IPreview>, IPreview>(previews, previews[0]),
                     Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                    VerticalContentAlignment = VerticalAlignment.Stretch,
                     Padding = new Thickness(0),
                     CornerRadius = new CornerRadius(NoMargins ? 4 : 14),
                     Width = w,
                     Height = h,
                     Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4)
                 };
+                AddPreviewInfo(previews[0], imgBtn);
                 if (uri != null) _ = imgBtn.SetImageBackgroundAsync(uri, Width, Height);
                 imgBtn.Click += ImgBtn_Click;
                 StandartAttachments.Children.Add(imgBtn);
             } else if (previews.Count > 1) {
                 List<Size> sizes = new List<Size>();
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
-                    // var prevsize = preview.GetSizeAndUriForThumbnail(imageFixedWidth, imageFixedWidth);
                     var prevsize = preview.GetOriginalSize();
                     sizes.Add(new Size(prevsize.Width, prevsize.Height));
                 }
@@ -199,6 +201,8 @@ namespace ELOR.Laney.Controls.Attachments {
                     Button imgBtn = new Button {
                         Tag = new Tuple<List<IPreview>, IPreview>(previews, preview),
                         Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush"),
+                        HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                        VerticalContentAlignment = VerticalAlignment.Stretch,
                         Padding = new Thickness(0),
                         CornerRadius = new CornerRadius(tl, tr, br, bl),
                         Width = rect.Width,
@@ -206,6 +210,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     };
                     Canvas.SetLeft(imgBtn, rect.Left);
                     Canvas.SetTop(imgBtn, rect.Top);
+                    AddPreviewInfo(preview, imgBtn);
                     if (p.Uri != null) _ = imgBtn.SetImageBackgroundAsync(p.Uri, rect.Width, rect.Height);
                     imgBtn.Click += ImgBtn_Click;
                     canvas.Children.Add(imgBtn);
@@ -216,7 +221,6 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Sticker
             if (sticker != null) {
-
                 StickerPresenter sp = new StickerPresenter() {
                     Width = MessageBubble.STICKER_WIDTH,
                     Height = MessageBubble.STICKER_WIDTH,
@@ -379,7 +383,7 @@ namespace ELOR.Laney.Controls.Attachments {
                             Subtitle = def,
                             Name = st.ObjectType
                         };
-                        ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+                        // ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
                         StandartAttachments.Children.Add(ba);
                     } else {
                         ExtendedAttachment ea = new ExtendedAttachment {
@@ -438,6 +442,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Subtitle = a.Artist,
                     Name = a.ObjectType
                 };
+                ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
                 StandartAttachments.Children.Add(ba);
             }
 
@@ -451,6 +456,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Subtitle = Localizer.Instance["not_implemented"],
                     Name = am.ObjectType
                 };
+                ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
                 StandartAttachments.Children.Add(ba);
             }
 
@@ -518,7 +524,44 @@ namespace ELOR.Laney.Controls.Attachments {
             StandartAttachments.IsVisible = StandartAttachments.Children.Count > 0;
         }
 
-        private void ImgBtn_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private void AddPreviewInfo(IPreview preview, Button button) {
+            bool isNarrow = button.Width < 128;
+            if (preview is Video video) {
+                string meta = "►";
+                if (!isNarrow) {
+                    if (video.Live == 1) {
+                        meta += " LIVE";
+                    } else {
+                        meta += $" {video.DurationTime.ToString(video.DurationTime.Hours > 0 ? "c" : @"m\:ss")}";
+                    }
+                }
+                button.Content = BuildPreviewInfoUI(meta);
+            } else if (preview is Document doc) {
+                string meta = doc.Extension.ToUpper();
+                if (!isNarrow) meta += $" · {doc.Size.ToFileSize()}";
+                button.Content = BuildPreviewInfoUI(meta);
+            }
+        }
+
+        private Border BuildPreviewInfoUI(string content) {
+            Border b = new Border { 
+                Background = new SolidColorBrush(Color.FromArgb(104, 0, 0, 0)),
+                CornerRadius = new CornerRadius(10),
+                // Padding = new Thickness(6, 3),
+                Padding = new Thickness(6, 4, 6, 2),
+                Margin = new Thickness(5),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Child = new TextBlock {
+                    Text = content,
+                    Foreground = new SolidColorBrush(Colors.White),
+                    FontSize = 11, LineHeight = 14
+                }
+            };
+            return b;
+        }
+
+        private void ImgBtn_Click(object sender, RoutedEventArgs e) {
             Button button = sender as Button;
             if (button.Tag != null && button.Tag is Tuple<List<IPreview>, IPreview> data) {
                 if (data.Item2 is Video v) {
