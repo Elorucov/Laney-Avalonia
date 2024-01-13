@@ -3,6 +3,7 @@ name: Publish
 on:
   push:
     branches: [ "beta", "production" ]
+  workflow_dispatch:
 
 jobs:
   release:
