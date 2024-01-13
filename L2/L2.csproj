@@ -195,4 +195,7 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Controls\GroupMessageTemplates.axaml" />
   </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Modals\StandaloneMessageViewer.axaml" />
+  </ItemGroup>
 </Project>

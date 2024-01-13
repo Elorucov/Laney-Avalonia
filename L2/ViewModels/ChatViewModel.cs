@@ -415,12 +415,13 @@ namespace ELOR.Laney.ViewModels {
 
         #region Loading messages
 
-        public void GoToMessage(MessageViewModel message) {
+        public async void GoToMessage(MessageViewModel message) {
             if (message == null) return;
             if (message.ConversationMessageId > 0 && !message.IsUnavailable) {
                 GoToMessage(message.ConversationMessageId);
             } else {
-                ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+                StandaloneMessageViewer smv = new StandaloneMessageViewer(message);
+                await smv.ShowDialog(session.Window);
             }
         }
 

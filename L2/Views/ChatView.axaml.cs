@@ -57,7 +57,6 @@ namespace ELOR.Laney.Views {
 
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
             DataContextChanged += ChatView_DataContextChanged;
-            PinnedMessageButton.Click += PinnedMessageButton_Click;
             LoadingSpinner.PropertyChanged += LoadingSpinner_PropertyChanged;
 
             DebugOverlay.IsVisible = Settings.ShowDebugCounters;
