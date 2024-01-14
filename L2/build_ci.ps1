@@ -74,7 +74,7 @@ if ($IsLinux) {
 
 if ($IsMacOS) {
     $const = "MAC$($chstr)";
-    New-Item "$($location)/MacOS_Bundles/$($appname)_$($ctarget).app" -itemType Directory
+    New-Item "$($location)/MacOS_Bundles/$($appname).app" -itemType Directory
 
     dotnet restore -r $($ctarget);
     $mlocation = "$($projfolder)/bin/Release/net8.0";
@@ -85,7 +85,7 @@ if ($IsMacOS) {
     Copy-Item "$($projfolder)/Assets/Logo/icon.icns" -Destination "$($mlocation)/publish/$($appname).app/Contents/Resources";
     
     echo "Creating .app bundle file for macOS...";
-    Copy-Item -Path "$($mlocation)/publish/$($appname).app/*" -Destination "$($location)/MacOS_Bundles/$($appname)_$($ctarget).app" -Recurse
+    Copy-Item -Path "$($mlocation)/publish/$($appname).app/*" -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse
     echo "Deleting publish folder...";
     Remove-Item -Path "$($mlocation)/publish" -Recurse;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";

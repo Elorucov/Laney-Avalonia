@@ -7,6 +7,7 @@ namespace ELOR.Laney.Views.SettingsCategories {
         public DebugPage() {
             InitializeComponent();
             InitSettings();
+            lc01.Subtitle = Path.Combine(App.LocalDataPath, "logs");
 
 #if BETA || RELEASE
             LogsCells.Children.Remove(lc05);

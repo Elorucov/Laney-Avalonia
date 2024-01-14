@@ -6,9 +6,11 @@ namespace ToastNotifications.Avalonia {
         internal static ToastsContainer Container { get; private set; }
         public static double ExpirationMilliseconds { get; set; } = 7000;
         internal Bitmap AppLogo { get; private set; }
+        internal Action<string> Log { get; private set; }
 
-        public ToastNotificationsManager(Bitmap appLogo = null) {
+        public ToastNotificationsManager(Bitmap appLogo = null, Action<string> log = null) {
             AppLogo = appLogo;
+            Log = log;
         }
 
         public void Show(INotification notification) {
@@ -16,7 +18,7 @@ namespace ToastNotifications.Avalonia {
                 throw new ArgumentException($"{ExpirationMilliseconds} should be between 1000 and 15000!");
 
             if (Container == null) {
-                Container = new ToastsContainer();
+                Container = new ToastsContainer(Log);
             }
 
             if (notification is ToastNotification tn) {

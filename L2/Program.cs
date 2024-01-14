@@ -65,7 +65,7 @@ namespace ELOR.Laney {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 #if RELEASE
 #else
-            LNet.DebugLog += (a, b) => Log.Information("LNET: {0}", b);
+            LNet.DebugLog += (a, b) => Log.Information($"[LNET] {b}");
 #endif
 
             try {

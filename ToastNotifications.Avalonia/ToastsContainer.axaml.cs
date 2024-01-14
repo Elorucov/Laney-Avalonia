@@ -15,13 +15,24 @@ namespace ToastNotifications.Avalonia {
             SetPosition();
         }
 
+        internal ToastsContainer(Action<string> log = null) {
+            InitializeComponent();
+            Log = log;
+#if DEBUG
+            this.AttachDevTools();
+#endif
+            SetPosition();
+        }
+
+        Action<string> Log;
+
         bool topAligned = false;
         bool leftAligned = false;
 
-        private async void SetPosition(bool cycle = false) {
+        private void SetPosition(bool cycle = false) {
             var screen = Screens.ScreenFromWindow(this);
             if (screen == null) {
-                Debug.WriteLine("ToastContainer: Cannot get screen!");
+                Log?.Invoke("SetPosition: Cannot get screen!");
                 return;
             }
 
@@ -39,6 +50,7 @@ namespace ToastNotifications.Avalonia {
             Height = height;
 
             IsVisible = height > 0;
+            Log?.Invoke($"SetPosition: topAligned={topAligned}; leftAligned={leftAligned}; sw={screen.Bounds.Width}; sh={screen.Bounds.Height}; wx={working.X}; wy={working.Y}; ww={working.Width}; wh={working.Height}; tx={posx}; ty={posy}; th={height}; isVisible={IsVisible}");
         }
 
         internal void AddToastToContainer(ToastNotification notification, Bitmap appLogo) {
@@ -55,8 +67,8 @@ namespace ToastNotifications.Avalonia {
                 Margin = new Thickness(12, 3, 12, 9)
             };
             
-            // Linux DE moment...
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+            // Linux DE moment... (maybe also macOS?)
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
                 toast.Loaded += async (a, b) => {
                     await Task.Delay(20);
                     SetPosition();
@@ -65,6 +77,8 @@ namespace ToastNotifications.Avalonia {
 
             IsVisible = true;
             NotificationItems.Children.Add(toast);
+            Log?.Invoke($"AddToastToContainer: toast {toast.GetHashCode()} added in window!");
+
             SetPosition();
 
             DispatcherTimer timer = new DispatcherTimer { 
@@ -102,6 +116,7 @@ namespace ToastNotifications.Avalonia {
 
         private void RemoveToast(Toast toast) {
             NotificationItems.Children.Remove(toast);
+            Log?.Invoke($"AddToastToContainer: toast {toast.GetHashCode()} removed!");
             SetPosition();
         }
     }

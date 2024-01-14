@@ -39,7 +39,7 @@
             </vkui:Cell.After>
           </vkui:Cell>
           <Button x:Name="b01" Classes="Tertiary" Click="b01_Click">
-            <vkui:Cell Header="Открыть папку с логами"/>
+            <vkui:Cell x:Name="lc01" Header="Открыть папку с логами"/>
           </Button>
         </StackPanel>
       </Border>

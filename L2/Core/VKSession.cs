@@ -257,6 +257,44 @@ namespace ELOR.Laney.Core {
 
         public static NativeMenu TrayMenu { get; private set; }
 
+#if MAC
+        private static void SetUpTrayMenu() {
+            TrayMenu = new NativeMenu();
+
+            foreach (var session in Sessions) {
+                var item = new NativeMenuItem { Header = session.Name };
+                item.Click += (a, b) => TryOpenSessionWindow(session.Id);
+                TrayMenu.Items.Add(item);
+            }
+
+            TrayMenu.Items.Add(new NativeMenuItemSeparator());
+
+            var ft = new NativeMenuItem { Header = "Field test" };
+            ft.Click += (a, b) => {
+                new FieldTestWindow().Show();
+            };
+
+            var exit = new NativeMenuItem { Header = Localizer.Instance["exit"] };
+            exit.Click += (a, b) => {
+                App.Current.DesktopLifetime.Shutdown();
+            };
+
+#if !RELEASE && !BETA
+            TrayMenu.Items.Add(ft);
+#endif
+            TrayMenu.Items.Add(exit);
+
+            TrayIcon icon = new TrayIcon {
+                Icon = new WindowIcon(AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon()))),
+                Menu = TrayMenu,
+                IsVisible = true,
+                ToolTipText = "Laney"
+            };
+
+            var icons = new TrayIcons { icon };
+            Application.Current.SetValue(TrayIcon.IconsProperty, icons);
+        }
+#else
         private static void SetUpTrayMenu() {
             TrayMenu = new NativeMenu();
 
@@ -299,8 +337,9 @@ namespace ELOR.Laney.Core {
                 Application.Current.SetValue(TrayIcon.IconsProperty, icons);
             }
         }
+#endif
 
-        #endregion
+#endregion
 
         #region Internal
 
@@ -380,13 +419,17 @@ namespace ELOR.Laney.Core {
 
                 // Notifications
                 var appLogo = await BitmapManager.GetBitmapAsync(new Uri("avares://laney/Assets/Logo/Tray/t32cw.png"), 16, 16);
-                if (_systemNotificationManager == null) _systemNotificationManager = new ToastNotificationsManager(appLogo);
+                if (_systemNotificationManager == null) _systemNotificationManager = new ToastNotificationsManager(appLogo, (log) => Log.Information($"[CSToast] {log}"));
 
                 SetUpTrayMenu(); // обновляем tray menu, отображая уже все загружнные сессии
             } catch (Exception ex) {
-                Log.Error(ex, "Init failed. Waiting 3 sec. before trying again...");
-                await Task.Delay(3000);
-                Init(dontUpdateSessionsList);
+                if (_sessions == null || _sessions.Count == 0) {
+                    Log.Error(ex, "Init failed! Waiting 3 sec. before trying again...");
+                    await Task.Delay(3000);
+                    Init(dontUpdateSessionsList);
+                } else {
+                    Log.Error(ex, "Init failed!");
+                }
             }
 
             // Load chats
