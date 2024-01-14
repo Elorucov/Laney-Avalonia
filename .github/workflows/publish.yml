@@ -98,6 +98,7 @@ jobs:
         shell: bash
         run: |
           brew install create-dmg;
+          xattr -cr ${{ env.BINFOLDER }}/MacOS_Bundles/Laney.app
           create-dmg --volname "Laney Installer" --background "${{ env.INSTALLER_BACKGROUND }}" --window-pos 400 220 --window-size 360 548 --icon-size 128 --icon "Laney.app" 180 134 --app-drop-link 180 366 "Laney_"${{ matrix.target }}_${{ env.VERSION }}_${{ env.channel }}".dmg" "${{ env.BINFOLDER }}/MacOS_Bundles/Laney.app"
           echo ${{ env.BINFOLDER }}/MacOS_Bundles/Laney_${{ matrix.target }}.app >> $env:BINARCHIVE
       - name: Release to Github
