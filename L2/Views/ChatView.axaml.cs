@@ -199,7 +199,7 @@ namespace ELOR.Laney.Views {
                     ForceScroll(h);
                     // MessagesListScrollViewer.ScrollToEnd();
 
-                    Log.Information($"Scroll to message\"{msg.ConversationMessageId}\" done.");
+                    Log.Information($"Scroll to message \"{msg.ConversationMessageId}\" done.");
                 }
             }
         }
@@ -318,7 +318,8 @@ namespace ELOR.Laney.Views {
             }
             UpdateDateUnderHeader(fv);
             if (Chat?.DisplayedMessages?.Count > 0) {
-                HopNavContainer.IsVisible = lv == null || Chat?.LastMessage?.ConversationMessageId != lv.ConversationMessageId;
+                // HopNavContainer.IsVisible = lv == null || Chat?.LastMessage?.ConversationMessageId != lv.ConversationMessageId;
+                HopNavContainer.IsVisible = !autoScrollToLastMessage;
             } else {
                 HopNavContainer.IsVisible = false;
             }

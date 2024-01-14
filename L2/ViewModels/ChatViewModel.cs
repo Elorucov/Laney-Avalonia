@@ -130,6 +130,8 @@ namespace ELOR.Laney.ViewModels {
         }
 
         public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
+            Log.Information($"New ChatViewModel for conversation with peer {c.Peer.Id}. Last message: {lastMessage?.ConversationMessageId}");
+
             this.session = session;
             Composer = new ComposerViewModel(session, this);
             SetUpEvents();
@@ -308,7 +310,10 @@ namespace ELOR.Laney.ViewModels {
             return null;
         }
 
+        bool eventsAlreadySetup = false;
         private void SetUpEvents() {
+            if (eventsAlreadySetup) return;
+            eventsAlreadySetup = true;
             // При приёме сообщения обновляем последнее сообщение.
             ReceivedMessages.CollectionChanged += (a, b) => OnPropertyChanged(nameof(LastMessage));
             SelectedMessages.SelectionChanged += SelectedMessages_SelectionChanged;
@@ -601,7 +606,6 @@ namespace ELOR.Laney.ViewModels {
                     msg.State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
                     if (!message.IsSilent) ShowSystemNotification(msg, isMention);
                 } else {
-
                     if (!message.IsSilent) {
                         Log.Information($"Adding message {message.PeerId}_{message.ConversationMessageId} to pending for notification... (by longpoll)");
                         pendingMessages.Add(message.ConversationMessageId, isMention);
@@ -962,8 +966,8 @@ namespace ELOR.Laney.ViewModels {
             bool soundSettings = PeerType == PeerType.Chat ? Settings.NotificationsGroupChatSound : Settings.NotificationsPrivateSound;
             bool sound = !PushSettings.NoSound && soundSettings;
             bool canNotify = isMention ? true : CanNotify();
-            Log.Information($"ChatViewModel: about to show new message notification ({message.PeerId}_{message.ConversationMessageId}). Is mention: {isMention}, can notify: {canNotify}.");
             if (message.IsOutgoing || !canNotify) return;
+            Log.Information($"ChatViewModel: about to show new message notification ({message.PeerId}_{message.ConversationMessageId}). Is mention: {isMention}.");
             await Task.Delay(20); // имя отправителя может не оказаться в кеше вовремя.
 
             string text = message.ToString();
