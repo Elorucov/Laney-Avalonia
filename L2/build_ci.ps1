@@ -84,8 +84,9 @@ if ($IsMacOS) {
     
     echo "Creating .app bundle file for macOS...";
 	cd ..;
-	Copy-Item -Path "$($output)/*" -Destination "MacOS_layout/Contents/MacOS" -Recurse;
-    Copy-Item -Path "MacOS_layout/*" -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse
+	dir $(Get-Location);
+	Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;
+    Copy-Item -Path "$(Get-Location)/MacOS_layout/*" -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse;
     echo "Deleting publish folder...";
     Remove-Item -Path "$($mlocation)/publish" -Recurse;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
