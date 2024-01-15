@@ -74,18 +74,18 @@ if ($IsLinux) {
 
 if ($IsMacOS) {
     $const = "MAC$($chstr)";
-    New-Item "$($location)/MacOS_Bundles/$($appname).app" -itemType Directory
+	$layout = "../MacOS_layout/Contents/MacOS";
 
     dotnet restore -r $($ctarget);
     $mlocation = "$($projfolder)/bin/Release/net8.0";
 
     $btagm1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm1;
-    dotnet msbuild -t:BundleApp -property:Configuration=Release -p:RuntimeIdentifiers=$ctarget -p:UseAppHost=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagm1 -p:DefineConstants=$const;
-    Copy-Item "$($projfolder)/Assets/Logo/icon.icns" -Destination "$($mlocation)/publish/$($appname).app/Contents/Resources";
+    publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagm1 -p:DefineConstants=$const;
     
     echo "Creating .app bundle file for macOS...";
-    Copy-Item -Path "$($mlocation)/publish/$($appname).app/*" -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse
+	Copy-Item "$($output)/*" -Destination $layout;
+    Copy-Item -Path $layout -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse
     echo "Deleting publish folder...";
     Remove-Item -Path "$($mlocation)/publish" -Recurse;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
