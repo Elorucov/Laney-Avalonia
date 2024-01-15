@@ -84,7 +84,7 @@ if ($IsMacOS) {
     
     echo "Creating .app bundle file for macOS...";
 	Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;
-    Copy-Item -Path "$(Get-Location)/MacOS_layout/*" -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse;
+    Copy-Item -Path "$(Get-Location)/MacOS_layout/*" -Destination "$($location)/MacOS_Bundles/$($appname).app/Contents" -Recurse;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
 
