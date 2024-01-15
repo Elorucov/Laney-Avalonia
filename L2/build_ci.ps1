@@ -74,7 +74,6 @@ if ($IsLinux) {
 
 if ($IsMacOS) {
     $const = "MAC$($chstr)";
-	$layout = "../MacOS_layout/Contents/MacOS";
 
     dotnet restore -r $($ctarget);
     $mlocation = "$($projfolder)/bin/Release/net8.0";
@@ -84,8 +83,9 @@ if ($IsMacOS) {
     dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagm1 -p:DefineConstants=$const;
     
     echo "Creating .app bundle file for macOS...";
-	Copy-Item "$($output)/*" -Destination "$($layout)/" -Recurse;
-    Copy-Item -Path $layout -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse
+	cd ..;
+	Copy-Item -Path "$($output)/*" -Destination "MacOS_layout/Contents/MacOS" -Recurse;
+    Copy-Item -Path "MacOS_layout/*" -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse
     echo "Deleting publish folder...";
     Remove-Item -Path "$($mlocation)/publish" -Recurse;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
