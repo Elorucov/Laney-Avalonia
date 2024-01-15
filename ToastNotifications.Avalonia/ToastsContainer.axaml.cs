@@ -1,8 +1,9 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
 
 namespace ToastNotifications.Avalonia {
@@ -28,12 +29,21 @@ namespace ToastNotifications.Avalonia {
 
         bool topAligned = false;
         bool leftAligned = false;
+        Screen lastScreen = null;
 
         private void SetPosition(bool cycle = false) {
             var screen = Screens.ScreenFromWindow(this);
             if (screen == null) {
-                Log?.Invoke("SetPosition: Cannot get screen!");
-                return;
+                if (lastScreen == null) {
+                    Log?.Invoke("SetPosition: Cannot get screen!");
+                    return;
+                } else {
+                    // В macOS после того, как мы получили окно в первый раз, в дальнейшем возвращает null.
+                    Log?.Invoke("SetPosition: Cannot get screen now, but last time we got this...");
+                    screen = lastScreen;
+                }
+            } else {
+                lastScreen = screen;
             }
 
             var working = screen.WorkingArea;
