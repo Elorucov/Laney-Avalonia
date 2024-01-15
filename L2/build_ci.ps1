@@ -83,11 +83,8 @@ if ($IsMacOS) {
     dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagm1 -p:DefineConstants=$const;
     
     echo "Creating .app bundle file for macOS...";
-	dir $(Get-Location);
 	Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;
     Copy-Item -Path "$(Get-Location)/MacOS_layout/*" -Destination "$($location)/MacOS_Bundles/$($appname).app" -Recurse;
-    echo "Deleting publish folder...";
-    Remove-Item -Path "$($mlocation)/publish" -Recurse;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
 
