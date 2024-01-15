@@ -81,7 +81,7 @@ if ($IsMacOS) {
 
     $btagm1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm1;
-    publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagm1 -p:DefineConstants=$const;
+    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagm1 -p:DefineConstants=$const;
     
     echo "Creating .app bundle file for macOS...";
 	Copy-Item "$($output)/*" -Destination $layout;
