@@ -50,6 +50,8 @@ namespace ELOR.Laney.Views.Modals {
             MoreButton.CommandParameter = MoreButton;
 #if LINUX
             TitleBar.IsVisible = false;
+#elif MAC
+            PeerInfo.Margin = new Thickness(24, 28, 24, 24);
 #endif
         }
 
