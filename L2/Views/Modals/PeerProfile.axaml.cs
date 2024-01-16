@@ -51,7 +51,7 @@ namespace ELOR.Laney.Views.Modals {
 #if LINUX
             TitleBar.IsVisible = false;
 #elif MAC
-            PeerInfo.Margin = new Thickness(24, 28, 24, 24);
+            PeerInfo.Margin = new Avalonia.Thickness(24, 28, 24, 24);
 #endif
         }
 
