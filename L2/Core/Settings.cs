@@ -82,8 +82,8 @@ namespace ELOR.Laney.Core {
                 if (_settings.ContainsKey(key)) {
                     _settings.Remove(key);
                     if (key == VK_TOKEN) {
-                        _settings.Remove(key + "1");
-                        _settings.Remove(key + "2");
+                        if (_settings.ContainsKey($"{key}1")) _settings.Remove($"{key}1");
+                        if (_settings.ContainsKey($"{key}2")) _settings.Remove($"{key}2");
                     }
                 }
                 return;
@@ -93,8 +93,8 @@ namespace ELOR.Laney.Core {
                 if (key == VK_TOKEN) {
                     var result = Encryption.Encrypt(AssetsManager.BinaryPayload.Skip(576).Take(32).OrderDescending().ToArray(), (string)value);
                     _settings[key] = result.Item1;
-                    _settings[key + "1"] = result.Item2;
-                    _settings[key + "2"] = result.Item3;
+                    if (_settings.ContainsKey($"{key}1")) _settings[$"{key}1"] = result.Item2;
+                    if (_settings.ContainsKey($"{key}2")) _settings[$"{key}2"] = result.Item3;
                 } else {
                     _settings[key] = value;
                 }
@@ -102,8 +102,8 @@ namespace ELOR.Laney.Core {
                 if (key == VK_TOKEN) {
                     var result = Encryption.Encrypt(AssetsManager.BinaryPayload.Skip(576).Take(32).OrderDescending().ToArray(), (string)value);
                     _settings.Add(key, result.Item1);
-                    _settings.Add(key + "1", result.Item2);
-                    _settings.Add(key + "2", result.Item3);
+                    if (!_settings.ContainsKey($"{key}1")) _settings.Add($"{key}1", result.Item2);
+                    if (!_settings.ContainsKey($"{key}2")) _settings.Add($"{key}2", result.Item3);
                 } else {
                     _settings.Add(key, value);
                 }

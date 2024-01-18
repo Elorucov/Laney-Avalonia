@@ -43,7 +43,7 @@ namespace ELOR.Laney {
             Log.Logger = loggerConfig.CreateLogger();
             Log.Information("Laney is starting up. Build tag: {0}", App.BuildInfoFull);
             Log.Information("Local data folder: {0}", localDataPath);
-
+            Log.Information("Is ChaCha20Poly1305 supported: {0}", Encryption.IsChaCha20Poly1305Supported);
 
             // Delay (нужен при перезапуске приложения)
             Int32.TryParse(App.GetCmdLineValue("delay"), out delay);
