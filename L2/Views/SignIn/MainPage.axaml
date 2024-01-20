@@ -12,7 +12,7 @@
              x:Class="ELOR.Laney.Views.SignIn.MainPage">
   <Grid RowDefinitions="Auto * Auto">
     <vkui:PanelHeader IsSeparatorVisible="False"/>
-    <StackPanel Grid.Row="1" Margin="24,12">
+    <StackPanel x:Name="Middle" Grid.Row="1" Margin="24,12">
       <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="0,0,0,12" Source="{StaticResource Logo}"/>
       <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
       <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="{i18n:Localize landing_subtitle}"/>
