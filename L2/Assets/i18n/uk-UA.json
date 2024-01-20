@@ -338,6 +338,9 @@
   "settings_privacy": "Конфіденційність",
   "settings_blacklist": "Чорний список",
 
+  "restart_required": "Перезапустіть додаток",
+  "restart_required_ext": "Це налаштування набуде чинності після перезапуску програми",
+
   "st_lang": "Мова",
   "st_send_method": "Параметри надсилання повiдомлень",
   "st_send_method_1": "Enter — надсилання",

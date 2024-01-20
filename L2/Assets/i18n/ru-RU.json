@@ -338,6 +338,9 @@
   "settings_privacy": "Приватность",
   "settings_blacklist": "Чёрный список",
 
+  "restart_required": "Перезапустите приложение",
+  "restart_required_ext": "Эта настройка вступит в силу после перезапуска приложения",
+
   "st_lang": "Язык",
   "st_send_method": "Параметры отправки сообщения",
   "st_send_method_1": "Enter — отправка",

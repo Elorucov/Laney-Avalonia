@@ -14,7 +14,7 @@
         <StackPanel>
           <vkui:Cell Margin="0" Header="{i18n:Localize st_lang}">
             <vkui:Cell.After>
-              <ComboBox Classes="Alternate" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}">
+              <ComboBox Classes="Alternate" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
                   <DataTemplate x:DataType="mdl:TwoStringTuple">
                     <TextBlock Text="{Binding Item2}"/>

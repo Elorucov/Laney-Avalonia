@@ -338,6 +338,9 @@
   "settings_privacy": "Privacy",
   "settings_blacklist": "Black list",
 
+  "restart_required": "Restart required",
+  "restart_required_ext": "Restart the app to apply this setting",
+
   "st_lang": "Language",
   "st_send_method": "Message sending options",
   "st_send_method_1": "Enter — send",

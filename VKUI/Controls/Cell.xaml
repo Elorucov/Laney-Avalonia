@@ -53,9 +53,9 @@
           </Border.Styles>
           <Grid ColumnDefinitions="Auto * Auto" Margin="12,0">
             <ContentPresenter x:Name="BeforeControl" Margin="0,6,12,6" VerticalAlignment="Stretch" IsVisible="{TemplateBinding Before, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{TemplateBinding Before}"/>
-            <StackPanel Grid.Column="1" Margin="0,8" VerticalAlignment="Center">
+            <StackPanel Grid.Column="1" Margin="0,8" VerticalAlignment="Center" ClipToBounds="True">
               <TextBlock x:Name="HeaderText" Classes="Default" Text="{TemplateBinding Header}"/>
-              <TextBlock x:Name="SubtitleText" Classes="Caption1" TextWrapping="Wrap" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{TemplateBinding Subtitle, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{TemplateBinding Subtitle}"/>
+              <TextBlock x:Name="SubtitleText" Classes="Caption1" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{TemplateBinding Subtitle, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{TemplateBinding Subtitle}"/>
             </StackPanel>
             <ContentPresenter x:Name="AfterControl" Grid.Column="2" Margin="12,6,0,6" VerticalAlignment="Stretch" IsVisible="{TemplateBinding After, Converter={x:Static ObjectConverters.IsNotNull}}"/>
           </Grid>
