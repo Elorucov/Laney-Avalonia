@@ -323,6 +323,7 @@ namespace ELOR.Laney.Views {
             } else {
                 HopNavContainer.IsVisible = false;
             }
+            if (MessagesListScrollViewer.Extent.Height <= MessagesListScrollViewer.DesiredSize.Height) HopNavContainer.IsVisible = false;
         }
 
         private void UpdateDateUnderHeader(MessageViewModel msg) {
