@@ -290,6 +290,12 @@ namespace ELOR.Laney.Core {
                 IsVisible = true,
                 ToolTipText = "Laney"
             };
+            
+            icon.Clicked += (a, b) => {
+                if (lastSessionId == 0) return;
+                var s = Sessions.Where(s => s.Id == lastSessionId).FirstOrDefault();
+                if (s != null) s.TryOpenWindow();
+            };
 
             var icons = new TrayIcons { icon };
             Application.Current.SetValue(TrayIcon.IconsProperty, icons);
@@ -331,6 +337,12 @@ namespace ELOR.Laney.Core {
                     Menu = TrayMenu,
                     IsVisible = true,
                     ToolTipText = "Laney"
+                };
+                icon.Clicked += (a, b) => {
+                    Log.Information($"User clicked on tray icon. Last displayed session id = {lastSessionId}");
+                    if (lastSessionId == 0) return;
+                    var s = Sessions.Where(s => s.Id == lastSessionId).FirstOrDefault();
+                    if (s != null) s.TryOpenWindow();
                 };
 
                 icons = new TrayIcons { icon };
@@ -479,6 +491,7 @@ namespace ELOR.Laney.Core {
                 Log.Information("Creating and showing new window for session {0}", sessionId);
                 session.Window = new MainWindow();
                 session.Window.DataContext = session;
+                session.Window.Activated += (a, b) => lastSessionId = ((a as Window).DataContext as VKSession).Id;
                 session.Init(true);
                 session.Window.Show();
             } else {
@@ -637,6 +650,7 @@ namespace ELOR.Laney.Core {
         private static List<VKSession> _sessions = new List<VKSession>();
         public static IReadOnlyList<VKSession> Sessions { get => _sessions.AsReadOnly(); }
         public static VKSession Main { get => _sessions.FirstOrDefault(); }
+        private static long lastSessionId = 0;
 
         public static async void StartUserSession(long userId, string accessToken) {
             VKSession session = new VKSession {
@@ -649,6 +663,7 @@ namespace ELOR.Laney.Core {
             _sessions.Add(session);
             session.Window.DataContext = session;
             session.ImViewModel = new ImViewModel(session);
+            session.Window.Activated += (a, b) => lastSessionId = ((a as Window).DataContext as VKSession).Id;
             session.Init();
             session.Window.Show();
 

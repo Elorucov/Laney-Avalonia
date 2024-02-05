@@ -110,7 +110,7 @@ namespace ELOR.Laney.ViewModels {
 
         public ChatViewModel(VKSession session, long peerId, Message lastMessage = null, bool needSetup = false) {
             int cmid = lastMessage != null ? lastMessage.ConversationMessageId : 0;
-            Log.Information($"New ChatViewModel for peer {peerId}. Last message: {cmid}, need setup: {needSetup}");
+            Log.Verbose($"New ChatViewModel for peer {peerId}. Last message: {cmid}, need setup: {needSetup}");
 
             this.session = session;
             Composer = new ComposerViewModel(session, this);
@@ -130,7 +130,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
-            Log.Information($"New ChatViewModel for conversation with peer {c.Peer.Id}. Last message: {lastMessage?.ConversationMessageId}");
+            Log.Verbose($"New ChatViewModel for conversation with peer {c.Peer.Id}. Last message: {lastMessage?.ConversationMessageId}");
 
             this.session = session;
             Composer = new ComposerViewModel(session, this);
