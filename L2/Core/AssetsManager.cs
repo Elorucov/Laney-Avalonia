@@ -10,7 +10,8 @@ namespace ELOR.Laney.Core {
     public static class AssetsManager {
         public static Bitmap GetBitmapFromUri(Uri uri) {
             Stream stream = OpenAsset(uri);
-            return new Bitmap(stream);
+            var b = new Bitmap(stream);
+            return b;
         }
 
         public static WriteableBitmap GetWBitmapFromUri(Uri uri) {

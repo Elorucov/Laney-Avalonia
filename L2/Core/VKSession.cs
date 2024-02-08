@@ -28,6 +28,7 @@ using ToastNotifications.Avalonia;
 using Avalonia.Dialogs;
 using ELOR.VKAPILib.Objects.Messages;
 using System.Diagnostics;
+using Avalonia.Platform;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -332,8 +333,15 @@ namespace ELOR.Laney.Core {
             if (icons != null && icons.Count == 1) {
                 icons[0].Menu = TrayMenu;
             } else {
+                WindowIcon wi = null;
+                try {
+                    wi = new WindowIcon(AssetLoader.Open(new Uri(AssetsManager.GetThemeDependentTrayIcon())));
+                } catch (Exception ex) {
+                    Log.Error(ex, "Failed to open a tray icon!");
+                }
+
                 TrayIcon icon = new TrayIcon {
-                    Icon = new WindowIcon(AssetsManager.GetBitmapFromUri(new Uri(AssetsManager.GetThemeDependentTrayIcon()))),
+                    Icon = wi,
                     Menu = TrayMenu,
                     IsVisible = true,
                     ToolTipText = "Laney"
