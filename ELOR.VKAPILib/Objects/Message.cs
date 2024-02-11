@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class MessagesHistoryResponse {
-        public MessagesHistoryResponse() {}
+        public MessagesHistoryResponse() { }
 
         [JsonPropertyName("items")]
         public List<Message> Items { get; set; }
@@ -24,8 +24,19 @@ namespace ELOR.VKAPILib.Objects {
 
     //
 
+    public class MessageReaction {
+        [JsonPropertyName("reaction_id")]
+        public int ReactionId { get; set; }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("user_ids")]
+        public List<long> UserIds { get; set; }
+    }
+
     public class GeoCoordinates {
-        public GeoCoordinates() {}
+        public GeoCoordinates() { }
 
         [JsonPropertyName("latitude")]
         public double Latitude { get; set; }
@@ -35,7 +46,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class GeoPlace {
-        public GeoPlace() {}
+        public GeoPlace() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -63,7 +74,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Geo {
-        public Geo() {}
+        public Geo() { }
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
@@ -76,7 +87,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Action {
-        public Action() {}
+        public Action() { }
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
@@ -104,7 +115,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Message {
-        public Message() {}
+        public Message() { }
 
         [JsonIgnore]
         public DateTime DateTime { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
@@ -182,6 +193,12 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("is_silent")]
         public bool IsSilent { get; set; }
+
+        [JsonPropertyName("reaction_id")]
+        public int ReactionId { get; set; }
+
+        [JsonPropertyName("reactions")]
+        public List<MessageReaction> Reactions { get; set; }
 
         [JsonIgnore]
         public bool IsPartial { get; private set; }

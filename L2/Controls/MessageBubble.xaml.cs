@@ -88,6 +88,7 @@ namespace ELOR.Laney.Controls {
         Rectangle Map;
         Border ForwardedMessagesContainer;
         StackPanel ForwardedMessagesStack;
+        Border ReactionsContainer;
         Border IndicatorContainer;
         TextBlock TimeIndicator;
         VKIcon StateIndicator;
@@ -96,6 +97,7 @@ namespace ELOR.Laney.Controls {
         bool isUILoaded = false;
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e) {
             if (Settings.MessageRenderingLogs) Log.Verbose($"> MessageBubble OnApplyTemplate exec. ({Message.PeerId}_{Message.ConversationMessageId})");
+            Debug.WriteLine($"Msg bubble {Message?.PeerId}_{Message?.ConversationMessageId}");
 
             base.OnApplyTemplate(e);
             BubbleRoot = e.NameScope.Find<Grid>(nameof(BubbleRoot));
@@ -111,6 +113,7 @@ namespace ELOR.Laney.Controls {
             Map = e.NameScope.Find<Rectangle>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
             ForwardedMessagesStack = e.NameScope.Find<StackPanel>(nameof(ForwardedMessagesStack));
+            ReactionsContainer = e.NameScope.Find<Border>(nameof(ReactionsContainer));
             IndicatorContainer = e.NameScope.Find<Border>(nameof(IndicatorContainer));
             TimeIndicator = e.NameScope.Find<TextBlock>(nameof(TimeIndicator));
             StateIndicator = e.NameScope.Find<VKIcon>(nameof(StateIndicator));
@@ -119,6 +122,8 @@ namespace ELOR.Laney.Controls {
             double mapWidth = BUBBLE_FIXED_WIDTH - 8;
             Map.Width = mapWidth;
             Map.Height = mapWidth / 2;
+
+            IndicatorContainer.SizeChanged += BubbleRoot_SizeChanged;
 
             AvatarButton.Click += AvatarButton_Click;
             ReplyMessageButton.Click += ReplyMessageButton_Click;
@@ -248,6 +253,10 @@ namespace ELOR.Laney.Controls {
                 acc.Add(IsOutgoing ? MSG_OUTGOING : MSG_INCOMING);
             }
 
+            var rct = ReactionsContainer.Classes;
+            rct.Clear();
+            rct.Add(IsOutgoing ? MSG_OUTGOING : MSG_INCOMING);
+
             // Avatar
             AvatarButton.IsVisible = IsChat && !IsOutgoing;
 
@@ -338,14 +347,28 @@ namespace ELOR.Laney.Controls {
                 IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
             }
 
+            // Reactions panel
+            if (Message.Reactions?.Count > 0) {
+                Grid.SetRow(IndicatorContainer, 2);
+            }
+
             // UI
             ChangeUI();
 
             sw.Stop();
+            Debug.WriteLine($"Msg bubble {Message?.PeerId}_{Message?.ConversationMessageId} rendered!");
             if (Settings.MessageRenderingLogs) Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} rendered. ({sw.ElapsedMilliseconds} ms.)");
             if (sw.ElapsedMilliseconds > (1000.0 / 30.0)) {
                 Log.Warning($"MessageBubble: rendering {Message.PeerId}_{Message.ConversationMessageId} took too long! ({sw.ElapsedMilliseconds} ms.)");
             }
+        }
+
+        private void BubbleRoot_SizeChanged(object sender, SizeChangedEventArgs e) {
+            double indicatorsWidth = IndicatorContainer.DesiredSize.Width;
+            Debug.WriteLine($"IC Width: {indicatorsWidth}");
+
+            var rcm = ReactionsContainer.Margin;
+            ReactionsContainer.Margin = new Thickness(rcm.Left, rcm.Top, indicatorsWidth, rcm.Bottom);
         }
 
         private void SetText(string text) {
@@ -353,7 +376,7 @@ namespace ELOR.Laney.Controls {
             TextParser.SetText(text, MessageText, OnLinkClicked);
 
             // Empty space for sent time/status
-            if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0) {
+            if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0 && (Message.Reactions == null || Message.Reactions.Count == 0)) {
                 string editedPlaceholder = Message.EditTime != null ? Localizer.Instance["edited_indicator"] : "";
                 string favoritePlaceholder = Message.IsImportant ? "W" : "";
                 string outgoingPlaceholder = Message.IsOutgoing ? "WW" : "";
@@ -438,8 +461,15 @@ namespace ELOR.Laney.Controls {
 
             // Forwarded messages margin-top
             double fwdTopMargin = !String.IsNullOrEmpty(Message.Text) || Message.Attachments.Count > 0 ? 0 : 8;
+            double fwdBottomMargin = Message.Reactions?.Count > 0 ? 4 : 22;
             var fwm = ForwardedMessagesContainer.Margin;
-            ForwardedMessagesContainer.Margin = new Thickness(fwm.Left, fwdTopMargin, fwm.Right, fwm.Bottom);
+            ForwardedMessagesContainer.Margin = new Thickness(fwm.Left, fwdTopMargin, fwm.Right, fwdBottomMargin);
+
+            // Reactions margin-top
+            double rtop = Message.UIType != MessageUIType.Standart || Message.Keyboard != null ? 8 : 0;
+            double rside = Message.UIType == MessageUIType.SingleImage || Message.UIType == MessageUIType.Graffiti || Message.UIType == MessageUIType.Sticker ? 0 : 12;
+            var rcm = ReactionsContainer.Margin;
+            ReactionsContainer.Margin = new Thickness(rside, rtop, rcm.Right, rcm.Bottom);
 
             if (Settings.MessageRenderingLogs) Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} ChangeUI completed.");
         }

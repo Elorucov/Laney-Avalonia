@@ -8,9 +8,11 @@ using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public enum MessageVMState {
@@ -52,6 +54,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         private int _ttl;
         private bool _isExpired;
         private bool _isUnavailable;
+        private int _selectedReactionId;
+        private ObservableCollection<MessageReaction> _reactions;
         private MessageVMState _state;
 
         private bool _isSenderNameVisible;
@@ -86,6 +90,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public int TTL { get { return _ttl; } private set { _ttl = value; OnPropertyChanged(); } }
         public bool IsExpired { get { return _isExpired; } private set { _isExpired = value; OnPropertyChanged(); } }
         public bool IsUnavailable { get { return _isUnavailable; } private set { _isUnavailable = value; OnPropertyChanged(); } }
+        public int SelectedReactionId { get { return _selectedReactionId; } set { _selectedReactionId = value; OnPropertyChanged(); } }
+        public ObservableCollection<MessageReaction> Reactions { get { return _reactions; } private set { _reactions = value; OnPropertyChanged(); } }
         public MessageVMState State { get { return _state; } set { _state = value; OnPropertyChanged(); } }
         public bool IsOutgoing { get { return session.Id == SenderId; } }
 
@@ -134,6 +140,8 @@ namespace ELOR.Laney.ViewModels.Controls {
             TTL = Math.Max(msg.ExpireTTL, msg.TTL);
             IsExpired = msg.IsExpired;
             IsUnavailable = msg.IsUnavailable;
+            SelectedReactionId = msg.ReactionId;
+            Reactions = msg.Reactions == null ? new ObservableCollection<MessageReaction>() : new ObservableCollection<MessageReaction>(msg.Reactions);
 
             if (msg.ForwardedMessages != null) {
                 ForwardedMessages.Clear();

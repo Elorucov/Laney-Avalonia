@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using Avalonia.Svg.Skia;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using Serilog;
@@ -15,6 +16,9 @@ namespace ELOR.Laney.Controls {
         static ImageLoader() {
             SourceProperty.Changed
                 .Subscribe(args => OnSourceChanged((Image)args.Sender, args.NewValue.Value));
+
+            SvgSourceProperty.Changed
+                .Subscribe(args => OnSvgSourceChanged((Image)args.Sender, args.NewValue.Value));
 
             BackgroundSourceProperty.Changed
                 .Subscribe(args => OnBackgroundSourceChanged((Border)args.Sender, args.NewValue.Value));
@@ -45,6 +49,22 @@ namespace ELOR.Laney.Controls {
             }
 
             // SetIsLoading(sender, false);
+        }
+
+        private static async void OnSvgSourceChanged(Image sender, Uri uri) {
+            if (uri == null) {
+                sender.Source = null;
+                return;
+            }
+            double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
+            double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
+
+            string data = await CacheManager.GetStaticReactionImageAsync(uri);
+            if (String.IsNullOrEmpty(data)) return;
+            sender.Source = new SvgImage {
+                Source = SvgSource.LoadFromSvg(data)
+            };
+            // sender.Unloaded += Sender_Unloaded;
         }
 
         private static async void OnBackgroundSourceChanged(Border sender, Uri uri) {
@@ -99,6 +119,16 @@ namespace ELOR.Laney.Controls {
 
         public static void SetSource(Image element, Uri? value) {
             element.SetValue(SourceProperty, value);
+        }
+
+        public static readonly AttachedProperty<Uri?> SvgSourceProperty = AvaloniaProperty.RegisterAttached<Image, Uri?>("Source", typeof(ImageLoader));
+
+        public static Uri? GetSvgSource(Image element) {
+            return element.GetValue(SvgSourceProperty);
+        }
+
+        public static void SetSvgSource(Image element, Uri? value) {
+            element.SetValue(SvgSourceProperty, value);
         }
 
         public static readonly AttachedProperty<Uri?> BackgroundSourceProperty = AvaloniaProperty.RegisterAttached<Border, Uri?>("BackgroundSource", typeof(ImageLoader));

@@ -29,19 +29,6 @@ namespace ELOR.Laney {
                 VKUIDialog dlg = new VKUIDialog("Link test", link);
                 await dlg.ShowDialog(this);
             });
-
-            TestAnimatedSticker();
-        }
-
-        private async void TestAnimatedSticker() {
-            await Task.Delay(1000);
-            var file = await CacheManager.GetFileFromCacheAsync(new Uri("https://vk.com/sticker/3-8476.json"));
-            if (file) {
-                lottieSticker.Stretch = Avalonia.Media.Stretch.Uniform;
-                lottieSticker.StretchDirection = Avalonia.Media.StretchDirection.Both;
-                lottieSticker.RepeatCount = 10;
-                lottieSticker.Path = $"file://{Path.Combine(App.LocalDataPath, "cache", "3-8476.json").Replace("\\", "/")}";
-            }
         }
 
         private void MainWindow_EffectiveViewportChanged(object? sender, Avalonia.Layout.EffectiveViewportChangedEventArgs e) {

@@ -135,8 +135,12 @@
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">
-        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Lottie test"/>
-        <lottie:Lottie x:Name="lottieSticker" Width="128" Height="128" Margin="8" HorizontalAlignment="Left"/>
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="SVG test"/>
+        <Image HorizontalAlignment="Left" Width="26" Height="26">
+          <Image.Source>
+            <SvgImage Source="https://sun9-65.userapi.com/NRmhCK9GMbm4L_tnd3m-DmKqMUq5u26FI8CQKw/ey7FdcDQ9pk.svg"/>
+          </Image.Source>
+        </Image>
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">

@@ -205,9 +205,12 @@ namespace ELOR.Laney.Views {
         }
 
         private async void ForceScroll(double y) {
+            byte retries = 0;
             while (MessagesListScrollViewer.Offset.Y < y - 2 || MessagesListScrollViewer.Offset.Y > y + 2) {
                 MessagesListScrollViewer.Offset = new Vector(0, y);
                 await Task.Yield();
+                retries++;
+                if (retries >= 5) break;
             }
         }
 
@@ -323,7 +326,12 @@ namespace ELOR.Laney.Views {
             } else {
                 HopNavContainer.IsVisible = false;
             }
-            if (MessagesListScrollViewer.Extent.Height <= MessagesListScrollViewer.DesiredSize.Height) HopNavContainer.IsVisible = false;
+            try {
+                if (MessagesListScrollViewer?.Extent.Height <= MessagesListScrollViewer?.DesiredSize.Height) HopNavContainer.IsVisible = false;
+            } catch (Exception ex) {
+                Log.Error(ex, "Failed to check messages list's ScrollViewer!");
+                HopNavContainer.IsVisible = false;
+            }
         }
 
         private void UpdateDateUnderHeader(MessageViewModel msg) {

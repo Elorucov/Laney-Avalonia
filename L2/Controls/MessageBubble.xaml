@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vkui="using:VKUI.Controls"
+        xmlns:obj="using:ELOR.VKAPILib.Objects"
         xmlns:i18n="using:ELOR.Laney.Core.Localization"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:atch="using:ELOR.Laney.Controls.Attachments"
@@ -44,6 +45,23 @@
               <Setter Property="Foreground" Value="{DynamicResource MessageBubbleOutgoingTextSecondaryBrush}"/>
             </Style>
 
+            <Style Selector="Button.ReactionChip TextBlock">
+              <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+            </Style>
+            <Style Selector="Border#ReactionsContainer.Outgoing Button.ReactionChip">
+              <Setter Property="Background" Value="{DynamicResource VKImBubbleOutgoingHighlightedBrush}"/>
+            </Style>
+            <Style Selector="Border#ReactionsContainer.Incoming Button.ReactionChip">
+              <Setter Property="Background" Value="{DynamicResource VKImBubbleIncomingHighlightedBrush}"/>
+            </Style>
+            
+            <Style Selector="Button.ReactionChip.Selected TextBlock">
+              <Setter Property="Foreground" Value="#FFF"/>
+            </Style>
+            <Style Selector="Button.ReactionChip.Selected">
+              <Setter Property="Background" Value="{DynamicResource VKAccentBrush}"/>
+            </Style>
+            
             <!-- Time & indicators -->
 
             <Style Selector="Border.DefaultIndicator">
@@ -84,8 +102,8 @@
                        Background="{Binding Message.SenderId, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource agc}}"
                        controls:ImageLoader.Image="{Binding Message.SenderAvatar, RelativeSource={RelativeSource TemplatedParent}}"/>
           </Button>
-          <Grid x:Name="BubbleRoot" RowDefinitions="* Auto" Grid.Column="1" MinHeight="36" MinWidth="48" MaxWidth="420" HorizontalAlignment="Left" ToolTip.Tip="{Binding Message.UIType, RelativeSource={RelativeSource TemplatedParent}}">
-            <Border x:Name="BubbleBackground" Grid.RowSpan="2" CornerRadius="18"/>
+          <Grid x:Name="BubbleRoot" RowDefinitions="* Auto Auto" Grid.Column="1" MinHeight="36" MinWidth="48" MaxWidth="420" HorizontalAlignment="Left" ToolTip.Tip="{Binding Message.UIType, RelativeSource={RelativeSource TemplatedParent}}">
+            <Border x:Name="BubbleBackground" Grid.RowSpan="3" CornerRadius="18"/>
             <StackPanel x:Name="MessageContent">
               <Border x:Name="SenderNameWrap">
                 <TextBlock x:Name="SenderName" Margin="12,7,12,0" Classes="Caption1" FontWeight="SemiBold" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.IsSenderNameVisible, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -113,7 +131,32 @@
               </StackPanel>
             </Border>
             <controls:BotKeyboardUI x:Name="BotKeyboard" Grid.Row="1" Margin="12,4,12,12" MinWidth="296" Keyboard="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-            <Ellipse x:Name="ReadIndicator" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,1" Width="8" Height="8" Fill="{DynamicResource VKAccentBrush}" Stroke="{DynamicResource VKBackgroundContentBrush}" StrokeThickness="1"/>
+            <Border x:Name="ReactionsContainer" Grid.Row="2" Margin="12,0,12,8" HorizontalAlignment="Left" Tag="{Binding Message.SelectedReactionId, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Reactions.Count, RelativeSource={RelativeSource TemplatedParent}}">
+              <ItemsControl HorizontalAlignment="Left" ItemsSource="{Binding Message.Reactions, RelativeSource={RelativeSource TemplatedParent}}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Left" Margin="0,-2" Orientation="Horizontal"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="obj:MessageReaction">
+                    <Button Classes="ReactionChip" CornerRadius="15" Margin="0,2,4,2" Padding="4,2,6,2" Height="30">
+                      <Classes.Selected>
+                        <MultiBinding Converter="{StaticResource src}">
+                          <Binding Path="Tag" ElementName="ReactionsContainer"/>
+                          <Binding Path="ReactionId"/>
+                        </MultiBinding>
+                      </Classes.Selected>
+                      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="26" Height="26" controls:ImageLoader.SvgSource="{Binding ReactionId, Converter={StaticResource rec}}"/>
+                        <TextBlock FontSize="13" LineHeight="16" Margin="4,5,2,5" FontWeight="Medium" Text="{Binding Count}"/>
+                      </StackPanel>
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </Border>
+            <Ellipse x:Name="ReadIndicator" Grid.RowSpan="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,1" Width="8" Height="8" Fill="{DynamicResource VKAccentBrush}" Stroke="{DynamicResource VKBackgroundContentBrush}" StrokeThickness="1"/>
           </Grid>
         </Grid>
       </ControlTemplate>

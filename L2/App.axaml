@@ -36,8 +36,10 @@
     <conv:MessageInChatConverter x:Key="micc"/>
     <conv:OnlineIconConverter x:Key="oic"/>
     <conv:OwnerNameConverter x:Key="onc"/>
+    <conv:ReactionIconConverter x:Key="rec"/>
     <conv:ReadIndicatorConverter x:Key="ric"/>
     <conv:ReadIndicatorVisibilityConverter x:Key="rivc"/>
+    <conv:SelectedReactionConverter x:Key="src"/>
     <conv:VKPhotoSizesConverter x:Key="vpsc"/>
 
     <DataTemplate x:Key="OnlineIcon">

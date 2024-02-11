@@ -42,7 +42,7 @@ namespace ELOR.Laney.Core {
 #endif
         }
 
-        public static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri, double decodeWidth = 0, double decodeHeight = 0) {
+        private static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri, double decodeWidth = 0, double decodeHeight = 0) {
             if (uri == null) return null;
 
             string url = uri.AbsoluteUri;

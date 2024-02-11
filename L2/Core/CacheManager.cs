@@ -5,10 +5,12 @@ using ELOR.Laney.ViewModels;
 using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
@@ -115,6 +117,58 @@ namespace ELOR.Laney.Core {
             CachedUsers.Clear();
             CachedGroups.Clear();
         }
+
+        #region Reactions assets
+
+        public static ConcurrentDictionary<int, ReactionAssetLinks> ReactionsAssets { get; private set; }
+        public static ConcurrentDictionary<string, string> ReactionsAssetData { get; private set; } = new ConcurrentDictionary<string, string>();
+        static ConcurrentDictionary<string, ManualResetEventSlim> nowLoading = new ConcurrentDictionary<string, ManualResetEventSlim>();
+
+        public static void SetReactionsAssets(List<ReactionAssets> assets) {
+            ReactionsAssets = new ConcurrentDictionary<int, ReactionAssetLinks>();
+            if (assets == null) return;
+            foreach (var a in assets) {
+                ReactionsAssets.TryAdd(a.ReactionId, a.Links);
+            }
+        }
+
+        public static async Task<string> GetStaticReactionImageAsync(Uri uri) {
+            string key = uri.AbsoluteUri;
+            if (!ReactionsAssetData.ContainsKey(key)) {
+                if (nowLoading.ContainsKey(key)) {
+                    var lmres = nowLoading[key];
+                    await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
+                    return ReactionsAssetData[key];
+                }
+                string data = null;
+                ManualResetEventSlim mres = new ManualResetEventSlim();
+                bool isAdded = nowLoading.TryAdd(key, mres);
+                if (!isAdded) Log.Warning($"GetStaticReactionImage: cannot add MRES \"{uri}\"!");
+
+                var response = await LNet.GetAsync(uri);
+                response.EnsureSuccessStatusCode();
+                data = await response.Content.ReadAsStringAsync();
+
+                if (!ReactionsAssetData.ContainsKey(key)) {
+                    bool isAdded2 = ReactionsAssetData.TryAdd(key, data);
+                    if (!isAdded2) Log.Warning($"GetStaticReactionImage: cannot add svg asset data \"{uri}\"!");
+                }
+
+                ManualResetEventSlim outmres = null;
+                bool isRemoved2 = nowLoading.TryRemove(key, out outmres);
+                if (!isRemoved2) Log.Warning($"GetStaticReactionImage: cannot remove MRES \"{uri}\"!");
+                mres.Set();
+                // mres.Dispose();
+                return data;
+            } else {
+                return ReactionsAssetData[key];
+            }
+
+
+
+        }
+
+        #endregion
 
         #region Files
 
