@@ -1,9 +1,11 @@
-﻿using Avalonia.Platform.Storage;
+﻿using Avalonia.Platform;
+using Avalonia.Platform.Storage;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
 using ELOR.VKAPILib.Objects;
 using Serilog;
+using SkiaSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -133,6 +135,11 @@ namespace ELOR.Laney.Core {
         }
 
         public static async Task<string> GetStaticReactionImageAsync(Uri uri) {
+            if (uri.Scheme == "avares") {
+                var stream = AssetLoader.Open(uri);
+                StreamReader reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            }
             string key = uri.AbsoluteUri;
             if (!ReactionsAssetData.ContainsKey(key)) {
                 if (nowLoading.ContainsKey(key)) {

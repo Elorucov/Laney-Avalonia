@@ -12,7 +12,7 @@ namespace ELOR.Laney.Converters {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             if (value is not int) return null;
             int id = (int)value;
-            if (!CacheManager.ReactionsAssets.ContainsKey(id)) return null;
+            if (!CacheManager.ReactionsAssets.ContainsKey(id)) return new Uri("avares://laney/Assets/placeholder.svg");
 
             var uri = CacheManager.ReactionsAssets[id].Static;
             return new Uri(uri);

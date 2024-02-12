@@ -60,6 +60,7 @@
     <None Remove="Assets\Logo\Tray\t32mb.png" />
     <None Remove="Assets\Logo\Tray\t32mw.png" />
     <None Remove="Assets\macos_installer_background.png" />
+    <None Remove="Assets\placeholder.svg" />
     <None Remove="Controls\Attachments\AttachmentsContainer.xaml" />
     <None Remove="Controls\Attachments\BasicAttachment.xaml" />
     <None Remove="Controls\Attachments\ExtendedAttachment.xaml" />
