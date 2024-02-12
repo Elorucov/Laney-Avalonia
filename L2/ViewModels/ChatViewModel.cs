@@ -49,6 +49,7 @@ namespace ELOR.Laney.ViewModels {
         private ObservableCollection<int> _mentions;
         private bool _hasMention;
         private bool _hasSelfDestructMessage;
+        private ObservableCollection<int> _unreadReactions;
         private string _restrictionReason;
         private bool _isCurrentOpenedChat;
         private int _selectedMessagesCount;
@@ -84,6 +85,7 @@ namespace ELOR.Laney.ViewModels {
         public bool HasMention { get { return _hasMention; } private set { _hasMention = value; OnPropertyChanged(); } }
         public bool HasSelfDestructMessage { get { return _hasSelfDestructMessage; } private set { _hasSelfDestructMessage = value; OnPropertyChanged(); } }
         public string MentionIconId { get { return GetMentionIcon(); } }
+        public ObservableCollection<int> UnreadReactions { get { return _unreadReactions; } set { _unreadReactions = value; OnPropertyChanged(); } }
         public string RestrictionReason { get { return _restrictionReason; } private set { _restrictionReason = value; OnPropertyChanged(); } }
         public bool IsCurrentOpenedChat { get { return _isCurrentOpenedChat; } private set { _isCurrentOpenedChat = value; OnPropertyChanged(); } }
         public int SelectedMessagesCount { get { return _selectedMessagesCount; } private set { _selectedMessagesCount = value; OnPropertyChanged(); } }
@@ -203,6 +205,7 @@ namespace ELOR.Laney.ViewModels {
                 DisabledUntil = 0
             };
 
+            if (c.UnreadReactions != null && c.UnreadReactions.Count > 0) UnreadReactions = new ObservableCollection<int>(c.UnreadReactions);
             if (c.Mentions != null && c.Mentions.Count > 0) {
                 Mentions = new ObservableCollection<int>(c.Mentions);
                 HasMention = true;
@@ -343,6 +346,7 @@ namespace ELOR.Laney.ViewModels {
                 session.LongPoll.ConversationDataChanged += LongPoll_ConversationDataChanged;
                 session.LongPoll.ActivityStatusChanged += LongPoll_ActivityStatusChanged;
                 session.LongPoll.NotificationsSettingsChanged += LongPoll_NotificationsSettingsChanged;
+                session.LongPoll.UnreadReactionsChanged += LongPoll_UnreadReactionsChanged;
 
                 if (!session.IsGroup) VKQueue.Online += VKQueue_Online;
             }
@@ -940,6 +944,17 @@ namespace ELOR.Laney.ViewModels {
                     NoSound = e.Sound == 0
                 };
                 PushSettings = ps;
+            });
+        }
+
+        private async void LongPoll_UnreadReactionsChanged(LongPoll longPoll, long peerId, List<int> cmIds) {
+            if (peerId != PeerId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                if (cmIds == null || cmIds.Count == 0) {
+                    UnreadReactions = null;
+                    return;
+                }
+                UnreadReactions = new ObservableCollection<int>(cmIds);
             });
         }
 

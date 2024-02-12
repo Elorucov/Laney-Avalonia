@@ -5,6 +5,7 @@
         public const string Icon12Favorite = "Icon12Favorite";
         public const string Icon12Mention = "Icon12Mention";
         public const string Icon12Star = "Icon12Star";
+        public const string Icon12Stars = "Icon12Stars";
 
         public const string Icon16Cancel = "Icon16Cancel";
         public const string Icon16CheckDoubleOutline = "Icon16CheckDoubleOutline";

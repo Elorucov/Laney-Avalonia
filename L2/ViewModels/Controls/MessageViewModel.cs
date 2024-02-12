@@ -9,10 +9,8 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using static System.Collections.Specialized.BitVector32;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public enum MessageVMState {
@@ -158,6 +156,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                 session.LongPoll.MessageEdited += LongPoll_MessageEdited;
                 session.LongPoll.MessageFlagSet += LongPoll_MessageFlagSet;
                 session.LongPoll.MessageFlagRemove += LongPoll_MessageFlagRemove;
+                session.LongPoll.ReactionsChanged += LongPoll_ReactionsChanged;
                 if (session.Id != SenderId) session.LongPoll.IncomingMessagesRead += LongPoll_MessagesRead;
                 if (session.Id == SenderId) session.LongPoll.OutgoingMessagesRead += LongPoll_MessagesRead;
             }
@@ -233,7 +232,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     UIType = MessageUIType.Complex;
                 }
 
-                bool firstImage = a1.Type == AttachmentType.Photo || a1.Type == AttachmentType.Video 
+                bool firstImage = a1.Type == AttachmentType.Photo || a1.Type == AttachmentType.Video
                     || (a1.Type == AttachmentType.Document && a1.Document.Preview != null);
                 bool secondImage = a2.Type == AttachmentType.Photo || a2.Type == AttachmentType.Video
                     || (a2.Type == AttachmentType.Document && a2.Document.Preview != null);
@@ -303,6 +302,27 @@ namespace ELOR.Laney.ViewModels.Controls {
             await Dispatcher.UIThread.InvokeAsync(() => {
                 if (flags.HasFlag(8)) { // Unmarked as important
                     IsImportant = false;
+                }
+            });
+        }
+
+        private async void LongPoll_ReactionsChanged(LongPoll longPoll, long peerId, int cmId, LongPollReactionEventType type, int myReactionId, List<MessageReaction> reactions) {
+            if (peerId != PeerId || cmId != ConversationMessageId) return;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                bool isEmpty = Reactions.Count == 0;
+                Reactions = new ObservableCollection<MessageReaction>(reactions);
+
+                if (isEmpty && Reactions.Count > 0) {
+                    MessageEdited?.Invoke(this, null);
+                } else if (!isEmpty && Reactions.Count == 0) {
+                    MessageEdited?.Invoke(this, null);
+                }
+
+                if (type == LongPollReactionEventType.IAdded) {
+                    SelectedReactionId = myReactionId;
+                }
+                else if(type == LongPollReactionEventType.IRemoved) {
+                    SelectedReactionId = 0;
                 }
             });
         }

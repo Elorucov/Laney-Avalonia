@@ -154,6 +154,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("can_see_invite_link")]
         public bool CanSeeInviteLink { get; set; }
+
+        [JsonPropertyName("can_send_reactions")]
+        public bool CanSendReactions { get; set; }
     }
 
     public class ChatPermissions {
@@ -289,6 +292,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("expire_cmids")]
         public List<int> ExpireConvMessageIds { get; set; }
+
+        [JsonPropertyName("unread_reactions")]
+        public List<int> UnreadReactions { get; set; }
     }
 
     // Chat

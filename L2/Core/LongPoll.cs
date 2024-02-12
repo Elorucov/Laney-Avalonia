@@ -8,7 +8,6 @@ using Serilog;
 using Serilog.Core;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -18,6 +17,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
+    public enum LongPollReactionEventType {
+        Unknown, IAdded, SomeoneAdded, IRemoved, SomeoneRemoved
+    }
+
     public sealed class LongPoll {
         public const int WAIT_AFTER_FAIL = 3;
         public const int VERSION = 19;
@@ -69,6 +72,8 @@ namespace ELOR.Laney.Core {
         public delegate void ReadInfoDelegate(LongPoll longPoll, long peerId, int messageId, int count);
         public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, long peerId, long extra);
         public delegate void ActivityStatusDelegate(LongPoll longPoll, long peerId, List<LongPollActivityInfo> infos);
+        public delegate void ReactionsChangedDelegate(LongPoll longPoll, long peerId, int cmId, LongPollReactionEventType type, int myReactionId, List<MessageReaction> reactions);
+        public delegate void UnreadReactionsChangedDelegate(LongPoll longPoll, long peerId, List<int> cmIds);
 
         public event MessageFlagsDelegate MessageFlagSet; // 10002
         public event MessageFlagsDelegate MessageFlagRemove; // 10003
@@ -87,6 +92,8 @@ namespace ELOR.Laney.Core {
         public event EventHandler<int> UnreadCounterUpdated; // 80
         public event EventHandler<LongPollPushNotificationData> NotificationsSettingsChanged; // 114
         public event EventHandler<LongPollCallbackResponse> CallbackReceived; // 119
+        public event ReactionsChangedDelegate ReactionsChanged; // 601
+        public event UnreadReactionsChangedDelegate UnreadReactionsChanged; // 602
 
         public event EventHandler<LongPollState> StateChanged;
 
@@ -322,12 +329,69 @@ namespace ELOR.Laney.Core {
                         Log.Information($"EVENT {eventId}: peer={cbData.PeerId}, owner={cbData.OwnerId}, event={cbData.EventId} action={cbData.Action?.Type}");
                         CallbackReceived?.Invoke(this, cbData);
                         break;
+                    case 601:
+                        ParseReactionsAndInvoke(u.Select(n => n.Deserialize<long>()).ToArray());
+                        break;
+                    case 602:
+                        ParseUnreadReactionsAndInvoke(u.Select(n => n.Deserialize<int>()).ToArray());
+                        break;
                 }
             }
 
             if (MessagesFromAPI.Count > 0) {
                 GetMessagesFromAPI(MessagesFromAPI, MessagesFromAPIFlags);
             }
+        }
+
+        private void ParseReactionsAndInvoke(long[] u) {
+            LongPollReactionEventType type = (LongPollReactionEventType)u[1];
+            long myReaction = 0;
+            long peerId = u[2];
+            long cmId = u[3];
+
+            int pos = 4;
+            if (type == LongPollReactionEventType.IAdded) {
+                myReaction = u[4];
+                pos = 5;
+            }
+
+            bool changedByMe = type == LongPollReactionEventType.IAdded || type == LongPollReactionEventType.IRemoved;
+            long i3 = u[pos];
+            long i4 = pos + 1;
+            List<MessageReaction> reactions = new List<MessageReaction>();
+
+            for (long i = 0; i < i3; i++) {
+                Tuple<long, MessageReaction> b = ParseReactions(u, i4);
+                i4 = b.Item1;
+                reactions.Add(b.Item2);
+            }
+            ReactionsChanged?.Invoke(this, peerId, Convert.ToInt32(cmId), type, Convert.ToInt32(myReaction), reactions);
+        }
+
+        private Tuple<long, MessageReaction> ParseReactions(long[] u, long start) {
+            long i2 = u[start];
+            long i3 = start + 1;
+            long reactionId = u[start + 1];
+            long count = u[start + 2];
+            long end = u[start + 3];
+
+            List<long> members = new List<long>();
+            for (int j = 0; j < end; j++) {
+                members.Add(u[start + 4 + j]);
+            }
+            return new Tuple<long, MessageReaction>(i3 + i2, new MessageReaction {
+                ReactionId = Convert.ToInt32(reactionId),
+                Count = Convert.ToInt32(count), 
+                UserIds = members
+            });
+        }
+
+        private void ParseUnreadReactionsAndInvoke(int[] u) {
+            int peerId = u[1];
+            int cmidsCount = u[2];
+            List<int> cmIds = new List<int>();
+            if (cmidsCount > 0) cmIds = u.Skip(3).ToList();
+            UnreadReactionsChanged?.Invoke(this, peerId, cmIds);
         }
 
         private void CheckMentions(JsonNode additional, int messageId, long peerId) {
