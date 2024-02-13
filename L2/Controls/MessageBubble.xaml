@@ -149,7 +149,9 @@
                       </Classes.Selected>
                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image Width="26" Height="26" controls:ImageLoader.SvgSource="{Binding ReactionId, Converter={StaticResource rec}}"/>
-                        <TextBlock FontSize="13" LineHeight="16" Margin="4,5,2,5" FontWeight="Medium" Text="{Binding Count}"/>
+                        <Grid MinWidth="16" Height="22">
+                          <TextBlock FontSize="13" LineHeight="16" Margin="4,3,2,3" TextAlignment="Center" FontWeight="Medium" Text="{Binding Count}"/>
+                        </Grid>
                       </StackPanel>
                     </Button>
                   </DataTemplate>

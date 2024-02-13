@@ -545,6 +545,19 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<bool>("messages.markAsUnreadConversation", parameters);
         }
 
+        /// <summary>Marks reactions as read.</summary>
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        /// <param name="peerId">Destination ID.</param>
+        /// <param name="cmIds">List of IDs of messages with reactions in conversation to mark as read.</param>
+        public async Task<bool> MarkReactionsAsReadAsync(long groupId, long peerId, List<int> cmIds) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            parameters.Add("peer_id", peerId.ToString());
+            parameters.Add("cmids", cmIds.Combine());
+
+            return await API.CallMethodAsync<int>("messages.markReactionsAsRead", parameters) == 1;
+        }
+
         /// <summary>Pins a message.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Destination ID.</param>

@@ -386,6 +386,7 @@ namespace ELOR.Laney.Views {
 
         private void MarkReadTimer_Tick(object sender, EventArgs e) {
             TryMarkAsRead(LastVisible);
+            if (Chat.UnreadReactions != null) TryMarkReactionsAsRead();
         }
 
         bool isMarking = false;
@@ -398,9 +399,31 @@ namespace ELOR.Laney.Views {
                 bool result = await session.API.Messages.MarkAsReadAsync(session.GroupId, Chat.PeerId, msg.ConversationMessageId);
                 await Task.Delay(1000);
             } catch (Exception ex) {
-                Log.Error(ex, $"Unable to mark message (cmid {msg.ConversationMessageId}) as read!");
+                Log.Error(ex, $"Unable to mark message (peer: {msg.PeerId}; cmid: {msg.ConversationMessageId}) as read!");
             } finally {
                 isMarking = false;
+            }
+        }
+
+        bool isMarking2 = false;
+        private async void TryMarkReactionsAsRead() {
+            if (isMarking2 || FirstVisible == null || LastVisible == null) return;
+            var fid = FirstVisible.ConversationMessageId;
+            var lid = LastVisible.ConversationMessageId;
+            var visibleMessages = Chat.DisplayedMessages.Select(m => m.ConversationMessageId)
+                .Where(id => id >= fid && id <= lid && Chat.UnreadReactions.Contains(id)).ToList();
+            if (visibleMessages == null || visibleMessages.Count == 0) return;
+
+            isMarking2 = true;
+            try {
+                Log.Information($"About to mark reactions in messages (cmids {String.Join(',', visibleMessages)}) as read...");
+                var session = VKSession.GetByDataContext(this);
+                bool result = await session.API.Messages.MarkReactionsAsReadAsync(session.GroupId, Chat.PeerId, visibleMessages);
+                await Task.Delay(1000);
+            } catch (Exception ex) {
+                Log.Error(ex, $"Unable to mark reactions in messages (cmids {String.Join(',', visibleMessages)}) as read!");
+            } finally {
+                isMarking2 = false;
             }
         }
 
