@@ -49,21 +49,22 @@ namespace ELOR.Laney.Helpers {
             return result;
         }
 
-        public static async Task<bool> ShowErrorDialogAsync(Window owner, Tuple<string, string> errorInfo, bool hideRetry = false) {
+        public static async Task<bool> ShowErrorDialogAsync(Window owner, Tuple<string, string> errorInfo, bool hideRetry = false, string additional = null) {
             string[] buttons = hideRetry 
                 ? new string[] { Localizer.Instance["close"] } 
-                : new string[] { Localizer.Instance["retry"], Localizer.Instance["close"] };
+                : [Localizer.Instance["retry"], Localizer.Instance["close"]];
 
-            VKUIDialog alert = new VKUIDialog(errorInfo.Item1, errorInfo.Item2, buttons, 1);
+            string message = String.IsNullOrEmpty(additional) ? errorInfo.Item2 : $"{additional}\n\n{errorInfo.Item2}";
+            VKUIDialog alert = new VKUIDialog(errorInfo.Item1, message, buttons, 1);
             int result = await alert.ShowDialog<int>(owner);
             return !hideRetry && result == 1;
         }
 
-        public static async Task<bool> ShowErrorDialogAsync(Window owner, Exception ex, bool hideRetry = false) {
+        public static async Task<bool> ShowErrorDialogAsync(Window owner, Exception ex, bool hideRetry = false, string additional = null) {
             if (ex is AggregateException agex) ex = agex.InnerException;
             if (ex is APIException apiex && apiex.Code == 14) return true;
             Tuple<string, string> err = GetDefaultErrorInfo(ex);
-            return await ShowErrorDialogAsync(owner, err, hideRetry);
+            return await ShowErrorDialogAsync(owner, err, hideRetry, additional);
         }
 
         public static async void ShowNotImplementedDialogAsync(Window owner) {

@@ -132,7 +132,7 @@
             </Border>
             <controls:BotKeyboardUI x:Name="BotKeyboard" Grid.Row="1" Margin="12,4,12,12" MinWidth="296" Keyboard="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
             <Border x:Name="ReactionsContainer" Grid.Row="2" Margin="12,0,12,8" HorizontalAlignment="Left" Tag="{Binding Message.SelectedReactionId, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Reactions.Count, RelativeSource={RelativeSource TemplatedParent}}">
-              <ItemsControl HorizontalAlignment="Left" ItemsSource="{Binding Message.Reactions, RelativeSource={RelativeSource TemplatedParent}}">
+              <ItemsControl x:Name="ReactionsList" HorizontalAlignment="Left" ItemsSource="{Binding Message.Reactions, RelativeSource={RelativeSource TemplatedParent}}">
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>
                     <WrapPanel HorizontalAlignment="Left" Margin="0,-2" Orientation="Horizontal"/>
@@ -140,7 +140,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                   <DataTemplate x:DataType="obj:MessageReaction">
-                    <Button Classes="ReactionChip" CornerRadius="15" Margin="0,2,4,2" Padding="4,2,6,2" Height="30">
+                    <Button Classes="ReactionChip" CornerRadius="15" Margin="0,2,4,2" Padding="4,2,6,2" Height="30" Command="{Binding Tag, ElementName=ReactionsList}" CommandParameter="{Binding ReactionId}">
                       <Classes.Selected>
                         <MultiBinding Converter="{StaticResource src}">
                           <Binding Path="Tag" ElementName="ReactionsContainer"/>

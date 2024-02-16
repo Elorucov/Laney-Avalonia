@@ -23,6 +23,7 @@ namespace VKUI.Popups {
         }
 
         public bool CloseAfterClick { get; set; } = true;
+        public Control Above { get; set; }
 
         StackPanel itemsPanel;
         private List<Button> itemsButtons = new List<Button>();
@@ -43,6 +44,7 @@ namespace VKUI.Popups {
             }
 
             VKUIFlyoutPresenter presenter = new VKUIFlyoutPresenter {
+                Above = Above,
                 Content = itemsPanel
             };
             presenter.Classes.Add("ActionSheet");

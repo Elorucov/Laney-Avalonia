@@ -4,6 +4,9 @@
   <Design.PreviewWith>
     <Border Width="384" Height="384">
       <controls:VKUIFlyoutPresenter Classes="ActionSheet">
+        <controls:VKUIFlyoutPresenter.Above>
+          <Border Width="384" Height="32" Background="#7f7f7f"/>
+        </controls:VKUIFlyoutPresenter.Above>
         <StackPanel Margin="0,4">
           <controls:ActionSheetItem Header="Avatar">
             <controls:ActionSheetItem.Before>
@@ -34,9 +37,12 @@
   <ControlTheme x:Key="{x:Type controls:VKUIFlyoutPresenter}" TargetType="controls:VKUIFlyoutPresenter">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border x:Name="FlyoutPresenterRoot" Cursor="Arrow" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
-          <ContentPresenter Content="{TemplateBinding Content}"/>
-        </Border>
+        <StackPanel>
+          <ContentPresenter x:Name="AboveContentRoot" HorizontalAlignment="Left" Content="{TemplateBinding Above}"/>
+          <Border x:Name="FlyoutPresenterRoot" HorizontalAlignment="Left" Cursor="Arrow" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
+            <ContentPresenter Content="{TemplateBinding Content}"/>
+          </Border>
+        </StackPanel>
       </ControlTemplate>
     </Setter>
 

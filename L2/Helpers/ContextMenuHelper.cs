@@ -12,6 +12,7 @@ using System.Linq;
 using System;
 using ELOR.Laney.Views.Modals;
 using Avalonia.Controls.Notifications;
+using Avalonia.Media;
 
 namespace ELOR.Laney.Helpers {
     public class ContextMenuHelper {
@@ -284,7 +285,12 @@ namespace ELOR.Laney.Helpers {
                 if (message.SenderId != session.Id) ash.Items.Add(spam);
                 ash.Items.Add(delete);
             }
-            if (ash.Items.Count > 0) ash.ShowAt(target, true);
+            if (ash.Items.Count > 0) {
+                ash.Above = new ReactionsPicker(message.PeerId, message.ConversationMessageId, message.SelectedReactionId, target, ash) {
+                    Margin = new Avalonia.Thickness(0, 0, 0, 4)
+                };
+                ash.ShowAt(target, true);
+            }
         }
 
         public static void ShowForMultipleMessages(List<MessageViewModel> messages, ChatViewModel chat, Control target) {

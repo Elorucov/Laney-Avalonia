@@ -1,6 +1,7 @@
 ﻿using ELOR.VKAPILib.Attributes;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;
+using System;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
@@ -171,6 +172,18 @@ namespace ELOR.VKAPILib.Methods {
                 { "peer_id", peerId.ToString() }
             };
             return await API.CallMethodAsync<DeleteConversationResponse>("messages.deleteConversation", parameters);
+        }
+
+        /// <summary>Delete a reaction from message.</summary>
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        /// <param name="cmId">ID of message in conv.</param>
+        /// <param name="reactionId">Reaction ID.</param>
+        public async Task<bool> DeleteReactionAsync(long groupId, long peerId, int cmId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            parameters.Add("peer_id", peerId.ToString());
+            parameters.Add("cmid", cmId.ToString());
+            return await API.CallMethodAsync<int>("messages.deleteReaction", parameters) == 1;
         }
 
         /// <remarks>This method is undocumented!</remarks>
@@ -662,6 +675,19 @@ namespace ELOR.VKAPILib.Methods {
             if (dontParseLinks) parameters.Add("dont_parse_links", "1");
             if (disableMentions) parameters.Add("disable_mentions", "1");
             return await API.CallMethodAsync<MessageSendResponse>("messages.send", parameters);
+        }
+
+        /// <summary>Sends a reaction to message.</summary>
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        /// <param name="cmId">ID of message in conv.</param>
+        /// <param name="reactionId">Reaction ID.</param>
+        public async Task<bool> SendReactionAsync(long groupId, long peerId, int cmId, int reactionId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            parameters.Add("peer_id", peerId.ToString());
+            parameters.Add("cmid", cmId.ToString());
+            parameters.Add("reaction_id", reactionId.ToString());
+            return await API.CallMethodAsync<int>("messages.sendReaction", parameters) == 1;
         }
 
         /// <remarks>This method is undocumented!</remarks>

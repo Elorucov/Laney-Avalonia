@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mdl="using:ELOR.Laney.DataModels"
+             xmlns:controls="using:ELOR.Laney.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ELOR.Laney.ReactionsPicker">
+  <Border MinHeight="40" MaxHeight="140" CornerRadius="20" Background="{DynamicResource VKBackgroundContentBrush}" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" BoxShadow="{StaticResource VKElevation3}">
+    <ScrollViewer>
+      <ItemsControl x:Name="ReactionsList" Margin="4,2" MaxWidth="308">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="mdl:Entity">
+            <Button Classes="Tertiary" Loaded="Button_Loaded" Width="40" Height="40" Margin="2,0" Padding="0" CornerRadius="20" Command="{Binding Item5.Action}" CommandParameter="{Binding Item1}">
+              <Image controls:ImageLoader.SvgSource="{Binding Item2}" Width="36" Height="36"/>
+            </Button>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </Border>
+</UserControl>
