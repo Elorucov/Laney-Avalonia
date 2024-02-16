@@ -677,8 +677,18 @@ namespace ELOR.Laney.Core {
             session.Init();
             session.Window.Show();
 
-            await Task.Delay(1000); // чтобы метод api не выполнялся одновременно с другими и не поймать ошибку 6.
+            Settings.SettingChanged += Settings_SettingChanged;
+
+            await Task.Delay(2000); // чтобы метод api не выполнялся одновременно с другими и не поймать ошибку 6.
             StickersManager.InitKeywords();
+        }
+
+        private static void Settings_SettingChanged(string key, object value) {
+            switch (key) {
+                case Settings.STICKERS_SUGGEST:
+                    StickersManager.InitKeywords();
+                    break;
+            }
         }
 
         public static void StartDemoSession(DemoModeSession mainSession) {
