@@ -66,7 +66,7 @@ namespace ELOR.Laney.Core {
                 Placement = PlacementMode.BottomEdgeAlignedLeft
             };
 
-            foreach (var session in VKSession.Sessions) {
+            foreach (var session in Sessions) {
                 if (session.Id == Id) continue;
                 Avatar ava = new Avatar {
                     Initials = session.Name.GetInitials(session.IsGroup),

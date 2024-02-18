@@ -56,6 +56,7 @@ namespace ELOR.Laney.ViewModels {
         private ObservableCollection<Command> _messagesCommands = new ObservableCollection<Command>();
         private RelayCommand _openProfileCommand;
         private RelayCommand _goToLastMessageCommand;
+        private RelayCommand _goToLastReactedMessageCommand;
 
         public PeerType PeerType { get { return _peerType; } private set { _peerType = value; OnPropertyChanged(); } }
         public long PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -92,6 +93,7 @@ namespace ELOR.Laney.ViewModels {
         public ObservableCollection<Command> MessagesCommands { get { return _messagesCommands; } private set { _messagesCommands = value; OnPropertyChanged(); } }
         public RelayCommand OpenProfileCommand { get { return _openProfileCommand; } private set { _openProfileCommand = value; OnPropertyChanged(); } }
         public RelayCommand GoToLastMessageCommand { get { return _goToLastMessageCommand; } private set { _goToLastMessageCommand = value; OnPropertyChanged(); } }
+        public RelayCommand GoToLastReactedMessageCommand { get { return _goToLastReactedMessageCommand; } private set { _goToLastReactedMessageCommand = value; OnPropertyChanged(); } }
 
 
         public SelectionModel<MessageViewModel> SelectedMessages { get; } = new SelectionModel<MessageViewModel> { 
@@ -262,6 +264,7 @@ namespace ELOR.Laney.ViewModels {
             } else {
                 OpenProfileCommand = new RelayCommand(OpenPeerProfile);
                 GoToLastMessageCommand = new RelayCommand(GoToLastMessage);
+                GoToLastReactedMessageCommand = new RelayCommand(GoToLastReactedMessage);
             }
 
             UpdateRestrictionInfo();
@@ -389,6 +392,11 @@ namespace ELOR.Laney.ViewModels {
                     LoadPreviousMessages();
                 }
             }
+        }
+
+        private void GoToLastReactedMessage(object obj) {
+            if (IsLoading) return;
+            if (UnreadReactions != null && UnreadReactions.Count > 0) GoToMessage(UnreadReactions.LastOrDefault());
         }
 
         private void PrevMessagesLoaded(object sender, bool next) {

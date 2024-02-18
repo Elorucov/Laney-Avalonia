@@ -15,7 +15,7 @@
              x:DataType="vm:ChatViewModel" x:CompileBindings="True">
   <UserControl.Styles>
     <Style Selector="Button.OnChat">
-      <Setter Property="Margin" Value="24"/>
+      <Setter Property="Margin" Value="12"/>
       <Setter Property="Padding" Value="0"/>
       <Setter Property="Width" Value="40"/>
       <Setter Property="Height" Value="40"/>
@@ -141,16 +141,28 @@
     <Border x:Name="TopDateContainer" IsVisible="False" IsHitTestVisible="False" Background="{DynamicResource VKModalCardBackgroundBrush}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="8" Padding="12,4" CornerRadius="8" BoxShadow="0 4 8 #0A000000, 0 0 4 #0F000000">
       <TextBlock x:Name="TopDate" Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}"/>
     </Border>
-    
-    <Grid x:Name="HopNavContainer" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Border Width="40" Height="40" CornerRadius="20" Margin="24" BoxShadow="0 0 2 #15000000, 0 8 24 #15000000"/>
-      <Button Classes="OnChat" Command="{Binding GoToLastMessageCommand}">
-        <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20Dropdown}" Margin="0,4,0,0"/>
-      </Button>
-      <Border x:Name="UnreadMessagesCounterBadge" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" IsVisible="{Binding !!UnreadMessagesCount}" MinWidth="18" Height="18" CornerRadius="9" Margin="18" IsHitTestVisible="False" HorizontalAlignment="Right" VerticalAlignment="Top">
-        <TextBlock FontSize="12" LineHeight="12" Margin="4,2,4,0" TextAlignment="Center" Text="{Binding UnreadMessagesCount}"/>
-      </Border>
-    </Grid>
+
+    <StackPanel x:Name="OnChatButtons" Grid.Row="2" Margin="12" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+      <Grid x:Name="ReactionNavContainer" IsVisible="{Binding UnreadReactions, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <Border Width="40" Height="40" CornerRadius="20" Margin="12" BoxShadow="0 0 2 #15000000, 0 8 24 #15000000"/>
+        <Button Classes="OnChat" Command="{Binding GoToLastReactedMessageCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20Stars}" Margin="0,4,0,0"/>
+        </Button>
+        <Border x:Name="UnreadReactionsCounterBadge" Classes="Unmuted" MinWidth="18" Height="18" CornerRadius="9" Margin="9" IsHitTestVisible="False" HorizontalAlignment="Right" VerticalAlignment="Top">
+          <TextBlock FontSize="12" LineHeight="12" Margin="4,2,4,0" TextAlignment="Center" Text="{Binding UnreadReactions.Count}"/>
+        </Border>
+      </Grid>
+      
+      <Grid x:Name="HopNavContainer">
+        <Border Width="40" Height="40" CornerRadius="20" Margin="12" BoxShadow="0 0 2 #15000000, 0 8 24 #15000000"/>
+        <Button Classes="OnChat" Command="{Binding GoToLastMessageCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20Dropdown}" Margin="0,4,0,0"/>
+        </Button>
+        <Border x:Name="UnreadMessagesCounterBadge" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" IsVisible="{Binding !!UnreadMessagesCount}" MinWidth="18" Height="18" CornerRadius="9" Margin="9" IsHitTestVisible="False" HorizontalAlignment="Right" VerticalAlignment="Top">
+          <TextBlock FontSize="12" LineHeight="12" Margin="4,2,4,0" TextAlignment="Center" Text="{Binding UnreadMessagesCount}"/>
+        </Border>
+      </Grid>
+    </StackPanel>
 
     <Border x:Name="SuggestedStickersContainer" Grid.Row="2" IsVisible="{Binding !!Composer.SuggestedStickers, Mode=OneWay}" Height="72" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12" CornerRadius="12" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="{StaticResource VKElevation3}">
       <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
