@@ -5,6 +5,8 @@ using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.Execute.Objects {
 
+    [JsonSerializable(typeof(int))]
+    [JsonSerializable(typeof(long))]
     [JsonSerializable(typeof(AlbumLite))]
     [JsonSerializable(typeof(List<AlbumLite>))]
     [JsonSerializable(typeof(StartSessionResponse))]

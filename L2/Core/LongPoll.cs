@@ -330,10 +330,10 @@ namespace ELOR.Laney.Core {
                         CallbackReceived?.Invoke(this, cbData);
                         break;
                     case 601:
-                        ParseReactionsAndInvoke(u.Select(n => n.Deserialize<long>()).ToArray());
+                        ParseReactionsAndInvoke(u.Select(n => (long)n.Deserialize(typeof(long), L2JsonSerializerContext.Default)).ToArray());
                         break;
                     case 602:
-                        ParseUnreadReactionsAndInvoke(u.Select(n => n.Deserialize<int>()).ToArray());
+                        ParseUnreadReactionsAndInvoke(u.Select(n => (int)n.Deserialize(typeof(int), L2JsonSerializerContext.Default)).ToArray());
                         break;
                 }
             }
