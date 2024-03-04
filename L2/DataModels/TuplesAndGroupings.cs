@@ -13,6 +13,10 @@ namespace ELOR.Laney.DataModels {
         public Entity(long item1, Uri item2, string item3, string item4, Command item5) : base(item1, item2, item3, item4, item5) {}
     }
 
+    public class ReactionGroup : Tuple<int, int, List<Entity>> {
+        public ReactionGroup(int item1, int item2, List<Entity> item3) : base(item1, item2, item3) { }
+    }
+
     public class Grouping<TKey, TElement> : IGrouping<TKey, TElement> {
         readonly List<TElement> elements;
 

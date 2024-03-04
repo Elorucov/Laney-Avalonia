@@ -35,6 +35,14 @@ namespace ELOR.VKAPILib.Objects {
         public List<long> UserIds { get; set; }
     }
 
+    public class ReactedMember {
+        [JsonPropertyName("reaction_id")]
+        public int ReactionId { get; set; }
+
+        [JsonPropertyName("user_id")]
+        public long UserId { get; set; }
+    }
+
     public class GeoCoordinates {
         public GeoCoordinates() { }
 

@@ -141,9 +141,18 @@ namespace ELOR.Laney.Helpers {
             if (chat.PeerId != message.PeerId) return;
             ActionSheet ash = new ActionSheet();
 
+            int totalReactions = 0;
+            if (message.Reactions != null) foreach (var reaction in message.Reactions) {
+                totalReactions += reaction.Count;
+            }
+
             ActionSheetItem debug = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
                 Header = $"ID: {message.Id}, CMID: {message.ConversationMessageId}"
+            };
+            ActionSheetItem reactions = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20Stars },
+                Header = Localizer.Instance.GetDeclensionFormatted(totalReactions, "reactions")
             };
             ActionSheetItem reply = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ReplyOutline },
@@ -215,9 +224,19 @@ namespace ELOR.Laney.Helpers {
             bool canDeleteForAll = message.SenderId == session.Id && message.PeerId != message.SenderId
                 && message.SentTime > DateTime.Now.AddDays(-1);
 
+            bool isCall = message.Attachments.Any(a => a.Type == AttachmentType.Call || a.Type == AttachmentType.GroupCallInProgress);
+            bool canShowContextMenu = message.Action == null && !message.IsExpired && !isCall;
+            bool canSendReaction = canShowContextMenu && message.UIType != MessageUIType.Gift;
+            if (chat.ChatSettings?.ACL.CanSendReactions == false) canSendReaction = false;
+
             // Actions
 
-            reply.Click += (a, b) => chat.Composer.AddReply(message);
+
+
+            reactions.Click += async (a, b) => {
+                ReactedMembers rmw = new ReactedMembers(session, message.PeerId, message.ConversationMessageId);
+                await rmw.ShowDialog(session.ModalWindow);
+            };
 
             repriv.Click += (a, b) => {
                 session.GoToChat(message.SenderId);
@@ -271,8 +290,9 @@ namespace ELOR.Laney.Helpers {
             // ¯\_(ツ)_/¯
 
             if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
-            if (message.Action == null && !message.IsExpired) {
+            if (canShowContextMenu) {
                 if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
+                if (totalReactions > 0) ash.Items.Add(reactions);
                 if (chat.CanWrite.Allowed) ash.Items.Add(reply);
                 if (canReplyPrivately && chat.PeerType == PeerType.Chat) ash.Items.Add(repriv);
                 ash.Items.Add(forward);
@@ -286,9 +306,7 @@ namespace ELOR.Laney.Helpers {
                 ash.Items.Add(delete);
             }
             if (ash.Items.Count > 0) {
-                ash.Above = new ReactionsPicker(message.PeerId, message.ConversationMessageId, message.SelectedReactionId, target, ash) {
-                    Margin = new Avalonia.Thickness(0, 0, 0, 4)
-                };
+                if (canSendReaction) ash.Above = new ReactionsPicker(message.PeerId, message.ConversationMessageId, message.SelectedReactionId, target, ash);
                 ash.ShowAt(target, true);
             }
         }

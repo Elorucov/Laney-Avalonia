@@ -20,7 +20,7 @@ namespace ELOR.Laney.Core {
         private static Dictionary<long, User> CachedUsers = new Dictionary<long, User>();
         private static Dictionary<long, Group> CachedGroups = new Dictionary<long, Group>();
         private static Dictionary<long, List<ChatViewModel>> CachedChats = new Dictionary<long, List<ChatViewModel>>();
-        
+
         public static void Add(IEnumerable<User> users) {
             if (users == null) return;
             foreach (User user in users) {
@@ -132,6 +132,11 @@ namespace ELOR.Laney.Core {
             foreach (var a in assets) {
                 ReactionsAssets.TryAdd(a.ReactionId, a.Links);
             }
+        }
+
+        public static string GetStaticReactionUrl(int id) {
+            if (!ReactionsAssets.ContainsKey(id)) return "avares://laney/Assets/placeholder.svg";
+            return ReactionsAssets[id].Static;
         }
 
         public static async Task<string> GetStaticReactionImageAsync(Uri uri) {

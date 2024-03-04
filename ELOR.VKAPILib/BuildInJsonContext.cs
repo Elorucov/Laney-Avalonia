@@ -49,6 +49,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(PrivacyResponse))]
     [JsonSerializable(typeof(PrivacySettingValue))]
     [JsonSerializable(typeof(QueueSubscribeResponse))]
+    [JsonSerializable(typeof(ReactedPeersList))]
     [JsonSerializable(typeof(ResolveScreenNameResult))]
     [JsonSerializable(typeof(SetChatPhotoResponse))]
     [JsonSerializable(typeof(StickersKeywordsResponse))]

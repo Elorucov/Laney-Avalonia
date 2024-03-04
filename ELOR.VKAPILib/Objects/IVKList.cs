@@ -198,4 +198,23 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
     }
+
+    public class ReactedPeersList : IVKList<ReactedMember> {
+        public ReactedPeersList() { }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("reactions")]
+        public List<ReactedMember> Items { get; set; }
+
+        [JsonPropertyName("counters")]
+        public List<MessageReaction> Counters { get; set; }
+
+        [JsonPropertyName("profiles")]
+        public List<User> Profiles { get; set; }
+
+        [JsonPropertyName("groups")]
+        public List<Group> Groups { get; set; }
+    }
 }

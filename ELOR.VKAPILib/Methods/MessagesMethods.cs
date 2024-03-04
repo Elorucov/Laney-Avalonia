@@ -439,7 +439,7 @@ namespace ELOR.VKAPILib.Methods {
             if (previewLength > 0) parameters.Add("preview_length", previewLength.ToString());
             parameters.Add("events_limit", eventsLimit.ToString());
             parameters.Add("msgs_limit", msgsLimit.ToString());
-            if (maxMsgId > 0) parameters.Add("mmax_msg_id", maxMsgId.ToString());
+            if (maxMsgId > 0) parameters.Add("max_msg_id", maxMsgId.ToString());
             parameters.Add("credentials", "1");
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             return await API.CallMethodAsync<LongPollHistoryResponse>("messages.getLongPollHistory", parameters);
@@ -454,6 +454,21 @@ namespace ELOR.VKAPILib.Methods {
             if (needPts) parameters.Add("need_pts", "1");
             parameters.Add("lp_version", version.ToString());
             return await API.CallMethodAsync<LongPollServerInfo>("messages.getLongPollServer", parameters);
+        }
+
+        /// <summary>Returns reacted members.</summary>
+        /// <param name="peerId">Peer ID.</param>
+        /// <param name="cmid">Conversation message ID.</param>
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        public async Task<ReactedPeersList> GetReactedPeersAsync(long groupId, long peerId, int cmid) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "peer_id", peerId.ToString() },
+                { "cmid", cmid.ToString() },
+                { "extended", "1" },
+                { "fields", "photo_100,photo_50" }
+            };
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            return await API.CallMethodAsync<ReactedPeersList>("messages.getReactedPeers", parameters);
         }
 
         /// <summary>Returns a list of recently used graffities.</summary>

@@ -6,7 +6,7 @@
              xmlns:controls="using:ELOR.Laney.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ELOR.Laney.ReactionsPicker">
-  <Border MinHeight="40" MaxHeight="140" CornerRadius="20" Background="{DynamicResource VKBackgroundContentBrush}" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" BoxShadow="{StaticResource VKElevation3}">
+  <Border MinHeight="40" MaxHeight="140" CornerRadius="20" Background="{DynamicResource VKBackgroundContentBrush}" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,6" VerticalAlignment="Center">
     <ScrollViewer>
       <ItemsControl x:Name="ReactionsList" Margin="4,2" MaxWidth="308">
         <ItemsControl.ItemsPanel>

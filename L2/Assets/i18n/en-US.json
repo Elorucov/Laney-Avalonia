@@ -399,6 +399,10 @@
   "msg_search_chat": "Search in chat \"{0}\"",
   "in_chat": "in chat \"{0}\"",
 
+  "reactions_nom": "{0} reaction",
+  "reactions_gen": "{0} reactions",
+  "reactions_plu": "{0} reactions",
+
   "group_management_desc": "Add Laney to your groups to stay in touch with their members and receive notifications when new messages arrive.",
 
   "templates": "Templates",

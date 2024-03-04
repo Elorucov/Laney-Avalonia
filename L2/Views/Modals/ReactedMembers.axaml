@@ -1,0 +1,54 @@
+<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:vkw="using:VKUI.Windows"
+        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:vm="using:ELOR.Laney.ViewModels"
+        xmlns:vmm="using:ELOR.Laney.ViewModels.Modals"
+        xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
+        xmlns:dm="using:ELOR.Laney.DataModels"
+        mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="576"
+        Width="360" Height="540"
+        x:Class="ELOR.Laney.ReactedMembers"
+        Title="Reacted members">
+
+  <Grid RowDefinitions="Auto Auto *">
+    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="False"/>
+    <TabControl x:Name="Tabs" Classes="Accent" Grid.Row="2">
+      <TabControl.ItemTemplate>
+        <DataTemplate x:DataType="dm:ReactionGroup">
+          <StackPanel Orientation="Horizontal">
+            <ContentPresenter Height="26" Margin="0,0,8,0" DataContextChanged="ContentPresenter_DataContextChanged"/>
+            <TextBlock Text="{Binding Item2}" FontWeight="Regular" VerticalAlignment="Center"/>
+          </StackPanel>
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <TabControl.ContentTemplate>
+        <DataTemplate x:DataType="dm:ReactionGroup">
+          <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Item3}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="dm:Entity">
+                  <Grid Margin="12,6" ColumnDefinitions="Auto * Auto" MinHeight="32" Background="Transparent">
+                    <vkui:Avatar Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Top"
+                                 Initials="{Binding Item3, Converter={StaticResource ic}}"
+                                 Background="{Binding Item1, Converter={StaticResource agc}}"
+                                 controls:ImageLoader.Image="{Binding Item2}"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                      <TextBlock Text="{Binding Item3}" Classes="Default" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+                    </StackPanel>
+                    <Image Grid.Column="2" Width="26" Height="26" VerticalAlignment="Center" DataContextChanged="Image_DataContextChanged"/>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+        </DataTemplate>
+      </TabControl.ContentTemplate>
+    </TabControl>
+    <vkui:Spinner x:Name="LoadingIndicator" Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="3"/>
+  </Grid>
+</vkw:DialogWindow>
