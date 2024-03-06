@@ -110,6 +110,7 @@ namespace ELOR.Laney.Views {
             if (WindowState == WindowState.Maximized) {
                 Settings.Set(Settings.WIN_MAXIMIZED, true);
             } else {
+                if (Position.X <= Width * -1) return; // workaround for strange bug maybe caused by last version of Avalonia
                 Settings.SetBatch(new Dictionary<string, object> {
                     { Settings.WIN_SIZE_W, Width },
                     { Settings.WIN_SIZE_H, Height },
