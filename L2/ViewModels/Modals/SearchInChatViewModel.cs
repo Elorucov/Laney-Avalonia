@@ -21,7 +21,9 @@ namespace ELOR.Laney.ViewModels.Modals {
             this.peerId = peerId;
         }
 
-        public async void DoSearch() {
+        public async void DoSearch(bool clear = false) {
+            if (clear) Messages = null;
+            if (String.IsNullOrEmpty(Query)) return;
             if (IsLoading) return;
             Placeholder = null;
             IsLoading = true;
@@ -46,8 +48,6 @@ namespace ELOR.Laney.ViewModels.Modals {
                         Messages.Add(msg);
                     }
                 }
-
-                
             } catch (Exception ex) {
                 IsLoading = false;
                 if (Messages != null && Messages.Count > 0) {

@@ -44,10 +44,12 @@ namespace ELOR.Laney.ViewModels {
         public void DoSearch() {
             switch (CurrentTab) {
                 case 0:
-                    if (FoundChats == null && !String.IsNullOrEmpty(Query)) SearchChats();
+                    FoundChats?.Clear();
+                    if (!String.IsNullOrEmpty(Query)) SearchChats();
                     break;
                 case 1:
-                    if (FoundMessages == null && !String.IsNullOrEmpty(Query)) SearchMessages();
+                    FoundMessages?.Clear();
+                    if (!String.IsNullOrEmpty(Query)) SearchMessages();
                     break;
             }
         }

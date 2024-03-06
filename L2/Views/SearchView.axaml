@@ -31,7 +31,7 @@
               </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>
           </ScrollViewer>
-          <Grid x:Name="EmptyChatsListContainer" IsVisible="{Binding FoundChats, Mode=OneWay, Converter={x:Static ObjectConverters.IsNull}}">
+          <Grid x:Name="EmptyChatsListContainer" IsVisible="{Binding !FoundChats.Count, Mode=OneWay}">
             <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsChatsLoading, Mode=OneWay}"/>
             <vkui:Placeholder VerticalAlignment="Center"
                                   IsVisible="{Binding ChatsPlaceholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
@@ -56,7 +56,7 @@
               </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>
           </ScrollViewer>
-          <Grid Grid.Row="1" x:Name="EmptyMessagesListContainer" IsVisible="{Binding FoundMessages, Mode=OneWay, Converter={x:Static ObjectConverters.IsNull}}">
+          <Grid Grid.Row="1" x:Name="EmptyMessagesListContainer" IsVisible="{Binding !FoundMessages.Count, Mode=OneWay}">
             <vkui:Spinner HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsMessagesLoading, Mode=OneWay}"/>
             <vkui:Placeholder VerticalAlignment="Center"
                                   IsVisible="{Binding MessagesPlaceholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}"
