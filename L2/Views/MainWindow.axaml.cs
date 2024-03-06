@@ -57,10 +57,20 @@ namespace ELOR.Laney.Views {
             Log.Information($"{nameof(MainWindow)} activated. Launch time: {Program.LaunchTime} ms.");
             Activated -= MainWindow_Activated;
             Closing += MainWindow_Closing;
+            SizeChanged += MainWindow_SizeChanged; // not optimal, but working perfectly
+            PositionChanged += MainWindow_PositionChanged; // not optimal, but working perfectly
             VKSession.GetByDataContext(this).PropertyChanged += SessionPropertyChanged;
             SetSessionNameInWindowTitle(VKSession.GetByDataContext(this).Name);
 
             await LeftNav.NavigationRouter.NavigateToAsync(new ImView());
+        }
+
+        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e) {
+            SaveWindowParameters();
+        }
+
+        private void MainWindow_PositionChanged(object sender, PixelPointEventArgs e) {
+            SaveWindowParameters();
         }
 
         private void SessionPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
