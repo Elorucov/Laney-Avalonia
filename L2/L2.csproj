@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.581</AssemblyVersion>
-    <FileVersion>2.0.581</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.581-win-anycpu-devuser.devpc-240311-0637</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.581-linux-anycpu-devuser.devpc-240311-0637</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.581-macos-anycpu-devuser.devpc-240311-0637</Version>
+    <AssemblyVersion>2.0.582</AssemblyVersion>
+    <FileVersion>2.0.582</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.582-win-anycpu-devuser.devpc-240311-0637</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.582-linux-anycpu-devuser.devpc-240311-0637</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.582-macos-anycpu-devuser.devpc-240311-0637</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -23,8 +23,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.581</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.581</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.582</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.582</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
@@ -93,19 +93,19 @@
     </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.8" />
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.8" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.8" />
+    <PackageReference Include="Avalonia" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.8" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.13" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.8" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.14" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
     <PackageReference Include="DynamicData" Version="8.3.27" />
     <PackageReference Include="ManagedBass" Version="3.1.1" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Svg.Skia" Version="1.0.0.13" />
+    <PackageReference Include="Svg.Skia" Version="1.0.0.14" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />

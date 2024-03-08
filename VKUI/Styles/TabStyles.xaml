@@ -2,15 +2,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <StackPanel>
-          <TabControl>
+          <TabControl Width="360">
             <TabItem Header="Anna"/>
             <TabItem Header="Nastya"/>
             <TabItem Header="Yulia"/>
+            <TabItem Header="Anna2"/>
+            <TabItem Header="Nastya2"/>
+            <TabItem Header="Yulia2"/>
+            <TabItem Header="Anna3"/>
+            <TabItem Header="Nastya3"/>
+            <TabItem Header="Yulia3"/>
           </TabControl>
-          <TabControl Classes="Accent">
+          <TabControl Classes="Accent" Width="360">
             <TabItem Header="Anna"/>
             <TabItem Header="Nastya"/>
             <TabItem Header="Yulia"/>
+            <TabItem Header="Anna2"/>
+            <TabItem Header="Nastya2"/>
+            <TabItem Header="Yulia2"/>
+            <TabItem Header="Anna3"/>
+            <TabItem Header="Nastya3"/>
+            <TabItem Header="Yulia3"/>
           </TabControl>
         </StackPanel>
     </Design.PreviewWith>
@@ -18,7 +30,40 @@
   <Style Selector="TabControl[TabStripPlacement=Top]">
     <Setter Property="Padding" Value="0" />
   </Style>
-  
+
+  <Style Selector="TabControl">
+    <Setter Property="WrapSelection" Value="True"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Background="{TemplateBinding Background}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalAlignment}">
+          <DockPanel>
+            <ScrollViewer DockPanel.Dock="{TemplateBinding TabStripPlacement}">
+              <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" />
+            </ScrollViewer>
+            <ContentPresenter Name="PART_SelectedContentHost"
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Content="{TemplateBinding SelectedContent}"
+                              ContentTemplate="{TemplateBinding SelectedContentTemplate}" />
+          </DockPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <Setter.Value>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
   <Style Selector="TabItem">
     <Setter Property="Padding" Value="12" />
     <Setter Property="BorderThickness" Value="0" />
