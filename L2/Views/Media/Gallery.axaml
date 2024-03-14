@@ -14,7 +14,7 @@
     <vkui:FlipView x:Name="GalleryItems" Grid.RowSpan="4" SelectionChanged="GalleryItems_SelectionChanged">
       <vkui:FlipView.ItemTemplate>
         <DataTemplate>
-          <paz:ZoomBorder>
+          <paz:ZoomBorder HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinZoomX="1" MaxZoomX="2" MinZoomY="1" MaxZoomY="2" Loaded="ZoomBorder_Loaded" PropertyChanged="ZoomBorder_PropertyChanged">
             <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" DataContextChanged="ImageDataContextChanged"/>
           </paz:ZoomBorder>
         </DataTemplate>
@@ -40,5 +40,9 @@
         <TextBlock x:Name="Date" Classes="Subhead" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}" FontWeight="Medium"/>
       </StackPanel>
     </Grid>
+  
+    <Border x:Name="dbg" Classes="Debug" Background="#7f000000" MinWidth="180" Grid.RowSpan="4" VerticalAlignment="Top" HorizontalAlignment="Left">
+      <TextBlock x:Name="dbgt" Foreground="Yellow"/>
+    </Border>
   </Grid>
 </Window>
