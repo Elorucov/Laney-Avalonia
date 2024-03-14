@@ -14,7 +14,9 @@
     <vkui:FlipView x:Name="GalleryItems" Grid.RowSpan="4" SelectionChanged="GalleryItems_SelectionChanged">
       <vkui:FlipView.ItemTemplate>
         <DataTemplate>
-          <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" DataContextChanged="ImageDataContextChanged"/>
+          <paz:ZoomBorder>
+            <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" DataContextChanged="ImageDataContextChanged"/>
+          </paz:ZoomBorder>
         </DataTemplate>
       </vkui:FlipView.ItemTemplate>
     </vkui:FlipView>

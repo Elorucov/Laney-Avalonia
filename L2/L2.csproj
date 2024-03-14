@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.584</AssemblyVersion>
-    <FileVersion>2.0.584</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.584-win-anycpu-devuser.devpc-240312-1503</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.584-linux-anycpu-devuser.devpc-240312-1503</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.584-macos-anycpu-devuser.devpc-240312-1503</Version>
+    <AssemblyVersion>2.0.585</AssemblyVersion>
+    <FileVersion>2.0.585</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.585-win-anycpu-devuser.devpc-240312-1503</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.585-linux-anycpu-devuser.devpc-240312-1503</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.585-macos-anycpu-devuser.devpc-240312-1503</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -28,8 +28,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.584</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.584</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.585</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.585</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
@@ -100,6 +100,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.10" />
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.0.0.3" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
