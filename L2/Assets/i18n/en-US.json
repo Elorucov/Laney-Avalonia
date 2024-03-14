@@ -403,6 +403,11 @@
   "reactions_gen": "{0} reactions",
   "reactions_plu": "{0} reactions",
 
+  "chat_clear_modal_title": "Delete all messages",
+  "chat_clear_modal_text": "Are you sure you want to delete all messages in this chat? This can't be undone",
+  "chat_leave_modal_title": "Leave chat?",
+  "chat_leave_modal_text": "If you leave, you won't receive any new messages from this chat. You can only return if there is enough room.",
+
   "group_management_desc": "Add Laney to your groups to stay in touch with their members and receive notifications when new messages arrive.",
 
   "templates": "Templates",

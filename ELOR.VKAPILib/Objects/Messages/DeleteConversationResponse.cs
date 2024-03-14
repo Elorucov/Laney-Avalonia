@@ -6,5 +6,8 @@ namespace ELOR.VKAPILib.Objects.Messages {
         
         [JsonPropertyName("last_deleted_id")]
         public int LastDeletedId { get; set; }
+
+        [JsonPropertyName("last_deleted_cmid")]
+        public int LastDeletedCMId { get; set; }
     }
 }

@@ -13,8 +13,12 @@ using System;
 using ELOR.Laney.Views.Modals;
 using Avalonia.Controls.Notifications;
 using Avalonia.Media;
+using Svg;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ELOR.Laney.Helpers {
+
+    // Кроме контекстного меню, тут будут функции, которые могут юзаться в разных конт. меню.
     public class ContextMenuHelper {
         #region For chat
 
@@ -102,9 +106,9 @@ namespace ELOR.Laney.Helpers {
                 }
             };
 
-            clear.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
-            leave.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
-            creturn.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+            clear.Click += (a, b) => TryClearChat(session, chat.PeerId);
+            leave.Click += (a, b) => TryLeaveChat(session, chat.PeerId);
+            creturn.Click += (a, b) => ReturnToChat(session, chat.PeerId);
             gdeny.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
 
             // ¯\_(ツ)_/¯
@@ -130,6 +134,39 @@ namespace ELOR.Laney.Helpers {
             if (chat.PeerId != session.Id) ash.Items.Add(clear);
 
             if (ash.Items.Count > 0) ash.ShowAt(target, true);
+        }
+
+        public static async void TryClearChat(VKSession session, long peerId, System.Action onSuccess = null) {
+            VKUIDialog dlg = new VKUIDialog(Localizer.Instance["chat_clear_modal_title"], Localizer.Instance["chat_clear_modal_text"], [Localizer.Instance["yes"], Localizer.Instance["no"]], 2);
+            if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
+                try {
+                    var response = await session.API.Messages.DeleteConversationAsync(session.GroupId, peerId);
+                    onSuccess?.Invoke(); // TODO: Snackbar
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+                }
+            }
+        }
+
+        public static async void TryLeaveChat(VKSession session, long peerId, System.Action onSuccess = null) {
+            VKUIDialog dlg = new VKUIDialog(Localizer.Instance["chat_leave_modal_title"], Localizer.Instance["chat_leave_modal_text"], [Localizer.Instance["yes"], Localizer.Instance["no"]], 2);
+            if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
+                try {
+                    var response = await session.API.Messages.RemoveChatUserAsync(session.GroupId, peerId - 2000000000, session.Id);
+                    onSuccess?.Invoke(); // TODO: Snackbar
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+                }
+            }
+        }
+
+        public static async void ReturnToChat(VKSession session, long peerId, System.Action onSuccess = null) {
+            try {
+                var response = await session.API.Messages.AddChatUserAsync(session.GroupId, peerId - 2000000000, session.Id);
+                onSuccess?.Invoke(); // TODO: Snackbar
+            } catch (Exception ex) {
+                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+            }
         }
 
         #endregion

@@ -60,7 +60,7 @@ if ($IsWindows) {
     $const = "WIN$($chstr)";
     $btagw1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagw1 -p:DefineConstants=$const;
+    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:Version=$btagw1 -p:DefineConstants=$const;
 	echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
 
@@ -68,7 +68,7 @@ if ($IsLinux) {
     $const = "LINUX$($chstr)";
 	$btagl1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagl1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagl1 -p:DefineConstants=$const;
+    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:Version=$btagl1 -p:DefineConstants=$const;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
 
@@ -80,7 +80,7 @@ if ($IsMacOS) {
 
     $btagm1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagm1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:PublishReadyToRun=true -p:DebugType=None -p:DebugSymbols=false -p:Version=$btagm1 -p:DefineConstants=$const;
+    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:Version=$btagm1 -p:DefineConstants=$const;
     
     echo "Creating .app bundle file for macOS...";
 	Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;

@@ -86,6 +86,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         }
 
         private void Setup() {
+            Header = null;
             if (Id.IsChat()) {
                 MemberSearchQuery = null;
                 GetChat(Id);
@@ -245,7 +246,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Clear history
             if (user.MessagesCount > 0) {
-                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
                 moreCommands.Add(clearCmd);
             }
 
@@ -362,7 +363,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Clear history
             if (group.MessagesCount > 0) {
-                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
                 moreCommands.Add(clearCmd);
             }
 
@@ -429,8 +430,10 @@ namespace ELOR.Laney.ViewModels.Modals {
         private void SetupMembers(ChatInfoEx chat) {
             allMembers.Clear();
             DisplayedMembers = null;
-            CacheManager.Add(chat.Members.Profiles);
-            CacheManager.Add(chat.Members.Groups);
+            if (chat.Members == null) return;
+
+            CacheManager.Add(chat.Members?.Profiles);
+            CacheManager.Add(chat.Members?.Groups);
 
             foreach (var member in CollectionsMarshal.AsSpan(chat.Members.Items)) {
                 string name = member.MemberId.ToString();
@@ -559,7 +562,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
 
             // Clear history
-            Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+            Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
             moreCommands.Add(clearCmd);
 
             // Exit or return to chat/channel
@@ -567,7 +570,13 @@ namespace ELOR.Laney.ViewModels.Modals {
                 string exitLabel = Localizer.Instance[chat.IsChannel ? "pp_exit_channel" : "pp_exit_chat"];
                 string returnLabel = Localizer.Instance[chat.IsChannel ? "pp_return_channel" : "pp_return_chat"];
                 string icon = chat.State == UserStateInChat.In ? VKIconNames.Icon20DoorArrowRightOutline : VKIconNames.Icon20DoorEnterArrowRightOutline;
-                Command exitRetCmd = new Command(icon, chat.State == UserStateInChat.In ? exitLabel : returnLabel, true, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command exitRetCmd = new Command(icon, chat.State == UserStateInChat.In ? exitLabel : returnLabel, true, (a) => {
+                    if (chat.State == UserStateInChat.In) {
+                        ContextMenuHelper.TryLeaveChat(session, Id, Setup);
+                    } else {
+                        ContextMenuHelper.ReturnToChat(session, Id, Setup);
+                    }
+                });
                 moreCommands.Add(exitRetCmd);
             }
 

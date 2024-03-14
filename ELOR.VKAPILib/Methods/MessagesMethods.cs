@@ -4,6 +4,7 @@ using ELOR.VKAPILib.Objects.Messages;
 using System;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace ELOR.VKAPILib.Methods {
     public enum ConversationsFilter {
@@ -95,13 +96,15 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="chatId">Chat ID.</param>
         /// <param name="userId">ID of the user to be added to the chat.</param>
         /// <param name="visibleMessagesCount">Visible messages count.</param>
-        public async Task<bool> AddChatUserAsync(long chatId, long userId, int visibleMessagesCount) {
+        /// <param name="groupId">Group ID.</param>
+        public async Task<bool> AddChatUserAsync(long groupId, long chatId, long userId, int visibleMessagesCount = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "chat_id", chatId.ToString() },
                 { "user_id", userId.ToString() },
                 { "visible_messages_count", visibleMessagesCount.ToString() }
             };
-            return await API.CallMethodAsync<bool>("messages.addChatUser", parameters);
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            return await API.CallMethodAsync<int>("messages.addChatUser", parameters) == 1;
         }
 
         /// <remarks>This method is undocumented!</remarks>
@@ -166,11 +169,13 @@ namespace ELOR.VKAPILib.Methods {
         }
 
         /// <summary>Deletes private messages in a conversation.</summary>
+        /// <param name="groupId">Group ID.</param>
         /// <param name="peerId">Destination ID.</param>
-        public async Task<DeleteConversationResponse> DeleteConversationAsync(long peerId) {
+        public async Task<DeleteConversationResponse> DeleteConversationAsync(long groupId,  long peerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "peer_id", peerId.ToString() }
             };
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             return await API.CallMethodAsync<DeleteConversationResponse>("messages.deleteConversation", parameters);
         }
 
@@ -601,12 +606,14 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Allows the current user to leave a chat or, if the current user started the chat, allows the user to remove another user from the chat.</summary>
         /// <param name="chatId">Chat ID.</param>
         /// <param name="memberId">ID of the member to be removed.</param>
-        public async Task<bool> RemoveChatUserAsync(long chatId, long memberId) {
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        public async Task<bool> RemoveChatUserAsync(long groupId, long chatId, long memberId) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "chat_id", chatId.ToString() },
                 { "member_id", memberId.ToString() }
             };
-            return await API.CallMethodAsync<bool>("messages.removeChatUser", parameters);
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            return await API.CallMethodAsync<int>("messages.removeChatUser", parameters) == 1;
         }
 
         /// <summary>Restores a deleted message.</summary>
