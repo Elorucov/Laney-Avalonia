@@ -127,7 +127,7 @@ namespace ELOR.VKAPILib.Methods {
                 { "group_id", groupId.ToString() },
                 { "key", key }
             };
-            return await API.CallMethodAsync<bool>("messages.allowMessagesFromGroup", parameters);
+            return await API.CallMethodAsync<int>("messages.allowMessagesFromGroup", parameters) == 1;
         }
 
         /// <summary>Creates a chat with several participants.</summary>
@@ -208,7 +208,7 @@ namespace ELOR.VKAPILib.Methods {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "group_id", groupId.ToString() }
             };
-            return await API.CallMethodAsync<bool>("messages.denyMessagesFromGroup", parameters);
+            return await API.CallMethodAsync<int>("messages.denyMessagesFromGroup", parameters) == 1;
         }
 
         /// <summary>Edits the message. You can edit sent message during 24 hours.</summary>
