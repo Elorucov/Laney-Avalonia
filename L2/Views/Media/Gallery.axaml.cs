@@ -5,9 +5,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Views.Media {
@@ -20,11 +18,13 @@ namespace ELOR.Laney.Views.Media {
         IPreview target;
         public Gallery() {
             InitializeComponent();
+            dbg.IsVisible = Settings.ShowDebugInfoInGallery;
             RequestedThemeVariant = ThemeVariant.Dark;
         }
 
         private Gallery(List<IPreview> items, IPreview target) {
             InitializeComponent();
+            dbg.IsVisible = Settings.ShowDebugInfoInGallery;
             RequestedThemeVariant = ThemeVariant.Dark;
 
             this.items = items;
@@ -38,6 +38,7 @@ namespace ELOR.Laney.Views.Media {
 
             AttachmentBase attachment = GalleryItems.SelectedItem as AttachmentBase;
             if (attachment != null) {
+                dbgi.Text = attachment.ToString();
                 var owner = CacheManager.GetNameAndAvatar(attachment.OwnerId);
                 OwnerAvatar.IsVisible = owner != null;
                 if (owner != null) {
@@ -80,10 +81,6 @@ namespace ELOR.Laney.Views.Media {
 
             if (item is Photo photo) {
                 var p = photo.MaximalSizedPhoto;
-                //zb.MinZoomX = 1;
-                //zb.MinZoomY = 1;
-                //zb.MaxZoomX = 2;
-                //zb.MaxZoomY = 2;
                 image.SetUriSourceAsync(p.Uri);
             } else if (item is Document doc && (doc.Type == DocumentType.Image || doc.Type == DocumentType.GIF)) {
                 image.SetUriSourceAsync(doc.Uri);
@@ -99,7 +96,7 @@ namespace ELOR.Laney.Views.Media {
                 case nameof(ZoomBorder.ZoomY):
                 case nameof(ZoomBorder.Width):
                 case nameof(ZoomBorder.Height):
-                    dbgt.Text = $"W:     {zb.Width}\nH:     {zb.Height}\nOffsX: {zb.OffsetX}\nOffsY: {zb.OffsetY}\nZoomX: {zb.ZoomX}\nZoomY: {zb.ZoomY}\n";
+                    dbgt.Text = $"W:     {zb.Width}\nH:     {zb.Height}\nOffsX: {zb.OffsetX}\nOffsY: {zb.OffsetY}\nZoomX: {zb.ZoomX}\nZoomY: {zb.ZoomY}";
                     break;
             }
         }

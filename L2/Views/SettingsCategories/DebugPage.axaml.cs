@@ -45,6 +45,9 @@ namespace ELOR.Laney.Views.SettingsCategories {
             p06.IsChecked = Settings.MessagesListVirtualization;
             p06.Click += (a, b) => Settings.MessagesListVirtualization = (bool)(a as ToggleSwitch).IsChecked;
 
+            p07.IsChecked = Settings.ShowDebugInfoInGallery;
+            p07.Click += (a, b) => Settings.ShowDebugInfoInGallery = (bool)(a as ToggleSwitch).IsChecked;
+
 #if !BETA && !RELEASE
 
             l05.IsChecked = Settings.MessageRenderingLogs;

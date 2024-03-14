@@ -79,6 +79,11 @@
               <ToggleSwitch x:Name="p06"/>
             </vkui:Cell.After>
           </vkui:Cell>
+          <vkui:Cell x:Name="c07" Header="Show debug infos in photo viewer" Subtitle="Size, offset and zoom. Also photo/doc id.">
+            <vkui:Cell.After>
+              <ToggleSwitch x:Name="p07"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
         </StackPanel>
       </Border>
     </StackPanel>

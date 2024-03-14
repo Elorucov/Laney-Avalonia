@@ -154,6 +154,7 @@ namespace ELOR.Laney.Core {
         public const string DEBUG_COUNTERS_RAM = "dbg_counters_ram";
         public const string DEBUG_CONTEXT_MENU = "dbg_dev_context_menu";
         public const string DEBUG_MSGESSAGES_LIST_VIRTUALIZATION = "dbg_msgl_virtualization";
+        public const string DEBUG_GALLERY = "dbg_gallery";
 
         #endregion
 
@@ -273,6 +274,11 @@ namespace ELOR.Laney.Core {
         public static bool MessagesListVirtualization {
             get => Get(DEBUG_MSGESSAGES_LIST_VIRTUALIZATION, false);
             set => Set(DEBUG_MSGESSAGES_LIST_VIRTUALIZATION, value);
+        }
+
+        public static bool ShowDebugInfoInGallery {
+            get => Get(DEBUG_GALLERY, false);
+            set => Set(DEBUG_GALLERY, value);
         }
 
         #endregion
