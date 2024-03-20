@@ -448,7 +448,7 @@ namespace ELOR.Laney.ViewModels {
                 LoadMessages(id);
                 return;
             }
-            MessageViewModel msg = (from m in DisplayedMessages where m.ConversationMessageId == id select m).FirstOrDefault();
+            MessageViewModel msg = DisplayedMessages.GetById(id);
             // TODO: искать ещё и в received messages.
             if (msg != null) {
                 ScrollToMessageRequested?.Invoke(this, id);
@@ -591,7 +591,7 @@ namespace ELOR.Laney.ViewModels {
                     MessageViewModel msg = ReceivedMessages.Where(m => m.ConversationMessageId == messageId).FirstOrDefault();
                     if (msg != null) ReceivedMessages.Remove(msg);
 
-                    MessageViewModel dmsg = DisplayedMessages?.Where(m => m.ConversationMessageId == messageId).FirstOrDefault();
+                    MessageViewModel dmsg = DisplayedMessages?.GetById(messageId);
                     if (dmsg != null) DisplayedMessages.Remove(dmsg);
                 }
             });
@@ -624,7 +624,7 @@ namespace ELOR.Laney.ViewModels {
                     }
                 }
 
-                bool canAddToDisplayedMessages = DisplayedMessages?.LastOrDefault()?.ConversationMessageId == ReceivedMessages.LastOrDefault()?.ConversationMessageId;
+                bool canAddToDisplayedMessages = DisplayedMessages?.Last?.ConversationMessageId == ReceivedMessages.LastOrDefault()?.ConversationMessageId;
                 ReceivedMessages.Add(msg);
                 if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
                 // if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
@@ -687,7 +687,7 @@ namespace ELOR.Laney.ViewModels {
 
         private async void UpdatePinnedMessage(int cmid) {
             var msg = ReceivedMessages.Where(m => m.ConversationMessageId == cmid).FirstOrDefault();
-            if (msg == null) msg = DisplayedMessages.Where(m => m.ConversationMessageId == cmid).FirstOrDefault();
+            if (msg == null) msg = DisplayedMessages.GetById(cmid);
             if (msg != null) {
                 PinnedMessage = msg;
             } else {

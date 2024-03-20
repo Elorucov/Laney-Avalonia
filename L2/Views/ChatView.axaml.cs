@@ -113,7 +113,7 @@ namespace ELOR.Laney.Views {
                 var fvi = ScrollPositions[Chat.PeerId];
                 Log.Information($"Trying to restore scroll position for chat {Chat.PeerId}. First visible CMID: {fvi}");
 
-                var fvm = Chat.DisplayedMessages.Where(m => m.ConversationMessageId == fvi).FirstOrDefault();
+                var fvm = Chat.DisplayedMessages.GetById(fvi);
                 if (fvm != null) {
                     int index = Chat.DisplayedMessages.IndexOf(fvm);
 
@@ -170,7 +170,7 @@ namespace ELOR.Laney.Views {
                 ObservableCollection<MessageViewModel> received = sender as ObservableCollection<MessageViewModel>;
                 await Task.Delay(10); // ибо id-ы разные почему-то...
                 int lastReceivedId = received.LastOrDefault()?.ConversationMessageId ?? 0;
-                var lastDisplayed = Chat.DisplayedMessages.LastOrDefault();
+                var lastDisplayed = Chat.DisplayedMessages.Last;
                 int lastDisplayedId = lastDisplayed?.ConversationMessageId ?? 0;
                 if (lastReceivedId == lastDisplayedId && lastDisplayedId > 0) {
                     // MessagesList.ScrollIntoView(Chat.DisplayedMessages.Count - 1);
