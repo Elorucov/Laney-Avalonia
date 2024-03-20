@@ -15,6 +15,8 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Media;
 using Svg;
 using static System.Collections.Specialized.BitVector32;
+using System.Threading.Tasks;
+using Tmds.DBus.Protocol;
 
 namespace ELOR.Laney.Helpers {
 
@@ -305,21 +307,9 @@ namespace ELOR.Laney.Helpers {
                 }
             };
 
-            pin.Click += async (a, b) => {
-                try {
-                    var response = await session.API.Messages.PinAsync(session.GroupId, chat.PeerId, message.ConversationMessageId);
-                } catch (Exception ex) {
-                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
-                }
-            };
+            pin.Click += async (a, b) => await PinMessageAsync(session, chat.PeerId, message.ConversationMessageId);
 
-            unpin.Click += async (a, b) => {
-                try {
-                    var response = await session.API.Messages.UnpinAsync(session.GroupId, chat.PeerId);
-                } catch (Exception ex) {
-                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
-                }
-            };
+            unpin.Click += async (a, b) => await UnpinMessageAsync(session, chat.PeerId);
 
             spam.Click += (a, b) => DeleteMessages(session, chat.PeerId, new List<int> { message.ConversationMessageId }, false, true);
             delete.Click += (a, b) => TryDeleteMessages(canDeleteWithoutConfirmation, session, chat.PeerId, new List<int> { message.ConversationMessageId }, canDeleteForAll);
@@ -410,6 +400,26 @@ namespace ELOR.Laney.Helpers {
             if (isAllMessagesMarkedAsImportant) ash.Items.Add(unmark);
 
             if (ash.Items.Count > 0) ash.ShowAt(target, true);
+        }
+
+        public static async Task<bool> PinMessageAsync(VKSession session, long peerId, int cmid) {
+            try {
+                var response = await session.API.Messages.PinAsync(session.GroupId, peerId, cmid);
+                return true;
+            } catch (Exception ex) {
+                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+            }
+            return false;
+        }
+
+        public static async Task<bool> UnpinMessageAsync(VKSession session, long peerId) {
+            try {
+                var response = await session.API.Messages.UnpinAsync(session.GroupId, peerId);
+                return true;
+            } catch (Exception ex) {
+                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+            }
+            return false;
         }
 
         private static async void TryDeleteMessages(bool withoutConfirmation, VKSession session, long peerId, List<int> ids, bool canDeleteForAll) {

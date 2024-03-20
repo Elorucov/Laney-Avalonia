@@ -766,11 +766,11 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Unpins a message.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Destination ID.</param>
-        public async Task<int> UnpinAsync(long groupId, long peerId) {
+        public async Task<bool> UnpinAsync(long groupId, long peerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if(groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
-            return await API.CallMethodAsync<int>("messages.unpin", parameters);
+            return await API.CallMethodAsync<int>("messages.unpin", parameters) == 1;
         }
     }
 }

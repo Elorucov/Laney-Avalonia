@@ -557,7 +557,9 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Unpin message
             if (chat.ACL.CanChangePin && chat.PinnedMessage != null) {
-                Command unpinCmd = new Command(VKIconNames.Icon20PinSlashOutline, Localizer.Instance["pp_unpin_message"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command unpinCmd = new Command(VKIconNames.Icon20PinSlashOutline, Localizer.Instance["pp_unpin_message"], false, async (a) => {
+                    if (await ContextMenuHelper.UnpinMessageAsync(session, Id)) chat.PinnedMessage = null;
+                });
                 commands.Add(unpinCmd);
             }
 
