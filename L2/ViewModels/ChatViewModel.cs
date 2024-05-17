@@ -289,7 +289,7 @@ namespace ELOR.Laney.ViewModels {
                 if (ChatSettings.State != UserStateInChat.In) {
                     RestrictionReason = Localizer.Instance[$"chat_{ChatSettings.State.ToString().ToLower()}"];
                 } else {
-                    // VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason);
+                    RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Localizer.Instance["cannot_write"]);
                 }
             } else if (PeerType == PeerType.User) {
                 switch (CanWrite.Reason) {

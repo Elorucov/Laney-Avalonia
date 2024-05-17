@@ -8,9 +8,9 @@
     <RootNamespace>ELOR.Laney</RootNamespace>
     <AssemblyVersion>2.0.586</AssemblyVersion>
     <FileVersion>2.0.586</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.586-win-anycpu-devuser.devpc-240314-1602</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.586-linux-anycpu-devuser.devpc-240314-1602</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.586-macos-anycpu-devuser.devpc-240314-1602</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.586-win-anycpu-devuser.devpc-240514-1602</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.586-linux-anycpu-devuser.devpc-240514-1602</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.586-macos-anycpu-devuser.devpc-240514-1602</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
