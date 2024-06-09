@@ -63,5 +63,8 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(List<ReactionAssets>))]
     [JsonSerializable(typeof(OauthResponse))]
     [JsonSerializable(typeof(DirectAuthResponse))]
+    [JsonSerializable(typeof(AnonymToken))]
+    [JsonSerializable(typeof(GetAuthCodeResponse))]
+    [JsonSerializable(typeof(CheckAuthCodeResponse))]
     public partial class BuildInJsonContext : JsonSerializerContext { }
 }

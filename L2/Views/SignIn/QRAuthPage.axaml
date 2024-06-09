@@ -1,0 +1,28 @@
+<vkui:Page xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vkui="using:VKUI.Controls"
+             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:qr="using:Avalonia.Labs.Qr"
+             mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
+             x:Class="ELOR.Laney.Views.SignIn.QRAuthPage"
+             Loaded="Page_Loaded">
+  <Grid RowDefinitions="Auto * Auto">
+    <Image HorizontalAlignment="Center" Width="28" Height="28" Margin="0,12" Source="{StaticResource Logo}"/>
+    <vkui:PanelHeader IsSeparatorVisible="False">
+      <vkui:PanelHeader.LeftButtons>
+        <Button x:Name="BackButton" Click="BackButton_Click">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}"/>
+        </Button>
+      </vkui:PanelHeader.LeftButtons>
+    </vkui:PanelHeader>
+    <StackPanel Grid.Row="1" Margin="24,12">
+      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="QR Auth"/>
+      <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="Hold your camera to QR below"/>
+      <qr:QrCode x:Name="QrCodeControl" IsVisible="False" Width="256" Height="256" Data="https://youtube.com/watch?v=dQw4w9WgXcQ"/>
+      <vkui:Spinner x:Name="Loading" Width="44" Height="44" Margin="106"/>
+    </StackPanel>
+  </Grid>
+</vkui:Page>

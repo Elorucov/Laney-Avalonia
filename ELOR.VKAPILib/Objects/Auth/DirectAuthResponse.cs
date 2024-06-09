@@ -45,4 +45,13 @@ namespace ELOR.VKAPILib.Objects.Auth {
         [JsonPropertyName("ban_info")]
         public BanInfo BanInfo { get; set; }
     }
+
+
+    public class AnonymToken {
+        [JsonPropertyName("expired_at")]
+        public long ExpiresIn { get; set; }
+
+        [JsonPropertyName("token")]
+        public string Token { get; set; }
+    }
 }

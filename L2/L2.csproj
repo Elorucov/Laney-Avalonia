@@ -140,6 +140,9 @@
     <Reference Include="Avalonia.Flexbox">
       <HintPath>..\Libraries\Avalonia.Flexbox.dll</HintPath>
     </Reference>
+    <Reference Include="Avalonia.Labs.Qr">
+      <HintPath>..\Libraries\Avalonia.Labs.Qr.dll</HintPath>
+    </Reference>
     <!--<Reference Include="DesktopNotifications">
       <HintPath>..\Libraries\DesktopNotifications.dll</HintPath>
     </Reference>
@@ -193,6 +196,9 @@
     </Compile>
     <Compile Update="Controls\PostUI.xaml.cs">
       <DependentUpon>PostUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SignIn\QRAuthPage.axaml.cs">
+      <DependentUpon>QRAuthPage.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
