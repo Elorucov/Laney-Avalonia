@@ -28,5 +28,13 @@ namespace ToastNotifications.Avalonia {
                 throw new ArgumentException($"ToastNotification required!");
             }
         }
+
+        public void Close(INotification notification) {
+            
+        }
+
+        public void CloseAll() {
+            
+        }
     }
 }

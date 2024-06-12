@@ -69,7 +69,7 @@
             <StackPanel>
               <Grid>
                 <Separator Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
-                <TextBlock Margin="12,9,12,-3" Foreground="{DynamicResource VKTextSubheadBrush}" FontWeight="Medium" Text="{Binding Key}"/>
+                <TextBlock Margin="12,9,12,-3" Foreground="{DynamicResource VKTextSubheadBrush}" FontWeight="SemiBold" Text="{Binding Key}"/>
               </Grid>
               <ListBox Classes="FixMargin" ItemTemplate="{StaticResource DefaultUserItemTemplate}" ItemsSource="{Binding Items}" SelectionMode="Multiple,Toggle" Selection="{Binding Selected}">
                 <ListBox.ItemsPanel>

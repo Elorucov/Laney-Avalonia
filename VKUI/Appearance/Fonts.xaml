@@ -1,0 +1,6 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <FontFamily x:Key="VKSansDisplay">avares://VKUI/Fonts#VK Sans Display</FontFamily>
+  <FontFamily x:Key="VKSansText">avares://VKUI/Fonts#Segoe UI Variable Static</FontFamily>
+  <!--<FontFamily x:Key="VKSansText">avares://VKUI/Fonts#Roboto</FontFamily>-->
+</ResourceDictionary>

@@ -19,8 +19,8 @@
       </vkui:PanelHeader.LeftButtons>
     </vkui:PanelHeader>
     <StackPanel Grid.Row="1" Margin="24,12">
-      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="QR Auth"/>
-      <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="Hold your camera to QR below"/>
+      <TextBlock x:Name="PageTitle" Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="QR Auth"/>
+      <TextBlock x:Name="PageDesc" Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="Hold your camera to QR below"/>
       <qr:QrCode x:Name="QrCodeControl" IsVisible="False" Width="256" Height="256" Data="https://youtube.com/watch?v=dQw4w9WgXcQ"/>
       <vkui:Spinner x:Name="Loading" Width="44" Height="44" Margin="106"/>
     </StackPanel>

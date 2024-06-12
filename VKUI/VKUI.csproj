@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Appearance\Fonts.xaml" />
     <None Remove="Appearance\Palette.xaml" />
     <None Remove="Appearance\Scheme.xaml" />
     <None Remove="Controls\ActionSheetItem.xaml" />
@@ -70,11 +71,12 @@
     <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.999-cibuild0048957-alpha" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
-    <PackageReference Include="Avalonia" Version="11.0.10" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+    <PackageReference Include="Avalonia" Version="11.2.999-cibuild0048957-alpha" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.999-cibuild0048957-alpha" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.999-cibuild0048957-alpha" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="**/*.xaml" />
@@ -92,12 +94,14 @@
   <ItemGroup>
     <AvaloniaResource Include="Fonts\VKSansDisplay-Bold.otf" />
     <AvaloniaResource Include="Fonts\VKSansDisplay-Regular.otf" />
-    <AvaloniaResource Include="Fonts\VKSansText-Bold.ttf" />
-    <AvaloniaResource Include="Fonts\VKSansText-Light.ttf" />
-    <AvaloniaResource Include="Fonts\VKSansText-Medium.ttf" />
-    <AvaloniaResource Include="Fonts\VKSansText-Regular.ttf" />
-    <AvaloniaResource Include="Fonts\VKSansText-SemiBold.ttf" />
   </ItemGroup>
+  <!--<ItemGroup Condition="$(RuntimeIdentifier.StartsWith('linux'))">
+    <AvaloniaResource Include="Fonts\Roboto-Bold.ttf" />
+    <AvaloniaResource Include="Fonts\Roboto-Light.ttf" />
+    <AvaloniaResource Include="Fonts\Roboto-Medium.ttf" />
+    <AvaloniaResource Include="Fonts\Roboto-Regular.ttf" />
+    <AvaloniaResource Include="Fonts\Roboto-SemiBold.ttf" />
+  </ItemGroup>-->
   <ItemGroup>
     <AvaloniaXaml Include="Styles\ButtonStyles.xaml" />
     <AvaloniaXaml Include="Styles\ComboBoxStyles.xaml" />
@@ -111,6 +115,9 @@
     <AvaloniaXaml Include="Styles\ToggleSwitchStyles.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Update="Appearance\Fonts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
     <AvaloniaResource Update="Controls\CarouselEx.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>

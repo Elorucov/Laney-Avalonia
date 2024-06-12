@@ -98,15 +98,15 @@
     </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.10" />
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.10" />
+    <PackageReference Include="Avalonia" Version="11.2.999-cibuild0048957-alpha" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.2.999-cibuild0046261-alpha" />
     <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.0.0.3" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.999-cibuild0048957-alpha" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.999-cibuild0048957-alpha" />
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.18" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.999-cibuild0048957-alpha" />
     <PackageReference Include="DynamicData" Version="8.3.27" />
     <PackageReference Include="ManagedBass" Version="3.1.1" />
     <PackageReference Include="Serilog" Version="3.1.1" />

@@ -113,7 +113,7 @@
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
-    <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>
+    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}" />
     <Setter Property="FontSize" Value="16" />
     <Setter Property="MinHeight" Value="44" />
@@ -184,7 +184,7 @@
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
-    <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>
+    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
     <Setter Property="FontSize" Value="16" />
     <Setter Property="Cursor" Value="Hand"/>
     <Setter Property="Template">
