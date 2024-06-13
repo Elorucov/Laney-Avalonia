@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
@@ -26,6 +27,9 @@ namespace ELOR.Laney.Views.Modals {
             Limit = limit;
             DataContext = new AttachmentPickerViewModel(session, this);
             this.FixDialogWindows(TitleBar, Tabs);
+
+            RectangleGeometry rg = new RectangleGeometry(new Avalonia.Rect(Width - 64, 0, Width, 48));
+            TitleBar.Clip = rg;
 
             PhotosSV.RegisterIncrementalLoadingEvent(LoadMorePhotos);
             VideosSV.RegisterIncrementalLoadingEvent(LoadMoreVideos);
