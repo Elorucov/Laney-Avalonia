@@ -54,7 +54,7 @@
               </Grid>
               <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}">
                 <Border x:Name="UnreadMessagesIndicator" Margin="8,0,0,0" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9">
-                  <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
+                  <TextBlock FontWeight="SemiBold" Margin="4,3" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
                 </Border>
               </Grid>
               <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="8,0,0,0" Width="18" Height="18" CornerRadius="9" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}"/>
@@ -107,7 +107,7 @@
               </Grid>
               <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}">
                 <Border x:Name="UnreadMessagesIndicator" Margin="8,0,0,0" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9">
-                  <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
+                  <TextBlock FontWeight="SemiBold" Margin="4,3" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
                 </Border>
               </Grid>
               <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="8,0,0,0" Width="18" Height="18" CornerRadius="9" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}"/>

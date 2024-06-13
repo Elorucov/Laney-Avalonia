@@ -61,6 +61,7 @@
     <None Remove="Styles\TextBoxStyles.xaml" />
     <None Remove="Styles\ToggleSwitchStyles.xaml" />
     <None Remove="Typography.xaml" />
+    <None Remove="TypographySegoe.xaml" />
     <None Remove="VKUITheme.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,9 @@
     </AvaloniaResource>
     <AvaloniaResource Update="Controls\WindowNotificationManager.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Update="TypographySegoe.xaml">
+      <Generator></Generator>
     </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>

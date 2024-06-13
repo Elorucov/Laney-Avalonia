@@ -40,8 +40,15 @@
     <Setter Property="Width" Value="{Binding $parent.Bounds.Width}"/>
     <Setter Property="Height" Value="{Binding $parent.Bounds.Height}"/>
   </Style>
-  
-  <StyleInclude Source="/Typography.xaml"/>
+
+  <OnPlatform>
+    <OnPlatform.Default>
+      <StyleInclude Source="/Typography.xaml"/>
+    </OnPlatform.Default>
+    <OnPlatform.Windows>
+      <StyleInclude Source="/TypographySegoe.xaml"/>
+    </OnPlatform.Windows>
+  </OnPlatform>
   <StyleInclude Source="/Styles/CommonStyles.xaml"/>
   <StyleInclude Source="/Styles/ButtonStyles.xaml"/>
   <StyleInclude Source="/Styles/ComboBoxStyles.xaml"/>
