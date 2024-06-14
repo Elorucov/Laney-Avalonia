@@ -16,7 +16,7 @@
               <vkui:VKIcon x:Name="BAIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Foreground="{DynamicResource VKButtonPrimaryForegroundBrush}" Id="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
             </Border>
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-              <TextBlock x:Name="BATitle" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock x:Name="BATitle" Classes="Headline" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
               <TextBlock x:Name="BASub" Classes="Caption1" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Subtitle, RelativeSource={RelativeSource TemplatedParent}}" MaxLines="1"/>
             </StackPanel>
           </Grid>
