@@ -17,7 +17,7 @@
     </vkui:PanelHeader>
     <StackPanel Grid.Row="1" Margin="24,12">
       <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="0,0,0,12" Source="{StaticResource Logo}"/>
-      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="{i18n:Localize landing_auth_in_progress_title}"/>
+      <TextBlock Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="{i18n:Localize landing_auth_in_progress_title}"/>
       <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="{i18n:Localize landing_auth_in_progress}"/>
       <vkui:Spinner HorizontalAlignment="Center" Width="44" Height="44"/>
     </StackPanel>

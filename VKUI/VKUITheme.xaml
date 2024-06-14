@@ -43,11 +43,11 @@
 
   <OnPlatform>
     <OnPlatform.Default>
-      <StyleInclude Source="/Typography.xaml"/>
+      <StyleInclude Source="/TypographyCustomFont.xaml"/>
     </OnPlatform.Default>
-    <OnPlatform.Windows>
-      <StyleInclude Source="/TypographySegoe.xaml"/>
-    </OnPlatform.Windows>
+    <OnPlatform.macOS>
+      <StyleInclude Source="/Typography.xaml"/>
+    </OnPlatform.macOS>
   </OnPlatform>
   <StyleInclude Source="/Styles/CommonStyles.xaml"/>
   <StyleInclude Source="/Styles/ButtonStyles.xaml"/>

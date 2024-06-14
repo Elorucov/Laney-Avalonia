@@ -100,16 +100,19 @@ namespace ELOR.Laney.Views.Modals {
 #endif
         }
 
-        private async void b01_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri("https://vk.com/elorlaney"));
+        private void b01_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            // await Launcher.LaunchUriAsync(new Uri("https://vk.com/elorlaney")); 
+            Launcher.LaunchUrl(new Uri("https://vk.com/elorlaney"));
         }
 
-        private async void b02_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri("https://vk.com/privacy"));
+        private void b02_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            // await Launcher.LaunchUriAsync(new Uri("https://vk.com/privacy"));
+            Launcher.LaunchUrl(new Uri("https://vk.com/privacy"));
         }
 
-        private async void b03_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri("https://vk.com/terms"));
+        private void b03_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            // await Launcher.LaunchUriAsync(new Uri("https://vk.com/terms"));
+            Launcher.LaunchUrl(new Uri("https://vk.com/terms"));
         }
 
         private async void b04_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

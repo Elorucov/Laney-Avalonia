@@ -44,6 +44,11 @@
     <None Remove="Controls\VKUIFlyoutPresenter.xaml" />
     <None Remove="Controls\WindowNotificationManager.xaml" />
     <None Remove="Controls\WindowTitleBar.xaml" />
+    <None Remove="Fonts\Roboto-Bold.ttf" />
+    <None Remove="Fonts\Roboto-Light.ttf" />
+    <None Remove="Fonts\Roboto-Medium.ttf" />
+    <None Remove="Fonts\Roboto-Regular.ttf" />
+    <None Remove="Fonts\Roboto-SemiBold.ttf" />
     <None Remove="Fonts\VKSansDisplay-Bold.otf" />
     <None Remove="Fonts\VKSansDisplay-Regular.otf" />
     <None Remove="Fonts\VKSansText-Bold.ttf" />
@@ -61,7 +66,7 @@
     <None Remove="Styles\TextBoxStyles.xaml" />
     <None Remove="Styles\ToggleSwitchStyles.xaml" />
     <None Remove="Typography.xaml" />
-    <None Remove="TypographySegoe.xaml" />
+    <None Remove="TypographyCustomFont.xaml" />
     <None Remove="VKUITheme.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -72,12 +77,12 @@
     <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.999-cibuild0048957-alpha" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
     <PackageReference Include="Dotnet.Bundle" Version="*" />
-    <PackageReference Include="Avalonia" Version="11.2.999-cibuild0048957-alpha" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.2.999-cibuild0048957-alpha" />
+    <PackageReference Include="Avalonia" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.999-cibuild0048957-alpha" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="**/*.xaml" />
@@ -93,6 +98,10 @@
     <AvaloniaResource Remove="Styles\ToggleSwitchStyles.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Include="Fonts\Roboto-Bold.ttf" />
+    <AvaloniaResource Include="Fonts\Roboto-Light.ttf" />
+    <AvaloniaResource Include="Fonts\Roboto-Medium.ttf" />
+    <AvaloniaResource Include="Fonts\Roboto-Regular.ttf" />
     <AvaloniaResource Include="Fonts\VKSansDisplay-Bold.otf" />
     <AvaloniaResource Include="Fonts\VKSansDisplay-Regular.otf" />
   </ItemGroup>
@@ -140,7 +149,7 @@
     <AvaloniaResource Update="Controls\WindowNotificationManager.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
-    <AvaloniaResource Update="TypographySegoe.xaml">
+    <AvaloniaResource Update="TypographyCustomFont.xaml">
       <Generator></Generator>
     </AvaloniaResource>
   </ItemGroup>

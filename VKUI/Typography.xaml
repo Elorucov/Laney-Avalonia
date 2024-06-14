@@ -1,32 +1,27 @@
 <Styles xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">  
   <Style Selector="TextBlock.Title1">
     <Setter Property="FontSize" Value="24"/>
     <Setter Property="LineHeight" Value="28"/>
     <Setter Property="BaselineOffset" Value="28"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Title2">
     <Setter Property="FontSize" Value="20"/>
     <Setter Property="LineHeight" Value="24"/>
     <Setter Property="BaselineOffset" Value="24"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Title3">
     <Setter Property="FontSize" Value="17"/>
     <Setter Property="LineHeight" Value="22"/>
     <Setter Property="BaselineOffset" Value="22"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Headline">
     <Setter Property="FontSize" Value="16"/>
     <Setter Property="LineHeight" Value="20"/>
     <Setter Property="BaselineOffset" Value="20"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="Window">
     <Setter Property="TextElement.FontSize" Value="15"/>
-    <!-- <Setter Property="TextElement.FontFamily" Value="{StaticResource VKSansText}"/> -->
     <Setter Property="TextBlock.BaselineOffset" Value="20"/>
   </Style>
   <Style Selector="TextBlock">
@@ -38,36 +33,30 @@
     <Setter Property="FontSize" Value="15"/>
     <Setter Property="LineHeight" Value="20"/>
     <Setter Property="BaselineOffset" Value="20"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Subhead">
     <Setter Property="FontSize" Value="14"/>
     <Setter Property="LineHeight" Value="18"/>
     <Setter Property="BaselineOffset" Value="18"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Caption1">
     <Setter Property="FontSize" Value="13"/>
     <Setter Property="LineHeight" Value="16"/>
     <Setter Property="BaselineOffset" Value="16"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Caption2">
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="LineHeight" Value="14"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Caption3">
     <Setter Property="FontSize" Value="11"/>
     <Setter Property="LineHeight" Value="14"/>
     <Setter Property="BaselineOffset" Value="14"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Caption4">
     <Setter Property="FontSize" Value="9"/>
     <Setter Property="LineHeight" Value="12"/>
     <Setter Property="BaselineOffset" Value="12"/>
-    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
   </Style>
   <Style Selector="TextBlock.Display">
     <Setter Property="FontFamily" Value="{StaticResource VKSansDisplay}"/>

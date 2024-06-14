@@ -12,7 +12,7 @@
           <Grid ColumnDefinitions="Auto *" Margin="4">
             <vkui:Avatar x:Name="Avatar" Width="40" Height="40" Margin="0,0,10,0" Foreground="White"/>
             <StackPanel Grid.Column="1">
-              <TextBlock x:Name="Author" Classes="Subhead" FontWeight="SemiBold" Foreground="{DynamicResource VKImTextNameBrush}"/>
+              <TextBlock x:Name="Author" Classes="Subhead" FontWeight="Medium" Foreground="{DynamicResource VKImTextNameBrush}"/>
               <TextBlock x:Name="PostInfo" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
             </StackPanel>
           </Grid>

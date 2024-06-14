@@ -106,7 +106,7 @@
             <Border x:Name="BubbleBackground" Grid.RowSpan="3" CornerRadius="18"/>
             <StackPanel x:Name="MessageContent">
               <Border x:Name="SenderNameWrap">
-                <TextBlock x:Name="SenderName" Margin="12,7,12,0" Classes="Caption1" FontWeight="SemiBold" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.IsSenderNameVisible, RelativeSource={RelativeSource TemplatedParent}}"/>
+                <TextBlock x:Name="SenderName" Margin="12,7,12,0" Classes="Caption1" FontWeight="Medium" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.IsSenderNameVisible, RelativeSource={RelativeSource TemplatedParent}}"/>
               </Border>
               <Button x:Name="ReplyMessageButton" Classes="Tertiary" Margin="12,6,12,4" Padding="0" CornerRadius="0" IsVisible="{Binding Message.ReplyMessage, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}">
                 <DockPanel>

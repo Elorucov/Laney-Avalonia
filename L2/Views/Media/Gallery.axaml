@@ -36,7 +36,7 @@
     <Grid Grid.Row="3" Margin="12" Height="48" ColumnDefinitions="Auto * Auto">
       <vkui:Avatar x:Name="OwnerAvatar" IsVisible="False" Width="48" Height="48" Margin="0,0,12,0"/>
       <StackPanel Grid.Column="1" VerticalAlignment="Center">
-        <TextBlock x:Name="OwnerName" FontWeight="SemiBold"/>
+        <TextBlock x:Name="OwnerName" FontWeight="Medium"/>
         <TextBlock x:Name="Date" Classes="Subhead" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
       </StackPanel>
     </Grid>
