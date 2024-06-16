@@ -168,7 +168,7 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("textpost_publish")]
         public TextpostPublish TextpostPublish { get; set; }
 
-        private static AttachmentType GetAttachmentEnum(string type) {
+        internal static AttachmentType GetAttachmentEnum(string type) {
             switch (type) {
                 case "photo": return AttachmentType.Photo;
                 case "album": return AttachmentType.Album;

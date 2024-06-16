@@ -5,7 +5,10 @@ namespace ELOR.VKAPILib.Objects {
         public DocumentSaveResult() {}
 
         [JsonPropertyName("type")]
-        public AttachmentType Type { get; set; }
+        public string TypeString { get; set; }
+
+        [JsonIgnore]
+        public AttachmentType Type { get { return Attachment.GetAttachmentEnum(TypeString); } }
 
         [JsonPropertyName("graffiti")]
         public Graffiti Graffiti { get; set; }
