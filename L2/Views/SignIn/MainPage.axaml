@@ -25,7 +25,7 @@
       <!-- <Button x:Name="SignInBtnDirect" Classes="Large" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="12" Margin="0,0,0,12" Click="GoToDirectAuthPage">
         <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="{i18n:Localize sign_in_direct}"/>
       </Button> -->
-      <Button x:Name="SignInBtnDirect" Classes="Large" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="12" Margin="0,0,0,12" Click="GoToDirectAuthPage">
+      <Button x:Name="SignInBtnDirect" Classes="Large" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="12" Margin="0,0,0,12" Click="GoToDirectAuthPage" IsEnabled="false" Opacity="0">
         <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="{i18n:Localize sign_in_qr}"/>
       </Button>
     </StackPanel>
