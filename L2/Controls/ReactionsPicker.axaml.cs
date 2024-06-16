@@ -37,6 +37,8 @@ public partial class ReactionsPicker : UserControl {
 
     private async void OnReactionClick(object obj) {
         parentPopup?.Hide();
+
+        if (DemoMode.IsEnabled) return;
         if (obj == null || obj is not long) return;
 
         var session = VKSession.GetByDataContext(popupTarget);

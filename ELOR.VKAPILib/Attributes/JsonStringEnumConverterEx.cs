@@ -30,6 +30,8 @@ namespace ELOR.VKAPILib.Attributes {
         }
 
         public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+            if (reader.TokenType != JsonTokenType.String) return default;
+
             var stringValue = reader.GetString();
 
             if (_stringToEnum.TryGetValue(stringValue, out var enumValue)) {

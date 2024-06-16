@@ -9,7 +9,7 @@
     <key>CFBundleIdentifier</key>
     <string>top.elor.laney</string>
     <key>CFBundleVersion</key>
-    <string>2.0.592</string>
+    <string>2.0.593</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleSignature</key>
@@ -19,7 +19,7 @@
     <key>CFBundleIconFile</key>
     <string>icon.icns</string>
     <key>CFBundleShortVersionString</key>
-    <string>2.0.592</string>
+    <string>2.0.593</string>
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
     <key>NSHighResolutionCapable</key>

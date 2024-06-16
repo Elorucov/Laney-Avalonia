@@ -81,8 +81,14 @@ namespace ELOR.Laney.Views {
         private void SetSessionNameInWindowTitle(string name) {
 #if RELEASE
             Title = $"{name} - Laney";
+            if (DemoMode.IsEnabled) {
+                Title += $" (demo mode)";
+            }
 #elif BETA
             Title = $"{name} - Laney beta";
+            if (DemoMode.IsEnabled) {
+                Title += $" (demo mode)";
+            }
 #else
             Title = $"{name} - Laney dev";
 #endif

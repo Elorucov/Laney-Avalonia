@@ -255,12 +255,13 @@ namespace ELOR.Laney.ViewModels {
             // Checking and displaying activity status
             if (DemoMode.IsEnabled) {
                 var ds = DemoMode.GetDemoSessionById(session.Id);
-                if (ds.ActivityStatuses.ContainsKey(PeerId)) {
-                    foreach (var status in ds.ActivityStatuses[PeerId]) {
+                if (ds.ActivityStatuses.ContainsKey(PeerId.ToString())) {
+                    foreach (var status in ds.ActivityStatuses[PeerId.ToString()]) {
                         ActivityStatusUsers.Add(status, 1000 * 3600);
                     }
                     UpdateActivityStatus();
                 }
+                OpenProfileCommand = new RelayCommand((o) => { });
             } else {
                 OpenProfileCommand = new RelayCommand(OpenPeerProfile);
                 GoToLastMessageCommand = new RelayCommand(GoToLastMessage);
