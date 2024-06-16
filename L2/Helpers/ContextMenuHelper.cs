@@ -282,6 +282,8 @@ namespace ELOR.Laney.Helpers {
                 await rmw.ShowDialog(session.ModalWindow);
             };
 
+            reply.Click += (a, b) => chat.Composer.AddReply(message);
+
             repriv.Click += (a, b) => {
                 if (DemoMode.IsEnabled) return;
                 session.GoToChat(message.SenderId);

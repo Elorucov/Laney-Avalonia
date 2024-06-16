@@ -96,7 +96,7 @@
     <Setter Property="Margin" Value="0,12,0,10" />
     <Setter Property="FontSize" Value="14" />
     <Setter Property="LineHeight" Value="18" />
-    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="FontWeight" Value="Medium" />
     <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}" />
   </Style>
   
