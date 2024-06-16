@@ -19,7 +19,7 @@
           <StackPanel Orientation="Horizontal">
             <TextBlock Classes="ButtonIn" Text="Attach"/>
             <Border Margin="8,0,0,0" MinWidth="16" Height="16" CornerRadius="8" Background="{DynamicResource VKButtonPrimaryForegroundBrush}">
-              <TextBlock Margin="4,0" Classes="Subhead" FontWeight="SemiBold" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="4"/>
+              <TextBlock Margin="4,0" Classes="Subhead" FontWeight="Medium" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="4"/>
             </Border>
           </StackPanel>
         </Button>
@@ -75,7 +75,7 @@
 
   <Style Selector="Button TextBlock.ButtonIn">
     <Setter Property="FontSize" Value="13"/>
-    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="FontWeight" Value="Medium"/>
   </Style>
   
   <Style Selector="Button.ListItem /template/ Border#PART_Background">

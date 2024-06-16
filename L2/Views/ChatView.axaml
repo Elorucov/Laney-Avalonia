@@ -205,7 +205,7 @@
             <Button Classes="Tertiary Medium MessagesCommands" Command="{Binding ClearSelectedMessages}">
               <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon24CancelOutline}"/>
             </Button>
-            <TextBlock Classes="Subhead" FontWeight="Medium" VerticalAlignment="Center" Margin="0,1,0,0" Text="{Binding SelectedMessagesCount, Converter={StaticResource cc}, ConverterParameter=message}"/>
+            <TextBlock Classes="Subhead" VerticalAlignment="Center" Margin="0,1,0,0" Text="{Binding SelectedMessagesCount, Converter={StaticResource cc}, ConverterParameter=message}"/>
           </StackPanel>
           <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0">
             <ItemsControl ItemsSource="{Binding MessagesCommands}">
