@@ -31,6 +31,10 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<PrivacySettingValue>("account.setPrivacy", parameters);
         }
 
+        public async Task<bool> SetOnlineAsync() {
+            return await API.CallMethodAsync<int>("account.setOnline") == 1;
+        }
+
         public async Task<int> SetSilenceModeAsync(int time, long peerId, bool sound) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "time", time.ToString() },

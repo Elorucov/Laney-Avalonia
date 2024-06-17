@@ -29,6 +29,7 @@ using Avalonia.Dialogs;
 using ELOR.VKAPILib.Objects.Messages;
 using System.Diagnostics;
 using Avalonia.Platform;
+using System.Threading;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -420,6 +421,26 @@ namespace ELOR.Laney.Core {
                     }
 
                     _sessions = sessions;
+
+                    // Set online
+                    // TODO: сделать параметр для юзера, который позволил бы включить/отключить
+                    // отправку онлайна, когда окно закрыто.
+                    Thread thread = new Thread(async () => {
+                        System.Timers.Timer onlineTimer = new System.Timers.Timer(TimeSpan.FromMinutes(4)) {
+                            Enabled = true,
+                            AutoReset = true,
+                        };
+                        onlineTimer.Elapsed += async (a, b) => {
+                            try {
+                                bool result = await API.Account.SetOnlineAsync();
+                                Log.Information($"account.setOnline: {result}");
+                            } catch (Exception ex) {
+                                Log.Error(ex, "An error occured while calling account.setOnline!");
+                            }
+                        };
+                        onlineTimer.Start();
+                    });
+                    thread.Start();
                 }
 
                 if (!IsGroup) {
