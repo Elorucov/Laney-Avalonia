@@ -425,7 +425,7 @@ namespace ELOR.Laney.Core {
                     // Set online
                     // TODO: сделать параметр для юзера, который позволил бы включить/отключить
                     // отправку онлайна, когда окно закрыто.
-                    Thread thread = new Thread(async () => {
+                    Thread thread = new Thread(() => {
                         System.Timers.Timer onlineTimer = new System.Timers.Timer(TimeSpan.FromMinutes(4)) {
                             Enabled = true,
                             AutoReset = true,

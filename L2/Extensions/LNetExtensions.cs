@@ -2,14 +2,12 @@
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Network;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using VKUI.Controls;
 

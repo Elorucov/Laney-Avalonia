@@ -1,14 +1,19 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Svg.Skia;
+using Avalonia.VisualTree;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
@@ -21,7 +26,7 @@ namespace ELOR.Laney.Controls {
                 .Subscribe(args => OnSvgSourceChanged((Image)args.Sender, args.NewValue.Value));
 
             BackgroundSourceProperty.Changed
-                .Subscribe(args => OnBackgroundSourceChanged((Border)args.Sender, args.NewValue.Value));
+                .Subscribe(args => OnBackgroundSourceChanged((Control)args.Sender, args.NewValue.Value));
 
             FillSourceProperty.Changed
                 .Subscribe(args => OnFillSourceChanged((Shape)args.Sender, args.NewValue.Value));
@@ -30,9 +35,100 @@ namespace ELOR.Laney.Controls {
                 .Subscribe(args => OnImageChanged((Avatar)args.Sender, args.NewValue.Value));
         }
 
-        private static async void OnSourceChanged(Image sender, Uri? uri) {
-            // SetIsLoading(sender, true);
+        #region Weak load
 
+        private static void OnAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e) {
+            Control control = sender as Control;
+            control.AttachedToVisualTree -= OnAttachedToVisualTree;
+
+            Uri? uri = control.Tag as Uri;
+            RegisterLoadImageAfterAppearingOnScreen(control, uri);
+        }
+
+        static Dictionary<ScrollViewer, Dictionary<Control, Uri>> registeredControlsInScroll = new Dictionary<ScrollViewer, Dictionary<Control, Uri>>();
+
+        private static async void RegisterLoadImageAfterAppearingOnScreen(Control sender, Uri? uri) {
+            await Task.Delay(8);
+            var parentScroll = sender.FindAncestorOfType<ListBox>();
+            if (parentScroll != null) {
+                var t = sender.TransformToVisual(parentScroll);
+                if (t != null) {
+                    var y = t.Value.M32;
+                    Debug.WriteLine($"+++ Image control pos: {y}");
+                    double pos = y + sender.DesiredSize.Height;
+                    if (pos <= 0) {  // Control is out of visible area
+                        ScrollViewer sv = parentScroll.Scroll as ScrollViewer;
+                        Debug.WriteLine($"+++ Registering image control...");
+                        if (registeredControlsInScroll.ContainsKey(sv)) {
+                            if (!registeredControlsInScroll[sv].ContainsKey(sender)) {
+                                registeredControlsInScroll[sv].Add(sender, uri);
+                            }
+                        } else {
+                            registeredControlsInScroll.Add(sv, new Dictionary<Control, Uri> { { sender, uri } });
+                            sv.ScrollChanged += CheckIsControlHasAppearOnScreen;
+                        }
+
+                        return;
+                    }
+                }
+            }
+
+            SetSourceInternal(sender, uri);
+        }
+
+        private static void CheckIsControlHasAppearOnScreen(object sender, ScrollChangedEventArgs e) {
+            ScrollViewer sv = sender as ScrollViewer;
+            if (registeredControlsInScroll.ContainsKey(sv)) {
+                var controls = registeredControlsInScroll[sv];
+
+                List<Control> toRemove = new List<Control>();
+
+                foreach (var c in controls) {
+                    Control control = c.Key;
+                    var t = control.TransformToVisual(sv);
+                    if (t != null) {
+                        var y = t.Value.M32;
+                        double pos = y + control.DesiredSize.Height;
+                        if (pos > 0) {  // Control is appear on screen
+                            Debug.WriteLine("+++ Image control has appeared on screen!");
+                            toRemove.Add(control);
+                            SetSourceInternal(control, c.Value);
+                        }
+                    }
+                }
+                foreach (var control in CollectionsMarshal.AsSpan(toRemove)) {
+                    controls.Remove(control);
+                }
+                registeredControlsInScroll[sv] = controls;
+            }
+        }
+
+        private static void SetSourceInternal(Control sender, Uri uri) {
+            if (sender is Image image) {
+                OnSourceChangedInternal(image, uri);
+            } else if (sender is TemplatedControl tc && sender is not Avatar) {
+                OnBackgroundSourceChangedInternal(tc, uri);
+            } else if (sender is Border border) {
+                OnBackgroundSourceChangedInternal(border, uri);
+            } else if (sender is Shape shape) {
+                OnFillSourceChangedInternal(shape, uri);
+            } else if (sender is Avatar avatar) {
+                OnImageChangedInternal(avatar, uri);
+            }
+        }
+
+        #endregion
+
+        private static void OnSourceChanged(Image sender, Uri? uri) {
+            if (sender.Parent == null) {
+                sender.Tag = uri;
+                sender.AttachedToVisualTree += OnAttachedToVisualTree;
+            } else {
+                RegisterLoadImageAfterAppearingOnScreen(sender, uri);
+            }
+        }
+
+        private static async void OnSourceChangedInternal(Image sender, Uri? uri) {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
@@ -47,8 +143,6 @@ namespace ELOR.Laney.Controls {
                 Log.Error(ex, "Cannot set bitmap to Image!");
                 sender.Source = null;
             }
-
-            // SetIsLoading(sender, false);
         }
 
         private static async void OnSvgSourceChanged(Image sender, Uri uri) {
@@ -67,7 +161,25 @@ namespace ELOR.Laney.Controls {
             // sender.Unloaded += Sender_Unloaded;
         }
 
-        private static async void OnBackgroundSourceChanged(Border sender, Uri uri) {
+        private static void OnBackgroundSourceChanged(Control sender, Uri uri) {
+            if (sender.Parent == null) {
+                sender.Tag = uri;
+                sender.AttachedToVisualTree += OnAttachedToVisualTree;
+            } else {
+                RegisterLoadImageAfterAppearingOnScreen(sender, uri);
+            }
+        }
+
+        private static async void OnBackgroundSourceChangedInternal(TemplatedControl sender, Uri uri) {
+            double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
+            double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
+
+            sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
+            await sender.SetImageBackgroundAsync(uri, dw, dh);
+            // sender.Unloaded += Sender_Unloaded;
+        }
+
+        private static async void OnBackgroundSourceChangedInternal(Border sender, Uri uri) {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
@@ -77,6 +189,15 @@ namespace ELOR.Laney.Controls {
         }
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {
+            if (sender.Parent == null) {
+                sender.Tag = uri;
+                sender.AttachedToVisualTree += OnAttachedToVisualTree;
+            } else {
+                RegisterLoadImageAfterAppearingOnScreen(sender, uri);
+            }
+        }
+
+        private static void OnFillSourceChangedInternal(Shape sender, Uri uri) {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
@@ -86,6 +207,15 @@ namespace ELOR.Laney.Controls {
         }
 
         private static void OnImageChanged(Avatar sender, Uri uri) {
+            if (sender.Parent == null) {
+                sender.Tag = uri;
+                sender.AttachedToVisualTree += OnAttachedToVisualTree;
+            } else {
+                RegisterLoadImageAfterAppearingOnScreen(sender, uri);
+            }
+        }
+
+        private static void OnImageChangedInternal(Avatar sender, Uri uri) {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
@@ -131,10 +261,18 @@ namespace ELOR.Laney.Controls {
             element.SetValue(SvgSourceProperty, value);
         }
 
-        public static readonly AttachedProperty<Uri?> BackgroundSourceProperty = AvaloniaProperty.RegisterAttached<Border, Uri?>("BackgroundSource", typeof(ImageLoader));
+        public static readonly AttachedProperty<Uri?> BackgroundSourceProperty = AvaloniaProperty.RegisterAttached<Control, Uri?>("BackgroundSource", typeof(ImageLoader));
+
+        public static Uri? GetBackgroundSource(TemplatedControl element) {
+            return element.GetValue(BackgroundSourceProperty);
+        }
 
         public static Uri? GetBackgroundSource(Border element) {
             return element.GetValue(BackgroundSourceProperty);
+        }
+
+        public static void SetBackgroundSource(TemplatedControl element, Uri? value) {
+            element.SetValue(BackgroundSourceProperty, value);
         }
 
         public static void SetBackgroundSource(Border element, Uri? value) {
