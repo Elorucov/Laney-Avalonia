@@ -41,7 +41,7 @@ namespace ELOR.Laney.Controls {
             Control control = sender as Control;
             control.AttachedToVisualTree -= OnAttachedToVisualTree;
 
-            Uri? uri = control.Tag as Uri;
+            Uri? uri = control.Resources["uri"] as Uri;
             RegisterLoadImageAfterAppearingOnScreen(control, uri);
         }
 
@@ -121,7 +121,7 @@ namespace ELOR.Laney.Controls {
 
         private static void OnSourceChanged(Image sender, Uri? uri) {
             if (sender.Parent == null) {
-                sender.Tag = uri;
+                sender.Resources.Add("uri", uri);
                 sender.AttachedToVisualTree += OnAttachedToVisualTree;
             } else {
                 RegisterLoadImageAfterAppearingOnScreen(sender, uri);
@@ -163,7 +163,7 @@ namespace ELOR.Laney.Controls {
 
         private static void OnBackgroundSourceChanged(Control sender, Uri uri) {
             if (sender.Parent == null) {
-                sender.Tag = uri;
+                sender.Resources.Add("uri", uri);
                 sender.AttachedToVisualTree += OnAttachedToVisualTree;
             } else {
                 RegisterLoadImageAfterAppearingOnScreen(sender, uri);
@@ -190,7 +190,7 @@ namespace ELOR.Laney.Controls {
 
         private static void OnFillSourceChanged(Shape sender, Uri uri) {
             if (sender.Parent == null) {
-                sender.Tag = uri;
+                sender.Resources.Add("uri", uri);
                 sender.AttachedToVisualTree += OnAttachedToVisualTree;
             } else {
                 RegisterLoadImageAfterAppearingOnScreen(sender, uri);
@@ -208,7 +208,7 @@ namespace ELOR.Laney.Controls {
 
         private static void OnImageChanged(Avatar sender, Uri uri) {
             if (sender.Parent == null) {
-                sender.Tag = uri;
+                sender.Resources.Add("uri", uri);
                 sender.AttachedToVisualTree += OnAttachedToVisualTree;
             } else {
                 RegisterLoadImageAfterAppearingOnScreen(sender, uri);
