@@ -6,7 +6,7 @@ namespace ELOR.Laney.DataModels {
     }
 
     public enum LongPollActivityType {
-        Typing, RecordingAudioMessage, UploadingPhoto, UploadingVideo, UploadingFile
+        Typing = 0, RecordingAudioMessage = 1, UploadingPhoto = 2, UploadingVideo = 3, UploadingFile = 4
     }
 
     public class LongPollActivityInfo {
@@ -18,10 +18,10 @@ namespace ELOR.Laney.DataModels {
         }
 
         [JsonPropertyName("member_id")]
-        public long MemberId { get; private set; }
+        public long MemberId { get; set; }
 
         [JsonPropertyName("status")]
-        public LongPollActivityType Status { get; private set; }
+        public LongPollActivityType Status { get; set; }
 
         public override string ToString() {
             return $"{MemberId}={Status}";
