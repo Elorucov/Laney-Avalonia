@@ -1,8 +1,9 @@
-<picture width="480px">
+<picture align="center">
   <source media="(prefers-color-scheme: dark)" srcset="docs/logo_dark.png">
   <source media="(prefers-color-scheme: light)" srcset="docs/logo_light.png">
   <img alt="Logo" src="docs/logo_light.png">
 </picture>
+
 Это Laney 2 — кроссплатформенная версия Laney, альтернативного мессенджера ВКонтакте, написанная на платформе .NET 8 с использованием UI-фреймворка [Avalonia](https://github.com/AvaloniaUI/Avalonia).
 
 ![Windows](docs/screen_windows.png)
