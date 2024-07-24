@@ -21,8 +21,7 @@ namespace ELOR.Laney.Views.Modals {
             launchTimeCell.After = TimeSpan.FromMilliseconds(Program.LaunchTime).ToString(@"%s\.fff") + " sec.";
 
             string str = String.Empty;
-            AssetsManager.Check(out str);
-            dev.Text = $"{Localizer.Instance["about_dev"]} {str.Substring(str.Length / 2)}";
+            dev.Text = $"{Localizer.Instance["about_dev"]} {Localizer.Instance["about_dev2"]}";
 #if MAC
             TitleBar.CanShowTitle = true;
 #elif LINUX
@@ -100,18 +99,19 @@ namespace ELOR.Laney.Views.Modals {
 #endif
         }
 
+        private void b00_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            Launcher.LaunchUrl(new Uri("https://github.com/Elorucov/Laney-Avalonia"));
+        }
+
         private void b01_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            // await Launcher.LaunchUriAsync(new Uri("https://vk.com/elorlaney")); 
             Launcher.LaunchUrl(new Uri("https://vk.com/elorlaney"));
         }
 
         private void b02_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            // await Launcher.LaunchUriAsync(new Uri("https://vk.com/privacy"));
             Launcher.LaunchUrl(new Uri("https://vk.com/privacy"));
         }
 
         private void b03_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            // await Launcher.LaunchUriAsync(new Uri("https://vk.com/terms"));
             Launcher.LaunchUrl(new Uri("https://vk.com/terms"));
         }
 

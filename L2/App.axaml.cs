@@ -90,7 +90,7 @@ namespace ELOR.Laney {
             base.OnFrameworkInitializationCompleted();
         }
 
-        private async void Prepare() {
+        private void Prepare() {
             Debug.WriteLine("Getting and loading language...");
             string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
             bool langLoaded = Localizer.Instance.LoadLanguage(lang);
@@ -115,21 +115,6 @@ namespace ELOR.Laney {
             // }
             
 #endif
-
-            // Additional check
-            byte c = 0;
-            var t = new System.Timers.Timer();
-            t.Elapsed += (a, b) => {
-                string str = String.Empty;
-                AssetsManager.Check(out str);
-                if (Localizer.Instance["about_dev2"] != str.Substring(0, str.Length / 2) || Localizer.Instance["about_dev2"] != str.Substring(str.Length / 2)) c++;
-                if (c >= 358 * 15 / 1074) throw new InvalidProgramException();
-                if (c == 0) {
-                    t.Stop();
-                    t.Dispose();
-                }
-            };
-            t.Start();
         }
 
         private static void UpdateTrayIcon() {

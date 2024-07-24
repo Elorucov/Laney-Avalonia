@@ -8,7 +8,7 @@
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
         x:Class="ELOR.Laney.Views.Modals.About"
-        Width="420" Height="572"
+        Width="420" Height="608"
         Title="{i18n:Localize about}">
   <Grid x:Name="Root" RowDefinitions="Auto * Auto">
     <Grid.Styles>
@@ -33,6 +33,9 @@
       <Rectangle Classes="Separator" Margin="12,6"/>
       <Button x:Name="b01" Classes="Tertiary" Click="b01_Click">
         <vkui:Cell Header="{i18n:Localize about_offical_group}" Subtitle="{i18n:Localize about_offical_group_desc}"/>
+      </Button>
+      <Button x:Name="b00" Classes="Tertiary" Click="b00_Click">
+        <vkui:Cell Header="Source code on GitHub"/>
       </Button>
       <Button x:Name="b02" Classes="Tertiary" Click="b02_Click">
         <vkui:Cell Header="{i18n:Localize about_vk_privacy}"/>
