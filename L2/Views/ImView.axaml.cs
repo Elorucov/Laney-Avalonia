@@ -23,9 +23,11 @@ namespace ELOR.Laney.Views {
                 Session.ShowSessionPopup(AvatarButton);
             };
             NewConvButton.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 await NavigationRouter.NavigateToAsync(new ChatCreationView());
             };
             SearchButton.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 await NavigationRouter.NavigateToAsync(new SearchView());
             };
 
@@ -60,6 +62,8 @@ namespace ELOR.Laney.Views {
             Session.CurrentOpenedChatChanged += (a, b) => {
                 if (b == 0) ChatsList.SelectedItem = null;
             };
+
+            if (DemoMode.IsEnabled) return;
 
             bool isRegistered = false;
             while (isRegistered) {

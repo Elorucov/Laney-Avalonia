@@ -7,7 +7,6 @@ namespace VKUI.Windows {
         public DialogWindow() {
             Classes.Add("Dialog");
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) Classes.Add("WinFix");
             Activated += DialogWindow_Activated;
         }
 

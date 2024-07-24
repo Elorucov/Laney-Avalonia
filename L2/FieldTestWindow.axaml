@@ -57,74 +57,64 @@
       <StackPanel Margin="0,8,0,0">
         <WrapPanel Width="392" HorizontalAlignment="Left">
           <StackPanel Margin="8,6">
-            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Title1"/>
-            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Title1"/>
-            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Title1"/>
-            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" Text="Title1"/>
-            <TextBlock Classes="Title1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Title1"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title1" FontWeight="Bold" Text="Title1 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title1" FontWeight="Medium" Text="Title1 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title1" Text="Title1 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title1" FontWeight="Light" Text="Title1 Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Title2"/>
-            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Title2"/>
-            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Title2"/>
-            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" Text="Title2"/>
-            <TextBlock Classes="Title2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Title2"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title2" FontWeight="Bold" Text="Title2 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title2" FontWeight="Medium" Text="Title2 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title2" Text="Title2 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title2" FontWeight="Light" Text="Title2 Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Title3"/>
-            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Title3"/>
-            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Title3"/>
-            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" Text="Title3"/>
-            <TextBlock Classes="Title3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Title3"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title3" FontWeight="Bold" Text="Title3 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title3" FontWeight="Medium" Text="Title3 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title3" Text="Title3 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Title3" FontWeight="Light" Text="Title3 Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Headline"/>
-            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Headline"/>
-            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Headline"/>
-            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" Text="Headline"/>
-            <TextBlock Classes="Headline" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Headline"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Headline" FontWeight="Bold" Text="Headline Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Headline" FontWeight="Medium" Text="Headline Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Headline" Text="Headline Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Headline" FontWeight="Light" Text="Headline Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Bold"/>
-            <TextBlock Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="SemiBold"/>
-            <TextBlock Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Medium"/>
-            <TextBlock Background="#7f7f7f7f" Margin="0,1" Text="Regular"/>
-            <TextBlock Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Light"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock FontWeight="Bold" Text="Bold Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock FontWeight="Medium" Text="Medium Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Text="Regular Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock FontWeight="Light" Text="Light Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Subhead"/>
-            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Subhead"/>
-            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Subhead"/>
-            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" Text="Subhead"/>
-            <TextBlock Classes="Subhead" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Subhead"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Subhead" FontWeight="Bold" Text="Subhead Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Subhead" FontWeight="Medium" Text="Subhead Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Subhead" Text="Subhead Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Subhead" FontWeight="Light" Text="Subhead Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Caption1"/>
-            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Caption1"/>
-            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Caption1"/>
-            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" Text="Caption1"/>
-            <TextBlock Classes="Caption1" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption1"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption1" FontWeight="Bold" Text="Caption1 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption1" FontWeight="Medium" Text="Caption1 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption1" Text="Caption1 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption1" FontWeight="Light" Text="Caption1 Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Caption2"/>
-            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Caption2"/>
-            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Caption2"/>
-            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" Text="Caption2"/>
-            <TextBlock Classes="Caption2" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption2"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption2" FontWeight="Bold" Text="Caption2 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption2" FontWeight="Medium" Text="Caption2 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption2" Text="Caption2 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption2" FontWeight="Light" Text="Caption2 Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Caption3"/>
-            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Caption3"/>
-            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Caption3"/>
-            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" Text="Caption3"/>
-            <TextBlock Classes="Caption3" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption3"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption3" FontWeight="Bold" Text="Caption3 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption3" FontWeight="Medium" Text="Caption3 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption3" Text="Caption3 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption3" FontWeight="Light" Text="Caption3 Йg"/></Border>
           </StackPanel>
           <StackPanel Margin="8">
-            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="Bold" Text="Caption4"/>
-            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="SemiBold" Text="Caption4"/>
-            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="Medium" Text="Caption4"/>
-            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" Text="Caption4"/>
-            <TextBlock Classes="Caption4" Background="#7f7f7f7f" Margin="0,1" FontWeight="Light" Text="Caption4"/>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption4" FontWeight="Bold" Text="Caption4 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption4" FontWeight="Medium" Text="Caption4 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption4" Text="Caption4 Йg"/></Border>
+            <Border Background="#7f7f7f7f" Margin="0,1"><TextBlock Classes="Caption4" FontWeight="Light" Text="Caption4 Йg"/></Border>
           </StackPanel>
         </WrapPanel>
       </StackPanel>

@@ -1,8 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
-using Avalonia.Controls.Presenters;
-using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -30,7 +27,7 @@ namespace ELOR.Laney.Extensions {
             if (String.IsNullOrWhiteSpace(name)) return String.Empty;
             if (oneLetter) return name[0].ToString().ToUpper();
             string[] words = name.Split(" ");
-            if (words.Length == 1) return words[0][0].ToString().ToUpper();
+            if (words.Length == 1 || String.IsNullOrEmpty(words[1])) return words[0][0].ToString().ToUpper();
             return $"{words[0][0]}{words[1][0]}".ToUpper();
         }
 

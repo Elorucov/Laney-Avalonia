@@ -32,6 +32,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         // TODO: кэш
         private async void LoadStickerPacks() {
+            if (DemoMode.IsEnabled) return;
             try {
                 var req1 = await session.API.GetRecentStickersAndGraffitiesAsync();
                 TabItem<object> favTab = new TabItem<object>(Localizer.Instance["favorites"], new ObservableCollection<Sticker>(req1.FavoriteStickers), VKIconNames.Icon20FavoriteOutline);

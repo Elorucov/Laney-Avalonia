@@ -105,7 +105,7 @@ namespace VKUI.Controls {
             if (Content is string text) {
                 TextBlock textBlock = new TextBlock { 
                     Text = text,
-                    FontWeight = Avalonia.Media.FontWeight.SemiBold
+                    FontWeight = Avalonia.Media.FontWeight.Bold
                 };
                 textBlock.Classes.Add("Display");
                 textBlock.Classes.Add("PanelHeaderTextStyle");

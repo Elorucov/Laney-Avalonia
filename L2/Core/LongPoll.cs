@@ -8,6 +8,7 @@ using Serilog;
 using Serilog.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -248,7 +249,7 @@ namespace ELOR.Laney.Core {
                         } else {
                             bool contains = MessagesFromAPI.Where(m => m.Item2 == editedMsgId).FirstOrDefault() != null;
                             if (!contains) {
-                                MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId5, editedMsgId, false));
+                                MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId5, editedMsgId, true));
                                 MessagesFromAPIFlags.Add(editedMsgId, (int)u[2]);
                             }
                         }
@@ -448,6 +449,7 @@ namespace ELOR.Laney.Core {
                     CacheManager.Add(response.Profiles);
                     CacheManager.Add(response.Groups);
                     foreach (Message msg in response.Items) {
+
                         int flag = flags[msg.ConversationMessageId];
                         bool isEdited = isEditedCMIDs[$"{msg.PeerId}_{msg.ConversationMessageId}"];
                         Log.Information($"Successfully received message ({msg.PeerId}_{msg.ConversationMessageId}) from API. Is edited: {isEdited}");

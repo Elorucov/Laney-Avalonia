@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace ELOR.Laney.Core {
     public static class AuthManager {
         public const int APP_ID = 6614620;
-        const string CLIENT_SECRET = "KdOeDEb0swoCpKLRTfKb";
+        public const string CLIENT_SECRET = "KdOeDEb0swoCpKLRTfKb";
         public const int SCOPE = 995414;
         static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&redirect_uri=https://oauth.vk.com/blank.html&scope={SCOPE}&response_type=token&revoke=1");
         static Uri authUriLocalhost = new Uri($"https://oauth.vk.com/authorize?client_id={APP_ID}&redirect_uri=http://localhost:52639&scope=65536&response_type=token&revoke=1");

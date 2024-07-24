@@ -161,7 +161,8 @@ namespace ELOR.Laney.Controls.Attachments {
                     Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4)
                 };
                 AddPreviewInfo(previews[0], imgBtn);
-                if (uri != null) _ = imgBtn.SetImageBackgroundAsync(uri, Width, Height);
+                // if (uri != null) _ = imgBtn.SetImageBackgroundAsync(uri, Width, Height);
+                if (uri != null) ImageLoader.SetBackgroundSource(imgBtn, uri);
                 imgBtn.Click += ImgBtn_Click;
                 StandartAttachments.Children.Add(imgBtn);
             } else if (previews.Count > 1) {

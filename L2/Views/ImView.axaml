@@ -20,7 +20,7 @@
         <StackPanel x:Name="Info" Grid.Column="1" Margin="12,11,0,11">
           <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
             <fb:FlexPanel x:Name="ChatNameContainer" Direction="Row" JustifyContent="FlexStart" Wrap="NoWrap">
-              <TextBlock x:Name="ChatName" Classes="Default" Margin="0,1,0,0" FontWeight="SemiBold" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+              <TextBlock x:Name="ChatName" Classes="Default" Margin="0,1,0,0" FontWeight="Medium" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
             </fb:FlexPanel>
@@ -54,7 +54,7 @@
               </Grid>
               <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}">
                 <Border x:Name="UnreadMessagesIndicator" Margin="8,0,0,0" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9">
-                  <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
+                  <TextBlock FontWeight="Medium" Margin="4,3" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
                 </Border>
               </Grid>
               <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="8,0,0,0" Width="18" Height="18" CornerRadius="9" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}"/>
@@ -72,7 +72,7 @@
         <StackPanel x:Name="Info" Grid.Column="1" Margin="12,6,0,0">
           <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
             <fb:FlexPanel x:Name="ChatNameContainer" Direction="Row" JustifyContent="FlexStart" Wrap="NoWrap">
-              <TextBlock x:Name="ChatName" Classes="Default" Margin="0,1,0,0" FontWeight="SemiBold" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+              <TextBlock x:Name="ChatName" Classes="Default" Margin="0,1,0,0" FontWeight="Medium" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
             </fb:FlexPanel>
@@ -107,7 +107,7 @@
               </Grid>
               <Grid x:Name="UnreadMessagesIndicatorContainer" IsVisible="{Binding !!UnreadMessagesCount}">
                 <Border x:Name="UnreadMessagesIndicator" Margin="8,0,0,0" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}" MinWidth="18" Height="18" CornerRadius="9">
-                  <TextBlock FontWeight="SemiBold" Margin="4,2,4,4" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
+                  <TextBlock FontWeight="Medium" Margin="4,3" HorizontalAlignment="Center" FontSize="12" LineHeight="12" Text="{Binding UnreadMessagesCount}"/>
                 </Border>
               </Grid>
               <Border x:Name="ManuallyUnreadIndicator" IsVisible="{Binding IsMarkedAsUnread}" Margin="8,0,0,0" Width="18" Height="18" CornerRadius="9" Classes.Unmuted="{Binding !PushSettings.DisabledForever}" Classes.Muted="{Binding PushSettings.DisabledForever}"/>
@@ -136,7 +136,7 @@
     </vkui:PanelHeader>
 
     <Grid x:Name="ChatsListRoot" Grid.Row="1">
-      <ListBox x:Name="ChatsList" Classes="FixMargin" SelectionMode="Toggle" AutoScrollToSelectedItem="True" ItemsSource="{Binding ImViewModel.SortedChats}" SelectedItem="{Binding ImViewModel.VisualSelectedChat}">
+      <ListBox x:Name="ChatsList" Classes="FixMargin" SelectionMode="Toggle" AutoScrollToSelectedItem="True" ItemsSource="{Binding ImViewModel.SortedChats}">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
             <Setter Property="Padding" Value="0"/>

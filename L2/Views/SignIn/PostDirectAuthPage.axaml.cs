@@ -39,7 +39,7 @@ namespace ELOR.Laney.Views.SignIn {
                     Log.Information($"{nameof(PostDirectAuthPage)}: Oauth hash received!");
 
                     var response = await tempAPI.Auth.GetOauthTokenAsync(AuthManager.APP_ID, AuthManager.SCOPE, hash);
-                    Log.Information($"{nameof(PostDirectAuthPage)}: Access token received!.");
+                    Log.Information($"{nameof(PostDirectAuthPage)}: Access token received!");
                     Settings.SetBatch(new Dictionary<string, object> {
                         { Settings.VK_USER_ID, response.UserId },
                         { Settings.VK_TOKEN, response.AccessToken }

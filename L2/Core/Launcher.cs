@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace ELOR.Laney.Core {
@@ -18,6 +19,10 @@ namespace ELOR.Laney.Core {
             } else {
                 return false;
             }
+        }
+
+        public static bool LaunchUrl(Uri uri) {
+            return LaunchUrl(uri.AbsoluteUri);
         }
 
         public static bool LaunchFolder(string path) {

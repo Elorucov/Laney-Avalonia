@@ -78,7 +78,7 @@ namespace ELOR.Laney.Execute {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "chat_id", chatId.ToString() },
                 { "fields", string.Join(",", fields) },
-                { "func_v", "2" }
+                { "func_v", "3" }
             };
             return await API.CallMethodAsync<ChatInfoEx>("execute.getChatInfoWithMembers", parameters, L2JsonSerializerContext.Default);
         }

@@ -65,7 +65,7 @@
       <StackPanel x:Name="Info" Grid.Column="1" Margin="12,6,0,0">
         <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
           <DockPanel x:Name="ChatNameContainer" HorizontalAlignment="Left">
-            <TextBlock x:Name="ChatName" Margin="0,0,22,0" Classes="Default" FontWeight="SemiBold" Text="{Binding PeerName}" MaxLines="1" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+            <TextBlock x:Name="ChatName" Margin="0,0,22,0" Classes="Default" FontWeight="Medium" Text="{Binding PeerName}" MaxLines="1" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
           </DockPanel>
           <StackPanel x:Name="TopRight" Grid.Column="1" Orientation="Horizontal" Margin="0,0,12,0">
             <TextBlock x:Name="LastMessageTime" Classes="Subhead" Margin="0,2" FontWeight="Regular" Foreground="{DynamicResource VKTextTertiaryBrush}" MaxLines="1" Text="{Binding SentDate, Converter={StaticResource dc}, ConverterParameter=t}"/>

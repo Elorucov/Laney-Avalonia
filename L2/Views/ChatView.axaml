@@ -78,7 +78,7 @@
             <vkui:Avatar x:Name="ConvAvatar" Width="36" Height="36" Margin="0,0,8,0" VerticalAlignment="Center" Initials="{Binding Initials}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding Avatar, Mode=OneWay}"/>
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
               <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Classes="Headline" FontWeight="SemiBold" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Title, Mode=OneWay}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Classes="Headline" FontWeight="Medium" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding Title, Mode=OneWay}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
                 <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding IsVerified}"/>
                 <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
               </StackPanel>
@@ -205,7 +205,7 @@
             <Button Classes="Tertiary Medium MessagesCommands" Command="{Binding ClearSelectedMessages}">
               <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon24CancelOutline}"/>
             </Button>
-            <TextBlock Classes="Subhead" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,1,0,0" Text="{Binding SelectedMessagesCount, Converter={StaticResource cc}, ConverterParameter=message}"/>
+            <TextBlock Classes="Subhead" VerticalAlignment="Center" Margin="0,1,0,0" Text="{Binding SelectedMessagesCount, Converter={StaticResource cc}, ConverterParameter=message}"/>
           </StackPanel>
           <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0">
             <ItemsControl ItemsSource="{Binding MessagesCommands}">

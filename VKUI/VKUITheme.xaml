@@ -4,14 +4,13 @@
         x:Class="VKUI.VKUITheme">
   <Styles.Resources>
     <ResourceDictionary>
-      <FontFamily x:Key="VKSansDisplay">avares://VKUI/Fonts#VK Sans Display</FontFamily>
-      <FontFamily x:Key="VKSansText">avares://VKUI/Fonts#VK Sans Text</FontFamily>
       <BoxShadows x:Key="VKElevation1">0 0 2 #08000000, 0 2 2 #0F000000</BoxShadows>
       <BoxShadows x:Key="VKElevation2">0 4 8 #0A000000, 0 0 4 #0F000000</BoxShadows>
       <BoxShadows x:Key="VKElevation3">0 0 2 #14000000, 0 4 16 #14000000</BoxShadows>
       <BoxShadows x:Key="VKElevation4">0 0 8 #1F000000, 0 16 16 #29000000</BoxShadows>
       
       <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://VKUI/Appearance/Fonts.xaml"/>
         <ResourceInclude Source="avares://VKUI/Appearance/Palette.xaml"/>
         <ResourceInclude Source="avares://VKUI/Appearance/Scheme.xaml"/>
         <ResourceInclude Source="avares://VKUI/Icons.xaml"/>
@@ -41,8 +40,15 @@
     <Setter Property="Width" Value="{Binding $parent.Bounds.Width}"/>
     <Setter Property="Height" Value="{Binding $parent.Bounds.Height}"/>
   </Style>
-  
-  <StyleInclude Source="/Typography.xaml"/>
+
+  <OnPlatform>
+    <OnPlatform.Default>
+      <StyleInclude Source="/TypographyCustomFont.xaml"/>
+    </OnPlatform.Default>
+    <OnPlatform.macOS>
+      <StyleInclude Source="/Typography.xaml"/>
+    </OnPlatform.macOS>
+  </OnPlatform>
   <StyleInclude Source="/Styles/CommonStyles.xaml"/>
   <StyleInclude Source="/Styles/ButtonStyles.xaml"/>
   <StyleInclude Source="/Styles/ComboBoxStyles.xaml"/>

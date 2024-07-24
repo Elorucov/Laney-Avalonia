@@ -5,29 +5,29 @@ using System.Collections.Generic;
 namespace ELOR.Laney.DataModels {
     public class DemoModeSession {
         [JsonPropertyName("id")]
-        public long Id { get; private set; }
+        public long Id { get; set; }
 
         [JsonPropertyName("conversations")]
-        public List<ConversationItem> Conversations { get; private set; }
+        public List<ConversationItem> Conversations { get; set; }
 
         [JsonPropertyName("messages")]
-        public List<Message> Messages { get; private set; }
+        public List<Message> Messages { get; set; }
 
         [JsonPropertyName("times")]
-        public Dictionary<int, int> Times { get; private set; }
+        public Dictionary<string, int> Times { get; set; }
 
         [JsonPropertyName("activity_statuses")]
-        public Dictionary<long, List<LongPollActivityInfo>> ActivityStatuses { get; private set; }
+        public Dictionary<string, List<LongPollActivityInfo>> ActivityStatuses { get; set; }
     }
 
     public class DemoModeData {
         [JsonPropertyName("sessions")]
-        public List<DemoModeSession> Sessions { get; private set; }
+        public List<DemoModeSession> Sessions { get; set; }
 
         [JsonPropertyName("profiles")]
-        public List<User> Profiles { get; private set; }
+        public List<User> Profiles { get; set; }
 
         [JsonPropertyName("groups")]
-        public List<Group> Groups { get; private set; }
+        public List<Group> Groups { get; set; }
     }
 }

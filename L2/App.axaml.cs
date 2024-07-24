@@ -244,6 +244,7 @@ namespace ELOR.Laney {
         }
 
         public static List<string> UsedLibs { get; } = new List<string> {
+            "Avalonia.Labs.Qr",
             "Avalonia.Skia.Lottie by Wiesław Šoltés",
             "ColorTextBlock.Avalonia by whistyun",
             "jp2masa.Avalonia.Flexbox",

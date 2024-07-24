@@ -48,7 +48,7 @@
     <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,24,0,24">
       <TextBlock x:Name="dev" Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}" TextAlignment="Center"/>
       <TextBlock Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}" TextAlignment="Center">
-        Powered by <Run FontWeight="SemiBold">.NET</Run> and <Run FontWeight="SemiBold">Avalonia UI</Run>
+        Powered by <Run FontWeight="Medium">.NET</Run> and <Run FontWeight="Medium">Avalonia UI</Run>
       </TextBlock>
     </StackPanel>
     

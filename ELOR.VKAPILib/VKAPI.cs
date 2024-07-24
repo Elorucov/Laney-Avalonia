@@ -1,8 +1,10 @@
 ﻿using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.HandlerDatas;
+using System;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -43,10 +45,10 @@ namespace ELOR.VKAPILib {
         private string _accessToken;
         private string _language;
         private string _domain;
-        private static string _version = "5.218";
+        private static string _version = "5.236";
 
         public long UserId { get { return _userId; } }
-        public string AccessToken { get { return _accessToken; } }
+        public string AccessToken { get { return _accessToken; } internal set { _accessToken = value; } }
         public string Language { get { return _language; } }
         public string Domain { get { return _domain; } }
         public int LongPollVersion { get; set; } = 19;
@@ -121,6 +123,9 @@ namespace ELOR.VKAPILib {
                     { "Accept-Encoding", "gzip,deflate" }
                 };
                 if (!String.IsNullOrEmpty(UserAgent)) headers.Add("User-Agent", UserAgent);
+                if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
+                    headers.Add("Origin", $"https://id.vk.com");
+                }
 
                 var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
                 return await resp.Content.ReadAsStringAsync();
@@ -128,6 +133,9 @@ namespace ELOR.VKAPILib {
                 using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri) { 
                     Version = new Version(2, 0)
                 }) {
+                    if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
+                        hmsg.Headers.Add("Origin", $"https://id.vk.com");
+                    }
                     hmsg.Content = new FormUrlEncodedContent(parameters);
                     using (var resp = await HttpClient.SendAsync(hmsg)) {
                         return await resp.Content.ReadAsStringAsync();

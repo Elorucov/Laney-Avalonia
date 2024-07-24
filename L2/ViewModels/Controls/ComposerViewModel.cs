@@ -83,6 +83,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         public void ShowAttachmentPickerContextMenu(Control target) {
+            if (DemoMode.IsEnabled) return;
             ActionSheet ash = new ActionSheet {
                 Placement = PlacementMode.TopEdgeAlignedLeft
             };

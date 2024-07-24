@@ -14,7 +14,7 @@
     <vkui:PanelHeader IsSeparatorVisible="False"/>
     <StackPanel x:Name="Middle" Grid.Row="1" Margin="24,12">
       <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="0,0,0,12" Source="{StaticResource Logo}"/>
-      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
+      <TextBlock Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="{i18n:Localize landing_title}"/>
       <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="{i18n:Localize landing_subtitle}"/>
       <Button x:Name="SignInBtnVKExternal" Classes="Large" Background="#0077ff" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,0,0,12" Padding="0" Click="GoToExternalAuthPage">
         <Grid ColumnDefinitions="44 * 44">
@@ -22,8 +22,11 @@
           <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Text="{i18n:Localize sign_in_vk_id}"/>
         </Grid>
       </Button>
-      <Button x:Name="SignInBtnDirect" Classes="Large" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="12" Margin="0,0,0,12" Click="GoToDirectAuthPage">
+      <!-- <Button x:Name="SignInBtnDirect" Classes="Large" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="12" Margin="0,0,0,12" Click="GoToDirectAuthPage">
         <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="{i18n:Localize sign_in_direct}"/>
+      </Button> -->
+      <Button x:Name="SignInBtnDirect" Classes="Large" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="12" Margin="0,0,0,12" Click="GoToDirectAuthPage" IsEnabled="false" Opacity="0">
+        <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="{i18n:Localize sign_in_qr}"/>
       </Button>
     </StackPanel>
     <Grid Grid.Row="2" ColumnDefinitions="Auto *" Margin="24,0,24,18" VerticalAlignment="Center">

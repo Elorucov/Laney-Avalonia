@@ -17,7 +17,7 @@
       </vkui:PanelHeader.LeftButtons>
     </vkui:PanelHeader>
     <StackPanel Grid.Row="1" Margin="24,12">
-      <TextBlock Classes="Title2" FontWeight="SemiBold" TextAlignment="Center" Text="{i18n:Localize da_2fa_confirm}"/>
+      <TextBlock Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="{i18n:Localize da_2fa_confirm}"/>
       <TextBlock x:Name="TwoFAInfo" Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="Моргни 5 раз, хлопни 3 раза, скажи слово Laney 75 раз, разошли это SMS 5 друзьям. Загляни под подушку, там access_token!"/>
       <TextBox x:Name="TwoFACode" Width="128" TextAlignment="Center"/>
     </StackPanel>

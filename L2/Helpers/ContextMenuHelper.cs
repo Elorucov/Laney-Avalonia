@@ -77,6 +77,7 @@ namespace ELOR.Laney.Helpers {
             // Actions
 
             notifon.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var result = await session.API.Account.SetSilenceModeAsync(0, chat.PeerId, true);
                 } catch (Exception ex) {
@@ -85,6 +86,7 @@ namespace ELOR.Laney.Helpers {
             };
 
             notifoff.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var result = await session.API.Account.SetSilenceModeAsync(-1, chat.PeerId, true);
                 } catch (Exception ex) {
@@ -93,6 +95,7 @@ namespace ELOR.Laney.Helpers {
             };
 
             read.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var result = await session.API.Messages.MarkAsReadAsync(session.GroupId, chat.PeerId, chat.LastMessage.ConversationMessageId, true);
                 } catch (Exception ex) {
@@ -101,6 +104,7 @@ namespace ELOR.Laney.Helpers {
             };
 
             unread.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var result = await session.API.Messages.MarkAsUnreadConversationAsync(session.GroupId, chat.PeerId);
                 } catch (Exception ex) {
@@ -141,6 +145,7 @@ namespace ELOR.Laney.Helpers {
         public static async void TryClearChat(VKSession session, long peerId, System.Action onSuccess = null) {
             VKUIDialog dlg = new VKUIDialog(Localizer.Instance["chat_clear_modal_title"], Localizer.Instance["chat_clear_modal_text"], [Localizer.Instance["yes"], Localizer.Instance["no"]], 2);
             if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var response = await session.API.Messages.DeleteConversationAsync(session.GroupId, peerId);
                     onSuccess?.Invoke(); // TODO: Snackbar
@@ -153,6 +158,7 @@ namespace ELOR.Laney.Helpers {
         public static async void TryLeaveChat(VKSession session, long peerId, System.Action onSuccess = null) {
             VKUIDialog dlg = new VKUIDialog(Localizer.Instance["chat_leave_modal_title"], Localizer.Instance["chat_leave_modal_text"], [Localizer.Instance["yes"], Localizer.Instance["no"]], 2);
             if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var response = await session.API.Messages.RemoveChatUserAsync(session.GroupId, peerId - 2000000000, session.Id);
                     onSuccess?.Invoke(); // TODO: Snackbar
@@ -163,6 +169,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static async void ReturnToChat(VKSession session, long peerId, System.Action onSuccess = null) {
+            if (DemoMode.IsEnabled) return;
             try {
                 var response = await session.API.Messages.AddChatUserAsync(session.GroupId, peerId - 2000000000, session.Id);
                 onSuccess?.Invoke(); // TODO: Snackbar
@@ -277,7 +284,10 @@ namespace ELOR.Laney.Helpers {
                 await rmw.ShowDialog(session.ModalWindow);
             };
 
+            reply.Click += (a, b) => chat.Composer.AddReply(message);
+
             repriv.Click += (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 session.GoToChat(message.SenderId);
                 session.CurrentOpenedChat.Composer.AddForwardedMessages(chat.PeerId, new List<MessageViewModel> { message });
             };
@@ -292,6 +302,7 @@ namespace ELOR.Laney.Helpers {
             edit.Click += (a, b) => chat.Composer.StartEditing(message);
 
             mark.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var response = await session.API.Messages.MarkAsImportantAsync(message.PeerId, new List<int> { message.ConversationMessageId }, true);
                 } catch (Exception ex) {
@@ -300,6 +311,7 @@ namespace ELOR.Laney.Helpers {
             };
 
             unmark.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var response = await session.API.Messages.MarkAsImportantAsync(message.PeerId, new List<int> { message.ConversationMessageId }, false);
                 } catch (Exception ex) {
@@ -307,9 +319,23 @@ namespace ELOR.Laney.Helpers {
                 }
             };
 
-            pin.Click += async (a, b) => await PinMessageAsync(session, chat.PeerId, message.ConversationMessageId);
+            pin.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
+                try {
+                    var response = await session.API.Messages.PinAsync(session.GroupId, chat.PeerId, message.ConversationMessageId);
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+                }
+            };
 
-            unpin.Click += async (a, b) => await UnpinMessageAsync(session, chat.PeerId);
+            unpin.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
+                try {
+                    var response = await session.API.Messages.UnpinAsync(session.GroupId, chat.PeerId);
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+                }
+            };
 
             spam.Click += (a, b) => DeleteMessages(session, chat.PeerId, new List<int> { message.ConversationMessageId }, false, true);
             delete.Click += (a, b) => TryDeleteMessages(canDeleteWithoutConfirmation, session, chat.PeerId, new List<int> { message.ConversationMessageId }, canDeleteForAll);
@@ -374,6 +400,7 @@ namespace ELOR.Laney.Helpers {
             // Actions
 
             mark.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var response = await session.API.Messages.MarkAsImportantAsync(chat.PeerId, messages.Select(m => m.ConversationMessageId).ToList(), true);
                 } catch (Exception ex) {
@@ -381,6 +408,7 @@ namespace ELOR.Laney.Helpers {
                 }
             };
             unmark.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 try {
                     var response = await session.API.Messages.MarkAsImportantAsync(chat.PeerId, messages.Select(m => m.ConversationMessageId).ToList(), false);
                 } catch (Exception ex) {
@@ -445,6 +473,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         private static async void DeleteMessages(VKSession session, long peerId, List<int> ids, bool forAll, bool spam) {
+            if (DemoMode.IsEnabled) return; 
             try {
                 var response = await session.API.Messages.DeleteAsync(session.GroupId, peerId, ids, spam, forAll);
                 int count = response.Where(r => r.Response == 1).Count();

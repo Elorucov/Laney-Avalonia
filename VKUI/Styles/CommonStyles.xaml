@@ -42,14 +42,10 @@
     <Setter Property="ShowInTaskbar" Value="False"/>
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="ExtendClientAreaChromeHints" Value="SystemChrome"/>
-    <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0"/>
+    <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="1"/>  <!-- чтобы системная тень в винде отображалась -->
     <Setter Property="SystemDecorations" Value="Full"/>
     <Setter Property="Width" Value="540"/>
     <Setter Property="Height" Value="612"/>
-  </Style>
-
-  <Style Selector="Window.Dialog.WinFix  /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Margin" Value="1"/>
   </Style>
 
   <Style Selector="MenuFlyoutPresenter">
@@ -100,7 +96,7 @@
     <Setter Property="Margin" Value="0,12,0,10" />
     <Setter Property="FontSize" Value="14" />
     <Setter Property="LineHeight" Value="18" />
-    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="FontWeight" Value="Medium" />
     <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}" />
   </Style>
   
@@ -113,7 +109,7 @@
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
-    <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>
+    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}" />
     <Setter Property="FontSize" Value="16" />
     <Setter Property="MinHeight" Value="44" />
@@ -184,7 +180,7 @@
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
-    <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>
+    <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
     <Setter Property="FontSize" Value="16" />
     <Setter Property="Cursor" Value="Hand"/>
     <Setter Property="Template">

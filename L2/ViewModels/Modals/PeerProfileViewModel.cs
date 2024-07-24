@@ -338,7 +338,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             List<Command> commands = new List<Command>();
             List<Command> moreCommands = new List<Command>();
 
-            if ((group.CanMessage == 1 || group.MessagesCount > 0) && session.CurrentOpenedChat.PeerId != -group.Id) {
+            if ((group.CanMessage == 1 || group.MessagesCount > 0) && session.CurrentOpenedChat?.PeerId != -group.Id) {
                 Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
                     CloseWindowRequested?.Invoke(this, null);
                     session.GoToChat(-group.Id);

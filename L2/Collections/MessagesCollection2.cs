@@ -23,7 +23,7 @@ namespace ELOR.Laney.Collections {
                     isDateBetweenVisible = true;
                 } else {
                     var prev = messages[i - 1];
-                    isPrevFromSameSender = prev.SenderId == message.SenderId && prev.SentTime.Date == message.SentTime.Date;
+                    isPrevFromSameSender = prev.SenderId == message.SenderId && prev.SentTime.Date == message.SentTime.Date && prev.Action == null;
                     isDateBetweenVisible = prev.SentTime.Date != message.SentTime.Date;
                 }
 
@@ -33,7 +33,7 @@ namespace ELOR.Laney.Collections {
                     isNextFromSameSender = false;
                 } else {
                     var next = messages[i + 1];
-                    isNextFromSameSender = next.SenderId == message.SenderId && next.SentTime.Date == message.SentTime.Date;
+                    isNextFromSameSender = next.SenderId == message.SenderId && next.SentTime.Date == message.SentTime.Date && next.Action == null;
                 }
 
                 message.UpdateSenderInfoView(isPrevFromSameSender, isNextFromSameSender);

@@ -71,6 +71,10 @@ namespace ELOR.Laney {
             try {
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
+            } catch (Exception ex) {
+                Log.Fatal(ex, "App crashed! (TC)\n");
+                Log.CloseAndFlush();
+                Process.GetCurrentProcess().Kill();
             } finally {
                 Log.Information("App closed.\n");
                 Log.CloseAndFlush();
@@ -80,7 +84,7 @@ namespace ELOR.Laney {
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
             Exception ex = e.ExceptionObject as Exception;
 
-            Log.Fatal(ex, "App crashed!\n");
+            Log.Fatal(ex, "App crashed! (UE)\n");
             Log.CloseAndFlush();
             Process.GetCurrentProcess().Kill();
         }

@@ -255,12 +255,13 @@ namespace ELOR.Laney.ViewModels {
             // Checking and displaying activity status
             if (DemoMode.IsEnabled) {
                 var ds = DemoMode.GetDemoSessionById(session.Id);
-                if (ds.ActivityStatuses.ContainsKey(PeerId)) {
-                    foreach (var status in ds.ActivityStatuses[PeerId]) {
+                if (ds.ActivityStatuses.ContainsKey(PeerId.ToString())) {
+                    foreach (var status in ds.ActivityStatuses[PeerId.ToString()]) {
                         ActivityStatusUsers.Add(status, 1000 * 3600);
                     }
                     UpdateActivityStatus();
                 }
+                OpenProfileCommand = new RelayCommand((o) => { });
             } else {
                 OpenProfileCommand = new RelayCommand(OpenPeerProfile);
                 GoToLastMessageCommand = new RelayCommand(GoToLastMessage);
@@ -289,7 +290,7 @@ namespace ELOR.Laney.ViewModels {
                 if (ChatSettings.State != UserStateInChat.In) {
                     RestrictionReason = Localizer.Instance[$"chat_{ChatSettings.State.ToString().ToLower()}"];
                 } else {
-                    // VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason);
+                    RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Localizer.Instance["cannot_write"]);
                 }
             } else if (PeerType == PeerType.User) {
                 switch (CanWrite.Reason) {

@@ -106,7 +106,7 @@
             <Border x:Name="BubbleBackground" Grid.RowSpan="3" CornerRadius="18"/>
             <StackPanel x:Name="MessageContent">
               <Border x:Name="SenderNameWrap">
-                <TextBlock x:Name="SenderName" Margin="12,7,12,0" Classes="Caption1" FontWeight="SemiBold" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.IsSenderNameVisible, RelativeSource={RelativeSource TemplatedParent}}"/>
+                <TextBlock x:Name="SenderName" Margin="12,7,12,0" Classes="Caption1" FontWeight="Medium" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding Message.SenderName, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.IsSenderNameVisible, RelativeSource={RelativeSource TemplatedParent}}"/>
               </Border>
               <Button x:Name="ReplyMessageButton" Classes="Tertiary" Margin="12,6,12,4" Padding="0" CornerRadius="0" IsVisible="{Binding Message.ReplyMessage, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}">
                 <DockPanel>
@@ -123,11 +123,11 @@
               </Border>
             </StackPanel>
             <Border x:Name="IndicatorContainer" Height="20" CornerRadius="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Classes="DefaultIndicator">
-              <StackPanel x:Name="IndicatorStack" Orientation="Horizontal" Margin="6,4,6,2">
-                <vkui:VKIcon x:Name="ImportantIndicator" Id="Icon12Favorite" Width="12" Height="12" Margin="0,-1,4,0" IsVisible="{Binding Message.IsImportant, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <StackPanel x:Name="IndicatorStack" Orientation="Horizontal" Margin="6,3">
+                <vkui:VKIcon x:Name="ImportantIndicator" Id="Icon12Favorite" Width="12" Height="12" Margin="0,0,4,0" IsVisible="{Binding Message.IsImportant, RelativeSource={RelativeSource TemplatedParent}}"/>
                 <TextBlock x:Name="EditedIndicator" Classes="Caption3" Text="{i18n:Localize edited_indicator}" Margin="0,0,4,0" IsVisible="{Binding Message.EditTime, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                 <TextBlock x:Name="TimeIndicator" Classes="Caption3"/>
-                <vkui:VKIcon x:Name="StateIndicator" Id="Icon16CheckDoubleOutline" Width="12" Height="12" Margin="4,-1,0,0"/>
+                <vkui:VKIcon x:Name="StateIndicator" Id="Icon16CheckDoubleOutline" Width="12" Height="12" Margin="4,0,0,0"/>
               </StackPanel>
             </Border>
             <controls:BotKeyboardUI x:Name="BotKeyboard" Grid.Row="1" Margin="12,4,12,12" MinWidth="296" Keyboard="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
@@ -150,7 +150,7 @@
                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image Width="26" Height="26" controls:ImageLoader.SvgSource="{Binding ReactionId, Converter={StaticResource rec}}"/>
                         <Grid MinWidth="16" Height="22">
-                          <TextBlock FontSize="13" LineHeight="16" Margin="4,3,2,3" TextAlignment="Center" FontWeight="Medium" Text="{Binding Count}"/>
+                          <TextBlock FontSize="13" LineHeight="16" Margin="4,3,2,3" TextAlignment="Center" Text="{Binding Count}"/>
                         </Grid>
                       </StackPanel>
                     </Button>

@@ -1,0 +1,4 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <FontFamily x:Key="VKSansDisplay">avares://VKUI/Fonts#VK Sans Display</FontFamily>
+</ResourceDictionary>

@@ -367,6 +367,7 @@ namespace ELOR.Laney.Views {
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) {
+            if (DemoMode.IsEnabled) return;
             Window mainWindow = TopLevel.GetTopLevel(this) as Window;
             SearchInChatWindow window = new SearchInChatWindow(VKSession.GetByDataContext(this), Chat.PeerId, mainWindow);
             window.Show();
@@ -391,6 +392,7 @@ namespace ELOR.Laney.Views {
 
         bool isMarking = false;
         private async void TryMarkAsRead(MessageViewModel msg) {
+            if (DemoMode.IsEnabled) return;
             if (isMarking || msg == null || msg.IsOutgoing || msg.State != MessageVMState.Unread) return;
             isMarking = true;
 
@@ -407,6 +409,7 @@ namespace ELOR.Laney.Views {
 
         bool isMarking2 = false;
         private async void TryMarkReactionsAsRead() {
+            if (DemoMode.IsEnabled) return;
             if (isMarking2 || FirstVisible == null || LastVisible == null) return;
             var fid = FirstVisible.ConversationMessageId;
             var lid = LastVisible.ConversationMessageId;

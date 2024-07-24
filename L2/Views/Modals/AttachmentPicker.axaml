@@ -16,7 +16,7 @@
     <DataTemplate x:Key="PhotoAlbumTemplate" x:DataType="vke:AlbumLite">
       <StackPanel Width="220">
         <Rectangle Width="220" Height="124" RadiusX="8" RadiusY="8" controls:ImageLoader.FillSource="{Binding ThumbUri}"/>
-        <TextBlock x:Name="AlbumTitle" Margin="0,6,0,0" Classes="Subhead" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Text="{Binding Title}"/>
+        <TextBlock x:Name="AlbumTitle" Margin="0,6,0,0" Classes="Subhead" FontWeight="Medium" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Text="{Binding Title}"/>
         <TextBlock x:Name="ItemsCount" Margin="0,0,0,4" Classes="Caption1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Size, Converter={StaticResource cc}, ConverterParameter=photo}"/>
       </StackPanel>
     </DataTemplate>
@@ -26,7 +26,7 @@
     <DataTemplate x:Key="VideoAlbumTemplate" x:DataType="vke:AlbumLite">
       <StackPanel Width="220">
         <Rectangle Width="220" Height="124" RadiusX="8" RadiusY="8" controls:ImageLoader.FillSource="{Binding ThumbUri}"/>
-        <TextBlock x:Name="AlbumTitle" Margin="0,6,0,0" Classes="Subhead" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Text="{Binding Title}"/>
+        <TextBlock x:Name="AlbumTitle" Margin="0,6,0,0" Classes="Subhead" FontWeight="Medium" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Text="{Binding Title}"/>
         <TextBlock x:Name="ItemsCount" Margin="0,0,0,4" Classes="Caption1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Size, Converter={StaticResource cc}, ConverterParameter=video}"/>
       </StackPanel>
     </DataTemplate>
@@ -69,9 +69,7 @@
     </Style>
   </vkw:DialogWindow.Styles>
     
-  <Grid RowDefinitions="Auto * Auto">
-    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="False"/>
-    
+  <Grid RowDefinitions="Auto * Auto">   
     <TabControl x:Name="Tabs" Classes="Accent" Grid.RowSpan="2" SelectionChanged="Tabs_SelectionChanged">
       <TabItem Header="{i18n:Localize photo}">
         <Grid RowDefinitions="Auto *">
@@ -198,14 +196,16 @@
         </Grid>
       </TabItem>
     </TabControl>
-    
+
+    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="False"/>
+
     <Rectangle VerticalAlignment="Bottom" Grid.Row="1" Height="24" IsHitTestVisible="False" Fill="{DynamicResource TransparentToContentGradientBrush}"/>
       
     <Button Grid.Row="2" Classes="Primary Large" Margin="12,0,12,12" HorizontalAlignment="Stretch" IsEnabled="{Binding !!SelectedAttachmentsCount}" Click="CloseAndAttach">
       <StackPanel Orientation="Horizontal">
         <TextBlock Classes="ButtonIn" Text="{i18n:Localize attach}"/>
-        <Border IsVisible="{Binding !!SelectedAttachmentsCount}" Margin="8,0,0,0" MinWidth="16" Height="16" CornerRadius="8" Background="{DynamicResource VKButtonPrimaryForegroundBrush}">
-          <TextBlock Margin="4,0" Classes="Subhead" FontWeight="SemiBold" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="{Binding SelectedAttachmentsCount}"/>
+        <Border IsVisible="{Binding !!SelectedAttachmentsCount}" Margin="8,0,0,0" MinWidth="18" Height="18" CornerRadius="9" Background="{DynamicResource VKButtonPrimaryForegroundBrush}">
+          <TextBlock Margin="4,0" Classes="Subhead" FontWeight="Medium" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="{Binding SelectedAttachmentsCount}"/>
         </Border>
       </StackPanel>
     </Button>

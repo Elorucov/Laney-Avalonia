@@ -5,9 +5,12 @@
              xmlns:vkui="using:VKUI.Controls"
              xmlns:i18n="using:ELOR.Laney.Core.Localization"
              xmlns:controls="using:ELOR.Laney.Controls"
+             xmlns:qr="using:Avalonia.Labs.Qr"
              mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
-             x:Class="ELOR.Laney.Views.SignIn.ExternalBrowserAuthPage">
+             x:Class="ELOR.Laney.Views.SignIn.QRAuthPage"
+             Loaded="Page_Loaded">
   <Grid RowDefinitions="Auto * Auto">
+    <Image HorizontalAlignment="Center" Width="28" Height="28" Margin="0,12" Source="{StaticResource Logo}"/>
     <vkui:PanelHeader IsSeparatorVisible="False">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="BackButton" Click="BackButton_Click">
@@ -16,10 +19,10 @@
       </vkui:PanelHeader.LeftButtons>
     </vkui:PanelHeader>
     <StackPanel Grid.Row="1" Margin="24,12">
-      <Image HorizontalAlignment="Center" Width="72" Height="72" Margin="0,0,0,12" Source="{StaticResource Logo}"/>
-      <TextBlock Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="{i18n:Localize landing_auth_in_progress_title}"/>
-      <TextBlock Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="{i18n:Localize landing_auth_in_progress}"/>
-      <vkui:Spinner HorizontalAlignment="Center" Width="44" Height="44"/>
+      <TextBlock x:Name="PageTitle" Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="QR Auth"/>
+      <TextBlock x:Name="PageDesc" Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="Hold your camera to QR below"/>
+      <qr:QrCode x:Name="QrCodeControl" IsVisible="False" Width="256" Height="256" Data="https://youtube.com/watch?v=dQw4w9WgXcQ"/>
+      <vkui:Spinner x:Name="Loading" Width="44" Height="44" Margin="106"/>
     </StackPanel>
   </Grid>
 </vkui:Page>

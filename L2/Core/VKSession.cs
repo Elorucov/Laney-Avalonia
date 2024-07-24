@@ -29,6 +29,7 @@ using Avalonia.Dialogs;
 using ELOR.VKAPILib.Objects.Messages;
 using System.Diagnostics;
 using Avalonia.Platform;
+using System.Threading;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -85,7 +86,7 @@ namespace ELOR.Laney.Core {
                 ash.Items.Add(item);
             }
 
-            if (!IsGroup) {
+            if (!IsGroup && !DemoMode.IsEnabled) {
                 ActionSheetItem chooseGroups = new ActionSheetItem {
                     Before = new VKIcon { Id = VKIconNames.Icon20More },
                     Header = Localizer.Instance["groups_management"],
@@ -140,6 +141,7 @@ namespace ELOR.Laney.Core {
                 await new AboutAvaloniaDialog().ShowDialog(Window);
             };
             logout.Click += async (a, b) => {
+                if (DemoMode.IsEnabled) return;
                 string[] buttons = [Localizer.Instance["yes"], Localizer.Instance["no"]];
                 VKUIDialog dlg = new VKUIDialog(Localizer.Instance["log_out"], Localizer.Instance["log_out_confirm"], buttons, 2);
                 int result = await dlg.ShowDialog<int>(Window);
@@ -147,7 +149,7 @@ namespace ELOR.Laney.Core {
                 if (result == 1) LogOut();
             };
 
-            if (!IsGroup) {
+            if (!IsGroup && !DemoMode.IsEnabled) {
                 ash.Items.Add(important);
                 ash.Items.Add(favorites);
                 ash.Items.Add(new ActionSheetItem());
@@ -371,6 +373,7 @@ namespace ELOR.Laney.Core {
                 Window.Activated += Window_Activated;
 
                 if (DemoMode.IsEnabled) {
+                    ImViewModel = new ImViewModel(this);
                     ImViewModel.LoadConversations();
                     return;
                 }
@@ -418,6 +421,26 @@ namespace ELOR.Laney.Core {
                     }
 
                     _sessions = sessions;
+
+                    // Set online
+                    // TODO: сделать параметр для юзера, который позволил бы включить/отключить
+                    // отправку онлайна, когда окно закрыто.
+                    Thread thread = new Thread(() => {
+                        System.Timers.Timer onlineTimer = new System.Timers.Timer(TimeSpan.FromMinutes(4)) {
+                            Enabled = true,
+                            AutoReset = true,
+                        };
+                        onlineTimer.Elapsed += async (a, b) => {
+                            try {
+                                bool result = await API.Account.SetOnlineAsync();
+                                Log.Information($"account.setOnline: {result}");
+                            } catch (Exception ex) {
+                                Log.Error(ex, "An error occured while calling account.setOnline!");
+                            }
+                        };
+                        onlineTimer.Start();
+                    });
+                    thread.Start();
                 }
 
                 if (!IsGroup) {
@@ -628,6 +651,7 @@ namespace ELOR.Laney.Core {
         }
 
         public async void Share(long fromPeerId, List<MessageViewModel> messages) {
+            if (DemoMode.IsEnabled) return;
             SharingViewModel user = new SharingViewModel(Main, GroupId);
             SharingViewModel group = IsGroup ? new SharingViewModel(this, 0) : null;
             SharingView dlg = new SharingView(user, group);

@@ -274,7 +274,7 @@ namespace ELOR.Laney.Core.Network {
             if (parameters != null) {
                 foreach (var p in parameters) {
                     if (p.Key == "access_token") continue;
-                    paramstr += $"{p.Key}={p.Value.Replace("\n", "")}; ";
+                    paramstr += $"{p.Key}={p.Value.Replace("\n", "").Replace("\r\n", "")}; ";
                 }
             } else {
                 paramstr = String.Empty;
