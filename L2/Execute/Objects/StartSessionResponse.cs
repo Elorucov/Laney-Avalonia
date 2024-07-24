@@ -25,6 +25,9 @@ namespace ELOR.Laney.Execute.Objects {
         [JsonPropertyName("reactions_assets")]
         public List<ReactionAssets> ReactionsAssets { get; set; }
 
+        [JsonPropertyName("available_reactions")]
+        public List<int> AvailableReactions { get; set; }
+
         [JsonPropertyName("longpolls")]
         public List<LongPollInfoForSession> LongPolls { get; set; }
 

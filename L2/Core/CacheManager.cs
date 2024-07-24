@@ -123,10 +123,12 @@ namespace ELOR.Laney.Core {
         #region Reactions assets
 
         public static ConcurrentDictionary<int, ReactionAssetLinks> ReactionsAssets { get; private set; }
+        public static List<int> AvailableReactions { get; private set; }
         public static ConcurrentDictionary<string, string> ReactionsAssetData { get; private set; } = new ConcurrentDictionary<string, string>();
         static ConcurrentDictionary<string, ManualResetEventSlim> nowLoading = new ConcurrentDictionary<string, ManualResetEventSlim>();
 
-        public static void SetReactionsAssets(List<ReactionAssets> assets) {
+        public static void SetReactionsInfo(List<int> available, List<ReactionAssets> assets) {
+            AvailableReactions = available;
             ReactionsAssets = new ConcurrentDictionary<int, ReactionAssetLinks>();
             if (assets == null) return;
             foreach (var a in assets) {

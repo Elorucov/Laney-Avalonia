@@ -31,7 +31,7 @@ public partial class ReactionsPicker : UserControl {
         parentPopup = parent;
 
         Command command = new Command(null, null, false, OnReactionClick);
-        var entities = CacheManager.ReactionsAssets.Select(r => new Entity(r.Key, new Uri(r.Value.Static), null, null, command)).ToList();
+        var entities = CacheManager.AvailableReactions.Select(r => new Entity(r, new Uri(CacheManager.GetStaticReactionUrl(r)), null, null, command)).ToList();
         ReactionsList.ItemsSource = entities;
     }
 

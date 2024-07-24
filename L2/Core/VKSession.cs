@@ -457,7 +457,7 @@ namespace ELOR.Laney.Core {
                     Avatar = currentGroup.Avatar;
                 }
 
-                CacheManager.SetReactionsAssets(info.ReactionsAssets);
+                CacheManager.SetReactionsInfo(info.AvailableReactions, info.ReactionsAssets);
 
                 var lp = info.LongPolls.Where(lps => lps.SessionId == Id).FirstOrDefault();
                 SetUpLongPoll(lp);
