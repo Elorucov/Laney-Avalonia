@@ -6,7 +6,11 @@
 
 Это Laney 2 — кроссплатформенная версия Laney, альтернативного мессенджера ВКонтакте, написанная на платформе .NET 8 с использованием UI-фреймворка [Avalonia](https://github.com/AvaloniaUI/Avalonia).
 
-![Windows](docs/screen_windows.png)
+<picture align="center">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/windows_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/windows_light.png">
+  <img alt="Windows screenshot" src="docs/windows_light.png">
+</picture>
 
 ## О приложении
 Первая версия Laney разрабатывается с 2018 года, является UWP-приложением, которое работает на компьютере и смартфоне на Windows 10, и в Xbox.
