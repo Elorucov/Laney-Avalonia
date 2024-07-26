@@ -31,7 +31,7 @@ namespace ELOR.Laney.Views.Modals {
             Setup(header, text, buttons, primaryButton);
         }
 
-        private void Setup(string header, string text, string[] buttons, int primaryButton = 1) {
+        private void Setup(string header, string text, string[] buttons, int primaryButton = 0) {
             TitleBar.CanShowTitle = false;
             if (string.IsNullOrEmpty(header)) throw new ArgumentException("Parameter must not be null!", nameof(header));
             if (buttons == null) throw new ArgumentException("Buttons must not be null!", nameof(buttons));

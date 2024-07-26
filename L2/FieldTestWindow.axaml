@@ -125,15 +125,6 @@
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">
-        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="SVG test"/>
-        <Image HorizontalAlignment="Left" Width="26" Height="26">
-          <Image.Source>
-            <SvgImage Source="https://sun9-65.userapi.com/NRmhCK9GMbm4L_tnd3m-DmKqMUq5u26FI8CQKw/ey7FdcDQ9pk.svg"/>
-          </Image.Source>
-        </Image>
-      </StackPanel>
-
-      <StackPanel Margin="0,8,0,0">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Router test"/>
         <StackPanel Orientation="Horizontal">
           <TextBox x:Name="linkBox" Width="240" Margin="8" Watermark="https://vk.com/elorucov"/>
@@ -145,6 +136,11 @@
       <StackPanel Margin="0,8,0,0">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Audio test"/>
         <Button x:Name="w1" Margin="8" Content="Play SFX"/>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Various tests"/>
+        <Button x:Name="vt01" Margin="8" Click="vt01_Click" Content="Dump clipboard content to local folder"/>
       </StackPanel>
       
       <StackPanel Margin="0,8,0,0">

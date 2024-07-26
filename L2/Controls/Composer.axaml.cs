@@ -7,6 +7,7 @@ using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Controls {
@@ -37,7 +38,20 @@ namespace ELOR.Laney.Controls {
             MessageText.SelectionEnd = ViewModel.TextSelectionEnd;
         }
 
+        private async void MessageText_KeyUp(object? sender, KeyEventArgs e) {
+            Debug.WriteLine($"KeyUp: {e.Key}; Modifiers: {e.KeyModifiers}");
+            if (e.KeyModifiers == KeyModifiers.Control && e.Key == Key.V) {
+                var window = VKSession.GetByDataContext(this).ModalWindow;
+
+                var formats = await window.Clipboard.GetFormatsAsync();
+                await new VKUIDialog("Clipboard", String.Join(", ", formats)).ShowDialog<int>(window);
+                e.Handled = true;
+            }
+        }
+
         private void MessageText_KeyDown(object sender, KeyEventArgs e) {
+            Debug.WriteLine($"KeyDown: {e.Key}; Modifiers: {e.KeyModifiers}");
+
             if (e.Key == Key.Enter) {
                 if (!Settings.SentViaEnter) {
                     if (e.KeyModifiers == KeyModifiers.Control && ViewModel.CanSendMessage && !ViewModel.IsLoading) {

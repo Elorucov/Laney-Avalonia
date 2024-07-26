@@ -60,5 +60,46 @@ namespace ELOR.Laney {
             var bb2 = AssetsManager.OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
             AudioPlayer.SFX?.Play(bb2);
         }
+
+        private async void vt01_Click(object? sender, RoutedEventArgs e) {
+            var formats = await Clipboard.GetFormatsAsync();
+            string str = String.Join(", ", formats);
+            string export = Path.Combine(App.LocalDataPath, "clipboardtest");
+            if (formats.Length > 0) {
+                Directory.CreateDirectory(export);
+
+                int result = await new VKUIDialog("Save data from clipboard?", $"Clipboard contains {formats.Length} object(s): {str}.\n\nAll these object saved as binary file in:\n{export}\n\nContinue?", new string[] { "Yes", "No" }, 1).ShowDialog<int>(this);
+                if (result == 1) {
+                    Dictionary<string, string> nonbinary = new Dictionary<string, string>();
+                    foreach (string format in formats) {
+                        var data = await Clipboard.GetDataAsync(format);
+                        if (data == null) {
+                            nonbinary.Add(format, "empty");
+                            continue;
+                        } else if (data is byte[] binary) {
+                            string path = Path.Combine(export, $"{format}.bin");
+                            var fs = File.Create(path);
+                            await fs.WriteAsync(binary);
+                            await fs.FlushAsync();
+                        } else {
+                            nonbinary.Add(format, data.GetType().ToString());
+                            continue;
+                        }
+                    }
+
+                    if (nonbinary.Count > 0) {
+                        string str2 = "";
+                        foreach (var nb in nonbinary) {
+                            str2 += $"{nb.Key}: {nb.Value}\n";
+                        }
+                        await new VKUIDialog(nonbinary.Count == formats.Length ? "Failed to save all objects!" : "Failed to save some objects", str2.Trim()).ShowDialog<int>(this);
+                    } else {
+                        await new VKUIDialog("All done!", $"Check folder:\n{export}").ShowDialog<int>(this);
+                    }
+                }
+            } else {
+                await new VKUIDialog("Failed", "Clipboard is empty.").ShowDialog<int>(this);
+            }
+        }
     }
 }
