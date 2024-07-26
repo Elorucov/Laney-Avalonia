@@ -72,17 +72,25 @@ namespace ELOR.Laney {
                 if (result == 1) {
                     Dictionary<string, string> nonbinary = new Dictionary<string, string>();
                     foreach (string format in formats) {
-                        var data = await Clipboard.GetDataAsync(format);
-                        if (data == null) {
-                            nonbinary.Add(format, "empty");
-                            continue;
-                        } else if (data is byte[] binary) {
-                            string path = Path.Combine(export, $"{format}.bin");
-                            var fs = File.Create(path);
-                            await fs.WriteAsync(binary);
-                            await fs.FlushAsync();
-                        } else {
-                            nonbinary.Add(format, data.GetType().ToString());
+                        try {
+                            var data = await Clipboard.GetDataAsync(format);
+                            if (data == null) {
+                                nonbinary.Add(format, "empty");
+                                continue;
+                            } else if (data is byte[] binary) {
+                                string path = Path.Combine(export, $"{format}.bin");
+                                var fs = File.Create(path);
+                                await fs.WriteAsync(binary);
+                                await fs.FlushAsync();
+                            } else if (data is string text) {
+                                string path = Path.Combine(export, $"{format}.txt");
+                                await File.WriteAllTextAsync(path, text);
+                            } else {
+                                nonbinary.Add(format, data.GetType().ToString());
+                                continue;
+                            }
+                        } catch (Exception ex) {
+                            nonbinary.Add(format, $"failed with {ex.GetType()}\n");
                             continue;
                         }
                     }
