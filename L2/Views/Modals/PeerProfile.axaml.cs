@@ -104,7 +104,7 @@ namespace ELOR.Laney.Views.Modals {
             ash.ShowAt(b, true);
         }
 
-        private void OnAttachmentClick(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private async void OnAttachmentClick(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             Button b = sender as Button;
             ConversationAttachment a = b.DataContext as ConversationAttachment;
             
@@ -118,7 +118,7 @@ namespace ELOR.Laney.Views.Modals {
                     }
                     break;
                 case AttachmentType.Link:
-                    Router.LaunchLink(session, a.Attachment.Link.Uri);
+                    await Router.LaunchLink(session, a.Attachment.Link.Uri);
                     break;
             }
         }

@@ -233,7 +233,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
 
             // Open in browser
-            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_profile"], false, (a) => Launcher.LaunchUrl($"https://vk.com/id{user.Id}"));
+            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_profile"], false, async (a) => await Launcher.LaunchUrl($"https://vk.com/id{user.Id}"));
             commands.Add(openExternalCmd);
 
             // Ban/unban
@@ -352,7 +352,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             commands.Add(notifsCmd);
 
             // Open in browser
-            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_group"], false, (a) => Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
+            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_group"], false,async (a) => await Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
             commands.Add(openExternalCmd);
 
             // Allow/deny messages from group

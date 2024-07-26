@@ -94,7 +94,7 @@ namespace ELOR.Laney.Core {
             string authUri = await GetVKIDAuthLinkAsync();
             if (String.IsNullOrEmpty(authUri)) throw new Exception("Auth URL for external browser is null!");
 
-            Launcher.LaunchUrl(authUri);
+            await Launcher.LaunchUrl(authUri);
             string response = await LServer.StartAndReturnQueryFromClient(cts.Token);
             if (response.Length <= 1) return new Tuple<long, string>(userId, accessToken);
             var queries = response.Substring(1).ParseQuery();

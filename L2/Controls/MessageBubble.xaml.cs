@@ -392,8 +392,8 @@ namespace ELOR.Laney.Controls {
             if (Settings.MessageRenderingLogs) Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} text rendered.");
         }
 
-        private void OnLinkClicked(string link) {
-            Router.LaunchLink(VKSession.GetByDataContext(this), link);
+        private async void OnLinkClicked(string link) {
+            await Router.LaunchLink(VKSession.GetByDataContext(this), link);
         }
 
         private async void SendOrDeleteReaction(object obj) {

@@ -119,8 +119,8 @@ namespace ELOR.Laney.Controls {
             }
         }
 
-        private void OnLinkClicked(string link) {
-            Router.LaunchLink(VKSession.GetByDataContext(this), link);
+        private async void OnLinkClicked(string link) {
+            await Router.LaunchLink(VKSession.GetByDataContext(this), link);
         }
     }
 }

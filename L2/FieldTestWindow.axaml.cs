@@ -45,14 +45,14 @@ namespace ELOR.Laney {
             Settings.Set(Settings.TEST_STRING, settingDemo.Text);
         }
 
-        private void CheckLinkBtn_Click(object sender, RoutedEventArgs e) {
+        private async void CheckLinkBtn_Click(object sender, RoutedEventArgs e) {
             string url = linkBox.Text;
             if (!Uri.IsWellFormedUriString(url, UriKind.Absolute)) {
                 routerResult.Text = "Invalid URL!";
                 return;
             }
 
-            var result = Router.LaunchLink(VKSession.Main, url);
+            var result = await Router.LaunchLink(VKSession.Main, url);
             routerResult.Text = $"Type: {result.Item1}";
         }
 

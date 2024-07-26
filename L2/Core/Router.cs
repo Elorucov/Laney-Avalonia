@@ -40,11 +40,11 @@ namespace ELOR.Laney.Core {
             return VKLinkType.Unknown;
         }
 
-        public static Tuple<VKLinkType, string> LaunchLink(this VKSession session, Uri uri) {
-            return LaunchLink(session, uri.AbsoluteUri);
+        public static async Task<Tuple<VKLinkType, string>> LaunchLink(this VKSession session, Uri uri) {
+            return await LaunchLink(session, uri.AbsoluteUri);
         }
 
-        public static Tuple<VKLinkType, string> LaunchLink(this VKSession session, string url) {
+        public static async Task<Tuple<VKLinkType, string>> LaunchLink(this VKSession session, string url) {
             VKLinkType type = GetLinkType(url);
             string id = null;
 
@@ -65,22 +65,22 @@ namespace ELOR.Laney.Core {
                     break;
                 case VKLinkType.Wall: // TODO: Wallpost viewer in app
                     id = $"{ids[0].Value}_{ids[1].Value}";
-                    Launcher.LaunchUrl(url);
+                    await Launcher.LaunchUrl(url);
                     break;
                 case VKLinkType.Poll:
                     OpenPollViewer(session, Int64.Parse(ids[0].Value), Int32.Parse(ids[1].Value));
-                    Launcher.LaunchUrl(url);
+                    await Launcher.LaunchUrl(url);
                     break;
                 case VKLinkType.ConversationInvite:
                     id = url;
                     if (session.GroupId != 0) break; // TODO: открыть окно превью чата в сессии юзера
                     OpenChatPreview(session, url);
-                    Launcher.LaunchUrl(url);
+                    await Launcher.LaunchUrl(url);
                     break;
                 case VKLinkType.WriteVkMe:
                     id = snm[0].Value;
                     TryResolveScreenNameAndOpenConv(session, id, url);
-                    Launcher.LaunchUrl(url); // Remove after implementation
+                    await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.Write:
                     var wr = writeIdReg.Match(url);
@@ -90,16 +90,16 @@ namespace ELOR.Laney.Core {
                 case VKLinkType.StickerPack:
                     string packName = spm[0].Groups[4].Value;
                     OpenStickerPackPreview(session, packName);
-                    Launcher.LaunchUrl(url); // Remove after implementation
+                    await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.ScreenName:
                     id = snm[0].Value;
                     TryResolveScreenNameAndOpenProfile(session, id, url);
-                    Launcher.LaunchUrl(url); // Remove after implementation
+                    await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.Unknown:
                     id = url;
-                    Launcher.LaunchUrl(url);
+                    await Launcher.LaunchUrl(url);
                     break;
             }
             return new Tuple<VKLinkType, string>(type, id);

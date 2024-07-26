@@ -255,7 +255,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Subtitle = def,
                     Name = wp.ObjectType
                 };
-                ba.Click += (a, b) => Launcher.LaunchUrl($"https://vk.com/wall{wp.OwnerId}_{wp.Id}");
+                ba.Click += async (a, b) => await Launcher.LaunchUrl($"https://vk.com/wall{wp.OwnerId}_{wp.Id}");
                 StandartAttachments.Children.Add(ba);
             }
 
@@ -269,7 +269,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Subtitle = def,
                     Name = "WallReply"
                 };
-                ba.Click += (a, b) => Launcher.LaunchUrl($"https://vk.com/wall{wr.OwnerId}_{wr.PostId}?reply={wr.Id}");
+                ba.Click += async (a, b) => await Launcher.LaunchUrl($"https://vk.com/wall{wr.OwnerId}_{wr.PostId}?reply={wr.Id}");
                 StandartAttachments.Children.Add(ba);
             }
 
@@ -284,11 +284,11 @@ namespace ELOR.Laney.Controls.Attachments {
                     };
                     if (link.Button != null) {
                         ea.ActionButtonText = link.Button.Title;
-                        ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link.Button.Action.Url);
+                        ea.ActionButtonClick += async (a, b) => await Launcher.LaunchUrl(link.Button.Action.Url);
                     }
                     if (!String.IsNullOrEmpty(link.Description)) ToolTip.SetTip(ea, link.Description);
                     if (link.Photo != null) ea.Preview = link.Photo.GetSizeAndUriForThumbnail(Constants.ExtendedAttachmentPreviewSize, Constants.ExtendedAttachmentPreviewSize).Uri;
-                    ea.Click += (a, b) => Launcher.LaunchUrl(link.Url);
+                    ea.Click += async (a, b) => await Launcher.LaunchUrl(link.Url);
                     StandartAttachments.Children.Add(ea);
                 } else {
                     BasicAttachment ba = new BasicAttachment {
@@ -299,7 +299,7 @@ namespace ELOR.Laney.Controls.Attachments {
                         Name = "Link"
                     };
                     if (!String.IsNullOrEmpty(link.Description)) ToolTip.SetTip(ba, link.Description);
-                    ba.Click += (a, b) => Launcher.LaunchUrl(link.Url);
+                    ba.Click += async (a, b) => await Launcher.LaunchUrl(link.Url);
                     StandartAttachments.Children.Add(ba);
                 }
             }
@@ -317,8 +317,8 @@ namespace ELOR.Laney.Controls.Attachments {
                     Name = market.ObjectType
                 };
                 if (!String.IsNullOrEmpty(market.Description)) ToolTip.SetTip(ea, market.Description);
-                ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link);
-                ea.Click += (a, b) => Launcher.LaunchUrl(link);
+                ea.ActionButtonClick += async (a, b) => await Launcher.LaunchUrl(link);
+                ea.Click += async (a, b) => await Launcher.LaunchUrl(link);
                 StandartAttachments.Children.Add(ea);
             }
 
@@ -332,7 +332,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Subtitle = $"{Localizer.Instance["poll"]} {def}",
                     Name = poll.ObjectType,
                 };
-                ba.Click += (a, b) => Launcher.LaunchUrl($"https://vk.com/poll{poll.OwnerId}_{poll.Id}");
+                ba.Click += async (a, b) => await Launcher.LaunchUrl($"https://vk.com/poll{poll.OwnerId}_{poll.Id}");
                 StandartAttachments.Children.Add(ba);
             }
 
@@ -356,8 +356,8 @@ namespace ELOR.Laney.Controls.Attachments {
                     Name = "Event"
                 };
                 if (!String.IsNullOrEmpty(evt.Text)) ToolTip.SetTip(ea, evt.Text);
-                ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link);
-                ea.Click += (a, b) => Launcher.LaunchUrl(link);
+                ea.ActionButtonClick += async (a, b) => await Launcher.LaunchUrl(link);
+                ea.Click += async (a, b) => await Launcher.LaunchUrl(link);
                 StandartAttachments.Children.Add(ea);
             }
 
@@ -413,8 +413,8 @@ namespace ELOR.Laney.Controls.Attachments {
                     ActionButtonText = Localizer.Instance["watch"],
                     Name = nr.ObjectType
                 };
-                ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(link);
-                ea.Click += (a, b) => Launcher.LaunchUrl(link);
+                ea.ActionButtonClick += async (a, b) => await Launcher.LaunchUrl(link);
+                ea.Click += async (a, b) => await Launcher.LaunchUrl(link);
                 StandartAttachments.Children.Add(ea);
             }
 
@@ -428,8 +428,8 @@ namespace ELOR.Laney.Controls.Attachments {
                     ActionButtonText = Localizer.Instance["open"],
                     Name = "Curator"
                 };
-                ea.ActionButtonClick += (a, b) => Launcher.LaunchUrl(cur.Url);
-                ea.Click += (a, b) => Launcher.LaunchUrl(cur.Url);
+                ea.ActionButtonClick += async (a, b) => await Launcher.LaunchUrl(cur.Url);
+                ea.Click += async (a, b) => await Launcher.LaunchUrl(cur.Url);
                 StandartAttachments.Children.Add(ea);
             }
 
@@ -485,7 +485,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Name = d.ObjectType
                 };
 
-                ba.Click += (a, b) => Launcher.LaunchUrl(d.Url);
+                ba.Click += async (a, b) => await Launcher.LaunchUrl(d.Url);
                 StandartAttachments.Children.Add(ba);
             }
 
@@ -499,7 +499,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Name = "Textpost"
                 };
 
-                if (!String.IsNullOrEmpty(tpb.Url)) ba.Click += (a, b) => Launcher.LaunchUrl(tpb.Url);
+                if (!String.IsNullOrEmpty(tpb.Url)) ba.Click += async (a, b) => await Launcher.LaunchUrl(tpb.Url);
                 StandartAttachments.Children.Add(ba);
             }
 
