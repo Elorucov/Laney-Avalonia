@@ -28,7 +28,7 @@ namespace ELOR.Laney.Views.SignIn {
         private async void WaitAuthAsync() {
             try {
                 Tuple<long, string> result = new Tuple<long, string>(0, String.Empty);
-                result = await AuthManager.AuthViaExternalBrowserAsync(cts);
+                result = await AuthManager.AuthViaExternalBrowserAsync(TopLevel.GetTopLevel(this) as Window, cts);
 
                 if (result.Item1 != 0) {
                     Window window = TopLevel.GetTopLevel(this) as Window;

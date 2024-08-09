@@ -1,4 +1,5 @@
-﻿using ELOR.Laney.Core.Localization;
+﻿using Avalonia.Controls;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib;
@@ -88,13 +89,13 @@ namespace ELOR.Laney.Core {
             return null;
         }
 
-        public static async Task<Tuple<long, string>> AuthViaExternalBrowserAsync(CancellationTokenSource cts) {
+        public static async Task<Tuple<long, string>> AuthViaExternalBrowserAsync(Window window, CancellationTokenSource cts) {
             long userId = 0;
             string accessToken = String.Empty;
             string authUri = await GetVKIDAuthLinkAsync();
             if (String.IsNullOrEmpty(authUri)) throw new Exception("Auth URL for external browser is null!");
 
-            await Launcher.LaunchUrl(authUri);
+            await window.Launcher.LaunchUriAsync(new Uri(authUri));
             string response = await LServer.StartAndReturnQueryFromClient(cts.Token);
             if (response.Length <= 1) return new Tuple<long, string>(userId, accessToken);
             var queries = response.Substring(1).ParseQuery();
