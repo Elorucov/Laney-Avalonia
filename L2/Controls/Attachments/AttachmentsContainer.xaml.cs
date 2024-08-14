@@ -40,6 +40,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
         public bool NoMargins { get; set; } = false; // отступы по бокам. true нужно для PostUI.
         public bool? IsOutgoing { get; set; } = null; // нужно для MessageBubble. В других случаях null.
+        public bool NeedToShowStoryPreview { get; set; } = false;
 
         #endregion
 
@@ -226,7 +227,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Width = MessageBubble.STICKER_WIDTH,
                     Height = MessageBubble.STICKER_WIDTH,
                     Margin = new Thickness(0, 0, 0, 8),
-                    HorizontalAlignment = HorizontalAlignment.Left,
+                    HorizontalAlignment = IsOutgoing.HasValue && IsOutgoing.Value ? HorizontalAlignment.Right : HorizontalAlignment.Left,
                     Sticker = sticker
                 };
                 StandartAttachments.Children.Add(sp);
@@ -362,15 +363,16 @@ namespace ELOR.Laney.Controls.Attachments {
             }
 
             // Story
-            if (IsOutgoing.HasValue && stories.Count == 1 && (Attachments.Count == 1 || (Attachments.Count == 2 && sticker != null))) {
-
+            if (NeedToShowStoryPreview && IsOutgoing.HasValue && stories.Count == 1 && (Attachments.Count == 1 || (Attachments.Count == 2 && sticker != null))) {
                 StoryPreview prev = new StoryPreview(stories.FirstOrDefault());
                 prev.Margin = new Thickness(0, 0, 0, 8);
                 prev.HorizontalAlignment = IsOutgoing.Value ? HorizontalAlignment.Right : HorizontalAlignment.Left;
 
                 var lastUI = StandartAttachments.Children.LastOrDefault();
                 if (lastUI != null && lastUI is StickerPresenter) {
-                    lastUI.Margin = new Thickness(0, -72, 0, 8);
+                    lastUI.Margin = new Thickness(0, -80, 0, 8);
+                    lastUI.Width = 128;
+                    lastUI.Height = 128;
                 }
                 StandartAttachments.Children.Insert(0, prev);
             } else {

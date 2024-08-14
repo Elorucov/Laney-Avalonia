@@ -9,7 +9,7 @@
     <Grid RowDefinitions="Auto *">
       <Rectangle VerticalAlignment="Stretch" RadiusX="17" RadiusY="17">
         <Rectangle.Fill>
-          <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,80%">
+          <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
             <LinearGradientBrush.GradientStops>
               <GradientStop Color="#a0000000" Offset="0"/>
               <GradientStop Color="#00000000" Offset="1"/>
@@ -17,7 +17,7 @@
           </LinearGradientBrush>
         </Rectangle.Fill>
       </Rectangle>
-      <Grid ColumnDefinitions="Auto *" Margin="12,12,12,0">
+      <Grid ColumnDefinitions="Auto *" Margin="12,12,12,24">
         <vkui:Avatar x:Name="AuthorAvatar" Width="20" Height="20" Margin="0,0,6,0"/>
         <TextBlock x:Name="AuthorName" Grid.Column="1" Foreground="White" FontSize="13"/>
       </Grid>

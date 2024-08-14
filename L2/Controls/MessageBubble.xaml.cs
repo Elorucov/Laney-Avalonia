@@ -239,8 +239,8 @@ namespace ELOR.Laney.Controls {
             bbc.Clear();
             if (singleImage) {
                 bbc.Add(BACKGROUND_TRANSPARENT);
-            //} else if ((uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) && hasReply) {
-            //    bbc.Add(BACKGROUND_BORDER);
+                //} else if ((uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) && hasReply) {
+                //    bbc.Add(BACKGROUND_BORDER);
             } else if (uiType == MessageUIType.Gift) {
                 bbc.Add(BACKGROUND_GIFT);
             } else {
@@ -267,10 +267,10 @@ namespace ELOR.Laney.Controls {
             SenderNameWrap.IsVisible = !singleImage;
 
             // Message bubble width
-            if (uiType == MessageUIType.Sticker || uiType == MessageUIType.StoryWithSticker) {
+            if (uiType == MessageUIType.Sticker) {
                 // при BACKGROUND_BORDER у стикера будет отступ в 8px по сторонам.
                 BubbleRoot.Width = hasReply ? STICKER_WIDTH + 16 : STICKER_WIDTH;
-            } else if (uiType == MessageUIType.Story) {
+            } else if (uiType == MessageUIType.Story || uiType == MessageUIType.StoryWithSticker) {
                 BubbleRoot.Width = STORY_WIDTH;
             } else if (uiType == MessageUIType.Graffiti) {
                 // при BACKGROUND_BORDER у граффити будет отступ в 8px по сторонам.
@@ -291,6 +291,9 @@ namespace ELOR.Laney.Controls {
                 }
             }
             MessageAttachments.Margin = new Thickness(amargin, 0, amargin, amargin);
+
+            // Story UI
+            MessageAttachments.NeedToShowStoryPreview = Message.UIType == MessageUIType.Story || Message.UIType == MessageUIType.StoryWithSticker;
 
             // Attachments
             MessageAttachments.Attachments = Message.Attachments;
