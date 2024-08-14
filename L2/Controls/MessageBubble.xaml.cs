@@ -66,7 +66,7 @@ namespace ELOR.Laney.Controls {
         const string INDICATOR_IMAGE = "ImageIndicator";
         const string INDICATOR_COMPLEX_IMAGE = "ComplexImageIndicator";
 
-        public const double STORY_WIDTH = 124;
+        public const double STORY_WIDTH = 200;
         public const double BUBBLE_FIXED_WIDTH = 320;
         public const double STICKER_WIDTH = 168; // 168 в макете figma vk ipad, 176 — в vk ios, 
                                                  // 184 — android, 148 — android with reply

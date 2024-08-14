@@ -578,6 +578,7 @@ namespace ELOR.Laney.Core {
                         Avatar = new Uri(group.Photo100),
                         API = new VKAPI(Main.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent),
                     };
+                    gs.ImViewModel = new ImViewModel(gs);
                     gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
                     sessions.Add(gs);
 

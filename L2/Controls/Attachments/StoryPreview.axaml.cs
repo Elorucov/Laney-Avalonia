@@ -30,9 +30,14 @@ namespace ELOR.Laney.Controls.Attachments {
             }
 
             if (story.OwnerId == session.Id) {
-                StoryAuthor.Text = Localizer.Instance["stp_your_story"];
+                AuthorAvatar.IsVisible = false;
+                AuthorName.Text = Localizer.Instance["stp_your_story"];
             } else {
-                StoryAuthor.Text = $"{Localizer.Instance["story"]} {VKAPIHelper.GetNameOrDefaultString(story.OwnerId)}";
+                var owner = CacheManager.GetNameAndAvatar(story.OwnerId);
+                if (owner != null) {
+                    AuthorName.Text = $"{owner.Item1} {owner.Item2}";
+                    AuthorAvatar.SetImageAsync(owner.Item3);
+                }
             }
 
             if (story.IsExpired) {

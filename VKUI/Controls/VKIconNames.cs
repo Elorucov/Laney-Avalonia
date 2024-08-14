@@ -65,6 +65,7 @@
         public const string Icon20ShareOutline = "Icon20ShareOutline";
         public const string Icon20SmileOutline = "Icon20SmileOutline";
         public const string Icon20Stars = "Icon20Stars";
+        public const string Icon20StoryOutline = "Icon20StoryOutline";
         public const string Icon20UnfavoriteOutline = "Icon20UnfavoriteOutline";
         public const string Icon20UnlockOutline = "Icon20UnlockOutline";
         public const string Icon20UserAddOutline = "Icon20UserAddOutline";
