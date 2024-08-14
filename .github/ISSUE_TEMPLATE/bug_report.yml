@@ -1,0 +1,67 @@
+name: Отчет о баге
+description: Сообщите об ошибках или непредвиденном поведении в приложении Laney.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо за ваш отчет об ошибках в приложении Laney!
+
+        Чтобы нам было легче помочь вам, пожалуйста, заполните всю подробную информацию ниже.
+  - type: textarea
+    attributes:
+      label: Шаги для воспроизведения
+      placeholder: |
+        1. 
+        2. 
+        3. 
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Ожидаемый результат
+      placeholder: Опишите, что должно было произойти
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Фактический результат
+      placeholder: Опишите, что произошло на самом деле
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Операционная система
+      description: >
+        Укажите название и версию вашей операционной системы.
+        **Не используйте версию ядра (uname), она не полезна.**
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Версия приложения Laney
+      description: >
+        Укажите конкретную версию приложения Laney, которую вы используете.
+        **Не используйте 'последняя', укажите точную версию.**
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Источник установки
+      multiple: false
+      options:
+        - Официальный сайт Laney
+        - Microsoft Store
+        - Mac App Store
+        - Snap
+        - Flatpak
+        - Другое (неофициальный источник)
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Логи
+      description: >
+        Если возможно, приложите файл log.txt, чтобы помочь нам в диагностике проблемы.
+      placeholder: Вставьте здесь содержимое log.txt (если необходимо)
+      render: shell
