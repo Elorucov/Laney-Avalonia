@@ -45,19 +45,19 @@ body:
         **Не используйте 'последняя', укажите точную версию.**
     validations:
       required: true
-  - type: dropdown
-    attributes:
-      label: Источник установки
-      multiple: false
-      options:
-        - Официальный сайт Laney
-        - Microsoft Store
-        - Mac App Store
-        - Snap
-        - Flatpak
-        - Другое (неофициальный источник)
-    validations:
-      required: true
+  # - type: dropdown
+  #   attributes:
+  #     label: Источник установки
+  #     multiple: false
+  #     options:
+  #       - Официальный сайт Laney
+  #       - Microsoft Store
+  #       - Mac App Store
+  #       - Snap
+  #       - Flatpak
+  #       - Другое (неофициальный источник)
+  #   validations:
+  #     required: true
   - type: textarea
     attributes:
       label: Логи
