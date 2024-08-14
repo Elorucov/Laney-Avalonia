@@ -1,0 +1,28 @@
+name: Запрос новой функции
+description: Предложите идею для улучшения приложения Laney.
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes:
+      label: Связана ли ваша идея с проблемой?
+      placeholder: Четкое и ясное описание проблемы, которую вы пытаетесь решить с помощью этой функции.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Опишите решение, которое вы хотели бы видеть
+      placeholder: Четкое и ясное описание того, как вы представляете реализацию функции.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Опишите альтернативные решения, которые вы рассматривали
+      placeholder: Четкое описание любых альтернативных решений или функций, которые вы рассматривали, и почему они не подошли.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Дополнительный контекст
+      placeholder: Добавьте любую другую информацию или примеры, которые могут помочь в понимании вашей идеи. При необходимости прикрепите скриншоты.
+    validations:
+      required: false
