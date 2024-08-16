@@ -14,7 +14,7 @@
           <Viewbox>
             <Grid Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center">
               <Ellipse x:Name="GradientEllipse" Width="48" Height="48" Fill="{TemplateBinding Background}"/>
-              <TextBlock x:Name="Initials" VerticalAlignment="Center" HorizontalAlignment="Center" Classes="Display" FontWeight="SemiBold" FontSize="16" LineHeight="20" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Initials}"/>
+              <TextBlock x:Name="Initials" VerticalAlignment="Center" HorizontalAlignment="Center" Classes="Display" FontWeight="Medium" FontSize="16" LineHeight="20" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Initials}"/>
             </Grid>
           </Viewbox>
           <Ellipse x:Name="ImageEllipse" HorizontalAlignment="Center" VerticalAlignment="Center"/>

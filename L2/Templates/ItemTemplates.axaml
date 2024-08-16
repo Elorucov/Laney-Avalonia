@@ -61,7 +61,7 @@
   <!-- Шаблон для элемента сообщений в глобальном поиске (класс FoundMessageItem) -->
   <DataTemplate x:Key="FoundMessageTemplate" x:DataType="mdl:FoundMessageItem">
     <Grid MinHeight="64" ColumnDefinitions="Auto *" Background="Transparent">
-      <vkui:Avatar Width="48" Height="48" Margin="12,6,0,6" VerticalAlignment="Top" Initials="{Binding PeerName}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding PeerAvatar}"/>
+      <vkui:Avatar Width="48" Height="48" Margin="12,6,0,6" VerticalAlignment="Top" Initials="{Binding PeerName, Converter={StaticResource ic}}" Background="{Binding PeerId, Converter={StaticResource agc}}" Foreground="White" controls:ImageLoader.Image="{Binding PeerAvatar}"/>
       <StackPanel x:Name="Info" Grid.Column="1" Margin="12,6,0,0">
         <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
           <DockPanel x:Name="ChatNameContainer" HorizontalAlignment="Left">
