@@ -264,7 +264,7 @@ namespace ELOR.Laney.Controls {
             AvatarButton.IsVisible = IsChat && !IsOutgoing;
 
             // Sender name
-            SenderNameWrap.IsVisible = !singleImage;
+            if (singleImage) SenderNameWrap.IsVisible = false;
 
             // Message bubble width
             if (uiType == MessageUIType.Sticker) {
@@ -465,7 +465,7 @@ namespace ELOR.Laney.Controls {
             ReplyMessageButton.Margin = new Thickness(rmm.Left, replyTopMargin, rmm.Right, rmm.Bottom);
 
             // Text margin-top
-            double textTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null || Message.Gift != null ? 0 : 8;
+            double textTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null || Message.Gift != null ? 2 : 8;
             var mtm = MessageText.Margin;
             MessageText.Margin = new Thickness(mtm.Left, textTopMargin, mtm.Right, mtm.Bottom);
 

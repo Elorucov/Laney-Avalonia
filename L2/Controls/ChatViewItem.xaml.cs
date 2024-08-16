@@ -2,12 +2,16 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml.Templates;
+using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Controls;
+using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
     public class ChatViewItem : TemplatedControl, ICustomVirtalizedListItem {
@@ -107,7 +111,32 @@ namespace ELOR.Laney.Controls {
 
             // Carousel
             if (message.Template != null) {
+                if (message.Template.Type == BotTemplateType.Carousel) {
+                    StackPanel items = new StackPanel { 
+                        Spacing = 6,
+                        Orientation = Avalonia.Layout.Orientation.Horizontal,
+                    };
 
+                    foreach (CarouselElement item in CollectionsMarshal.AsSpan(message.Template.Elements)) {
+                        CarouselElementUI cui = new CarouselElementUI { 
+                            Element = item,
+                            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch
+                        };
+                        items.Children.Add(cui);
+                    }
+
+                    CarouselEx cex = new CarouselEx {
+                        ScrollPixels = 240,
+                        MaxWidth = 894,
+                        Margin = new Thickness(12, 0),
+                        Content = new ScrollViewer {
+                            VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,
+                            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                            Content = items
+                        }
+                    };
+                    Root.Children.Add(cex);
+                }
             }
 
             Log.Verbose($"ChatViewItem > RenderContent finished.");

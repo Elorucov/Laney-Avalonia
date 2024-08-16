@@ -49,8 +49,8 @@ namespace ELOR.Laney.Controls.Attachments {
 
         private async void Render() {
             if (!isUILoaded || Sticker == null) return;
-            // await StickerView.SetImageBackgroundAsync(Sticker.GetSizeAndUriForThumbnail(this.Width).Uri, Width, Height);
-            ImageLoader.SetBackgroundSource(StickerView, Sticker.GetSizeAndUriForThumbnail(this.Width).Uri);
+            await StickerView.SetImageBackgroundAsync(Sticker.GetSizeAndUriForThumbnail(this.Width).Uri, Width, Height);
+            // ImageLoader.SetBackgroundSource(StickerView, Sticker.GetSizeAndUriForThumbnail(this.Width).Uri);
 
             if (Settings.AnimateStickers && !String.IsNullOrEmpty(Sticker.AnimationUrl)) {
                 await Task.Delay(250); // надо
