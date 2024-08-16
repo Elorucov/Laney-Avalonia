@@ -15,6 +15,7 @@
         <ResourceInclude Source="/Controls/Attachments/ExtendedAttachment.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/GiftUI.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/StickerPresenter.xaml"/>
+        <ResourceInclude Source="/Controls/Attachments/UGCStickerPresenter.xaml"/>
         <ResourceInclude Source="/Controls/BotKeyboardUI.xaml"/>
         <ResourceInclude Source="/Controls/ChatViewItem.xaml"/>
         <ResourceInclude Source="/Controls/CompactMessage.xaml"/>

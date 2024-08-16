@@ -71,6 +71,7 @@
     <None Remove="Controls\Attachments\ExtendedAttachment.xaml" />
     <None Remove="Controls\Attachments\GiftUI.xaml" />
     <None Remove="Controls\Attachments\StickerPresenter.xaml" />
+    <None Remove="Controls\Attachments\UGCStickerPresenter.xaml" />
     <None Remove="Controls\BotKeyboardUI.xaml" />
     <None Remove="Controls\ChatViewItem.xaml" />
     <None Remove="Controls\CompactMessage.xaml" />
@@ -90,6 +91,9 @@
     </AvaloniaResource>
     <AvaloniaResource Include="Controls\Attachments\GiftUI.xaml" />
     <AvaloniaResource Include="Controls\Attachments\StickerPresenter.xaml" />
+    <AvaloniaResource Include="Controls\Attachments\UGCStickerPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
     <AvaloniaResource Include="Controls\BotKeyboardUI.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>

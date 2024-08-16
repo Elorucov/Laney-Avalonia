@@ -205,6 +205,10 @@ namespace ELOR.Laney.ViewModels.Controls {
                     UIType = MessageUIType.Sticker;
                     PreviewImageUri = a.Sticker.GetSizeAndUriForThumbnail(64).Uri;
                     return;
+                } else if (a.Type == AttachmentType.UGCSticker && String.IsNullOrEmpty(Text)) {
+                    UIType = MessageUIType.Sticker;
+                    if (a.UGCSticker.Images?.Count > 0) PreviewImageUri = a.UGCSticker.Images.LastOrDefault().Uri;
+                    return;
                 } else if (a.Type == AttachmentType.Graffiti && String.IsNullOrEmpty(Text)) {
                     UIType = MessageUIType.Graffiti;
                     PreviewImageUri = a.Graffiti.Uri;
@@ -363,6 +367,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         case AttachmentType.Podcast:
                         case AttachmentType.Poll:
                         case AttachmentType.Sticker:
+                        case AttachmentType.UGCSticker:
                         case AttachmentType.Story:
                         case AttachmentType.Wall:
                         case AttachmentType.WallReply:

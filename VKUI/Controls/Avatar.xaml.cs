@@ -6,7 +6,6 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using System;
 using System.Diagnostics;
-using System.IO;
 
 namespace VKUI.Controls {
     public sealed class Avatar : TemplatedControl {

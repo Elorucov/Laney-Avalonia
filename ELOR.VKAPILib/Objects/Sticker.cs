@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class StickerImage {
@@ -94,5 +96,56 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("dictionary")]
         public List<StickerDictionary> Dictionary { get; set; }
+    }
+
+    [DataContract]
+    public enum UGCStickerStatus {
+        [EnumMember(Value = "created")]
+        Created,
+
+        [EnumMember(Value = "passed")]
+        Passed,
+
+        [EnumMember(Value = "in_review")]
+        InReview,
+
+        [EnumMember(Value = "banned")]
+        Banned,
+
+        [EnumMember(Value = "rejected")]
+        Rejected,
+    }
+
+    public class UGCSticker {
+        [JsonPropertyName("owner_id")]
+        public long OwnerId { get; set; }
+
+        [JsonPropertyName("pack_id")]
+        public long PackId { get; set; }
+
+        [JsonPropertyName("id")]
+        public long Id { get; set; }
+
+        [JsonPropertyName("images")]
+        public List<StickerImage> Images { get; set; }
+
+        [JsonPropertyName("restrictions")]
+        public List<string> Restrictions { get; set; }
+
+        [JsonPropertyName("active_restriction")]
+        public string ActiveRestriction { get; set; }
+
+        [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<UGCStickerStatus>))]
+        public UGCStickerStatus Status { get; set; }
+
+        [JsonPropertyName("status_description")]
+        public string StatusDescription { get; set; }
+
+        [JsonPropertyName("is_deleted")]
+        public bool IsDeleted { get; set; }
+
+        [JsonPropertyName("is_claimed")]
+        public bool IsClaimed { get; set; }
     }
 }

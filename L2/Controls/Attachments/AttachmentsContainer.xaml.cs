@@ -80,6 +80,7 @@ namespace ELOR.Laney.Controls.Attachments {
             if (!Double.IsNaN(Width)) imageFixedWidth = Width;
 
             Sticker sticker = null;
+            UGCSticker ugcs = null;
             Gift gift = null;
             Graffiti graffiti = null;
             List<IPreview> previews = new List<IPreview>();
@@ -109,6 +110,7 @@ namespace ELOR.Laney.Controls.Attachments {
             foreach (Attachment a in CollectionsMarshal.AsSpan(Attachments)) {
                 switch (a.Type) {
                     case AttachmentType.Sticker: sticker = a.Sticker; break;
+                    case AttachmentType.UGCSticker: ugcs = a.UGCSticker; break;
                     case AttachmentType.Graffiti: graffiti = a.Graffiti; break;
                     case AttachmentType.Gift: gift = a.Gift; break;
                     case AttachmentType.Photo: previews.Add(a.Photo); break;
@@ -229,6 +231,18 @@ namespace ELOR.Laney.Controls.Attachments {
                     Margin = new Thickness(0, 0, 0, 8),
                     HorizontalAlignment = IsOutgoing.HasValue && IsOutgoing.Value ? HorizontalAlignment.Right : HorizontalAlignment.Left,
                     Sticker = sticker
+                };
+                StandartAttachments.Children.Add(sp);
+            }
+
+            // UGC Sticker
+            if (ugcs != null) {
+                UGCStickerPresenter sp = new UGCStickerPresenter() {
+                    Width = MessageBubble.STICKER_WIDTH,
+                    Height = MessageBubble.STICKER_WIDTH,
+                    Margin = new Thickness(0, 0, 0, 8),
+                    HorizontalAlignment = IsOutgoing.HasValue && IsOutgoing.Value ? HorizontalAlignment.Right : HorizontalAlignment.Left,
+                    Sticker = ugcs
                 };
                 StandartAttachments.Children.Add(sp);
             }

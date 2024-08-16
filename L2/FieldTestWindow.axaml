@@ -6,6 +6,7 @@
         xmlns:controls="clr-namespace:VKUI.Controls;assembly=VKUI"
         xmlns:ctb="using:ColorTextBlock.Avalonia"
         xmlns:lottie="using:Avalonia.Skia.Lottie"
+        xmlns:ctrls="using:ELOR.Laney.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="900"
         x:Class="ELOR.Laney.FieldTestWindow" WindowState="Maximized"
         Title="Field test" Background="{DynamicResource VKBackgroundContentBrush}">
@@ -136,6 +137,11 @@
       <StackPanel Margin="0,8,0,0">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Audio test"/>
         <Button x:Name="w1" Margin="8" Content="Play SFX"/>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="WEBP Test"/>
+        <Image x:Name="webptest" Width="256" Height="256" HorizontalAlignment="Left" ctrls:ImageLoader.Source="https://sun1-30.userapi.com/8u2UmktysriV0Q-ILL7_A7vV5GLjKECwDVplTw/McWSoC2aIF0.webp"/>
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">

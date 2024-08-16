@@ -50,6 +50,9 @@ namespace ELOR.VKAPILib.Objects {
         [EnumMember(Value = "sticker")]
         Sticker,
 
+        [EnumMember(Value = "ugc_sticker")]
+        UGCSticker,
+
         [EnumMember(Value = "story")]
         Story,
 
@@ -138,6 +141,9 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("sticker")]
         public Sticker Sticker { get; set; }
 
+        [JsonPropertyName("ugc_sticker")]
+        public UGCSticker UGCSticker { get; set; }
+
         [JsonPropertyName("graffiti")]
         public Graffiti Graffiti { get; set; }
 
@@ -185,6 +191,7 @@ namespace ELOR.VKAPILib.Objects {
                 case "wall": return AttachmentType.Wall;
                 case "wall_reply": return AttachmentType.WallReply;
                 case "sticker": return AttachmentType.Sticker;
+                case "ugc_sticker": return AttachmentType.UGCSticker;
                 case "story": return AttachmentType.Story;
                 case "event": return AttachmentType.Event;
                 case "gift": return AttachmentType.Gift;

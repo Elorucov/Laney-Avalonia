@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ELOR.Laney">
+  <Design.PreviewWith>
+    <StackPanel Width="400" Spacing="10">      
+        <StackPanel Background="{DynamicResource SystemRegionBrush}">
+          <controls:UGCStickerPresenter />
+        </StackPanel>
+    </StackPanel>
+  </Design.PreviewWith>
+ 
+  <ControlTheme x:Key="{x:Type controls:UGCStickerPresenter}" TargetType="controls:UGCStickerPresenter">
+    <Setter Property="Width" Value="168"/>
+    <Setter Property="Height" Value="168"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="StickerView"/>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>
