@@ -339,23 +339,23 @@ namespace ELOR.Laney.Controls {
                 Map.SetImageFillAsync(new Uri($"https://static-maps.yandex.ru/1.x/?ll={glong},{glat}&size={w},{h}&z=12&lang=ru_RU&l=pmap&pt={glong},{glat},vkbkm"), Map.Width, Map.Height);
             }
 
-            // Time & indicator class
-            IndicatorContainer.Classes.RemoveAll(new string[3] { INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE });
-            if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
-                IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
-            } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
-                IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
-            } else if (uiType == MessageUIType.Complex &&
-                (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
-                Message.ForwardedMessages.Count == 0) {
-                IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
-            } else {
-                IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-            }
-
-            // Reactions panel
+            // Time & indicator class & reactions panel
+            IndicatorContainer.Classes.RemoveAll([INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE]);
             if (Message.Reactions?.Count > 0) {
+                IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
                 Grid.SetRow(IndicatorContainer, 2);
+            } else {
+                if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
+                    IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
+                } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
+                    IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
+                } else if (uiType == MessageUIType.Complex &&
+                    (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
+                    Message.ForwardedMessages.Count == 0) {
+                    IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+                } else {
+                    IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                }
             }
 
             // UI
@@ -492,7 +492,7 @@ namespace ELOR.Laney.Controls {
 
             // Reactions margin-top
             double rtop = Message.UIType != MessageUIType.Standart || Message.Keyboard != null ? 8 : 0;
-            double rside = Message.UIType == MessageUIType.SingleImage || Message.UIType == MessageUIType.Graffiti || Message.UIType == MessageUIType.Sticker ? 0 : 12;
+            double rside = Message.Reactions.Count == 0 && (Message.UIType == MessageUIType.SingleImage || Message.UIType == MessageUIType.Graffiti || Message.UIType == MessageUIType.Sticker) ? 0 : 12;
             var rcm = ReactionsContainer.Margin;
             ReactionsContainer.Margin = new Thickness(rside, rtop, rcm.Right, rcm.Bottom);
 
