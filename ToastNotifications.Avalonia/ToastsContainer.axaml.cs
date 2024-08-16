@@ -47,20 +47,35 @@ namespace ToastNotifications.Avalonia {
             }
 
             var working = screen.WorkingArea;
-            NotificationItems.Measure(new Size(MaxWidth, working.Height));
+            double scale = screen.Scaling;
+            bool needBigMargin = false;
+
+            double sw = (double)screen.Bounds.Width / scale;
+            double sh = (double)screen.Bounds.Height / scale;
+            double ww = working.Width / scale;
+            double wh = working.Height / scale;
+            double wx = working.X / scale;
+            double wy = working.Y / scale;
+
+            if (wh > sh) {
+                needBigMargin = true;
+                Log?.Invoke("SetPosition: Working area's height is GREATER than screen height! WTF?!");
+            }
+
+            NotificationItems.Measure(new Size(MaxWidth, wh));
             double height = NotificationItems.DesiredSize.Height;
 
-            topAligned = screen.Bounds.Height > working.Height && working.Y != 0;
-            leftAligned = screen.Bounds.Width > working.Width && working.X != 0;
-            int posx = leftAligned ? working.X : working.Width - Convert.ToInt32(MaxWidth);
-            int posy = topAligned ? working.Y : working.Height - Convert.ToInt32(height);
+            topAligned = sh > wh && wy != 0;
+            leftAligned = sw > ww && wx != 0;
+            int posx = Convert.ToInt32((leftAligned ? wx : ww - MaxWidth) * scale);
+            int posy = Convert.ToInt32((topAligned ? wy : wh - height) * scale);
             if (topAligned) posy = posy + 9;
 
-            Position = new PixelPoint(posx, posy);
-            Height = height;
+            Position = new PixelPoint(posx, needBigMargin ? posy + 48 : posy);
+            Height = needBigMargin ? height - 96 : height;
 
             IsVisible = height > 0;
-            Log?.Invoke($"SetPosition: topAligned={topAligned}; leftAligned={leftAligned}; sw={screen.Bounds.Width}; sh={screen.Bounds.Height}; wx={working.X}; wy={working.Y}; ww={working.Width}; wh={working.Height}; tx={posx}; ty={posy}; th={height}; isVisible={IsVisible}");
+            Log?.Invoke($"SetPosition: topAligned={topAligned}; leftAligned={leftAligned}; sw={sw}; sh={sh}; wx={wx}; wy={wy}; ww={ww}; wh={wh}; tx={posx}; ty={posy}; th={height}; isVisible={IsVisible}");
         }
 
         internal void AddToastToContainer(ToastNotification notification, Bitmap appLogo) {

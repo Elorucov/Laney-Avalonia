@@ -30,22 +30,7 @@
   <ControlTheme x:Key="{x:Type controls:ChatViewItem}" TargetType="controls:ChatViewItem">
     <Setter Property="Template">
       <ControlTemplate>
-        <StackPanel x:Name="Root" Background="Transparent">
-          <!--<vkui:CarouselEx x:Name="Carousel" ScrollPixels="240" Margin="0,0,0,6" IsVisible="{Binding Template, Converter={x:Static ObjectConverters.IsNotNull}}">
-            <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-              <ItemsRepeater Margin="9,0" Items="{Binding Template.Elements}">
-                <ItemsRepeater.Layout>
-                  <StackLayout Orientation="Horizontal"/>
-                </ItemsRepeater.Layout>
-                <ItemsRepeater.ItemTemplate>
-                  <DataTemplate>
-                    <atch:CarouselElementUI Element="{Binding}" Margin="3,0" VerticalAlignment="Stretch"/>
-                  </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
-              </ItemsRepeater>
-            </ScrollViewer>
-          </vkui:CarouselEx>-->
-        </StackPanel>
+        <StackPanel x:Name="Root" Background="Transparent"/>
       </ControlTemplate>
     </Setter>
   </ControlTheme>
