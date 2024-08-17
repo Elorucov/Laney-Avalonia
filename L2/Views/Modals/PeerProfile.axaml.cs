@@ -22,6 +22,7 @@ namespace ELOR.Laney.Views.Modals {
         public PeerProfile(VKSession session, long peerId) {
             InitializeComponent();
             this.session = session;
+            Tag = session;
 
             DataContext = new PeerProfileViewModel(session, peerId);
             ViewModel.CloseWindowRequested += ViewModel_CloseWindowRequested;

@@ -181,7 +181,7 @@
       </ScrollViewer>
     </Border>
 
-    <Border x:Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="894" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
+    <Border x:Name="BottomPanel" Grid.Row="3" Margin="12,0,12,12" CornerRadius="12" MaxWidth="984" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 4 6 #14000000">
       <Grid>
         <Grid x:Name="GenericChatComposerRoot" IsVisible="{Binding !ChatSettings.IsGroupChannel}">
           <Grid x:Name="ComposerContainer" IsVisible="{Binding !SelectedMessagesCount}">

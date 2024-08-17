@@ -31,6 +31,7 @@ public partial class ReactedMembers : DialogWindow {
         this.peerId = peerId;
         this.cmid = cmid;
         this.session = session;
+        Tag = session;
         Activated += ReactedMembers_Activated;
     }
 

@@ -25,6 +25,7 @@ namespace ELOR.Laney.Views.Modals {
             Unloaded += (a, b) => BitmapManager.ClearCachedImages();
 
             Limit = limit;
+            Tag = session;
             DataContext = new AttachmentPickerViewModel(session, this);
             this.FixDialogWindows(TitleBar, Tabs);
 

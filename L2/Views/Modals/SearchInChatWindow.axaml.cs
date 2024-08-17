@@ -21,6 +21,7 @@ namespace ELOR.Laney.Views.Modals {
 
         public SearchInChatWindow(VKSession session, long peerId, Window owner) {
             InitializeComponent();
+            Tag = session;
             this.session = session;
             this.peerId = peerId;
             UpdateWindowTitle();

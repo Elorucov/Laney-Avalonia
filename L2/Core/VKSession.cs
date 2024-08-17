@@ -799,12 +799,14 @@ namespace ELOR.Laney.Core {
 
         // Т. к. мы привязываем VKSession к окну, то
         // мы можем получить текущий инстанс VKSession,
-        // проверив свойство DataContext у окна или user control
+        // проверив свойство DataContext или Tag у окна или user control
         public static VKSession GetByDataContext(Control control) {
             VKSession session = null;
             do {
                 if (control.DataContext is VKSession s) {
                     session = s;
+                } else if (control.Tag is VKSession s2) {
+                    session = s2;
                 } else {
                     control = (Control)control.Parent;
                     if (control == null) return null;

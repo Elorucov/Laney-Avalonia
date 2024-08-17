@@ -127,7 +127,7 @@ namespace ELOR.Laney.Controls {
 
                     CarouselEx cex = new CarouselEx {
                         ScrollPixels = 240,
-                        MaxWidth = 894,
+                        MaxWidth = 984,
                         Margin = new Thickness(12, 0),
                         Content = new ScrollViewer {
                             VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,

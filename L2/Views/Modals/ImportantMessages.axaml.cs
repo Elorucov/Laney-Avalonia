@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Helpers;
@@ -24,6 +23,7 @@ namespace ELOR.Laney.Views.Modals {
         public ImportantMessages(VKSession session) {
             InitializeComponent();
             this.session = session;
+            Tag = session;
             DataContext = new ImportantMessagesViewModel(session);
 
 #if LINUX
