@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
@@ -29,6 +30,10 @@ namespace ELOR.Laney {
                 VKUIDialog dlg = new VKUIDialog("Link test", link);
                 await dlg.ShowDialog(this);
             });
+
+            AddHandler(DragDrop.DragEnterEvent, OnDragEnter);
+            AddHandler(DragDrop.DragLeaveEvent, OnDragLeave);
+            AddHandler(DragDrop.DropEvent, OnDrop);
         }
 
         private void MainWindow_EffectiveViewportChanged(object? sender, Avalonia.Layout.EffectiveViewportChangedEventArgs e) {
@@ -108,6 +113,21 @@ namespace ELOR.Laney {
             } else {
                 await new VKUIDialog("Failed", "Clipboard is empty.").ShowDialog<int>(this);
             }
+        }
+
+        private void OnDragEnter(object sender, DragEventArgs e) {
+            Title = "Drag enter!";
+            int i = 0;
+        }
+
+        private void OnDragLeave(object sender, DragEventArgs e) {
+            Title = "Drag leave!";
+            int i = 0;
+        }
+
+        private void OnDrop(object sender, DragEventArgs e) {
+            Title = "Drop!";
+            int i = 0;
         }
     }
 }

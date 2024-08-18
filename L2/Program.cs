@@ -19,7 +19,8 @@ namespace ELOR.Laney {
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
-        public static async Task Main(string[] args) {
+        [STAThread]
+        public static void Main(string[] args) {
             stopwatch = Stopwatch.StartNew();
             int delay = 0;
 
@@ -48,7 +49,7 @@ namespace ELOR.Laney {
             // Delay (нужен при перезапуске приложения)
             Int32.TryParse(App.GetCmdLineValue("delay"), out delay);
             if (delay > 0) {
-                await Task.Delay(delay);
+                Task.Delay(delay).RunSynchronously();
                 Log.Information("Launched with delay flag ({0} ms)", delay);
             }
 

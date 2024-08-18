@@ -14,8 +14,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using VKUI.Controls;
 using VKUI.Popups;
@@ -202,7 +200,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                 }
             } else if (pickerResult is Tuple<int, List<IStorageFile>> pfiles) {
                 foreach (IStorageFile file in pfiles.Item2) {
-                    Attachments.Add(new OutboundAttachmentViewModel(session, file, pfiles.Item1));
+                    Attachments.Add(new OutboundAttachmentViewModel(session, file, Constants.FileUploadCommand));
                     await Task.Delay(500);
                 }
             }

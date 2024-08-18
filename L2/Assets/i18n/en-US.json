@@ -412,5 +412,13 @@
   "group_management_desc": "Add Laney to your groups to stay in touch with their members and receive notifications when new messages arrive.",
 
   "templates": "Templates",
-  "commtemplate_greeting": "Hi"
+  "commtemplate_greeting": "Hi",
+
+  "drop_quick": "Quick send",
+  "drop_without_compression": "Send uncompressed",
+  "drop_without_compression_desc": "Drag and drop files here\nto attach them to the message",
+  "drop_photos_quick": "Drag and drop photos here\nto attach them to the message",
+  "drop_photos_file": "Drag and drop photos here\nto attach them as files (uncompressed)",
+  "drop_videos_quick": "Drag and drop videos here\nto attach them to the message",
+  "drop_videos_file": "Drag and drop videos here\nto attach them as files"
 }

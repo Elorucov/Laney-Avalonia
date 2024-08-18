@@ -19,7 +19,7 @@
       <TextBox Width="320" Margin="8" HorizontalAlignment="Left" Watermark="TextBox" TextWrapping="Wrap"/>
       <TextBox Width="320" Margin="8" HorizontalAlignment="Left" Classes="Search" Watermark="Search"/>
 
-      <Grid ColumnDefinitions="128 128">
+      <Grid ColumnDefinitions="128 128 128">
         <StackPanel Grid.Column="0">
           <CheckBox Margin="8,0" Content="Default"/>
           <CheckBox Margin="8,0" Content="Disabled" IsEnabled="False"/>
@@ -30,6 +30,21 @@
           <RadioButton Margin="8,0" GroupName="TestBest" Content="Default"/>
           <RadioButton Margin="8,0" GroupName="TestBest" Content="Disabled" IsEnabled="False"/>
           <RadioButton Margin="8,0" GroupName="TestBest" Content="Checked" IsChecked="True"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+          <StackPanel Margin="8,10,0,11" Orientation="Horizontal">
+            <ToggleSwitch />
+            <TextBlock Margin="4,1,0,0" Text="Default"/>
+          </StackPanel>
+          <StackPanel Margin="8,11,0,11" Orientation="Horizontal">
+            <ToggleSwitch IsEnabled="False"/>
+            <TextBlock Margin="4,1,0,0" Text="Disabled"/>
+          </StackPanel>
+          <StackPanel Margin="8,11,0,11" Orientation="Horizontal">
+            <ToggleSwitch IsChecked="True"/>
+            <TextBlock Margin="4,1,0,0" Text="Checked"/>
+          </StackPanel>
         </StackPanel>
       </Grid>
       
@@ -141,7 +156,10 @@
 
       <StackPanel Margin="0,8,0,0">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="WEBP Test"/>
-        <Image x:Name="webptest" Width="256" Height="256" HorizontalAlignment="Left" ctrls:ImageLoader.Source="https://sun1-30.userapi.com/8u2UmktysriV0Q-ILL7_A7vV5GLjKECwDVplTw/McWSoC2aIF0.webp"/>
+        <Border x:Name="droptest" Width="256" Height="256" HorizontalAlignment="Left" Background="Transparent" DragDrop.AllowDrop="True">
+          <Image x:Name="webptest" IsHitTestVisible="False" Width="256" Height="256" ctrls:ImageLoader.Source="https://sun1-30.userapi.com/8u2UmktysriV0Q-ILL7_A7vV5GLjKECwDVplTw/McWSoC2aIF0.webp"/>
+        </Border>
+        <TextBlock TextWrapping="Wrap" Text="You can drop file to image for testing Drag'n'Drop API"/>
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">

@@ -157,8 +157,11 @@
 
         public const string Icon44Spinner = "Icon44Spinner";
 
+        public const string Icon56DocumentOutline = "Icon56DocumentOutline";
         public const string Icon56ErrorOutline = "Icon56ErrorOutline";
+        public const string Icon56GalleryOutline = "Icon56GalleryOutline";
         public const string Icon56InfoOutline = "Icon56InfoOutline";
         public const string Icon56MessageReadOutline = "Icon56MessageReadOutline";
+        public const string Icon56VideoOutline = "Icon56VideoOutline";
     }
 }

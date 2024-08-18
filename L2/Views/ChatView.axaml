@@ -62,10 +62,47 @@
   
     <Style Selector="Button.ComposerButton:pointerover, Button.ComposerButton:pointerover > vkui|VKIcon">
       <Setter Property="Opacity" Value="1"/>
-    </Style>    
+    </Style>
+
+    <Style Selector="Border.DropTarget">
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="BorderThickness" Value="3"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource VKIconSecondaryAlphaBrush}"/>
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Border.DropTargetHover">
+      <Setter Property="BorderBrush" Value="{DynamicResource VKAccentBrush}"/>
+    </Style>
+
+    <Style Selector="Border.DropTarget vkui|VKIcon">
+      <Setter Property="Foreground" Value="{DynamicResource VKIconSecondaryAlphaBrush}"/>
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Border.DropTargetHover vkui|VKIcon">
+      <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
+    </Style>
+
+    <Style Selector="Border.DropTarget TextBlock.Title2">
+      <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Border.DropTargetHover TextBlock.Title2">
+      <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
+    </Style>
+
+    <Style Selector="Border.DropTarget TextBlock.Subhead">
+      <Setter Property="Foreground" Value="{DynamicResource VKIconSecondaryAlphaBrush}"/>
+      <Setter Property="Margin" Value="0,8,0,0"/>
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="LineHeight" Value="18"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
   </UserControl.Styles>
   
-  <Grid x:Name="Root" RowDefinitions="Auto Auto * Auto" Background="{DynamicResource VKBackgroundPageBrush}">
+  <Grid x:Name="Root" RowDefinitions="Auto Auto * Auto" DragDrop.AllowDrop="True" Background="{DynamicResource VKBackgroundPageBrush}">
     <vkui:PanelHeader VerticalAlignment="Top" IsSeparatorVisible="False" Background="{DynamicResource VKBackgroundContentBrush}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource VKSeparatorAlphaBrush}">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="BackButton">
@@ -264,5 +301,25 @@
         </StackPanel>
       </StackPanel>
     </Border>
+
+    <Grid x:Name="DropArea" Grid.RowSpan="3" Grid.Row="1" IsVisible="False">
+      <Rectangle Fill="{DynamicResource VKBackgroundPageBrush}" Grid.RowSpan="2" Opacity="0.85"/>
+      <Grid x:Name="DropAreaRoot" Grid.RowDefinitions="* *" Background="Transparent" Margin="6">
+        <Border x:Name="TopDropArea" Classes="DropTarget" Margin="6" DragDrop.AllowDrop="True">
+          <StackPanel VerticalAlignment="Center">
+            <vkui:VKIcon x:Name="TopDropIcon" Id="{x:Static vkui:VKIconNames.Icon56DocumentOutline}"/>
+            <TextBlock Classes="Title2" FontWeight="Medium" Text="{i18n:Localize drop_without_compression}"/>
+            <TextBlock x:Name="TopDropText" Classes="Subhead"/>
+          </StackPanel>
+        </Border>
+        <Border x:Name="BottomDropArea" Classes="DropTarget" Grid.Row="1" Margin="6" DragDrop.AllowDrop="True">
+          <StackPanel VerticalAlignment="Center">
+            <vkui:VKIcon x:Name="BottomDropIcon"/>
+            <TextBlock Classes="Title2" FontWeight="Medium" Text="{i18n:Localize drop_quick}"/>
+            <TextBlock x:Name="BottomDropText" Classes="Subhead"/>
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Grid>
   </Grid>
 </UserControl>

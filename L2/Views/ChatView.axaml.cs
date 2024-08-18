@@ -1,9 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
@@ -18,6 +21,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
@@ -61,6 +65,17 @@ namespace ELOR.Laney.Views {
 
             DebugOverlay.IsVisible = Settings.ShowDebugCounters;
             Settings.SettingChanged += Settings_SettingChanged;
+
+            Root.AddHandler(DragDrop.DragEnterEvent, OnDragEnter);
+            DropArea.AddHandler(DragDrop.DragLeaveEvent, OnDragLeave);
+            DropArea.AddHandler(DragDrop.DropEvent, OnDrop);
+
+            TopDropArea.AddHandler(DragDrop.DragEnterEvent, OnDragEnterIntoArea);
+            BottomDropArea.AddHandler(DragDrop.DragEnterEvent, OnDragEnterIntoArea);
+            TopDropArea.AddHandler(DragDrop.DragLeaveEvent, OnDragLeaveFromArea);
+            BottomDropArea.AddHandler(DragDrop.DragLeaveEvent, OnDragLeaveFromArea);
+            TopDropArea.AddHandler(DragDrop.DropEvent, OnDropOnArea);
+            BottomDropArea.AddHandler(DragDrop.DropEvent, OnDropOnArea);
         }
 
         Stopwatch sw = null;
@@ -345,7 +360,7 @@ namespace ELOR.Laney.Views {
         }
 
         private void LoadingSpinner_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
-            if (e.Property == Spinner.IsVisibleProperty) {
+            if (e.Property == VKUI.Controls.Spinner.IsVisibleProperty) {
                 TopDateContainer.IsVisible = !LoadingSpinner.IsVisible;
                 HopNavContainer.IsVisible = !LoadingSpinner.IsVisible;
                 if (!LoadingSpinner.IsVisible) CheckFirstAndLastDisplayedMessages();
@@ -440,6 +455,89 @@ namespace ELOR.Laney.Views {
             if (message == null) return;
 
             ContextMenuHelper.ShowForMessage(message, Chat, cvi);
+        }
+
+        #endregion
+
+        #region Drag'n'drop
+
+        private async void OnDragEnter(object sender, DragEventArgs e) {
+            DropArea.IsVisible = true;
+
+            try {
+                var files = e.Data.GetFiles();
+                var type = files.GetFilesType();
+                BottomDropArea.Tag = type;
+                switch (type) {
+                    case DroppedFilesType.OnlyPhotos:
+                        Grid.SetRowSpan(TopDropArea, 1);
+                        BottomDropArea.IsVisible = true;
+                        BottomDropIcon.Id = VKIconNames.Icon56GalleryOutline;
+                        BottomDropText.Text = Localizer.Instance["drop_photos_quick"];
+                        TopDropText.Text = Localizer.Instance["drop_photos_file"];
+                        break;
+                    case DroppedFilesType.OnlyVideos:
+                        Grid.SetRowSpan(TopDropArea, 1);
+                        BottomDropArea.IsVisible = true;
+                        BottomDropIcon.Id = VKIconNames.Icon56VideoOutline;
+                        BottomDropText.Text = Localizer.Instance["drop_videos_quick"];
+                        TopDropText.Text = Localizer.Instance["drop_videos_file"];
+                        break;
+                    case DroppedFilesType.Mixed:
+                        Grid.SetRowSpan(TopDropArea, 2);
+                        BottomDropArea.IsVisible = false;
+                        TopDropText.Text = Localizer.Instance["drop_without_compression_desc"];
+                        break;
+                }
+            } catch (Exception ex) {
+                DropArea.IsVisible = false;
+                await ExceptionHelper.ShowErrorDialogAsync(VKSession.GetByDataContext(this).ModalWindow, ex, true);
+            }
+        }
+
+        private void OnDragLeave(object sender, DragEventArgs e) {
+            DropArea.IsVisible = false;
+        }
+
+        private void OnDrop(object sender, DragEventArgs e) {
+            DropArea.IsVisible = false;
+        }
+
+        private void OnDragEnterIntoArea(object sender, DragEventArgs e) {
+            Border border = sender as Border;
+            border.Classes.Add("DropTargetHover");
+        }
+
+        private void OnDragLeaveFromArea(object sender, DragEventArgs e) {
+            Border border = sender as Border;
+            border.Classes.Remove("DropTargetHover");
+        }
+
+        private async void OnDropOnArea(object sender, DragEventArgs e) {
+            VKSession session = VKSession.GetByDataContext(this);
+            Border border = sender as Border;
+            border.Classes.Remove("DropTargetHover");
+
+            var files = e.Data.GetFiles().Take(10);
+            if (border.Name == "TopDropArea") {
+                foreach (IStorageFile file in files) {
+                    Chat.Composer.Attachments.Add(new OutboundAttachmentViewModel(session, file, Constants.FileUploadCommand));
+                    await Task.Delay(500);
+                }
+            } else if (border.Name == "BottomDropArea") {
+                DroppedFilesType type = (DroppedFilesType)BottomDropArea.Tag;
+                int utype = Constants.FileUploadCommand;
+                switch (type) {
+                    case DroppedFilesType.OnlyPhotos: utype = Constants.PhotoUploadCommand; break;
+                    case DroppedFilesType.OnlyVideos: utype = Constants.VideoUploadCommand; break;
+                    default: utype = Constants.FileUploadCommand; break;
+                }
+
+                foreach (IStorageFile file in files) {
+                    Chat.Composer.Attachments.Add(new OutboundAttachmentViewModel(session, file, utype));
+                    await Task.Delay(500);
+                }
+            }
         }
 
         #endregion
