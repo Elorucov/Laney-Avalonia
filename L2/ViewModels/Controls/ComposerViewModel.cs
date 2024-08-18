@@ -200,7 +200,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                 }
             } else if (pickerResult is Tuple<int, List<IStorageFile>> pfiles) {
                 foreach (IStorageFile file in pfiles.Item2) {
-                    Attachments.Add(new OutboundAttachmentViewModel(session, file, Constants.FileUploadCommand));
+                    Attachments.Add(new OutboundAttachmentViewModel(session, file, pfiles.Item1));
                     await Task.Delay(500);
                 }
             }
