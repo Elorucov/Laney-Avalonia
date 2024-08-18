@@ -76,7 +76,7 @@ namespace ELOR.Laney.Controls.Attachments {
             if (!isUILoaded || Attachments == null) return;
             StandartAttachments.Margin = NoMargins ? new Thickness(0) : new Thickness(8, 0, 8, 0);
 
-            double imageFixedWidth = MessageBubble.BUBBLE_FIXED_WIDTH - 8;
+            double imageFixedWidth = MessageBubble.BUBBLE_FIXED_WIDTH - 4;
             if (!Double.IsNaN(Width)) imageFixedWidth = Width;
 
             Sticker sticker = null;
@@ -158,10 +158,10 @@ namespace ELOR.Laney.Controls.Attachments {
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
                     VerticalContentAlignment = VerticalAlignment.Stretch,
                     Padding = new Thickness(0),
-                    CornerRadius = new CornerRadius(NoMargins ? 4 : 14),
+                    CornerRadius = new CornerRadius(NoMargins ? 4 : 16),
                     Width = w,
                     Height = h,
-                    Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4)
+                    Margin = NoMargins ? new Thickness(0, 0, 0, 2) : new Thickness(-6, 0, -6, 2)
                 };
                 AddPreviewInfo(previews[0], imgBtn);
                 // if (uri != null) _ = imgBtn.SetImageBackgroundAsync(uri, Width, Height);
@@ -175,7 +175,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     sizes.Add(new Size(prevsize.Width, prevsize.Height));
                 }
 
-                var layout = PhotoLayout.Create(new Size(imageFixedWidth, imageFixedWidth), sizes, 4);
+                var layout = PhotoLayout.Create(new Size(imageFixedWidth, imageFixedWidth), sizes, 2);
                 List<Rect> thumbRects = layout.Item1;
                 Size layoutSize = layout.Item2;
                 List<bool[]> corners = layout.Item3; 
@@ -187,7 +187,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 Canvas canvas = new Canvas {
                     Width = layoutSize.Width,
                     Height = layoutSize.Height,
-                    Margin = NoMargins ? new Thickness(0, 0, 0, 4) : new Thickness(-4, 0, -4, 4),
+                    Margin = NoMargins ? new Thickness(0, 0, 0, 2) : new Thickness(-6, 0, -6, 2),
                     ClipToBounds = true,
                 };
 
@@ -197,10 +197,10 @@ namespace ELOR.Laney.Controls.Attachments {
                     var p = preview.GetSizeAndUriForThumbnail(rect.Width, rect.Height);
                     bool[] corner = corners[i];
 
-                    double tl = !NoMargins && corner[0] ? 14 : 4;
-                    double tr = !NoMargins && corner[1] ? 14 : 4;
-                    double br = !NoMargins && corner[2] ? 14 : 4;
-                    double bl = !NoMargins && corner[3] ? 14 : 4;
+                    double tl = !NoMargins && corner[0] ? 16 : 4;
+                    double tr = !NoMargins && corner[1] ? 16 : 4;
+                    double br = !NoMargins && corner[2] ? 16 : 4;
+                    double bl = !NoMargins && corner[3] ? 16 : 4;
 
                     Button imgBtn = new Button {
                         Tag = new Tuple<List<IPreview>, IPreview>(previews, preview),
