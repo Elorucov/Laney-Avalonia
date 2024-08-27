@@ -209,11 +209,13 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 10004:
+                        bool isDeletedBeforeEvent = u.Count <= 4;
                         int receivedMsgId = (int)u[1];
                         int minor = (int)u[3];
-                        long peerId4 = (long)u[4];
-                        Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}");
-                        Message msgFromHistory = messages?.Where(m => m.ConversationMessageId == receivedMsgId).FirstOrDefault();
+                        long peerId4 = !isDeletedBeforeEvent ? (long)u[4] : 0;
+                        Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, minorId={minor}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
+                        if (isDeletedBeforeEvent) break;
+                        Message msgFromHistory = messages?.Where(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4).FirstOrDefault();
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, (int)u[2]);
                             if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
@@ -239,13 +241,14 @@ namespace ELOR.Laney.Core {
                         break;
                     case 10005:
                     case 10018:
+                        bool isDeletedBeforeEvent2 = u.Count <= 3;
                         int editedMsgId = (int)u[1];
                         long peerId5 = (long)u[3];
                         Message editMsgFromHistory = messages?.Where(m => m.ConversationMessageId == editedMsgId).FirstOrDefault();
-                        Log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}");
+                        Log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent2}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2]);
-                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, peerId5);
+                            if (!isDeletedBeforeEvent2) CheckMentions(u[6], editedMsgId, peerId5);
                         } else {
                             bool contains = MessagesFromAPI.Where(m => m.Item2 == editedMsgId).FirstOrDefault() != null;
                             if (!contains) {
@@ -283,7 +286,7 @@ namespace ELOR.Laney.Core {
                         ConversationRemoved?.Invoke(this, peerId13);
                         break;
                     case 20:
-					case 21:
+                    case 21:
                         long peerId20 = (long)u[1];
                         int sortId = (int)u[2];
                         Log.Information($"EVENT {eventId}: peer={peerId20}, major/minor={sortId}");
@@ -382,7 +385,7 @@ namespace ELOR.Laney.Core {
             }
             return new Tuple<long, MessageReaction>(i3 + i2, new MessageReaction {
                 ReactionId = Convert.ToInt32(reactionId),
-                Count = Convert.ToInt32(count), 
+                Count = Convert.ToInt32(count),
                 UserIds = members
             });
         }
