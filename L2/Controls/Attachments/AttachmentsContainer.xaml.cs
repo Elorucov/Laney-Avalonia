@@ -400,7 +400,7 @@ namespace ELOR.Laney.Controls.Attachments {
                             Subtitle = def,
                             Name = st.ObjectType
                         };
-                        // ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+                        ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
                         StandartAttachments.Children.Add(ba);
                     } else {
                         ExtendedAttachment ea = new ExtendedAttachment {
