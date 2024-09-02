@@ -122,7 +122,7 @@
     </AvaloniaXaml>
     <AvaloniaXaml Include="Styles\TabStyles.xaml" />
     <AvaloniaXaml Include="Styles\TextBoxStyles.xaml" />
-    <AvaloniaXaml Include="Styles\ToggleSwitchStyles.xaml" />
+    <AvaloniaXaml Include="Controls\ToggleSwitch.xaml" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Update="Appearance\Fonts.xaml">
