@@ -193,31 +193,6 @@ namespace ELOR.Laney.ViewModels.Controls {
             }
         }
 
-        // Возвращает true, если вложение с типом type отображается как сниппет,
-        // т. е. BasicAttachment или ExtendedAttachment.
-        // Проверить это можно в файле AttachmentsContainer.xaml.cs > RenderAttachments()
-        // (исключение: Document в виде сниппетов)
-        private static bool IsAttachmentWithSnippetInUI(AttachmentType type) {
-            switch (type) {
-                case AttachmentType.Wall:
-                case AttachmentType.WallReply:
-                case AttachmentType.Link:
-                case AttachmentType.Market:
-                case AttachmentType.Poll:
-                case AttachmentType.Call:
-                case AttachmentType.Story:
-                case AttachmentType.GroupCallInProgress:
-                case AttachmentType.Event:
-                case AttachmentType.Narrative:
-                case AttachmentType.Curator:
-                case AttachmentType.Podcast:
-                case AttachmentType.TextpostPublish:
-                case AttachmentType.Unknown:
-                    return true;
-                default: 
-                    return false;
-            }
-        }
 
         private void UpdateUIType() {
             if (Attachments.Count == 1) {
@@ -247,7 +222,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     Gift = a.Gift;
                     PreviewImageUri = a.Gift.ThumbUri;
                     return;
-                } else if (IsAttachmentWithSnippetInUI(a.Type)) {
+                } else if (a.IsAttachmentWithSnippetInUI()) {
                     UIType = MessageUIType.Standart;
                     return;
                 } else {
@@ -262,7 +237,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                 if (ss1 || ss2) {
                     UIType = MessageUIType.StoryWithSticker;
                 } else {
-                    bool isAllAttachmentsAreSnippets = Attachments.All(a => IsAttachmentWithSnippetInUI(a.Type));
+                    bool isAllAttachmentsAreSnippets = Attachments.All(a => a.IsAttachmentWithSnippetInUI());
                     UIType = isAllAttachmentsAreSnippets ? MessageUIType.Standart : MessageUIType.Complex;
                 }
 
@@ -273,7 +248,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             } else if (Attachments.Count == 0 && ForwardedMessages.Count == 0 && Location == null) {
                 UIType = !String.IsNullOrEmpty(Text) || ReplyMessage != null ? MessageUIType.Standart : MessageUIType.Empty;
             } else {
-                bool isAllAttachmentsAreSnippets = Attachments.All(a => IsAttachmentWithSnippetInUI(a.Type));
+                bool isAllAttachmentsAreSnippets = Attachments.All(a => a.IsAttachmentWithSnippetInUI());
                 UIType = isAllAttachmentsAreSnippets ? MessageUIType.Standart : MessageUIType.Complex;
             }
 

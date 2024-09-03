@@ -538,6 +538,13 @@ namespace ELOR.Laney.Controls.Attachments {
                 });
             }
 
+            if (Classes.Contains(Constants.ATCHC_INBUBBLE)) {
+                Control last = StandartAttachments.Children.LastOrDefault();
+                if (last is BasicAttachment) {
+                    last.Classes.Add(Constants.ATCHC_INBUBBLE);
+                }
+            }
+
             StandartAttachments.IsVisible = StandartAttachments.Children.Count > 0;
         }
 

@@ -10,7 +10,7 @@
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Button x:Name="BAButton" Classes="Tertiary" Padding="0" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" HorizontalContentAlignment="Stretch">
+        <Button x:Name="BAButton" Classes="Tertiary" Background="{TemplateBinding Background}" Padding="0" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" HorizontalContentAlignment="Stretch">
           <Grid ColumnDefinitions="Auto *">
             <Border Width="40" Height="40" CornerRadius="20" Margin="0,0,12,0" IsVisible="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKButtonPrimaryBackgroundBrush}">
               <vkui:VKIcon x:Name="BAIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Foreground="{DynamicResource VKButtonPrimaryForegroundBrush}" Id="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -23,5 +23,9 @@
         </Button>
       </ControlTemplate>
     </Setter>
+
+    <Style Selector="^.InBubble /template/ TextBlock#BASub">
+      <Setter Property="Margin" Value="0,2,64,0"/>
+    </Style>
   </ControlTheme>
 </ResourceDictionary>

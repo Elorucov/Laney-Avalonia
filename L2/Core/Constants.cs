@@ -13,5 +13,8 @@
         public const int PhotoUploadCommand = 0;
         public const int VideoUploadCommand = 1;
         public const int FileUploadCommand = 2;
+
+        // For message UI
+        public const string ATCHC_INBUBBLE = "InBubble";
     }
 }

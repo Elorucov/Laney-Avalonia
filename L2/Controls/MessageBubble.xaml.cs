@@ -255,6 +255,7 @@ namespace ELOR.Laney.Controls {
             } else {
                 acc.Add(IsOutgoing ? MSG_OUTGOING : MSG_INCOMING);
             }
+            acc.Add(Constants.ATCHC_INBUBBLE);
 
             var rct = ReactionsContainer.Classes;
             rct.Clear();
