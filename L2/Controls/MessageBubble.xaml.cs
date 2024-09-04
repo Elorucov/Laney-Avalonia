@@ -19,7 +19,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using VKUI.Controls;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ELOR.Laney.Controls {
     public class MessageBubble : TemplatedControl {
@@ -370,21 +369,17 @@ namespace ELOR.Laney.Controls {
 
             // Time & indicator class & reactions panel
             IndicatorContainer.Classes.RemoveAll([INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE]);
-            if (Message.Reactions?.Count > 0) {
+            if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
+                IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
+            } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
+                IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
+            } else if (uiType == MessageUIType.Complex &&
+                (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
+                Message.ForwardedMessages.Count == 0) {
+                IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+            } else {
                 IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
                 Grid.SetRow(IndicatorContainer, 2);
-            } else {
-                if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
-                    IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
-                } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
-                    IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
-                } else if (uiType == MessageUIType.Complex &&
-                    (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
-                    Message.ForwardedMessages.Count == 0) {
-                    IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
-                } else {
-                    IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-                }
             }
 
             // UI
@@ -400,10 +395,11 @@ namespace ELOR.Laney.Controls {
 
         private void BubbleRoot_SizeChanged(object sender, SizeChangedEventArgs e) {
             double indicatorsWidth = IndicatorContainer.DesiredSize.Width;
+            bool noLeftBottomMargin = IndicatorContainer.Classes.Contains(INDICATOR_IMAGE);
             Debug.WriteLine($"IC Width: {indicatorsWidth}");
 
             var rcm = ReactionsContainer.Margin;
-            ReactionsContainer.Margin = new Thickness(rcm.Left, rcm.Top, indicatorsWidth, rcm.Bottom);
+            ReactionsContainer.Margin = new Thickness(noLeftBottomMargin ? 0 : rcm.Left, rcm.Top, indicatorsWidth, noLeftBottomMargin ? 0 : rcm.Bottom);
         }
 
         private void SetText(string text) {
