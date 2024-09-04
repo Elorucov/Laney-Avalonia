@@ -255,6 +255,7 @@ namespace ELOR.Laney.Controls {
             } else {
                 acc.Add(IsOutgoing ? MSG_OUTGOING : MSG_INCOMING);
             }
+            acc.Add(Constants.ATCHC_INBUBBLE);
 
             var rct = ReactionsContainer.Classes;
             rct.Clear();
@@ -472,7 +473,7 @@ namespace ELOR.Laney.Controls {
             // Attachments margin-top
             double atchTopMargin = 0;
 
-            if (Message.UIType == MessageUIType.Complex && Message.ReplyMessage == null && String.IsNullOrEmpty(Message.Text)) {
+            if ((Message.UIType == MessageUIType.Complex || (Message.UIType == MessageUIType.Standart && Message.Attachments.Count > 0)) && Message.ReplyMessage == null && String.IsNullOrEmpty(Message.Text)) {
                 atchTopMargin = Message.ImagesCount > 0 ? 4 : 8;
             }
             var mam = MessageAttachments.Margin;

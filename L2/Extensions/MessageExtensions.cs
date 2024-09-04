@@ -31,6 +31,34 @@ namespace ELOR.Laney.Extensions {
             }
         }
 
+        // Возвращает true, если вложение с типом type отображается как сниппет,
+        // т. е. BasicAttachment или ExtendedAttachment.
+        // Проверить это можно в файле AttachmentsContainer.xaml.cs > RenderAttachments()
+        // (исключение: Document в виде сниппетов)
+        public static bool IsAttachmentWithSnippetInUI(this Attachment attachment) {
+            switch (attachment.Type) {
+                case AttachmentType.Wall:
+                case AttachmentType.WallReply:
+                case AttachmentType.Link:
+                case AttachmentType.Market:
+                case AttachmentType.Poll:
+                case AttachmentType.Call:
+                case AttachmentType.Story:
+                case AttachmentType.GroupCallInProgress:
+                case AttachmentType.Event:
+                case AttachmentType.Narrative:
+                case AttachmentType.Curator:
+                case AttachmentType.Podcast:
+                case AttachmentType.TextpostPublish:
+                case AttachmentType.Unknown:
+                    return true;
+                case AttachmentType.Document:
+                    return attachment.Document?.Preview == null;
+                default:
+                    return false;
+            }
+        }
+
         public static bool CanEdit(this MessageViewModel m, long sessionId) {
             return m.SentTime.AddDays(1) > DateTime.Now && m.SenderId == sessionId && m.Action == null
                 && m.UIType != MessageUIType.Gift && m.UIType != MessageUIType.Sticker;

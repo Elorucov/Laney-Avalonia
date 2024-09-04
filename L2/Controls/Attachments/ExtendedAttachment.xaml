@@ -9,7 +9,7 @@
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Button x:Name="EAButton" Classes="Tertiary" Padding="0" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" HorizontalContentAlignment="Stretch">
+        <Button x:Name="EAButton" Classes="Tertiary" Background="{TemplateBinding Background}" Padding="0" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" HorizontalContentAlignment="Stretch">
           <Grid MinHeight="80" ColumnDefinitions="Auto *">
             <Border x:Name="PreviewImage" Background="{DynamicResource VKBackgroundHoverBrush}" IsVisible="{Binding Preview, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Top" Width="80" Height="80" CornerRadius="14" Margin="0,0,10,0"/>
             <StackPanel Grid.Column="1" VerticalAlignment="Top">

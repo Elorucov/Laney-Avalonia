@@ -28,6 +28,7 @@
         <ResourceInclude Source="avares://VKUI/Controls/ScrollBar.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/ScrollViewer.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Spinner.xaml" />
+        <ResourceInclude Source="avares://VKUI/Controls/ToggleSwitch.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/VKIcon.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/VKUIFlyoutPresenter.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/WindowTitleBar.xaml" />
@@ -55,5 +56,4 @@
   <StyleInclude Source="/Styles/ListBoxStyles.xaml"/>
   <StyleInclude Source="/Styles/TabStyles.xaml"/>
   <StyleInclude Source="/Styles/TextBoxStyles.xaml"/>
-  <StyleInclude Source="/Styles/ToggleSwitchStyles.xaml"/>
 </Styles>

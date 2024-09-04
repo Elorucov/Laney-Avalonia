@@ -193,6 +193,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             }
         }
 
+
         private void UpdateUIType() {
             if (Attachments.Count == 1) {
                 var a = Attachments[0];
@@ -221,6 +222,9 @@ namespace ELOR.Laney.ViewModels.Controls {
                     Gift = a.Gift;
                     PreviewImageUri = a.Gift.ThumbUri;
                     return;
+                } else if (a.IsAttachmentWithSnippetInUI()) {
+                    UIType = MessageUIType.Standart;
+                    return;
                 } else {
                     UIType = MessageUIType.Complex;
                 }
@@ -233,17 +237,19 @@ namespace ELOR.Laney.ViewModels.Controls {
                 if (ss1 || ss2) {
                     UIType = MessageUIType.StoryWithSticker;
                 } else {
-                    UIType = MessageUIType.Complex;
+                    bool isAllAttachmentsAreSnippets = Attachments.All(a => a.IsAttachmentWithSnippetInUI());
+                    UIType = isAllAttachmentsAreSnippets ? MessageUIType.Standart : MessageUIType.Complex;
                 }
 
-                bool firstImage = a1.Type == AttachmentType.Photo || a1.Type == AttachmentType.Video
-                    || (a1.Type == AttachmentType.Document && a1.Document.Preview != null);
-                bool secondImage = a2.Type == AttachmentType.Photo || a2.Type == AttachmentType.Video
-                    || (a2.Type == AttachmentType.Document && a2.Document.Preview != null);
+                //bool firstImage = a1.Type == AttachmentType.Photo || a1.Type == AttachmentType.Video
+                //    || (a1.Type == AttachmentType.Document && a1.Document.Preview != null);
+                //bool secondImage = a2.Type == AttachmentType.Photo || a2.Type == AttachmentType.Video
+                //    || (a2.Type == AttachmentType.Document && a2.Document.Preview != null);
             } else if (Attachments.Count == 0 && ForwardedMessages.Count == 0 && Location == null) {
                 UIType = !String.IsNullOrEmpty(Text) || ReplyMessage != null ? MessageUIType.Standart : MessageUIType.Empty;
             } else {
-                UIType = MessageUIType.Complex;
+                bool isAllAttachmentsAreSnippets = Attachments.All(a => a.IsAttachmentWithSnippetInUI());
+                UIType = isAllAttachmentsAreSnippets ? MessageUIType.Standart : MessageUIType.Complex;
             }
 
             Gift = Attachments.Where(a => a.Type == AttachmentType.Gift).FirstOrDefault()?.Gift;

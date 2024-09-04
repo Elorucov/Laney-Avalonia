@@ -1,0 +1,128 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:ClassModifier="internal">
+  <Design.PreviewWith>
+    <Border Padding="12">
+      <StackPanel Spacing="6">
+        <ToggleSwitch IsChecked="True"/>
+        <ToggleSwitch IsChecked="False"/>
+        <ToggleSwitch IsEnabled="False" IsChecked="True"/>
+        <ToggleSwitch IsEnabled="False" IsChecked="False"/>
+      </StackPanel>
+    </Border>
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type ToggleSwitch}" TargetType="ToggleSwitch">
+    <Setter Property="Foreground" Value="{DynamicResource ToggleSwitchContentForeground}" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="KnobTransitions">
+      <Transitions>
+        <DoubleTransition
+            Easing="CubicEaseOut"
+            Property="Canvas.Left"
+            Duration="0:0:0.2" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid Background="{TemplateBinding Background}" RowDefinitions="Auto,*">
+
+          <Grid x:Name="Root"
+              Grid.Row="1"
+              MinWidth="32"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Top">
+
+            <Grid
+                x:Name="SwitchAreaGrid"
+                Background="Transparent"
+                Margin="0"
+                TemplatedControl.IsTemplateFocusTarget="True" />
+
+            <Border
+                x:Name="OuterBorder"
+                Width="32"
+                Height="20"
+                Background="Transparent"
+                BorderBrush="{DynamicResource VKFieldBorderBrush}"
+                BorderThickness="2"
+                CornerRadius="10" />
+
+            <Border
+                x:Name="SwitchKnobBounds"
+                Width="32"
+                Height="20"
+                Background="{DynamicResource VKAccentBrush}"
+                BorderThickness="0"
+                CornerRadius="10" />
+
+            <Canvas
+                x:Name="PART_SwitchKnob"
+                Grid.Row="1"
+                Width="12"
+                Height="16"
+                Margin="2,0,0,0"
+                HorizontalAlignment="Left">
+
+              <Grid x:Name="PART_MovingKnobs" Width="16" Height="16">
+                <Ellipse
+                  x:Name="SwitchKnobOn"
+                  Fill="White"
+                  Width="16"
+                  Height="16" />
+                <Ellipse
+                  x:Name="SwitchKnobOff"
+                  Fill="{DynamicResource VKFieldTextPlaceholderBrush}"
+                  Width="10"
+                  Height="10" />
+              </Grid>
+            </Canvas>
+          </Grid>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+
+    <!--  DisabledState  -->
+    <Style Selector="^:disabled /template/ Grid#Root">
+      <Setter Property="Opacity" Value="0.5" />
+    </Style>
+
+    <!--  CheckedState  -->
+    <Style Selector="^:checked /template/ Border#OuterBorder">
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^:checked  /template/ Ellipse#SwitchKnobOff">
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^:checked  /template/ Border#SwitchKnobBounds">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <Style Selector="^:checked /template/ Ellipse#SwitchKnobOn">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <!--  UncheckedState  -->
+    <Style Selector="^:unchecked /template/ Border#OuterBorder">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <Style Selector="^:unchecked /template/ Ellipse#SwitchKnobOff">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <Style Selector="^:unchecked /template/ Ellipse#SwitchKnobOn">
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^:unchecked  /template/ Border#SwitchKnobBounds">
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

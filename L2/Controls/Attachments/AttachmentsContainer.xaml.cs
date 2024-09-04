@@ -400,7 +400,7 @@ namespace ELOR.Laney.Controls.Attachments {
                             Subtitle = def,
                             Name = st.ObjectType
                         };
-                        // ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+                        ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
                         StandartAttachments.Children.Add(ba);
                     } else {
                         ExtendedAttachment ea = new ExtendedAttachment {
@@ -536,6 +536,13 @@ namespace ELOR.Laney.Controls.Attachments {
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(0, 0, 0, 8),
                 });
+            }
+
+            if (Classes.Contains(Constants.ATCHC_INBUBBLE)) {
+                Control last = StandartAttachments.Children.LastOrDefault();
+                if (last is BasicAttachment) {
+                    last.Classes.Add(Constants.ATCHC_INBUBBLE);
+                }
             }
 
             StandartAttachments.IsVisible = StandartAttachments.Children.Count > 0;
