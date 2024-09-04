@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Layout;
+using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
@@ -13,9 +14,12 @@ using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using VKUI.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ELOR.Laney.Controls {
     public class MessageBubble : TemplatedControl {
@@ -65,6 +69,8 @@ namespace ELOR.Laney.Controls {
         const string INDICATOR_DEFAULT = "DefaultIndicator";
         const string INDICATOR_IMAGE = "ImageIndicator";
         const string INDICATOR_COMPLEX_IMAGE = "ComplexImageIndicator";
+
+        const int MAX_DISPLAYED_FORWARDED_MESSAGES = 3;
 
         public const double STORY_WIDTH = 200;
         public const double BUBBLE_FIXED_WIDTH = 320;
@@ -306,11 +312,29 @@ namespace ELOR.Laney.Controls {
             var fmcborder = ForwardedMessagesContainer.BorderThickness;
             var fmsmargin = ForwardedMessagesStack.Margin;
             double fmwidth = fmcmargin.Left + fmcmargin.Right + fmcborder.Left + fmsmargin.Left;
-            foreach (var message in Message.ForwardedMessages) {
-                ForwardedMessagesStack.Children.Add(new PostUI {
-                    Width = BubbleRoot.Width - fmwidth,
-                    Post = message
+            
+            if (Message.ForwardedMessages?.Count > MAX_DISPLAYED_FORWARDED_MESSAGES) {
+                Button fwdsButton = new Button {
+                    Padding = new Thickness(0),
+                    MinHeight = 16,
+                    ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplateAccent"),
+                    Content = Localizer.Instance.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message")
+                };
+                fwdsButton.Classes.Add("Tertiary");
+                ForwardedMessagesStack.Children.Add(fwdsButton);
+            } else {
+                ForwardedMessagesStack.Children.Add(new ContentControl {
+                    ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplate"),
+                    Content = Localizer.Instance.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message"),
+                    Margin = new Thickness(0, 0, 0, -4),
+                    Height = 16
                 });
+                foreach (var message in Message.ForwardedMessages) {
+                    ForwardedMessagesStack.Children.Add(new PostUI {
+                        Width = BubbleRoot.Width - fmwidth,
+                        Post = message
+                    });
+                }
             }
 
             // Gift
@@ -467,8 +491,9 @@ namespace ELOR.Laney.Controls {
 
             // Text margin-top
             double textTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null || Message.Gift != null ? 2 : 8;
+            double textBottomMargin = Message.ForwardedMessages?.Count > 0 && (Message.Attachments == null || Message.Attachments.Count == 0) ? 4 : 8;
             var mtm = MessageText.Margin;
-            MessageText.Margin = new Thickness(mtm.Left, textTopMargin, mtm.Right, mtm.Bottom);
+            MessageText.Margin = new Thickness(mtm.Left, textTopMargin, mtm.Right, textBottomMargin);
 
             // Attachments margin-top
             double atchTopMargin = 0;
@@ -507,7 +532,8 @@ namespace ELOR.Laney.Controls {
         }
 
         private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            Message.OwnerSession.CurrentOpenedChat.GoToMessage(Message.ReplyMessage);
+            // Message.OwnerSession.CurrentOpenedChat.GoToMessage(Message.ReplyMessage);
+            Message.OwnerSession.GoToMessage(Message.ReplyMessage);
         }
 
         #endregion

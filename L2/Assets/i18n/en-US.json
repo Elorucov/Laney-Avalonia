@@ -143,6 +143,9 @@
   "forwarded_message_nom": "{0} forwarded message",
   "forwarded_message_gen": "{0} forwarded messages",
   "forwarded_message_plu": "{0} forwarded messages",
+  "forwarded_message_more_nom": "{0} more message",
+  "forwarded_message_more_gen": "{0} more messages",
+  "forwarded_message_more_plu": "{0} more messages",
 
   "attachment": "Attachment",
   "attachment_nom": "{0} attachment",

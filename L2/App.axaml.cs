@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Styling;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
@@ -171,6 +172,12 @@ namespace ELOR.Laney {
                     ChangeTheme((int)value);
                     break;
             }
+        }
+
+        public DataTemplate GetCommonTemplate(string key) {
+            // 12 - это порядковый номер (с нуля) CommonTemplates.axaml в App.axaml > MergedDictionaries
+            var dictionary = App.Current.Resources.MergedDictionaries[12] as ResourceDictionary;
+            return dictionary[key] as DataTemplate;
         }
 
         #region Platform, version and other infos

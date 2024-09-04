@@ -143,6 +143,9 @@
   "forwarded_message_nom": "{0} переслані повідомлення",
   "forwarded_message_gen": "{0} переслані повідомлення",
   "forwarded_message_plu": "{0} пересланих повідомлень",
+  "forwarded_message_more_nom": "Ще {0} повідомлення",
+  "forwarded_message_more_gen": "Ще {0} повідомлення",
+  "forwarded_message_more_plu": "Ще {0} повідомлень",
 
   "attachment": "Вкладення",
   "attachment_nom": "{0} вкладення",

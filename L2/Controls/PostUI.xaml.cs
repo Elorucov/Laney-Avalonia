@@ -1,19 +1,25 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
     public class PostUI : TemplatedControl {
+        const int MAX_DISPLAYED_FORWARDED_MESSAGES = 1;
+
         #region Properties
 
         public static readonly StyledProperty<object> PostProperty =
@@ -32,6 +38,8 @@ namespace ELOR.Laney.Controls {
         TextBlock Author;
         TextBlock PostInfo;
         CTextBlock PostText;
+        Button ReplyMessageButton;
+        CompactMessage Reply;
         AttachmentsContainer Attachments;
         Border Map;
         Border ForwardedMessagesContainer;
@@ -44,10 +52,14 @@ namespace ELOR.Laney.Controls {
             Author = e.NameScope.Find<TextBlock>(nameof(Author));
             PostInfo = e.NameScope.Find<TextBlock>(nameof(PostInfo));
             PostText = e.NameScope.Find<CTextBlock>(nameof(PostText));
+            ReplyMessageButton = e.NameScope.Find<Button>(nameof(ReplyMessageButton));
+            Reply = e.NameScope.Find<CompactMessage>(nameof(Reply));
             Attachments = e.NameScope.Find<AttachmentsContainer>(nameof(Attachments));
             Map = e.NameScope.Find<Border>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
             ForwardedMessagesStack = e.NameScope.Find<StackPanel>(nameof(ForwardedMessagesStack));
+
+            ReplyMessageButton.Click += ReplyMessageButton_Click;
 
             isUILoaded = true;
             if (Post is MessageViewModel message) {
@@ -85,6 +97,11 @@ namespace ELOR.Laney.Controls {
             Author.Text = message.SenderName;
             PostInfo.Text = message.SentTime.ToHumanizedString(true);
 
+            if (message.ReplyMessage != null) { 
+                Reply.Message = message.ReplyMessage;
+                ReplyMessageButton.IsVisible = true;
+            }
+
             TextParser.SetText(message.Text, PostText, OnLinkClicked);
             PostText.IsVisible = !String.IsNullOrEmpty(message.Text);
 
@@ -100,27 +117,39 @@ namespace ELOR.Laney.Controls {
             Map.IsVisible = message.Location != null;
 
             ForwardedMessagesStack.Children.Clear();
-            ForwardedMessagesContainer.IsVisible = message.ReplyMessage != null || message.ForwardedMessages.Count > 0;
+            ForwardedMessagesContainer.IsVisible = message.ForwardedMessages.Count > 0;
             var fmcmargin = ForwardedMessagesContainer.Margin;
             var fmcborder = ForwardedMessagesContainer.BorderThickness;
             var fmsmargin = ForwardedMessagesStack.Margin;
             double fmwidth = fmcmargin.Left + fmcmargin.Right + fmcborder.Left + fmsmargin.Left;
-            if (message.ReplyMessage != null) {
-                ForwardedMessagesStack.Children.Add(new PostUI {
-                    Width = Width - fmwidth,
-                    Post = message.ReplyMessage
-                });
-            }
-            foreach (var msg in message.ForwardedMessages) {
+            foreach (var msg in message.ForwardedMessages.Take(MAX_DISPLAYED_FORWARDED_MESSAGES)) {
                 ForwardedMessagesStack.Children.Add(new PostUI {
                     Width = Width - fmwidth,
                     Post = msg
                 });
             }
+            if (message.ForwardedMessages?.Count > MAX_DISPLAYED_FORWARDED_MESSAGES) {
+                int nextFwds = message.ForwardedMessages.Count - MAX_DISPLAYED_FORWARDED_MESSAGES;
+
+                Button fwdsButton = new Button {
+                    Padding = new Thickness(0),
+                    MinHeight = 16,
+                    Margin = new Thickness(0, -6, 0, 0),
+                    ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplateAccent"),
+                    Content = Localizer.Instance.GetDeclensionFormatted(nextFwds, "forwarded_message_more")
+                };
+                fwdsButton.Classes.Add("Tertiary");
+                ForwardedMessagesStack.Children.Add(fwdsButton);
+            }
         }
 
         private async void OnLinkClicked(string link) {
             await Router.LaunchLink(VKSession.GetByDataContext(this), link);
+        }
+
+        private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            var message = Reply.Message;
+            VKSession.GetByDataContext(this).GoToMessage(message);
         }
     }
 }

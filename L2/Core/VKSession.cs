@@ -30,6 +30,7 @@ using ELOR.VKAPILib.Objects.Messages;
 using System.Diagnostics;
 using Avalonia.Platform;
 using System.Threading;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -624,6 +625,16 @@ namespace ELOR.Laney.Core {
         #region Public
 
         byte gcCollectTriggerCounter = 0;
+
+        public async void GoToMessage(MessageViewModel message) {
+            if (message.IsUnavailable) {
+                StandaloneMessageViewer smv = new StandaloneMessageViewer(message);
+                await smv.ShowDialog(Window);
+                return;
+            }
+
+            GoToChat(message.PeerId, message.ConversationMessageId);
+        }
 
         public void GoToChat(long peerId, int messageId = -1) {
             if (peerId == 0) {

@@ -435,7 +435,7 @@ namespace ELOR.Laney.ViewModels {
 
         public async void GoToMessage(MessageViewModel message) {
             if (message == null) return;
-            if (message.ConversationMessageId > 0 && !message.IsUnavailable) {
+            if (!message.IsUnavailable) {
                 GoToMessage(message.ConversationMessageId);
             } else {
                 StandaloneMessageViewer smv = new StandaloneMessageViewer(message);

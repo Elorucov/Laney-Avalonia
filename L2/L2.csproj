@@ -221,4 +221,9 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Modals\StandaloneMessageViewer.axaml" />
   </ItemGroup>
+  <ItemGroup>
+    <AvaloniaXaml Update="Templates\CommonTemplates.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+  </ItemGroup>
 </Project>

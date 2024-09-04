@@ -1,0 +1,24 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:vkui="using:VKUI.Controls"
+                    xmlns:sys="using:System"
+                    xmlns:controls="using:ELOR.Laney.Controls"
+                    xmlns:mdl="using:ELOR.Laney.DataModels"
+                    xmlns:vm="using:ELOR.Laney.ViewModels"
+                    xmlns:vk="using:ELOR.VKAPILib.Objects"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Шапка над пересланными сообщениями в облачке -->
+  <DataTemplate x:Key="ForwardedMessagesInfoTemplate" x:DataType="sys:String">
+    <Grid ColumnDefinitions="Auto *" Height="16" Background="Transparent">
+      <vkui:VKIcon Margin="0,0,4,0"  Foreground="{DynamicResource VKTextSecondaryBrush}" Id="{x:Static vkui:VKIconNames.Icon16RepostOutline}"/>
+      <TextBlock Grid.Column="1" Classes="Caption1" FontWeight="Regular" VerticalAlignment="Center" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding}"/>
+    </Grid>
+  </DataTemplate>
+
+  <DataTemplate x:Key="ForwardedMessagesInfoTemplateAccent" x:DataType="sys:String">
+    <Grid ColumnDefinitions="Auto *" Height="16" Background="Transparent">
+      <vkui:VKIcon Margin="0,0,4,0"  Foreground="{DynamicResource VKImTextNameBrush}" Id="{x:Static vkui:VKIconNames.Icon16RepostOutline}"/>
+      <TextBlock Grid.Column="1" Classes="Caption1" FontWeight="Regular" VerticalAlignment="Center" Foreground="{DynamicResource VKImTextNameBrush}" Text="{Binding}"/>
+    </Grid>
+  </DataTemplate>
+</ResourceDictionary>

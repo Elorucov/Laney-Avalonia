@@ -34,7 +34,6 @@ namespace ELOR.Laney.Extensions {
         // Возвращает true, если вложение с типом type отображается как сниппет,
         // т. е. BasicAttachment или ExtendedAttachment.
         // Проверить это можно в файле AttachmentsContainer.xaml.cs > RenderAttachments()
-        // (исключение: Document в виде сниппетов)
         public static bool IsAttachmentWithSnippetInUI(this Attachment attachment) {
             switch (attachment.Type) {
                 case AttachmentType.Wall:

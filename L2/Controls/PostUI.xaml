@@ -8,21 +8,27 @@
   <ControlTheme x:Key="{x:Type controls:PostUI}" TargetType="controls:PostUI">
     <Setter Property="Template">
       <ControlTemplate>
-        <StackPanel>
-          <Grid ColumnDefinitions="Auto *" Margin="4">
-            <vkui:Avatar x:Name="Avatar" Width="40" Height="40" Margin="0,0,10,0" Foreground="White"/>
-            <StackPanel Grid.Column="1">
-              <TextBlock x:Name="Author" Classes="Subhead" FontWeight="Medium" Foreground="{DynamicResource VKImTextNameBrush}"/>
-              <TextBlock x:Name="PostInfo" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
-            </StackPanel>
+        <StackPanel Spacing="4">
+          <Grid ColumnDefinitions="Auto *">
+            <vkui:Avatar x:Name="Avatar" Width="24" Height="24" Margin="0,0,10,0" Foreground="White"/>
+            <Grid Grid.Column="1" VerticalAlignment="Center" ColumnDefinitions="Auto *">
+              <TextBlock x:Name="Author" Classes="Caption1" FontWeight="Medium" Foreground="{DynamicResource VKImTextNameBrush}"/>
+              <TextBlock x:Name="PostInfo" Grid.Column="1" Classes="Caption1" Margin="8,0,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
+            </Grid>
           </Grid>
-          <ctb:CTextBlock x:Name="PostText" IsVisible="False" FontSize="16" LineHeight="20" Margin="8,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
-          <atch:AttachmentsContainer x:Name="Attachments" NoMargins="True" Margin="4,8,0,0" IsVisible="False"/>
-          <Border x:Name="Map" Margin="4,8,0,0" IsVisible="False" Background="#3f7f7f7f" CornerRadius="4">
+          <Button x:Name="ReplyMessageButton" Classes="Tertiary" Margin="0,4,0,0" Padding="0" CornerRadius="0" IsVisible="False">
+            <DockPanel>
+              <Rectangle Fill="{DynamicResource VKImTextNameBrush}" Width="2" RadiusX="1" RadiusY="1" Margin="0,0,6,0" VerticalAlignment="Stretch"/>
+              <controls:CompactMessage x:Name="Reply"/>
+            </DockPanel>
+          </Button>
+          <ctb:CTextBlock x:Name="PostText" IsVisible="False" FontSize="16" LineHeight="20" Margin="0,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+          <atch:AttachmentsContainer x:Name="Attachments" NoMargins="True" Margin="0,0,0,0" IsVisible="False"/>
+          <Border x:Name="Map" Margin="0,0,0,0" IsVisible="False" Background="#3f7f7f7f" CornerRadius="4">
             <TextBlock Margin="8" FontStyle="Italic" Text="Map"/>
           </Border>
-          <Border x:Name="ForwardedMessagesContainer" Margin="0,8,0,0" IsVisible="False" BorderBrush="{DynamicResource VKImForwardLineTintBrush}" BorderThickness="2,0,0,0">
-            <StackPanel x:Name="ForwardedMessagesStack" Margin="4,0,0,0"/>
+          <Border x:Name="ForwardedMessagesContainer" Margin="0,-4,0,0" IsVisible="False" BorderBrush="{DynamicResource VKImForwardLineTintBrush}" BorderThickness="2,0,0,0">
+            <StackPanel x:Name="ForwardedMessagesStack" Margin="8,0,0,0" Spacing="12"/>
           </Border>
         </StackPanel>
       </ControlTemplate>
