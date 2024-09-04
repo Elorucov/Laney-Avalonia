@@ -372,14 +372,29 @@ namespace ELOR.Laney.Controls {
             if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
                 IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
             } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
+                if (hasReply) {
+                    if (Message.Reactions?.Count > 0) {
+                        IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                        Grid.SetRow(IndicatorContainer, 2);
+                    } else {
+                        IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+                    }
+                } else {
+                    IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
+                }
                 IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
             } else if (uiType == MessageUIType.Complex &&
                 (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
                 Message.ForwardedMessages.Count == 0) {
-                IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+                if (Message.Reactions?.Count > 0) {
+                    IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                    Grid.SetRow(IndicatorContainer, 2);
+                } else {
+                    IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+                }
             } else {
                 IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-                Grid.SetRow(IndicatorContainer, 2);
+                if (Message.Reactions?.Count > 0) Grid.SetRow(IndicatorContainer, 2);
             }
 
             // UI
