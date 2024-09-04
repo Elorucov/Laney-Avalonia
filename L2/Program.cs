@@ -38,7 +38,7 @@ namespace ELOR.Laney {
                 .MinimumLevel.Verbose();
 #endif
 
-            if (Settings.EnableLogs) 
+            if (Settings.EnableLogs)
                 loggerConfig = loggerConfig.WriteTo.File(Path.Combine(localDataPath, "logs", $"L2_{DateTimeOffset.Now.ToUnixTimeSeconds()}.log"));
 
             Log.Logger = loggerConfig.CreateLogger();
@@ -107,6 +107,7 @@ namespace ELOR.Laney {
         public static AppBuilder BuildAvaloniaApp() =>
             AppBuilder.Configure<App>().UseAvaloniaNative().UsePlatformDetect()
             .With(new SkiaOptions {
+                UseOpacitySaveLayer = true,
                 MaxGpuResourceSizeBytes = 33554432
             });
     }

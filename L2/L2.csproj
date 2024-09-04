@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.610</AssemblyVersion>
-    <FileVersion>2.0.610</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.610-win-anycpu-devuser.devpc-240904-1211</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.610-linux-anycpu-devuser.devpc-240904-1211</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.610-macos-anycpu-devuser.devpc-240904-1211</Version>
+    <AssemblyVersion>2.0.611</AssemblyVersion>
+    <FileVersion>2.0.611</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.611-win-anycpu-devuser.devpc-240904-1903</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.611-linux-anycpu-devuser.devpc-240904-1903</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.611-macos-anycpu-devuser.devpc-240904-1903</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -28,8 +28,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.610</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.610</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.611</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.611</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
@@ -38,6 +38,12 @@
     <NSHighResolutionCapable>true</NSHighResolutionCapable>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ChiselPackage Condition="$([MSBuild]::IsOSPlatform('Windows'))">Avalonia.FreeDesktop</ChiselPackage>
+    <ChiselPackage Condition="$([MSBuild]::IsOSPlatform('Windows'))">Avalonia.Remote.Protocol</ChiselPackage>
+    <ChiselPackage Condition="$([MSBuild]::IsOSPlatform('Windows'))">Avalonia.X11</ChiselPackage>
+    <ChiselPackage Condition="$([MSBuild]::IsOSPlatform('Windows'))">Tmds.DBus.Protocol</ChiselPackage>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>8632</NoWarn>
@@ -109,7 +115,7 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.3" />
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.1.0" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.1.0.1" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.1.3" />
     <PackageReference Include="Chisel" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -119,9 +125,7 @@
     <PackageReference Include="ManagedBass" Version="3.1.1" />
     <PackageReference Include="Serilog" Version="4.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
-    <!--<PackageReference Include="Svg.Skia" Version="1.0.0.18" />-->
     <PackageReference Include="System.Collections" Version="4.3.0" />
-    <PackageReference Include="Dotnet.Bundle" Version="*" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
