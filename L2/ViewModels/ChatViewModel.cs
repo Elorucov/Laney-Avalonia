@@ -438,7 +438,7 @@ namespace ELOR.Laney.ViewModels {
             if (!message.IsUnavailable) {
                 GoToMessage(message.ConversationMessageId);
             } else {
-                StandaloneMessageViewer smv = new StandaloneMessageViewer(message);
+                StandaloneMessageViewer smv = new StandaloneMessageViewer(session, message);
                 await smv.ShowDialog(session.Window);
             }
         }

@@ -321,6 +321,10 @@ namespace ELOR.Laney.Controls {
                     Content = Localizer.Instance.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message")
                 };
                 fwdsButton.Classes.Add("Tertiary");
+                fwdsButton.Click += async (a, b) => {
+                    StandaloneMessageViewer smv = new StandaloneMessageViewer(Message.OwnerSession, Message.ForwardedMessages);
+                    await smv.ShowDialog(Message.OwnerSession.ModalWindow);
+                };
                 ForwardedMessagesStack.Children.Add(fwdsButton);
             } else {
                 ForwardedMessagesStack.Children.Add(new ContentControl {

@@ -36,7 +36,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 CacheManager.Add(response.Groups);
                 Count = response.Messages.Count;
                 foreach (var message in response.Messages.Items) {
-                    Messages.Add(new MessageViewModel(message));
+                    Messages.Add(new MessageViewModel(message, session));
                 }
             } catch (Exception ex) {
                 if (Messages.Count > 0) {

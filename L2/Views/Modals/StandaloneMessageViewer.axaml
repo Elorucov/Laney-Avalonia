@@ -11,7 +11,9 @@
         x:Class="ELOR.Laney.StandaloneMessageViewer"
         Title="{i18n:Localize message}">
   <Grid RowDefinitions="Auto *">
-    <ScrollViewer x:Name="ScrollRoot" Grid.Row="1"/>
+    <ScrollViewer x:Name="ScrollRoot" Grid.Row="1">
+      <StackPanel x:Name="MessagesStack" Spacing="12" Margin="12,0,12,24"/>
+    </ScrollViewer>
     <vkui:WindowTitleBar x:Name="TitleBar" CanMove="True"/>
   </Grid>
 </vkw:DialogWindow>

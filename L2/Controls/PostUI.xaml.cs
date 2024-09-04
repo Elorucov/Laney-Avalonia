@@ -19,6 +19,7 @@ using VKUI.Controls;
 namespace ELOR.Laney.Controls {
     public class PostUI : TemplatedControl {
         const int MAX_DISPLAYED_FORWARDED_MESSAGES = 1;
+        VKSession session;
 
         #region Properties
 
@@ -90,6 +91,7 @@ namespace ELOR.Laney.Controls {
         }
 
         private void RenderElement(MessageViewModel message) {
+            session = message.OwnerSession;
             Avatar.Background = message.SenderId.GetGradient();
             Avatar.Initials = message.SenderName.GetInitials();
             Avatar.SetImageAsync(message.SenderAvatar, Avatar.Width, Avatar.Height);
@@ -139,17 +141,21 @@ namespace ELOR.Laney.Controls {
                     Content = Localizer.Instance.GetDeclensionFormatted(nextFwds, "forwarded_message_more")
                 };
                 fwdsButton.Classes.Add("Tertiary");
+                fwdsButton.Click += async (a, b) => {
+                    StandaloneMessageViewer smv = new StandaloneMessageViewer(message.OwnerSession, message.ForwardedMessages);
+                    await smv.ShowDialog(message.OwnerSession.ModalWindow);
+                };
                 ForwardedMessagesStack.Children.Add(fwdsButton);
             }
         }
 
         private async void OnLinkClicked(string link) {
-            await Router.LaunchLink(VKSession.GetByDataContext(this), link);
+            await Router.LaunchLink(session, link);
         }
 
         private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             var message = Reply.Message;
-            VKSession.GetByDataContext(this).GoToMessage(message);
+            session.GoToMessage(message);
         }
     }
 }

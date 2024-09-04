@@ -144,7 +144,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (msg.ForwardedMessages != null) {
                 ForwardedMessages.Clear();
                 foreach (var fmsg in msg.ForwardedMessages) {
-                    ForwardedMessages.Add(new MessageViewModel(fmsg));
+                    ForwardedMessages.Add(new MessageViewModel(fmsg, session));
                 }
             }
 

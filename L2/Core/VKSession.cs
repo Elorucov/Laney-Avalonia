@@ -628,7 +628,7 @@ namespace ELOR.Laney.Core {
 
         public async void GoToMessage(MessageViewModel message) {
             if (message.IsUnavailable) {
-                StandaloneMessageViewer smv = new StandaloneMessageViewer(message);
+                StandaloneMessageViewer smv = new StandaloneMessageViewer(this, message);
                 await smv.ShowDialog(Window);
                 return;
             }
@@ -643,6 +643,8 @@ namespace ELOR.Laney.Core {
                 Window.SwitchToSide(false);
                 return;
             }
+
+            CloseAllSMVWindows();
 
             ChatViewModel chat = CacheManager.GetChat(Id, peerId);
             Log.Information("VKSession: getting to chat {0}. cmid: {1}; cached: {2}", peerId, messageId, chat != null);
@@ -806,6 +808,15 @@ namespace ELOR.Laney.Core {
                 Log.Error(ex, "VKSession: cannot get added groups!");
             }
             return ids;
+        }
+
+        private void CloseAllSMVWindows() {
+            var smvs1 = Window.OwnedWindows.Where(w => w is StandaloneMessageViewer).ToList();
+            var smvs2 = ModalWindow?.OwnedWindows.Where(w => w is StandaloneMessageViewer).ToList();
+            var smvs = smvs1.Concat(smvs2);
+            foreach (var smv in smvs) {
+                smv.Close();
+            }
         }
 
         // Т. к. мы привязываем VKSession к окну, то
