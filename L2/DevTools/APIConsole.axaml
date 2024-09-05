@@ -1,0 +1,105 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:vkp="using:VKUI.Popups"
+        xmlns:dm="using:ELOR.Laney.DataModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        MinWidth="800" MinHeight="600"
+        WindowState="Maximized"
+        x:Class="ELOR.Laney.APIConsoleWindow"
+        Title="VK API Console">
+  <Grid Margin="12" RowDefinitions="* Auto Auto">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1*" MinWidth="320"/>
+      <ColumnDefinition Width="12"/>
+      <ColumnDefinition Width="1.75*"/>
+    </Grid.ColumnDefinitions>
+    <Grid RowDefinitions="Auto *">
+
+      <Grid Grid.Row="0" ColumnDefinitions="* Auto" Margin="0,0,0,12">
+        <TextBox x:Name="Method" Classes="Mono" Watermark="method"/>
+        <Button x:Name="CallButton" Grid.Column="2" Classes="Primary Large" Margin="6,0,0,0" VerticalAlignment="Center" Content="Call" Click="CallMethod"/>
+      </Grid>
+      <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
+      
+      <ScrollViewer Grid.Row="1">
+        <StackPanel>
+          <ItemsControl x:Name="ParametersItems" Margin="0,6">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="dm:TwoStringBindable">
+                <Grid Margin="0,6">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="6"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="6"/>
+                    <ColumnDefinition Width="36"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBox Grid.Column="0" Loaded="OnParamTBLoaded" Classes="Mono" Text="{Binding Item1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  <TextBox Grid.Column="2" Classes="Mono" Text="{Binding Item2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  <Button Grid.Column="4" Width="36" Padding="0" Classes="Tertiary Large" Click="RemoveParameter">
+                    <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24Dismiss}"/>
+                  </Button>
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="6">
+            <Button Classes="Tertiary" Content="Clear all" Click="ClearAllParameters"/>
+            <Button Content="Add parameter" Click="AddNewParameter"/>
+          </StackPanel>
+        </StackPanel>
+      </ScrollViewer>
+    </Grid>
+
+    <Grid Grid.Column="3">
+      <Grid.Styles>
+        <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+          <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+          <Setter Property="Background" Value="Transparent"/>
+        </Style>
+      </Grid.Styles>
+      <TextBox x:Name="Response" Classes="Mono" IsReadOnly="True" TextWrapping="Wrap" Background="Transparent" Watermark="Response from API displaying here..."/>
+    </Grid>
+
+    <Separator Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Top" Margin="0,12"/>
+
+    <Grid Grid.ColumnSpan="3" Grid.Row="2" ColumnDefinitions="Auto 24 Auto 24 * 12 Auto">
+      
+      <StackPanel VerticalAlignment="Center">
+        <Button x:Name="TokenButton" Classes="Large Primary" Content="Set access token">
+          <Button.Flyout>
+            <vkp:VKUIFlyout Opened="VKUIFlyout_Opened" Closed="VKUIFlyout_Closed">
+              <StackPanel Margin="12" Width="240">
+                <HeaderedContentControl Header="Your access token">
+                  <TextBox x:Name="AccessToken" PasswordChar="*"/>
+                </HeaderedContentControl>
+              </StackPanel>
+            </vkp:VKUIFlyout>
+          </Button.Flyout>
+        </Button>
+      </StackPanel>
+
+      <StackPanel Grid.Column="2" Orientation="Horizontal">
+        <TextBlock Classes="Caption2 Mono" VerticalAlignment="Center" Text="Version"/>
+        <TextBox x:Name="Version" Classes="Mono" Margin="6,0,0,0" Width="64"/>
+      </StackPanel>
+
+      <StackPanel Grid.Column="4" Orientation="Horizontal">
+        <TextBlock Classes="Caption2 Mono" VerticalAlignment="Center" Text="Lang"/>
+        <TextBox x:Name="Lang" Classes="Mono" Margin="6,0,0,0" Width="48" Text="ru" TextChanged="OnLangTextChanged"/>
+      </StackPanel>
+      
+      <Grid x:Name="Logo" Grid.Column="6" ColumnDefinitions="Auto Auto Auto" HorizontalAlignment="Right">
+        <TextBlock x:Name="AppVersion" Margin="0,0,12,0" VerticalAlignment="Center" Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
+        <Image Grid.Column="1" Width="36" Height="36" Source="{StaticResource Logo}"/>
+        <ContentPresenter Grid.Column="2" Margin="11,6,0,0" Height="24" VerticalAlignment="Center" ContentTemplate="{StaticResource LText2}"/>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

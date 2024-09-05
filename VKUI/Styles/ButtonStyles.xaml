@@ -39,7 +39,7 @@
     <Setter Property="Background" Value="{DynamicResource VKButtonSecondaryBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonSecondaryForegroundBrush}"/>
     <Setter Property="FontSize" Value="13"/>
-    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="FontWeight" Value="Regular"/>
     <!--<Setter Property="FontFamily" Value="{StaticResource VKSansText}"/>-->
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="Template">

@@ -400,7 +400,7 @@ namespace ELOR.Laney.Core {
                             GroupId = group.Id,
                             Name = group.Name,
                             Avatar = new Uri(group.Photo100),
-                            API = new VKAPI(info.User.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent)
+                            API = new VKAPI(API.AccessToken, Localizer.Instance["lang"], App.UserAgent)
                         };
                         gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
                         gs.ImViewModel = new ImViewModel(gs);
@@ -577,7 +577,7 @@ namespace ELOR.Laney.Core {
                         GroupId = group.Id,
                         Name = group.Name,
                         Avatar = new Uri(group.Photo100),
-                        API = new VKAPI(Main.Id, API.AccessToken, Localizer.Instance["lang"], App.UserAgent),
+                        API = new VKAPI(API.AccessToken, Localizer.Instance["lang"], App.UserAgent),
                     };
                     gs.ImViewModel = new ImViewModel(gs);
                     gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
@@ -704,7 +704,7 @@ namespace ELOR.Laney.Core {
             VKSession session = new VKSession {
                 UserId = userId,
                 Name = "...",
-                API = new VKAPI(userId, accessToken, Localizer.Instance["lang"], App.UserAgent),
+                API = new VKAPI(accessToken, Localizer.Instance["lang"], App.UserAgent),
                 Window = new MainWindow()
             };
             session.LongPoll = new LongPoll(session.API, session.Id, session.GroupId);
@@ -738,7 +738,7 @@ namespace ELOR.Laney.Core {
                     UserId = ds.Id,
                     Name = String.Join(" ", new List<string> { info.Item1, info.Item2 }),
                     Avatar = info.Item3,
-                    API = new VKAPI(ds.Id, null, Localizer.Instance["lang"], App.UserAgent),
+                    API = new VKAPI(null, Localizer.Instance["lang"], App.UserAgent),
                     Window = new MainWindow()
                 };
                 _sessions.Add(session);

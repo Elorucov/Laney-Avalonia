@@ -35,6 +35,14 @@ namespace ELOR.Laney {
             Settings.SettingChanged += Settings_SettingChanged;
         }
 
+        public static bool HasCmdLineValue(string key) {
+            string[] args = Environment.GetCommandLineArgs();
+            foreach (string arg in args) {
+                if (arg.StartsWith($"-{key}")) return true;
+            }
+            return false;
+        }
+
         public static string GetCmdLineValue(string key) {
             string[] args = Environment.GetCommandLineArgs();
             foreach (string arg in args) {
@@ -53,39 +61,42 @@ namespace ELOR.Laney {
                 Prepare();
                 if (DesktopLifetime.MainWindow != null) return; // признак того, что открыто окно expired info.
 
-                // Demo mode
-                if (DemoMode.Check()) {
-                    var usessions = DemoMode.Data.Sessions.Where(s => s.Id.IsUser());
-                    int ucount = usessions.Count();
-                    if (ucount == 0) throw new Exception("No user session found!");
-                    if (ucount > 1) throw new Exception("There can be only 1 user session!");
-                    VKSession.StartDemoSession(usessions.FirstOrDefault());
-                    desktop.MainWindow = VKSession.Main.Window;
-                } else {
-                    try {
-                        long uid = Settings.Get<long>(Settings.VK_USER_ID);
-                        string token = Settings.Get<string>(Settings.VK_TOKEN);
-                        string nonce = Settings.Get<string>(Settings.VK_TOKEN + "1");
-                        string tag = Settings.Get<string>(Settings.VK_TOKEN + "2");
-                        string dt = Encryption.Decrypt(AssetsManager.BinaryPayload.Skip(576).Take(32).OrderDescending().ToArray(), token, nonce, tag);
-                        if (uid > 0 && !String.IsNullOrEmpty(dt)) {
-                            Log.Information($"Authorized user: {uid}");
-                            VKSession.StartUserSession(uid, dt);
-                            desktop.MainWindow = VKSession.Main.Window;
-                        } else {
-                            Log.Information($"Not authorized. Opening sign in window...");
+                if (Program.Mode == LaunchMode.Default) {
+                    // Demo mode
+                    if (DemoMode.Check()) {
+                        var usessions = DemoMode.Data.Sessions.Where(s => s.Id.IsUser());
+                        int ucount = usessions.Count();
+                        if (ucount == 0) throw new Exception("No user session found!");
+                        if (ucount > 1) throw new Exception("There can be only 1 user session!");
+                        VKSession.StartDemoSession(usessions.FirstOrDefault());
+                        desktop.MainWindow = VKSession.Main.Window;
+                    } else {
+                        try {
+                            long uid = Settings.Get<long>(Settings.VK_USER_ID);
+                            string token = Settings.Get<string>(Settings.VK_TOKEN);
+                            string nonce = Settings.Get<string>(Settings.VK_TOKEN + "1");
+                            string tag = Settings.Get<string>(Settings.VK_TOKEN + "2");
+                            string dt = Encryption.Decrypt(AssetsManager.BinaryPayload.Skip(576).Take(32).OrderDescending().ToArray(), token, nonce, tag);
+                            if (uid > 0 && !String.IsNullOrEmpty(dt)) {
+                                Log.Information($"Authorized user: {uid}");
+                                VKSession.StartUserSession(uid, dt);
+                                desktop.MainWindow = VKSession.Main.Window;
+                            } else {
+                                Log.Information($"Not authorized. Opening sign in window...");
+                                desktop.MainWindow = new Views.SignInWindow();
+                            }
+                        } catch (Exception ex) {
+                            Log.Error(ex, $"Cannot check authorization. Opening sign in window...");
                             desktop.MainWindow = new Views.SignInWindow();
                         }
-                    } catch (Exception ex) {
-                        Log.Error(ex, $"Cannot check authorization. Opening sign in window...");
-                        desktop.MainWindow = new Views.SignInWindow();
                     }
+                    PlatformSettings.ColorValuesChanged += (a, b) => UpdateTrayIcon();
+                } else if (Program.Mode == LaunchMode.APIConsole) {
+                    desktop.MainWindow = new APIConsoleWindow();
                 }
 
                 DPI = desktop.MainWindow.DesktopScaling;
                 Log.Information($"Maximal DPI: {DPI}");
-
-                PlatformSettings.ColorValuesChanged += (a, b) => UpdateTrayIcon();
             }
 
             base.OnFrameworkInitializationCompleted();

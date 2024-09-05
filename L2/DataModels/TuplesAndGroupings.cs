@@ -1,4 +1,5 @@
-﻿using NeoSmart.Unicode;
+﻿using ELOR.Laney.ViewModels;
+using NeoSmart.Unicode;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,14 @@ using System.Linq;
 namespace ELOR.Laney.DataModels {
     public class TwoStringTuple : Tuple<string, string> {
         public TwoStringTuple(string item1, string item2) : base(item1, item2) {}
+    }
+
+    public class TwoStringBindable : ViewModelBase {
+        private string _item1;
+        private string _item2;
+
+        public string Item1 { get { return _item1; } set { _item1 = value; OnPropertyChanged(nameof(Item1)); } }
+        public string Item2 { get { return _item2; } set { _item2 = value; OnPropertyChanged(nameof(Item2)); } }
     }
 
     public class Entity : Tuple<long, Uri, string, string, Command> {

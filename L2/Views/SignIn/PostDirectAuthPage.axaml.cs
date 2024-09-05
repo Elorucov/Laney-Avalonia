@@ -27,7 +27,7 @@ namespace ELOR.Laney.Views.SignIn {
             Exception lastEx = null;
             Window window = TopLevel.GetTopLevel(this) as Window;
 
-            VKAPI tempAPI = new VKAPI(userId, temporaryAccessToken, Localizer.Instance["lang"], App.UserAgent);
+            VKAPI tempAPI = new VKAPI(temporaryAccessToken, Localizer.Instance["lang"], App.UserAgent);
             tempAPI.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
             do {
                 if (attempts > 0) await Task.Delay(500).ConfigureAwait(false);

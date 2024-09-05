@@ -230,4 +230,7 @@
       <SubType>Designer</SubType>
     </AvaloniaXaml>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DevTools\DataModels\" />
+  </ItemGroup>
 </Project>

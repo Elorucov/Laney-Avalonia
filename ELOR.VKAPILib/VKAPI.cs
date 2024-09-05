@@ -41,15 +41,13 @@ namespace ELOR.VKAPILib {
 
         #region Fields & Properties
 
-        private long _userId;
         private string _accessToken;
         private string _language;
         private string _domain;
-        private static string _version = "5.236";
+        private static string _version = "5.238";
 
-        public long UserId { get { return _userId; } }
         public string AccessToken { get { return _accessToken; } internal set { _accessToken = value; } }
-        public string Language { get { return _language; } }
+        public string Language { get { return _language; } set { _language = value; } }
         public string Domain { get { return _domain; } }
         public int LongPollVersion { get; set; } = 19;
         public static string UserAgent { get; private set; }
@@ -67,8 +65,7 @@ namespace ELOR.VKAPILib {
 
         #endregion
 
-        public VKAPI(long userId, string accessToken, string language, string userAgent, string domain = "api.vk.com") {
-            _userId = userId;
+        public VKAPI(string accessToken, string language, string userAgent, string domain = "api.vk.com") {
             _accessToken = accessToken;
             _language = language;
             UserAgent = userAgent;
@@ -142,6 +139,13 @@ namespace ELOR.VKAPILib {
                     }
                 }
             }
+        }
+
+        public async Task<string> CallMethodAsync(string method, Dictionary<string, string> parameters = null) {
+            if (parameters == null) parameters = new Dictionary<string, string>();
+
+            string response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
+            return response;
         }
 
         public async Task<T> CallMethodAsync<T>(string method, Dictionary<string, string> parameters = null, JsonSerializerContext serializerContext = null) {

@@ -410,11 +410,10 @@ namespace ELOR.Laney.Controls {
 
         private void BubbleRoot_SizeChanged(object sender, SizeChangedEventArgs e) {
             double indicatorsWidth = IndicatorContainer.DesiredSize.Width;
-            bool noLeftBottomMargin = IndicatorContainer.Classes.Contains(INDICATOR_IMAGE);
             Debug.WriteLine($"IC Width: {indicatorsWidth}");
 
             var rcm = ReactionsContainer.Margin;
-            ReactionsContainer.Margin = new Thickness(noLeftBottomMargin ? 0 : rcm.Left, rcm.Top, indicatorsWidth, noLeftBottomMargin ? 0 : rcm.Bottom);
+            ReactionsContainer.Margin = new Thickness(rcm.Left, rcm.Top, indicatorsWidth, rcm.Bottom);
         }
 
         private void SetText(string text) {
@@ -533,7 +532,7 @@ namespace ELOR.Laney.Controls {
 
             // Reactions margin-top
             double rtop = Message.UIType != MessageUIType.Standart || Message.Keyboard != null ? 8 : 0;
-            double rside = Message.Reactions.Count == 0 && (Message.UIType == MessageUIType.SingleImage || Message.UIType == MessageUIType.Graffiti || Message.UIType == MessageUIType.Sticker) ? 0 : 12;
+            double rside = Message.UIType == MessageUIType.SingleImage || Message.UIType == MessageUIType.Graffiti || Message.UIType == MessageUIType.Sticker ? 0 : 12;
             var rcm = ReactionsContainer.Margin;
             ReactionsContainer.Margin = new Thickness(rside, rtop, rcm.Right, rcm.Bottom);
 

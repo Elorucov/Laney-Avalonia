@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <StackPanel Margin="8">
-            <TextBox Margin="8" Watermark="Hello!"/>
+            <TextBox Margin="8" Watermark="Hello!" Text="Test"/>
             <TextBox Margin="8" Classes="Search" Watermark="Hello!"/>
             <TextBox Margin="8" Classes="WriteBar" Watermark="Hello!"/>
             <TextBox Margin="8" Classes="Transparent" Watermark="Hello!"/>
@@ -14,10 +14,11 @@
     <Setter Property="BorderBrush" Value="{DynamicResource VKFieldBorderBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="CornerRadius" Value="8"/>
-    <Setter Property="Padding" Value="11"/>
-    <Setter Property="MinHeight" Value="42"/>
+    <Setter Property="Padding" Value="12,10,12,10"/>
+    <Setter Property="MinHeight" Value="36"/>
     <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
-    <Setter Property="FontSize" Value="16"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="LineHeight" Value="16"/>
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -48,8 +49,9 @@
                                 TextAlignment="{TemplateBinding TextAlignment}"
                                 TextWrapping="{TemplateBinding TextWrapping}"
                                 IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 FontSize="{TemplateBinding FontSize}"
+                                LineHeight="{TemplateBinding LineHeight}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         <TextPresenter Name="PART_TextPresenter"
                                       Text="{TemplateBinding Text, Mode=TwoWay}"
@@ -63,6 +65,7 @@
                                       SelectionBrush="{TemplateBinding SelectionBrush}"
                                       SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
                                       CaretBrush="{TemplateBinding CaretBrush}"
+                                      LineHeight="{TemplateBinding LineHeight}"
                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/> 
                       </Panel>
@@ -76,14 +79,8 @@
       </ControlTemplate>
     </Setter>
   </Style>
-
-  <Style Selector="TextBox /template/ TextPresenter#PART_TextPresenter">
-    <Setter Property="MinHeight" Value="20"/>
-  </Style>
     
   <Style Selector="TextBox /template/ TextBlock#PART_Watermark">
-    <Setter Property="FontSize" Value="16"/>
-    <Setter Property="LineHeight" Value="20"/>
     <Setter Property="Foreground" Value="{DynamicResource VKFieldTextPlaceholderBrush}" />
   </Style>
     
@@ -119,7 +116,8 @@
     <Setter Property="Padding" Value="6,7,12,5"/>
     <Setter Property="MinHeight" Value="32"/>
     <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
-    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="LineHeight" Value="18"/>
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
     <Setter Property="InnerLeftContent">
       <Setter.Value>
@@ -166,6 +164,7 @@
     <Setter Property="MinHeight" Value="36"/>
     <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
     <Setter Property="FontSize" Value="15"/>
+    <Setter Property="LineHeight" Value="20"/>
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
   </Style>
 

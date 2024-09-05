@@ -20,7 +20,7 @@ namespace ELOR.VKAPILib {
             //AnonymToken at = JsonConvert.DeserializeObject<AnonymToken>(response);
             //return at;
 
-            VKAPI api = new VKAPI(0, null, "en", userAgent);
+            VKAPI api = new VKAPI(null, "en", userAgent);
             api.WebRequestCallback = webRequestCallback;
 
             string response = await api.SendRequestAsync(new Uri("https://oauth.vk.com/get_anonym_token"), p);

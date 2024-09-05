@@ -110,7 +110,7 @@ namespace ELOR.Laney.Core {
         static VKAPI tempAPI;
         public static async Task<DirectAuthResponse> AuthViaLoginAndPasswordAsync(string login, string password, string code = null, string captchaSid = null, string captchaKey = null) {
             if (tempAPI == null) {
-                tempAPI = new VKAPI(0, null, Localizer.Instance["lang"], App.UserAgent);
+                tempAPI = new VKAPI(null, Localizer.Instance["lang"], App.UserAgent);
                 tempAPI.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
             }
             var response = await DirectAuth.AuthAsync(tempAPI, APP_ID, CLIENT_SECRET, SCOPE, login, password, code, captchaSid, captchaKey);

@@ -8,13 +8,15 @@ using Avalonia;
 using Avalonia.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Network;
-using ELOR.Laney.Extensions;
 using Serilog;
 
 namespace ELOR.Laney {
+    enum LaunchMode { Default, APIConsole }
+
     class Program {
         static Stopwatch stopwatch;
         public static long LaunchTime { get { return stopwatch.ElapsedMilliseconds; } }
+        public static LaunchMode Mode;
 
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -23,6 +25,9 @@ namespace ELOR.Laney {
         public static void Main(string[] args) {
             stopwatch = Stopwatch.StartNew();
             int delay = 0;
+            Mode = LaunchMode.Default;
+
+            if (App.HasCmdLineValue("apiconsole")) Mode = LaunchMode.APIConsole;
 
             // Создаём локальную папку для хранения настроек и данных.
             string localDataPath = App.LocalDataPath;
@@ -43,6 +48,7 @@ namespace ELOR.Laney {
 
             Log.Logger = loggerConfig.CreateLogger();
             Log.Information("Laney is starting up. Build tag: {0}", App.BuildInfoFull);
+            Log.Information("Launch mode: {0}", Mode);
             Log.Information("Local data folder: {0}", localDataPath);
             Log.Information("Is ChaCha20Poly1305 supported: {0}", Encryption.IsChaCha20Poly1305Supported);
 
@@ -53,13 +59,15 @@ namespace ELOR.Laney {
                 Log.Information("Launched with delay flag ({0} ms)", delay);
             }
 
-            // в macOS нельзя вроде запустить более одного процесса одной программы.
-            if (App.Platform == OSPlatform.OSX) {
-                Settings.Initialize();
-            } else {
-                if (!Design.IsDesignMode && IsAlreadyRunning()) {
-                    Log.Warning("Laney is already launched, quitting.");
-                    Process.GetCurrentProcess().Kill();
+            if (Mode == LaunchMode.Default) {
+                // в macOS нельзя вроде запустить более одного процесса одной программы.
+                if (App.Platform == OSPlatform.OSX) {
+                    Settings.Initialize();
+                } else {
+                    if (!Design.IsDesignMode && IsAlreadyRunning()) {
+                        Log.Warning("Laney is already launched, quitting.");
+                        Process.GetCurrentProcess().Kill();
+                    }
                 }
             }
 
