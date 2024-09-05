@@ -2,6 +2,7 @@
 using ELOR.VKAPILib.Objects.Auth;
 using ELOR.VKAPILib.Objects.Messages;
 using ELOR.VKAPILib.Objects.Upload;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib {
@@ -66,5 +67,6 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(AnonymToken))]
     [JsonSerializable(typeof(GetAuthCodeResponse))]
     [JsonSerializable(typeof(CheckAuthCodeResponse))]
+    [JsonSerializable(typeof(JsonDocument))] // Required for Serialize method
     public partial class BuildInJsonContext : JsonSerializerContext { }
 }

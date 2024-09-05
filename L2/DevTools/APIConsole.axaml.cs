@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace ELOR.Laney;
@@ -107,7 +108,10 @@ public partial class APIConsoleWindow : Window {
 
             string response = await API.CallMethodAsync(Method.Text, parameters);
             using var jDoc = JsonDocument.Parse(response);
-            string pretty = JsonSerializer.Serialize(jDoc, new JsonSerializerOptions { WriteIndented = true });
+            string pretty = JsonSerializer.Serialize(jDoc, new JsonSerializerOptions { 
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, // To decoding cyrillic letters correctly
+                TypeInfoResolver = BuildInJsonContext.Default });
             Response.Text = pretty;
         } catch (Exception ex) {
             Response.Text = $"{ex.GetType()} 0x{ex.HResult.ToString("x8")}\n{ex.Message}";
