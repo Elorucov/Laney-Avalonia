@@ -67,7 +67,7 @@
       <TextBox x:Name="Response" Classes="Mono" IsReadOnly="True" TextWrapping="Wrap" Background="Transparent" Watermark="Response from API displaying here..."/>
     </Grid>
 
-    <Separator Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Top" Margin="0,12"/>
+    <Separator Grid.Row="1" VerticalAlignment="Top" Margin="0,0,0,12"/>
 
     <Grid Grid.ColumnSpan="3" Grid.Row="2" ColumnDefinitions="Auto 24 Auto 24 * 12 Auto">
       
@@ -86,12 +86,12 @@
       </StackPanel>
 
       <StackPanel Grid.Column="2" Orientation="Horizontal">
-        <TextBlock Classes="Caption2 Mono" VerticalAlignment="Center" Text="Version"/>
+        <TextBlock Classes="Caption1" VerticalAlignment="Center" Text="Version"/>
         <TextBox x:Name="Version" Classes="Mono" Margin="6,0,0,0" Width="64"/>
       </StackPanel>
 
       <StackPanel Grid.Column="4" Orientation="Horizontal">
-        <TextBlock Classes="Caption2 Mono" VerticalAlignment="Center" Text="Lang"/>
+        <TextBlock Classes="Caption1" VerticalAlignment="Center" Text="Lang"/>
         <TextBox x:Name="Lang" Classes="Mono" Margin="6,0,0,0" Width="48" Text="ru" TextChanged="OnLangTextChanged"/>
       </StackPanel>
       

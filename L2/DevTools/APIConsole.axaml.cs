@@ -27,8 +27,6 @@ public partial class APIConsoleWindow : Window {
         ParametersItems.ItemsSource = Parameters;
         Activated += APIConsoleWindow_Activated;
         AppVersion.Text = App.BuildInfo.Replace(" ", "\n");
-
-        // API = new VKAPI();
     }
 
     private void APIConsoleWindow_Activated(object sender, EventArgs e) {
@@ -67,6 +65,8 @@ public partial class APIConsoleWindow : Window {
             if (dt == null) throw new Exception("Failed to get access_token from settings!");
             AccessToken.Text = dt;
             API = new VKAPI(dt, Lang.Text, App.UserAgent);
+
+            Method.Focus();
         } catch (Exception ex) {
             TokenButton.Flyout.ShowAt(TokenButton);
         }
