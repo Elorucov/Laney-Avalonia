@@ -13,7 +13,7 @@
               <CheckBox Margin="12,0" Content="Lena" IsEnabled="False"/>
               <CheckBox Margin="12,0" Content="Nastya" IsChecked="True"/>
 
-              <Rectangle Margin="12,0" Classes="Separator"/>
+              <Rectangle Margin="12,6" Classes="Separator"/>
 
               <RadioButton Margin="12,0" GroupName="TestBest" Content="Anna"/>
               <RadioButton Margin="12,0" GroupName="TestBest" Content="Lena" IsEnabled="False"/>
@@ -113,7 +113,7 @@
     <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
     <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}" />
     <Setter Property="FontSize" Value="16" />
-    <Setter Property="MinHeight" Value="44" />
+    <Setter Property="MinHeight" Value="36" />
     <Setter Property="Cursor" Value="Hand"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -125,7 +125,7 @@
                   BorderThickness="{TemplateBinding BorderThickness}"
                   CornerRadius="{TemplateBinding CornerRadius}" />
 
-          <Grid VerticalAlignment="Top" Height="44">
+          <Grid VerticalAlignment="Top" Height="{TemplateBinding MinHeight}">
             <Path x:Name="PART_Path" Width="24" Height="24"/>
           </Grid>
           <ContentPresenter x:Name="ContentPresenter"
@@ -181,6 +181,7 @@
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="MinHeight" Value="36" />
     <!-- <Setter Property="FontFamily" Value="{StaticResource VKSansText}"/> -->
     <Setter Property="FontSize" Value="16" />
     <Setter Property="Cursor" Value="Hand"/>
@@ -193,7 +194,7 @@
                 CornerRadius="{TemplateBinding CornerRadius}">
           <Grid ColumnDefinitions="22,*">
             <Grid VerticalAlignment="Top"
-              Height="44">
+              Height="{TemplateBinding MinHeight}">
 
               <Ellipse Name="OuterEllipse"
                        Width="22" Height="22"

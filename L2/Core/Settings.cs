@@ -39,6 +39,7 @@ namespace ELOR.Laney.Core {
                 Log.Error(ex, "An error occured while reading settings file!");
             }
         }
+
         private static async void UpdateFile() {
             string content = ElorPrefs.SerializeToXML(_settings);
             byte[] bytes = Encoding.UTF8.GetBytes(content);
@@ -47,6 +48,12 @@ namespace ELOR.Laney.Core {
             _file.SetLength(bytes.Length);
             await _file.WriteAsync(bytes);
             await _file.FlushAsync();
+        }
+
+        public static void UnlockSettingsFile() {
+            UpdateFile();
+            _file.Close();
+            _file.Dispose();
         }
 
 #endregion

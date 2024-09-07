@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney;
 
@@ -29,13 +30,13 @@ public partial class APIConsoleWindow : Window {
         AppVersion.Text = App.BuildInfo.Replace(" ", "\n");
     }
 
-    private void APIConsoleWindow_Activated(object sender, EventArgs e) {
+    private async void APIConsoleWindow_Activated(object sender, EventArgs e) {
         Activated -= APIConsoleWindow_Activated;
         Version.Text = VKAPI.Version;
 
         // Test data
         Method.Text = "users.get";
-        Parameters.Add(new TwoStringBindable { 
+        Parameters.Add(new TwoStringBindable {
             Item1 = "user_ids",
             Item2 = "172894294,168354935"
         });
@@ -65,7 +66,9 @@ public partial class APIConsoleWindow : Window {
             if (dt == null) throw new Exception("Failed to get access_token from settings!");
             AccessToken.Text = dt;
             API = new VKAPI(dt, Lang.Text, App.UserAgent);
+            Settings.UnlockSettingsFile();
 
+            await Task.Delay(100); // Required for properly focus to "method" TextBox.
             Method.Focus();
         } catch (Exception ex) {
             TokenButton.Flyout.ShowAt(TokenButton);
@@ -90,7 +93,7 @@ public partial class APIConsoleWindow : Window {
         try {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             foreach (var p in Parameters) {
-                if (p.Item1 == "v" || p.Item1 == "lang") continue;
+                if (p.Item1 == "v" || p.Item1 == "lang" || !p.Enabled) continue;
                 if (parameters.ContainsKey(p.Item1)) {
                     parameters[p.Item1] = p.Item2;
                 } else {

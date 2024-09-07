@@ -11,9 +11,11 @@ namespace ELOR.Laney.DataModels {
     }
 
     public class TwoStringBindable : ViewModelBase {
+        private bool _enabled = true;
         private string _item1;
         private string _item2;
 
+        public bool Enabled { get { return _enabled; } set { _enabled = value; OnPropertyChanged(nameof(Enabled)); } }
         public string Item1 { get { return _item1; } set { _item1 = value; OnPropertyChanged(nameof(Item1)); } }
         public string Item2 { get { return _item2; } set { _item2 = value; OnPropertyChanged(nameof(Item2)); } }
     }
