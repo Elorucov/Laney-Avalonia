@@ -72,6 +72,7 @@
         public const string Icon20UserAddOutline = "Icon20UserAddOutline";
         public const string Icon20UserCheckOutline = "Icon20UserCheckOutline";
         public const string Icon20UserOutline = "Icon20UserOutline";
+        public const string Icon20ViewOutline = "Icon20ViewOutline";
         public const string Icon20VideoOutline = "Icon20VideoOutline";
         public const string Icon20WriteOutline = "Icon20WriteOutline";
         public const string Icon20WorkOutline = "Icon20WorkOutline";

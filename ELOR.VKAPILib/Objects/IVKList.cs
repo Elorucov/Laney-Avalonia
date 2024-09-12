@@ -41,6 +41,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
+
+        [JsonPropertyName("total_count")] // Some methods (example messages.getMessageReadPeers)
+        public int TotalCount { get; set; }
     }
 
     public class AppsList : IVKList<App> {

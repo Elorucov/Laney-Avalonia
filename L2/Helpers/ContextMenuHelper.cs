@@ -12,11 +12,8 @@ using System.Linq;
 using System;
 using ELOR.Laney.Views.Modals;
 using Avalonia.Controls.Notifications;
-using Avalonia.Media;
-using Svg;
-using static System.Collections.Specialized.BitVector32;
 using System.Threading.Tasks;
-using Tmds.DBus.Protocol;
+using Serilog;
 
 namespace ELOR.Laney.Helpers {
 
@@ -183,7 +180,7 @@ namespace ELOR.Laney.Helpers {
 
         #region For message
 
-        public static void ShowForMessage(MessageViewModel message, ChatViewModel chat, Control target) {
+        public static async void ShowForMessage(MessageViewModel message, ChatViewModel chat, Control target) {
             if (chat.PeerId != message.PeerId) return;
             ActionSheet ash = new ActionSheet();
 
@@ -195,6 +192,10 @@ namespace ELOR.Laney.Helpers {
             ActionSheetItem debug = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
                 Header = $"ID: {message.Id}, CMID: {message.ConversationMessageId}"
+            };
+            ActionSheetItem readers = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20ViewOutline },
+                Header = Localizer.Instance["loading"]
             };
             ActionSheetItem reactions = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20Stars },
@@ -257,6 +258,7 @@ namespace ELOR.Laney.Helpers {
                 if (sender != null) canReplyPrivately = sender.CanWritePrivateMessage == 1;
             }
 
+            bool canShowReaders = message.IsOutgoing && chat.ChatSettings?.State == UserStateInChat.In;
             bool isAdminInChat = false;
             if (chat.ChatSettings?.AdminIDs != null) isAdminInChat = chat.ChatSettings.AdminIDs.Contains(session.Id);
 
@@ -277,7 +279,10 @@ namespace ELOR.Laney.Helpers {
 
             // Actions
 
-
+            readers.Click += async (a, b) => {
+                WhoReadMessage wrm = new WhoReadMessage(session, message.PeerId, message.ConversationMessageId);
+                await wrm.ShowDialog(session.ModalWindow);
+            };
 
             reactions.Click += async (a, b) => {
                 ReactedMembers rmw = new ReactedMembers(session, message.PeerId, message.ConversationMessageId);
@@ -345,7 +350,9 @@ namespace ELOR.Laney.Helpers {
             if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
             if (canShowContextMenu) {
                 if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
+                if (canShowReaders) ash.Items.Add(readers);
                 if (totalReactions > 0) ash.Items.Add(reactions);
+                if (canShowReaders || totalReactions > 0) ash.Items.Add(new ActionSheetItem());
                 if (chat.CanWrite.Allowed) ash.Items.Add(reply);
                 if (canReplyPrivately && chat.PeerType == PeerType.Chat) ash.Items.Add(repriv);
                 ash.Items.Add(forward);
@@ -361,6 +368,22 @@ namespace ELOR.Laney.Helpers {
             if (ash.Items.Count > 0) {
                 if (canSendReaction) ash.Above = new ReactionsPicker(message.PeerId, message.ConversationMessageId, message.SelectedReactionId, target, ash);
                 ash.ShowAt(target, true);
+            }
+
+            // Show message readers count
+            if (canShowReaders) {
+                try {
+                    var wrm = await session.API.Messages.GetMessageReadPeersAsync(session.GroupId, message.PeerId, message.ConversationMessageId, 0, 3, new List<string> { "photos_50", "sex" });
+                    if (wrm.TotalCount > 0) {
+                        readers.Header = Localizer.Instance.GetDeclensionFormatted(wrm.TotalCount, "views");
+                    } else {
+                        readers.Header = Localizer.Instance["views_empty"];
+                    }
+                } catch (Exception ex) {
+                    Log.Error(ex, $"Cannot check who read message to display in context menu! {message.PeerId}_{message.ConversationMessageId}");
+                    // readers.Header = Localizer.Instance["error"];
+                    readers.Header = Localizer.Instance["views"];
+                }
             }
         }
 

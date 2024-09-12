@@ -46,6 +46,7 @@
   "go_back": "Go back",
   "continue": "Continue",
   "customize": "Customize",
+  "loading": "Loading...",
 
   "landing_title": "This is Laney",
   "landing_subtitle": "The messenger of VK social network",
@@ -423,5 +424,11 @@
   "drop_photos_quick": "Drag and drop photos here\nto attach them to the message",
   "drop_photos_file": "Drag and drop photos here\nto attach them as files (uncompressed)",
   "drop_videos_quick": "Drag and drop videos here\nto attach them to the message",
-  "drop_videos_file": "Drag and drop videos here\nto attach them as files"
+  "drop_videos_file": "Drag and drop videos here\nto attach them as files",
+
+  "views": "Views",
+  "views_nom": "{0} view",
+  "views_gen": "{0} views",
+  "views_plu": "{0} views",
+  "views_empty": "No views"
 }

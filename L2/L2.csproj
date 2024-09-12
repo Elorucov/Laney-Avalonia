@@ -233,4 +233,7 @@
   <ItemGroup>
     <Folder Include="DevTools\DataModels\" />
   </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Modals\WhoReadMessage.axaml" />
+  </ItemGroup>
 </Project>

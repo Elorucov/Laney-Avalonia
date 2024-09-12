@@ -461,6 +461,23 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<LongPollServerInfo>("messages.getLongPollServer", parameters);
         }
 
+        /// <summary>Returns members who read message.</summary>
+        /// <param name="peerId">Peer ID.</param>
+        /// <param name="cmid">Conversation message ID.</param>
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        public async Task<LongList> GetMessageReadPeersAsync(long groupId, long peerId, int cmid, int offset = 0, int count = 50, List<string> fields = null) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "peer_id", peerId.ToString() },
+                { "cmid", cmid.ToString() },
+                { "offset_major_id", offset.ToString() },
+                { "count", count.ToString() },
+                { "extended", "1" }
+            };
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
+            return await API.CallMethodAsync<LongList>("messages.getMessageReadPeers", parameters);
+        }
+
         /// <summary>Returns reacted members.</summary>
         /// <param name="peerId">Peer ID.</param>
         /// <param name="cmid">Conversation message ID.</param>

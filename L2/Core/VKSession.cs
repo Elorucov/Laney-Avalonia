@@ -30,7 +30,6 @@ using ELOR.VKAPILib.Objects.Messages;
 using System.Diagnostics;
 using Avalonia.Platform;
 using System.Threading;
-using static System.Collections.Specialized.BitVector32;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -381,6 +380,12 @@ namespace ELOR.Laney.Core {
                 API.CaptchaHandler = ShowCaptcha;
                 if (API.WebRequestCallback == null) API.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
 
+                // Load chats
+                if (!isFirstTimeChatsLoaded) {
+                    ImViewModel.LoadConversations();
+                    isFirstTimeChatsLoaded = true;
+                }
+
                 List<VKSession> sessions = new List<VKSession>();
                 List<long> savedGroupIds = GetAddedGroupIds();
                 StartSessionResponse info = await API.StartSessionAsync(savedGroupIds);
@@ -432,6 +437,11 @@ namespace ELOR.Laney.Core {
                             AutoReset = true,
                         };
                         onlineTimer.Elapsed += async (a, b) => {
+                            bool isMinimized = false;
+                            await Dispatcher.UIThread.InvokeAsync(() => {
+                                isMinimized = Window.WindowState == WindowState.Minimized;
+                            });
+                            if (isMinimized) return;
                             try {
                                 bool result = await API.Account.SetOnlineAsync();
                                 Log.Information($"account.setOnline: {result}");
@@ -476,12 +486,6 @@ namespace ELOR.Laney.Core {
                 } else {
                     Log.Error(ex, "Init failed!");
                 }
-            }
-
-            // Load chats
-            if (!isFirstTimeChatsLoaded) {
-                ImViewModel.LoadConversations();
-                isFirstTimeChatsLoaded = true;
             }
         }
 
