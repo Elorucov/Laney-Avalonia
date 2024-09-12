@@ -32,16 +32,18 @@
             <ItemsControl ItemsSource="{Binding Item3}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="dm:Entity">
-                  <Grid Margin="12,6" ColumnDefinitions="Auto * Auto" MinHeight="32" Background="Transparent">
-                    <vkui:Avatar Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Top"
-                                 Initials="{Binding Item3, Converter={StaticResource ic}}"
-                                 Background="{Binding Item1, Converter={StaticResource agc}}"
-                                 controls:ImageLoader.Image="{Binding Item2}"/>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding Item3}" Classes="Default" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
-                    </StackPanel>
-                    <Image Grid.Column="2" Width="26" Height="26" VerticalAlignment="Center" DataContextChanged="Image_DataContextChanged"/>
-                  </Grid>
+                  <Button Classes="Tertiary Cell" Click="OpenProfile">
+                    <Grid Margin="12,6" ColumnDefinitions="Auto * Auto" MinHeight="32" Background="Transparent">
+                      <vkui:Avatar Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Top"
+                                   Initials="{Binding Item3, Converter={StaticResource ic}}"
+                                   Background="{Binding Item1, Converter={StaticResource agc}}"
+                                   controls:ImageLoader.Image="{Binding Item2}"/>
+                      <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Item3}" Classes="Default" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+                      </StackPanel>
+                      <Image Grid.Column="2" Width="26" Height="26" VerticalAlignment="Center" DataContextChanged="Image_DataContextChanged"/>
+                    </Grid>
+                  </Button>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>

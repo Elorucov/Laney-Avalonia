@@ -158,6 +158,14 @@
       <Setter Property="Foreground" Value="{DynamicResource VKCounterSecondaryTextBrush}"/>
     </Style>
 
+    <!-- Cell in Button (in ItemsControl, for example) -->
+    <Style Selector="Button.Cell">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    </Style>
+    
+    <!-- Debug -->
     <Style Selector="Border.Debug TextBlock">
       <Setter Property="LineHeight" Value="16"/>
       <Setter Property="FontSize" Value="12"/>

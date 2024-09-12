@@ -106,4 +106,11 @@ public partial class ReactedMembers : DialogWindow {
 
         ImageLoader.SetSvgSource(img, new Uri(en.Item4));
     }
+
+    private void OpenProfile(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        Entity entity = (sender as Control).DataContext as Entity;
+        if (entity == null) return;
+        Close();
+        Router.OpenPeerProfile(session, entity.Item1);
+    }
 }

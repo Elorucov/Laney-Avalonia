@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
@@ -61,5 +62,12 @@ public partial class WhoReadMessage : DialogWindow {
             await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
             Close();
         }
+    }
+
+    private void OpenProfile(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        Entity entity = (sender as Control).DataContext as Entity;
+        if (entity == null) return;
+        Close();
+        Router.OpenPeerProfile(session, entity.Item1);
     }
 }
