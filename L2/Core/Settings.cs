@@ -50,8 +50,8 @@ namespace ELOR.Laney.Core {
             await _file.FlushAsync();
         }
 
-        public static void UnlockSettingsFile() {
-            UpdateFile();
+        public static void UnlockSettingsFile(bool doNotUpdateFile = false) {
+            if (!doNotUpdateFile) UpdateFile();
             _file.Close();
             _file.Dispose();
         }

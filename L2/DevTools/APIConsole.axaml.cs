@@ -66,7 +66,7 @@ public partial class APIConsoleWindow : Window {
             if (dt == null) throw new Exception("Failed to get access_token from settings!");
             AccessToken.Text = dt;
             API = new VKAPI(dt, Lang.Text, App.UserAgent);
-            Settings.UnlockSettingsFile();
+            Settings.UnlockSettingsFile(true);
 
             await Task.Delay(100); // Required for properly focus to "method" TextBox.
             Method.Focus();
