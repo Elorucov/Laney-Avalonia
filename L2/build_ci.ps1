@@ -84,7 +84,7 @@ if ($IsMacOS) {
     
     echo "Creating .app bundle file for macOS...";
     Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;
-    Rempve-Item -Path "$(Get-Location)/MacOS_layout/Contents/MacOS/empty";
+    Remove-Item -Path "$(Get-Location)/MacOS_layout/Contents/MacOS/empty";
     Get-ChildItem -LiteralPath "$(Get-Location)/MacOS_layout/Contents/MacOS" -Filter *.dsym | Remove-Item -Force -Recurse
     Copy-Item -Path "$(Get-Location)/MacOS_layout/*" -Destination "$($location)/MacOS_Bundles/$($appname).app/Contents" -Recurse;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
