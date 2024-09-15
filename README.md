@@ -19,6 +19,8 @@
 
 Главное отличие Laney от десктопного приложения [VK Мессенджер](https://vk.me/) — мгновенный запуск и быстрая работа приложения, а также более экономное потребление ОЗУ.
 
+> **Обратите внимание:** версия для macOS не подписана. Для запуска введите в терминале `xattr -r -d com.apple.quarantine \Applications\Laney.app`
+
 ## Перед началом работы
 Сначала установите [.NET SDK 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) и [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell).
 
@@ -32,7 +34,6 @@ dotnet run
 ```
 
 ## Сборка
-
 Запустите скрипт `build_aot.ps1`, находящийся в папке **L2**:
 
 - На Windows: `pwsh .\build_aot.ps1`
@@ -45,8 +46,7 @@ dotnet run
 > **Обратите внимание:** скрипт скомпилирует бинарник только для той ОС, на которой запущен скрипт.
 
 > [!WARNING]  
-> На данный момент скрипт не работает корректно на macOS. Также опубликованные в Releases сборки не запускаются на macOS через Launchpad, необходимо перейти в содержимое папки Laney.app и запустить оттуда бинарник.
-> Можете попробовать прописать в терминале команду `xattr -c "/Applications/Laney.app"`.
+> На данный момент скрипт не работает корректно на macOS.
 
 Скрипту можно передавать аргумент `channel`, доступны два значения: `BETA` и `RELEASE`.
 ```powershell
@@ -54,7 +54,7 @@ pwsh ./build_aot.ps1 -channel RELEASE
 ```
 
 ## Локальная папка по умолчанию
-Это папка, где Laney хранит свои данные: файл с настройками и токеном, логи и кэш. В Windows она находится по адресу `C:\Users\<User>\AppData\Local\ELOR\Laney\`, в macOS — `/Users/<User>/.local/share/ELOR/Laney`, в Linux — `$HOME/.local/share/ELOR/Laney`.
+Это папка, где Laney хранит свои данные: файл с настройками и токеном, логи и кэш. В Windows она находится по адресу `C:\Users\<User>\AppData\Local\ELOR\Laney\`, в macOS — `/Users/<User>/Library/Application Support/ELOR/Laney`, в Linux — `$HOME/.local/share/ELOR/Laney`.
 
 Местоположение папки можно менять, для этого надо запускать Laney с аргументом командной строки `-ldp=<path>`, где `<path>` — это путь к папке (например, `laney.exe -ldp=D:\custom\folder\for\my\fake\account\`)
 
