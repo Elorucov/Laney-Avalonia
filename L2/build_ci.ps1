@@ -61,12 +61,12 @@ if ($IsWindows) {
     $btagw1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagw1;
     dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugType=None -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagw1 -p:DefineConstants=$const;
-	echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
+    echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
 
 if ($IsLinux) {
     $const = "LINUX$($chstr)";
-	$btagl1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagl1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
     echo $btagl1;
     dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugType=None -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagl1 -p:DefineConstants=$const;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
@@ -83,7 +83,9 @@ if ($IsMacOS) {
     dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugType=None -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagm1 -p:DefineConstants=$const;
     
     echo "Creating .app bundle file for macOS...";
-	Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;
+    Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;
+    Rempve-Item -Path "$(Get-Location)/MacOS_layout/Contents/MacOS/empty";
+    Get-ChildItem -LiteralPath "$(Get-Location)/MacOS_layout/Contents/MacOS" -Filter *.dsym | Remove-Item -Force -Recurse
     Copy-Item -Path "$(Get-Location)/MacOS_layout/*" -Destination "$($location)/MacOS_Bundles/$($appname).app/Contents" -Recurse;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
