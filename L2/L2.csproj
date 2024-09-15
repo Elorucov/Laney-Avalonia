@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.616</AssemblyVersion>
-    <FileVersion>2.0.616</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.616-win-anycpu-devuser.devpc-240915-1255</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.616-linux-anycpu-devuser.devpc-240915-1255</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.616-macos-anycpu-devuser.devpc-240915-1255</Version>
+    <AssemblyVersion>2.0.617</AssemblyVersion>
+    <FileVersion>2.0.617</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.617-win-anycpu-devuser.devpc-240915-1255</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.617-linux-anycpu-devuser.devpc-240915-1255</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.617-macos-anycpu-devuser.devpc-240915-1255</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -28,8 +28,8 @@
     <CFBundleName>Laney</CFBundleName>
     <CFBundleDisplayName>Laney</CFBundleDisplayName>
     <CFBundleIdentifier>top.elor.laney</CFBundleIdentifier>
-    <CFBundleVersion>2.0.616</CFBundleVersion>
-    <CFBundleShortVersionString>2.0.616</CFBundleShortVersionString>
+    <CFBundleVersion>2.0.617</CFBundleVersion>
+    <CFBundleShortVersionString>2.0.617</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>laney</CFBundleExecutable>
@@ -51,6 +51,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>8632</NoWarn>
   </PropertyGroup>
+  <!-- Temporary fix issue https://github.com/dotnet/runtime/issues/98124 -->
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <LinkerArg Include="-mmacosx-version-min=11.0" />
+  </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Remove="Controls\ChatListView.axaml" />
   </ItemGroup>
