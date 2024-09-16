@@ -28,75 +28,7 @@ namespace ELOR.Laney.Views.Modals {
             TitleBar.IsVisible = false;
 #endif
 
-#if RELEASE
-            byte i = 2;
-#elif BETA
-            TextBlock t = new TextBlock { 
-                    Text = "BETA",
-                    Foreground = new SolidColorBrush(Color.Parse("#000000")),
-                    TextAlignment = TextAlignment.Center,
-                    FontWeight = FontWeight.Bold
-                };
-                t.Classes.Add("Caption2");
-
-                Border b = new Border {
-                    Width = 36,
-                    Height = 14,
-                    CornerRadius = new Avalonia.CornerRadius(0, 2, 2, 0),
-                    Background = new SolidColorBrush(Color.Parse("#D1C097")),
-                    Child = t
-                };
-
-                Path p = new Path { 
-                    Data = Geometry.Parse("M 0,14 L 10,24 L 10,14 z"),
-                    Fill = new SolidColorBrush(Color.Parse("#857250"))
-                };
-
-                Canvas c = new Canvas { 
-                    HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left,
-                    VerticalAlignment = Avalonia.Layout.VerticalAlignment.Bottom,
-                    Width = 36,
-                    Height = 26,
-                    Margin = new Avalonia.Thickness(2, 0, 0, 7)
-                };
-
-                c.Children.Add(b);
-                c.Children.Add(p);
-                Logo.Children.Add(c);
-#else
-            TextBlock t = new TextBlock {
-                Text = "DEV",
-                Foreground = new SolidColorBrush(Color.Parse("#FFFFFF")),
-                TextAlignment = TextAlignment.Center,
-                FontWeight = FontWeight.Bold
-            };
-            t.Classes.Add("Caption2");
-
-            Border b = new Border {
-                Width = 36,
-                Height = 14,
-                CornerRadius = new Avalonia.CornerRadius(0, 2, 2, 0),
-                Background = new SolidColorBrush(Color.Parse("#FF0000")),
-                Child = t
-            };
-
-            Path p = new Path {
-                Data = Geometry.Parse("M 0,14 L 10,24 L 10,14 z"),
-                Fill = new SolidColorBrush(Color.Parse("#9F0000"))
-            };
-
-            Canvas c = new Canvas {
-                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left,
-                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Bottom,
-                Width = 36,
-                Height = 26,
-                Margin = new Avalonia.Thickness(2, 0, 0, 7)
-            };
-
-            c.Children.Add(b);
-            c.Children.Add(p);
-            Logo.Children.Add(c);
-#endif
+            App.UpdateBranding(Logo.Child as Grid);
         }
 
         private async void b00_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

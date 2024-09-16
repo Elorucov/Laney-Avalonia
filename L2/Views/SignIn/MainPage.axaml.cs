@@ -4,6 +4,7 @@ using System;
 using VKUI.Controls;
 using System.Linq;
 using System.IO;
+using Avalonia.Controls;
 
 namespace ELOR.Laney.Views.SignIn {
     public partial class MainPage : Page {
@@ -21,18 +22,15 @@ namespace ELOR.Laney.Views.SignIn {
                 NavigationRouter.NavigateToAsync(new MainPage(), NavigationMode.Clear);
             };
 
-#if RELEASE
             VersionInfo.Text = $"v{App.BuildInfo}";
-#elif BETA
-            VersionInfo.Text = $"v{App.BuildInfo} (BETA)";
-            Middle.Children.Add(new Avalonia.Controls.TextBlock { 
+#if BETA
+            Middle.Children.Add(new TextBlock { 
                 FontSize = 12,
                 Margin = new Avalonia.Thickness(0,36,0,0),
                 Text = $"Logs folder:\n{Path.Combine(App.LocalDataPath, "logs")}"
             });
 #else
-            VersionInfo.Text = $"v{App.BuildInfo} (DEV)";
-            Middle.Children.Add(new Avalonia.Controls.TextBlock { 
+            Middle.Children.Add(new TextBlock { 
                 FontSize = 12,
                 Margin = new Avalonia.Thickness(0,36,0,0),
                 Text = $"Logs folder:\n{Path.Combine(App.LocalDataPath, "logs")}"
@@ -46,6 +44,10 @@ namespace ELOR.Laney.Views.SignIn {
 
         private void GoToDirectAuthPage(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             NavigationRouter.NavigateToAsync(new QRAuthPage());
+        }
+
+        private void Page_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            App.UpdateBranding(Logo.Child as Grid);
         }
     }
 }

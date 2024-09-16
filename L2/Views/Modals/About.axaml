@@ -20,10 +20,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
       </Style>
     </Grid.Styles>
-    <Grid x:Name="Logo" Margin="48" ColumnDefinitions="Auto Auto" HorizontalAlignment="Center">
-      <Image Margin="12,0,0,0" Width="72" Height="72" Source="{StaticResource Logo}"/>
-      <ContentPresenter Grid.Column="1" Margin="23,0,12,0" Height="49" VerticalAlignment="Center" ContentTemplate="{StaticResource LText}"/>
-    </Grid>
+    <ContentPresenter x:Name="Logo" ContentTemplate="{StaticResource LogoFull}" Margin="48" HorizontalAlignment="Center" />
 
     <StackPanel Grid.Row="1" Margin="4,0">
       <vkui:Cell x:Name="versionCell" Header="{i18n:Localize app_version}"/>

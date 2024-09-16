@@ -3,7 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Media;
 using Avalonia.Styling;
+using DynamicData;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
@@ -260,7 +262,7 @@ namespace ELOR.Laney {
 
 #endregion
 
-        #region Paths
+#region Paths
 
         public static string LocalDataPath { get => GetLocalDataPath(); }
 
@@ -272,6 +274,83 @@ namespace ELOR.Laney {
                 string appdataroot = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 return Path.Combine(appdataroot, "ELOR", "Laney");
             }
+        }
+
+#endregion
+
+#region Non-production things
+
+        public static void UpdateBranding(Grid brand) {
+#if RELEASE
+            byte i = 2;
+#elif BETA
+            TextBlock t = new TextBlock { 
+                    Text = "BETA",
+                    Foreground = new SolidColorBrush(Color.Parse("#000000")),
+                    TextAlignment = TextAlignment.Center,
+                    FontWeight = FontWeight.Bold
+                };
+                t.Classes.Add("Caption2");
+
+                Border b = new Border {
+                    Width = 36,
+                    Height = 14,
+                    CornerRadius = new Avalonia.CornerRadius(0, 2, 2, 0),
+                    Background = new SolidColorBrush(Color.Parse("#D1C097")),
+                    Child = t
+                };
+
+                Path p = new Path { 
+                    Data = Geometry.Parse("M 0,14 L 10,24 L 10,14 z"),
+                    Fill = new SolidColorBrush(Color.Parse("#857250"))
+                };
+
+                Canvas c = new Canvas { 
+                    HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left,
+                    VerticalAlignment = Avalonia.Layout.VerticalAlignment.Bottom,
+                    Width = 36,
+                    Height = 26,
+                    Margin = new Avalonia.Thickness(2, 0, 0, 7)
+                };
+
+                c.Children.Add(b);
+                c.Children.Add(p);
+                Logo.Children.Add(c);
+#else
+            TextBlock t = new TextBlock {
+                Text = "DEV",
+                Foreground = new SolidColorBrush(Color.Parse("#FFFFFF")),
+                TextAlignment = TextAlignment.Center,
+                FontWeight = FontWeight.Bold
+            };
+            t.Classes.Add("Caption2");
+
+            Border b = new Border {
+                Width = 36,
+                Height = 14,
+                CornerRadius = new Avalonia.CornerRadius(0, 2, 2, 0),
+                Background = new SolidColorBrush(Color.Parse("#FF0000")),
+                Child = t
+            };
+
+            Avalonia.Controls.Shapes.Path p = new Avalonia.Controls.Shapes.Path {
+                Data = Geometry.Parse("M 0,14 L 10,24 L 10,14 z"),
+                Fill = new SolidColorBrush(Color.Parse("#9F0000"))
+            };
+
+            Canvas c = new Canvas {
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left,
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Bottom,
+                Width = 36,
+                Height = 26,
+                Margin = new Avalonia.Thickness(2, 0, 0, 7)
+            };
+
+            c.Children.Add(b);
+            c.Children.Add(p);
+
+            brand.Children.Add(c);
+#endif
         }
 
         #endregion
