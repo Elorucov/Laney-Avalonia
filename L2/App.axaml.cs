@@ -95,8 +95,10 @@ namespace ELOR.Laney {
                     desktop.MainWindow = new APIConsoleWindow();
                 }
 
-                DPI = desktop.MainWindow.DesktopScaling;
-                Log.Information($"Maximal DPI: {DPI}");
+                double rs = desktop.MainWindow.RenderScaling;
+                double ds = desktop.MainWindow.DesktopScaling;
+                DPI = Math.Max(rs, ds);
+                Log.Information($"Desktop scaling: {ds}; Render scaling: {rs}. Using maximal scaling ({DPI})");
             }
 
             base.OnFrameworkInitializationCompleted();
