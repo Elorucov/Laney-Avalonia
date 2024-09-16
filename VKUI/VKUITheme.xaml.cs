@@ -12,8 +12,6 @@ namespace VKUI {
             _instance = this;
 
             var fonts = _instance.Resources.MergedDictionaries[0] as ResourceDictionary;
-            int i = 0;
-            
         }
 
         public static IResourceDictionary Icons { 
