@@ -103,7 +103,7 @@ jobs:
         shell: bash
         run: |
           brew install create-dmg;
-          create-dmg --volname "Laney Installer" --background "${{ env.INSTALLER_BACKGROUND }}" --window-pos 400 300 --window-size 640 450 --icon-size 128 --icon "Laney.app" 64 50 --app-drop-link 448 50 "Laney_"${{ matrix.target }}_${{ env.VERSION }}_${{ env.channel }}".dmg" "${{ env.BINFOLDER }}/MacOS_Bundles/Laney.app"
+          create-dmg --volname "Laney Installer" --background "${{ env.INSTALLER_BACKGROUND }}" --window-pos 400 300 --window-size 640 450 --icon-size 128 --icon "Laney.app" 64 60 --app-drop-link 448 60 "Laney_"${{ matrix.target }}_${{ env.VERSION }}_${{ env.channel }}".dmg" "${{ env.BINFOLDER }}/MacOS_Bundles/Laney.app"
           echo ${{ env.BINFOLDER }}/MacOS_Bundles/Laney_${{ matrix.target }}.app >> $env:BINARCHIVE
       - name: Release to Github
         uses: softprops/action-gh-release@v1
