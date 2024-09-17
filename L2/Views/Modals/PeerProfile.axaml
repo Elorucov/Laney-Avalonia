@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
         xmlns:vko="using:ELOR.VKAPILib.Objects"
@@ -11,7 +11,7 @@
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="640"
         x:Class="ELOR.Laney.Views.Modals.PeerProfile" x:DataType="vm:PeerProfileViewModel"
         Width="540" Height="640"
-        Title="{i18n:Localize wnd_peerprofile}">
+        Title="{x:Static i18n:Resources.wnd_peerprofile}">
 
   <vkw:DialogWindow.Resources>
     <DataTemplate x:Key="PhotoTemplate" x:DataType="vko:ConversationAttachment">
@@ -117,14 +117,14 @@
     </Border>
 
     <TabControl x:Name="Tabs" Grid.Row="2" SelectionChanged="Tabs_SelectionChanged" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,14,0,0" Classes="Accent">
-      <TabItem x:Name="UserInfoTab" Header="{i18n:Localize info}">
+      <TabItem x:Name="UserInfoTab" Header="{x:Static i18n:Resources.info}">
         <ScrollViewer>
           <ItemsControl Margin="0,-3,0,6" ItemsSource="{Binding Information}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>
         </ScrollViewer>
       </TabItem>
-      <TabItem x:Name="ChatMembersTab" Header="{i18n:Localize members}">
+      <TabItem x:Name="ChatMembersTab" Header="{x:Static i18n:Resources.members}">
         <Grid RowDefinitions="Auto *">
-          <TextBox Classes="Search" Margin="12,2,12,0" Text="{Binding MemberSearchQuery}" Watermark="{i18n:Localize pp_search_members}"/>
+          <TextBox Classes="Search" Margin="12,2,12,0" Text="{Binding MemberSearchQuery}" Watermark="{x:Static i18n:Resources.pp_search_members}"/>
           <ScrollViewer Grid.Row="1">
             <ItemsRepeater Margin="0,6" ItemsSource="{Binding DisplayedMembers}" ItemTemplate="{StaticResource DefaultEntityItemTemplate}">
               <ItemsRepeater.Layout>
@@ -135,7 +135,7 @@
         </Grid>
       </TabItem>
       
-      <TabItem Header="{i18n:Localize photo}">
+      <TabItem Header="{x:Static i18n:Resources.photo}">
         <ScrollViewer x:Name="PhotosSV" DataContext="{Binding Photos}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="PhotosList" MaxWidth="520" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource PhotoTemplate}">
@@ -162,7 +162,7 @@
         </ScrollViewer>
       </TabItem>
       
-      <TabItem Header="{i18n:Localize video}">
+      <TabItem Header="{x:Static i18n:Resources.video}">
         <ScrollViewer x:Name="VideosSV" DataContext="{Binding Videos}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="VideosList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource VideoTemplate}">
@@ -189,11 +189,11 @@
         </ScrollViewer>
       </TabItem>
       
-      <TabItem Header="{i18n:Localize audio}">
-        <vkui:Placeholder VerticalAlignment="Center" Header="{i18n:Localize not_implemented}" Text="{i18n:Localize not_implemented_desc}"/>
+      <TabItem Header="{x:Static i18n:Resources.audio}">
+        <vkui:Placeholder VerticalAlignment="Center" Header="{x:Static i18n:Resources.not_implemented}" Text="{x:Static i18n:Resources.not_implemented_desc}"/>
       </TabItem>
       
-      <TabItem Header="{i18n:Localize doc}">
+      <TabItem Header="{x:Static i18n:Resources.doc}">
         <ScrollViewer x:Name="DocsSV" DataContext="{Binding Documents}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="DocsList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource DocTemplate}">
@@ -220,7 +220,7 @@
         </ScrollViewer>
       </TabItem>
       
-      <TabItem Header="{i18n:Localize links}">
+      <TabItem Header="{x:Static i18n:Resources.links}">
         <ScrollViewer x:Name="LinksSV" DataContext="{Binding Share}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="LinksList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource LinkTemplate}">

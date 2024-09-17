@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vkui="using:VKUI.Controls"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:vm="using:ELOR.Laney.ViewModels"
              xmlns:mdl="using:ELOR.Laney.DataModels"
@@ -12,7 +12,7 @@
              x:Name="Root"
              x:Class="ELOR.Laney.Views.ChatCreationView" Loaded="ChatCreationView_Loaded" x:DataType="vm:ChatCreationViewModel">
   <Grid RowDefinitions="Auto Auto Auto *">
-    <vkui:PanelHeader Content="{i18n:Localize chat_creation_title}">
+    <vkui:PanelHeader Content="{x:Static i18n:Resources.chat_creation_title}">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="BackButton">
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28ArrowLeftOutline}"/>
@@ -34,8 +34,8 @@
         </Grid>
       </Button>
       <StackPanel Grid.Column="1" Margin="6">
-        <TextBox x:Name="ChatName" Watermark="{i18n:Localize chat_creation_name_watermark}" Text="{Binding ChatName, Mode=TwoWay}"/>
-        <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap" Text="{i18n:Localize chat_creation_name_footnote}"/>
+        <TextBox x:Name="ChatName" Watermark="{x:Static i18n:Resources.chat_creation_name_watermark}" Text="{Binding ChatName, Mode=TwoWay}"/>
+        <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap" Text="{x:Static i18n:Resources.chat_creation_name_footnote}"/>
       </StackPanel>
     </Grid>
     <Separator Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>

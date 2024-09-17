@@ -54,23 +54,23 @@ namespace ELOR.Laney.DataModels {
             InitiatorId = fromId;
             InitiatorDisplayName = actionerName;
 
-            string create = Localizer.Instance.Get("msg_action_create", actionerSex);
-            string invited = Localizer.Instance.Get("msg_action_invited", actionerSex);
-            string returned = Localizer.Instance.Get("msg_action_returned", actionerSex);
-            string invitedlink = Localizer.Instance.Get("msg_action_invited_by_link", actionerSex);
-            string left = Localizer.Instance.Get("msg_action_left", memberSex);
-            string kicked = Localizer.Instance.Get("msg_action_kick", actionerSex);
-            string photoupd = Localizer.Instance.Get("msg_action_photo_update", actionerSex);
-            string photorem = Localizer.Instance.Get("msg_action_photo_remove", actionerSex);
-            string pin = Localizer.Instance.Get("msg_action_pin", actionerSex);
-            string unpin = Localizer.Instance.Get("msg_action_unpin", actionerSex);
-            string rename = Localizer.Instance.Get("msg_action_rename", actionerSex);
-            string screenshot = Localizer.Instance.Get("msg_action_screenshot", actionerSex);
-            string acceptedmsgrequest = Localizer.Instance.Get("msg_action_accepted_message_request", memberSex);
-            string inviteuserbycall = Localizer.Instance.Get("msg_action_invite_user_by_call", actionerSex);
-            string inviteuserbycalljoinlink = Localizer.Instance.Get("msg_action_invite_user_by_call_join_link", actionerSex);
-            string inviteuserbycallsuffix = !String.IsNullOrWhiteSpace(Localizer.Instance["msg_action_invite_user_by_call"]) ? $" {Localizer.Instance["msg_action_invite_user_by_call"]}" : String.Empty;
-            string styleupdate = String.IsNullOrEmpty(act.Style) ? Localizer.Instance.Get("msg_action_style_reset", actionerSex) : $"{Localizer.Instance.Get("msg_action_style_update", actionerSex)} «{act.Style}»";
+            string create = Localizer.Get("msg_action_create", actionerSex);
+            string invited = Localizer.Get("msg_action_invited", actionerSex);
+            string returned = Localizer.Get("msg_action_returned", actionerSex);
+            string invitedlink = Localizer.Get("msg_action_invited_by_link", actionerSex);
+            string left = Localizer.Get("msg_action_left", memberSex);
+            string kicked = Localizer.Get("msg_action_kick", actionerSex);
+            string photoupd = Localizer.Get("msg_action_photo_update", actionerSex);
+            string photorem = Localizer.Get("msg_action_photo_remove", actionerSex);
+            string pin = Localizer.Get("msg_action_pin", actionerSex);
+            string unpin = Localizer.Get("msg_action_unpin", actionerSex);
+            string rename = Localizer.Get("msg_action_rename", actionerSex);
+            string screenshot = Localizer.Get("msg_action_screenshot", actionerSex);
+            string acceptedmsgrequest = Localizer.Get("msg_action_accepted_message_request", memberSex);
+            string inviteuserbycall = Localizer.Get("msg_action_invite_user_by_call", actionerSex);
+            string inviteuserbycalljoinlink = Localizer.Get("msg_action_invite_user_by_call_join_link", actionerSex);
+            string inviteuserbycallsuffix = !String.IsNullOrWhiteSpace(Assets.i18n.Resources.msg_action_invite_user_by_call) ? $" {Assets.i18n.Resources.msg_action_invite_user_by_call}" : String.Empty;
+            string styleupdate = String.IsNullOrEmpty(act.Style) ? Localizer.Get("msg_action_style_reset", actionerSex) : $"{Localizer.Get("msg_action_style_update", actionerSex)} «{act.Style}»";
 
             switch (act.Type) {
                 case "chat_create":
@@ -102,7 +102,7 @@ namespace ELOR.Laney.DataModels {
                     ActionText = pin;
                     ObjectType = VKActionObjectType.ConversationMessage;
                     ObjectId = act.ConversationMessageId;
-                    ObjectDisplayName = Localizer.Instance["message"].ToLower();
+                    ObjectDisplayName = Assets.i18n.Resources.message.ToLower();
                     MessageText = act.Message;
                     break;
                 case "chat_unpin_message":
@@ -111,7 +111,7 @@ namespace ELOR.Laney.DataModels {
                     ActionText = unpin;
                     ObjectType = VKActionObjectType.ConversationMessage;
                     ObjectId = act.ConversationMessageId;
-                    ObjectDisplayName = Localizer.Instance["message"].ToLower();
+                    ObjectDisplayName = Assets.i18n.Resources.message.ToLower();
                     break;
                 case "chat_screenshot":
                     InitiatorId = act.MemberId;

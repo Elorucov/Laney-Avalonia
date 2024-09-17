@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vkui="using:VKUI.Controls"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:vm="using:ELOR.Laney.ViewModels.SettingsCategories"
              xmlns:mdl="using:ELOR.Laney.DataModels"
              mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="450"
@@ -12,7 +12,7 @@
     <StackPanel>
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
-          <vkui:Cell Margin="0" Header="{i18n:Localize st_lang}">
+          <vkui:Cell Margin="0" Header="{x:Static i18n:Resources.st_lang}">
             <vkui:Cell.After>
               <ComboBox Classes="Alternate" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
@@ -28,24 +28,24 @@
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
           <Grid Classes="GroupHeader">
-            <TextBlock Text="{i18n:Localize !st_send_method}"/>
+            <TextBlock Text="{x:Static i18n:Resources.st_send_method}"/>
           </Grid>
-          <vkui:Cell Header="{i18n:Localize st_send_method_1}" Subtitle="{i18n:Localize st_send_method_1_desc}">
+          <vkui:Cell Header="{x:Static i18n:Resources.st_send_method_1}" Subtitle="{x:Static i18n:Resources.st_send_method_1_desc}">
             <vkui:Cell.Before>
               <RadioButton GroupName="EnterBtn" IsChecked="{Binding SentViaEnter, Mode=TwoWay}"/>
             </vkui:Cell.Before>
           </vkui:Cell>
-          <vkui:Cell Header="{i18n:Localize st_send_method_2}" Subtitle="{i18n:Localize st_send_method_2_desc}">
+          <vkui:Cell Header="{x:Static i18n:Resources.st_send_method_2}" Subtitle="{x:Static i18n:Resources.st_send_method_2_desc}">
             <vkui:Cell.Before>
               <RadioButton GroupName="EnterBtn" IsChecked="{Binding !SentViaEnter, Mode=TwoWay}"/>
             </vkui:Cell.Before>
           </vkui:Cell>
-          <vkui:Cell Header="{i18n:Localize st_send_dpl}">
+          <vkui:Cell Header="{x:Static i18n:Resources.st_send_dpl}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding DontParseLinks, Mode=TwoWay}"/>
             </vkui:Cell.After>
           </vkui:Cell>
-          <vkui:Cell Header="{i18n:Localize st_send_nomentions}">
+          <vkui:Cell Header="{x:Static i18n:Resources.st_send_nomentions}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding DisableMentions, Mode=TwoWay}"/>
             </vkui:Cell.After>
@@ -55,14 +55,14 @@
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
           <Grid Classes="GroupHeader">
-            <TextBlock Text="{i18n:Localize !st_stickers}"/>
+            <TextBlock Text="{x:Static i18n:Resources.st_stickers}"/>
           </Grid>
-          <vkui:Cell Header="{i18n:Localize st_stickers_suggest}" Subtitle="{i18n:Localize st_stickers_suggest_desc}">
+          <vkui:Cell Header="{x:Static i18n:Resources.st_stickers_suggest}" Subtitle="{x:Static i18n:Resources.st_stickers_suggest_desc}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding SuggestStickers, Mode=TwoWay}"/>
             </vkui:Cell.After>
           </vkui:Cell>
-          <vkui:Cell Header="{i18n:Localize st_stickers_animate}" Subtitle="{i18n:Localize st_stickers_animate_desc}">
+          <vkui:Cell Header="{x:Static i18n:Resources.st_stickers_animate}" Subtitle="{x:Static i18n:Resources.st_stickers_animate_desc}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding AnimateStickers, Mode=TwoWay}"/>
             </vkui:Cell.After>

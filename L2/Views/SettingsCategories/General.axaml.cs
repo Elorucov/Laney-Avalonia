@@ -20,7 +20,7 @@ namespace ELOR.Laney.Views.SettingsCategories {
                 TwoStringTuple value = e.AddedItems[0] as TwoStringTuple;
                 if (value.Item1 == oldLangId) return;
 
-                VKUIDialog alert = new VKUIDialog(Localizer.Instance["restart_required"], Localizer.Instance["restart_required_ext"]);
+                VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.restart_required, Assets.i18n.Resources.restart_required_ext);
                 await alert.ShowDialog(window);
             }
         }

@@ -63,11 +63,11 @@ namespace ELOR.Laney.Views.Modals {
             };
             ActionSheetItem go = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20MessageArrowRightOutline },
-                Header = Localizer.Instance["go_to_message"],
+                Header = Assets.i18n.Resources.go_to_message,
             };
             ActionSheetItem unmark = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20UnfavoriteOutline },
-                Header = Localizer.Instance["unmark_important"],
+                Header = Assets.i18n.Resources.unmark_important,
             };
 
             go.Click += (a, b) => {

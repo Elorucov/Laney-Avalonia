@@ -1,0 +1,1157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader> 
+    <data name="lang" xml:space="preserve">
+        <value>en</value>
+    </data>
+    <data name="human" xml:space="preserve">
+        <value>English</value>
+    </data>
+    <data name="seconds_short" xml:space="preserve">
+        <value>{0} s</value>
+    </data>
+    <data name="minutes_short" xml:space="preserve">
+        <value>{0} min</value>
+    </data>
+    <data name="hours_short" xml:space="preserve">
+        <value>{0} h</value>
+    </data>
+    <data name="days_short" xml:space="preserve">
+        <value>{0} d</value>
+    </data>
+    <data name="months_short" xml:space="preserve">
+        <value>{0} m</value>
+    </data>
+    <data name="years_short" xml:space="preserve">
+        <value>{0} y</value>
+    </data>
+    <data name="yesterday" xml:space="preserve">
+        <value>yesterday</value>
+    </data>
+    <data name="today" xml:space="preserve">
+        <value>today</value>
+    </data>
+    <data name="tomorrow" xml:space="preserve">
+        <value>tomorrow</value>
+    </data>
+    <data name="time_at" xml:space="preserve">
+        <value>at</value>
+    </data>
+    <data name="all" xml:space="preserve">
+        <value>All</value>
+    </data>
+    <data name="you" xml:space="preserve">
+        <value>You</value>
+    </data>
+    <data name="yes" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="no" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="retry" xml:space="preserve">
+        <value>Try again</value>
+    </data>
+    <data name="nothing_found" xml:space="preserve">
+        <value>Nothing was found</value>
+    </data>
+    <data name="open" xml:space="preserve">
+        <value>Open</value>
+    </data>
+    <data name="close" xml:space="preserve">
+        <value>Close</value>
+    </data>
+    <data name="add" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="search" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="attach" xml:space="preserve">
+        <value>Attach</value>
+    </data>
+    <data name="delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="block" xml:space="preserve">
+        <value>Block</value>
+    </data>
+    <data name="unblock" xml:space="preserve">
+        <value>Unblock</value>
+    </data>
+    <data name="open_profile" xml:space="preserve">
+        <value>Open profile</value>
+    </data>
+    <data name="more" xml:space="preserve">
+        <value>More</value>
+    </data>
+    <data name="wait" xml:space="preserve">
+        <value>Please wait...</value>
+    </data>
+    <data name="enable" xml:space="preserve">
+        <value>Enable</value>
+    </data>
+    <data name="disable" xml:space="preserve">
+        <value>Disable</value>
+    </data>
+    <data name="enabled" xml:space="preserve">
+        <value>Enabled</value>
+    </data>
+    <data name="disabled" xml:space="preserve">
+        <value>Disabled</value>
+    </data>
+    <data name="offset" xml:space="preserve">
+        <value>Offset</value>
+    </data>
+    <data name="count" xml:space="preserve">
+        <value>Count</value>
+    </data>
+    <data name="sound" xml:space="preserve">
+        <value>Sound</value>
+    </data>
+    <data name="go" xml:space="preserve">
+        <value>Go</value>
+    </data>
+    <data name="_continue" xml:space="preserve">
+        <value>Continue</value>
+    </data>
+    <data name="sign_in_direct" xml:space="preserve">
+        <value>Sign in using login and password</value>
+    </data>
+    <data name="sign_in_vk_id" xml:space="preserve">
+        <value>Sign in with VK ID</value>
+    </data>
+    <data name="sign_in_qr" xml:space="preserve">
+        <value>Sign in via QR</value>
+    </data>
+    <data name="sign_in" xml:space="preserve">
+        <value>Sign in</value>
+    </data>
+    <data name="go_back" xml:space="preserve">
+        <value>Go back</value>
+    </data>
+    <data name="customize" xml:space="preserve">
+        <value>Customize</value>
+    </data>
+    <data name="loading" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
+    <data name="landing_title" xml:space="preserve">
+        <value>This is Laney</value>
+    </data>
+    <data name="landing_subtitle" xml:space="preserve">
+        <value>The messenger of VK social network</value>
+    </data>
+    <data name="landing_auth_in_progress_title" xml:space="preserve">
+        <value>Authorization</value>
+    </data>
+    <data name="landing_auth_in_progress" xml:space="preserve">
+        <value>Please allow access to your account.</value>
+    </data>
+    <data name="da_login" xml:space="preserve">
+        <value>E-mail or phone</value>
+    </data>
+    <data name="da_password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="da_2fa_confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="da_2fa_app" xml:space="preserve">
+        <value>Enter the code provided by the code-generating app:</value>
+    </data>
+    <data name="da_2fa_sms" xml:space="preserve">
+        <value>Enter the code sent via SMS to {0}:</value>
+    </data>
+    <data name="da_wrong_otp_code" xml:space="preserve">
+        <value>Incorrect confirmation code!</value>
+    </data>
+    <data name="not_implemented" xml:space="preserve">
+        <value>Not implemented yet</value>
+    </data>
+    <data name="not_implemented_desc" xml:space="preserve">
+        <value>This feature will coming in the next beta-versions of Laney.</value>
+    </data>
+    <data name="error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="error_api" xml:space="preserve">
+        <value>VK API error</value>
+    </data>
+    <data name="err_network" xml:space="preserve">
+        <value>Network error</value>
+    </data>
+    <data name="err_network_general" xml:space="preserve">
+        <value>Please check your internet connection and try again.</value>
+    </data>
+    <data name="err_network_no_connection" xml:space="preserve">
+        <value>No internet connection.</value>
+    </data>
+    <data name="err_network_shinaprovod" xml:space="preserve">
+        <value>A server error occurred. Please try again later.</value>
+    </data>
+    <data name="err_network_aborted" xml:space="preserve">
+        <value>Connection aborted.</value>
+    </data>
+    <data name="err_network_timeout" xml:space="preserve">
+        <value>Connection timed out.</value>
+    </data>
+    <data name="captcha_title" xml:space="preserve">
+        <value>Enter captcha</value>
+    </data>
+    <data name="captcha_placeholder" xml:space="preserve">
+        <value>Enter the code</value>
+    </data>
+    <data name="ls_done" xml:space="preserve">
+        <value>Go back to Laney.</value>
+    </data>
+    <data name="emoji" xml:space="preserve">
+        <value>Emoji</value>
+    </data>
+    <data name="recent" xml:space="preserve">
+        <value>Recent</value>
+    </data>
+    <data name="favorites" xml:space="preserve">
+        <value>Favorites</value>
+    </data>
+    <data name="info" xml:space="preserve">
+        <value>Information</value>
+    </data>
+    <data name="groups_management" xml:space="preserve">
+        <value>Community management</value>
+    </data>
+    <data name="important_messages" xml:space="preserve">
+        <value>Important messages</value>
+    </data>
+    <data name="favorite_messages" xml:space="preserve">
+        <value>Favorite messages</value>
+    </data>
+    <data name="settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="about" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="log_out" xml:space="preserve">
+        <value>Log out</value>
+    </data>
+    <data name="log_out_confirm" xml:space="preserve">
+        <value>Are you sure you want to log out?</value>
+    </data>
+    <data name="exit" xml:space="preserve">
+        <value>Exit</value>
+    </data>
+    <data name="app_version" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="build_time" xml:space="preserve">
+        <value>Build time</value>
+    </data>
+    <data name="launch_time" xml:space="preserve">
+        <value>Launch duration</value>
+    </data>
+    <data name="dotnet_version" xml:space="preserve">
+        <value>.NET version</value>
+    </data>
+    <data name="chats" xml:space="preserve">
+        <value>Chats</value>
+    </data>
+    <data name="private_messages" xml:space="preserve">
+        <value>Private messages</value>
+    </data>
+    <data name="group_chats" xml:space="preserve">
+        <value>Group chats</value>
+    </data>
+    <data name="chatview_placeholder" xml:space="preserve">
+        <value>Select a chat or create a new one</value>
+    </data>
+    <data name="members" xml:space="preserve">
+        <value>Members</value>
+    </data>
+    <data name="members_sub_nom" xml:space="preserve">
+        <value>{0} member</value>
+    </data>
+    <data name="members_sub_gen" xml:space="preserve">
+        <value>{0} members</value>
+    </data>
+    <data name="members_sub_plu" xml:space="preserve">
+        <value>{0} members</value>
+    </data>
+    <data name="chat_kicked" xml:space="preserve">
+        <value>You were removed from the chat</value>
+    </data>
+    <data name="chat_left" xml:space="preserve">
+        <value>You left the chat</value>
+    </data>
+    <data name="cannot_write" xml:space="preserve">
+        <value>You cannot send messages</value>
+    </data>
+    <data name="user_blacklisted_by_me_f" xml:space="preserve">
+        <value>Blacklisted</value>
+    </data>
+    <data name="user_blacklisted_by_me_m" xml:space="preserve">
+        <value>Blacklisted</value>
+    </data>
+    <data name="user_blacklisted_f" xml:space="preserve">
+        <value>Added you to the blacklist</value>
+    </data>
+    <data name="user_blacklisted_m" xml:space="preserve">
+        <value>Added you to the blacklist</value>
+    </data>
+    <data name="user_blocked" xml:space="preserve">
+        <value>User blocked</value>
+    </data>
+    <data name="user_deleted" xml:space="preserve">
+        <value>User deleted</value>
+    </data>
+    <data name="user_private" xml:space="preserve">
+        <value>Private profile</value>
+    </data>
+    <data name="offline_last_month_f" xml:space="preserve">
+        <value>Last seen this month</value>
+    </data>
+    <data name="offline_last_week_f" xml:space="preserve">
+        <value>Last seen this week</value>
+    </data>
+    <data name="offline_long_ago_f" xml:space="preserve">
+        <value>Last seen a long time ago</value>
+    </data>
+    <data name="offline_recently_f" xml:space="preserve">
+        <value>Last seen recently</value>
+    </data>
+    <data name="offline_last_seen_f" xml:space="preserve">
+        <value>Last seen {0}</value>
+    </data>
+    <data name="offline_last_month_m" xml:space="preserve">
+        <value>Last seen this month</value>
+    </data>
+    <data name="offline_last_week_m" xml:space="preserve">
+        <value>Last seen this week</value>
+    </data>
+    <data name="offline_long_ago_m" xml:space="preserve">
+        <value>Last seen a long time ago</value>
+    </data>
+    <data name="offline_recently_m" xml:space="preserve">
+        <value>Last seen recently</value>
+    </data>
+    <data name="offline_last_seen_m" xml:space="preserve">
+        <value>Last seen {0}</value>
+    </data>
+    <data name="online" xml:space="preserve">
+        <value>Online</value>
+    </data>
+    <data name="online_via" xml:space="preserve">
+        <value>online via {0}</value>
+    </data>
+    <data name="offline" xml:space="preserve">
+        <value>Offline</value>
+    </data>
+    <data name="casper_chat" xml:space="preserve">
+        <value>Casper-chat</value>
+    </data>
+    <data name="follower" xml:space="preserve">
+        <value>Follower</value>
+    </data>
+    <data name="follower_nom" xml:space="preserve">
+        <value>{0} follower</value>
+    </data>
+    <data name="follower_gen" xml:space="preserve">
+        <value>{0} followers</value>
+    </data>
+    <data name="follower_plu" xml:space="preserve">
+        <value>{0} followers</value>
+    </data>
+    <data name="message" xml:space="preserve">
+        <value>Message</value>
+    </data>
+    <data name="messages" xml:space="preserve">
+        <value>Messages</value>
+    </data>
+    <data name="message_nom" xml:space="preserve">
+        <value>{0} message</value>
+    </data>
+    <data name="message_gen" xml:space="preserve">
+        <value>{0} messages</value>
+    </data>
+    <data name="message_plu" xml:space="preserve">
+        <value>{0} messages</value>
+    </data>
+    <data name="forwarded_message" xml:space="preserve">
+        <value>Forwarded message</value>
+    </data>
+    <data name="forwarded_message_nom" xml:space="preserve">
+        <value>{0} forwarded message</value>
+    </data>
+    <data name="forwarded_message_gen" xml:space="preserve">
+        <value>{0} forwarded messages</value>
+    </data>
+    <data name="forwarded_message_plu" xml:space="preserve">
+        <value>{0} forwarded messages</value>
+    </data>
+    <data name="forwarded_message_more_nom" xml:space="preserve">
+        <value>{0} more message</value>
+    </data>
+    <data name="forwarded_message_more_gen" xml:space="preserve">
+        <value>{0} more messages</value>
+    </data>
+    <data name="forwarded_message_more_plu" xml:space="preserve">
+        <value>{0} more messages</value>
+    </data>
+    <data name="attachment" xml:space="preserve">
+        <value>Attachment</value>
+    </data>
+    <data name="attachment_nom" xml:space="preserve">
+        <value>{0} attachment</value>
+    </data>
+    <data name="attachment_gen" xml:space="preserve">
+        <value>{0} attachments</value>
+    </data>
+    <data name="attachment_plu" xml:space="preserve">
+        <value>{0} attachments</value>
+    </data>
+    <data name="audio" xml:space="preserve">
+        <value>Audio</value>
+    </data>
+    <data name="audio_nom" xml:space="preserve">
+        <value>{0} audio</value>
+    </data>
+    <data name="audio_gen" xml:space="preserve">
+        <value>{0} audios</value>
+    </data>
+    <data name="audio_plu" xml:space="preserve">
+        <value>{0} audios</value>
+    </data>
+    <data name="audio_message" xml:space="preserve">
+        <value>Voice message</value>
+    </data>
+    <data name="audio_message_nom" xml:space="preserve">
+        <value>{0} voice message</value>
+    </data>
+    <data name="audio_message_gen" xml:space="preserve">
+        <value>{0} voice messages</value>
+    </data>
+    <data name="audio_message_plu" xml:space="preserve">
+        <value>{0} voice messages</value>
+    </data>
+    <data name="doc" xml:space="preserve">
+        <value>File</value>
+    </data>
+    <data name="doc_nom" xml:space="preserve">
+        <value>{0} file</value>
+    </data>
+    <data name="doc_gen" xml:space="preserve">
+        <value>{0} files</value>
+    </data>
+    <data name="doc_plu" xml:space="preserve">
+        <value>{0} files</value>
+    </data>
+    <data name="photo" xml:space="preserve">
+        <value>Photo</value>
+    </data>
+    <data name="photo_nom" xml:space="preserve">
+        <value>{0} photo</value>
+    </data>
+    <data name="photo_gen" xml:space="preserve">
+        <value>{0} photos</value>
+    </data>
+    <data name="photo_plu" xml:space="preserve">
+        <value>{0} photos</value>
+    </data>
+    <data name="video" xml:space="preserve">
+        <value>Video</value>
+    </data>
+    <data name="video_nom" xml:space="preserve">
+        <value>{0} video</value>
+    </data>
+    <data name="video_gen" xml:space="preserve">
+        <value>{0} videos</value>
+    </data>
+    <data name="video_plu" xml:space="preserve">
+        <value>{0} videos</value>
+    </data>
+    <data name="call" xml:space="preserve">
+        <value>Call</value>
+    </data>
+    <data name="curator" xml:space="preserve">
+        <value>Curator</value>
+    </data>
+    <data name="event" xml:space="preserve">
+        <value>Event</value>
+    </data>
+    <data name="geo" xml:space="preserve">
+        <value>Place</value>
+    </data>
+    <data name="gift" xml:space="preserve">
+        <value>Gift</value>
+    </data>
+    <data name="graffiti" xml:space="preserve">
+        <value>Graffiti</value>
+    </data>
+    <data name="group_call_in_progress" xml:space="preserve">
+        <value>Group call</value>
+    </data>
+    <data name="link" xml:space="preserve">
+        <value>Link</value>
+    </data>
+    <data name="links" xml:space="preserve">
+        <value>Links</value>
+    </data>
+    <data name="market" xml:space="preserve">
+        <value>Product</value>
+    </data>
+    <data name="narrative" xml:space="preserve">
+        <value>Narrative</value>
+    </data>
+    <data name="podcast" xml:space="preserve">
+        <value>Podcast</value>
+    </data>
+    <data name="poll" xml:space="preserve">
+        <value>Poll</value>
+    </data>
+    <data name="sticker" xml:space="preserve">
+        <value>Sticker</value>
+    </data>
+    <data name="ugc_sticker" xml:space="preserve">
+        <value>Sticker</value>
+    </data>
+    <data name="story" xml:space="preserve">
+        <value>Story</value>
+    </data>
+    <data name="wall" xml:space="preserve">
+        <value>Wall post</value>
+    </data>
+    <data name="wall_reply" xml:space="preserve">
+        <value>Wall comment</value>
+    </data>
+    <data name="not_supported" xml:space="preserve">
+        <value>Not supported</value>
+    </data>
+    <data name="empty_message" xml:space="preserve">
+        <value>Empty message</value>
+    </data>
+    <data name="edited_indicator" xml:space="preserve">
+        <value>edited</value>
+    </data>
+    <data name="editing" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="msg_action_create_m" xml:space="preserve">
+        <value>created the group chat</value>
+    </data>
+    <data name="msg_action_create_f" xml:space="preserve">
+        <value>created the group chat</value>
+    </data>
+    <data name="msg_action_invited_m" xml:space="preserve">
+        <value>invited</value>
+    </data>
+    <data name="msg_action_invited_f" xml:space="preserve">
+        <value>invited</value>
+    </data>
+    <data name="msg_action_returned_m" xml:space="preserve">
+        <value>returned to the group chat</value>
+    </data>
+    <data name="msg_action_returned_f" xml:space="preserve">
+        <value>returned to the group chat</value>
+    </data>
+    <data name="msg_action_invited_by_link_m" xml:space="preserve">
+        <value>joined the conversation via link</value>
+    </data>
+    <data name="msg_action_invited_by_link_f" xml:space="preserve">
+        <value>joined the conversation via link</value>
+    </data>
+    <data name="msg_action_left_m" xml:space="preserve">
+        <value>left the group chat</value>
+    </data>
+    <data name="msg_action_left_f" xml:space="preserve">
+        <value>left the group chat</value>
+    </data>
+    <data name="msg_action_kick_m" xml:space="preserve">
+        <value>removed</value>
+    </data>
+    <data name="msg_action_kick_f" xml:space="preserve">
+        <value>removed</value>
+    </data>
+    <data name="msg_action_photo_update_m" xml:space="preserve">
+        <value>changed the group chat photo</value>
+    </data>
+    <data name="msg_action_photo_update_f" xml:space="preserve">
+        <value>changed the group chat photo</value>
+    </data>
+    <data name="msg_action_photo_remove_m" xml:space="preserve">
+        <value>deleted the group chat photo</value>
+    </data>
+    <data name="msg_action_photo_remove_f" xml:space="preserve">
+        <value>deleted the group chat photo</value>
+    </data>
+    <data name="msg_action_pin_m" xml:space="preserve">
+        <value>pinned a</value>
+    </data>
+    <data name="msg_action_pin_f" xml:space="preserve">
+        <value>pinned a</value>
+    </data>
+    <data name="msg_action_unpin_m" xml:space="preserve">
+        <value>unpinned a</value>
+    </data>
+    <data name="msg_action_unpin_f" xml:space="preserve">
+        <value>unpinned a</value>
+    </data>
+    <data name="msg_action_rename_m" xml:space="preserve">
+        <value>changed the group chat name to</value>
+    </data>
+    <data name="msg_action_rename_f" xml:space="preserve">
+        <value>changed the group chat name to</value>
+    </data>
+    <data name="msg_action_screenshot_m" xml:space="preserve">
+        <value>took a screenshot</value>
+    </data>
+    <data name="msg_action_screenshot_f" xml:space="preserve">
+        <value>took a screenshot</value>
+    </data>
+    <data name="msg_action_accepted_message_request_m" xml:space="preserve">
+        <value>accepted your message request</value>
+    </data>
+    <data name="msg_action_accepted_message_request_f" xml:space="preserve">
+        <value>accepted your message request</value>
+    </data>
+    <data name="msg_action_invite_user_by_call" xml:space="preserve">
+        <value>to the call</value>
+    </data>
+    <data name="msg_action_invite_user_by_call_m" xml:space="preserve">
+        <value>invited</value>
+    </data>
+    <data name="msg_action_invite_user_by_call_f" xml:space="preserve">
+        <value>invited</value>
+    </data>
+    <data name="msg_action_invite_user_by_call_join_link_m" xml:space="preserve">
+        <value>joined the call via link</value>
+    </data>
+    <data name="msg_action_invite_user_by_call_join_link_f" xml:space="preserve">
+        <value>joined the call via link</value>
+    </data>
+    <data name="msg_action_style_update_m" xml:space="preserve">
+        <value>changed the chat theme to</value>
+    </data>
+    <data name="msg_action_style_update_f" xml:space="preserve">
+        <value>changed the chat theme to</value>
+    </data>
+    <data name="msg_action_style_reset_m" xml:space="preserve">
+        <value>reset the chat theme</value>
+    </data>
+    <data name="msg_action_style_reset_f" xml:space="preserve">
+        <value>reset the chat theme</value>
+    </data>
+    <data name="msg_expired" xml:space="preserve">
+        <value>Message self-destructed</value>
+    </data>
+    <data name="member" xml:space="preserve">
+        <value>Member</value>
+    </data>
+    <data name="member_nom" xml:space="preserve">
+        <value>{0} member</value>
+    </data>
+    <data name="member_gen" xml:space="preserve">
+        <value>{0} members</value>
+    </data>
+    <data name="member_plu" xml:space="preserve">
+        <value>{0} members</value>
+    </data>
+    <data name="incoming_call" xml:space="preserve">
+        <value>Incoming call</value>
+    </data>
+    <data name="outgoing_call" xml:space="preserve">
+        <value>Outgoing call</value>
+    </data>
+    <data name="call_cancelled" xml:space="preserve">
+        <value>Cancelled</value>
+    </data>
+    <data name="call_declined" xml:space="preserve">
+        <value>Declined</value>
+    </data>
+    <data name="call_missed" xml:space="preserve">
+        <value>Missed</value>
+    </data>
+    <data name="from" xml:space="preserve">
+        <value>from</value>
+    </data>
+    <data name="watch" xml:space="preserve">
+        <value>Watch</value>
+    </data>
+    <data name="play" xml:space="preserve">
+        <value>Play</value>
+    </data>
+    <data name="reply" xml:space="preserve">
+        <value>Reply</value>
+    </data>
+    <data name="reply_privately" xml:space="preserve">
+        <value>Reply privately</value>
+    </data>
+    <data name="forward" xml:space="preserve">
+        <value>Forward</value>
+    </data>
+    <data name="forward_here" xml:space="preserve">
+        <value>Forward here</value>
+    </data>
+    <data name="mark_important" xml:space="preserve">
+        <value>Mark as important</value>
+    </data>
+    <data name="unmark_important" xml:space="preserve">
+        <value>Unmark</value>
+    </data>
+    <data name="edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="pin" xml:space="preserve">
+        <value>Pin</value>
+    </data>
+    <data name="unpin" xml:space="preserve">
+        <value>Unpin</value>
+    </data>
+    <data name="go_to_message" xml:space="preserve">
+        <value>Go to message</value>
+    </data>
+    <data name="mark_spam" xml:space="preserve">
+        <value>Mark as spam</value>
+    </data>
+    <data name="chat_clear_history" xml:space="preserve">
+        <value>Clear message history</value>
+    </data>
+    <data name="mark_read" xml:space="preserve">
+        <value>Mark as read</value>
+    </data>
+    <data name="mark_unread" xml:space="preserve">
+        <value>Mark as unread</value>
+    </data>
+    <data name="notifications_enable" xml:space="preserve">
+        <value>Enable notifications</value>
+    </data>
+    <data name="notifications_disable" xml:space="preserve">
+        <value>Disable notifications</value>
+    </data>
+    <data name="lp_act_typing_multi" xml:space="preserve">
+        <value>is typing</value>
+    </data>
+    <data name="lp_act_typing_single" xml:space="preserve">
+        <value>is typing</value>
+    </data>
+    <data name="lp_act_voice_multi" xml:space="preserve">
+        <value>recording audio</value>
+    </data>
+    <data name="lp_act_voice_single" xml:space="preserve">
+        <value>recording audio</value>
+    </data>
+    <data name="lp_act_photo_multi" xml:space="preserve">
+        <value>is sending a photo</value>
+    </data>
+    <data name="lp_act_photo_single" xml:space="preserve">
+        <value>is sending a photo</value>
+    </data>
+    <data name="lp_act_video_multi" xml:space="preserve">
+        <value>is sending a video</value>
+    </data>
+    <data name="lp_act_video_single" xml:space="preserve">
+        <value>is sending a video</value>
+    </data>
+    <data name="lp_act_file_multi" xml:space="preserve">
+        <value>is sending a file</value>
+    </data>
+    <data name="lp_act_file_single" xml:space="preserve">
+        <value>is sending a file</value>
+    </data>
+    <data name="im_status_more" xml:space="preserve">
+        <value>and {0} more</value>
+    </data>
+    <data name="wnd_attachmentpicker" xml:space="preserve">
+        <value>Choose...</value>
+    </data>
+    <data name="wnd_peerprofile" xml:space="preserve">
+        <value>Profile</value>
+    </data>
+    <data name="wnd_gallery" xml:space="preserve">
+        <value>Image viewer</value>
+    </data>
+    <data name="atchpicker_doctype_animations" xml:space="preserve">
+        <value>Animations</value>
+    </data>
+    <data name="atchpicker_doctype_archives" xml:space="preserve">
+        <value>Archives</value>
+    </data>
+    <data name="atchpicker_doctype_audio" xml:space="preserve">
+        <value>Audio</value>
+    </data>
+    <data name="atchpicker_doctype_books" xml:space="preserve">
+        <value>Books</value>
+    </data>
+    <data name="atchpicker_doctype_other" xml:space="preserve">
+        <value>Other</value>
+    </data>
+    <data name="atchpicker_doctype_pictures" xml:space="preserve">
+        <value>Pictures</value>
+    </data>
+    <data name="atchpicker_doctype_texts" xml:space="preserve">
+        <value>Texts</value>
+    </data>
+    <data name="atchpicker_doctype_video" xml:space="preserve">
+        <value>Video</value>
+    </data>
+    <data name="atchpicker_upload_photo" xml:space="preserve">
+        <value>Upload photo</value>
+    </data>
+    <data name="atchpicker_upload_video" xml:space="preserve">
+        <value>Upload video</value>
+    </data>
+    <data name="upload_error" xml:space="preserve">
+        <value>Unable to upload the file</value>
+    </data>
+    <data name="pp_friend_accept" xml:space="preserve">
+        <value>Accept</value>
+    </data>
+    <data name="pp_friend_add" xml:space="preserve">
+        <value>Add friend</value>
+    </data>
+    <data name="pp_friend_decline" xml:space="preserve">
+        <value>Decline</value>
+    </data>
+    <data name="pp_friend_delete" xml:space="preserve">
+        <value>Delete friend</value>
+    </data>
+    <data name="pp_friend_request" xml:space="preserve">
+        <value>Request sent</value>
+    </data>
+    <data name="pp_friend_your" xml:space="preserve">
+        <value>Your friend</value>
+    </data>
+    <data name="pp_profile" xml:space="preserve">
+        <value>VK profile</value>
+    </data>
+    <data name="pp_group" xml:space="preserve">
+        <value>VK group</value>
+    </data>
+    <data name="pp_allow" xml:space="preserve">
+        <value>Allow messages</value>
+    </data>
+    <data name="pp_deny" xml:space="preserve">
+        <value>Deny messages</value>
+    </data>
+    <data name="pp_unpin_message" xml:space="preserve">
+        <value>Unpin message</value>
+    </data>
+    <data name="pp_exit_chat" xml:space="preserve">
+        <value>Leave chat</value>
+    </data>
+    <data name="pp_exit_channel" xml:space="preserve">
+        <value>Leave channel</value>
+    </data>
+    <data name="pp_return_chat" xml:space="preserve">
+        <value>Return to chat</value>
+    </data>
+    <data name="pp_return_channel" xml:space="preserve">
+        <value>Return to channel</value>
+    </data>
+    <data name="pp_search_members" xml:space="preserve">
+        <value>Search members</value>
+    </data>
+    <data name="pp_attachments_photo" xml:space="preserve">
+        <value>Photos from the chat will be displayed here</value>
+    </data>
+    <data name="pp_attachments_video" xml:space="preserve">
+        <value>Videos from the chat will be displayed here</value>
+    </data>
+    <data name="pp_attachments_audio" xml:space="preserve">
+        <value>Music from the chat will be displayed here</value>
+    </data>
+    <data name="pp_attachments_doc" xml:space="preserve">
+        <value>Files from the chat will be displayed here</value>
+    </data>
+    <data name="pp_attachments_share" xml:space="preserve">
+        <value>Links from the chat will be displayed here</value>
+    </data>
+    <data name="admin" xml:space="preserve">
+        <value>admin</value>
+    </data>
+    <data name="created_on_m" xml:space="preserve">
+        <value>created this chat</value>
+    </data>
+    <data name="created_on_f" xml:space="preserve">
+        <value>created this chat</value>
+    </data>
+    <data name="invited_by_m" xml:space="preserve">
+        <value>invited by {0} on</value>
+    </data>
+    <data name="invited_by_f" xml:space="preserve">
+        <value>invited by {0} on</value>
+    </data>
+    <data name="pp_member_admin_add" xml:space="preserve">
+        <value>Appoint as administrator</value>
+    </data>
+    <data name="pp_member_admin_remove" xml:space="preserve">
+        <value>Dismiss administrator</value>
+    </data>
+    <data name="pp_member_kick" xml:space="preserve">
+        <value>Remove from chat</value>
+    </data>
+    <data name="stp_your_story" xml:space="preserve">
+        <value>Your story</value>
+    </data>
+    <data name="stp_deleted" xml:space="preserve">
+        <value>Story deleted</value>
+    </data>
+    <data name="stp_expired" xml:space="preserve">
+        <value>The story could have been viewed within 24 hours after being created</value>
+    </data>
+    <data name="stp_private" xml:space="preserve">
+        <value>Story hidden by author</value>
+    </data>
+    <data name="settings_general" xml:space="preserve">
+        <value>General</value>
+    </data>
+    <data name="settings_appearance" xml:space="preserve">
+        <value>Appearance</value>
+    </data>
+    <data name="settings_notifications" xml:space="preserve">
+        <value>Notifications</value>
+    </data>
+    <data name="settings_privacy" xml:space="preserve">
+        <value>Privacy</value>
+    </data>
+    <data name="settings_blacklist" xml:space="preserve">
+        <value>Black list</value>
+    </data>
+    <data name="restart_required" xml:space="preserve">
+        <value>Restart required</value>
+    </data>
+    <data name="restart_required_ext" xml:space="preserve">
+        <value>Restart the app to apply this setting</value>
+    </data>
+    <data name="st_lang" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="st_send_method" xml:space="preserve">
+        <value>Message sending options</value>
+    </data>
+    <data name="st_send_method_1" xml:space="preserve">
+        <value>Enter — send</value>
+    </data>
+    <data name="st_send_method_1_desc" xml:space="preserve">
+        <value>Shift + Enter — line break</value>
+    </data>
+    <data name="st_send_method_2" xml:space="preserve">
+        <value>Ctrl + Enter — send</value>
+    </data>
+    <data name="st_send_method_2_desc" xml:space="preserve">
+        <value>Enter — line break</value>
+    </data>
+    <data name="st_send_dpl" xml:space="preserve">
+        <value>Don't parse links</value>
+    </data>
+    <data name="st_send_nomentions" xml:space="preserve">
+        <value>Disable mentions</value>
+    </data>
+    <data name="st_stickers" xml:space="preserve">
+        <value>Stickers</value>
+    </data>
+    <data name="st_stickers_suggest" xml:space="preserve">
+        <value>Suggest stickers</value>
+    </data>
+    <data name="st_stickers_suggest_desc" xml:space="preserve">
+        <value>Matching stickers will appear when you type certain words or emojis</value>
+    </data>
+    <data name="st_stickers_animate" xml:space="preserve">
+        <value>Animated stickers</value>
+    </data>
+    <data name="st_stickers_animate_desc" xml:space="preserve">
+        <value>Animated stickers will be played automatically</value>
+    </data>
+    <data name="st_theme" xml:space="preserve">
+        <value>Mode</value>
+    </data>
+    <data name="st_theme_system" xml:space="preserve">
+        <value>System</value>
+    </data>
+    <data name="st_theme_light" xml:space="preserve">
+        <value>Light</value>
+    </data>
+    <data name="st_theme_dark" xml:space="preserve">
+        <value>Dark</value>
+    </data>
+    <data name="st_chat_item_rows" xml:space="preserve">
+        <value>Chat list</value>
+    </data>
+    <data name="st_chat_item_rows_2" xml:space="preserve">
+        <value>Two line</value>
+    </data>
+    <data name="st_chat_item_rows_3" xml:space="preserve">
+        <value>Three line</value>
+    </data>
+    <data name="about_offical_group" xml:space="preserve">
+        <value>Our community</value>
+    </data>
+    <data name="about_offical_group_desc" xml:space="preserve">
+        <value>Ask questions or report bugs</value>
+    </data>
+    <data name="about_libs" xml:space="preserve">
+        <value>Used libraries</value>
+    </data>
+    <data name="about_vk_privacy" xml:space="preserve">
+        <value>VK Privacy Policy</value>
+    </data>
+    <data name="about_vk_terms" xml:space="preserve">
+        <value>VK Terms of Service</value>
+    </data>
+    <data name="about_dev" xml:space="preserve">
+        <value>Developed by</value>
+    </data>
+    <data name="about_dev2" xml:space="preserve">
+        <value>Elchin Orujov</value>
+    </data>
+    <data name="chat_creation_title" xml:space="preserve">
+        <value>New chat</value>
+    </data>
+    <data name="chat_creation_name_watermark" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="chat_creation_name_footnote" xml:space="preserve">
+        <value>Enter a name and upload an optional photo</value>
+    </data>
+    <data name="msg_delete_dialog_single_title" xml:space="preserve">
+        <value>Delete message</value>
+    </data>
+    <data name="msg_delete_dialog_single_question" xml:space="preserve">
+        <value>Delete message?</value>
+    </data>
+    <data name="msg_delete_dialog_multi_title" xml:space="preserve">
+        <value>Delete messages</value>
+    </data>
+    <data name="msg_delete_dialog_multi_question" xml:space="preserve">
+        <value>Delete messages?</value>
+    </data>
+    <data name="msg_delete_dialog_text_nom" xml:space="preserve">
+        <value>Are you sure you want to delete {0} message?</value>
+    </data>
+    <data name="msg_delete_dialog_text_gen" xml:space="preserve">
+        <value>Are you sure you want to delete {0} messages?</value>
+    </data>
+    <data name="msg_delete_dialog_text_plu" xml:space="preserve">
+        <value>Are you sure you want to delete {0} messages?</value>
+    </data>
+    <data name="delete_for_all" xml:space="preserve">
+        <value>Delete for everyone</value>
+    </data>
+    <data name="message_deleted_single" xml:space="preserve">
+        <value>Message deleted.</value>
+    </data>
+    <data name="message_deleted_multi" xml:space="preserve">
+        <value>Messages deleted.</value>
+    </data>
+    <data name="message_spam_single" xml:space="preserve">
+        <value>Message marked as spam and deleted.</value>
+    </data>
+    <data name="message_spam_multi" xml:space="preserve">
+        <value>Messages marked as spam and deleted.</value>
+    </data>
+    <data name="sharing_messages" xml:space="preserve">
+        <value>Forward messages</value>
+    </data>
+    <data name="sharing_user" xml:space="preserve">
+        <value>In private message</value>
+    </data>
+    <data name="sharing_group" xml:space="preserve">
+        <value>To community messages</value>
+    </data>
+    <data name="msg_search_user" xml:space="preserve">
+        <value>Search in chat with {0} {1}</value>
+    </data>
+    <data name="msg_search_group" xml:space="preserve">
+        <value>Search in chat with \"{0}\"</value>
+    </data>
+    <data name="msg_search_chat" xml:space="preserve">
+        <value>Search in chat \"{0}\"</value>
+    </data>
+    <data name="in_chat" xml:space="preserve">
+        <value>in chat \"{0}\"</value>
+    </data>
+    <data name="reactions_nom" xml:space="preserve">
+        <value>{0} reaction</value>
+    </data>
+    <data name="reactions_gen" xml:space="preserve">
+        <value>{0} reactions</value>
+    </data>
+    <data name="reactions_plu" xml:space="preserve">
+        <value>{0} reactions</value>
+    </data>
+    <data name="chat_clear_modal_title" xml:space="preserve">
+        <value>Delete all messages</value>
+    </data>
+    <data name="chat_clear_modal_text" xml:space="preserve">
+        <value>Are you sure you want to delete all messages in this chat? This can't be undone</value>
+    </data>
+    <data name="chat_leave_modal_title" xml:space="preserve">
+        <value>Leave chat?</value>
+    </data>
+    <data name="chat_leave_modal_text" xml:space="preserve">
+        <value>If you leave, you won't receive any new messages from this chat. You can only return if there is enough room.</value>
+    </data>
+    <data name="group_management_desc" xml:space="preserve">
+        <value>Add Laney to your groups to stay in touch with their members and receive notifications when new messages arrive.</value>
+    </data>
+    <data name="templates" xml:space="preserve">
+        <value>Templates</value>
+    </data>
+    <data name="commtemplate_greeting" xml:space="preserve">
+        <value>Hi</value>
+    </data>
+    <data name="drop_quick" xml:space="preserve">
+        <value>Quick send</value>
+    </data>
+    <data name="drop_without_compression" xml:space="preserve">
+        <value>Send uncompressed</value>
+    </data>
+    <data name="drop_without_compression_desc" xml:space="preserve">
+        <value>Drag and drop files here\nto attach them to the message</value>
+    </data>
+    <data name="drop_photos_quick" xml:space="preserve">
+        <value>Drag and drop photos here\nto attach them to the message</value>
+    </data>
+    <data name="drop_photos_file" xml:space="preserve">
+        <value>Drag and drop photos here\nto attach them as files (uncompressed)</value>
+    </data>
+    <data name="drop_videos_quick" xml:space="preserve">
+        <value>Drag and drop videos here\nto attach them to the message</value>
+    </data>
+    <data name="drop_videos_file" xml:space="preserve">
+        <value>Drag and drop videos here\nto attach them as files</value>
+    </data>
+    <data name="views" xml:space="preserve">
+        <value>Views</value>
+    </data>
+    <data name="views_nom" xml:space="preserve">
+        <value>{0} view</value>
+    </data>
+    <data name="views_gen" xml:space="preserve">
+        <value>{0} views</value>
+    </data>
+    <data name="views_plu" xml:space="preserve">
+        <value>{0} views</value>
+    </data>
+    <data name="views_empty" xml:space="preserve">
+        <value>No views</value>
+    </data></root>

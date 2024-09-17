@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:vkui="using:VKUI.Controls"
         xmlns:controls="using:ELOR.Laney.Controls.Attachments">
   <Design.PreviewWith>
@@ -18,7 +18,7 @@
           </Border>
           <DockPanel HorizontalAlignment="Center" Height="20" Margin="3,10,3,9">
             <vkui:VKIcon Id="Icon16Gift" Margin="3,0" Width="16" Height="16" Foreground="{DynamicResource VKImBubbleGiftTextBrush}"/>
-            <TextBlock Classes="Caption1" Margin="3,0" VerticalAlignment="Center" Foreground="{DynamicResource VKImBubbleGiftTextBrush}" Text="{i18n:Localize gift}"/>
+            <TextBlock Classes="Caption1" Margin="3,0" VerticalAlignment="Center" Foreground="{DynamicResource VKImBubbleGiftTextBrush}" Text="{x:Static i18n:Resources.gift}"/>
           </DockPanel>
         </StackPanel>
       </ControlTemplate>

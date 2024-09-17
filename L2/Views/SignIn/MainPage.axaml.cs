@@ -18,7 +18,7 @@ namespace ELOR.Laney.Views.SignIn {
                 Tuple<string, string> selected = LangPicker.SelectedItem as Tuple<string, string>;
                 if (selected == null) return;
                 Settings.Set(Settings.LANGUAGE, selected.Item1);
-                Localizer.Instance.LoadLanguage(selected.Item1);
+                Localizer.LoadLanguage(selected.Item1);
                 NavigationRouter.NavigateToAsync(new MainPage(), NavigationMode.Clear);
             };
 

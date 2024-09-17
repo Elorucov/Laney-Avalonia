@@ -110,8 +110,8 @@ namespace ELOR.Laney.ViewModels.Modals {
                 Subhead = VKAPIHelper.GetOnlineInfo(user.OnlineInfo, user.Sex).ToLowerInvariant();
 
                 switch (user.Deactivated) {
-                    case DeactivationState.Banned: Subhead = Localizer.Instance["user_blocked"]; break;
-                    case DeactivationState.Deleted: Subhead = Localizer.Instance["user_deleted"]; break;
+                    case DeactivationState.Banned: Subhead = Assets.i18n.Resources.user_blocked; break;
+                    case DeactivationState.Deleted: Subhead = Assets.i18n.Resources.user_deleted; break;
                     default: Subhead = VKAPIHelper.GetOnlineInfo(user.OnlineInfo, user.Sex).ToLowerInvariant(); break;
                 }
 
@@ -131,10 +131,10 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Banned/deleted/blocked...
             if (user.Blacklisted == 1) {
-                Information.Add(new TwoStringTuple(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted", user.Sex)));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20BlockOutline, Localizer.Get("user_blacklisted", user.Sex)));
             }
             if (user.BlacklistedByMe == 1) {
-                Information.Add(new TwoStringTuple(VKIconNames.Icon20BlockOutline, Localizer.Instance.Get("user_blacklisted_by_me", user.Sex)));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20BlockOutline, Localizer.Get("user_blacklisted_by_me", user.Sex)));
             }
 
             // Domain
@@ -142,7 +142,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Private profile
             if (user.IsClosed && !user.CanAccessClosed)
-                Information.Add(new TwoStringTuple(VKIconNames.Icon20LockOutline, Localizer.Instance["user_private"]));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20LockOutline, Assets.i18n.Resources.user_private));
 
             // Status
             if (!String.IsNullOrEmpty(user.Status))
@@ -173,7 +173,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Followers
             if (user.Followers > 0)
-                Information.Add(new TwoStringTuple(VKIconNames.Icon20FollowersOutline, Localizer.Instance.GetDeclensionFormatted(user.Followers, "follower")));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20FollowersOutline, Localizer.GetDeclensionFormatted(user.Followers, "follower")));
         }
 
         private void SetupCommands(UserEx user) {
@@ -189,7 +189,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             // или если открыт чат с этим юзером,
             // то не будем добавлять эту кнопку
             if ((user.CanWritePrivateMessage == 1 || user.MessagesCount > 0) && session.CurrentOpenedChat?.PeerId != user.Id) {
-                Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
+                Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Assets.i18n.Resources.message, false, (a) => {
                     CloseWindowRequested?.Invoke(this, null);
                     session.GoToChat(user.Id);
                 });
@@ -204,19 +204,19 @@ namespace ELOR.Laney.ViewModels.Modals {
 
                 switch (user.FriendStatus) {
                     case FriendStatus.None:
-                        flabel = Localizer.Instance["pp_friend_add"];
+                        flabel = Assets.i18n.Resources.pp_friend_add;
                         ficon = VKIconNames.Icon20UserAddOutline;
                         break;
                     case FriendStatus.IsFriend:
-                        flabel = Localizer.Instance["pp_friend_your"];
+                        flabel = Assets.i18n.Resources.pp_friend_your;
                         ficon = VKIconNames.Icon20UserCheckOutline;
                         break;
                     case FriendStatus.InboundRequest:
-                        flabel = Localizer.Instance["pp_friend_accept"];
+                        flabel = Assets.i18n.Resources.pp_friend_accept;
                         ficon = VKIconNames.Icon20UserAddOutline;
                         break;
                     case FriendStatus.RequestSent:
-                        flabel = Localizer.Instance["pp_friend_request"];
+                        flabel = Assets.i18n.Resources.pp_friend_request;
                         ficon = VKIconNames.Icon20UserOutline;
                         break;
                 }
@@ -228,29 +228,29 @@ namespace ELOR.Laney.ViewModels.Modals {
             // Notifications
             if (session.UserId != user.Id) {
                 string notifIcon = user.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-                Command notifsCmd = new Command(notifIcon, Localizer.Instance[user.NotificationsDisabled ? "disabled" : "enabled"], false, (a) => ToggleNotifications(!user.NotificationsDisabled, user.Id));
+                Command notifsCmd = new Command(notifIcon, user.NotificationsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, (a) => ToggleNotifications(!user.NotificationsDisabled, user.Id));
                 commands.Add(notifsCmd);
             }
 
             // Open in browser
-            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_profile"], false, async (a) => await Launcher.LaunchUrl($"https://vk.com/id{user.Id}"));
+            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.pp_profile, false, async (a) => await Launcher.LaunchUrl($"https://vk.com/id{user.Id}"));
             commands.Add(openExternalCmd);
 
             // Ban/unban
             if (session.UserId != user.Id && user.Blacklisted == 0) {
                 string banIcon = user.BlacklistedByMe == 1 ? VKIconNames.Icon20UnlockOutline : VKIconNames.Icon20BlockOutline;
-                string banLabel = Localizer.Instance[user.BlacklistedByMe == 1 ? "unblock" : "block"];
+                string banLabel = user.BlacklistedByMe == 1 ? Assets.i18n.Resources.unblock : Assets.i18n.Resources.block;
                 Command banCmd = new Command(banIcon, banLabel, true, (a) => ToggleBan(user.Id, user.BlacklistedByMe == 1));
                 moreCommands.Add(banCmd);
             }
 
             // Clear history
             if (user.MessagesCount > 0) {
-                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
+                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
                 moreCommands.Add(clearCmd);
             }
 
-            Command moreCommand = new Command(VKIconNames.Icon20More, Localizer.Instance["more"], false, (a) => OpenContextMenu(a, commands, moreCommands));
+            Command moreCommand = new Command(VKIconNames.Icon20More, Assets.i18n.Resources.more, false, (a) => OpenContextMenu(a, commands, moreCommands));
 
             FirstCommand = commands[0];
 
@@ -327,7 +327,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Members
             if (group.Members > 0)
-                Information.Add(new TwoStringTuple(VKIconNames.Icon20FollowersOutline, Localizer.Instance.GetDeclensionFormatted(group.Members, "members_sub")));
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20FollowersOutline, Localizer.GetDeclensionFormatted(group.Members, "members_sub")));
         }
 
         private void SetupCommands(GroupEx group) {
@@ -339,7 +339,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             List<Command> moreCommands = new List<Command>();
 
             if ((group.CanMessage == 1 || group.MessagesCount > 0) && session.CurrentOpenedChat?.PeerId != -group.Id) {
-                Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Localizer.Instance["message"], false, (a) => {
+                Command messageCmd = new Command(VKIconNames.Icon20MessageOutline, Assets.i18n.Resources.message, false, (a) => {
                     CloseWindowRequested?.Invoke(this, null);
                     session.GoToChat(-group.Id);
                 });
@@ -348,26 +348,26 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Notifications
             string notifIcon = group.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-            Command notifsCmd = new Command(notifIcon, Localizer.Instance[group.NotificationsDisabled ? "disabled" : "enabled"], false, (a) => ToggleNotifications(!group.NotificationsDisabled, -group.Id));
+            Command notifsCmd = new Command(notifIcon,group.NotificationsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, (a) => ToggleNotifications(!group.NotificationsDisabled, -group.Id));
             commands.Add(notifsCmd);
 
             // Open in browser
-            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["pp_group"], false,async (a) => await Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
+            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.pp_group, false,async (a) => await Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
             commands.Add(openExternalCmd);
 
             // Allow/deny messages from group
             string banIcon = group.MessagesAllowed == 1 ? VKIconNames.Icon20BlockOutline : VKIconNames.Icon20Check;
-            string banLabel = Localizer.Instance[group.MessagesAllowed == 1 ? "pp_deny" : "pp_allow"];
+            string banLabel = group.MessagesAllowed == 1 ? Assets.i18n.Resources.pp_deny : Assets.i18n.Resources.pp_allow;
             Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed == 1, (a) => ToggleMessagesFromGroup(group.Id, group.MessagesAllowed == 1));
             moreCommands.Add(banCmd);
 
             // Clear history
             if (group.MessagesCount > 0) {
-                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
+                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
                 moreCommands.Add(clearCmd);
             }
 
-            Command moreCommand = new Command(VKIconNames.Icon20More, Localizer.Instance["more"], false, (a) => OpenContextMenu(a, commands, moreCommands));
+            Command moreCommand = new Command(VKIconNames.Icon20More, Assets.i18n.Resources.more, false, (a) => OpenContextMenu(a, commands, moreCommands));
 
             FirstCommand = commands[0];
 
@@ -412,10 +412,10 @@ namespace ELOR.Laney.ViewModels.Modals {
 
                 if (chat.State == UserStateInChat.In) {
                     Subhead = String.Empty;
-                    if (chat.IsCasperChat) Subhead = $"{Localizer.Instance["casper_chat"].ToLowerInvariant()}, ";
-                    Subhead += Localizer.Instance.GetDeclensionFormatted(chat.MembersCount, "members_sub");
+                    if (chat.IsCasperChat) Subhead = $"{Assets.i18n.Resources.casper_chat.ToLowerInvariant()}, ";
+                    Subhead += Localizer.GetDeclensionFormatted(chat.MembersCount, "members_sub");
                 } else {
-                    Subhead = Localizer.Instance[chat.State == UserStateInChat.Left ? "chat_left" : "chat_kicked"].ToLowerInvariant();
+                    Subhead = chat.State == UserStateInChat.Left ? Assets.i18n.Resources.chat_left : Assets.i18n.Resources.chat_kicked.ToLowerInvariant();
                 }
 
                 if (!chat.IsChannel) SetupMembers(chat);
@@ -449,18 +449,18 @@ namespace ELOR.Laney.ViewModels.Modals {
                     if (iid.IsUser()) {
                         var user = CacheManager.GetUser(iid);
                         if (user != null) {
-                            invitedBy = Localizer.Instance.GetFormatted(user.Sex, "invited_by", user.NameWithFirstLetterSurname());
+                            invitedBy = Localizer.GetFormatted(user.Sex, "invited_by", user.NameWithFirstLetterSurname());
                         }
                     } else if (iid.IsGroup()) {
                         var group = CacheManager.GetGroup(iid);
                         if (group != null) {
-                            invitedBy = Localizer.Instance.GetFormatted(Sex.Male, "invited_by", group.Name);
+                            invitedBy = Localizer.GetFormatted(Sex.Male, "invited_by", group.Name);
                         }
                     }
-                    if (member.IsAdmin) desc = $"{Localizer.Instance["admin"]}, ";
+                    if (member.IsAdmin) desc = $"{Assets.i18n.Resources.admin}, ";
                     desc += $"{invitedBy} {joinDate}";
                 } else if (mid == chat.OwnerId) {
-                    desc = Localizer.Instance.Get("created_on", Sex.Male);
+                    desc = Localizer.Get("created_on", Sex.Male);
                 }
 
                 if (mid.IsUser()) {
@@ -490,7 +490,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             };
 
             var profile = new ActionSheetItem {
-                Header = Localizer.Instance["open_profile"]
+                Header = Assets.i18n.Resources.open_profile
             };
             profile.Click += (a, b) => {
                 // TODO: открывать профиль в текущем окне PeerProfile с возможностью вернуться назад.
@@ -503,19 +503,19 @@ namespace ELOR.Laney.ViewModels.Modals {
             bool canChangeAdmin = chat.OwnerId == session.Id;
 
             if (member.MemberId != session.Id && canChangeAdmin && !member.IsAdmin) ash.Items.Add(new ActionSheetItem {
-                Header = Localizer.Instance["pp_member_admin_add"]
+                Header = Assets.i18n.Resources.pp_member_admin_add
             });
 
             if (member.MemberId != session.Id && canChangeAdmin && member.IsAdmin) ash.Items.Add(new ActionSheetItem {
-                Header = Localizer.Instance["pp_member_admin_remove"]
+                Header = Assets.i18n.Resources.pp_member_admin_remove
             });
 
             if (member.MemberId != session.Id && member.CanKick) ash.Items.Add(new ActionSheetItem { 
-                Header = Localizer.Instance["pp_member_kick"]
+                Header = Assets.i18n.Resources.pp_member_kick
             });
 
             if (ash.Items.Count > 0) {
-                return new Command(VKIconNames.Icon24MoreHorizontal, Localizer.Instance["more"], false, (c) => {
+                return new Command(VKIconNames.Icon24MoreHorizontal, Assets.i18n.Resources.more, false, (c) => {
                     ash.ShowAt(c as Control);
                 });
             }
@@ -533,44 +533,44 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Edit
             if (chat.ACL.CanChangeInfo) {
-                Command editCmd = new Command(VKIconNames.Icon20WriteOutline, Localizer.Instance["edit"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command editCmd = new Command(VKIconNames.Icon20WriteOutline, Assets.i18n.Resources.edit, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(editCmd);
             }
 
             // Add member
             if (chat.ACL.CanInvite) {
-                Command addCmd = new Command(VKIconNames.Icon20UserAddOutline, Localizer.Instance["add"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command addCmd = new Command(VKIconNames.Icon20UserAddOutline, Assets.i18n.Resources.add, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(addCmd);
             }
 
             // Notifications
             bool notifsDisabled = chat.PushSettings != null && chat.PushSettings.DisabledForever;
             string notifIcon = notifsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-            Command notifsCmd = new Command(notifIcon, Localizer.Instance[notifsDisabled ? "disabled" : "enabled"], false, (a) => ToggleNotifications(!notifsDisabled, chat.PeerId));
+            Command notifsCmd = new Command(notifIcon, notifsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, (a) => ToggleNotifications(!notifsDisabled, chat.PeerId));
             commands.Add(notifsCmd);
 
             // Link
             if (chat.ACL.CanSeeInviteLink) {
-                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Localizer.Instance["link"], false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
                 commands.Add(chatLinkCmd);
             }
 
             // Unpin message
             if (chat.ACL.CanChangePin && chat.PinnedMessage != null) {
-                Command unpinCmd = new Command(VKIconNames.Icon20PinSlashOutline, Localizer.Instance["pp_unpin_message"], false, async (a) => {
+                Command unpinCmd = new Command(VKIconNames.Icon20PinSlashOutline, Assets.i18n.Resources.pp_unpin_message, false, async (a) => {
                     if (await ContextMenuHelper.UnpinMessageAsync(session, Id)) chat.PinnedMessage = null;
                 });
                 commands.Add(unpinCmd);
             }
 
             // Clear history
-            Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Localizer.Instance["chat_clear_history"], true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
+            Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
             moreCommands.Add(clearCmd);
 
             // Exit or return to chat/channel
             if (chat.State != UserStateInChat.Kicked) {
-                string exitLabel = Localizer.Instance[chat.IsChannel ? "pp_exit_channel" : "pp_exit_chat"];
-                string returnLabel = Localizer.Instance[chat.IsChannel ? "pp_return_channel" : "pp_return_chat"];
+                string exitLabel = chat.IsChannel ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled;
+                string returnLabel = chat.IsChannel ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled;
                 string icon = chat.State == UserStateInChat.In ? VKIconNames.Icon20DoorArrowRightOutline : VKIconNames.Icon20DoorEnterArrowRightOutline;
                 Command exitRetCmd = new Command(icon, chat.State == UserStateInChat.In ? exitLabel : returnLabel, true, (a) => {
                     if (chat.State == UserStateInChat.In) {
@@ -582,7 +582,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 moreCommands.Add(exitRetCmd);
             }
 
-            Command moreCommand = new Command(VKIconNames.Icon20More, Localizer.Instance["more"], false, (a) => OpenContextMenu(a, commands, moreCommands));
+            Command moreCommand = new Command(VKIconNames.Icon20More, Assets.i18n.Resources.more, false, (a) => OpenContextMenu(a, commands, moreCommands));
 
             FirstCommand = commands[0];
 
@@ -709,7 +709,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
                 if (ivm.Items.Count == 0) {
                     ivm.Placeholder = new PlaceholderViewModel {
-                        Text = Localizer.Instance[$"pp_attachments_{type}".ToLower()],
+                        Text = Localizer.Get($"pp_attachments_{type}".ToLower()),
                         ActionButton = null
                     };
                     ivm.End = true;

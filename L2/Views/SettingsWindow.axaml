@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
@@ -11,7 +11,7 @@
         x:Class="ELOR.Laney.Views.SettingsWindow" x:DataType="vm:SettingsViewModel"
         Width="720" Height="640"
         Background="{DynamicResource VKBackgroundPageBrush}"
-        Title="{i18n:Localize settings}">
+        Title="{x:Static i18n:Resources.settings}">
   <Grid RowDefinitions="Auto *" ColumnDefinitions="240 *">
     <Grid x:Name="CategoriesPanel" Grid.Row="1">
       <Grid.Styles>

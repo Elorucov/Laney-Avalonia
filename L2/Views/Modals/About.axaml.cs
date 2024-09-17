@@ -21,7 +21,7 @@ namespace ELOR.Laney.Views.Modals {
             launchTimeCell.After = TimeSpan.FromMilliseconds(Program.LaunchTime).ToString(@"%s\.fff") + " sec.";
 
             string str = String.Empty;
-            dev.Text = $"{Localizer.Instance["about_dev"]} {Localizer.Instance["about_dev2"]}";
+            dev.Text = $"{Assets.i18n.Resources.about_dev} {Assets.i18n.Resources.about_dev2}";
 #if MAC
             TitleBar.CanShowTitle = true;
 #elif LINUX
@@ -48,7 +48,7 @@ namespace ELOR.Laney.Views.Modals {
         }
 
         private async void b04_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            VKUIDialog dlg = new VKUIDialog(Localizer.Instance["about_libs"], String.Join("\n", App.UsedLibs));
+            VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.about_libs, String.Join("\n", App.UsedLibs));
             await dlg.ShowDialog(this);
         }
     }

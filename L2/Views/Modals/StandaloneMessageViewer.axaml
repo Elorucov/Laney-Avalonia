@@ -2,14 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Width="512" Height="640" MaxHeight="640"
         x:Class="ELOR.Laney.StandaloneMessageViewer"
-        Title="{i18n:Localize message}">
+        Title="{x:Static i18n:Resources.message}">
   <Grid RowDefinitions="Auto *">
     <ScrollViewer x:Name="ScrollRoot" Grid.Row="1">
       <StackPanel x:Name="MessagesStack" Spacing="12" Margin="12,0,12,24"/>

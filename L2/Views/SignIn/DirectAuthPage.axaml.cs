@@ -46,7 +46,7 @@ namespace ELOR.Laney.Views.SignIn {
                     HandleError(response);
                 } else {
                     Log.Error($"{nameof(DirectAuthPage)}: VK auth returns a strange response!");
-                    ShowError(Localizer.Instance["error"]);
+                    ShowError(Assets.i18n.Resources.error);
                 }
             } catch (Exception ex) {
                 var info = ExceptionHelper.GetDefaultErrorInfo(ex);
@@ -61,10 +61,10 @@ namespace ELOR.Laney.Views.SignIn {
             Log.Warning($"{nameof(DirectAuthPage)}: VK auth returns an error! {err.Error}: {err.ErrorDescription}");
             switch (err.Error) {
                 case "invalid_client":
-                    ShowError(!String.IsNullOrEmpty(err.ErrorDescription) ? err.ErrorDescription : $"{Localizer.Instance["error"]}: {err.ErrorType}");
+                    ShowError(!String.IsNullOrEmpty(err.ErrorDescription) ? err.ErrorDescription : $"{Assets.i18n.Resources.error}: {err.ErrorType}");
                     break;
                 case "invalid_request":
-                    ShowError(err.ErrorType == "wrong_otp" ? Localizer.Instance["da_wrong_otp_code"] : $"{Localizer.Instance["error"]}: {err.ErrorType}");
+                    ShowError(err.ErrorType == "wrong_otp" ? Assets.i18n.Resources.da_wrong_otp_code : $"{Assets.i18n.Resources.error}: {err.ErrorType}");
                     break;
                 case "need_validation":
                     if (err.BanInfo != null) {

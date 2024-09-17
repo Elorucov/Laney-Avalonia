@@ -95,7 +95,7 @@ namespace ELOR.Laney.Views.Modals {
             ActionSheet ash = new ActionSheet();
             ActionSheetItem gotomsg = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20MessageArrowRightOutline },
-                Header = Localizer.Instance["go_to_message"]
+                Header = Assets.i18n.Resources.go_to_message
             };
             gotomsg.Click += (b, c) => {
                 session.GoToChat(ViewModel.Id, a.CMID);

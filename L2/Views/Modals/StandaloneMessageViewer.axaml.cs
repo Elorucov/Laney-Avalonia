@@ -35,7 +35,7 @@ public partial class StandaloneMessageViewer : DialogWindow {
     public StandaloneMessageViewer(VKSession session, List<MessageViewModel> messages) {
         InitializeComponent();
         if (messages == null || messages.Count == 0) throw new ArgumentNullException("messages", "Messages not passed!");
-        Title = Localizer.Instance.GetDeclensionFormatted(messages.Count, "message");
+        Title = Localizer.GetDeclensionFormatted(messages.Count, "message");
 #if LINUX
         TitleBar.IsVisible = false;
 #endif

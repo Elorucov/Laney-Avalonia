@@ -68,7 +68,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             try {
                 var albums = await session.API.GetPhotoAlbumsAsync(session.Id);
-                if (albums.Count > 0) albums[0].Title = Localizer.Instance["all"];
+                if (albums.Count > 0) albums[0].Title = Assets.i18n.Resources.all;
                 PhotoAlbums = new ObservableCollection<AlbumLite>(albums);
                 Photos.IsLoading = false;
                 SelectedPhotoAlbum = PhotoAlbums.First();

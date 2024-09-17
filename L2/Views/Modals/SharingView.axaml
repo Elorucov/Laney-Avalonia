@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:mdl="using:ELOR.Laney.DataModels"
         xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
@@ -17,11 +17,11 @@
     <Grid x:Name="Content" RowDefinitions="Auto Auto *">
       <Grid x:Name="SessionSwitcherContainer" Height="48" Margin="64,0" HorizontalAlignment="Center" IsVisible="False">
         <ComboBox x:Name="SessionSwitcher" Classes="Alternate" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="SessionSwitcher_SelectionChanged">
-          <ComboBoxItem Content="{i18n:Localize sharing_group}"/>
-          <ComboBoxItem Content="{i18n:Localize sharing_user}"/>
+          <ComboBoxItem Content="{x:Static i18n:Resources.sharing_group}"/>
+          <ComboBoxItem Content="{x:Static i18n:Resources.sharing_user}"/>
         </ComboBox>
       </Grid>
-      <TextBox Classes="Search" Grid.Row="1" Margin="12,0,12,6" Watermark="{i18n:Localize search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
+      <TextBox Classes="Search" Grid.Row="1" Margin="12,0,12,6" Watermark="{x:Static i18n:Resources.search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
       <ListBox x:Name="ChatsList" Classes="FixMargin" Grid.Row="2" Background="Transparent" ItemsSource="{Binding Chats}">
         <ListBox.ItemTemplate>
           <DataTemplate x:DataType="mdl:Entity">

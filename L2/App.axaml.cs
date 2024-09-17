@@ -109,7 +109,7 @@ namespace ELOR.Laney {
         private void Prepare() {
             Debug.WriteLine("Getting and loading language...");
             string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
-            bool langLoaded = Localizer.Instance.LoadLanguage(lang);
+            Localizer.LoadLanguage(lang);
             Debug.WriteLine("Language loaded!");
 
             AudioPlayer.InitInstances();
@@ -117,7 +117,7 @@ namespace ELOR.Laney {
 #if RELEASE
 #else
             if (IsExpired) {
-                DesktopLifetime.MainWindow = new VKUIDialog(Localizer.Instance["error"], "This version is expired!");
+                DesktopLifetime.MainWindow = new VKUIDialog(Assets.i18n.Resources.error, "This version is expired!");
                 DesktopLifetime.MainWindow.Closed += (a, b) => Process.GetCurrentProcess().Kill();
                 DesktopLifetime.MainWindow.Show();
             }

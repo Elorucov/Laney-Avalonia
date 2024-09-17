@@ -26,7 +26,7 @@ namespace ELOR.Laney.Views.Modals {
 
             switch (user.Type) {
                 case SharingContentType.Messages:
-                    Title = Localizer.Instance["sharing_messages"];
+                    Title = Assets.i18n.Resources.sharing_messages;
                     break;
             }
 

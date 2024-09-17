@@ -266,7 +266,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 BasicAttachment ba = new BasicAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24ArticleOutline,
-                    Title = Localizer.Instance["wall"],
+                    Title = Assets.i18n.Resources.wall,
                     Subtitle = def,
                     Name = wp.ObjectType
                 };
@@ -280,7 +280,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 BasicAttachment ba = new BasicAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24CommentOutline,
-                    Title = Localizer.Instance["wall_reply"],
+                    Title = Assets.i18n.Resources.wall_reply,
                     Subtitle = def,
                     Name = "WallReply"
                 };
@@ -328,7 +328,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Title = market.Title,
                     Subtitle = market.Price.Text,
                     Preview = new Uri(market.ThumbPhoto),
-                    ActionButtonText = Localizer.Instance["open"],
+                    ActionButtonText = Assets.i18n.Resources.open,
                     Name = market.ObjectType
                 };
                 if (!String.IsNullOrEmpty(market.Description)) ToolTip.SetTip(ea, market.Description);
@@ -344,7 +344,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24Poll,
                     Title = poll.Question,
-                    Subtitle = $"{Localizer.Instance["poll"]} {def}",
+                    Subtitle = $"{Assets.i18n.Resources.poll} {def}",
                     Name = poll.ObjectType,
                 };
                 ba.Click += async (a, b) => await Launcher.LaunchUrl($"https://vk.com/poll{poll.OwnerId}_{poll.Id}");
@@ -396,7 +396,7 @@ namespace ELOR.Laney.Controls.Attachments {
                         BasicAttachment ba = new BasicAttachment {
                             Margin = new Thickness(0, 0, 0, 8),
                             Icon = VKIconNames.Icon24Story,
-                            Title = Localizer.Instance["story"],
+                            Title = Assets.i18n.Resources.story,
                             Subtitle = def,
                             Name = st.ObjectType
                         };
@@ -405,10 +405,10 @@ namespace ELOR.Laney.Controls.Attachments {
                     } else {
                         ExtendedAttachment ea = new ExtendedAttachment {
                             Margin = new Thickness(0, 0, 0, 8),
-                            Title = Localizer.Instance["story"],
+                            Title = Assets.i18n.Resources.story,
                             Subtitle = def,
                             Preview = st.Video != null ? st.Video.FirstFrameForStory.Uri : st.Photo.GetSizeAndUriForThumbnail(Constants.ExtendedAttachmentPreviewSize, Constants.ExtendedAttachmentPreviewSize).Uri,
-                            ActionButtonText = Localizer.Instance["watch"],
+                            ActionButtonText = Assets.i18n.Resources.watch,
                             Name = st.ObjectType
                         };
                         ea.ActionButtonClick += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
@@ -424,9 +424,9 @@ namespace ELOR.Laney.Controls.Attachments {
                 ExtendedAttachment ea = new ExtendedAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Title = nr.Title,
-                    Subtitle = $"{Localizer.Instance["narrative"]} {VKAPIHelper.GetNameOrDefaultString(nr.OwnerId)}",
+                    Subtitle = $"{Assets.i18n.Resources.narrative} {VKAPIHelper.GetNameOrDefaultString(nr.OwnerId)}",
                     Preview = nr.Cover.CroppedSizes.LastOrDefault().Uri,
-                    ActionButtonText = Localizer.Instance["watch"],
+                    ActionButtonText = Assets.i18n.Resources.watch,
                     Name = nr.ObjectType
                 };
                 ea.ActionButtonClick += async (a, b) => await Launcher.LaunchUrl(link);
@@ -439,9 +439,9 @@ namespace ELOR.Laney.Controls.Attachments {
                 ExtendedAttachment ea = new ExtendedAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Title = cur.Name,
-                    Subtitle = Localizer.Instance["curator"],
+                    Subtitle = Assets.i18n.Resources.curator,
                     Preview = cur.Photo[0].Uri,
-                    ActionButtonText = Localizer.Instance["open"],
+                    ActionButtonText = Assets.i18n.Resources.open,
                     Name = "Curator"
                 };
                 ea.ActionButtonClick += async (a, b) => await Launcher.LaunchUrl(cur.Url);
@@ -469,8 +469,8 @@ namespace ELOR.Laney.Controls.Attachments {
                 BasicAttachment ba = new BasicAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24Song,
-                    Title = Localizer.Instance["audio_message"],
-                    Subtitle = Localizer.Instance["not_implemented"],
+                    Title = Assets.i18n.Resources.audio_message,
+                    Subtitle = Assets.i18n.Resources.not_implemented,
                     Name = am.ObjectType
                 };
                 ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
@@ -482,9 +482,9 @@ namespace ELOR.Laney.Controls.Attachments {
                 ExtendedAttachment ea = new ExtendedAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Title = p.Title,
-                    Subtitle = Localizer.Instance["podcast"],
+                    Subtitle = Assets.i18n.Resources.podcast,
                     Preview = p.Info.Cover.Sizes[0].Uri,
-                    ActionButtonText = Localizer.Instance["play"],
+                    ActionButtonText = Assets.i18n.Resources.play,
                     Name = p.ObjectType
                 };
                 ea.ActionButtonClick += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
@@ -511,7 +511,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24TextLiveOutline,
                     Title = tpb.Title,
-                    Subtitle = Localizer.Instance["textpost_publish"],
+                    // Subtitle = Assets.i18n.Resources.textpost_publish,
                     Name = "Textpost"
                 };
 
@@ -522,7 +522,7 @@ namespace ELOR.Laney.Controls.Attachments {
             // Unsuported
             foreach (Attachment a in unknown) {
                 StandartAttachments.Children.Add(new BasicAttachment {
-                    Title = Localizer.Instance["not_supported"],
+                    Title = Assets.i18n.Resources.not_supported,
                     Subtitle = a.TypeString,
                     Margin = new Thickness(0, 0, 0, 8),
                     Icon = VKIconNames.Icon24Question
@@ -600,24 +600,24 @@ namespace ELOR.Laney.Controls.Attachments {
 
         private BasicAttachment GetCallInfoControl(Call call) {
             bool isCurrentUserInitiator = call.InitiatorId == VKSession.GetByDataContext(this).UserId;
-            string title = Localizer.Instance[isCurrentUserInitiator ? "outgoing_call" : "incoming_call"];
+            string title = isCurrentUserInitiator ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled;
             string subtitle = String.Empty;
 
             if (call.Participants != null) {
                 int c = call.Participants.Count;
-                subtitle = " " + Localizer.Instance.GetDeclensionFormatted2(c, "member");
+                subtitle = " " + Localizer.GetDeclensionFormatted2(c, "member");
             }
 
             switch (call.State) {
                 case "reached": subtitle += call.Duration.ToString(call.Duration.Hours > 0 ? @"h\:mm\:ss" : @"m\:ss"); break;
-                case "canceled_by_receiver": subtitle += Localizer.Instance[isCurrentUserInitiator ? "call_declined" : "call_canceled"]; break;
-                case "canceled_by_initiator": subtitle += Localizer.Instance[isCurrentUserInitiator ? "call_canceled" : "call_missed"]; break;
+                case "canceled_by_receiver": subtitle += isCurrentUserInitiator ? Assets.i18n.Resources.call_declined : Assets.i18n.Resources.call_cancelled; break;
+                case "canceled_by_initiator": subtitle += isCurrentUserInitiator ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled; break;
                 default: subtitle += call.State; break;
             }
 
             return new BasicAttachment {
                 Icon = call.Video ? VKIconNames.Icon24Videocam : VKIconNames.Icon24Phone,
-                Title = call.ReceiverId.IsChat() ? Localizer.Instance["group_call_in_progress"] : title,
+                Title = call.ReceiverId.IsChat() ? Assets.i18n.Resources.group_call_in_progress : title,
                 Subtitle = subtitle,
                 Margin = new Thickness(0, 0, 0, 8),
                 Name = "Call"
@@ -629,11 +629,11 @@ namespace ELOR.Laney.Controls.Attachments {
 
             if (call.Participants != null) {
                 int c = call.Participants.Count;
-                subtitle = " " + Localizer.Instance.GetDeclensionFormatted2(c, "member");
+                subtitle = " " + Localizer.GetDeclensionFormatted2(c, "member");
             }
 
             return new ExtendedAttachment {
-                Title = Localizer.Instance["group_call_in_progress"],
+                Title = Assets.i18n.Resources.group_call_in_progress,
                 Subtitle = subtitle,
                 Margin = new Thickness(0, 0, 0, 8),
                 Name = "GroupCallInProgress"

@@ -60,15 +60,15 @@ namespace ELOR.Laney.Views.Modals {
             if (peerId.IsUser()) {
                 User u = CacheManager.GetUser(peerId);
                 if (u == null) return;
-                Title = Localizer.Instance.GetFormatted("msg_search_user", u.FirstNameIns, u.LastNameIns);
+                Title = Localizer.GetFormatted("msg_search_user", u.FirstNameIns, u.LastNameIns);
             } else if (peerId.IsGroup()) {
                 Group g = CacheManager.GetGroup(peerId);
                 if (g == null) return;
-                Title = Localizer.Instance.GetFormatted("msg_search_group", g.Name);
+                Title = Localizer.GetFormatted("msg_search_group", g.Name);
             } else if (peerId.IsChat()) {
                 var c = CacheManager.GetChat(session.Id, peerId);
                 if (c == null) return;
-                Title = Localizer.Instance.GetFormatted("msg_search_chat", c.Title);
+                Title = Localizer.GetFormatted("msg_search_chat", c.Title);
             }
         }
 

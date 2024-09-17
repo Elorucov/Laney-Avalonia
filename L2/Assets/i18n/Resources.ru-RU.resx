@@ -1,0 +1,1254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lang" xml:space="preserve">
+    <value>ru</value>
+  </data>
+  <data name="human" xml:space="preserve">
+    <value>Русский</value>
+  </data>
+  <data name="seconds_short" xml:space="preserve">
+    <value>{0}с</value>
+  </data>
+  <data name="minutes_short" xml:space="preserve">
+    <value>{0}мин</value>
+  </data>
+  <data name="hours_short" xml:space="preserve">
+    <value>{0}ч</value>
+  </data>
+  <data name="days_short" xml:space="preserve">
+    <value>{0}д</value>
+  </data>
+  <data name="months_short" xml:space="preserve">
+    <value>{0}м</value>
+  </data>
+  <data name="years_short" xml:space="preserve">
+    <value>{0}г</value>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>вчера</value>
+  </data>
+  <data name="today" xml:space="preserve">
+    <value>сегодня</value>
+  </data>
+  <data name="tomorrow" xml:space="preserve">
+    <value>завтра</value>
+  </data>
+  <data name="time_at" xml:space="preserve">
+    <value>в</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="you" xml:space="preserve">
+    <value>Вы</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="retry" xml:space="preserve">
+    <value>Повторить попытку</value>
+  </data>
+  <data name="nothing_found" xml:space="preserve">
+    <value>Ничего не найдено</value>
+  </data>
+  <data name="open" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="attach" xml:space="preserve">
+    <value>Прикрепить</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="block" xml:space="preserve">
+    <value>Заблокировать</value>
+  </data>
+  <data name="unblock" xml:space="preserve">
+    <value>Разблокировать</value>
+  </data>
+  <data name="open_profile" xml:space="preserve">
+    <value>Открыть профиль</value>
+  </data>
+  <data name="more" xml:space="preserve">
+    <value>Ещё</value>
+  </data>
+  <data name="wait" xml:space="preserve">
+    <value>Подождите...</value>
+  </data>
+  <data name="enable" xml:space="preserve">
+    <value>Включить</value>
+  </data>
+  <data name="disable" xml:space="preserve">
+    <value>Отключить</value>
+  </data>
+  <data name="enabled" xml:space="preserve">
+    <value>Включены</value>
+  </data>
+  <data name="disabled" xml:space="preserve">
+    <value>Отключены</value>
+  </data>
+  <data name="offset" xml:space="preserve">
+    <value>Смещение</value>
+  </data>
+  <data name="count" xml:space="preserve">
+    <value>Всего</value>
+  </data>
+  <data name="sound" xml:space="preserve">
+    <value>Звук</value>
+  </data>
+  <data name="go" xml:space="preserve">
+    <value>Перейти</value>
+  </data>
+  <data name="sign_in_direct" xml:space="preserve">
+    <value>Вход по логину и паролю</value>
+  </data>
+  <data name="sign_in_vk_id" xml:space="preserve">
+    <value>Войти через VK ID</value>
+  </data>
+  <data name="sign_in_qr" xml:space="preserve">
+    <value>Войти с помощью QR-кода</value>
+  </data>
+  <data name="sign_in" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="go_back" xml:space="preserve">
+    <value>Вернуться назад</value>
+  </data>
+  <data name="customize" xml:space="preserve">
+    <value>Настроить</value>
+  </data>
+  <data name="loading" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="landing_title" xml:space="preserve">
+    <value>Это Laney</value>
+  </data>
+  <data name="landing_subtitle" xml:space="preserve">
+    <value>Мессенджер социальной сети ВКонтакте</value>
+  </data>
+  <data name="landing_auth_in_progress_title" xml:space="preserve">
+    <value>Авторизация</value>
+  </data>
+  <data name="landing_auth_in_progress" xml:space="preserve">
+    <value>Пожалуйста, разрешите доступ к вашему аккаунту.</value>
+  </data>
+  <data name="da_login" xml:space="preserve">
+    <value>E-mail или телефон</value>
+  </data>
+  <data name="da_password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="da_2fa_confirm" xml:space="preserve">
+    <value>Подтвердите вход</value>
+  </data>
+  <data name="da_2fa_app" xml:space="preserve">
+    <value>Введите код из приложения-генератора кодов:</value>
+  </data>
+  <data name="da_2fa_sms" xml:space="preserve">
+    <value>Введите код, отправленный по SMS на номер {0}:</value>
+  </data>
+  <data name="da_wrong_otp_code" xml:space="preserve">
+    <value>Неверный код подтверждения!</value>
+  </data>
+  <data name="not_implemented" xml:space="preserve">
+    <value>Пока не реализовано</value>
+  </data>
+  <data name="not_implemented_desc" xml:space="preserve">
+    <value>Функция появится в следующих бета-версиях Laney.</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="error_api" xml:space="preserve">
+    <value>Ошибка VK API</value>
+  </data>
+  <data name="err_network" xml:space="preserve">
+    <value>Ошибка сети</value>
+  </data>
+  <data name="err_network_general" xml:space="preserve">
+    <value>Проверьте соединение и повторите попытку.</value>
+  </data>
+  <data name="err_network_no_connection" xml:space="preserve">
+    <value>Отсутствует интернет-соединение.</value>
+  </data>
+  <data name="err_network_shinaprovod" xml:space="preserve">
+    <value>Произошла ошибка на сервере. Повторите попытку позже.</value>
+  </data>
+  <data name="err_network_aborted" xml:space="preserve">
+    <value>Соединение прервано.</value>
+  </data>
+  <data name="err_network_timeout" xml:space="preserve">
+    <value>Время ожидания ответа от сервера истекло.</value>
+  </data>
+  <data name="captcha_title" xml:space="preserve">
+    <value>Введите код с картинки</value>
+  </data>
+  <data name="captcha_placeholder" xml:space="preserve">
+    <value>Введите код</value>
+  </data>
+  <data name="ls_done" xml:space="preserve">
+    <value>Вернитесь в Laney.</value>
+  </data>
+  <data name="emoji" xml:space="preserve">
+    <value>Эмодзи</value>
+  </data>
+  <data name="recent" xml:space="preserve">
+    <value>Недавние</value>
+  </data>
+  <data name="favorites" xml:space="preserve">
+    <value>Избранное</value>
+  </data>
+  <data name="info" xml:space="preserve">
+    <value>Информация</value>
+  </data>
+  <data name="groups_management" xml:space="preserve">
+    <value>Управление сообществами</value>
+  </data>
+  <data name="important_messages" xml:space="preserve">
+    <value>Важные сообщения</value>
+  </data>
+  <data name="favorite_messages" xml:space="preserve">
+    <value>Избранные сообщения</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="about" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="log_out" xml:space="preserve">
+    <value>Выйти из аккаунта</value>
+  </data>
+  <data name="log_out_confirm" xml:space="preserve">
+    <value>Вы уверены, что хотите выйти из Вашего аккаунта?</value>
+  </data>
+  <data name="exit" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="app_version" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+  <data name="build_time" xml:space="preserve">
+    <value>Время сборки</value>
+  </data>
+  <data name="launch_time" xml:space="preserve">
+    <value>Длительность запуска</value>
+  </data>
+  <data name="dotnet_version" xml:space="preserve">
+    <value>Версия .NET</value>
+  </data>
+  <data name="chats" xml:space="preserve">
+    <value>Чаты</value>
+  </data>
+  <data name="private_messages" xml:space="preserve">
+    <value>Личные сообщения</value>
+  </data>
+  <data name="group_chats" xml:space="preserve">
+    <value>Групповые чаты</value>
+  </data>
+  <data name="chatview_placeholder" xml:space="preserve">
+    <value>Выберите чат или создайте новый</value>
+  </data>
+  <data name="members" xml:space="preserve">
+    <value>Участники</value>
+  </data>
+  <data name="members_sub_nom" xml:space="preserve">
+    <value>{0} участник</value>
+  </data>
+  <data name="members_sub_gen" xml:space="preserve">
+    <value>{0} участника</value>
+  </data>
+  <data name="members_sub_plu" xml:space="preserve">
+    <value>{0} участников</value>
+  </data>
+  <data name="chat_kicked" xml:space="preserve">
+    <value>Вас исключили из беседы</value>
+  </data>
+  <data name="chat_left" xml:space="preserve">
+    <value>Вы вышли из беседы</value>
+  </data>
+  <data name="cannot_write" xml:space="preserve">
+    <value>Отправка сообщений ограничена</value>
+  </data>
+  <data name="user_blacklisted_by_me_f" xml:space="preserve">
+    <value>Добавлена в чёрный список</value>
+  </data>
+  <data name="user_blacklisted_by_me_m" xml:space="preserve">
+    <value>Добавлен в чёрный список</value>
+  </data>
+  <data name="user_blacklisted_f" xml:space="preserve">
+    <value>Добавила Вас в чёрный список</value>
+  </data>
+  <data name="user_blacklisted_m" xml:space="preserve">
+    <value>Добавил Вас в чёрный список</value>
+  </data>
+  <data name="user_blocked" xml:space="preserve">
+    <value>Пользователь заблокирован</value>
+  </data>
+  <data name="user_deleted" xml:space="preserve">
+    <value>Пользователь удалён</value>
+  </data>
+  <data name="user_private" xml:space="preserve">
+    <value>Закрытый профиль</value>
+  </data>
+  <data name="offline_last_month_f" xml:space="preserve">
+    <value>Была в сети в этом месяце</value>
+  </data>
+  <data name="offline_last_week_f" xml:space="preserve">
+    <value>Была в сети на этой неделе</value>
+  </data>
+  <data name="offline_long_ago_f" xml:space="preserve">
+    <value>Была в сети давно</value>
+  </data>
+  <data name="offline_recently_f" xml:space="preserve">
+    <value>Была в сети недавно</value>
+  </data>
+  <data name="offline_last_seen_f" xml:space="preserve">
+    <value>Была в сети {0}</value>
+  </data>
+  <data name="offline_last_month_m" xml:space="preserve">
+    <value>Был в сети в этом месяце</value>
+  </data>
+  <data name="offline_last_week_m" xml:space="preserve">
+    <value>Был в сети на этой неделе</value>
+  </data>
+  <data name="offline_long_ago_m" xml:space="preserve">
+    <value>Был в сети давно</value>
+  </data>
+  <data name="offline_recently_m" xml:space="preserve">
+    <value>Был в сети недавно</value>
+  </data>
+  <data name="offline_last_seen_m" xml:space="preserve">
+    <value>Был в сети {0}</value>
+  </data>
+  <data name="online" xml:space="preserve">
+    <value>в сети</value>
+  </data>
+  <data name="online_via" xml:space="preserve">
+    <value>в сети с {0}</value>
+  </data>
+  <data name="offline" xml:space="preserve">
+    <value>не в сети</value>
+  </data>
+  <data name="casper_chat" xml:space="preserve">
+    <value>Фантом-чат</value>
+  </data>
+  <data name="follower" xml:space="preserve">
+    <value>Подписчик</value>
+  </data>
+  <data name="follower_nom" xml:space="preserve">
+    <value>{0} подписчик</value>
+  </data>
+  <data name="follower_gen" xml:space="preserve">
+    <value>{0} подписчика</value>
+  </data>
+  <data name="follower_plu" xml:space="preserve">
+    <value>{0} подписчиков</value>
+  </data>
+  <data name="message" xml:space="preserve">
+    <value>Сообщение</value>
+  </data>
+  <data name="messages" xml:space="preserve">
+    <value>Сообщения</value>
+  </data>
+  <data name="message_nom" xml:space="preserve">
+    <value>{0} сообщение</value>
+  </data>
+  <data name="message_gen" xml:space="preserve">
+    <value>{0} сообщения</value>
+  </data>
+  <data name="message_plu" xml:space="preserve">
+    <value>{0} сообщений</value>
+  </data>
+  <data name="forwarded_message" xml:space="preserve">
+    <value>Пересланное сообщение</value>
+  </data>
+  <data name="forwarded_message_nom" xml:space="preserve">
+    <value>{0} пересланное сообщение</value>
+  </data>
+  <data name="forwarded_message_gen" xml:space="preserve">
+    <value>{0} пересланных сообщения</value>
+  </data>
+  <data name="forwarded_message_plu" xml:space="preserve">
+    <value>{0} пересланных сообщений</value>
+  </data>
+  <data name="forwarded_message_more_nom" xml:space="preserve">
+    <value>Ещё {0} сообщение</value>
+  </data>
+  <data name="forwarded_message_more_gen" xml:space="preserve">
+    <value>Ещё {0} пересланных сообщения</value>
+  </data>
+  <data name="forwarded_message_more_plu" xml:space="preserve">
+    <value>Ещё {0} пересланных сообщений</value>
+  </data>
+  <data name="attachment" xml:space="preserve">
+    <value>Вложение</value>
+  </data>
+  <data name="attachment_nom" xml:space="preserve">
+    <value>{0} вложение</value>
+  </data>
+  <data name="attachment_gen" xml:space="preserve">
+    <value>{0} вложения</value>
+  </data>
+  <data name="attachment_plu" xml:space="preserve">
+    <value>{0} вложений</value>
+  </data>
+  <data name="audio" xml:space="preserve">
+    <value>Аудио</value>
+  </data>
+  <data name="audio_nom" xml:space="preserve">
+    <value>{0} аудио</value>
+  </data>
+  <data name="audio_gen" xml:space="preserve">
+    <value>{0} аудио</value>
+  </data>
+  <data name="audio_plu" xml:space="preserve">
+    <value>{0} аудио</value>
+  </data>
+  <data name="audio_message" xml:space="preserve">
+    <value>Голосовое сообщение</value>
+  </data>
+  <data name="audio_message_nom" xml:space="preserve">
+    <value>{0} голосовое сообщение</value>
+  </data>
+  <data name="audio_message_gen" xml:space="preserve">
+    <value>{0} голосовых сообщения</value>
+  </data>
+  <data name="audio_message_plu" xml:space="preserve">
+    <value>{0} голосовых сообщений</value>
+  </data>
+  <data name="doc" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="doc_nom" xml:space="preserve">
+    <value>{0} файл</value>
+  </data>
+  <data name="doc_gen" xml:space="preserve">
+    <value>{0} файла</value>
+  </data>
+  <data name="doc_plu" xml:space="preserve">
+    <value>{0} файлов</value>
+  </data>
+  <data name="photo" xml:space="preserve">
+    <value>Фото</value>
+  </data>
+  <data name="photo_nom" xml:space="preserve">
+    <value>{0} фото</value>
+  </data>
+  <data name="photo_gen" xml:space="preserve">
+    <value>{0} фото</value>
+  </data>
+  <data name="photo_plu" xml:space="preserve">
+    <value>{0} фото</value>
+  </data>
+  <data name="video" xml:space="preserve">
+    <value>Видео</value>
+  </data>
+  <data name="video_nom" xml:space="preserve">
+    <value>{0} видео</value>
+  </data>
+  <data name="video_gen" xml:space="preserve">
+    <value>{0} видео</value>
+  </data>
+  <data name="video_plu" xml:space="preserve">
+    <value>{0} видео</value>
+  </data>
+  <data name="call" xml:space="preserve">
+    <value>Звонок</value>
+  </data>
+  <data name="curator" xml:space="preserve">
+    <value>Куратор</value>
+  </data>
+  <data name="event" xml:space="preserve">
+    <value>Мероприятие</value>
+  </data>
+  <data name="geo" xml:space="preserve">
+    <value>Место</value>
+  </data>
+  <data name="gift" xml:space="preserve">
+    <value>Подарок</value>
+  </data>
+  <data name="graffiti" xml:space="preserve">
+    <value>Граффити</value>
+  </data>
+  <data name="group_call_in_progress" xml:space="preserve">
+    <value>Групповой звонок</value>
+  </data>
+  <data name="link" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="links" xml:space="preserve">
+    <value>Ссылки</value>
+  </data>
+  <data name="market" xml:space="preserve">
+    <value>Товар</value>
+  </data>
+  <data name="narrative" xml:space="preserve">
+    <value>Сюжет</value>
+  </data>
+  <data name="podcast" xml:space="preserve">
+    <value>Подкаст</value>
+  </data>
+  <data name="poll" xml:space="preserve">
+    <value>Опрос</value>
+  </data>
+  <data name="sticker" xml:space="preserve">
+    <value>Стикер</value>
+  </data>
+  <data name="ugc_sticker" xml:space="preserve">
+    <value>Стикер</value>
+  </data>
+  <data name="story" xml:space="preserve">
+    <value>История</value>
+  </data>
+  <data name="wall" xml:space="preserve">
+    <value>Запись на стене</value>
+  </data>
+  <data name="wall_reply" xml:space="preserve">
+    <value>Комментарий со стены</value>
+  </data>
+  <data name="not_supported" xml:space="preserve">
+    <value>Не поддерживается</value>
+  </data>
+  <data name="empty_message" xml:space="preserve">
+    <value>Пустое сообщение</value>
+  </data>
+  <data name="edited_indicator" xml:space="preserve">
+    <value>ред.</value>
+  </data>
+  <data name="editing" xml:space="preserve">
+    <value>Редактирование</value>
+  </data>
+  <data name="msg_action_create_m" xml:space="preserve">
+    <value>создал беседу</value>
+  </data>
+  <data name="msg_action_create_f" xml:space="preserve">
+    <value>создала беседу</value>
+  </data>
+  <data name="msg_action_invited_m" xml:space="preserve">
+    <value>пригласил</value>
+  </data>
+  <data name="msg_action_invited_f" xml:space="preserve">
+    <value>пригласила</value>
+  </data>
+  <data name="msg_action_returned_m" xml:space="preserve">
+    <value>вернулся в беседу</value>
+  </data>
+  <data name="msg_action_returned_f" xml:space="preserve">
+    <value>вернулась в беседу</value>
+  </data>
+  <data name="msg_action_invited_by_link_m" xml:space="preserve">
+    <value>присоединился к беседе по ссылке</value>
+  </data>
+  <data name="msg_action_invited_by_link_f" xml:space="preserve">
+    <value>присоединилась к беседе по ссылке</value>
+  </data>
+  <data name="msg_action_left_m" xml:space="preserve">
+    <value>покинул беседу</value>
+  </data>
+  <data name="msg_action_left_f" xml:space="preserve">
+    <value>покинула беседу</value>
+  </data>
+  <data name="msg_action_kick_m" xml:space="preserve">
+    <value>исключил</value>
+  </data>
+  <data name="msg_action_kick_f" xml:space="preserve">
+    <value>исключила</value>
+  </data>
+  <data name="msg_action_photo_update_m" xml:space="preserve">
+    <value>изменил фотографию беседы</value>
+  </data>
+  <data name="msg_action_photo_update_f" xml:space="preserve">
+    <value>изменила фотографию беседы</value>
+  </data>
+  <data name="msg_action_photo_remove_m" xml:space="preserve">
+    <value>удалил фотографию беседы</value>
+  </data>
+  <data name="msg_action_photo_remove_f" xml:space="preserve">
+    <value>удалила фотографию беседы</value>
+  </data>
+  <data name="msg_action_pin_m" xml:space="preserve">
+    <value>закрепил</value>
+  </data>
+  <data name="msg_action_pin_f" xml:space="preserve">
+    <value>закрепила</value>
+  </data>
+  <data name="msg_action_unpin_m" xml:space="preserve">
+    <value>открепил</value>
+  </data>
+  <data name="msg_action_unpin_f" xml:space="preserve">
+    <value>открепила</value>
+  </data>
+  <data name="msg_action_rename_m" xml:space="preserve">
+    <value>изменил название беседы на</value>
+  </data>
+  <data name="msg_action_rename_f" xml:space="preserve">
+    <value>изменила название беседы на</value>
+  </data>
+  <data name="msg_action_screenshot_m" xml:space="preserve">
+    <value>сделал скриншот</value>
+  </data>
+  <data name="msg_action_screenshot_f" xml:space="preserve">
+    <value>сделала скриншот</value>
+  </data>
+  <data name="msg_action_accepted_message_request_m" xml:space="preserve">
+    <value>принял ваш запрос на переписку</value>
+  </data>
+  <data name="msg_action_accepted_message_request_f" xml:space="preserve">
+    <value>приняла ваш запрос на переписку</value>
+  </data>
+  <data name="msg_action_invite_user_by_call_m" xml:space="preserve">
+    <value>пригласил в звонок</value>
+  </data>
+  <data name="msg_action_invite_user_by_call_f" xml:space="preserve">
+    <value>пригласила в звонок</value>
+  </data>
+  <data name="msg_action_invite_user_by_call_join_link_m" xml:space="preserve">
+    <value>присоединился к звонку по ссылке</value>
+  </data>
+  <data name="msg_action_invite_user_by_call_join_link_f" xml:space="preserve">
+    <value>присоединилась к звонку по ссылке</value>
+  </data>
+  <data name="msg_action_style_update_m" xml:space="preserve">
+    <value>изменил оформление чата на</value>
+  </data>
+  <data name="msg_action_style_update_f" xml:space="preserve">
+    <value>изменила оформление чата на</value>
+  </data>
+  <data name="msg_action_style_reset_m" xml:space="preserve">
+    <value>сбросил оформление чата</value>
+  </data>
+  <data name="msg_action_style_reset_f" xml:space="preserve">
+    <value>сбросила оформление чата</value>
+  </data>
+  <data name="msg_expired" xml:space="preserve">
+    <value>Сообщение исчезло</value>
+  </data>
+  <data name="member" xml:space="preserve">
+    <value>Участник</value>
+  </data>
+  <data name="member_nom" xml:space="preserve">
+    <value>{0} участник</value>
+  </data>
+  <data name="member_gen" xml:space="preserve">
+    <value>{0} участника</value>
+  </data>
+  <data name="member_plu" xml:space="preserve">
+    <value>{0} участников</value>
+  </data>
+  <data name="incoming_call" xml:space="preserve">
+    <value>Входящий звонок</value>
+  </data>
+  <data name="outgoing_call" xml:space="preserve">
+    <value>Исходящий звонок</value>
+  </data>
+  <data name="call_cancelled" xml:space="preserve">
+    <value>Отменён</value>
+  </data>
+  <data name="call_declined" xml:space="preserve">
+    <value>Отклонён</value>
+  </data>
+  <data name="call_missed" xml:space="preserve">
+    <value>Пропущен</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>от</value>
+  </data>
+  <data name="watch" xml:space="preserve">
+    <value>Посмотреть</value>
+  </data>
+  <data name="play" xml:space="preserve">
+    <value>Слушать</value>
+  </data>
+  <data name="reply" xml:space="preserve">
+    <value>Ответить</value>
+  </data>
+  <data name="reply_privately" xml:space="preserve">
+    <value>Ответить лично</value>
+  </data>
+  <data name="forward" xml:space="preserve">
+    <value>Переслать</value>
+  </data>
+  <data name="forward_here" xml:space="preserve">
+    <value>Переслать сюда</value>
+  </data>
+  <data name="mark_important" xml:space="preserve">
+    <value>Отметить как важное</value>
+  </data>
+  <data name="unmark_important" xml:space="preserve">
+    <value>Снять отметку</value>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="pin" xml:space="preserve">
+    <value>Закрепить</value>
+  </data>
+  <data name="unpin" xml:space="preserve">
+    <value>Открепить</value>
+  </data>
+  <data name="go_to_message" xml:space="preserve">
+    <value>Перейти к сообщению</value>
+  </data>
+  <data name="mark_spam" xml:space="preserve">
+    <value>Отметить как спам</value>
+  </data>
+  <data name="chat_clear_history" xml:space="preserve">
+    <value>Очистить историю</value>
+  </data>
+  <data name="mark_read" xml:space="preserve">
+    <value>Отметить прочитанным</value>
+  </data>
+  <data name="mark_unread" xml:space="preserve">
+    <value>Отметить непрочитанным</value>
+  </data>
+  <data name="notifications_enable" xml:space="preserve">
+    <value>Включить уведомления</value>
+  </data>
+  <data name="notifications_disable" xml:space="preserve">
+    <value>Отключить уведомления</value>
+  </data>
+  <data name="lp_act_typing_multi" xml:space="preserve">
+    <value>печатают</value>
+  </data>
+  <data name="lp_act_typing_single" xml:space="preserve">
+    <value>печатает</value>
+  </data>
+  <data name="lp_act_voice_multi" xml:space="preserve">
+    <value>записывают аудио</value>
+  </data>
+  <data name="lp_act_voice_single" xml:space="preserve">
+    <value>записывает аудио</value>
+  </data>
+  <data name="lp_act_photo_multi" xml:space="preserve">
+    <value>отправляют фото</value>
+  </data>
+  <data name="lp_act_photo_single" xml:space="preserve">
+    <value>отправляет фото</value>
+  </data>
+  <data name="lp_act_video_multi" xml:space="preserve">
+    <value>отправляют видео</value>
+  </data>
+  <data name="lp_act_video_single" xml:space="preserve">
+    <value>отправляет видео</value>
+  </data>
+  <data name="lp_act_file_multi" xml:space="preserve">
+    <value>отправляют файл</value>
+  </data>
+  <data name="lp_act_file_single" xml:space="preserve">
+    <value>отправляет файл</value>
+  </data>
+  <data name="im_status_more" xml:space="preserve">
+    <value>и ещё {0}</value>
+  </data>
+  <data name="wnd_attachmentpicker" xml:space="preserve">
+    <value>Выберите...</value>
+  </data>
+  <data name="wnd_peerprofile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="wnd_gallery" xml:space="preserve">
+    <value>Просмотр изображений</value>
+  </data>
+  <data name="atchpicker_doctype_animations" xml:space="preserve">
+    <value>Анимации</value>
+  </data>
+  <data name="atchpicker_doctype_archives" xml:space="preserve">
+    <value>Архивы</value>
+  </data>
+  <data name="atchpicker_doctype_audio" xml:space="preserve">
+    <value>Аудио</value>
+  </data>
+  <data name="atchpicker_doctype_books" xml:space="preserve">
+    <value>Книги</value>
+  </data>
+  <data name="atchpicker_doctype_other" xml:space="preserve">
+    <value>Прочее</value>
+  </data>
+  <data name="atchpicker_doctype_pictures" xml:space="preserve">
+    <value>Картинки</value>
+  </data>
+  <data name="atchpicker_doctype_texts" xml:space="preserve">
+    <value>Текстовые</value>
+  </data>
+  <data name="atchpicker_doctype_video" xml:space="preserve">
+    <value>Видео</value>
+  </data>
+  <data name="atchpicker_upload_photo" xml:space="preserve">
+    <value>Загрузить фотографию</value>
+  </data>
+  <data name="atchpicker_upload_video" xml:space="preserve">
+    <value>Загрузить видео</value>
+  </data>
+  <data name="upload_error" xml:space="preserve">
+    <value>Не удалось загрузить файл</value>
+  </data>
+  <data name="pp_friend_accept" xml:space="preserve">
+    <value>Принять</value>
+  </data>
+  <data name="pp_friend_add" xml:space="preserve">
+    <value>В друзья</value>
+  </data>
+  <data name="pp_friend_decline" xml:space="preserve">
+    <value>Отклонить</value>
+  </data>
+  <data name="pp_friend_delete" xml:space="preserve">
+    <value>Удалить из друзей</value>
+  </data>
+  <data name="pp_friend_request" xml:space="preserve">
+    <value>Запрос отправлен</value>
+  </data>
+  <data name="pp_friend_your" xml:space="preserve">
+    <value>Ваш друг</value>
+  </data>
+  <data name="pp_profile" xml:space="preserve">
+    <value>Профиль VK</value>
+  </data>
+  <data name="pp_group" xml:space="preserve">
+    <value>Группа VK</value>
+  </data>
+  <data name="pp_allow" xml:space="preserve">
+    <value>Разрешить сообщения</value>
+  </data>
+  <data name="pp_deny" xml:space="preserve">
+    <value>Запретить сообщения</value>
+  </data>
+  <data name="pp_unpin_message" xml:space="preserve">
+    <value>Открепить сообщение</value>
+  </data>
+  <data name="pp_exit_chat" xml:space="preserve">
+    <value>Выйти из чата</value>
+  </data>
+  <data name="pp_exit_channel" xml:space="preserve">
+    <value>Покинуть канал</value>
+  </data>
+  <data name="pp_return_chat" xml:space="preserve">
+    <value>Вернуться в чат</value>
+  </data>
+  <data name="pp_return_channel" xml:space="preserve">
+    <value>Вернуться в канал</value>
+  </data>
+  <data name="pp_search_members" xml:space="preserve">
+    <value>Поиск участников</value>
+  </data>
+  <data name="pp_attachments_photo" xml:space="preserve">
+    <value>Здесь будут отображаться фотографии из чата</value>
+  </data>
+  <data name="pp_attachments_video" xml:space="preserve">
+    <value>Здесь будут отображаться видео из чата</value>
+  </data>
+  <data name="pp_attachments_audio" xml:space="preserve">
+    <value>Здесь будет отображаться музыка из чата</value>
+  </data>
+  <data name="pp_attachments_doc" xml:space="preserve">
+    <value>Здесь будут отображаться файлы из чата</value>
+  </data>
+  <data name="pp_attachments_share" xml:space="preserve">
+    <value>Здесь будут отображаться ссылки из чата</value>
+  </data>
+  <data name="admin" xml:space="preserve">
+    <value>админ</value>
+  </data>
+  <data name="created_on_m" xml:space="preserve">
+    <value>создал чат</value>
+  </data>
+  <data name="created_on_f" xml:space="preserve">
+    <value>создала чат</value>
+  </data>
+  <data name="invited_by_m" xml:space="preserve">
+    <value>пригласил {0}</value>
+  </data>
+  <data name="invited_by_f" xml:space="preserve">
+    <value>пригласила {0}</value>
+  </data>
+  <data name="pp_member_admin_add" xml:space="preserve">
+    <value>Назначить администратором</value>
+  </data>
+  <data name="pp_member_admin_remove" xml:space="preserve">
+    <value>Разжаловать администратора</value>
+  </data>
+  <data name="pp_member_kick" xml:space="preserve">
+    <value>Исключить из чата</value>
+  </data>
+  <data name="stp_your_story" xml:space="preserve">
+    <value>Ваша история</value>
+  </data>
+  <data name="stp_deleted" xml:space="preserve">
+    <value>История удалена</value>
+  </data>
+  <data name="stp_expired" xml:space="preserve">
+    <value>Историю можно было посмотреть в течение 24 часов после публикации</value>
+  </data>
+  <data name="stp_private" xml:space="preserve">
+    <value>Автор скрыл историю</value>
+  </data>
+  <data name="settings_general" xml:space="preserve">
+    <value>Основные</value>
+  </data>
+  <data name="settings_appearance" xml:space="preserve">
+    <value>Внешний вид</value>
+  </data>
+  <data name="settings_notifications" xml:space="preserve">
+    <value>Уведомления</value>
+  </data>
+  <data name="settings_privacy" xml:space="preserve">
+    <value>Приватность</value>
+  </data>
+  <data name="settings_blacklist" xml:space="preserve">
+    <value>Чёрный список</value>
+  </data>
+  <data name="restart_required" xml:space="preserve">
+    <value>Перезапустите приложение</value>
+  </data>
+  <data name="restart_required_ext" xml:space="preserve">
+    <value>Эта настройка вступит в силу после перезапуска приложения</value>
+  </data>
+  <data name="st_lang" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="st_send_method" xml:space="preserve">
+    <value>Параметры отправки сообщения</value>
+  </data>
+  <data name="st_send_method_1" xml:space="preserve">
+    <value>Enter — отправка</value>
+  </data>
+  <data name="st_send_method_1_desc" xml:space="preserve">
+    <value>Shift + Enter — перенос строки</value>
+  </data>
+  <data name="st_send_method_2" xml:space="preserve">
+    <value>Ctrl + Enter — отправка</value>
+  </data>
+  <data name="st_send_method_2_desc" xml:space="preserve">
+    <value>Enter — перенос строки</value>
+  </data>
+  <data name="st_send_dpl" xml:space="preserve">
+    <value>Не создавать сниппет ссылки</value>
+  </data>
+  <data name="st_send_nomentions" xml:space="preserve">
+    <value>Не уведомлять об упоминании</value>
+  </data>
+  <data name="st_stickers" xml:space="preserve">
+    <value>Стикеры</value>
+  </data>
+  <data name="st_stickers_suggest" xml:space="preserve">
+    <value>Подсказывать стикеры</value>
+  </data>
+  <data name="st_stickers_suggest_desc" xml:space="preserve">
+    <value>При вводе смайлов и некоторых слов будут показываться подсказки стикеров</value>
+  </data>
+  <data name="st_stickers_animate" xml:space="preserve">
+    <value>Анимированные стикеры</value>
+  </data>
+  <data name="st_stickers_animate_desc" xml:space="preserve">
+    <value>Стикеры с анимацией будут проигрываться автоматически</value>
+  </data>
+  <data name="st_theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="st_theme_system" xml:space="preserve">
+    <value>Системная</value>
+  </data>
+  <data name="st_theme_light" xml:space="preserve">
+    <value>Светлая</value>
+  </data>
+  <data name="st_theme_dark" xml:space="preserve">
+    <value>Тёмная</value>
+  </data>
+  <data name="st_chat_item_rows" xml:space="preserve">
+    <value>Список чатов</value>
+  </data>
+  <data name="st_chat_item_rows_2" xml:space="preserve">
+    <value>Двухстрочный</value>
+  </data>
+  <data name="st_chat_item_rows_3" xml:space="preserve">
+    <value>Трёхстрочный</value>
+  </data>
+  <data name="about_offical_group" xml:space="preserve">
+    <value>Наше сообщество</value>
+  </data>
+  <data name="about_offical_group_desc" xml:space="preserve">
+    <value>Задавайте вопросы или сообщите об ошибках</value>
+  </data>
+  <data name="about_libs" xml:space="preserve">
+    <value>Используемые библиотеки</value>
+  </data>
+  <data name="about_vk_privacy" xml:space="preserve">
+    <value>Политика конфиденциальности ВК</value>
+  </data>
+  <data name="about_vk_terms" xml:space="preserve">
+    <value>Пользовательское соглашение ВК</value>
+  </data>
+  <data name="about_dev" xml:space="preserve">
+    <value>Разработчик:</value>
+  </data>
+  <data name="about_dev2" xml:space="preserve">
+    <value>Эльчин Оруджев</value>
+  </data>
+  <data name="chat_creation_title" xml:space="preserve">
+    <value>Новый чат</value>
+  </data>
+  <data name="chat_creation_name_watermark" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="chat_creation_name_footnote" xml:space="preserve">
+    <value>Введите название и при желании загрузите фотографию</value>
+  </data>
+  <data name="msg_delete_dialog_single_title" xml:space="preserve">
+    <value>Удалить сообщение</value>
+  </data>
+  <data name="msg_delete_dialog_single_question" xml:space="preserve">
+    <value>Удалить сообщение?</value>
+  </data>
+  <data name="msg_delete_dialog_multi_title" xml:space="preserve">
+    <value>Удалить сообщения</value>
+  </data>
+  <data name="msg_delete_dialog_multi_question" xml:space="preserve">
+    <value>Удалить сообщения?</value>
+  </data>
+  <data name="msg_delete_dialog_text_nom" xml:space="preserve">
+    <value>Вы действительно хотите удалить {0} сообщение?</value>
+  </data>
+  <data name="msg_delete_dialog_text_gen" xml:space="preserve">
+    <value>Вы действительно хотите удалить {0} сообщения?</value>
+  </data>
+  <data name="msg_delete_dialog_text_plu" xml:space="preserve">
+    <value>Вы действительно хотите удалить {0} сообщений?</value>
+  </data>
+  <data name="delete_for_all" xml:space="preserve">
+    <value>Удалить для всех</value>
+  </data>
+  <data name="message_deleted_single" xml:space="preserve">
+    <value>Сообщение удалено.</value>
+  </data>
+  <data name="message_deleted_multi" xml:space="preserve">
+    <value>Сообщения удалены.</value>
+  </data>
+  <data name="message_spam_single" xml:space="preserve">
+    <value>Сообщение было помечено как спам и удалено.</value>
+  </data>
+  <data name="message_spam_multi" xml:space="preserve">
+    <value>Сообщения были помечены как спам и удалены.</value>
+  </data>
+  <data name="sharing_messages" xml:space="preserve">
+    <value>Переслать сообщения</value>
+  </data>
+  <data name="sharing_user" xml:space="preserve">
+    <value>В личные сообщения</value>
+  </data>
+  <data name="sharing_group" xml:space="preserve">
+    <value>В сообщения сообщества</value>
+  </data>
+  <data name="msg_search_user" xml:space="preserve">
+    <value>Поиск в чате с {0} {1}</value>
+  </data>
+  <data name="msg_search_group" xml:space="preserve">
+    <value>Поиск в чате с «{0}»</value>
+  </data>
+  <data name="msg_search_chat" xml:space="preserve">
+    <value>Поиск в чате «{0}»</value>
+  </data>
+  <data name="in_chat" xml:space="preserve">
+    <value>в чате «{0}»</value>
+  </data>
+  <data name="reactions_nom" xml:space="preserve">
+    <value>{0} реакция</value>
+  </data>
+  <data name="reactions_gen" xml:space="preserve">
+    <value>{0} реакции</value>
+  </data>
+  <data name="reactions_plu" xml:space="preserve">
+    <value>{0} реакций</value>
+  </data>
+  <data name="chat_clear_modal_title" xml:space="preserve">
+    <value>Удалить все сообщения</value>
+  </data>
+  <data name="chat_clear_modal_text" xml:space="preserve">
+    <value>Вы действительно хотите удалить всю переписку в этом чате? Отменить это действие будет невозможно.</value>
+  </data>
+  <data name="chat_leave_modal_title" xml:space="preserve">
+    <value>Выйти из чата?</value>
+  </data>
+  <data name="chat_leave_modal_text" xml:space="preserve">
+    <value>Если вы покинете чат, вы не будете получать новые сообщения от участников. Вы сможете вернуться при наличии свободных мест.</value>
+  </data>
+  <data name="group_management_desc" xml:space="preserve">
+    <value>Добавьте в Laney ваши сообщества, чтобы оставаться на связи с их участниками и получать уведомления о новых сообщениях в них.</value>
+  </data>
+  <data name="templates" xml:space="preserve">
+    <value>Шаблоны</value>
+  </data>
+  <data name="commtemplate_greeting" xml:space="preserve">
+    <value>Привет</value>
+  </data>
+  <data name="drop_quick" xml:space="preserve">
+    <value>Быстрая отправка</value>
+  </data>
+  <data name="drop_without_compression" xml:space="preserve">
+    <value>Отправка без сжатия</value>
+  </data>
+  <data name="drop_without_compression_desc" xml:space="preserve">
+    <value>Перетащите сюда файлы,\nчтобы прикрепить их к сообщению</value>
+  </data>
+  <data name="drop_photos_quick" xml:space="preserve">
+    <value>Перетащите сюда фотографии,\nчтобы прикрепить их к сообщению</value>
+  </data>
+  <data name="drop_photos_file" xml:space="preserve">
+    <value>Перетащите сюда фотографии,\nчтобы прикрепить их как файлы (без сжатия)</value>
+  </data>
+  <data name="drop_videos_quick" xml:space="preserve">
+    <value>Перетащите сюда видео,\nчтобы прикрепить их к сообщению</value>
+  </data>
+  <data name="drop_videos_file" xml:space="preserve">
+    <value>Перетащите сюда видео,\nчтобы прикрепить их как файлы</value>
+  </data>
+  <data name="views" xml:space="preserve">
+    <value>Просмотры</value>
+  </data>
+  <data name="views_nom" xml:space="preserve">
+    <value>{0} просмотр</value>
+  </data>
+  <data name="views_gen" xml:space="preserve">
+    <value>{0} просмотра</value>
+  </data>
+  <data name="views_plu" xml:space="preserve">
+    <value>{0} просмотров</value>
+  </data>
+  <data name="views_empty" xml:space="preserve">
+    <value>Нет просмотров</value>
+  </data>
+  <data name="_continue" xml:space="preserve">
+    <value>Продолжить</value>
+  </data>
+</root>

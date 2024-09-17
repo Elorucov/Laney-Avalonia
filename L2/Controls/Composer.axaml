@@ -3,7 +3,7 @@
              xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
              xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:vmc="using:ELOR.Laney.ViewModels.Controls"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="128"
@@ -31,7 +31,7 @@
 
   <StackPanel x:Name="Root">
     <DockPanel x:Name="EditingInfoArea" Margin="12,10,12,-2" IsVisible="{Binding EditingMessageId}">
-      <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{i18n:Localize editing}"/>
+      <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{x:Static i18n:Resources.editing}"/>
       <Button x:Name="EditionCancelButton" Classes="Tertiary ComposerButton" HorizontalAlignment="Right" DockPanel.Dock="Right" CornerRadius="2" Width="16" MinHeight="16" Height="16" Command="{Binding CancelEditing}">
         <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}"/>
       </Button>
@@ -101,7 +101,7 @@
       </Button>
 
       <!-- Костыль с margin-ом нужен, т. к. при 15/20 текст располагается выше. (должно быть "0,8") -->
-      <TextBox x:Name="MessageText" Grid.Column="1" Classes="Transparent" VerticalAlignment="Center" Margin="0,9,0,7" TextWrapping="Wrap" MaxLength="2048" MaxHeight="100" LostFocus="MessageText_LostFocus" PropertyChanged="MessageText_PropertyChanged" KeyDown="MessageText_KeyDown" KeyUp="MessageText_KeyUp" SelectionStart="{Binding TextSelectionStart, Mode=TwoWay}" SelectionEnd="{Binding TextSelectionEnd, Mode=TwoWay}" Watermark="{i18n:Localize message}" Text="{Binding Text, Mode=TwoWay}"/>
+      <TextBox x:Name="MessageText" Grid.Column="1" Classes="Transparent" VerticalAlignment="Center" Margin="0,9,0,7" TextWrapping="Wrap" MaxLength="2048" MaxHeight="100" LostFocus="MessageText_LostFocus" PropertyChanged="MessageText_PropertyChanged" KeyDown="MessageText_KeyDown" KeyUp="MessageText_KeyUp" SelectionStart="{Binding TextSelectionStart, Mode=TwoWay}" SelectionEnd="{Binding TextSelectionEnd, Mode=TwoWay}" Watermark="{x:Static i18n:Resources.message}" Text="{Binding Text, Mode=TwoWay}"/>
 
       <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
         <Button x:Name="GroupsTemplatesButton" Classes="Tertiary ComposerButton" IsVisible="{Binding IsGroupSession}" Click="ShowTemplatesFlyout">

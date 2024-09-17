@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:vkui="using:VKUI.Controls"
              xmlns:vm="using:ELOR.Laney.ViewModels.SettingsCategories"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -12,14 +12,14 @@
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
           <Grid Classes="GroupHeader">
-            <TextBlock Text="{i18n:Localize !private_messages}"/>
+            <TextBlock Text="{x:Static i18n:Resources.private_messages}"/>
           </Grid>
-          <vkui:Cell Header="{i18n:Localize settings_notifications}">
+          <vkui:Cell Header="{x:Static i18n:Resources.settings_notifications}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding Private, Mode=TwoWay}"/>
             </vkui:Cell.After>
           </vkui:Cell>
-          <vkui:Cell IsVisible="{Binding Private, Mode=OneWay}" Header="{i18n:Localize sound}">
+          <vkui:Cell IsVisible="{Binding Private, Mode=OneWay}" Header="{x:Static i18n:Resources.sound}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding PrivateSound, Mode=TwoWay}"/>
             </vkui:Cell.After>
@@ -30,14 +30,14 @@
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
           <Grid Classes="GroupHeader">
-            <TextBlock Text="{i18n:Localize !group_chats}"/>
+            <TextBlock Text="{x:Static i18n:Resources.group_chats}"/>
           </Grid>
-          <vkui:Cell Header="{i18n:Localize settings_notifications}">
+          <vkui:Cell Header="{x:Static i18n:Resources.settings_notifications}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding GroupChat, Mode=TwoWay}"/>
             </vkui:Cell.After>
           </vkui:Cell>
-          <vkui:Cell IsVisible="{Binding GroupChat, Mode=OneWay}" Header="{i18n:Localize sound}">
+          <vkui:Cell IsVisible="{Binding GroupChat, Mode=OneWay}" Header="{x:Static i18n:Resources.sound}">
             <vkui:Cell.After>
               <ToggleSwitch IsChecked="{Binding GroupChatSound, Mode=TwoWay}"/>
             </vkui:Cell.After>

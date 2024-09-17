@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vkui="using:VKUI.Controls"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:controls="using:ELOR.Laney.Controls"
              mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="540"
              x:Class="ELOR.Laney.Views.SignIn.DAValidationPage">
@@ -17,13 +17,13 @@
       </vkui:PanelHeader.LeftButtons>
     </vkui:PanelHeader>
     <StackPanel Grid.Row="1" Margin="24,12">
-      <TextBlock Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="{i18n:Localize da_2fa_confirm}"/>
+      <TextBlock Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="{x:Static i18n:Resources.da_2fa_confirm}"/>
       <TextBlock x:Name="TwoFAInfo" Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="Моргни 5 раз, хлопни 3 раза, скажи слово Laney 75 раз, разошли это SMS 5 друзьям. Загляни под подушку, там access_token!"/>
       <TextBox x:Name="TwoFACode" Width="128" TextAlignment="Center"/>
     </StackPanel>
     <StackPanel Margin="12" Grid.Row="2">
       <TextBlock x:Name="ErrorInfo" Margin="12" Foreground="{DynamicResource VKDestructiveBrush}"/>
-      <Button x:Name="SignInButton" Classes="Primary Large" Margin="12" HorizontalAlignment="Stretch" Content="{i18n:Localize continue}" Click="SignIn_Click"/>
+      <Button x:Name="SignInButton" Classes="Primary Large" Margin="12" HorizontalAlignment="Stretch" Content="{x:Static i18n:Resources._continue}" Click="SignIn_Click"/>
     </StackPanel>
   </Grid>
 </vkui:Page>

@@ -2,15 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:vkobj="using:ELOR.VKAPILib.Objects.Messages"
              mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="320"
              x:Class="ELOR.Laney.GroupMessageTemplates">
   <Grid RowDefinitions="Auto *">
     <Grid x:Name="Header" ColumnDefinitions="* Auto" Margin="12,12,12,8">
-      <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{i18n:Localize templates}"/>
+      <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{x:Static i18n:Resources.templates}"/>
       <Button Grid.Column="1" Classes="Link" Click="OpenTemplatesEditorModal">
-        <TextBlock Classes="Caption1" Text="{i18n:Localize customize}"/>
+        <TextBlock Classes="Caption1" Text="{x:Static i18n:Resources.customize}"/>
       </Button>
     </Grid>
   

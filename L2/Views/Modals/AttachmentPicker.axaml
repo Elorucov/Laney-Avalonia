@@ -1,6 +1,6 @@
 <vkw:DialogWindow xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
         xmlns:vkw="using:VKUI.Windows"
@@ -11,7 +11,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="612"
         x:Class="ELOR.Laney.Views.Modals.AttachmentPicker" x:DataType="vm:AttachmentPickerViewModel"
-        Title="{i18n:Localize wnd_attachmentpicker}">
+        Title="{x:Static i18n:Resources.wnd_attachmentpicker}">
   <vkw:DialogWindow.Resources>
     <DataTemplate x:Key="PhotoAlbumTemplate" x:DataType="vke:AlbumLite">
       <StackPanel Width="220">
@@ -71,12 +71,12 @@
     
   <Grid RowDefinitions="Auto * Auto">   
     <TabControl x:Name="Tabs" Classes="Accent" Grid.RowSpan="2" SelectionChanged="Tabs_SelectionChanged">
-      <TabItem Header="{i18n:Localize photo}">
+      <TabItem Header="{x:Static i18n:Resources.photo}">
         <Grid RowDefinitions="Auto *">
           <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12" Click="OpenFilePickerForPhoto">
             <StackPanel Orientation="Horizontal">
               <vkui:VKIcon Classes="ButtonIn" Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
-              <TextBlock Classes="ButtonIn" Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_photo}"/>
+              <TextBlock Classes="ButtonIn" Margin="4,0,0,0" Text="{x:Static i18n:Resources.atchpicker_upload_photo}"/>
             </StackPanel>
           </Button>
           <ScrollViewer x:Name="PhotosSV" Grid.Row="1">
@@ -117,12 +117,12 @@
         </Grid>
       </TabItem>
 
-      <TabItem Header="{i18n:Localize video}">
+      <TabItem Header="{x:Static i18n:Resources.video}">
         <Grid RowDefinitions="Auto *">
           <Button Classes="Outline Medium" HorizontalAlignment="Stretch" Margin="12,0,12,12" Click="OpenFilePickerForVideo">
             <StackPanel Orientation="Horizontal">
               <vkui:VKIcon Classes="ButtonIn" Margin="0,0,4,0" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
-              <TextBlock Classes="ButtonIn" Margin="4,0,0,0" Text="{i18n:Localize atchpicker_upload_video}"/>
+              <TextBlock Classes="ButtonIn" Margin="4,0,0,0" Text="{x:Static i18n:Resources.atchpicker_upload_video}"/>
             </StackPanel>
           </Button>
           <ScrollViewer x:Name="VideosSV" Grid.Row="1">
@@ -157,21 +157,21 @@
         </Grid>
       </TabItem>
 
-      <TabItem Header="{i18n:Localize doc}">
+      <TabItem Header="{x:Static i18n:Resources.doc}">
         <Grid ColumnDefinitions="Auto *" RowDefinitions="Auto *">
           <Button Classes="Tertiary Medium" Margin="12,0,0,12" Click="OpenFilePickerForDoc">
             <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon16UploadOutline}"/>
           </Button>
           <ComboBox x:Name="DocsTypeBox" Margin="12,0,12,12" Grid.Column="1" SelectedIndex="{Binding DocumentTypeIndex, Mode=TwoWay}">
-            <ComboBoxItem Content="{i18n:Localize all}"/>
-            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_texts}"/>
-            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_archives}"/>
-            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_animations}"/>
-            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_pictures}"/>
-            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_audio}"/>
-            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_video}"/>
-            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_books}"/>
-            <ComboBoxItem Content="{i18n:Localize atchpicker_doctype_other}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.all}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.atchpicker_doctype_texts}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.atchpicker_doctype_archives}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.atchpicker_doctype_animations}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.atchpicker_doctype_pictures}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.atchpicker_doctype_audio}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.atchpicker_doctype_video}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.atchpicker_doctype_books}"/>
+            <ComboBoxItem Content="{x:Static i18n:Resources.atchpicker_doctype_other}"/>
           </ComboBox>
 
           <ScrollViewer x:Name="DocsSV" Grid.Row="1" Grid.ColumnSpan="2">
@@ -203,7 +203,7 @@
       
     <Button Grid.Row="2" Classes="Primary Large" Margin="12,0,12,12" HorizontalAlignment="Stretch" IsEnabled="{Binding !!SelectedAttachmentsCount}" Click="CloseAndAttach">
       <StackPanel Orientation="Horizontal">
-        <TextBlock Classes="ButtonIn" Text="{i18n:Localize attach}"/>
+        <TextBlock Classes="ButtonIn" Text="{x:Static i18n:Resources.attach}"/>
         <Border IsVisible="{Binding !!SelectedAttachmentsCount}" Margin="8,0,0,0" MinWidth="18" Height="18" CornerRadius="9" Background="{DynamicResource VKButtonPrimaryForegroundBrush}">
           <TextBlock Margin="4,0" Classes="Subhead" FontWeight="Medium" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="{Binding SelectedAttachmentsCount}"/>
         </Border>

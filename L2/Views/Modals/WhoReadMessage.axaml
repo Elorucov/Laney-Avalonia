@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vkui="using:VKUI.Controls"
         xmlns:vkw="using:VKUI.Windows"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vm="using:ELOR.Laney.ViewModels"
         xmlns:vmm="using:ELOR.Laney.ViewModels.Modals"
@@ -13,7 +13,7 @@
         mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="576"
         Width="360" Height="540"
         x:Class="ELOR.Laney.WhoReadMessage"
-        Title="{i18n:Localize views}">
+        Title="{x:Static i18n:Resources.views}">
   <Grid RowDefinitions="Auto Auto *">
     <vkui:WindowTitleBar x:Name="TitleBar" CanMove="False"/>
     <ScrollViewer x:Name="ScrollViewer" Grid.Row="2">

@@ -89,7 +89,7 @@ namespace ELOR.Laney.Core {
             if (!IsGroup && !DemoMode.IsEnabled) {
                 ActionSheetItem chooseGroups = new ActionSheetItem {
                     Before = new VKIcon { Id = VKIconNames.Icon20More },
-                    Header = Localizer.Instance["groups_management"],
+                    Header = Assets.i18n.Resources.groups_management,
                 };
                 chooseGroups.Click += ChooseGroups_Click;
                 ash.Items.Add(chooseGroups);
@@ -101,24 +101,24 @@ namespace ELOR.Laney.Core {
 
             ActionSheetItem favorites = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BookmarkOutline },
-                Header = Localizer.Instance["favorite_messages"],
+                Header = Assets.i18n.Resources.favorite_messages,
             };
             ActionSheetItem important = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20FavoriteOutline },
-                Header = Localizer.Instance["important_messages"],
+                Header = Assets.i18n.Resources.important_messages,
             };
 
             ActionSheetItem settings = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20GearOutline },
-                Header = Localizer.Instance["settings"],
+                Header = Assets.i18n.Resources.settings,
             };
             ActionSheetItem about = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20InfoCircleOutline },
-                Header = Localizer.Instance["about"],
+                Header = Assets.i18n.Resources.about,
             };
             ActionSheetItem logout = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DoorArrowRightOutline },
-                Header = Localizer.Instance["log_out"],
+                Header = Assets.i18n.Resources.log_out,
             };
             logout.Classes.Add("Destructive");
 
@@ -142,8 +142,8 @@ namespace ELOR.Laney.Core {
             };
             logout.Click += async (a, b) => {
                 if (DemoMode.IsEnabled) return;
-                string[] buttons = [Localizer.Instance["yes"], Localizer.Instance["no"]];
-                VKUIDialog dlg = new VKUIDialog(Localizer.Instance["log_out"], Localizer.Instance["log_out_confirm"], buttons, 2);
+                string[] buttons = [Assets.i18n.Resources.yes, Assets.i18n.Resources.no];
+                VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.log_out, Assets.i18n.Resources.log_out_confirm, buttons, 2);
                 int result = await dlg.ShowDialog<int>(Window);
 
                 if (result == 1) LogOut();
@@ -277,7 +277,7 @@ namespace ELOR.Laney.Core {
                 new FieldTestWindow().Show();
             };
 
-            var exit = new NativeMenuItem { Header = Localizer.Instance["exit"] };
+            var exit = new NativeMenuItem { Header = Assets.i18n.Resources.exit };
             exit.Click += (a, b) => {
                 App.Current.DesktopLifetime.Shutdown();
             };
@@ -320,7 +320,7 @@ namespace ELOR.Laney.Core {
                 new FieldTestWindow().Show();
             };
 
-            var exit = new NativeMenuItem { Header = Localizer.Instance["exit"] };
+            var exit = new NativeMenuItem { Header = Assets.i18n.Resources.exit };
             exit.Click += (a, b) => {
                 App.Current.DesktopLifetime.Shutdown();
             };
@@ -405,7 +405,7 @@ namespace ELOR.Laney.Core {
                             GroupId = group.Id,
                             Name = group.Name,
                             Avatar = new Uri(group.Photo100),
-                            API = new VKAPI(API.AccessToken, Localizer.Instance["lang"], App.UserAgent)
+                            API = new VKAPI(API.AccessToken, Assets.i18n.Resources.lang, App.UserAgent)
                         };
                         gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
                         gs.ImViewModel = new ImViewModel(gs);
@@ -581,7 +581,7 @@ namespace ELOR.Laney.Core {
                         GroupId = group.Id,
                         Name = group.Name,
                         Avatar = new Uri(group.Photo100),
-                        API = new VKAPI(API.AccessToken, Localizer.Instance["lang"], App.UserAgent),
+                        API = new VKAPI(API.AccessToken, Assets.i18n.Resources.lang, App.UserAgent),
                     };
                     gs.ImViewModel = new ImViewModel(gs);
                     gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
@@ -708,7 +708,7 @@ namespace ELOR.Laney.Core {
             VKSession session = new VKSession {
                 UserId = userId,
                 Name = "...",
-                API = new VKAPI(accessToken, Localizer.Instance["lang"], App.UserAgent),
+                API = new VKAPI(accessToken, Assets.i18n.Resources.lang, App.UserAgent),
                 Window = new MainWindow()
             };
             session.LongPoll = new LongPoll(session.API, session.Id, session.GroupId);
@@ -742,7 +742,7 @@ namespace ELOR.Laney.Core {
                     UserId = ds.Id,
                     Name = String.Join(" ", new List<string> { info.Item1, info.Item2 }),
                     Avatar = info.Item3,
-                    API = new VKAPI(null, Localizer.Instance["lang"], App.UserAgent),
+                    API = new VKAPI(null, Assets.i18n.Resources.lang, App.UserAgent),
                     Window = new MainWindow()
                 };
                 _sessions.Add(session);

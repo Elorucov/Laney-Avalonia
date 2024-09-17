@@ -26,7 +26,7 @@ namespace ELOR.Laney.DataModels {
                     var senderInfo = CacheManager.GetNameOnly(message.FromId, true);
                     sname = senderInfo;
                 } else {
-                    sname = Localizer.Instance["you"];
+                    sname = Assets.i18n.Resources.you;
                 }
                 Text = $"{sname}: {msg}";
             } else {
@@ -34,7 +34,7 @@ namespace ELOR.Laney.DataModels {
                 PeerName = String.Join(" ", new string[] { info.Item1, info.Item2 });
                 PeerAvatar = info.Item3;
 
-                string youSign = isOutgoing ? $"{Localizer.Instance["you"]}: " : String.Empty;
+                string youSign = isOutgoing ? $"{Assets.i18n.Resources.you}: " : String.Empty;
                 Text = youSign + msg.ToString();
             }
 

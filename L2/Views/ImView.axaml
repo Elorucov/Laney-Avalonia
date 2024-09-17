@@ -1,6 +1,6 @@
 <vkui:Page xmlns="https://github.com/avaloniaui"
              xmlns:vkui="clr-namespace:VKUI.Controls;assembly=VKUI"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:core="using:ELOR.Laney.Core"
              xmlns:vm="using:ELOR.Laney.ViewModels"
@@ -119,7 +119,7 @@
   </vkui:Page.Resources>
   
   <Grid RowDefinitions="Auto *">
-    <vkui:PanelHeader VerticalAlignment="Top" Content="{i18n:Localize chats}">
+    <vkui:PanelHeader VerticalAlignment="Top" Content="{x:Static i18n:Resources.chats}">
       <vkui:PanelHeader.LeftButtons>
         <Button x:Name="AvatarButton">
           <vkui:Avatar Width="32" Height="32" controls:ImageLoader.Image="{Binding Avatar}"/>

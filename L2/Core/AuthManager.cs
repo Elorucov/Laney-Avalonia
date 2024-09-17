@@ -25,7 +25,7 @@ namespace ELOR.Laney.Core {
         //    long userId = 0;
         //    string accessToken = String.Empty;
 
-        //    OAuthWindow window = new OAuthWindow(authUri, oauthWorkaround ? finalUriOauth : finalUri, Localizer.Instance["sign_in"], 784, 541); // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
+        //    OAuthWindow window = new OAuthWindow(authUri, oauthWorkaround ? finalUriOauth : finalUri, Assets.i18n.Resources.sign_in, 784, 541); // 768 + 16; 502 + 39;   Доп. 16 и 39 px надо будет прописать в либе oauth.
         //    window.LocalDataPath = App.LocalDataPath;
         //    Uri url = await window.StartAuthenticationAsync();
         //    if (url == null) return new Tuple<long, string>(userId, accessToken);
@@ -110,7 +110,7 @@ namespace ELOR.Laney.Core {
         static VKAPI tempAPI;
         public static async Task<DirectAuthResponse> AuthViaLoginAndPasswordAsync(string login, string password, string code = null, string captchaSid = null, string captchaKey = null) {
             if (tempAPI == null) {
-                tempAPI = new VKAPI(null, Localizer.Instance["lang"], App.UserAgent);
+                tempAPI = new VKAPI(null, Assets.i18n.Resources.lang, App.UserAgent);
                 tempAPI.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
             }
             var response = await DirectAuth.AuthAsync(tempAPI, APP_ID, CLIENT_SECRET, SCOPE, login, password, code, captchaSid, captchaKey);

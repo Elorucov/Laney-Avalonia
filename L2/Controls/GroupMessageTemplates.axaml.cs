@@ -48,6 +48,6 @@ public partial class GroupMessageTemplates : UserControl {
         string al = admin.LastName;
         return template.Replace("{user name}", uf).Replace("{user surname}", ul)
             .Replace("{admin name}", af).Replace("{admin surname}", al)
-            .Replace("{community}", groupName).Replace("{greeting}", Localizer.Instance["commtemplate_greeting"]);
+            .Replace("{community}", groupName).Replace("{greeting}", Assets.i18n.Resources.commtemplate_greeting);
     }
 }

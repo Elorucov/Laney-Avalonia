@@ -20,15 +20,15 @@ namespace ELOR.Laney.Extensions {
 
             if (mdiff >= 12) {
                 int years = mdiff / 12;
-                text = Localizer.Instance.GetFormatted("years_short", years.ToString());
+                text = Localizer.GetFormatted("years_short", years.ToString());
             } else if (mdiff > 0) {
-                text = Localizer.Instance.GetFormatted("months_short", mdiff.ToString());
+                text = Localizer.GetFormatted("months_short", mdiff.ToString());
             } else if (diff.TotalDays >= 1) {
-                text = Localizer.Instance.GetFormatted("days_short", diff.Days.ToString());
+                text = Localizer.GetFormatted("days_short", diff.Days.ToString());
             } else if (diff.TotalHours >= 1) {
-                text = Localizer.Instance.GetFormatted("hours_short", diff.Hours.ToString());
+                text = Localizer.GetFormatted("hours_short", diff.Hours.ToString());
             } else if (diff.TotalMinutes >= 1) {
-                text = Localizer.Instance.GetFormatted("minutes_short", diff.Minutes.ToString());
+                text = Localizer.GetFormatted("minutes_short", diff.Minutes.ToString());
             }
             //else if (diff.TotalSeconds >= 10) {
             //    text = $"{diff.Seconds} s";
@@ -42,11 +42,11 @@ namespace ELOR.Laney.Extensions {
             DateTime current = DateTime.Now;
 
             if (current.Date == target.Date) {
-                text = Localizer.Instance["today"];
+                text = Assets.i18n.Resources.today;
             } else if (current.Date.AddDays(-1) == target.Date) {
-                text = Localizer.Instance["yesterday"];
+                text = Assets.i18n.Resources.yesterday;
             } else if (current.Date.AddDays(1) == target.Date) {
-                text = Localizer.Instance["tomorrow"];
+                text = Assets.i18n.Resources.tomorrow;
             } else {
                 if (current.Year == target.Year) {
                     text = target.ToString("m");
@@ -62,7 +62,7 @@ namespace ELOR.Laney.Extensions {
             DateTime current = DateTime.Now;
             string text = String.Empty;
             if (current.Date != target.Date) text = target.ToHumanizedDateString() + " ";
-            string at = noAt && text.Length == 0 ? "" : $"{Localizer.Instance["time_at"]} ";
+            string at = noAt && text.Length == 0 ? "" : $"{Assets.i18n.Resources.time_at} ";
             text += $"{at}{target.ToString("H:mm")}";
             return text;
         }

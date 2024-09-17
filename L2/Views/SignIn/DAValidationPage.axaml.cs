@@ -30,9 +30,9 @@ namespace ELOR.Laney.Views.SignIn {
         private void SetupInfo(DirectAuthResponse err) {
             TwoFACode.Text = String.Empty;
             if (err.ValidationType == "2fa_app") {
-                TwoFAInfo.Text = Localizer.Instance["da_2fa_app"];
+                TwoFAInfo.Text = Assets.i18n.Resources.da_2fa_app;
             } else if (err.ValidationType == "2fa_sms") {
-                TwoFAInfo.Text = Localizer.Instance.GetFormatted("da_2fa_sms", err.PhoneMask);
+                TwoFAInfo.Text = Localizer.GetFormatted("da_2fa_sms", err.PhoneMask);
             } else {
                 TwoFAInfo.Text = err.ErrorDescription;
             }
@@ -67,7 +67,7 @@ namespace ELOR.Laney.Views.SignIn {
                     HandleError(response);
                 } else {
                     Log.Error($"{nameof(DAValidationPage)}: VK auth returns a strange response!");
-                    ShowError(Localizer.Instance["error"]);
+                    ShowError(Assets.i18n.Resources.error);
                 }
             } catch (Exception ex) {
                 var info = ExceptionHelper.GetDefaultErrorInfo(ex);
@@ -82,10 +82,10 @@ namespace ELOR.Laney.Views.SignIn {
             Log.Warning($"{nameof(DAValidationPage)}: VK auth returns an error! {err.Error}: {err.ErrorDescription}");
             switch (err.Error) {
                 case "invalid_client":
-                    ShowError(!String.IsNullOrEmpty(err.ErrorDescription) ? err.ErrorDescription : $"{Localizer.Instance["error"]}: {err.ErrorType}");
+                    ShowError(!String.IsNullOrEmpty(err.ErrorDescription) ? err.ErrorDescription : $"{Assets.i18n.Resources.error}: {err.ErrorType}");
                     break;
                 case "invalid_request":
-                    ShowError(err.ErrorType == "wrong_otp" ? Localizer.Instance["da_wrong_otp_code"] : $"{Localizer.Instance["error"]}: {err.ErrorType}");
+                    ShowError(err.ErrorType == "wrong_otp" ? Assets.i18n.Resources.da_wrong_otp_code : $"{Assets.i18n.Resources.error}: {err.ErrorType}");
                     break;
                 case "need_validation":
                     if (err.BanInfo != null) {

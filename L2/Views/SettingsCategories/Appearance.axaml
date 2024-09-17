@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:vkui="using:VKUI.Controls"
              xmlns:vm="using:ELOR.Laney.ViewModels.SettingsCategories"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -11,7 +11,7 @@
     <StackPanel>
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
-          <vkui:Cell Margin="0" Header="{i18n:Localize st_theme}">
+          <vkui:Cell Margin="0" Header="{x:Static i18n:Resources.st_theme}">
             <vkui:Cell.After>
               <ComboBox Classes="Alternate" ItemsSource="{Binding AppThemes}" SelectedItem="{Binding CurrentAppTheme, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
@@ -28,14 +28,14 @@
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel>
           <Grid Classes="GroupHeader">
-            <TextBlock Text="{i18n:Localize !st_chat_item_rows}"/>
+            <TextBlock Text="{x:Static i18n:Resources.st_chat_item_rows}"/>
           </Grid>
-          <vkui:Cell Header="{i18n:Localize st_chat_item_rows_2}">
+          <vkui:Cell Header="{x:Static i18n:Resources.st_chat_item_rows_2}">
             <vkui:Cell.Before>
               <RadioButton GroupName="ChatListRow" IsChecked="{Binding !ChatItemMoreRows, Mode=TwoWay}"/>
             </vkui:Cell.Before>
           </vkui:Cell>
-          <vkui:Cell Header="{i18n:Localize st_chat_item_rows_3}">
+          <vkui:Cell Header="{x:Static i18n:Resources.st_chat_item_rows_3}">
             <vkui:Cell.Before>
               <RadioButton GroupName="ChatListRow" IsChecked="{Binding ChatItemMoreRows, Mode=TwoWay}"/>
             </vkui:Cell.Before>

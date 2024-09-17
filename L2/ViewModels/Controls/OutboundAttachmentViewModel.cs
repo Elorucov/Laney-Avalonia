@@ -160,14 +160,14 @@ namespace ELOR.Laney.ViewModels.Controls {
         private void SetUp(Graffiti g) {
             IconId = VKIconNames.Icon24BrushOutline;
             Type = OutboundAttachmentType.Attachment;
-            DisplayName = Localizer.Instance["atch_graffiti"];
+            DisplayName = Assets.i18n.Resources.graffiti;
             Attachment = g;
         }
 
         private void SetUp(Story s) {
             IconId = VKIconNames.Icon24Story;
             Type = OutboundAttachmentType.Attachment;
-            DisplayName = Localizer.Instance["atch_story"];
+            DisplayName = Assets.i18n.Resources.story;
             Attachment = s;
         }
 
@@ -334,7 +334,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private void UpdateUIForFwdMessages() {
             int c = ForwardedMessages.Count;
-            DisplayName = Localizer.Instance.GetDeclensionFormatted2(c, "message");
+            DisplayName = Localizer.GetDeclensionFormatted2(c, "message");
             IconId = VKIconNames.Icon24MessagesOutline;
         }
 

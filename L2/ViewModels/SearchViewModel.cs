@@ -64,7 +64,7 @@ namespace ELOR.Laney.ViewModels {
                 IsChatsLoading = false;
 
                 if (response.Count == 0) {
-                    ChatsPlaceholder = new PlaceholderViewModel { Text = Localizer.Instance["nothing_found"] };
+                    ChatsPlaceholder = new PlaceholderViewModel { Text = Assets.i18n.Resources.nothing_found };
                     return;
                 }
 
@@ -115,7 +115,7 @@ namespace ELOR.Laney.ViewModels {
                 IsMessagesLoading = false;
 
                 if (response.Count == 0) {
-                    MessagesPlaceholder = new PlaceholderViewModel { Text = Localizer.Instance["nothing_found"] };
+                    MessagesPlaceholder = new PlaceholderViewModel { Text = Assets.i18n.Resources.nothing_found };
                     return;
                 }
 

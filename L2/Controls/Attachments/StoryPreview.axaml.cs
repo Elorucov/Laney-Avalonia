@@ -24,13 +24,13 @@ namespace ELOR.Laney.Controls.Attachments {
             VKSession session = VKSession.GetByDataContext(this);
 
             if (story.IsDeleted) {
-                SetRestrictionInfo(Localizer.Instance["stp_deleted"]);
+                SetRestrictionInfo(Assets.i18n.Resources.stp_deleted);
                 return;
             }
 
             if (story.OwnerId == session.Id) {
                 AuthorAvatar.IsVisible = false;
-                AuthorName.Text = Localizer.Instance["stp_your_story"];
+                AuthorName.Text = Assets.i18n.Resources.stp_your_story;
             } else {
                 var owner = CacheManager.GetNameAndAvatar(story.OwnerId);
                 if (owner != null) {
@@ -40,12 +40,12 @@ namespace ELOR.Laney.Controls.Attachments {
             }
 
             if (story.IsExpired) {
-                SetRestrictionInfo(Localizer.Instance["stp_expired"]);
+                SetRestrictionInfo(Assets.i18n.Resources.stp_expired);
                 return;
             }
 
             if (story.CanSee == 0) {
-                SetRestrictionInfo(Localizer.Instance["stp_private"]);
+                SetRestrictionInfo(Assets.i18n.Resources.stp_private);
                 return;
             }
 

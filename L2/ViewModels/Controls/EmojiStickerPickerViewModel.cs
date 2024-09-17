@@ -23,7 +23,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         public EmojiStickerPickerViewModel(VKSession session) {
             this.session = session;
-            TabItem<object> emojiTab = new TabItem<object>(Localizer.Instance["emoji"], L2Emoji.All, VKIconNames.Icon20SmileOutline);
+            TabItem<object> emojiTab = new TabItem<object>(Assets.i18n.Resources.emoji, L2Emoji.All, VKIconNames.Icon20SmileOutline);
             Tabs.Add(emojiTab);
             SelectedTab = Tabs.FirstOrDefault();
 
@@ -35,8 +35,8 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (DemoMode.IsEnabled) return;
             try {
                 var req1 = await session.API.GetRecentStickersAndGraffitiesAsync();
-                TabItem<object> favTab = new TabItem<object>(Localizer.Instance["favorites"], new ObservableCollection<Sticker>(req1.FavoriteStickers), VKIconNames.Icon20FavoriteOutline);
-                TabItem<object> recentTab = new TabItem<object>(Localizer.Instance["recent"], new ObservableCollection<Sticker>(req1.RecentStickers), VKIconNames.Icon20RecentOutline);
+                TabItem<object> favTab = new TabItem<object>(Assets.i18n.Resources.favorites, new ObservableCollection<Sticker>(req1.FavoriteStickers), VKIconNames.Icon20FavoriteOutline);
+                TabItem<object> recentTab = new TabItem<object>(Assets.i18n.Resources.recent, new ObservableCollection<Sticker>(req1.RecentStickers), VKIconNames.Icon20RecentOutline);
                 Tabs.Add(favTab);
                 Tabs.Add(recentTab);
 

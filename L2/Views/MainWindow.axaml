@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:vkui="using:VKUI.Controls"
         xmlns:views="using:ELOR.Laney.Views"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:core="using:ELOR.Laney.Core"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,7 +20,7 @@
     <Rectangle x:Name="Separator" HorizontalAlignment="Right" Width="0.5" VerticalAlignment="Stretch" Fill="{DynamicResource VKSeparatorAlphaBrush}"/>
     <Grid x:Name="ChatViewContainer" Grid.Column="1">
       <views:ChatView x:Name="ChatView" IsVisible="{Binding DataContext, Mode=OneWay, ElementName=ChatView, Converter={x:Static ObjectConverters.IsNotNull}}" DataContext="{Binding CurrentOpenedChat}"/>
-      <TextBlock x:Name="NonSelectedChatInfo" IsVisible="{Binding CurrentOpenedChat, Converter={x:Static ObjectConverters.IsNull}}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{i18n:Localize chatview_placeholder}"/>
+      <TextBlock x:Name="NonSelectedChatInfo" IsVisible="{Binding CurrentOpenedChat, Converter={x:Static ObjectConverters.IsNull}}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Static i18n:Resources.chatview_placeholder}"/>
     </Grid>
 
     <Border x:Name="RAMInfoOverlay" IsVisible="False" Classes="Debug" Grid.ColumnSpan="2" Padding="4" IsHitTestVisible="False"

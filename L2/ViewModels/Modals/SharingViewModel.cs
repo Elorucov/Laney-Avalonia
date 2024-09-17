@@ -52,7 +52,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 IsLoading = false;
 
                 if (response.Count == 0) {
-                    Placeholder = new PlaceholderViewModel { Text = Localizer.Instance["nothing_found"] };
+                    Placeholder = new PlaceholderViewModel { Text = Assets.i18n.Resources.nothing_found };
                     return;
                 }
 

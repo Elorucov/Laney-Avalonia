@@ -17,10 +17,10 @@ namespace ELOR.Laney.ViewModels {
 
         public SettingsViewModel() {
             Categories = new ObservableCollection<SettingsCategory> { 
-                new SettingsCategory(VKIconNames.Icon28SettingsOutline, Localizer.Instance["settings_general"], new General(), new GeneralViewModel()),
-                new SettingsCategory(VKIconNames.Icon28PaletteOutline, Localizer.Instance["settings_appearance"], new Appearance(), new AppearanceViewModel()),
-                new SettingsCategory(VKIconNames.Icon28Notifications, Localizer.Instance["settings_notifications"], new NotificationsPage(), new NotificationsViewModel()),
-                new SettingsCategory(VKIconNames.Icon28PrivacyOutline, Localizer.Instance["settings_privacy"], new Privacy(), null),
+                new SettingsCategory(VKIconNames.Icon28SettingsOutline, Assets.i18n.Resources.settings_general, new General(), new GeneralViewModel()),
+                new SettingsCategory(VKIconNames.Icon28PaletteOutline, Assets.i18n.Resources.settings_appearance, new Appearance(), new AppearanceViewModel()),
+                new SettingsCategory(VKIconNames.Icon28Notifications, Assets.i18n.Resources.settings_notifications, new NotificationsPage(), new NotificationsViewModel()),
+                new SettingsCategory(VKIconNames.Icon28PrivacyOutline, Assets.i18n.Resources.settings_privacy, new Privacy(), null),
 #if RELEASE
 #else
                 new SettingsCategory(VKIconNames.Icon28BugOutline, "Debug", new DebugPage(), null)

@@ -473,20 +473,20 @@ namespace ELOR.Laney.Views {
                         Grid.SetRowSpan(TopDropArea, 1);
                         BottomDropArea.IsVisible = true;
                         BottomDropIcon.Id = VKIconNames.Icon56GalleryOutline;
-                        BottomDropText.Text = Localizer.Instance["drop_photos_quick"];
-                        TopDropText.Text = Localizer.Instance["drop_photos_file"];
+                        BottomDropText.Text = Assets.i18n.Resources.drop_photos_quick;
+                        TopDropText.Text = Assets.i18n.Resources.drop_photos_file;
                         break;
                     case DroppedFilesType.OnlyVideos:
                         Grid.SetRowSpan(TopDropArea, 1);
                         BottomDropArea.IsVisible = true;
                         BottomDropIcon.Id = VKIconNames.Icon56VideoOutline;
-                        BottomDropText.Text = Localizer.Instance["drop_videos_quick"];
-                        TopDropText.Text = Localizer.Instance["drop_videos_file"];
+                        BottomDropText.Text = Assets.i18n.Resources.drop_videos_quick;
+                        TopDropText.Text = Assets.i18n.Resources.drop_videos_file;
                         break;
                     case DroppedFilesType.Mixed:
                         Grid.SetRowSpan(TopDropArea, 2);
                         BottomDropArea.IsVisible = false;
-                        TopDropText.Text = Localizer.Instance["drop_without_compression_desc"];
+                        TopDropText.Text = Assets.i18n.Resources.drop_without_compression_desc;
                         break;
                 }
             } catch (Exception ex) {

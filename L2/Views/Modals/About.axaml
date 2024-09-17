@@ -3,13 +3,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="572"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
         x:Class="ELOR.Laney.Views.Modals.About"
         Width="420" Height="608"
-        Title="{i18n:Localize about}">
+        Title="{x:Static i18n:Resources.about}">
   <Grid x:Name="Root" RowDefinitions="Auto * Auto">
     <Grid.Styles>
       <Style Selector="StackPanel > Button.Tertiary">
@@ -23,25 +23,25 @@
     <ContentPresenter x:Name="Logo" ContentTemplate="{StaticResource LogoFull}" Margin="48" HorizontalAlignment="Center" />
 
     <StackPanel Grid.Row="1" Margin="4,0">
-      <vkui:Cell x:Name="versionCell" Header="{i18n:Localize app_version}"/>
-      <vkui:Cell x:Name="buildTimeCell" Header="{i18n:Localize build_time}"/>
+      <vkui:Cell x:Name="versionCell" Header="{x:Static i18n:Resources.app_version}"/>
+      <vkui:Cell x:Name="buildTimeCell" Header="{x:Static i18n:Resources.build_time}"/>
       <vkui:Cell x:Name="dotnetVersionCell" Header="Runtime"/>
-      <vkui:Cell x:Name="launchTimeCell" Header="{i18n:Localize launch_time}"/>
+      <vkui:Cell x:Name="launchTimeCell" Header="{x:Static i18n:Resources.launch_time}"/>
       <Rectangle Classes="Separator" Margin="12,6"/>
       <Button x:Name="b01" Classes="Tertiary" Click="b01_Click">
-        <vkui:Cell Header="{i18n:Localize about_offical_group}" Subtitle="{i18n:Localize about_offical_group_desc}"/>
+        <vkui:Cell Header="{x:Static i18n:Resources.about_offical_group}" Subtitle="{x:Static i18n:Resources.about_offical_group_desc}"/>
       </Button>
       <Button x:Name="b00" Classes="Tertiary" Click="b00_Click">
         <vkui:Cell Header="Source code on GitHub"/>
       </Button>
       <Button x:Name="b02" Classes="Tertiary" Click="b02_Click">
-        <vkui:Cell Header="{i18n:Localize about_vk_privacy}"/>
+        <vkui:Cell Header="{x:Static i18n:Resources.about_vk_privacy}"/>
       </Button>
       <Button x:Name="b03" Classes="Tertiary" Click="b03_Click">
-        <vkui:Cell Header="{i18n:Localize about_vk_terms}"/>
+        <vkui:Cell Header="{x:Static i18n:Resources.about_vk_terms}"/>
       </Button>
       <Button x:Name="b04" Classes="Tertiary" Click="b04_Click">
-        <vkui:Cell Header="{i18n:Localize about_libs}"/>
+        <vkui:Cell Header="{x:Static i18n:Resources.about_libs}"/>
       </Button>
     </StackPanel>
 

@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vkui="using:VKUI.Controls"
         xmlns:vkw="using:VKUI.Windows"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:vm="using:ELOR.Laney.ViewModels"
         xmlns:vmm="using:ELOR.Laney.ViewModels.Modals"
@@ -13,9 +13,9 @@
         x:Class="ELOR.Laney.Views.Modals.SearchInChatWindow"
         Topmost="True" CanResize="False" x:DataType="vmm:SearchInChatViewModel"
         Width="360" Height="576" Loaded="SearchInChatWindow_Loaded"
-        Title="{i18n:Localize search}">
+        Title="{x:Static i18n:Resources.search}">
   <Grid x:Name="Root" RowDefinitions="Auto Auto *" x:DataType="vmm:SearchInChatViewModel">
-    <TextBox x:Name="SearchBox" Grid.Row="1" Margin="12,0" Classes="Search" Watermark="{i18n:Localize search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
+    <TextBox x:Name="SearchBox" Grid.Row="1" Margin="12,0" Classes="Search" Watermark="{x:Static i18n:Resources.search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
     <Grid Grid.Row="2">
       <ScrollViewer x:Name="MessagesSV">
         <ItemsRepeater x:Name="MessagesList" Margin="0,6" ItemsSource="{Binding Messages}">

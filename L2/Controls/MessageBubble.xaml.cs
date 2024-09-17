@@ -317,7 +317,7 @@ namespace ELOR.Laney.Controls {
                     Padding = new Thickness(0),
                     MinHeight = 16,
                     ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplateAccent"),
-                    Content = Localizer.Instance.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message")
+                    Content = Localizer.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message")
                 };
                 fwdsButton.Classes.Add("Tertiary");
                 fwdsButton.Click += async (a, b) => {
@@ -328,7 +328,7 @@ namespace ELOR.Laney.Controls {
             } else {
                 ForwardedMessagesStack.Children.Add(new ContentControl {
                     ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplate"),
-                    Content = Localizer.Instance.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message"),
+                    Content = Localizer.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message"),
                     Margin = new Thickness(0, 0, 0, -4),
                     Height = 16
                 });
@@ -422,7 +422,7 @@ namespace ELOR.Laney.Controls {
 
             // Empty space for sent time/status
             if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0 && (Message.Reactions == null || Message.Reactions.Count == 0)) {
-                string editedPlaceholder = Message.EditTime != null ? Localizer.Instance["edited_indicator"] : "";
+                string editedPlaceholder = Message.EditTime != null ? Assets.i18n.Resources.edited_indicator : "";
                 string favoritePlaceholder = Message.IsImportant ? "W" : "";
                 string outgoingPlaceholder = Message.IsOutgoing ? "WW" : "";
                 MessageText.Content.Add(new CRun { 

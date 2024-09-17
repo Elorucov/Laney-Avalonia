@@ -138,7 +138,7 @@ namespace ELOR.Laney.Controls {
                     MinHeight = 16,
                     Margin = new Thickness(0, -6, 0, 0),
                     ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplateAccent"),
-                    Content = Localizer.Instance.GetDeclensionFormatted(nextFwds, "forwarded_message_more")
+                    Content = Localizer.GetDeclensionFormatted(nextFwds, "forwarded_message_more")
                 };
                 fwdsButton.Classes.Add("Tertiary");
                 fwdsButton.Click += async (a, b) => {

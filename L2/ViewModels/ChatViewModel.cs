@@ -221,7 +221,7 @@ namespace ELOR.Laney.ViewModels {
                 PeerType = PeerType.User;
                 PeerUser = CacheManager.GetUser(PeerId);
                 if (PeerId == session.Id) {
-                    Title = Localizer.Instance["favorites"];
+                    Title = Assets.i18n.Resources.favorites;
                     Avatar = new Uri("https://vk.com/images/icons/im_favorites_200.png");
                 } else {
                     Title = PeerUser.FullName;
@@ -274,10 +274,10 @@ namespace ELOR.Laney.ViewModels {
         private void UpdateSubtitleForChat() {
             if (ChatSettings.State == UserStateInChat.In) {
                 Subtitle = String.Empty;
-                if (ChatSettings.IsDisappearing) Subtitle = $"{Localizer.Instance["casper_chat"].ToLowerInvariant()}, ";
-                Subtitle += Localizer.Instance.GetDeclensionFormatted(ChatSettings.MembersCount, "members_sub");
+                if (ChatSettings.IsDisappearing) Subtitle = $"{Assets.i18n.Resources.casper_chat.ToLowerInvariant()}, ";
+                Subtitle += Localizer.GetDeclensionFormatted(ChatSettings.MembersCount, "members_sub");
             } else {
-                Subtitle = Localizer.Instance[ChatSettings.State == UserStateInChat.Left ? "chat_left" : "chat_kicked"].ToLowerInvariant();
+                Subtitle = ChatSettings.State == UserStateInChat.Left ? Assets.i18n.Resources.chat_left.ToLowerInvariant() : Assets.i18n.Resources.chat_kicked.ToLowerInvariant();
             }
         }
 
@@ -288,26 +288,26 @@ namespace ELOR.Laney.ViewModels {
 
             if (PeerType == PeerType.Chat) {
                 if (ChatSettings.State != UserStateInChat.In) {
-                    RestrictionReason = Localizer.Instance[$"chat_{ChatSettings.State.ToString().ToLower()}"];
+                    RestrictionReason = Localizer.Get($"chat_{ChatSettings.State.ToString().ToLower()}");
                 } else {
-                    RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Localizer.Instance["cannot_write"]);
+                    RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Assets.i18n.Resources.cannot_write);
                 }
             } else if (PeerType == PeerType.User) {
                 switch (CanWrite.Reason) {
                     case 18:
-                        if (PeerUser.Deactivated == DeactivationState.Deleted) RestrictionReason = Localizer.Instance["user_deleted"];
-                        if (PeerUser.Deactivated == DeactivationState.Banned) RestrictionReason = Localizer.Instance["user_blocked"];
+                        if (PeerUser.Deactivated == DeactivationState.Deleted) RestrictionReason = Assets.i18n.Resources.user_deleted;
+                        if (PeerUser.Deactivated == DeactivationState.Banned) RestrictionReason = Assets.i18n.Resources.user_blocked;
                         break;
                     case 900:
-                        if (PeerUser.Blacklisted == 1) RestrictionReason = Localizer.Instance.Get("user_blacklisted", PeerUser.Sex);
-                        if (PeerUser.BlacklistedByMe == 1) RestrictionReason = Localizer.Instance.Get("user_blacklisted_by_me", PeerUser.Sex);
+                        if (PeerUser.Blacklisted == 1) RestrictionReason = Localizer.Get("user_blacklisted", PeerUser.Sex);
+                        if (PeerUser.BlacklistedByMe == 1) RestrictionReason = Localizer.Get("user_blacklisted_by_me", PeerUser.Sex);
                         break;
                     default:
-                        RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Localizer.Instance["cannot_write"]);
+                        RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Assets.i18n.Resources.cannot_write);
                         break;
                 }
             } else if (PeerType == PeerType.Group) {
-                RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Localizer.Instance["cannot_write"]);
+                RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Assets.i18n.Resources.cannot_write);
             }
         }
 
@@ -362,9 +362,9 @@ namespace ELOR.Laney.ViewModels {
             SelectedMessagesCount = SelectedMessages.Count;
             MessagesCommands.Clear();
             if (SelectedMessagesCount > 0) {
-                Command reply = new Command(VKIconNames.Icon24ReplyOutline, Localizer.Instance["reply"], false, ReplyToMessageCommand);
-                Command fwdhere = new Command(VKIconNames.Icon24ReplyOutline, Localizer.Instance["forward_here"], false, ForwardHereCommand);
-                Command forward = new Command(VKIconNames.Icon24ShareOutline, Localizer.Instance["forward"], false, ForwardCommand);
+                Command reply = new Command(VKIconNames.Icon24ReplyOutline, Assets.i18n.Resources.reply, false, ReplyToMessageCommand);
+                Command fwdhere = new Command(VKIconNames.Icon24ReplyOutline, Assets.i18n.Resources.forward_here, false, ForwardHereCommand);
+                Command forward = new Command(VKIconNames.Icon24ShareOutline, Assets.i18n.Resources.forward, false, ForwardCommand);
 
                 bool isChannel = ChatSettings != null && ChatSettings.IsGroupChannel;
                 if (!isChannel) MessagesCommands.Add(SelectedMessagesCount == 1 ? reply : fwdhere);
@@ -911,11 +911,11 @@ namespace ELOR.Laney.ViewModels {
         private string GetLocalizedActivityStatus(LongPollActivityType status, int count) {
             string suffix = count == 1 ? "_single" : "_multi";
             switch (status) {
-                case LongPollActivityType.Typing: return Localizer.Instance[$"lp_act_typing{suffix}"];
-                case LongPollActivityType.RecordingAudioMessage: return Localizer.Instance[$"lp_act_voice{suffix}"];
-                case LongPollActivityType.UploadingPhoto: return Localizer.Instance[$"lp_act_photo{suffix}"];
-                case LongPollActivityType.UploadingVideo: return Localizer.Instance[$"lp_act_video{suffix}"];
-                case LongPollActivityType.UploadingFile: return Localizer.Instance[$"lp_act_file{suffix}"];
+                case LongPollActivityType.Typing: return Localizer.Get($"lp_act_typing{suffix}");
+                case LongPollActivityType.RecordingAudioMessage: return Localizer.Get($"lp_act_voice{suffix}");
+                case LongPollActivityType.UploadingPhoto: return Localizer.Get($"lp_act_photo{suffix}");
+                case LongPollActivityType.UploadingVideo: return Localizer.Get($"lp_act_video{suffix}");
+                case LongPollActivityType.UploadingFile: return Localizer.Get($"lp_act_file{suffix}");
             }
             return String.Empty;
         }
@@ -938,7 +938,7 @@ namespace ELOR.Laney.ViewModels {
             }
             if (!String.IsNullOrEmpty(r)) {
                 if (count > 1) {
-                    r += $" {Localizer.Instance.GetFormatted("im_status_more", count - 1)}";
+                    r += $" {Localizer.GetFormatted("im_status_more", count - 1)}";
                 }
             }
             return r;
@@ -995,7 +995,7 @@ namespace ELOR.Laney.ViewModels {
             await Task.Delay(20); // имя отправителя может не оказаться в кеше вовремя.
 
             string text = message.ToString();
-            string chatName = PeerType == PeerType.Chat ? Localizer.Instance.GetFormatted("in_chat", Title) : null;
+            string chatName = PeerType == PeerType.Chat ? Localizer.GetFormatted("in_chat", Title) : null;
 
             var ava = await BitmapManager.GetBitmapAsync(message.SenderAvatar, 56, 56);
             var t = new ToastNotification(message, session.Name, message.SenderName, text, chatName, ava);

@@ -30,35 +30,35 @@ namespace ELOR.Laney.Helpers {
             };
             ActionSheetItem read = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20MessageOutline },
-                Header = Localizer.Instance["mark_read"],
+                Header = Assets.i18n.Resources.mark_read,
             };
             ActionSheetItem unread = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20MessageUnreadTopOutline },
-                Header = Localizer.Instance["mark_unread"],
+                Header = Assets.i18n.Resources.mark_unread,
             };
             ActionSheetItem notifon = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20NotificationOutline },
-                Header = Localizer.Instance["notifications_enable"],
+                Header = Assets.i18n.Resources.notifications_enable,
             };
             ActionSheetItem notifoff = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20NotificationSlashOutline },
-                Header = Localizer.Instance["notifications_disable"],
+                Header = Assets.i18n.Resources.notifications_disable,
             };
             ActionSheetItem clear = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
-                Header = Localizer.Instance["chat_clear_history"],
+                Header = Assets.i18n.Resources.chat_clear_history,
             };
             ActionSheetItem leave = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DoorArrowRightOutline },
-                Header = Localizer.Instance[chat.ChatSettings?.IsGroupChannel == true ? "pp_exit_channel" : "pp_exit_chat"],
+                Header = chat.ChatSettings?.IsGroupChannel == true ? Assets.i18n.Resources.pp_exit_channel : Assets.i18n.Resources.pp_exit_chat,
             };
             ActionSheetItem creturn = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DoorEnterArrowRightOutline },
-                Header = Localizer.Instance[chat.ChatSettings?.IsGroupChannel == true ? "pp_return_channel" : "pp_return_chat"],
+                Header =chat.ChatSettings?.IsGroupChannel == true ? Assets.i18n.Resources.pp_return_channel : Assets.i18n.Resources.pp_return_chat,
             };
             ActionSheetItem gdeny = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BlockOutline },
-                Header = Localizer.Instance["pp_deny"],
+                Header = Assets.i18n.Resources.pp_deny,
             };
 
             clear.Classes.Add("Destructive");
@@ -140,7 +140,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static async void TryClearChat(VKSession session, long peerId, System.Action onSuccess = null) {
-            VKUIDialog dlg = new VKUIDialog(Localizer.Instance["chat_clear_modal_title"], Localizer.Instance["chat_clear_modal_text"], [Localizer.Instance["yes"], Localizer.Instance["no"]], 2);
+            VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.chat_clear_modal_title, Assets.i18n.Resources.chat_clear_modal_text, [Assets.i18n.Resources.yes, Assets.i18n.Resources.no], 2);
             if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
                 if (DemoMode.IsEnabled) return;
                 try {
@@ -153,7 +153,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static async void TryLeaveChat(VKSession session, long peerId, System.Action onSuccess = null) {
-            VKUIDialog dlg = new VKUIDialog(Localizer.Instance["chat_leave_modal_title"], Localizer.Instance["chat_leave_modal_text"], [Localizer.Instance["yes"], Localizer.Instance["no"]], 2);
+            VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.chat_leave_modal_title, Assets.i18n.Resources.chat_leave_modal_text, [Assets.i18n.Resources.yes, Assets.i18n.Resources.no], 2);
             if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
                 if (DemoMode.IsEnabled) return;
                 try {
@@ -195,55 +195,55 @@ namespace ELOR.Laney.Helpers {
             };
             ActionSheetItem readers = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ViewOutline },
-                Header = Localizer.Instance["loading"]
+                Header = Assets.i18n.Resources.loading
             };
             ActionSheetItem reactions = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20Stars },
-                Header = Localizer.Instance.GetDeclensionFormatted(totalReactions, "reactions")
+                Header = Localizer.GetDeclensionFormatted(totalReactions, "reactions")
             };
             ActionSheetItem reply = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ReplyOutline },
-                Header = Localizer.Instance["reply"]
+                Header = Assets.i18n.Resources.reply
             };
             ActionSheetItem repriv = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ReplyOutline },
-                Header = Localizer.Instance["reply_privately"]
+                Header = Assets.i18n.Resources.reply_privately
             };
             ActionSheetItem forward = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ShareOutline },
-                Header = Localizer.Instance["forward"]
+                Header = Assets.i18n.Resources.forward
             };
             ActionSheetItem forwardHere = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ShareOutline },
-                Header = Localizer.Instance["forward_here"]
+                Header = Assets.i18n.Resources.forward_here
             };
             ActionSheetItem mark = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20FavoriteOutline },
-                Header = Localizer.Instance["mark_important"],
+                Header = Assets.i18n.Resources.mark_important,
             };
             ActionSheetItem unmark = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20UnfavoriteOutline },
-                Header = Localizer.Instance["unmark_important"],
+                Header = Assets.i18n.Resources.unmark_important,
             };
             ActionSheetItem pin = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20PinOutline },
-                Header = Localizer.Instance["pin"],
+                Header = Assets.i18n.Resources.pin,
             };
             ActionSheetItem unpin = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20PinSlashOutline },
-                Header = Localizer.Instance["unpin"],
+                Header = Assets.i18n.Resources.unpin,
             };
             ActionSheetItem edit = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20WriteOutline },
-                Header = Localizer.Instance["edit"],
+                Header = Assets.i18n.Resources.edit,
             };
             ActionSheetItem spam = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ReportOutline },
-                Header = Localizer.Instance["mark_spam"],
+                Header = Assets.i18n.Resources.mark_spam,
             };
             ActionSheetItem delete = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
-                Header = Localizer.Instance["delete"],
+                Header = Assets.i18n.Resources.delete,
             };
             spam.Classes.Add("Destructive");
             delete.Classes.Add("Destructive");
@@ -375,14 +375,14 @@ namespace ELOR.Laney.Helpers {
                 try {
                     var wrm = await session.API.Messages.GetMessageReadPeersAsync(session.GroupId, message.PeerId, message.ConversationMessageId, 0, 3, new List<string> { "photos_50", "sex" });
                     if (wrm.TotalCount > 0) {
-                        readers.Header = Localizer.Instance.GetDeclensionFormatted(wrm.TotalCount, "views");
+                        readers.Header = Localizer.GetDeclensionFormatted(wrm.TotalCount, "views");
                     } else {
-                        readers.Header = Localizer.Instance["views_empty"];
+                        readers.Header = Assets.i18n.Resources.views_empty;
                     }
                 } catch (Exception ex) {
                     Log.Error(ex, $"Cannot check who read message to display in context menu! {message.PeerId}_{message.ConversationMessageId}");
-                    // readers.Header = Localizer.Instance["error"];
-                    readers.Header = Localizer.Instance["views"];
+                    // readers.Header = Assets.i18n.Resources.error;
+                    readers.Header = Assets.i18n.Resources.views;
                 }
             }
         }
@@ -394,19 +394,19 @@ namespace ELOR.Laney.Helpers {
 
             ActionSheetItem mark = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20FavoriteOutline },
-                Header = Localizer.Instance["mark_important"],
+                Header = Assets.i18n.Resources.mark_important,
             };
             ActionSheetItem unmark = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20UnfavoriteOutline },
-                Header = Localizer.Instance["unmark_important"],
+                Header = Assets.i18n.Resources.unmark_important,
             };
             ActionSheetItem spam = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ReportOutline },
-                Header = Localizer.Instance["mark_spam"],
+                Header = Assets.i18n.Resources.mark_spam,
             };
             ActionSheetItem delete = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
-                Header = Localizer.Instance["delete"],
+                Header = Assets.i18n.Resources.delete,
             };
             spam.Classes.Add("Destructive");
             delete.Classes.Add("Destructive");
@@ -480,14 +480,14 @@ namespace ELOR.Laney.Helpers {
                 string title, subtitle = String.Empty;
 
                 if (ids.Count == 1) {
-                    title = Localizer.Instance[canDeleteForAll ? "msg_delete_dialog_single_question" : "msg_delete_dialog_single_title"];
+                    title = canDeleteForAll ? Assets.i18n.Resources.msg_delete_dialog_single_question : Assets.i18n.Resources.msg_delete_dialog_single_title;
                 } else {
-                    title = Localizer.Instance[canDeleteForAll ? "msg_delete_dialog_multi_question" : "msg_delete_dialog_multi_title"];
+                    title = canDeleteForAll ? Assets.i18n.Resources.msg_delete_dialog_multi_question : Assets.i18n.Resources.msg_delete_dialog_multi_title;
                 }
-                subtitle = canDeleteForAll ? String.Empty : Localizer.Instance.GetDeclensionFormatted(ids.Count, "msg_delete_dialog_text");
+                subtitle = canDeleteForAll ? String.Empty : Localizer.GetDeclensionFormatted(ids.Count, "msg_delete_dialog_text");
 
-                VKUIDialog dlg = new VKUIDialog(title, subtitle, [Localizer.Instance["yes"], Localizer.Instance["no"]], 2);
-                CheckBox forAll = new CheckBox { Content = Localizer.Instance["delete_for_all"] };
+                VKUIDialog dlg = new VKUIDialog(title, subtitle, [Assets.i18n.Resources.yes, Assets.i18n.Resources.no], 2);
+                CheckBox forAll = new CheckBox { Content = Assets.i18n.Resources.delete_for_all };
 
                 if (canDeleteForAll) dlg.DialogContent = forAll;
                 int result = await dlg.ShowDialog<int>(session.ModalWindow);
@@ -503,7 +503,7 @@ namespace ELOR.Laney.Helpers {
 
                 string type = spam ? "spam" : "deleted";
                 string multi = count > 1 ? "multi" : "single";
-                session.ShowNotification(new Notification(Localizer.Instance[$"message_{type}_{multi}"], null, NotificationType.Success));
+                session.ShowNotification(new Notification(Localizer.Get($"message_{type}_{multi}"), null, NotificationType.Success));
             } catch (Exception ex) {
                 await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
             }

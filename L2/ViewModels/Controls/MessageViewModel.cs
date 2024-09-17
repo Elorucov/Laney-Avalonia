@@ -361,7 +361,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         case AttachmentType.AudioMessage:
                         case AttachmentType.Document:
                         case AttachmentType.Photo:
-                        case AttachmentType.Video: return Localizer.Instance.GetDeclensionFormatted2(count, type);
+                        case AttachmentType.Video: return Localizer.GetDeclensionFormatted2(count, type);
                         case AttachmentType.Call:
                         case AttachmentType.Curator:
                         case AttachmentType.Event:
@@ -377,19 +377,19 @@ namespace ELOR.Laney.ViewModels.Controls {
                         case AttachmentType.Story:
                         case AttachmentType.Wall:
                         case AttachmentType.WallReply:
-                        case AttachmentType.Narrative: return Localizer.Instance[type];
-                        // case AttachmentType.TextpostPublish: return Localizer.Instance[type];
-                        default: return Localizer.Instance.GetDeclensionFormatted2(count, "attachment");
+                        case AttachmentType.Narrative: return Localizer.Get(type);
+                        case AttachmentType.TextpostPublish: return Localizer.Get(type);
+                        default: return Localizer.GetDeclensionFormatted2(count, "attachment");
                     }
                 } else {
                     if (Location != null && count > 0) count++;
-                    return Localizer.Instance.GetDeclensionFormatted2(count, "attachment");
+                    return Localizer.GetDeclensionFormatted2(count, "attachment");
                 }
             }
-            if (Location != null) return Localizer.Instance["geo"];
-            if (_forwardedMessages.Count > 0) return Localizer.Instance.GetDeclensionFormatted2(_forwardedMessages.Count, "forwarded_message");
+            if (Location != null) return Assets.i18n.Resources.geo;
+            if (_forwardedMessages.Count > 0) return Localizer.GetDeclensionFormatted2(_forwardedMessages.Count, "forwarded_message");
 
-            return Localizer.Instance[IsExpired? "msg_expired" : "empty_message"];
+            return IsExpired? Assets.i18n.Resources.msg_expired : Assets.i18n.Resources.empty_message;
         }
 
         public static List<MessageViewModel> BuildFromAPI(List<Message> messages, VKSession session, System.Action<MessageViewModel> afterBuild = null) {

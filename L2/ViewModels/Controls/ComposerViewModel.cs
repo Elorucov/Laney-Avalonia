@@ -88,19 +88,19 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             ActionSheetItem photo = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20PictureOutline },
-                Header = Localizer.Instance["photo"],
+                Header = Assets.i18n.Resources.photo,
             };
             ActionSheetItem video = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20VideoOutline },
-                Header = Localizer.Instance["video"],
+                Header = Assets.i18n.Resources.video,
             };
             ActionSheetItem file = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DocumentOutline },
-                Header = Localizer.Instance["doc"],
+                Header = Assets.i18n.Resources.doc,
             };
             ActionSheetItem poll = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20PollOutline },
-                Header = Localizer.Instance["poll"],
+                Header = Assets.i18n.Resources.poll,
             };
 
             var session = VKSession.GetByDataContext(target);

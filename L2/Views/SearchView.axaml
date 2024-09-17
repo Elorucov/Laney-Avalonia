@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vkui="using:VKUI.Controls"
-             xmlns:i18n="using:ELOR.Laney.Core.Localization"
+             xmlns:i18n="using:ELOR.Laney.Assets.i18n"
              xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:vm="using:ELOR.Laney.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -16,11 +16,11 @@
         </Button>
       </vkui:PanelHeader.LeftButtons>
       <vkui:PanelHeader.Content>
-        <TextBox Classes="Search" Watermark="{i18n:Localize search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
+        <TextBox Classes="Search" Watermark="{x:Static i18n:Resources.search}" Text="{Binding Query, Mode=TwoWay}" KeyUp="OnSearchBoxKeyUp"/>
       </vkui:PanelHeader.Content>
     </vkui:PanelHeader>
     <TabControl Grid.Row="1" SelectedIndex="{Binding CurrentTab}">
-      <TabItem Header="{i18n:Localize chats}">
+      <TabItem Header="{x:Static i18n:Resources.chats}">
         <Grid>
           <ScrollViewer>
             <ItemsRepeater x:Name="ChatsList" Margin="0,6" ItemsSource="{Binding FoundChats}">
@@ -45,7 +45,7 @@
           </Grid>
         </Grid>
       </TabItem>
-      <TabItem Header="{i18n:Localize messages}">
+      <TabItem Header="{x:Static i18n:Resources.messages}">
         <Grid>
            <ScrollViewer x:Name="MessagesSV">
             <ItemsRepeater x:Name="MessagesList" Margin="0,6" ItemsSource="{Binding FoundMessages}">

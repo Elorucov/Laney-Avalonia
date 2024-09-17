@@ -90,7 +90,7 @@ public partial class ReactedMembers : DialogWindow {
         if (rg == null) return;
 
         if (rg.Item1 == 0) {
-            c.Content = new TextBlock { Text = Localizer.Instance["all"], VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
+            c.Content = new TextBlock { Text = Assets.i18n.Resources.all, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
         } else {
             Image img = new Image { Width = 26, Height = 26 };
             ImageLoader.SetSvgSource(img, new Uri(CacheManager.GetStaticReactionUrl(rg.Item1)));

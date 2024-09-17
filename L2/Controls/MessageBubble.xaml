@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vkui="using:VKUI.Controls"
         xmlns:obj="using:ELOR.VKAPILib.Objects"
-        xmlns:i18n="using:ELOR.Laney.Core.Localization"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:atch="using:ELOR.Laney.Controls.Attachments"
         xmlns:ctb="using:ColorTextBlock.Avalonia">
@@ -124,7 +124,7 @@
             <Border x:Name="IndicatorContainer" Height="20" CornerRadius="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Classes="DefaultIndicator">
               <StackPanel x:Name="IndicatorStack" Orientation="Horizontal" Margin="6,3">
                 <vkui:VKIcon x:Name="ImportantIndicator" Id="Icon12Favorite" Width="12" Height="12" Margin="0,0,4,0" IsVisible="{Binding Message.IsImportant, RelativeSource={RelativeSource TemplatedParent}}"/>
-                <TextBlock x:Name="EditedIndicator" Classes="Caption3" Text="{i18n:Localize edited_indicator}" Margin="0,0,4,0" IsVisible="{Binding Message.EditTime, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                <TextBlock x:Name="EditedIndicator" Classes="Caption3" Text="{x:Static i18n:Resources.edited_indicator}" Margin="0,0,4,0" IsVisible="{Binding Message.EditTime, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                 <TextBlock x:Name="TimeIndicator" Classes="Caption3"/>
                 <vkui:VKIcon x:Name="StateIndicator" Id="Icon16CheckDoubleOutline" Width="12" Height="12" Margin="4,0,0,0"/>
               </StackPanel>

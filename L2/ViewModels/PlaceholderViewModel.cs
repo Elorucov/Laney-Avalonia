@@ -28,7 +28,7 @@ namespace ELOR.Laney.ViewModels {
                 Icon = new VKIcon { Id = VKIconNames.Icon56ErrorOutline },
                 Header = err.Item1,
                 Text = err.Item2,
-                ActionButton = Localizer.Instance["retry"],
+                ActionButton = Assets.i18n.Resources.retry,
                 ActionButtonFunc = new RelayCommand(function)
             };
         }

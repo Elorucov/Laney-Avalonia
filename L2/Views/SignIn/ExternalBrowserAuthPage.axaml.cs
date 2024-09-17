@@ -45,7 +45,7 @@ namespace ELOR.Laney.Views.SignIn {
                     await NavigationRouter.BackAsync();
                 }
             } catch (Exception ex) {
-                VKUIDialog alert = new VKUIDialog(Localizer.Instance["error"], ex.Message);
+                VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.error, ex.Message);
                 await alert.ShowDialog(TopLevel.GetTopLevel(this) as Window);
                 await NavigationRouter.BackAsync();
             }

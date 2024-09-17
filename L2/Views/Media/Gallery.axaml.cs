@@ -34,7 +34,7 @@ namespace ELOR.Laney.Views.Media {
         }
 
         private void GalleryItems_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            Title = $"{Localizer.Instance["wnd_gallery"]} — {GalleryItems.SelectedIndex + 1}/{GalleryItems.Items.Count}";
+            Title = $"{Assets.i18n.Resources.wnd_gallery} — {GalleryItems.SelectedIndex + 1}/{GalleryItems.Items.Count}";
 
             AttachmentBase attachment = GalleryItems.SelectedItem as AttachmentBase;
             if (attachment != null) {

@@ -9,7 +9,7 @@ namespace ELOR.Laney.Converters {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             string word = parameter.ToString();
             if (value is int num) {
-                return Localizer.Instance.GetDeclensionFormatted(num, word);
+                return Localizer.GetDeclensionFormatted(num, word);
             }
             return null;
         }

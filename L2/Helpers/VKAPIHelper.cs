@@ -33,11 +33,8 @@ namespace ELOR.Laney.Helpers {
 
         public static string GetUnderstandableErrorMessage(int code) {
             string key = $"api_error_{code}";
-            if (Localizer.Instance.ContainsKey(key)) {
-                return Localizer.Instance[$"api_error_{code}"];
-            } else {
-                return string.Empty;
-            }
+            string value = Assets.i18n.Resources.ResourceManager.GetString(key, Assets.i18n.Resources.Culture);
+            return !string.IsNullOrEmpty(value) ? value : string.Empty;
         }
 
         public static string GetUnderstandableErrorMessage(APIException ex) {
@@ -56,22 +53,22 @@ namespace ELOR.Laney.Helpers {
             if (info != null) {
                 if (info.Visible) {
                     if (info.IsOnline) {
-                        return Localizer.Instance["online"];
+                        return Assets.i18n.Resources.online;
                     } else {
                         return info.LastSeen.Year >= 2006 ?
-                            Localizer.Instance.GetFormatted(sex, "offline_last_seen", info.LastSeen.ToHumanizedString()) :
-                            Localizer.Instance["offline"]; // у забаненных/удалённых возвращается 0 в unixtime. 
+                            Localizer.GetFormatted(sex, "offline_last_seen", info.LastSeen.ToHumanizedString()) :
+                            Assets.i18n.Resources.offline; // у забаненных/удалённых возвращается 0 в unixtime. 
                     }
                 } else {
                     switch (info.Status) {
-                        case UserOnlineStatus.Recently: return Localizer.Instance.Get("offline_recently", sex);
-                        case UserOnlineStatus.LastWeek: return Localizer.Instance.Get("offline_last_week", sex);
-                        case UserOnlineStatus.LastMonth: return Localizer.Instance.Get("offline_last_month", sex);
-                        case UserOnlineStatus.LongAgo: return Localizer.Instance.Get("offline_long_ago", sex);
+                        case UserOnlineStatus.Recently: return Localizer.Get("offline_recently", sex);
+                        case UserOnlineStatus.LastWeek: return Localizer.Get("offline_last_week", sex);
+                        case UserOnlineStatus.LastMonth: return Localizer.Get("offline_last_month", sex);
+                        case UserOnlineStatus.LongAgo: return Localizer.Get("offline_long_ago", sex);
                     }
                 }
             }
-            return Localizer.Instance["offline"];
+            return Assets.i18n.Resources.offline;
         }
 
         public static string GetSenderNameShort(MessageViewModel msg) {
@@ -79,7 +76,7 @@ namespace ELOR.Laney.Helpers {
             string sender = string.Empty;
 
             if (msg.SenderId == VKSession.Main.UserId && msg.PeerId != VKSession.Main.UserId) {
-                sender = Localizer.Instance["you"];
+                sender = Assets.i18n.Resources.you;
             } else if (msg.PeerId.IsChat()) {
                 sender = CacheManager.GetNameOnly(msg.SenderId, true);
             }
@@ -125,10 +122,10 @@ namespace ELOR.Laney.Helpers {
             string from = "";
             if (ownerId.IsUser()) {
                 User u = CacheManager.GetUser(ownerId);
-                from = u != null ? $"{Localizer.Instance["from"]} {u.FirstNameGen} {u.LastNameGen}" : "";
+                from = u != null ? $"{Assets.i18n.Resources.from} {u.FirstNameGen} {u.LastNameGen}" : "";
             } else if (ownerId.IsGroup()) {
                 Group u = CacheManager.GetGroup(ownerId);
-                from = u != null ? $"{Localizer.Instance["from"]} \"{u.Name}\"" : "";
+                from = u != null ? $"{Assets.i18n.Resources.from} \"{u.Name}\"" : "";
             }
             return from;
         }
@@ -296,7 +293,7 @@ return response;
                     label.Text = "Pay via VK Pay";
                     break;
                 case BotButtonType.Location:
-                    label.Text = Localizer.Instance["geo"];
+                    label.Text = Assets.i18n.Resources.geo;
                     icon.Id = VKIconNames.Icon20PlaceOutline;
                     icon.IsVisible = true;
                     break;

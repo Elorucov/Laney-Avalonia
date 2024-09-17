@@ -27,7 +27,7 @@ namespace ELOR.Laney.ViewModels.SettingsCategories {
 
         private void ChangeLang(TwoStringTuple value) {
             Settings.Set(Settings.LANGUAGE, value.Item1);
-            Localizer.Instance.LoadLanguage(value.Item1);
+            Localizer.LoadLanguage(value.Item1);
             OnPropertyChanged(nameof(CurrentLanguage));
         }
     }

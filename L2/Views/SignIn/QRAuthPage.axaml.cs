@@ -29,7 +29,7 @@ namespace ELOR.Laney.Views.SignIn {
                 api = await DirectAuth.GetVKAPIWithAnonymTokenAsync(AuthManager.APP_ID, AuthManager.CLIENT_SECRET, App.UserAgent, LNetExtensions.SendRequestToAPIViaLNetAsync);
 
                 // Get auth code
-                var codeResp = await api.Auth.GetAuthCodeAsync(Localizer.Instance["lang"], $"Laney {App.BuildInfo} on {App.Platform}", AuthManager.APP_ID);
+                var codeResp = await api.Auth.GetAuthCodeAsync(Assets.i18n.Resources.lang, $"Laney {App.BuildInfo} on {App.Platform}", AuthManager.APP_ID);
                 QrCodeControl.Data = codeResp.AuthUrl;
 
                 Loading.IsVisible = false;
@@ -48,7 +48,7 @@ namespace ELOR.Laney.Views.SignIn {
                 while (isWorking) {
                     await Task.Delay(1500).ConfigureAwait(false);
                     try {
-                        var response = await api.Auth.CheckAuthCodeAsync(Localizer.Instance["lang"], AuthManager.APP_ID, authHash);
+                        var response = await api.Auth.CheckAuthCodeAsync(Assets.i18n.Resources.lang, AuthManager.APP_ID, authHash);
                         if (response.Status >= 2) isWorking = false;
                         await Dispatcher.UIThread.InvokeAsync(async () => {
                             // PageDesc.Text = $"Status: {response.Status}";
