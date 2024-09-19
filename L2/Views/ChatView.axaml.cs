@@ -135,13 +135,23 @@ namespace ELOR.Laney.Views {
                     byte retries = 20;
                     double y = MessagesListScrollViewer.Offset.Y;
                     while (retries > 0) {
-                        await Task.Yield();
-                        MessagesList.ScrollIntoView(index);
+                        // к большому сожалению, из-за таймаута список дёргается, но гарантированно возвращает юзера к
+                        // позиции, где он остановился при переключении чата.
+                        // Но без таймаута возврат к позиции происходит непонятно куда либо вообще не работает.
+                        await Task.Delay(16);
+
+                        // MessagesList.ScrollIntoView(index);
+                        var uitem = MessagesList.ContainerFromIndex(index);
+                        var t = uitem.TransformToVisual(MessagesListScrollViewer);
+                        if (t != null) MessagesListScrollViewer.Offset = new Vector(0, t.Value.M32);
+
                         retries--;
-                        if (MessagesListScrollViewer.Offset.Y == y) break;
-                        y = MessagesListScrollViewer.Offset.Y;
+                        //if (MessagesListScrollViewer.Offset.Y == y) break;
+                        //y = MessagesListScrollViewer.Offset.Y;
+                        if (FirstVisible?.ConversationMessageId == fvm.ConversationMessageId) break;
                     }
-                    if (y != MessagesListScrollViewer.Offset.Y) Log.Warning($"Cannot scroll to old position! First visible CMID: {fvi}");
+                    // if (y != MessagesListScrollViewer.Offset.Y) Log.Warning($"Cannot scroll to old position! First visible CMID: {fvi}");
+                    if (FirstVisible.ConversationMessageId != fvm.ConversationMessageId) Log.Warning($"Cannot scroll to old position! First visible CMID: {fvi}");
                 } else {
                     Log.Warning($"Cannot find a message with cmid {fvi} in displayed messages! (required to scroll to old position)");
                 }
@@ -175,7 +185,7 @@ namespace ELOR.Laney.Views {
                 if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
             });
 
-            await Task.Delay(100); // при смене DataContext скролл летит к 0 и может срабатываться загрузка старых сообщений до восстановления скролла
+            await Task.Delay(500); // при смене DataContext скролл летит к 0 и может срабатываться загрузка старых сообщений до восстановления скролла
             canTriggerLoadingMessages = true;
         }
 
@@ -249,7 +259,7 @@ namespace ELOR.Laney.Views {
             dbgScrO.Text = $"{Math.Round(y)}";
             if (h < trigger) return;
 
-            if (needToSaveScroll && oldScrollViewerHeight != h) {
+            if (needToSaveScroll && !canTriggerLoadingMessages && oldScrollViewerHeight != h) {
                 double diff = h - oldScrollViewerHeight;
                 double newpos = y + diff;
 
@@ -297,7 +307,7 @@ namespace ELOR.Laney.Views {
             }
             dbgScrAuto.Text = $"{autoScrollToLastMessage}";
 
-            // await Task.Delay(32); // надо
+            await Task.Delay(32); // надо
             CheckFirstAndLastDisplayedMessages();
         }
 
