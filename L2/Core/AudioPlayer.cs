@@ -47,5 +47,12 @@ namespace ELOR.Laney.Core {
                 Log.Error($"AudioPlayer.Play: Cannot play a stream! Last error code from BASS: {Bass.LastError}");
             }
         }
+
+        public void PlayURL(string url) {
+            var bstream = Bass.CreateStream(url, 0, BassFlags.Float | BassFlags.AutoFree, null);
+            if (bstream == 0 || !Bass.ChannelPlay(bstream, false)) {
+                Log.Error($"AudioPlayer.Play: Cannot play a stream! Last error code from BASS: {Bass.LastError}");
+            }
+        }
     }
 }

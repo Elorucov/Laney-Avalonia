@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Network;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
 using System;
@@ -21,6 +22,7 @@ namespace ELOR.Laney {
             checkLinkBtn.Click += CheckLinkBtn_Click;
 
             w1.Click += w1_Click;
+            w2.Click += w2_Click;
 
             buildInfo.Text = $"Build tag: {App.BuildInfoFull}";
             setResult.Text += $"\n\nSettings file location:\n{Settings.FilePath}";
@@ -64,6 +66,14 @@ namespace ELOR.Laney {
         private void w1_Click(object? sender, RoutedEventArgs e) {
             var bb2 = AssetsManager.OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
             AudioPlayer.SFX?.Play(bb2);
+        }
+
+        private void w2_Click(object? sender, RoutedEventArgs e) {
+            //var response = await LNet.GetAsync(new Uri("https://elor.top/res/audios/sunrise_spring.mp3"));
+            //using (var stream = await response.Content.ReadAsStreamAsync()) {
+            //    AudioPlayer.SFX?.Play(stream);
+            //}
+            AudioPlayer.SFX?.PlayURL("https://elor.top/res/audios/sunrise_spring.mp3");
         }
 
         private async void vt01_Click(object? sender, RoutedEventArgs e) {
