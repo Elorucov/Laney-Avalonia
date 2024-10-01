@@ -6,7 +6,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;

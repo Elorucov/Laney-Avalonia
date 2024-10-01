@@ -79,7 +79,7 @@ namespace ELOR.Laney.Core.Localization {
                 list.Insert(0, num);
                 return String.Format(GetDeclension(num, key), list.ToArray());
             } else {
-                string value = Assets.i18n.Resources.ResourceManager.GetString(key);
+                string value = Assets.i18n.Resources.ResourceManager.GetString(key, Assets.i18n.Resources.Culture);
                 return string.IsNullOrEmpty(value) ? $"%{key}%" : value;
             }
         }

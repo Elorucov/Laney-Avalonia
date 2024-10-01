@@ -92,6 +92,7 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets/**" />
     <AvaloniaResource Remove="Assets\i18n\en-US.json" />
+    <AvaloniaResource Remove="Assets\i18n\Resources.Designer.cs" />
     <AvaloniaResource Remove="Assets\i18n\Resources.resx" />
     <AvaloniaResource Remove="Assets\i18n\Resources.ru-RU.resx" />
     <AvaloniaResource Remove="Assets\i18n\Resources.uk-UA.resx" />
@@ -264,10 +265,10 @@
     <UpToDateCheckInput Remove="Views\Modals\WhoReadMessage.axaml" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Update="Assets\i18n\Resources.Designer.cs">
+    <Compile Update="Assets\i18n\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-    </AvaloniaResource>
+    </Compile>
   </ItemGroup>
 </Project>
