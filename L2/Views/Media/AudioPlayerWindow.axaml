@@ -1,0 +1,94 @@
+<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:ctrls="using:ELOR.Laney.Controls"
+        xmlns:vkw="using:VKUI.Windows"
+        xmlns:vm="using:ELOR.Laney.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="160"
+        x:Class="ELOR.Laney.Views.AudioPlayerWindow"
+        x:DataType="vm:AudioPlayerViewModel"
+        Topmost="True"
+        Width="420" CanResize="False"
+        SizeToContent="Height"
+        Title="AudioPlayerWindow">
+  <Grid RowDefinitions="Auto Auto Auto Auto Auto">
+    <Border x:Name="TBStub" Height="12"/>
+    
+    <Grid x:Name="TrackInfo" Grid.Row="1" ColumnDefinitions="Auto *" Margin="12,0" Height="48">
+      <Border x:Name="Cover" Width="48" Height="48" CornerRadius="6" Background="{DynamicResource VKPlaceholderIconBackgroundOpaqueBrush}" BorderBrush="{DynamicResource VKImageBorderBrush}" BorderThickness="1" BackgroundSizing="InnerBorderEdge">
+        <vkui:VKIcon Id="{Binding CurrentSong.CoverPlaceholderIconId}" Foreground="{DynamicResource VKContentPlaceholderIconBrush}"/>
+      </Border>
+      <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+        <TextBlock x:Name="TrackName" ClipToBounds="True" FontSize="16" LineHeight="24" Text="{Binding CurrentSong.Title}" TextTrimming="CharacterEllipsis" MaxLines="1"/>
+        <TextBlock ClipToBounds="True" FontSize="13" LineHeight="15" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding CurrentSong.Performer}" TextTrimming="CharacterEllipsis" MaxLines="1"/>
+      </StackPanel>
+    </Grid>
+
+    <StackPanel x:Name="Controls" Grid.Row="2" Height="44" Margin="12,16,12,6">
+      <ctrls:MediaSlider Duration="{Binding CurrentSong.Duration}" Position="{Binding Position}" PositionChanged="MediaSlider_PositionChanged"/>
+      <Grid ColumnDefinitions="* *" Margin="0,4,0,0">
+        <TextBlock FontSize="13" LineHeight="15" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Position, Converter={StaticResource tc}}"/>
+        <TextBlock Grid.Column="1" TextAlignment="Right" FontSize="13" LineHeight="15" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding CurrentSong.Duration, Converter={StaticResource tc}}"/>
+      </Grid>
+    </StackPanel>
+
+    <Grid Grid.Row="3" ColumnDefinitions="Auto Auto * Auto" Height="32" Margin="0,0,6,6">
+      <Grid.Styles>
+        <Style Selector="Button">
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Width" Value="32"/>
+          <Setter Property="Height" Value="32"/>
+        </Style>
+        <Style Selector="Button > vkui|VKIcon">
+          <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+        </Style>
+        <Style Selector="Button.Unchecked > vkui|VKIcon">
+          <Setter Property="Foreground" Value="{DynamicResource VKIconMediumBrush}"/>
+        </Style>
+        <Style Selector="Button.Checked > vkui|VKIcon">
+          <Setter Property="Foreground" Value="{DynamicResource VKTabbarTabletActiveIconBrush}"/>
+        </Style>
+      </Grid.Styles>
+      
+      <!--<Button Classes="Tertiary Unchecked">
+        <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24Playlist}"/>
+      </Button>-->
+
+      <Button Classes="Tertiary" Grid.Column="1" Padding="12,0" Width="NaN">
+        <TextBlock Classes="Subhead" VerticalAlignment="Center" TextAlignment="Left" Foreground="{DynamicResource VKTextSubheadBrush}">
+          <Run Text="{Binding CurrentSongIndex}"/><Run Text="/"/><Run Text="{Binding Songs.Count}"/>
+        </TextBlock>
+      </Button>
+      
+      <Rectangle Grid.Column="2" HorizontalAlignment="Left" Width="0.5" Height="20" Fill="{DynamicResource VKSeparatorAlphaBrush}"/>
+      <Border Grid.Column="2" Margin="12,0,8,0">
+        <TextBlock Classes="Subhead" VerticalAlignment="Center" Foreground="{DynamicResource VKTextNameBrush}" ClipToBounds="True" TextTrimming="CharacterEllipsis" Text="{Binding Name}"/>
+      </Border>
+
+      <StackPanel Grid.Column="3" Orientation="Horizontal">
+        <Button Classes="Tertiary" Classes.Checked="{Binding RepeatOneSong}" Classes.Unchecked="{Binding !RepeatOneSong}" Command="{Binding RepeatCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24RepeatOutline}"/>
+        </Button>
+        <Button Classes="Tertiary" Command="{Binding GetPreviousCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24SkipPrevious}"/>
+        </Button>
+        <Button Classes="Tertiary" IsVisible="{Binding IsPlaying}" Command="{Binding PlayPauseCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24Pause}"/>
+        </Button>
+        <Button Classes="Tertiary" IsVisible="{Binding !IsPlaying}" Command="{Binding PlayPauseCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24Play}"/>
+        </Button>
+        <Button Classes="Tertiary" Command="{Binding GetNextCommand}">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24SkipNext}"/>
+        </Button>
+        <!--<Button Classes="Tertiary">
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon20ShareOutline}"/>
+        </Button>-->
+      </StackPanel>
+    </Grid>
+
+    <vkui:WindowTitleBar x:Name="WTitleBar" CanShowTitle="False" Grid.RowSpan="2"/>
+  </Grid>
+</vkw:DialogWindow>

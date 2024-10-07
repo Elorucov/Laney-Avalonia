@@ -139,7 +139,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         private void SetUp(AudioMessage a) {
             IconId = VKIconNames.Icon24Voice;
             Type = OutboundAttachmentType.Attachment;
-            DisplayName = a.DurationTime.ToString(@"h\:mm\:ss");
+            DisplayName = a.Duration.ToTimeWithHourIfNeeded();
             Attachment = a;
         }
 

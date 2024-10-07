@@ -32,7 +32,7 @@ namespace ELOR.Laney {
 
             AvaloniaXamlLoader.Load(this);
 
-            this.ActualThemeVariantChanged += App_ActualThemeVariantChanged;
+            ActualThemeVariantChanged += App_ActualThemeVariantChanged;
             ChangeTheme(Settings.AppTheme);
             Settings.SettingChanged += Settings_SettingChanged;
         }
@@ -190,8 +190,8 @@ namespace ELOR.Laney {
         }
 
         public DataTemplate GetCommonTemplate(string key) {
-            // 12 - это порядковый номер (с нуля) CommonTemplates.axaml в App.axaml > MergedDictionaries
-            var dictionary = App.Current.Resources.MergedDictionaries[12] as ResourceDictionary;
+            // 14 - это порядковый номер (с нуля) CommonTemplates.axaml в App.axaml > MergedDictionaries
+            var dictionary = App.Current.Resources.MergedDictionaries[14] as ResourceDictionary;
             return dictionary[key] as DataTemplate;
         }
 

@@ -148,6 +148,8 @@ namespace ELOR.Laney.Core {
         public const string NOTIF_GCHAT = "notifications_group_chat";
         public const string NOTIF_GCHAT_SOUND = "notifications_group_chat_sound";
 
+        public const string AUDIO_PLAYER_LOOP = "audio_player_loop";
+
         public const string DEBUG_LOGS_CORE = "log_to_file_core";
         public const string DEBUG_LOGS_LP = "log_to_file_lp";
         public const string DEBUG_LOGS_BITMAPMANAGER = "log_to_file_bm";
@@ -224,6 +226,11 @@ namespace ELOR.Laney.Core {
         public static bool NotificationsGroupChatSound {
             get => Get(NOTIF_GCHAT_SOUND, true);
             set => Set(NOTIF_GCHAT_SOUND, value);
+        }
+
+        public static bool AudioPlayerLoop {
+            get => Get(AUDIO_PLAYER_LOOP, false);
+            set => Set(AUDIO_PLAYER_LOOP, value);
         }
 
         // Debug

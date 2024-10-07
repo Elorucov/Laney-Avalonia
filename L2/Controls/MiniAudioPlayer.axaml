@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vkui="using:VKUI.Controls"
+             xmlns:vm="using:ELOR.Laney.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="36"
+             x:Class="ELOR.Laney.Controls.MiniAudioPlayer"
+             x:DataType="vm:AudioPlayerViewModel">
+  <UserControl.Styles>
+    <Style Selector="Button">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Width" Value="36"/>
+      <Setter Property="Height" Value="36"/>
+    </Style>
+  </UserControl.Styles>
+  <Grid ColumnDefinitions="Auto * Auto">
+    <Button Classes="Tertiary" IsVisible="{Binding IsPlaying}" Command="{Binding PlayPauseCommand}">
+      <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24Pause}"/>
+    </Button>
+    <Button Classes="Tertiary" IsVisible="{Binding !IsPlaying}" Command="{Binding PlayPauseCommand}">
+      <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24Play}"/>
+    </Button>
+    <Button Classes="Tertiary" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Width="NaN" Click="OnClick">
+      <StackPanel>
+        <TextBlock Foreground="{DynamicResource VKTextPrimaryBrush}" TextAlignment="Center" FontSize="13" LineHeight="15" Text="{Binding CurrentSong.Title}"/>
+        <TextBlock Foreground="{DynamicResource VKTextSubheadBrush}" TextAlignment="Center" FontSize="11" LineHeight="15" Text="{Binding CurrentSong.Performer}"/>
+      </StackPanel>
+    </Button>
+    <Button Grid.Column="2" Classes="Tertiary" Click="OnCloseButtonClick">
+      <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon24Cancel}"/>
+    </Button>
+  </Grid>
+</UserControl>

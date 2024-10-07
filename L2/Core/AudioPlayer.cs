@@ -5,15 +5,22 @@ using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ELOR.Laney.Core {
+    public class UrlMediaPlayer : MediaPlayer {
+        protected override int OnLoad(string url) {
+            return Bass.CreateStream(url, 0, BassFlags.Float | BassFlags.AutoFree, null);
+        }
+    }
+
     public class AudioPlayer {
         #region Static instances
 
         public static bool IsInitialized { get; private set; }
+        public static Errors InitializationErrorReason { get; private set; }
         public static AudioPlayer SFX { get; private set; }
 
         public static void InitInstances() {
             try {
-                SFX = new AudioPlayer("SFX");
+                SFX = new AudioPlayer(nameof(SFX));
             } catch (Exception ex) {
                 SFX = null;
                 Log.Error(ex, $"AudioPlayer could not be initialized!");
@@ -28,8 +35,9 @@ namespace ELOR.Laney.Core {
             InstanceName = name;
             if (IsInitialized) return;
             if (!Bass.Init()) {
+                InitializationErrorReason = Bass.LastError;
                 string forName = String.IsNullOrEmpty(name) ? String.Empty : $" (instance: {name})";
-                Log.Error($"AudioPlayer: BASS could not be initialized!" + forName);
+                Log.Error($"AudioPlayer: BASS could not be initialized!{forName}. Error code: {InitializationErrorReason}");
                 return;
             }
             IsInitialized = true;
@@ -51,7 +59,7 @@ namespace ELOR.Laney.Core {
         public void PlayURL(string url) {
             var bstream = Bass.CreateStream(url, 0, BassFlags.Float | BassFlags.AutoFree, null);
             if (bstream == 0 || !Bass.ChannelPlay(bstream, false)) {
-                Log.Error($"AudioPlayer.Play: Cannot play a stream! Last error code from BASS: {Bass.LastError}");
+                Log.Error($"AudioPlayer.PlayURL: Cannot play an URL! Last error code from BASS: {Bass.LastError}");
             }
         }
     }

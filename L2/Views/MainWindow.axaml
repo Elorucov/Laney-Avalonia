@@ -1,6 +1,8 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:vkui="using:VKUI.Controls"
+        xmlns:ctrls="using:ELOR.Laney.Controls"
         xmlns:views="using:ELOR.Laney.Views"
+        xmlns:vm="using:ELOR.Laney.ViewModels"
         xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:core="using:ELOR.Laney.Core"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,15 +12,20 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" UseLayoutRounding="True"
         x:Class="ELOR.Laney.Views.MainWindow" MinWidth="400" MinHeight="540" WindowState="Maximized"
         Icon="avares://laney/Assets/Logo/icon.ico">
-  <Grid x:Name="Root">
+  <Grid x:Name="Root" RowDefinitions="* Auto">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="1*" MinWidth="320"/>
       <ColumnDefinition Width="1.75*"/>
     </Grid.ColumnDefinitions>
-    <!--<views:ImView x:Name="ConvsView"/>-->
+    
     <vkui:NavigationControl x:Name="LeftNav"/>
-    <Rectangle x:Name="Separator" HorizontalAlignment="Right" Width="0.5" VerticalAlignment="Stretch" Fill="{DynamicResource VKSeparatorAlphaBrush}"/>
-    <Grid x:Name="ChatViewContainer" Grid.Column="1">
+    <StackPanel x:Name="MainMAPC" Grid.Row="1" IsVisible="False">
+      <Separator Margin="0"/>
+      <ctrls:MiniAudioPlayer x:Name="MainMAP" DataContext="{x:Static vm:AudioPlayerViewModel.MainInstance}" Click="MainMAP_Click" CloseButtonClick="MainMAP_CloseButtonClick"/>
+    </StackPanel>
+    
+    <Rectangle x:Name="Separator" Grid.RowSpan="2" HorizontalAlignment="Right" Width="0.5" VerticalAlignment="Stretch" Fill="{DynamicResource VKSeparatorAlphaBrush}"/>
+    <Grid x:Name="ChatViewContainer" Grid.Column="1" Grid.RowSpan="2">
       <views:ChatView x:Name="ChatView" IsVisible="{Binding DataContext, Mode=OneWay, ElementName=ChatView, Converter={x:Static ObjectConverters.IsNotNull}}" DataContext="{Binding CurrentOpenedChat}"/>
       <TextBlock x:Name="NonSelectedChatInfo" IsVisible="{Binding CurrentOpenedChat, Converter={x:Static ObjectConverters.IsNull}}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Static i18n:Resources.chatview_placeholder}"/>
     </Grid>

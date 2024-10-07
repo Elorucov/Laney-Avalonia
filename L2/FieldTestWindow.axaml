@@ -33,20 +33,26 @@
         </StackPanel>
 
         <StackPanel Grid.Column="2">
-          <StackPanel Margin="8,10,0,11" Orientation="Horizontal">
+          <StackPanel Margin="8,8,0,7" Orientation="Horizontal">
             <ToggleSwitch />
             <TextBlock Margin="4,1,0,0" Text="Default"/>
           </StackPanel>
-          <StackPanel Margin="8,11,0,11" Orientation="Horizontal">
+          <StackPanel Margin="8,8,0,7" Orientation="Horizontal">
             <ToggleSwitch IsEnabled="False"/>
             <TextBlock Margin="4,1,0,0" Text="Disabled"/>
           </StackPanel>
-          <StackPanel Margin="8,11,0,11" Orientation="Horizontal">
+          <StackPanel Margin="8,8,0,8" Orientation="Horizontal">
             <ToggleSwitch IsChecked="True"/>
             <TextBlock Margin="4,1,0,0" Text="Checked"/>
           </StackPanel>
         </StackPanel>
       </Grid>
+
+      <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="MediaSlider test"/>
+        <ctrls:MediaSlider x:Name="MSlider" Width="296" Margin="8,0" Position="0:0:20" Duration="0:1:0"/>
+        <TextBlock Margin="8" Text="{Binding Position, ElementName=MSlider, Converter={StaticResource tc}}"/>
+      </StackPanel>
       
       <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Horizontal scroll buttons test"/>

@@ -111,6 +111,7 @@ namespace ELOR.Laney.Controls {
             if (message.Attachments.Count > 0) {
                 Attachments.Width = Width - Attachments.Margin.Left;
                 Attachments.Gift = message.Gift;
+                Attachments.Owner = message.SenderName;
                 Attachments.Attachments = message.Attachments;
             }
 

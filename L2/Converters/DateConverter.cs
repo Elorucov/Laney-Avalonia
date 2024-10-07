@@ -19,4 +19,15 @@ namespace ELOR.Laney.Converters {
             return AvaloniaProperty.UnsetValue;
         }
     }
+
+    public class TimeConverter : IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+            if (value != null && value is TimeSpan ts) return ts.ToTimeWithHourIfNeeded();
+            return String.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+            return AvaloniaProperty.UnsetValue;
+        }
+    }
 }

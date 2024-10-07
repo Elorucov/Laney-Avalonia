@@ -11,9 +11,6 @@ namespace ELOR.VKAPILib.Objects
         [JsonPropertyName("duration")]
         public int Duration { get; set; }
 
-        [JsonIgnore]
-        public TimeSpan DurationTime { get { return TimeSpan.FromSeconds(Duration); } }
-
         [JsonPropertyName("waveform")]
         public int[] WaveForm { get; set; }
 

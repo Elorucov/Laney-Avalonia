@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Remove="Controls\ChatListView.axaml" />
+    <AvaloniaXaml Remove="Templates\CommonTemplates.axaml" />
+    <AvaloniaXaml Remove="Templates\ItemTemplates.axaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Collections\MessagesCollection.cs" />
@@ -74,6 +76,7 @@
     <None Remove="Controls\BotKeyboardUI.xaml" />
     <None Remove="Controls\ChatViewItem.xaml" />
     <None Remove="Controls\CompactMessage.xaml" />
+    <None Remove="Controls\MediaSlider.xaml" />
     <None Remove="Controls\MessageBubble.xaml" />
     <None Remove="Controls\PostUI.xaml" />
     <None Remove="Styles\ChatViewDefaultResources.xaml" />
@@ -106,6 +109,10 @@
     <AvaloniaResource Include="Styles\ChatViewDefaultResources.xaml">
       <Generator></Generator>
     </AvaloniaResource>
+    <AvaloniaResource Include="Templates\CommonTemplates.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Templates\ItemTemplates.axaml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Assets\i18n\Resources.resx">
@@ -134,7 +141,7 @@
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.1.0.1" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.1.3" />
-    <PackageReference Include="Chisel" Version="1.1.0">
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -211,6 +218,11 @@
     </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Include="Controls\Attachments\AudioAttachment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="Controls\Attachments\AttachmentsContainer.xaml.cs">
       <DependentUpon>AttachmentsContainer.xaml</DependentUpon>
     </Compile>
@@ -219,6 +231,9 @@
     </Compile>
     <Compile Update="Controls\CompactMessage.xaml.cs">
       <DependentUpon>CompactMessage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\MediaSlider.xaml.cs">
+      <DependentUpon>MediaSlider.xaml</DependentUpon>
     </Compile>
     <Compile Update="Controls\MessageBubble.xaml.cs">
       <DependentUpon>MessageBubble.xaml</DependentUpon>
@@ -243,15 +258,15 @@
     <UpToDateCheckInput Remove="Views\Modals\StandaloneMessageViewer.axaml" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaXaml Update="Templates\CommonTemplates.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="DevTools\DataModels\" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Modals\WhoReadMessage.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\MediaSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Assets\i18n\Resources.Designer.cs">

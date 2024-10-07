@@ -76,5 +76,13 @@ namespace ELOR.Laney.Extensions {
                 return target.ToString("H:mm");
             }
         }
+
+        public static string ToTimeWithHourIfNeeded(this TimeSpan ts) {
+            return ts.TotalSeconds >= 3600 ? ts.ToString("c") : ts.ToString(@"m\:ss");
+        }
+
+        public static string ToTimeWithHourIfNeeded(this int seconds) {
+            return seconds >= 3600 ? TimeSpan.FromSeconds(seconds).ToString("c") : TimeSpan.FromSeconds(seconds).ToString(@"m\:ss");
+        }
     }
 }

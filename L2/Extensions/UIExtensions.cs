@@ -17,7 +17,6 @@ namespace ELOR.Laney.Extensions {
                 Grid.SetRow(content, 1);
                 Grid.SetRowSpan(content, 1);
                 titleBar.CanShowTitle = true;
-                titleBar.CanMove = true;
             } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
                 titleBar.IsVisible = false;
             }

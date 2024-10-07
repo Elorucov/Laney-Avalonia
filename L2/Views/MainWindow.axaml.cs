@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Rendering;
 using Avalonia.Threading;
 using ELOR.Laney.Core;
+using ELOR.Laney.ViewModels;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,6 @@ namespace ELOR.Laney.Views {
             ChatView.BackButtonClick += ChatView_BackButtonClick;
 
             // Window size, position & state
-
             bool isMaximized = Settings.Get(Settings.WIN_MAXIMIZED, false);
             if (!isMaximized) WindowState = WindowState.Normal;
 
@@ -34,10 +34,19 @@ namespace ELOR.Laney.Views {
             if (wy < 0) wy = 32;
             Position = new PixelPoint(wx, wy);
 
+            // Audio player
+            AudioPlayerViewModel.InstancesChanged += AudioPlayerViewModel_InstancesChanged;
+
+            //
             RendererDiagnostics.DebugOverlays = Settings.ShowFPS ? RendererDebugOverlays.Fps : RendererDebugOverlays.None;
             RAMInfoOverlay.IsVisible = Settings.ShowRAMUsage;
             ToggleRAMInfoOverlay();
             Settings.SettingChanged += Settings_SettingChanged;
+        }
+
+        private void AudioPlayerViewModel_InstancesChanged(object sender, EventArgs e) {
+            MainMAP.DataContext = AudioPlayerViewModel.MainInstance;
+            MainMAPC.IsVisible = AudioPlayerViewModel.MainInstance != null;
         }
 
         private void MainWindow_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
@@ -191,6 +200,18 @@ namespace ELOR.Laney.Views {
 
         private void ChatView_BackButtonClick(object? sender, EventArgs e) {
             Session.GoToChat(0);
+        }
+
+        #endregion
+
+        #region Mini audio player
+
+        private void MainMAP_Click(object sender, EventArgs e) {
+            AudioPlayerWindow.ShowForMainInstance();
+        }
+
+        private void MainMAP_CloseButtonClick(object sender, EventArgs e) {
+            AudioPlayerViewModel.CloseMainInstance();
         }
 
         #endregion

@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ELOR.Laney.Controls">
+  
+  <Design.PreviewWith>
+    <StackPanel Spacing="10">      
+        <StackPanel Margin="16" Width="320" Background="{DynamicResource SystemRegionBrush}">
+          <controls:MediaSlider HorizontalAlignment="Stretch" Width="320" Duration="0:1:0" Position="0:0:30"/>
+        </StackPanel>
+    </StackPanel>
+  </Design.PreviewWith>
+ 
+  <ControlTheme x:Key="{x:Type controls:MediaSlider}" TargetType="controls:MediaSlider">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Canvas x:Name="Root" Height="20" Background="{TemplateBinding Background}" Cursor="Hand">
+          <Border x:Name="DurationLine" IsHitTestVisible="False" Height="4" Canvas.Top="6" CornerRadius="2" Background="{DynamicResource VKPlaceholderIconBackgroundOpaqueBrush}"/>
+          <Border x:Name="PositionLine" IsHitTestVisible="False" Height="4" Canvas.Top="6" CornerRadius="2" Background="{DynamicResource VKAccentBrush}"/>
+          <Border x:Name="SliderThumb"  IsHitTestVisible="False" Width="16" Height="16" CornerRadius="8" Canvas.Left="0" Background="{DynamicResource VKAccentBrush}" BoxShadow="0 0 2 #1F000000, 0 2 4 #29000000"/>
+        </Canvas>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

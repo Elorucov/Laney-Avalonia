@@ -11,6 +11,7 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="/Styles/ChatViewDefaultResources.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/AttachmentsContainer.xaml"/>
+        <ResourceInclude Source="/Controls/Attachments/AudioAttachment.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/BasicAttachment.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/ExtendedAttachment.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/GiftUI.xaml"/>
@@ -19,6 +20,7 @@
         <ResourceInclude Source="/Controls/BotKeyboardUI.xaml"/>
         <ResourceInclude Source="/Controls/ChatViewItem.xaml"/>
         <ResourceInclude Source="/Controls/CompactMessage.xaml"/>
+        <ResourceInclude Source="/Controls/MediaSlider.xaml"/>
         <ResourceInclude Source="/Controls/MessageBubble.xaml"/>
         <ResourceInclude Source="/Controls/PostUI.xaml"/>
         <ResourceInclude Source="/Templates/CommonTemplates.axaml"/>
@@ -31,6 +33,7 @@
     <conv:CounterConverter x:Key="cc"/>
     <conv:DateTimeDiffConverter x:Key="dtdc"/>
     <conv:DateConverter x:Key="dc"/>
+    <conv:TimeConverter x:Key="tc"/>
     <conv:DocumentIconConverter x:Key="dic"/>
     <conv:FileSizeConverter x:Key="fsc"/>
     <conv:InitialsConverter x:Key="ic"/>

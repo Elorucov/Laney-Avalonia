@@ -302,6 +302,7 @@ namespace ELOR.Laney.Controls {
             MessageAttachments.NeedToShowStoryPreview = Message.UIType == MessageUIType.Story || Message.UIType == MessageUIType.StoryWithSticker;
 
             // Attachments
+            MessageAttachments.Owner = Message.SenderName;
             MessageAttachments.Attachments = Message.Attachments;
 
             // Forwarded messages
@@ -532,7 +533,7 @@ namespace ELOR.Laney.Controls {
 
             // Reactions margin-top
             double rtop = Message.UIType != MessageUIType.Standart || Message.Keyboard != null ? 8 : 0;
-            double rside = Message.UIType == MessageUIType.SingleImage || Message.UIType == MessageUIType.Graffiti || Message.UIType == MessageUIType.Sticker ? 0 : 12;
+            double rside = Message.UIType == MessageUIType.SingleImage || Message.UIType == MessageUIType.Graffiti || (Message.UIType == MessageUIType.Sticker && Message.ReplyMessage == null) ? 0 : 12;
             var rcm = ReactionsContainer.Margin;
             ReactionsContainer.Margin = new Thickness(rside, rtop, rcm.Right, rcm.Bottom);
 

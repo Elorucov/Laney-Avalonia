@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using System;
 using System.Runtime.InteropServices;
 
@@ -21,7 +23,7 @@ namespace VKUI.Windows {
             int movey = Position.Y + (int)(diffy / 2);
 
             FixSize();
-            this.Position = new Avalonia.PixelPoint(movex, movey);
+            this.Position = new PixelPoint(movex, movey);
         }
 
         private void DialogWindow_SizeChanged(object sender, SizeChangedEventArgs e) {
@@ -29,28 +31,40 @@ namespace VKUI.Windows {
             FixSize();
         }
 
+        // This temporary fix written specially for https://github.com/AvaloniaUI/Avalonia/issues/17202
+        bool isSizeChangedFirstTime = false;
         private void FixSize() {
+            if (isSizeChangedFirstTime || SizeToContent == SizeToContent.WidthAndHeight) return;
             double addx = 0, addy = 0;
+            double titleBarHeight = 0;
+            
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
                 addx = addy = 1;
+                titleBarHeight = 39;
             }
 
-            double diffx = ClientSize.Width - DesiredSize.Width;
-            double diffy = ClientSize.Height - DesiredSize.Height;
+            if (MinWidth != 0 && MinWidth != Double.NaN) MinWidth += addx * 2;
+            if (MinHeight != 0 && MinHeight != Double.NaN) MinHeight += addy * 2;
+            if (MinHeight != 0 && MinHeight != Double.NaN) MinHeight -= titleBarHeight; // Standart window titlebar's height.
 
-            double finalx = DesiredSize.Width - diffx;
-            double finaly = DesiredSize.Height - diffy;
+            if (MaxWidth != 0 && MaxWidth != Double.NaN) MaxWidth += addx * 2;
+            if (MaxHeight != 0 && MaxHeight != Double.NaN) MaxHeight += addy * 2;
+            // if (MaxHeight != 0 && MaxHeight != Double.NaN) MaxHeight -= titleBarHeight;
 
-            MinWidth = finalx;
-            MinHeight = finaly;
+            if (SizeToContent == SizeToContent.Width && Width != 0 && Width != Double.NaN) Width += addx * 2;
+            if (SizeToContent == SizeToContent.Height && Height != 0 && Height != Double.NaN) Height += addy * 2;
+            // if (Height != 0 && Height != Double.NaN) Height -= titleBarHeight;
 
-            MaxWidth = finalx + addx; 
-            MaxHeight = finaly + addy;
-
-            // PlatformImpl.Resize(new Avalonia.Size(MaxWidth, MaxHeight));
-            this.Width = MaxWidth;
-            this.Height = MaxHeight;
+            var root = VisualChildren[0] as Panel;
+            if (root == null) return;
+            foreach (var child in root.Children) { 
+                if (child is VisualLayerManager vlm) {
+                    vlm.Padding = new Thickness(addx);
+                    break;
+                }
+            }
+            isSizeChangedFirstTime = true;
         }
     }
 }

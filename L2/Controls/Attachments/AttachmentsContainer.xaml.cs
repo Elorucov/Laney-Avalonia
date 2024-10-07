@@ -9,6 +9,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
+using ELOR.Laney.ViewModels;
 using ELOR.Laney.Views.Media;
 using ELOR.VKAPILib.Objects;
 using System;
@@ -40,6 +41,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
         public bool NoMargins { get; set; } = false; // отступы по бокам. true нужно для PostUI.
         public bool? IsOutgoing { get; set; } = null; // нужно для MessageBubble. В других случаях null.
+        public string Owner { get; set; } = String.Empty; // имя владельца контента. Обычно это отправитель сообщения либо автор записи с данными вложениями. Нужно для аудиопроигрывателя.
         public bool NeedToShowStoryPreview { get; set; } = false;
 
         #endregion
@@ -451,16 +453,15 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Audios
             foreach (Audio a in audios) {
-                // TODO: сделать проигрыватель и только потом отдельный control с play/pause
-                BasicAttachment ba = new BasicAttachment {
+                AudioAttachment aa = new AudioAttachment { 
                     Margin = new Thickness(0, 0, 0, 8),
-                    Icon = VKIconNames.Icon24Song,
-                    Title = a.Title,
-                    Subtitle = a.Artist,
+                    Audio = a,
                     Name = a.ObjectType
                 };
-                ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
-                StandartAttachments.Children.Add(ba);
+                aa.PlayAudioRequested += (b, c) => {
+                    AudioPlayerViewModel.PlaySong(audios, a, Owner);
+                };
+                StandartAttachments.Children.Add(aa);
             }
 
             // Audio message
