@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.618</AssemblyVersion>
-    <FileVersion>2.0.618</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.618-win-anycpu-devuser.devpc-240915-1255</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.618-linux-anycpu-devuser.devpc-240915-1255</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.618-macos-anycpu-devuser.devpc-240915-1255</Version>
+    <AssemblyVersion>2.0.621</AssemblyVersion>
+    <FileVersion>2.0.621</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.621-win-anycpu-devuser.devpc-241008-1255</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.621-linux-anycpu-devuser.devpc-241008-1255</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.621-macos-anycpu-devuser.devpc-241008-1255</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
