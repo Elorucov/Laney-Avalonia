@@ -11,6 +11,7 @@ namespace ELOR.Laney.DataModels {
         public AudioType Type { get; private set; }
         public long Id { get; private set; }
         public string Title { get; private set; }
+        public string Subtitle { get; private set; }
         public string Performer { get; private set; }
         public TimeSpan Duration { get; private set; }
         public Uri Source { get; private set; }
@@ -23,7 +24,8 @@ namespace ELOR.Laney.DataModels {
             Type = AudioType.Audio;
             Id = audio.Id;
             Title = audio.Title;
-            if (!String.IsNullOrEmpty(audio.Subtitle)) Title += $" ({audio.Subtitle})";
+            Subtitle = audio.Subtitle;
+            // if (!String.IsNullOrEmpty(audio.Subtitle)) Title += $" ({audio.Subtitle})";
             Performer = audio.Artist;
             Duration = TimeSpan.FromSeconds(audio.Duration);
             Source = audio.Uri;

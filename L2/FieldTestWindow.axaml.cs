@@ -140,7 +140,7 @@ namespace ELOR.Laney {
             int i = 0;
         }
 
-        private void Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private void Button_Click(object? sender, RoutedEventArgs e) {
             PTest.IsOpen = true;
         }
     }

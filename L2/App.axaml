@@ -46,6 +46,7 @@
     <conv:ReadIndicatorVisibilityConverter x:Key="rivc"/>
     <conv:SelectedReactionConverter x:Key="src"/>
     <conv:VKPhotoSizesConverter x:Key="vpsc"/>
+    <conv:EqualMultiBindingConverter x:Key="embc"/>
 
     <DataTemplate x:Key="OnlineIcon">
       <Ellipse Width="12" Height="12" Fill="#8AC176" Stroke="{DynamicResource VKBackgroundContentBrush}" StrokeThickness="2"/>

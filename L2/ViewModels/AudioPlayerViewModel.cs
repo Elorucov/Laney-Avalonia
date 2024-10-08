@@ -20,12 +20,14 @@ namespace ELOR.Laney.ViewModels {
         private TimeSpan _position;
         private PlaybackState _playbackState;
         private bool _isPlaying;
+        private bool _isTracklistDisplaying;
 
         private RelayCommand _playPauseCommand;
         private RelayCommand _getPreviousCommand;
         private RelayCommand _getNextCommand;
         private RelayCommand _repeatCommand;
         private RelayCommand _shareCommand;
+        private RelayCommand _openTracklistCommand;
 
         public string Name { get { return _name; } set { _name = value; OnPropertyChanged(); } }
         public ObservableCollection<AudioPlayerItem> Songs { get { return _songs; } private set { _songs = value; OnPropertyChanged(); } }
@@ -35,12 +37,14 @@ namespace ELOR.Laney.ViewModels {
         public PlaybackState PlaybackState { get { return _playbackState; } private set { _playbackState = value; OnPropertyChanged(); } }
         public bool RepeatOneSong { get { return Player.Loop; } set { Player.Loop = value; OnPropertyChanged(); } }
         public bool IsPlaying { get { return _isPlaying; } private set { _isPlaying = value; OnPropertyChanged(); } }
+        public bool IsTracklistDisplaying { get { return _isTracklistDisplaying; } private set { _isTracklistDisplaying = value; OnPropertyChanged(); } }
 
         public RelayCommand PlayPauseCommand { get { return _playPauseCommand; } private set { _playPauseCommand = value; OnPropertyChanged(); } }
         public RelayCommand GetPreviousCommand { get { return _getPreviousCommand; } private set { _getPreviousCommand = value; OnPropertyChanged(); } }
         public RelayCommand GetNextCommand { get { return _getNextCommand; } private set { _getNextCommand = value; OnPropertyChanged(); } }
         public RelayCommand RepeatCommand { get { return _repeatCommand; } private set { _repeatCommand = value; OnPropertyChanged(); } }
         public RelayCommand ShareCommand { get { return _shareCommand; } private set { _shareCommand = value; OnPropertyChanged(); } }
+        public RelayCommand OpenTracklistCommand { get { return _openTracklistCommand; } private set { _openTracklistCommand = value; OnPropertyChanged(); } }
 
         public event EventHandler<PlaybackState> PlaybackStateChanged;
         AudioType Type;
@@ -148,6 +152,9 @@ namespace ELOR.Laney.ViewModels {
                 Settings.AudioPlayerLoop = RepeatOneSong;
             });
             ShareCommand = new RelayCommand(o => { });
+            OpenTracklistCommand = new RelayCommand(o => { 
+                IsTracklistDisplaying = !IsTracklistDisplaying;
+            });
         }
 
         private void PositionTimer_Tick(object sender, EventArgs e) {
@@ -254,6 +261,7 @@ namespace ELOR.Laney.ViewModels {
         public static AudioPlayerViewModel VoiceMessageInstance { get; private set; }
 
         public static event EventHandler InstancesChanged;
+
         public static void PlaySong(List<Audio> songs, Audio selectedSong, string name) {
             CloseVoiceMessageInstance();
             MainInstance?.Uninitialize();
