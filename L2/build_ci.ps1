@@ -2,7 +2,9 @@ param (
     [string]$appname = "",
     [string]$channel = "",
     [string]$output = "",
-    [string]$ctarget = ""
+    [string]$ctarget = "",
+    [string]$repoowner = "",
+    [string]$reponame = "",
 )
 <# Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #>
 
@@ -53,12 +55,17 @@ echo "Current build: $($currentbuild)";
 
 $location = $output;
 
-$uname = [Environment]::UserName.Replace("-", "");
-$hname = "$(hostname)".Replace("-", "");
+$uname = [Environment]::UserName;
+$hname = "$(hostname)";
+$uhnamefull = [System.Text.Encoding]::UTF8.GetBytes("$($uname).$($hname)");
+$uhnamenc = [System.Convert]::ToBase64String($uhnamefull).Replace("=", ".4444");
+
+$repofull = [System.Text.Encoding]::UTF8.GetBytes("$($repoowner)/$($reponame)");
+$repoenc = [System.Convert]::ToBase64String($repofull).Replace("=", ".4444");
 
 if ($IsWindows) {
     $const = "WIN$($chstr)";
-    $btagw1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagw1 = "$($currentversion)-$($ctarget)-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-$($repoenc)";
     echo $btagw1;
     dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugType=None -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagw1 -p:DefineConstants=$const;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
@@ -66,7 +73,7 @@ if ($IsWindows) {
 
 if ($IsLinux) {
     $const = "LINUX$($chstr)";
-    $btagl1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagl1 = "$($currentversion)-$($ctarget)-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-$($repoenc)";
     echo $btagl1;
     dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugType=None -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagl1 -p:DefineConstants=$const;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";

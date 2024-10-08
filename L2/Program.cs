@@ -47,7 +47,7 @@ namespace ELOR.Laney {
                 loggerConfig = loggerConfig.WriteTo.File(Path.Combine(localDataPath, "logs", $"L2_{DateTimeOffset.Now.ToUnixTimeSeconds()}.log"));
 
             Log.Logger = loggerConfig.CreateLogger();
-            Log.Information("Laney is starting up. Build tag: {0}", App.BuildInfoFull);
+            Log.Information("Laney is starting up. Build: {0}, Repo: {1}", App.BuildInfo, App.RepoInfo);
             Log.Information("Launch mode: {0}", Mode);
             Log.Information("Local data folder: {0}", localDataPath);
             Log.Information("Is ChaCha20Poly1305 supported: {0}", Encryption.IsChaCha20Poly1305Supported);

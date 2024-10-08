@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace ELOR.Laney {
     public sealed class App : Application {
@@ -129,7 +130,7 @@ namespace ELOR.Laney {
             // foreach (var uri in uris) {
             //     Log.Information($"> {uri}");
             // }
-            
+
 #endif
         }
 
@@ -209,6 +210,8 @@ namespace ELOR.Laney {
         private static string _buildInfo;
         public static string BuildInfoFull => _buildInfo ?? GetFullBuildInfo();
         public static string BuildInfo => GetBuildInfo();
+        public static string BuildHost => GetBuilderInfo();
+        public static string RepoInfo => GetRepoInfo();
         public static DateTime BuildTime => GetBuildTime();
 
 #if RELEASE
@@ -239,9 +242,29 @@ namespace ELOR.Laney {
             string ver = BuildInfoFull;
             string[] sections = ver.Split('-');
             string datetime = $"{sections[4]}-{sections[5]}";
-            if (datetime.Contains('+')) datetime = datetime.Split('+')[0];
             var date = DateTime.ParseExact(datetime, "yyMMdd-HHmm", CultureInfo.InvariantCulture);
             return date;
+        }
+
+        private static string GetBuilderInfo() {
+            string ver = BuildInfoFull;
+            string[] sections = ver.Split('-');
+            string encoded = sections[3];
+            encoded = encoded.Replace(".4444", "=");
+
+            var bytes = Convert.FromBase64String(encoded);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        private static string GetRepoInfo() {
+            string ver = BuildInfoFull;
+            string[] sections = ver.Split('-');
+            string encoded = sections[6];
+            if (encoded.Contains('+')) encoded = encoded.Split('+')[0];
+            encoded = encoded.Replace(".4444", "=");
+
+            var bytes = Convert.FromBase64String(encoded);
+            return Encoding.UTF8.GetString(bytes);
         }
 
         private static string GetUserAgent() {
@@ -260,9 +283,9 @@ namespace ELOR.Laney {
             "Unicode.net",
         };
 
-#endregion
+        #endregion
 
-#region Paths
+        #region Paths
 
         public static string LocalDataPath { get => GetLocalDataPath(); }
 
@@ -276,9 +299,9 @@ namespace ELOR.Laney {
             }
         }
 
-#endregion
+        #endregion
 
-#region Non-production things
+        #region Non-production things
 
         public static void UpdateBranding(Grid brand) {
 #if RELEASE
@@ -300,7 +323,7 @@ namespace ELOR.Laney {
                     Child = t
                 };
 
-                Path p = new Path { 
+                Avalonia.Controls.Shapes.Path p = new Avalonia.Controls.Shapes.Path { 
                     Data = Geometry.Parse("M 0,14 L 10,24 L 10,14 z"),
                     Fill = new SolidColorBrush(Color.Parse("#857250"))
                 };
@@ -315,7 +338,7 @@ namespace ELOR.Laney {
 
                 c.Children.Add(b);
                 c.Children.Add(p);
-                Logo.Children.Add(c);
+                brand.Children.Add(c);
 #else
             TextBlock t = new TextBlock {
                 Text = "DEV",
@@ -348,7 +371,6 @@ namespace ELOR.Laney {
 
             c.Children.Add(b);
             c.Children.Add(p);
-
             brand.Children.Add(c);
 #endif
         }

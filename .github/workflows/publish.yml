@@ -41,15 +41,17 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 8.0.100
-      - name: Setting channel to DEV, if needed
+      - name: Setting repository name and owner to binary and channel variable to DEV by default
         shell: bash
-        if: ${{ github.ref == 'refs/heads/master' }}
-        run: echo "channel=DEV" >> "$GITHUB_ENV" 
-      - name: Setting channel to RELEASE, if needed
+        run: |
+          echo "channel=DEV" >> "$GITHUB_ENV"
+          echo "reponame=${{ github.repository }}" >> "$GITHUB_ENV"
+          echo "repoowner=${{ github.repository_owner }}" >> "$GITHUB_ENV"
+      - name: Setting channel variable to RELEASE, if needed
         shell: bash
         if: ${{ github.ref == 'refs/heads/production' }}
         run: echo "channel=RELEASE" >> "$GITHUB_ENV" 
-      - name: Setting channel to BETA, if needed
+      - name: Setting channel variable to BETA, if needed
         if: ${{ github.ref == 'refs/heads/beta' }}
         shell: bash
         run: echo "channel=BETA" >> "$GITHUB_ENV"
@@ -83,7 +85,7 @@ jobs:
           $location = Get-Location;
           $output = '{0}/pub_${{ matrix.target }}' -f $location;
           echo "BINFOLDER=$output" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-          & $location/L2/build_ci.ps1 -appname Laney -channel ${{ env.channel }} -ctarget ${{ matrix.target }} -output $output;
+          & $location/L2/build_ci.ps1 -appname Laney -channel ${{ env.channel }} -ctarget ${{ matrix.target }} -repoowner ${{ env.repoowner }} -reponame ${{ env.reponame }} -output $output;
       - name: Clean-up output folder and make zip
         if: ${{ matrix.define != 'MAC' }}
         shell: bash

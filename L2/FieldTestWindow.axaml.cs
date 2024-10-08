@@ -24,7 +24,7 @@ namespace ELOR.Laney {
             w1.Click += w1_Click;
             w2.Click += w2_Click;
 
-            buildInfo.Text = $"Build tag: {App.BuildInfoFull}";
+            buildInfo.Text = $"The infos listed below is changed when building on CI/CD\nBuild tag: {App.BuildInfoFull}\nRepository: {App.RepoInfo}\nBuilder username and hostname: {App.BuildHost}";
             setResult.Text += $"\n\nSettings file location:\n{Settings.FilePath}";
 
             string test = "Testing VK links (ColorTextBlock lib): [id172894294|user], [club171015120|group], https://elor.top and [https://vk.com/wall-171015120_363|wall post], hee-hee!";
