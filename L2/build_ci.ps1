@@ -4,7 +4,7 @@ param (
     [string]$output = "",
     [string]$ctarget = "",
     [string]$repoowner = "",
-    [string]$reponame = "",
+    [string]$reponame = ""
 )
 <# Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #>
 
