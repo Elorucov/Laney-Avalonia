@@ -20,7 +20,7 @@ public partial class AudioPlayerWindow : DialogWindow {
         WTitleBar.CanShowTitle = true;
         TBStub.Height = 27;
 #elif LINUX
-        WTitleBar.IsVIsible = false;
+        WTitleBar.IsVisible = false;
 #endif
     }
 
@@ -36,28 +36,13 @@ public partial class AudioPlayerWindow : DialogWindow {
     private void AudioPlayerWindow_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
         AudioPlayerViewModel.InstancesChanged -= AudioPlayerViewModel_InstancesChanged;
         Unloaded -= AudioPlayerWindow_Unloaded;
+        if (currentOpenedWindow == this) currentOpenedWindow = null;
     }
 
     AudioPlayerViewModel ViewModel => DataContext as AudioPlayerViewModel;
 
     private void MediaSlider_PositionChanged(object sender, System.TimeSpan e) {
         ViewModel?.SetPosition(e);
-    }
-
-    static AudioPlayerWindow currentOpenedWindow;
-    public static void ShowForMainInstance() {
-        if (currentOpenedWindow != null) {
-            currentOpenedWindow.Show();
-            currentOpenedWindow.Activate();
-            return;
-        }
-
-        currentOpenedWindow = new AudioPlayerWindow {
-            DataContext = AudioPlayerViewModel.MainInstance,
-            WindowStartupLocation = WindowStartupLocation.Manual,
-            Position = new PixelPoint(64, 64)
-        };
-        currentOpenedWindow.Show();
     }
 
     private void AudioItemSizeChanged(object? sender, SizeChangedEventArgs e) {
@@ -85,5 +70,21 @@ public partial class AudioPlayerWindow : DialogWindow {
         if (audio == null || ViewModel == null) return;
 
         if (ViewModel.Songs.Contains(audio)) ViewModel.CurrentSong = audio;
+    }
+
+    static AudioPlayerWindow currentOpenedWindow;
+    public static void ShowForMainInstance() {
+        if (currentOpenedWindow != null) {
+            currentOpenedWindow.Show();
+            currentOpenedWindow.Activate();
+            return;
+        }
+
+        currentOpenedWindow = new AudioPlayerWindow {
+            DataContext = AudioPlayerViewModel.MainInstance,
+            WindowStartupLocation = WindowStartupLocation.Manual,
+            Position = new PixelPoint(64, 64)
+        };
+        currentOpenedWindow.Show();
     }
 }
