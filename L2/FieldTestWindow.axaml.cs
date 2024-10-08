@@ -139,5 +139,9 @@ namespace ELOR.Laney {
             Title = "Drop!";
             int i = 0;
         }
+
+        private void Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            PTest.IsOpen = true;
+        }
     }
 }

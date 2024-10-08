@@ -23,7 +23,7 @@
     </Button>
     <Button Classes="Tertiary" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Width="NaN" Click="OnClick">
       <StackPanel>
-        <TextBlock Foreground="{DynamicResource VKTextPrimaryBrush}" TextAlignment="Center" FontSize="13" LineHeight="15" Text="{Binding CurrentSong.Title}"/>
+        <TextBlock Foreground="{DynamicResource VKTextPrimaryBrush}" TextAlignment="Center" FontSize="13" LineHeight="15" FontWeight="Medium" Text="{Binding CurrentSong.Title}"/>
         <TextBlock Foreground="{DynamicResource VKTextSubheadBrush}" TextAlignment="Center" FontSize="11" LineHeight="15" Text="{Binding CurrentSong.Performer}"/>
       </StackPanel>
     </Button>

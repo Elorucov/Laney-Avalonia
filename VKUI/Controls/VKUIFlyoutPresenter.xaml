@@ -2,7 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:VKUI.Controls">
   <Design.PreviewWith>
-    <Border Width="384" Height="384">
+    <StackPanel Width="384">
+      <controls:VKUIFlyoutPresenter>
+        <TextBlock Classes="Subhead" Text="12:12"/>
+      </controls:VKUIFlyoutPresenter>
+      
       <controls:VKUIFlyoutPresenter Classes="ActionSheet">
         <controls:VKUIFlyoutPresenter.Above>
           <Border Width="384" Height="32" Background="#7f7f7f"/>
@@ -31,7 +35,7 @@
           </controls:ActionSheetItem>
         </StackPanel>
       </controls:VKUIFlyoutPresenter>
-    </Border>
+    </StackPanel>
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type controls:VKUIFlyoutPresenter}" TargetType="controls:VKUIFlyoutPresenter">
@@ -40,15 +44,22 @@
       <ControlTemplate>
         <StackPanel>
           <ContentPresenter x:Name="AboveContentRoot" HorizontalAlignment="Left" Content="{TemplateBinding Above}"/>
-          <Border x:Name="FlyoutPresenterRoot" HorizontalAlignment="Left" Cursor="Arrow" BorderThickness="1" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,24" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="0 0 2 #14000000, 0 8 24 #14000000">
-            <ContentPresenter Content="{TemplateBinding Content}"/>
+          <Border x:Name="FlyoutPresenterRoot" HorizontalAlignment="Left" Cursor="Arrow" BorderThickness="0" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,14" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="{StaticResource VKElevation3}">
+            <ContentPresenter x:Name="FlyoutContent" Padding="12,8" Content="{TemplateBinding Content}"/>
           </Border>
         </StackPanel>
       </ControlTemplate>
     </Setter>
 
     <Style Selector="^.ActionSheet /template/ Border#FlyoutPresenterRoot">
+      <Setter Property="Margin" Value="12,6,12,24"/>
       <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="BoxShadow" Value="0 0 2 #14000000, 0 8 24 #14000000"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="^.ActionSheet /template/ ContentPresenter#FlyoutContent">
+      <Setter Property="Padding" Value="0"/>
     </Style>
   </ControlTheme>
 </ResourceDictionary>

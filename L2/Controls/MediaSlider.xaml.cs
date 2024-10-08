@@ -2,9 +2,14 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Media;
+using ELOR.Laney.Extensions;
 using ExCSS;
+using ManagedBass;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Controls;
 
@@ -36,6 +41,9 @@ public class MediaSlider : TemplatedControl {
     Border DurationLine;
     Border PositionLine;
     Border SliderThumb;
+
+    Popup PositionPopup;
+    TextBlock PositionPopupTB;
 
     #endregion
 
@@ -100,6 +108,7 @@ public class MediaSlider : TemplatedControl {
             SetupSlider();
         }
         // PositionFlyout.IsVisible = false;
+        HidePositionPopup();
     }
 
     private void ChangeThumbPosition(double x) {
@@ -122,6 +131,52 @@ public class MediaSlider : TemplatedControl {
         TimeSpan tm = TimeSpan.FromMilliseconds(pt);
         // ChangePosFlyoutPosition(tm, x);
         // PositionFlyout.IsVisible = true;
+        ShowPositionPopup(tm, x);
+    }
+
+    private async void ShowPositionPopup(TimeSpan tm, double x) {
+        if (PositionPopup == null || PositionPopupTB == null) {
+            PositionPopup = new Popup { 
+                IsHitTestVisible = false,
+                Placement = PlacementMode.Top,
+                PlacementTarget = SliderThumb
+            };
+
+            TextBlock tb = new TextBlock();
+            tb.Classes.Add("Subhead");
+            PositionPopupTB = tb;
+
+            VKUIFlyoutPresenter vkfp = new VKUIFlyoutPresenter { 
+                Content = tb
+            };
+
+            PositionPopup.Child = vkfp;
+            Root.Children.Add(PositionPopup);
+        }
+        PositionPopupTB.Text = tm.ToTimeWithHourIfNeeded();
+        PositionPopup.IsOpen = true;
+        PositionPopup.UpdateLayout();
+
+        if (PositionPopup.Bounds.Width == 0) await Task.Delay(1);
+        double w = ActualWidth;
+        double t = PositionPopup.Bounds.Width;
+        double p = 0;
+        var z = x - (t / 2);
+        if (z >= 0 && z <= w - t) {
+            p = z;
+        } else if (z < 0) {
+            p = 0;
+        } else if (z > w - t) {
+            p = w - t;
+        }
+    }
+
+    private void HidePositionPopup() {
+        if (PositionPopup != null) {
+            PositionPopup.IsOpen = false;
+            //Root.Children.Remove(PositionPopup);
+            //PositionPopup = null;
+        }
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {

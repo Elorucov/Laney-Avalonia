@@ -15,9 +15,15 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Canvas x:Name="Root" Height="20" Background="{TemplateBinding Background}" Cursor="Hand">
-          <Border x:Name="DurationLine" IsHitTestVisible="False" Height="4" Canvas.Top="6" CornerRadius="2" Background="{DynamicResource VKPlaceholderIconBackgroundOpaqueBrush}"/>
-          <Border x:Name="PositionLine" IsHitTestVisible="False" Height="4" Canvas.Top="6" CornerRadius="2" Background="{DynamicResource VKAccentBrush}"/>
-          <Border x:Name="SliderThumb"  IsHitTestVisible="False" Width="16" Height="16" CornerRadius="8" Canvas.Left="0" Background="{DynamicResource VKAccentBrush}" BoxShadow="0 0 2 #1F000000, 0 2 4 #29000000"/>
+          <!--<Border Padding="12,9,12,10" Width="64" BoxShadow="{StaticResource VKElevation3}" CornerRadius="8" Margin="4">
+            <Border.RenderTransform>
+              <TranslateTransform Y="-36"/>
+            </Border.RenderTransform>
+            <TextBlock Text="12:12"/>
+          </Border>-->
+          <Border x:Name="DurationLine" IsHitTestVisible="False" Height="4" Canvas.Top="8" CornerRadius="2" Background="{DynamicResource VKPlaceholderIconBackgroundOpaqueBrush}"/>
+          <Border x:Name="PositionLine" IsHitTestVisible="False" Height="4" Canvas.Top="8" CornerRadius="2" Background="{DynamicResource VKAccentBrush}"/>
+          <Border x:Name="SliderThumb"  IsHitTestVisible="False" Width="16" Height="16" CornerRadius="8" Canvas.Left="0" Canvas.Top="2" Background="{DynamicResource VKAccentBrush}" BoxShadow="{StaticResource VKElevation1}"/>
         </Canvas>
       </ControlTemplate>
     </Setter>

@@ -49,6 +49,14 @@
       </Grid>
 
       <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Popup test"/>
+        <Button x:Name="PTarget" Margin="8,0" Content="Click me!" Click="Button_Click"/>
+        <Popup x:Name="PTest" PlacementTarget="{Binding ElementName=PTarget}" Placement="Top">
+          <controls:VKUIFlyoutPresenter Content="Hello!"/>
+        </Popup>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="MediaSlider test"/>
         <ctrls:MediaSlider x:Name="MSlider" Width="296" Margin="8,0" Position="0:0:20" Duration="0:1:0"/>
         <TextBlock Margin="8" Text="{Binding Position, ElementName=MSlider, Converter={StaticResource tc}}"/>
