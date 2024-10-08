@@ -20,7 +20,7 @@ public partial class AudioPlayerWindow : DialogWindow {
         WTitleBar.CanShowTitle = true;
         TBStub.Height = 27;
 #elif LINUX
-        WTitleBar.IsVIsible = false;
+        WTitleBar.IsVisible = false;
 #endif
     }
 
