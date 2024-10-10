@@ -19,7 +19,10 @@
     
     <Grid x:Name="TrackInfo" Grid.Row="1" ColumnDefinitions="Auto *" Margin="12,0" Height="48">
       <Border x:Name="Cover" Width="48" Height="48" CornerRadius="6" Background="{DynamicResource VKPlaceholderIconBackgroundOpaqueBrush}" BorderBrush="{DynamicResource VKImageBorderBrush}" BorderThickness="1" BackgroundSizing="InnerBorderEdge">
-        <vkui:VKIcon Id="{Binding CurrentSong.CoverPlaceholderIconId}" Foreground="{DynamicResource VKContentPlaceholderIconBrush}"/>
+        <Grid Width="48" Height="48">
+          <vkui:VKIcon Id="{Binding CurrentSong.CoverPlaceholderIconId}" Foreground="{DynamicResource VKContentPlaceholderIconBrush}"/>
+          <Rectangle Width="48" Height="48" RadiusX="6" RadiusY="6" ctrls:ImageLoader.FillSource="{Binding CurrentSong.CoverUrl}"/>
+        </Grid>
       </Border>
       <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
         <TextBlock x:Name="TrackName" ClipToBounds="True" FontSize="16" LineHeight="24" TextTrimming="CharacterEllipsis" MaxLines="1">
@@ -126,7 +129,7 @@
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="32"/>
                   <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="64"/>
+                  <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="Ordinal" Margin="0,10,0,0" FontSize="14" HorizontalAlignment="Center" Foreground="{DynamicResource VKTextSecondaryBrush}" DataContextChanged="UpdateOrdinalNumber"/>
                 <vkui:VKIcon x:Name="PlayIcon" Id="{x:Static vkui:VKIconNames.Icon24Play}"/>

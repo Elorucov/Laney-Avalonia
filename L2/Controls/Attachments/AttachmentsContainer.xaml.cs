@@ -488,7 +488,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     ActionButtonText = Assets.i18n.Resources.play,
                     Name = p.ObjectType
                 };
-                ea.ActionButtonClick += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+                ea.ActionButtonClick += (a, b) => AudioPlayerViewModel.PlayPodcast(podcasts, p, Owner);
                 StandartAttachments.Children.Add(ea);
             }
 
