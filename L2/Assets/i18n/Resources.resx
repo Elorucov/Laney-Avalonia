@@ -789,6 +789,9 @@
     <data name="wnd_gallery" xml:space="preserve">
         <value>Image viewer</value>
     </data>
+    <data name="wnd_audioplayer" xml:space="preserve">
+        <value>Audio player</value>
+    </data>
     <data name="atchpicker_doctype_animations" xml:space="preserve">
         <value>Animations</value>
     </data>
@@ -1154,4 +1157,5 @@
     </data>
     <data name="views_empty" xml:space="preserve">
         <value>No views</value>
-    </data></root>
+    </data>
+</root>
