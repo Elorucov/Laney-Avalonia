@@ -882,6 +882,9 @@
   <data name="wnd_gallery" xml:space="preserve">
     <value>Просмотр изображений</value>
   </data>
+  <data name="wnd_audioplayer" xml:space="preserve">
+    <value>Аудиоплеер</value>
+  </data>
   <data name="atchpicker_doctype_animations" xml:space="preserve">
     <value>Анимации</value>
   </data>

@@ -7,13 +7,15 @@
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vm="using:ELOR.Laney.ViewModels"
         xmlns:dm="using:ELOR.Laney.DataModels"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="160"
         x:Class="ELOR.Laney.Views.AudioPlayerWindow"
         x:DataType="vm:AudioPlayerViewModel"
+        Icon="avares://laney/Assets/Logo/icon.ico"
         Topmost="True"
         Width="422" CanResize="False"
         SizeToContent="Height"
-        Title="AudioPlayerWindow">
+        Title="{x:Static i18n:Resources.wnd_audioplayer}">
   <Grid x:Name="Root" RowDefinitions="Auto Auto Auto Auto Auto" Tag="{Binding CurrentSong}">
     <Border x:Name="TBStub" Height="12"/>
     

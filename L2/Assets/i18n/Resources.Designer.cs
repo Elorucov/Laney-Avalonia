@@ -3418,6 +3418,15 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio player.
+        /// </summary>
+        public static string wnd_audioplayer {
+            get {
+                return ResourceManager.GetString("wnd_audioplayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image viewer.
         /// </summary>
         public static string wnd_gallery {
