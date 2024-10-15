@@ -22,7 +22,7 @@ using ToastNotifications.Avalonia;
 using VKUI.Controls;
 
 namespace ELOR.Laney.ViewModels {
-    public sealed class ChatViewModel : CommonViewModel {
+    public sealed class ChatViewModel : CommonViewModel, IContainsScrollSaverList {
         private VKSession session;
 
         private PeerType _peerType;
@@ -102,6 +102,8 @@ namespace ELOR.Laney.ViewModels {
 
         public List<User> MembersUsers { get; private set; } = new List<User>();
         public List<Group> MembersGroups { get; private set; } = new List<Group>();
+
+        public long Id => PeerId;
 
         private User PeerUser;
         private Group PeerGroup;

@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Remove="Collections\MessagesCollection.cs" />
     <Compile Remove="Controls\ChatListView.axaml.cs" />
+    <Compile Remove="Helpers\ListBoxCustomVirtualization.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
