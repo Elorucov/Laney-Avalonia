@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.623</AssemblyVersion>
-    <FileVersion>2.0.623</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.623-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241008-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.623-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241008-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.623-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241008-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.624</AssemblyVersion>
+    <FileVersion>2.0.624</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.624-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241015-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.624-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241015-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.624-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241015-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -23,6 +23,7 @@
     <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
     <InvariantGlobalization>false</InvariantGlobalization>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>Assets/Logo/icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <IlcGenerateMstatFile>true</IlcGenerateMstatFile>
@@ -52,15 +53,12 @@
   <ItemGroup>
     <Compile Remove="Collections\MessagesCollection.cs" />
     <Compile Remove="Controls\ChatListView.axaml.cs" />
+    <Compile Remove="Helpers\ListBoxCustomVirtualization.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="Assets\Audio\bb2.mp3" />
-    <None Remove="Assets\i18n\en-US.json" />
-    <None Remove="Assets\i18n\ru-RU.json" />
-    <None Remove="Assets\i18n\uk-UA.json" />
     <None Remove="Assets\Logo\icon.icns" />
-    <None Remove="Assets\Logo\icon.ico" />
     <None Remove="Assets\Logo\Laney.png" />
     <None Remove="Assets\Logo\Tray\t32cw.png" />
     <None Remove="Assets\Logo\Tray\t32mb.png" />
@@ -83,14 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets/**" />
-    <AvaloniaResource Remove="Assets\i18n\en-US.json" />
     <AvaloniaResource Remove="Assets\i18n\Resources.Designer.cs" />
     <AvaloniaResource Remove="Assets\i18n\Resources.resx" />
     <AvaloniaResource Remove="Assets\i18n\Resources.ru-RU.resx" />
     <AvaloniaResource Remove="Assets\i18n\Resources.uk-UA.resx" />
-    <AvaloniaResource Remove="Assets\i18n\ru-RU.json" />
-    <AvaloniaResource Remove="Assets\i18n\uk-UA.json" />
     <AvaloniaResource Remove="Assets\Logo\icon.icns" />
+    <AvaloniaResource Include="Assets\Logo\icon.ico" />
     <AvaloniaResource Remove="Assets\macos_installer_background.png" />
     <AvaloniaResource Include="Controls\Attachments\BasicAttachment.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -67,7 +67,7 @@ if ($IsWindows) {
     $const = "WIN$($chstr)";
     $btagw1 = "$($currentversion)-$($ctarget)-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-$($repoenc)";
     echo $btagw1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugType=None -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagw1 -p:DefineConstants=$const;
+    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagw1 -p:DefineConstants=$const;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
 
@@ -75,7 +75,7 @@ if ($IsLinux) {
     $const = "LINUX$($chstr)";
     $btagl1 = "$($currentversion)-$($ctarget)-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-$($repoenc)";
     echo $btagl1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugType=None -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagl1 -p:DefineConstants=$const;
+    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagl1 -p:DefineConstants=$const;
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
 
@@ -85,9 +85,9 @@ if ($IsMacOS) {
     dotnet restore -r $($ctarget);
     $mlocation = "$($projfolder)/bin/Release/net8.0";
 
-    $btagm1 = "$($currentversion)-$($ctarget)-$($uname).$($hname)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))";
+    $btagm1 = "$($currentversion)-$($ctarget)-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-$($repoenc)";
     echo $btagm1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugType=None -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagm1 -p:DefineConstants=$const;
+    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugSymbols=False -p:DebuggerSupport=false -p:Version=$btagm1 -p:DefineConstants=$const;
     
     echo "Creating .app bundle file for macOS...";
     Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;

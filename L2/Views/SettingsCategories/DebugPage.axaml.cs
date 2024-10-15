@@ -41,9 +41,6 @@ namespace ELOR.Laney.Views.SettingsCategories {
 
             p03.IsChecked = Settings.ShowRAMUsage;
             p03.Click += (a, b) => Settings.ShowRAMUsage = (bool)(a as ToggleSwitch).IsChecked;
-			
-            p06.IsChecked = Settings.MessagesListVirtualization;
-            p06.Click += (a, b) => Settings.MessagesListVirtualization = (bool)(a as ToggleSwitch).IsChecked;
 
             p07.IsChecked = Settings.ShowDebugInfoInGallery;
             p07.Click += (a, b) => Settings.ShowDebugInfoInGallery = (bool)(a as ToggleSwitch).IsChecked;

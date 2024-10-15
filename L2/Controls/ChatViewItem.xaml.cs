@@ -195,7 +195,7 @@ namespace ELOR.Laney.Controls {
         private void ChatViewItem_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             PointerPressed -= ChatViewItem_PointerPressed;
             Unloaded -= ChatViewItem_Unloaded;
-            Root.Children.Clear();
+            Root?.Children.Clear();
         }
 
         bool isDisplaying = !Settings.MessagesListVirtualization;
