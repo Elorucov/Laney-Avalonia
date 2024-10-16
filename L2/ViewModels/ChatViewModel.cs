@@ -489,11 +489,13 @@ namespace ELOR.Laney.ViewModels {
                 mhr.Messages?.Reverse();
                 DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
 
-                await Task.Delay(32);
-                if (startMessageId > 0) ScrollToMessageRequested?.Invoke(this, startMessageId);
+                int scrollTo = 0;
+                if (startMessageId > 0) scrollTo = startMessageId;
                 if (startMessageId == -1) {
-                    ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
+                    // ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
+                    scrollTo = InRead;
                 }
+                if (scrollTo > 0 && scrollTo != LastMessage?.ConversationMessageId) ScrollToMessageRequested?.Invoke(this, scrollTo);
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => { LoadMessages(startMessageId); });
             } finally {

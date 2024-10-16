@@ -38,24 +38,22 @@ namespace ELOR.Laney.Helpers {
         }
 
         long oldId = 0;
+        bool needSaveScroll = false;
         private void Scroll_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
             if (e.Property.Name == nameof(ScrollViewer.Extent)) {
 #if DEBUG
                 Debug.WriteLine($"ExtendChanged: vh={scroll.Viewport.Height}, eh={scroll.Extent.Height}, vo={scroll.Offset.Y}, Id {SId}");
 #endif
+                double newOffset = scroll.ScrollBarMaximum.Y;
                 if (Id != oldId) { // Признак того, что DataContext сменился, а значит, надо вернуться к сохранённой позиции.
-                    double newOffset = scroll.ScrollBarMaximum.Y;
                     if (savedOffset.ContainsKey(Id)) {
                         newOffset = savedOffset[Id];
-                        scroll.Offset = new Vector(scroll.Offset.X, newOffset);
-                    } else {
-                        ScrollSaverExtendChangedEventArgs args = new ScrollSaverExtendChangedEventArgs();
-                        ExtendChanged?.Invoke(this, args);
-                        if (!args.Handled) scroll.Offset = new Vector(scroll.Offset.X, newOffset);
                     }
-
                     oldId = Id;
                 }
+                ScrollSaverExtendChangedEventArgs args = new ScrollSaverExtendChangedEventArgs();
+                ExtendChanged?.Invoke(this, args);
+                if (!args.Handled) scroll.Offset = new Vector(scroll.Offset.X, newOffset);
             }
         }
 
