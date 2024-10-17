@@ -33,19 +33,19 @@ namespace ELOR.Laney.Views {
 
             ChatsList.Loaded += ChatsList_Loaded;
 
-            ChatsList.ItemTemplate = this.Resources[Settings.ChatItemMoreRows ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
+            ChatsList.ItemTemplate = Resources[Settings.ChatItemMoreRows ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
             Settings.SettingChanged += Settings_SettingChanged;
         }
 
         private void Settings_SettingChanged(string key, object value) {
             switch (key) {
                 case Settings.CHAT_ITEM_MORE_ROWS:
-                    DataTemplate template = this.Resources[(bool)value ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
+                    DataTemplate template = Resources[(bool)value ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
                     ChatsList.ItemTemplate = template;
 
                     // Костыль для того, чтобы шаблон действительно сменился.
                     ChatsList.ItemsSource = null;
-                    var prop = ChatsList.GetObservable(ListBox.DataContextProperty)
+                    var prop = ChatsList.GetObservable(DataContextProperty)
                         .OfType<VKSession>()
                         .Select(v => v.ImViewModel.SortedChats);
                     ChatsList.Bind(ListBox.ItemsSourceProperty, prop);

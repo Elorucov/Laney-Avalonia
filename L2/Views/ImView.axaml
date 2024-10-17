@@ -20,7 +20,7 @@
         <StackPanel x:Name="Info" Grid.Column="1" Margin="12,11,0,11">
           <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
             <fb:FlexPanel x:Name="ChatNameContainer" Direction="Row" JustifyContent="FlexStart" Wrap="NoWrap">
-              <TextBlock x:Name="ChatName" Classes="Default" Margin="0,1,0,0" FontWeight="Medium" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+              <TextBlock x:Name="ChatName" ClipToBounds="True" Classes="Default" Margin="0,1,0,0" FontWeight="Medium" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
             </fb:FlexPanel>
@@ -36,9 +36,9 @@
             <!--<TextBlock x:Name="LastMessage" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="20" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Foreground="{DynamicResource VKTextSubheadBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="1" Inlines="{Binding LastMessage, Converter={StaticResource micc}}"/>-->
             <Grid x:Name="LastMessage" ColumnDefinitions="Auto *" Height="18" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}">
               <TextBlock x:Name="LastMessageSender" Grid.Column="0" Classes="Subhead" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}" Text="{Binding LastMessage, Converter={StaticResource msnc}}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
-              <TextBlock x:Name="LastMessageText" Grid.Column="1" Classes="Subhead" Margin="0,0,8,0" FontWeight="Regular" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding LastMessage}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+              <TextBlock x:Name="LastMessageText" ClipToBounds="True" Grid.Column="1" Classes="Subhead" Margin="0,0,8,0" FontWeight="Regular" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding LastMessage}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
             </Grid>
-            <TextBlock x:Name="ActivityStatusText" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding ActivityStatus}" TextTrimming="CharacterEllipsis"/>
+            <TextBlock x:Name="ActivityStatusText" ClipToBounds="True" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Foreground="{DynamicResource VKAccentBrush}" Text="{Binding ActivityStatus}" TextTrimming="CharacterEllipsis"/>
 
             <Path x:Name="PinIndicator" Grid.Column="1" IsVisible="{Binding IsPinned}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="1,1,13,1" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
             <StackPanel x:Name="Indicators" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,12,0">
@@ -72,7 +72,7 @@
         <StackPanel x:Name="Info" Grid.Column="1" Margin="12,6,0,0">
           <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
             <fb:FlexPanel x:Name="ChatNameContainer" Direction="Row" JustifyContent="FlexStart" Wrap="NoWrap">
-              <TextBlock x:Name="ChatName" Classes="Default" Margin="0,1,0,0" FontWeight="Medium" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+              <TextBlock x:Name="ChatName" ClipToBounds="True" MaxLines="1" Classes="Default" Margin="0,1,0,0" FontWeight="Medium" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
               <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
             </fb:FlexPanel>
@@ -90,8 +90,8 @@
                 <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
               </Style>
             </Grid.Styles>
-            <TextBlock x:Name="LastMessage" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" Margin="0,0,12,0" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Foreground="{DynamicResource VKTextSubheadBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Inlines="{Binding LastMessage, Converter={StaticResource micc}}"/>
-            <TextBlock x:Name="ActivityStatusText" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Foreground="{DynamicResource VKAccentBrush}" TextWrapping="Wrap" Text="{Binding ActivityStatus}" MaxLines="2" TextTrimming="CharacterEllipsis"/>
+            <TextBlock x:Name="LastMessage" ClipToBounds="True" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" Margin="0,0,12,0" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Foreground="{DynamicResource VKTextSubheadBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2" Inlines="{Binding LastMessage, Converter={StaticResource micc}}"/>
+            <TextBlock x:Name="ActivityStatusText" ClipToBounds="True" Classes="Subhead" FontWeight="Regular" HorizontalAlignment="Left" MinHeight="18" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Foreground="{DynamicResource VKAccentBrush}" TextWrapping="Wrap" Text="{Binding ActivityStatus}" MaxLines="2" TextTrimming="CharacterEllipsis"/>
 
             <Path x:Name="PinIndicator" Grid.Column="1" IsVisible="{Binding IsPinned}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="1,1,13,1" Fill="{DynamicResource VKIconSecondaryAlphaBrush}" Data="{StaticResource Icon16Pin}"/>
             <StackPanel x:Name="Indicators" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,12,0">
