@@ -54,7 +54,7 @@ namespace ELOR.Laney.Views {
         }
 
         private async void ChatsList_Loaded(object sender, RoutedEventArgs e) {
-            ChatsList.Loaded -= ChatsList_Loaded;
+            // ChatsList.Loaded -= ChatsList_Loaded;
             ChatsList.SelectionChanged += ChatsList_SelectionChanged;
             new ItemsPresenterWidthFixer(ChatsList);
             new ListBoxAutoScrollHelper(ChatsList);
@@ -66,13 +66,13 @@ namespace ELOR.Laney.Views {
             if (DemoMode.IsEnabled) return;
 
             bool isRegistered = false;
-            while (isRegistered) {
+            while (!isRegistered) {
                 isRegistered = await TryRegisterIncrementalLoadingEvent();
             }
         }
 
         private async Task<bool> TryRegisterIncrementalLoadingEvent() {
-            await Task.Delay(1000).ConfigureAwait(false);
+            await Task.Yield();
             try {
                 if (Session.ImViewModel == null) return false;
                 (ChatsList?.Scroll as ScrollViewer)?.RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);

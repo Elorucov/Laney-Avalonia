@@ -51,7 +51,7 @@ namespace ELOR.Laney.Views {
                 new ListBoxAutoScrollHelper(MessagesList) {
                     ScrollToLastItemAfterTabFocus = true
                 };
-                // new ItemsPresenterWidthFixer(MessagesList);
+                new ItemsPresenterWidthFixer(MessagesList);
                 var ss = new ScrollSaver(MessagesListScrollViewer);
                 ss.ExtendChanged += (c, d) => { 
                     if (scrollToMessageIndex >= 0) {
