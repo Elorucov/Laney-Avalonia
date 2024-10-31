@@ -9,15 +9,24 @@ namespace VKUI.Popups {
         public static readonly StyledProperty<object> ContentProperty =
             AvaloniaProperty.Register<VKUIFlyout, object>(nameof(Content));
 
+        public static readonly StyledProperty<Thickness> PaddingProperty =
+            AvaloniaProperty.Register<VKUIFlyout, Thickness>(nameof(Padding));
+
         [Content]
         public object Content {
             get => GetValue(ContentProperty);
             set => SetValue(ContentProperty, value);
         }
 
+        public Thickness Padding {
+            get => GetValue(PaddingProperty);
+            set => SetValue(PaddingProperty, value);
+        }
+
         protected override Control CreatePresenter() {
             return new VKUIFlyoutPresenter {
-                [!ContentControl.ContentProperty] = this[!ContentProperty]
+                [!ContentControl.ContentProperty] = this[!ContentProperty],
+                [!PaddingProperty] = this[!PaddingProperty]
             };
         }
     }
