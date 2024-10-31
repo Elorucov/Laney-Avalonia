@@ -1129,19 +1129,24 @@
         <value>Send uncompressed</value>
     </data>
     <data name="drop_without_compression_desc" xml:space="preserve">
-        <value>Drag and drop files here\nto attach them to the message</value>
+        <value>Drag and drop files here
+to attach them to the message</value>
     </data>
     <data name="drop_photos_quick" xml:space="preserve">
-        <value>Drag and drop photos here\nto attach them to the message</value>
+        <value>Drag and drop photos here
+to attach them to the message</value>
     </data>
     <data name="drop_photos_file" xml:space="preserve">
-        <value>Drag and drop photos here\nto attach them as files (uncompressed)</value>
+        <value>Drag and drop photos here
+to attach them as files (uncompressed)</value>
     </data>
     <data name="drop_videos_quick" xml:space="preserve">
-        <value>Drag and drop videos here\nto attach them to the message</value>
+        <value>Drag and drop videos here
+to attach them to the message</value>
     </data>
     <data name="drop_videos_file" xml:space="preserve">
-        <value>Drag and drop videos here\nto attach them as files</value>
+        <value>Drag and drop videos here
+to attach them as files</value>
     </data>
     <data name="views" xml:space="preserve">
         <value>Views</value>

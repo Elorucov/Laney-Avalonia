@@ -1222,19 +1222,24 @@
     <value>Отправка без сжатия</value>
   </data>
   <data name="drop_without_compression_desc" xml:space="preserve">
-    <value>Перетащите сюда файлы,\nчтобы прикрепить их к сообщению</value>
+    <value>Перетащите сюда файлы,
+чтобы прикрепить их к сообщению</value>
   </data>
   <data name="drop_photos_quick" xml:space="preserve">
-    <value>Перетащите сюда фотографии,\nчтобы прикрепить их к сообщению</value>
+    <value>Перетащите сюда фотографии,
+чтобы прикрепить их к сообщению</value>
   </data>
   <data name="drop_photos_file" xml:space="preserve">
-    <value>Перетащите сюда фотографии,\nчтобы прикрепить их как файлы (без сжатия)</value>
+    <value>Перетащите сюда фотографии,
+чтобы прикрепить их как файлы (без сжатия)</value>
   </data>
   <data name="drop_videos_quick" xml:space="preserve">
-    <value>Перетащите сюда видео,\nчтобы прикрепить их к сообщению</value>
+    <value>Перетащите сюда видео,
+чтобы прикрепить их к сообщению</value>
   </data>
   <data name="drop_videos_file" xml:space="preserve">
-    <value>Перетащите сюда видео,\nчтобы прикрепить их как файлы</value>
+    <value>Перетащите сюда видео,
+чтобы прикрепить их как файлы</value>
   </data>
   <data name="views" xml:space="preserve">
     <value>Просмотры</value>
