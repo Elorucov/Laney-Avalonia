@@ -173,22 +173,30 @@ namespace ELOR.Laney.ViewModels.Controls {
         }
 
         private void Picker_EmojiPicked(object sender, string e) {
-            if (TextSelectionStart == TextSelectionEnd) {
-                if (Text == null) {
+            try {
+                if (TextSelectionStart == TextSelectionEnd) {
+                    if (String.IsNullOrEmpty(Text)) {
+                        Text = e;
+                    } else {
+                        Text = Text.Insert(TextSelectionEnd, e);
+                    }
+                    TextSelectionStart += e.Length;
+                    TextSelectionEnd += e.Length;
+                } else {
+                    int start = Math.Min(TextSelectionStart, TextSelectionEnd);
+                    int end = Math.Max(TextSelectionStart, TextSelectionEnd);
+                    string newText = Text.Remove(start, end - start);
+                    Text = newText.Insert(start, e);
+                    start += e.Length;
+                    TextSelectionStart = start;
+                    TextSelectionEnd = start;
+                }
+            } catch (ArgumentOutOfRangeException oorex) { // Workaround for issue #20 that mostye not reproducible
+                if (String.IsNullOrEmpty(Text)) {
                     Text = e;
                 } else {
-                    Text = Text.Insert(TextSelectionEnd, e);
+                    Text = Text.Insert(Text.Length - 1, e);
                 }
-                TextSelectionStart += e.Length;
-                TextSelectionEnd += e.Length;
-            } else {
-                int start = Math.Min(TextSelectionStart, TextSelectionEnd);
-                int end = Math.Max(TextSelectionStart, TextSelectionEnd);
-                string newText = Text.Remove(start, end - start);
-                Text = newText.Insert(start, e);
-                start += e.Length;
-                TextSelectionStart = start;
-                TextSelectionEnd = start;
             }
         }
 
