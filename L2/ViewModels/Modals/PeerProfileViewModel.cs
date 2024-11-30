@@ -8,6 +8,7 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -118,6 +119,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SetupInfo(user);
                 SetupCommands(user);
             } catch (Exception ex) {
+                Log.Error(ex, $"Error in PeerProfileViewModel.GetUser!");
                 Header = null;
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetUser(userId));
             }
@@ -275,6 +277,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 IsLoading = false;
                 Setup(); // TODO: обновить кнопку, а не всё окно.
             } catch (Exception ex) {
+                Log.Error(ex, $"Error in PeerProfileViewModel.ToggleBan!");
                 IsLoading = false;
                 await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
             }
@@ -296,6 +299,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SetupInfo(group);
                 SetupCommands(group);
             } catch (Exception ex) {
+                Log.Error(ex, $"Error in PeerProfileViewModel.GetGroup!");
                 Header = null; // чтобы содержимое окна было скрыто
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetGroup(groupId));
             }
@@ -392,6 +396,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 IsLoading = false;
                 Setup(); // TODO: обновить кнопку, а не всё окно.
             } catch (Exception ex) {
+                Log.Error(ex, $"Error in PeerProfileViewModel.ToggleMessageFromGroup!");
                 IsLoading = false;
                 await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
             }
@@ -421,6 +426,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 if (!chat.IsChannel) SetupMembers(chat);
                 SetupCommands(chat);
             } catch (Exception ex) {
+                Log.Error(ex, $"Error in PeerProfileViewModel.GetChat!");
                 Header = null; // чтобы содержимое окна было скрыто
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetChat(peerId));
             }
@@ -655,6 +661,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 IsLoading = false;
                 Setup(); // TODO: обновить кнопку, а не всё окно.
             } catch (Exception ex) {
+                Log.Error(ex, $"Error in PeerProfileViewModel.ToggleNotifications!");
                 IsLoading = false;
                 await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex);
             }
@@ -715,6 +722,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                     ivm.End = true;
                 }
             } catch (Exception ex) {
+                Log.Error(ex, $"Error in PeerProfileViewModel.LoadVM!");
                 if (ivm.Items.Count == 0) {
                     ivm.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadVM(ivm, type));
                 } else {

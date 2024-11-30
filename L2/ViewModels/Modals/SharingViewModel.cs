@@ -2,6 +2,7 @@
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
+using Serilog;
 using System;
 using System.Collections.ObjectModel;
 
@@ -75,6 +76,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             } catch (Exception ex) {
                 IsLoading = false;
                 if (Chats != null && Chats.Count > 0) {
+                    Log.Error(ex, $"Error in SharingViewModel.SearchChats!");
                     if (await ExceptionHelper.ShowErrorDialogAsync(Session.ModalWindow, ex)) SearchChats();
                 } else {
                     Placeholder = PlaceholderViewModel.GetForException(ex, (o) => SearchChats());
