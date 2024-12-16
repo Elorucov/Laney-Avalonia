@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Views.Modals;
 using Serilog;
@@ -19,8 +18,11 @@ namespace ELOR.Laney.Controls {
             InitializeComponent();
         }
 
-        private void MessageText_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
+        private void MessageText_DataContextChanged(object sender, EventArgs e) {
+            MessageText.Focus();
+        }
+
+        private void MessageText_Loaded(object? sender, RoutedEventArgs e) {
             MessageText.Focus();
         }
 

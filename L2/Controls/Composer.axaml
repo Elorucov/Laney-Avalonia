@@ -105,7 +105,7 @@
 			   LostFocus="MessageText_LostFocus" PropertyChanged="MessageText_PropertyChanged" KeyDown="MessageText_KeyDown" KeyUp="MessageText_KeyUp" 
 			   SelectionStart="{Binding TextSelectionStart, Mode=TwoWay}" SelectionEnd="{Binding TextSelectionEnd, Mode=TwoWay}" 
 			   Watermark="{x:Static i18n:Resources.message}" Text="{Binding Text, Mode=TwoWay}"
-			   Loaded="MessageText_Loaded"/>
+			   DataContextChanged="MessageText_DataContextChanged" Loaded="MessageText_Loaded"/>
 
       <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
         <Button x:Name="GroupsTemplatesButton" Classes="Tertiary ComposerButton" IsVisible="{Binding IsGroupSession}" Click="ShowTemplatesFlyout">
