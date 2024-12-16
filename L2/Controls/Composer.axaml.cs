@@ -19,6 +19,11 @@ namespace ELOR.Laney.Controls {
             InitializeComponent();
         }
 
+        private void MessageText_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            MessageText.Focus();
+        }
+
         // Костыль для сохранения выделения в тексте сообщения после потери фокуса.
         private async void MessageText_PropertyChanged(object sender, Avalonia.AvaloniaPropertyChangedEventArgs e) {
             if (e.Property == TextBox.SelectionStartProperty || e.Property == TextBox.SelectionEndProperty) {

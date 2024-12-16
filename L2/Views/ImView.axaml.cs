@@ -19,6 +19,10 @@ namespace ELOR.Laney.Views {
 
         public ImView() {
             InitializeComponent();
+
+            if (Design.IsDesignMode)
+                return;
+
             AvatarButton.Click += (a, b) => {
                 Session.ShowSessionPopup(AvatarButton);
             };
