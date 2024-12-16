@@ -330,6 +330,9 @@
   <data name="favorites" xml:space="preserve">
     <value>Збережене</value>
   </data>
+  <data name="saved_messages" xml:space="preserve">
+    <value>Збережені повідомлення</value>
+  </data>
   <data name="info" xml:space="preserve">
     <value>Iнформацiя</value>
   </data>

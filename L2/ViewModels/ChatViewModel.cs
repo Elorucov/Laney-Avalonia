@@ -339,7 +339,7 @@ namespace ELOR.Laney.ViewModels {
                 if (b.PropertyName == nameof(Online))
                 {
                     // make an empty subtitle if it is favorites
-                    if (PeerId == session.Id) Subtitle = string.Empty;
+                    if (PeerId == session.Id) Subtitle = Assets.i18n.Resources.saved_messages;
                     else Subtitle = VKAPIHelper.GetOnlineInfo(Online, PeerUser.Sex).ToLowerInvariant();
                 }
 

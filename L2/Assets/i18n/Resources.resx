@@ -234,6 +234,9 @@
     <data name="favorites" xml:space="preserve">
         <value>Favorites</value>
     </data>
+    <data name="saved_messages" xml:space="preserve">
+        <value>Saved messages</value>
+    </data>
     <data name="info" xml:space="preserve">
         <value>Information</value>
     </data>

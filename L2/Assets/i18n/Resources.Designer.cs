@@ -2775,6 +2775,15 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saved messages.
+        /// </summary>
+        public static string saved_messages {
+            get {
+                return ResourceManager.GetString("saved_messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string search {
