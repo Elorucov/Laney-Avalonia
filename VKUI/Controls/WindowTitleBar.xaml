@@ -14,7 +14,8 @@
         <Grid x:Name="TitleBar" ColumnDefinitions="* Auto">
           <TextBlock x:Name="WindowTitle" Grid.ColumnSpan="2" TextAlignment="Center" TextTrimming="CharacterEllipsis"/>
           <Border x:Name="DragArea" Grid.ColumnSpan="2" Background="Transparent"/>
-          <Button x:Name="CloseButton" Grid.Column="1" IsVisible="False" Width="24" Height="24" MinHeight="24" CornerRadius="12" Margin="12" Padding="4">
+          <Button x:Name="CloseButton" Grid.Column="1" IsVisible="False" IsCancel="True"
+				  Width="24" Height="24" MinHeight="24" CornerRadius="12" Margin="12" Padding="4">
             <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Cancel}" Foreground="{DynamicResource VKIconOutlineMediumBrush}"/>
           </Button>
         </Grid>
