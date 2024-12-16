@@ -5,6 +5,10 @@ namespace ELOR.Laney.Views {
     public sealed partial class SignInWindow : Window {
         public SignInWindow() {
             InitializeComponent();
+
+            if (Design.IsDesignMode)
+                return;
+
             Log.Information($"{nameof(SignInWindow)} initialized.");
 
             Activated += SignInWindow_Activated;
