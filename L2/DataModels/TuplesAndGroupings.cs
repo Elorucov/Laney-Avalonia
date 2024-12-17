@@ -1,9 +1,12 @@
-﻿using ELOR.Laney.ViewModels;
+﻿using Avalonia.Media;
+using ELOR.Laney.ViewModels;
 using NeoSmart.Unicode;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace ELOR.Laney.DataModels {
     public class TwoStringTuple : Tuple<string, string> {
@@ -22,6 +25,35 @@ namespace ELOR.Laney.DataModels {
 
     public class Entity : Tuple<long, Uri, string, string, Command> {
         public Entity(long item1, Uri item2, string item3, string item4, Command item5) : base(item1, item2, item3, item4, item5) {}
+    }
+
+    public class ReactionEntity : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public long Item1 { get; set; }
+        private IImage _item2;
+        public IImage Item2
+        {
+            get { return _item2; }
+            set { _item2 = value; OnPropertyChanged(); }
+        }
+        public string Item3 { get; set; }
+        public string Item4 { get; set; }
+        public Command Item5 { get; set; }
+
+        public ReactionEntity(long item1, IImage item2, string item3, string item4, Command item5)
+        {
+            Item1 = item1;
+            Item2 = item2;
+            Item3 = item3;
+            Item4 = item4;
+            Item5 = item5;
+        }
     }
 
     public class ReactionGroup : Tuple<int, int, List<Entity>> {
