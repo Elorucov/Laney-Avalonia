@@ -119,7 +119,16 @@
                 <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding IsVerified}"/>
                 <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
               </StackPanel>
-              <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNullOrEmpty}}" Text="{Binding Subtitle, Mode=OneWay}"/>
+              <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Subtitle, Mode=OneWay}">
+				  <TextBlock.IsVisible>
+					  <MultiBinding Converter="{x:Static BoolConverters.And}">
+						  <MultiBinding.Bindings>
+							  <Binding Path="ActivityStatus" Converter="{x:Static StringConverters.IsNullOrEmpty}"/>
+							  <Binding Path="Subtitle" Converter="{x:Static StringConverters.IsNotNullOrEmpty}"/>
+						  </MultiBinding.Bindings>
+					  </MultiBinding>
+				  </TextBlock.IsVisible>
+			  </TextBlock>
               <TextBlock Classes="Caption1" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding ActivityStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding ActivityStatus, Mode=OneWay}"/>
             </StackPanel>
           </Grid>

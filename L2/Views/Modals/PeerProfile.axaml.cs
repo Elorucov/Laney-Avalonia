@@ -21,6 +21,10 @@ namespace ELOR.Laney.Views.Modals {
 
         public PeerProfile(VKSession session, long peerId) {
             InitializeComponent();
+
+            if (Design.IsDesignMode)
+                return;
+
             this.session = session;
             Tag = session;
 

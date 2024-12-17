@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
+using Avalonia.VisualTree;
 using System;
 using System.Runtime.InteropServices;
 
@@ -24,6 +26,14 @@ namespace VKUI.Windows {
 
             FixSize();
             this.Position = new PixelPoint(movex, movey);
+
+            TryFocus();
+        }
+
+        // Autofocus to window
+        private void TryFocus() {
+            var focusable = this.FindDescendantOfType<InputElement>();
+            if (focusable != null) focusable.Focus();
         }
 
         private void DialogWindow_SizeChanged(object sender, SizeChangedEventArgs e) {

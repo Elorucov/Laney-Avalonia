@@ -19,6 +19,10 @@ namespace ELOR.Laney.Views {
 
         public ImView() {
             InitializeComponent();
+
+            if (Design.IsDesignMode)
+                return;
+
             AvatarButton.Click += (a, b) => {
                 Session.ShowSessionPopup(AvatarButton);
             };
@@ -33,19 +37,19 @@ namespace ELOR.Laney.Views {
 
             ChatsList.Loaded += ChatsList_Loaded;
 
-            ChatsList.ItemTemplate = this.Resources[Settings.ChatItemMoreRows ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
+            ChatsList.ItemTemplate = Resources[Settings.ChatItemMoreRows ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
             Settings.SettingChanged += Settings_SettingChanged;
         }
 
         private void Settings_SettingChanged(string key, object value) {
             switch (key) {
                 case Settings.CHAT_ITEM_MORE_ROWS:
-                    DataTemplate template = this.Resources[(bool)value ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
+                    DataTemplate template = Resources[(bool)value ? "ChatItemTemplate3Row" : "ChatItemTemplate2Row"] as DataTemplate;
                     ChatsList.ItemTemplate = template;
 
                     // Костыль для того, чтобы шаблон действительно сменился.
                     ChatsList.ItemsSource = null;
-                    var prop = ChatsList.GetObservable(ListBox.DataContextProperty)
+                    var prop = ChatsList.GetObservable(DataContextProperty)
                         .OfType<VKSession>()
                         .Select(v => v.ImViewModel.SortedChats);
                     ChatsList.Bind(ListBox.ItemsSourceProperty, prop);
@@ -54,7 +58,7 @@ namespace ELOR.Laney.Views {
         }
 
         private async void ChatsList_Loaded(object sender, RoutedEventArgs e) {
-            ChatsList.Loaded -= ChatsList_Loaded;
+            // ChatsList.Loaded -= ChatsList_Loaded;
             ChatsList.SelectionChanged += ChatsList_SelectionChanged;
             new ItemsPresenterWidthFixer(ChatsList);
             new ListBoxAutoScrollHelper(ChatsList);
@@ -66,13 +70,13 @@ namespace ELOR.Laney.Views {
             if (DemoMode.IsEnabled) return;
 
             bool isRegistered = false;
-            while (isRegistered) {
+            while (!isRegistered) {
                 isRegistered = await TryRegisterIncrementalLoadingEvent();
             }
         }
 
         private async Task<bool> TryRegisterIncrementalLoadingEvent() {
-            await Task.Delay(1000).ConfigureAwait(false);
+            await Task.Yield();
             try {
                 if (Session.ImViewModel == null) return false;
                 (ChatsList?.Scroll as ScrollViewer)?.RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);

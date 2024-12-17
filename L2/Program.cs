@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -116,7 +117,12 @@ namespace ELOR.Laney {
             AppBuilder.Configure<App>().UseAvaloniaNative().UsePlatformDetect()
             .With(new SkiaOptions {
                 UseOpacitySaveLayer = true,
-                MaxGpuResourceSizeBytes = 33554432
+                MaxGpuResourceSizeBytes = 1073741824
+            //}).With(new Win32PlatformOptions { 
+            //    RenderingMode = new List<Win32RenderingMode> { Win32RenderingMode.Vulkan, Win32RenderingMode.Wgl, Win32RenderingMode.Software },
+            //    CompositionMode = new List<Win32CompositionMode> { Win32CompositionMode.WinUIComposition, Win32CompositionMode.LowLatencyDxgiSwapChain, Win32CompositionMode.DirectComposition },
+            }).With(new X11PlatformOptions {
+                RenderingMode = new List<X11RenderingMode> { X11RenderingMode.Vulkan, X11RenderingMode.Glx, X11RenderingMode.Software }
             });
     }
 }

@@ -3,6 +3,7 @@ using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
 using System.IO;
 using System.Net.Sockets;
@@ -61,6 +62,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static async Task<bool> ShowErrorDialogAsync(Window owner, Exception ex, bool hideRetry = false, string additional = null) {
+            Log.Error(ex, $"From ShowErrorDialogAsync!");
             if (ex is AggregateException agex) ex = agex.InnerException;
             if (ex is APIException apiex && apiex.Code == 14) return true;
             Tuple<string, string> err = GetDefaultErrorInfo(ex);

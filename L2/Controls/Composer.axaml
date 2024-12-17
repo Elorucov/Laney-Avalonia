@@ -101,7 +101,11 @@
       </Button>
 
       <!-- Костыль с margin-ом нужен, т. к. при 15/20 текст располагается выше. (должно быть "0,8") -->
-      <TextBox x:Name="MessageText" Grid.Column="1" Classes="Transparent" VerticalAlignment="Center" Margin="0,9,0,7" TextWrapping="Wrap" MaxLength="2048" MaxHeight="100" LostFocus="MessageText_LostFocus" PropertyChanged="MessageText_PropertyChanged" KeyDown="MessageText_KeyDown" KeyUp="MessageText_KeyUp" SelectionStart="{Binding TextSelectionStart, Mode=TwoWay}" SelectionEnd="{Binding TextSelectionEnd, Mode=TwoWay}" Watermark="{x:Static i18n:Resources.message}" Text="{Binding Text, Mode=TwoWay}"/>
+      <TextBox x:Name="MessageText" Grid.Column="1" Classes="Transparent" VerticalAlignment="Center" Margin="0,9,0,7" TextWrapping="Wrap" MaxLength="2048" MaxHeight="100" 
+			   LostFocus="MessageText_LostFocus" PropertyChanged="MessageText_PropertyChanged" KeyDown="MessageText_KeyDown" KeyUp="MessageText_KeyUp" 
+			   SelectionStart="{Binding TextSelectionStart, Mode=TwoWay}" SelectionEnd="{Binding TextSelectionEnd, Mode=TwoWay}" 
+			   Watermark="{x:Static i18n:Resources.message}" Text="{Binding Text, Mode=TwoWay}"
+			   DataContextChanged="MessageText_DataContextChanged" Loaded="MessageText_Loaded"/>
 
       <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
         <Button x:Name="GroupsTemplatesButton" Classes="Tertiary ComposerButton" IsVisible="{Binding IsGroupSession}" Click="ShowTemplatesFlyout">

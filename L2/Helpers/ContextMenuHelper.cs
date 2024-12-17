@@ -503,6 +503,7 @@ namespace ELOR.Laney.Helpers {
 
                 string type = spam ? "spam" : "deleted";
                 string multi = count > 1 ? "multi" : "single";
+                Log.Information($"Messages deleted. Type = {type}; count = {count}; snackbar text = {Localizer.Get($"message_{type}_{multi}")}");
                 session.ShowNotification(new Notification(Localizer.Get($"message_{type}_{multi}"), null, NotificationType.Success));
             } catch (Exception ex) {
                 await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);

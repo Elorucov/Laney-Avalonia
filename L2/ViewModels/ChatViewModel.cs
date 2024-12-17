@@ -46,6 +46,7 @@ namespace ELOR.Laney.ViewModels {
         private ComposerViewModel _composer;
         private bool _isMarkedAsUnread;
         private bool _isPinned;
+        private bool _isFavoritesChat;
         private ObservableCollection<int> _mentions;
         private bool _hasMention;
         private bool _hasSelfDestructMessage;
@@ -82,6 +83,7 @@ namespace ELOR.Laney.ViewModels {
         public ComposerViewModel Composer { get { return _composer; } private set { _composer = value; OnPropertyChanged(); } }
         public bool IsMarkedAsUnread { get { return _isMarkedAsUnread; } private set { _isMarkedAsUnread = value; OnPropertyChanged(); } }
         public bool IsPinned { get { return _isPinned; } private set { _isPinned = value; OnPropertyChanged(); } }
+        public bool IsFavoritesChat { get { return _isFavoritesChat; } private set { _isFavoritesChat = value; OnPropertyChanged(); } }
         public ObservableCollection<int> Mentions { get { return _mentions; } private set { _mentions = value; OnPropertyChanged(); } }
         public bool HasMention { get { return _hasMention; } private set { _hasMention = value; OnPropertyChanged(); } }
         public bool HasSelfDestructMessage { get { return _hasSelfDestructMessage; } private set { _hasSelfDestructMessage = value; OnPropertyChanged(); } }
@@ -222,15 +224,21 @@ namespace ELOR.Laney.ViewModels {
             if (PeerId.IsUser()) { // User
                 PeerType = PeerType.User;
                 PeerUser = CacheManager.GetUser(PeerId);
-                if (PeerId == session.Id) {
+                IsFavoritesChat = PeerId == session.Id;
+                if (IsFavoritesChat) {
                     Title = Assets.i18n.Resources.favorites;
                     Avatar = new Uri("https://vk.com/images/icons/im_favorites_200.png");
+                    // make favorites offline
+                    var tmp = PeerUser.OnlineInfo;
+                    tmp.IsMobile = false;
+                    tmp.IsOnline = false;
+                    Online = tmp;
                 } else {
                     Title = PeerUser.FullName;
                     Avatar = new Uri(PeerUser.Photo200);
+                    Online = PeerUser.OnlineInfo;
                 }
                 IsVerified = PeerUser.Verified == 1;
-                Online = PeerUser.OnlineInfo;
             } else if (PeerId.IsGroup()) { // Group
                 PeerType = PeerType.Group;
                 PeerGroup = CacheManager.GetGroup(PeerId);
@@ -328,8 +336,12 @@ namespace ELOR.Laney.ViewModels {
             SelectedMessages.SelectionChanged += SelectedMessages_SelectionChanged;
 
             PropertyChanged += (a, b) => { 
-                if (b.PropertyName == nameof(Online)) 
-                    Subtitle = VKAPIHelper.GetOnlineInfo(Online, PeerUser.Sex).ToLowerInvariant();
+                if (b.PropertyName == nameof(Online))
+                {
+                    // make an empty subtitle if it is favorites
+                    if (PeerId == session.Id) Subtitle = Assets.i18n.Resources.saved_messages;
+                    else Subtitle = VKAPIHelper.GetOnlineInfo(Online, PeerUser.Sex).ToLowerInvariant();
+                }
 
                 if (b.PropertyName == nameof(HasMention) || b.PropertyName == nameof(HasSelfDestructMessage))
                     OnPropertyChanged(nameof(MentionIconId));
@@ -489,11 +501,13 @@ namespace ELOR.Laney.ViewModels {
                 mhr.Messages?.Reverse();
                 DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
 
-                await Task.Delay(32);
-                if (startMessageId > 0) ScrollToMessageRequested?.Invoke(this, startMessageId);
+                int scrollTo = 0;
+                if (startMessageId > 0) scrollTo = startMessageId;
                 if (startMessageId == -1) {
-                    ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
+                    // ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
+                    scrollTo = InRead;
                 }
+                if (scrollTo > 0 && scrollTo != LastMessage?.ConversationMessageId) ScrollToMessageRequested?.Invoke(this, scrollTo);
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => { LoadMessages(startMessageId); });
             } finally {

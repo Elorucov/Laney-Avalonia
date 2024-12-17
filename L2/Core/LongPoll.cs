@@ -195,7 +195,7 @@ namespace ELOR.Laney.Core {
                         long peerId = (long)u[3];
                         bool hasMessage = u.Count > 4; // удалённое у текущего юзера сообщение восстановилось
                         Log.Information($"EVENT {eventId}: msg={msgId}, flags={flags}, peer={peerId}, hasMessage={hasMessage}");
-                        if (eventId == 3) MessageFlagRemove?.Invoke(this, msgId, flags, peerId);
+                        if (eventId == 10003) MessageFlagRemove?.Invoke(this, msgId, flags, peerId);
                         else MessageFlagSet?.Invoke(this, msgId, flags, peerId);
                         if (hasMessage) {
                             Message msgFromHistory3 = messages?.Where(m => m.Id == msgId).FirstOrDefault();

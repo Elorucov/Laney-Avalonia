@@ -26,7 +26,7 @@ namespace ELOR.Laney.Views {
         ChatViewModel Chat { get; set; }
         ScrollViewer MessagesListScrollViewer;
         DispatcherTimer markReadTimer;
-        int scrollToMessageIndex = 0;
+        int scrollToMessageIndex = -1;
 
         MessageViewModel FirstVisible { get => MessagesListScrollViewer?.GetDataContextAt<MessageViewModel>(new Point(64, 0)); }
         MessageViewModel LastVisible { get => MessagesListScrollViewer?.GetDataContextAt<MessageViewModel>(new Point(64, MessagesListScrollViewer.DesiredSize.Height - 5)); }
@@ -51,10 +51,11 @@ namespace ELOR.Laney.Views {
                 new ListBoxAutoScrollHelper(MessagesList) {
                     ScrollToLastItemAfterTabFocus = true
                 };
-                // new ItemsPresenterWidthFixer(MessagesList);
+                new ItemsPresenterWidthFixer(MessagesList);
                 var ss = new ScrollSaver(MessagesListScrollViewer);
                 ss.ExtendChanged += (c, d) => { 
-                    if (scrollToMessageIndex > 0) {
+                    if (scrollToMessageIndex >= 0) {
+                        Debug.WriteLine($"ScrollSaver.ExtendChanged: scmi={scrollToMessageIndex}");
                         d.Handled = true;
                         MessagesList.ScrollIntoView(scrollToMessageIndex);
                     }
@@ -276,10 +277,10 @@ namespace ELOR.Laney.Views {
             if (Chat.DisplayedMessages == null) return;
             var msg = Chat.DisplayedMessages?.GetById(messageId);
             int index = Chat.DisplayedMessages.IndexOf(msg);
-            Log.Information($"ScrollToMessage: cmid: {messageId}; index: {index}");
+            Log.Information($"ScrollToMessage: cmid={messageId}; index={index}");
             if (canTriggerLoadingMessages) {
                 MessagesList.ScrollIntoView(scrollToMessageIndex);
-            } else { // Признак того, что происходит смена чата либо загрузка сообщений после первого перехода в чат
+            } else {
                 scrollToMessageIndex = index;
             }
         }

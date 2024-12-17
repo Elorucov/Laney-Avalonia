@@ -799,7 +799,8 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and drop photos here\nto attach them as files (uncompressed).
+        ///   Looks up a localized string similar to Drag and drop photos here
+        ///to attach them as files (uncompressed).
         /// </summary>
         public static string drop_photos_file {
             get {
@@ -808,7 +809,8 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and drop photos here\nto attach them to the message.
+        ///   Looks up a localized string similar to Drag and drop photos here
+        ///to attach them to the message.
         /// </summary>
         public static string drop_photos_quick {
             get {
@@ -826,7 +828,8 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and drop videos here\nto attach them as files.
+        ///   Looks up a localized string similar to Drag and drop videos here
+        ///to attach them as files.
         /// </summary>
         public static string drop_videos_file {
             get {
@@ -835,7 +838,8 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and drop videos here\nto attach them to the message.
+        ///   Looks up a localized string similar to Drag and drop videos here
+        ///to attach them to the message.
         /// </summary>
         public static string drop_videos_quick {
             get {
@@ -853,7 +857,8 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and drop files here\nto attach them to the message.
+        ///   Looks up a localized string similar to Drag and drop files here
+        ///to attach them to the message.
         /// </summary>
         public static string drop_without_compression_desc {
             get {
@@ -2766,6 +2771,15 @@ namespace ELOR.Laney.Assets.i18n {
         public static string save {
             get {
                 return ResourceManager.GetString("save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved messages.
+        /// </summary>
+        public static string saved_messages {
+            get {
+                return ResourceManager.GetString("saved_messages", resourceCulture);
             }
         }
         

@@ -29,7 +29,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         private void FixSize() {
-            Debug.WriteLine($"FixSize for items presenter. WIdth: {listBox.Bounds.Width}px");
+            Debug.WriteLine($"FixSize for items presenter. Width: {listBox.Bounds.Width}px");
             presenter.Width = listBox.Bounds.Width;
         }
 

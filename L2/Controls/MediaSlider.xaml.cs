@@ -142,7 +142,9 @@ public class MediaSlider : TemplatedControl {
                 PlacementTarget = SliderThumb
             };
 
-            TextBlock tb = new TextBlock();
+            TextBlock tb = new TextBlock {
+                Margin = new Thickness(12, 8)
+            };
             tb.Classes.Add("Subhead");
             PositionPopupTB = tb;
 

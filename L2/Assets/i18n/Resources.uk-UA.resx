@@ -330,6 +330,9 @@
   <data name="favorites" xml:space="preserve">
     <value>Збережене</value>
   </data>
+  <data name="saved_messages" xml:space="preserve">
+    <value>Збережені повідомлення</value>
+  </data>
   <data name="info" xml:space="preserve">
     <value>Iнформацiя</value>
   </data>
@@ -1222,19 +1225,24 @@
     <value>Надсилання без стискання</value>
   </data>
   <data name="drop_without_compression_desc" xml:space="preserve">
-    <value>Перетягніть сюди файли,\nщоб прикріпити їх до повідомлення</value>
+    <value>Перетягніть сюди файли,
+щоб прикріпити їх до повідомлення</value>
   </data>
   <data name="drop_photos_quick" xml:space="preserve">
-    <value>Перетягніть сюди фотографії,\nщоб прикріпити їх до повідомлення</value>
+    <value>Перетягніть сюди фотографії,
+щоб прикріпити їх до повідомлення</value>
   </data>
   <data name="drop_photos_file" xml:space="preserve">
-    <value>Перетягніть сюди фотографії,\nщоб прикріпити їх як файли (без стискання)</value>
+    <value>Перетягніть сюди фотографії,
+щоб прикріпити їх як файли (без стискання)</value>
   </data>
   <data name="drop_videos_quick" xml:space="preserve">
-    <value>Перетягніть сюди відео,\nщоб прикріпити їх до повідомлення</value>
+    <value>Перетягніть сюди відео,
+щоб прикріпити їх до повідомлення</value>
   </data>
   <data name="drop_videos_file" xml:space="preserve">
-    <value>Перетягніть сюди відео,\nщоб прикріпити їх як файли</value>
+    <value>Перетягніть сюди відео,
+щоб прикріпити їх як файли</value>
   </data>
   <data name="views" xml:space="preserve">
     <value>Перегляди</value>

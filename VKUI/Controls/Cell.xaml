@@ -27,7 +27,7 @@
           <RadioButton GroupName="Test" IsChecked="True"/>
         </controls:Cell.Before>
       </controls:Cell>
-      <controls:Cell Header="Bbbbb" Subtitle="Bbbbb">
+      <controls:Cell Header="Bbbbb">
         <controls:Cell.Before>
           <RadioButton GroupName="Test"/>
         </controls:Cell.Before>
@@ -48,7 +48,11 @@
 
             <Style Selector="ContentPresenter#BeforeControl > RadioButton">
               <Setter Property="VerticalAlignment" Value="Top"/>
-              <Setter Property="Margin" Value="0,-8,-10,0"/>
+              <Setter Property="Margin" Value="0,0,0,0"/>
+              <Setter Property="MinWidth" Value="22"/>
+              <Setter Property="MinHeight" Value="22"/>
+              <Setter Property="Width" Value="22"/>
+              <Setter Property="Height" Value="22"/>
             </Style>
           </Border.Styles>
           <Grid ColumnDefinitions="Auto * Auto" Margin="12,0">
