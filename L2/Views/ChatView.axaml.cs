@@ -278,11 +278,16 @@ namespace ELOR.Laney.Views {
             var msg = Chat.DisplayedMessages?.GetById(messageId);
             int index = Chat.DisplayedMessages.IndexOf(msg);
             Log.Information($"ScrollToMessage: cmid={messageId}; index={index}");
-            if (canTriggerLoadingMessages) {
+
+            // проверка, что мы хотим прокрутиться до последнего сообщения
+            // зачем? потому что, если последнее сообщение по размерам больше, чем 
+            // viewport, то будет показываться только начало этого сообщения
+            // а мы хотим самый низ - поэтому так
+            scrollToMessageIndex = index;
+            if (index != Chat.DisplayedMessages.Count - 1)
                 MessagesList.ScrollIntoView(scrollToMessageIndex);
-            } else {
-                scrollToMessageIndex = index;
-            }
+            else
+                MessagesList.Scroll.Offset = MessagesList.Scroll.Offset.WithY(MessagesList.Scroll.Extent.Height);
         }
 
         private void CheckFirstAndLastDisplayedMessages() {

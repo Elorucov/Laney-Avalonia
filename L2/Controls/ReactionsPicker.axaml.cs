@@ -2,11 +2,15 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using Avalonia.Svg.Skia;
 using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
+using ExCSS;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ELOR.Laney;
@@ -17,6 +21,8 @@ public partial class ReactionsPicker : UserControl {
     long peerId;
     int cmid;
     int selectedReactionId = 0;
+
+    private static List<IImage> _fullyCachedReactions;
 
     public ReactionsPicker() {
         InitializeComponent();
@@ -31,8 +37,42 @@ public partial class ReactionsPicker : UserControl {
         parentPopup = parent;
 
         Command command = new Command(null, null, false, OnReactionClick);
-        var entities = CacheManager.AvailableReactions.Select(r => new Entity(r, new Uri(CacheManager.GetStaticReactionUrl(r)), null, null, command)).ToList();
+        var entities = CacheManager.AvailableReactions.Select(r => new ReactionEntity(r, null, null, null, command)).ToList();
         ReactionsList.ItemsSource = entities;
+
+        LoadReactionsAsync(entities);
+    }
+
+    private async void LoadReactionsAsync(List<ReactionEntity> entities)
+    {
+        // apply cached if exist
+        if (_fullyCachedReactions != null)
+        {
+            for (int i = 0; i < CacheManager.AvailableReactions.Count; ++i)
+            {
+                entities[i].Item2 = _fullyCachedReactions[i];
+            }
+            return;
+        }
+
+        // cache
+        _fullyCachedReactions = new List<IImage>();
+        // load up reactions async
+        for (int i = 0; i < CacheManager.AvailableReactions.Count; ++i)
+        {
+            var uri = new Uri(CacheManager.GetStaticReactionUrl(CacheManager.AvailableReactions[i]));
+
+            string data = await CacheManager.GetStaticReactionImageAsync(uri);
+            if (String.IsNullOrEmpty(data)) return;
+
+            var ent = entities[i];
+            var svg = new SvgImage
+            {
+                Source = SvgSource.LoadFromSvg(data)
+            };
+            ent.Item2 = svg;
+            _fullyCachedReactions.Add(svg);
+        }
     }
 
     private async void OnReactionClick(object obj) {
