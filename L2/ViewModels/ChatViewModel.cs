@@ -130,7 +130,7 @@ namespace ELOR.Laney.ViewModels {
             Title = peerId.ToString();
             MessageViewModel msg = null;
             if (lastMessage != null) {
-                msg = new MessageViewModel(lastMessage, session);
+                msg = MessageViewModel.Create(lastMessage, session);
                 if (!lastMessage.IsPartial) FixState(msg);
                 if (SortId == null) SortId = new SortId { MajorId = 0, MinorId = lastMessage.Id };
                 ReceivedMessages.Add(msg);
@@ -149,7 +149,7 @@ namespace ELOR.Laney.ViewModels {
             SetUpEvents();
             Setup(c);
             if (lastMessage != null) {
-                MessageViewModel msg = new MessageViewModel(lastMessage, session);
+                MessageViewModel msg = MessageViewModel.Create(lastMessage, session);
                 FixState(msg);
                 ReceivedMessages.Add(msg);
             }
@@ -260,7 +260,7 @@ namespace ELOR.Laney.ViewModels {
                 Title = ChatSettings.Title;
                 Avatar = ChatSettings?.Photo?.Uri;
                 if (ChatSettings.PinnedMessage != null) 
-                    PinnedMessage = new MessageViewModel(ChatSettings.PinnedMessage, session);
+                    PinnedMessage = MessageViewModel.Create(ChatSettings.PinnedMessage, session);
                 UpdateSubtitleForChat();
             } else if (PeerId > 1900000000 && PeerId <= 2000000000) { // Contact?
                 PeerType = PeerType.Contact;
@@ -508,6 +508,7 @@ namespace ELOR.Laney.ViewModels {
                 Setup(mhr.Conversation);
                 mhr.Messages?.Reverse();
                 DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
+                GC.Collect();
 
                 int scrollTo = 0;
                 if (startMessageId > 0) scrollTo = startMessageId;
@@ -536,7 +537,7 @@ namespace ELOR.Laney.ViewModels {
                 mhr.Messages.Reverse();
                 MessagesChunkLoaded?.Invoke(this, false);
                 DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
-                    var msg = new MessageViewModel(m, session);
+                    var msg = MessageViewModel.Create(m, session);
                     FixState(msg);
                     return msg;
                 }).ToList());
@@ -563,7 +564,7 @@ namespace ELOR.Laney.ViewModels {
                 mhr.Messages.Reverse();
                 MessagesChunkLoaded?.Invoke(this, true);
                 DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
-                    var msg = new MessageViewModel(m, session);
+                    var msg = MessageViewModel.Create(m, session);
                     FixState(msg);
                     return msg;
                 }).ToList());
@@ -627,7 +628,7 @@ namespace ELOR.Laney.ViewModels {
         private async void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
             if (message.PeerId != PeerId) return;
             await Dispatcher.UIThread.InvokeAsync(() => {
-                MessageViewModel msg = new MessageViewModel(message, session);
+                MessageViewModel msg = MessageViewModel.Create(message, session);
 
                 bool isMention = false;
                 if (!message.IsSilent && message.MentionedUsers != null) { 
@@ -718,7 +719,7 @@ namespace ELOR.Laney.ViewModels {
             } else {
                 try {
                     var resp = await session.API.Messages.GetByConversationMessageIdAsync(session.GroupId, PeerId, new List<int> { cmid });
-                    PinnedMessage = new MessageViewModel(resp.Items[0], session);
+                    PinnedMessage = MessageViewModel.Create(resp.Items[0], session);
                 } catch (Exception ex) {
                     Log.Error(ex, $"Cannot get pinned message from event! peer={PeerId} cmid={cmid}");
                 }

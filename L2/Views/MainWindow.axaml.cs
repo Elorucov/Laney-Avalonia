@@ -160,10 +160,10 @@ namespace ELOR.Laney.Views {
         private void UpdateRAMUsageInfo() {
             long ram = Process.GetCurrentProcess().PrivateMemorySize64;
             double rammb = (double)ram / 1048576;
-            RAMInfo.Text = $"{ChatViewModel.Instances} chats | {MessageViewModel.Instances} msgs | {MessageViewModel.Duplicates} dups | {Math.Round(rammb, 1)} Mb";
+            RAMInfo.Text = $"{ChatViewModel.Instances} chats | {MessageViewModel.Instances} msgs | {ELOR.VKAPILib.Objects.Message.Instances} API msgs | {Math.Round(rammb, 1)} Mb";
         }
 
-        #endregion
+#endregion
 
         #region Adaptivity and convsview / chatview navigation
 

@@ -1,14 +1,13 @@
 ﻿using Avalonia.Threading;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
-using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -26,9 +25,11 @@ namespace ELOR.Laney.ViewModels.Controls {
     }
 
     public sealed class MessageViewModel : ViewModelBase, IComparable {
-        private static Dictionary<int, uint> _duplicates = new Dictionary<int, uint>();
+        private static Dictionary<UInt128, MessageViewModel> _cachedMessages = new Dictionary<UInt128, MessageViewModel>();
+        private static uint _instances;
 
         private VKSession session;
+        private string _toString;
 
         private int _id;
         private long _peerId;
@@ -105,9 +106,9 @@ namespace ELOR.Laney.ViewModels.Controls {
         public Uri PreviewImageUri { get { return _previewImageUri; } private set { _previewImageUri = value; OnPropertyChanged(); } }
         public bool CanShowInUI { get { return Action == null && !IsExpired; } }
 
-        public VKSession OwnerSession { get => session; }
-        public static int Instances { get => _duplicates.Count; }
-        public static int Duplicates { get => _duplicates.Where(m => m.Value > 1).Count(); }
+        public VKSession OwnerSession => session;
+
+        public static uint Instances => _instances;
 
         #region Events
 
@@ -116,22 +117,18 @@ namespace ELOR.Laney.ViewModels.Controls {
         #endregion
 
         public MessageViewModel(Message msg, VKSession session = null) {
-            if (_duplicates.ContainsKey(msg.Id)) {
-                _duplicates[msg.Id]++;
-            } else {
-                _duplicates.Add(msg.Id, 1);
-            }
+            _instances++;
             this.session = session;
             Setup(msg);
             PropertyChanged += MessageViewModel_PropertyChanged;
         }
 
         ~MessageViewModel() {
-            _duplicates[Id]--;
-            if (_duplicates[Id] == 0) _duplicates.Remove(Id);
+            _instances--;
         }
 
         private void Setup(Message msg) {
+            _toString = msg.ToNormalString();
             Id = msg.Id;
             PeerId = msg.PeerId;
             RandomId = msg.RandomId;
@@ -144,7 +141,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             Text = msg.Text;
             if (msg.Attachments != null) Attachments = msg.Attachments;
             Location = msg.Geo;
-            if (msg.ReplyMessage != null) ReplyMessage = new MessageViewModel(msg.ReplyMessage, session);
+            if (msg.ReplyMessage != null) ReplyMessage = Create(msg.ReplyMessage, session);
             Action = msg.Action;
             Keyboard = msg.Keyboard;
             Template = msg.Template;
@@ -158,7 +155,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (msg.ForwardedMessages != null) {
                 ForwardedMessages.Clear();
                 foreach (var fmsg in msg.ForwardedMessages) {
-                    ForwardedMessages.Add(new MessageViewModel(fmsg, session));
+                    ForwardedMessages.Add(Create(fmsg, session));
                 }
             }
 
@@ -360,56 +357,43 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         #endregion
 
-        public override string ToString() {
-            if (Action != null) {
-                return new VKActionMessage(Action, SenderId).ToString();
-            }
-
-            if (!String.IsNullOrEmpty(Text)) return TextParser.GetParsedText(Text);
-            if (_attachments.Count > 0) {
-                int count = _attachments.Count;
-                if (_attachments.All(a => a.Type == _attachments[0].Type) && Location == null) {
-                    string type = _attachments[0].TypeString;
-                    switch (_attachments[0].Type) {
-                        case AttachmentType.Audio:
-                        case AttachmentType.AudioMessage:
-                        case AttachmentType.Document:
-                        case AttachmentType.Photo:
-                        case AttachmentType.Video: return Localizer.GetDeclensionFormatted2(count, type);
-                        case AttachmentType.Call:
-                        case AttachmentType.Curator:
-                        case AttachmentType.Event:
-                        case AttachmentType.Gift:
-                        case AttachmentType.Graffiti:
-                        case AttachmentType.GroupCallInProgress:
-                        case AttachmentType.Link:
-                        case AttachmentType.Market:
-                        case AttachmentType.Podcast:
-                        case AttachmentType.Poll:
-                        case AttachmentType.Sticker:
-                        case AttachmentType.UGCSticker:
-                        case AttachmentType.Story:
-                        case AttachmentType.Wall:
-                        case AttachmentType.WallReply:
-                        case AttachmentType.Narrative: return Localizer.Get(type);
-                        case AttachmentType.TextpostPublish: return Localizer.Get(type);
-                        default: return Localizer.GetDeclensionFormatted2(count, "attachment");
-                    }
-                } else {
-                    if (Location != null && count > 0) count++;
-                    return Localizer.GetDeclensionFormatted2(count, "attachment");
-                }
-            }
-            if (Location != null) return Assets.i18n.Resources.geo;
-            if (_forwardedMessages.Count > 0) return Localizer.GetDeclensionFormatted2(_forwardedMessages.Count, "forwarded_message");
-
-            return IsExpired? Assets.i18n.Resources.msg_expired : Assets.i18n.Resources.empty_message;
+        private static UInt128 CalcHashFast(long peerId, int cmid, int id) {
+            byte[] data = new byte[16];
+            BitConverter.GetBytes(peerId).CopyTo(data, 0);
+            BitConverter.GetBytes(cmid).CopyTo(data, 8);
+            BitConverter.GetBytes(id).CopyTo(data, 12);
+            ulong a = BitConverter.ToUInt64(data, 0);
+            ulong b = BitConverter.ToUInt64(data, 8);
+            return a * b;
         }
 
-        public static List<MessageViewModel> BuildFromAPI(List<Message> messages, VKSession session, System.Action<MessageViewModel> afterBuild = null) {
+        //private static uint CalcHashMinRAM(long peerId, int cmid, int id) {
+        //    byte[] data = new byte[16];
+        //    BitConverter.GetBytes(peerId).CopyTo(data, 0);
+        //    BitConverter.GetBytes(cmid).CopyTo(data, 8);
+        //    BitConverter.GetBytes(id).CopyTo(data, 12);
+        //    return MurmurHash.Shared.Hash(data);
+        //}
+
+        // Further optimizations: check the last cmid in chat, and if msg.cmid > last, do not find in cache, just add here.
+        public static MessageViewModel Create(Message msg, VKSession session = null) {
+            // uint hash = CalcHashMinRAM(msg.PeerId, msg.ConversationMessageId, msg.Id);
+            UInt128 hash = CalcHashFast(msg.PeerId, msg.ConversationMessageId, msg.Id);
+            if (_cachedMessages.ContainsKey(hash)) return _cachedMessages[hash];
+
+            MessageViewModel message = new MessageViewModel(msg, session);
+            _cachedMessages.Add(hash, message);
+            return message;
+        }
+
+        public override string ToString() {
+            return _toString;
+        }
+
+        public static List<MessageViewModel> BuildFromAPI(List<Message> messages, VKSession session, Action<MessageViewModel> afterBuild = null) {
             List<MessageViewModel> vms = new List<MessageViewModel>();
             foreach (var message in CollectionsMarshal.AsSpan(messages)) {
-                MessageViewModel mvm = new MessageViewModel(message, session);
+                MessageViewModel mvm = Create(message, session);
                 afterBuild?.Invoke(mvm);
                 vms.Add(mvm);
             }

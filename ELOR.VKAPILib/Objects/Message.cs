@@ -123,7 +123,16 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Message {
-        public Message() { }
+        static uint _instances;
+        public static uint Instances => _instances;
+
+        public Message() {
+            _instances++;
+        }
+
+        ~Message() {
+            _instances--;
+        }
 
         [JsonIgnore]
         public DateTime DateTime { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }

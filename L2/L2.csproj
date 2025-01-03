@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.626</AssemblyVersion>
-    <FileVersion>2.0.626</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.626-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.626-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.626-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.627</AssemblyVersion>
+    <FileVersion>2.0.627</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.627-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.627-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.627-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -38,6 +38,7 @@
     <ChiselPackage Condition="$([MSBuild]::IsOSPlatform('Windows'))">Avalonia.Remote.Protocol</ChiselPackage>
     <ChiselPackage Condition="$([MSBuild]::IsOSPlatform('Windows'))">Avalonia.X11</ChiselPackage>
     <ChiselPackage Condition="$([MSBuild]::IsOSPlatform('Windows'))">Tmds.DBus.Protocol</ChiselPackage>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>8632</NoWarn>
@@ -85,6 +86,10 @@
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets/**" />
+    <AvaloniaXaml Remove="Helpers\Hash\**" />
+    <Compile Remove="Helpers\Hash\**" />
+    <EmbeddedResource Remove="Helpers\Hash\**" />
+    <None Remove="Helpers\Hash\**" />
     <AvaloniaResource Remove="Assets\i18n\Resources.Designer.cs" />
     <AvaloniaResource Remove="Assets\i18n\Resources.resx" />
     <AvaloniaResource Remove="Assets\i18n\Resources.ru-RU.resx" />
@@ -119,10 +124,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Assets\i18n\Resources.ru-RU.resx">
-    </EmbeddedResource>
-    <EmbeddedResource Update="Assets\i18n\Resources.uk-UA.resx">
-    </EmbeddedResource>
+    <EmbeddedResource Update="Assets\i18n\Resources.ru-RU.resx"></EmbeddedResource>
+    <EmbeddedResource Update="Assets\i18n\Resources.uk-UA.resx"></EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Assets\i18n\Resources.Designer.cs">
