@@ -37,6 +37,9 @@ namespace ELOR.Laney.ViewModels {
 
             var observableChats = _chats.Connect();
             var prop = observableChats.WhenPropertyChanged(c => c.SortIndex).Select(_ => Unit.Default);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            // Sort method is obsolete, but no working analog of this. The commented code below (SortAndBind) does not work correctly.
             var loader = observableChats
                 .Sort(SortExpressionComparer<ChatViewModel>.Descending(c => c.SortIndex), prop)
                 .TreatMovesAsRemoveAdd()
@@ -45,6 +48,19 @@ namespace ELOR.Laney.ViewModels {
                     IsEmpty = _chats.Count == 0;
                     Debug.WriteLine($"Chats count: {_chats.Count}; sorted count: {_sortedChats.Count}");
                 });
+#pragma warning restore CS0618 // Type or member is obsolete
+
+            //var comparer = SortExpressionComparer<ChatViewModel>.Descending(c => c.SortIndex);
+
+            //var loader = observableChats
+            //    .SortAndBind(out _sortedChats, comparer, new SortAndBindOptions {
+            //        UseReplaceForUpdates = true
+            //    })
+            //    .WhenPropertyChanged(c => c.SortIndex)
+            //    .Subscribe(t => {
+            //        IsEmpty = _chats.Count == 0;
+            //        Debug.WriteLine($"Chats count: {_chats.Count}; sorted count: {_sortedChats.Count}");
+            //    });
 
             if (!DemoMode.IsEnabled) {
                 session.LongPoll.MessageReceived += LongPoll_MessageReceived;

@@ -26,6 +26,8 @@ namespace ELOR.Laney.ViewModels.Controls {
     }
 
     public sealed class MessageViewModel : ViewModelBase, IComparable {
+        private static Dictionary<int, uint> _duplicates = new Dictionary<int, uint>();
+
         private VKSession session;
 
         private int _id;
@@ -104,6 +106,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public bool CanShowInUI { get { return Action == null && !IsExpired; } }
 
         public VKSession OwnerSession { get => session; }
+        public static int Instances { get => _duplicates.Count; }
+        public static int Duplicates { get => _duplicates.Where(m => m.Value > 1).Count(); }
 
         #region Events
 
@@ -112,9 +116,19 @@ namespace ELOR.Laney.ViewModels.Controls {
         #endregion
 
         public MessageViewModel(Message msg, VKSession session = null) {
+            if (_duplicates.ContainsKey(msg.Id)) {
+                _duplicates[msg.Id]++;
+            } else {
+                _duplicates.Add(msg.Id, 1);
+            }
             this.session = session;
             Setup(msg);
             PropertyChanged += MessageViewModel_PropertyChanged;
+        }
+
+        ~MessageViewModel() {
+            _duplicates[Id]--;
+            if (_duplicates[Id] == 0) _duplicates.Remove(Id);
         }
 
         private void Setup(Message msg) {

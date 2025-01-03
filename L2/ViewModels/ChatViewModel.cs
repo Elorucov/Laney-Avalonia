@@ -23,6 +23,7 @@ using VKUI.Controls;
 
 namespace ELOR.Laney.ViewModels {
     public sealed class ChatViewModel : CommonViewModel, IContainsScrollSaverList {
+        private static uint _instances = 0;
         private VKSession session;
 
         private PeerType _peerType;
@@ -106,6 +107,7 @@ namespace ELOR.Laney.ViewModels {
         public List<Group> MembersGroups { get; private set; } = new List<Group>();
 
         public long Id => PeerId;
+        public static uint Instances => _instances;
 
         private User PeerUser;
         private Group PeerGroup;
@@ -117,6 +119,7 @@ namespace ELOR.Laney.ViewModels {
         Elapser<LongPollActivityInfo> ActivityStatusUsers = new Elapser<LongPollActivityInfo>();
 
         public ChatViewModel(VKSession session, long peerId, Message lastMessage = null, bool needSetup = false) {
+            _instances++;
             int cmid = lastMessage != null ? lastMessage.ConversationMessageId : 0;
             Log.Verbose($"New ChatViewModel for peer {peerId}. Last message: {cmid}, need setup: {needSetup}");
 
@@ -138,6 +141,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
+            _instances++;
             Log.Verbose($"New ChatViewModel for conversation with peer {c.Peer.Id}. Last message: {lastMessage?.ConversationMessageId}");
 
             this.session = session;
@@ -149,6 +153,10 @@ namespace ELOR.Laney.ViewModels {
                 FixState(msg);
                 ReceivedMessages.Add(msg);
             }
+        }
+
+        ~ChatViewModel() {
+            _instances--;
         }
 
         // Вызывается при отображении беседы на окне
