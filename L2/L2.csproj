@@ -27,6 +27,7 @@
     <ApplicationIcon>Assets/Logo/icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
   </PropertyGroup>

@@ -45,13 +45,13 @@ $uhnamenc = [System.Convert]::ToBase64String($uhnamefull).Replace("=", ".4444");
 if ($IsWindows) {
     $btagw1 = "$($currentversion)-win-x64-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444";
     echo $btagw1;
-    $proc1 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win-x64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:Version=$($btagw1) -p:DefineConstants=WIN$($chstr)";
+    $proc1 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win-x64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugSymbols=false -p:DebugType=None -p:Version=$($btagw1) -p:DefineConstants=WIN$($chstr)";
     $proc1.WaitForExit();
 	echo "Win x86-64 is done.$([Environment]::NewLine)";
 
     $btagw3 = "$($currentversion)-win-arm64-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444";
     echo $btagw3;
-    $proc2 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win-arm64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:Version=$($btagw3) -p:DefineConstants=WIN$($chstr)";
+    $proc2 = Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -PassThru -ArgumentList "publish --nologo -c Release -r win-arm64 -p:EnableCompressionInSingleFile=true --p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugSymbols=false -p:DebugType=None -p:Version=$($btagw3) -p:DefineConstants=WIN$($chstr)";
     $proc2.WaitForExit();
 	echo "Win arm64 is done.$([Environment]::NewLine)";
 }
@@ -59,7 +59,7 @@ if ($IsWindows) {
 if ($IsLinux) {
 	$btagl1 = "$($currentversion)-linux-x64-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444";
     echo $btagl1;
-    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r linux-x64 -p:EnableCompressionInSingleFile=true -p:ServerGarbageCollection=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:Version=$($btagl1) -p:DefineConstants=LINUX$($chstr)";
+    Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "publish --nologo -c Release -r linux-x64 -p:EnableCompressionInSingleFile=true -p:ServerGarbageCollection=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebugSymbols=false -p:DebugType=None -p:Version=$($btagl1) -p:DefineConstants=LINUX$($chstr)";
     echo "Linux x86-64 is done.$([Environment]::NewLine)";
 }
 
