@@ -67,9 +67,9 @@ if ($IsWindows) {
     $const = "WIN$($chstr)";
     $btagw1 = "$($currentversion)-$($ctarget)-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-$($repoenc)";
     echo $btagw1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:DebugSymbols=false -p:DebugType=None -p:Version=$btagw1 -p:DefineConstants=$const;
+    dotnet publish $projfolder --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:DebugSymbols=false -p:DebugType=None -p:Version=$btagw1 -p:DefineConstants=$const;
 
-    Get-ChildItem -Path $output -Directory | Remove-Item;
+    Get-ChildItem -Path $output -Directory | Remove-Item -Recurse;
 
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
@@ -78,9 +78,9 @@ if ($IsLinux) {
     $const = "LINUX$($chstr)";
     $btagl1 = "$($currentversion)-$($ctarget)-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-$($repoenc)";
     echo $btagl1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:DebugSymbols=false -p:DebugType=None -p:Version=$btagl1 -p:DefineConstants=$const;
+    dotnet publish $projfolder --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:DebugSymbols=false -p:DebugType=None -p:Version=$btagl1 -p:DefineConstants=$const;
 
-    Get-ChildItem -Path $output -Directory | Remove-Item;
+    Get-ChildItem -Path $output -Directory | Remove-Item -Recurse;
 
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
@@ -92,9 +92,9 @@ if ($IsMacOS) {
 
     $btagm1 = "$($currentversion)-$($ctarget)-$($uhnamenc)-$([DateTime]::Now.ToString("yyMMdd"))-$([DateTime]::UtcNow.ToString("HHmm"))-$($repoenc)";
     echo $btagm1;
-    dotnet publish --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:DebugSymbols=false -p:DebugType=None -p:Version=$btagm1 -p:DefineConstants=$const;
+    dotnet publish $projfolder --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:DebugSymbols=false -p:DebugType=None -p:Version=$btagm1 -p:DefineConstants=$const;
 
-    Get-ChildItem -Path $output -Directory | Remove-Item;
+    Get-ChildItem -Path $output -Directory | Remove-Item -Recurse;
     
     echo "Creating .app bundle file for macOS...";
     Copy-Item -Path "$($output)/*" -Destination "$(Get-Location)/MacOS_layout/Contents/MacOS" -Recurse;
