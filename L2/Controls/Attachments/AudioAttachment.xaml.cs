@@ -54,7 +54,7 @@ public class AudioAttachment : TemplatedControl {
         Setup();
 
         PlayButton.Click += PlayButton_Click;
-        if (AudioPlayerViewModel.MainInstance != null) AudioPlayerViewModel.MainInstance.PlaybackStateChanged += MainInstance_PlaybackStateChanged;
+        if (AudioPlayerViewModel.MainInstance != null) Instance.PlaybackStateChanged += MainInstance_PlaybackStateChanged;
         AudioPlayerViewModel.InstancesChanged += AudioPlayerViewModel_InstancesChanged;
         Unloaded += AudioAttachment_Unloaded;
     }
@@ -94,7 +94,7 @@ public class AudioAttachment : TemplatedControl {
     }
 
     private async void MainInstance_PlaybackStateChanged(object sender, ManagedBass.PlaybackState e) {
-        await Task.Delay(1); // пока нужно, ибо свойство ISPlaying у bass-вского MediaPlayer обновляется после срабатывания события PlaybackStateChanged. Позже исправим.
+        await Task.Delay(1); // пока нужно, ибо свойство IsPlaying у bass-вского MediaPlayer обновляется после срабатывания события PlaybackStateChanged. Позже исправим.
         CheckCurrentPlayingAudio();
     }
 

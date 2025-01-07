@@ -279,7 +279,7 @@ namespace ELOR.Laney.Views {
             int index = Chat.DisplayedMessages.IndexOf(msg);
             Log.Information($"ScrollToMessage: cmid={messageId}; index={index}");
             if (canTriggerLoadingMessages) {
-                MessagesList.ScrollIntoView(scrollToMessageIndex);
+                MessagesList.ScrollIntoView(index);
             } else {
                 scrollToMessageIndex = index;
             }

@@ -1,5 +1,6 @@
 ﻿using Avalonia.Platform;
 using Avalonia.Platform.Storage;
+using Avalonia.Svg.Skia;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
@@ -124,7 +125,7 @@ namespace ELOR.Laney.Core {
 
         public static ConcurrentDictionary<int, ReactionAssetLinks> ReactionsAssets { get; private set; }
         public static List<int> AvailableReactions { get; private set; }
-        public static ConcurrentDictionary<string, string> ReactionsAssetData { get; private set; } = new ConcurrentDictionary<string, string>();
+        public static ConcurrentDictionary<string, SvgImage> ReactionsAssetData { get; private set; } = new ConcurrentDictionary<string, SvgImage>();
         static ConcurrentDictionary<string, ManualResetEventSlim> nowLoading = new ConcurrentDictionary<string, ManualResetEventSlim>();
 
         public static void SetReactionsInfo(List<int> available, List<ReactionAssets> assets) {
@@ -141,11 +142,14 @@ namespace ELOR.Laney.Core {
             return ReactionsAssets[id].Static;
         }
 
-        public static async Task<string> GetStaticReactionImageAsync(Uri uri) {
+        public static async Task<SvgImage> GetStaticReactionImageAsync(Uri uri) {
             if (uri.Scheme == "avares") {
                 var stream = AssetLoader.Open(uri);
                 StreamReader reader = new StreamReader(stream);
-                return reader.ReadToEnd();
+                string data = reader.ReadToEnd();
+                return new SvgImage {
+                    Source = SvgSource.LoadFromSvg(data)
+                };
             }
             string key = uri.AbsoluteUri;
             if (!ReactionsAssetData.ContainsKey(key)) {
@@ -162,9 +166,12 @@ namespace ELOR.Laney.Core {
                 var response = await LNet.GetAsync(uri);
                 response.EnsureSuccessStatusCode();
                 data = await response.Content.ReadAsStringAsync();
+                SvgImage image = new SvgImage {
+                    Source = SvgSource.LoadFromSvg(data)
+                };
 
                 if (!ReactionsAssetData.ContainsKey(key)) {
-                    bool isAdded2 = ReactionsAssetData.TryAdd(key, data);
+                    bool isAdded2 = ReactionsAssetData.TryAdd(key, image);
                     if (!isAdded2) Log.Warning($"GetStaticReactionImage: cannot add svg asset data \"{uri}\"!");
                 }
 
@@ -173,13 +180,10 @@ namespace ELOR.Laney.Core {
                 if (!isRemoved2) Log.Warning($"GetStaticReactionImage: cannot remove MRES \"{uri}\"!");
                 mres.Set();
                 // mres.Dispose();
-                return data;
+                return image;
             } else {
                 return ReactionsAssetData[key];
             }
-
-
-
         }
 
         #endregion

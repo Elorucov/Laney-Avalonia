@@ -191,8 +191,8 @@ namespace ELOR.Laney {
         }
 
         public DataTemplate GetCommonTemplate(string key) {
-            // 14 - это порядковый номер (с нуля) CommonTemplates.axaml в App.axaml > MergedDictionaries
-            var dictionary = App.Current.Resources.MergedDictionaries[14] as ResourceDictionary;
+            // 15 - это порядковый номер (с нуля) CommonTemplates.axaml в App.axaml > MergedDictionaries
+            var dictionary = App.Current.Resources.MergedDictionaries[15] as ResourceDictionary;
             return dictionary[key] as DataTemplate;
         }
 

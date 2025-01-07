@@ -153,11 +153,9 @@ namespace ELOR.Laney.Controls {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
-            string data = await CacheManager.GetStaticReactionImageAsync(uri);
-            if (String.IsNullOrEmpty(data)) return;
-            sender.Source = new SvgImage {
-                Source = SvgSource.LoadFromSvg(data)
-            };
+            SvgImage image = await CacheManager.GetStaticReactionImageAsync(uri);
+            if (image == null) return;
+            sender.Source = image;
             // sender.Unloaded += Sender_Unloaded;
         }
 
