@@ -466,16 +466,15 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Audio message
             foreach (AudioMessage am in ams) {
-                // TODO: сделать проигрыватель и только потом отдельный control
-                BasicAttachment ba = new BasicAttachment {
+                AudioMessageAttachment ama = new AudioMessageAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
-                    Icon = VKIconNames.Icon24Song,
-                    Title = Assets.i18n.Resources.audio_message,
-                    Subtitle = Assets.i18n.Resources.not_implemented,
+                    AudioMessage = am,
                     Name = am.ObjectType
                 };
-                ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
-                StandartAttachments.Children.Add(ba);
+                ama.PlayAudioRequested += (b, c) => {
+                    AudioPlayerViewModel.PlayVoiceMessage(ams, am, Owner);
+                };
+                StandartAttachments.Children.Add(ama);
             }
 
             // Podcasts

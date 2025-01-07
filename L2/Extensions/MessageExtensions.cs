@@ -64,7 +64,7 @@ namespace ELOR.Laney.Extensions {
             }
 
             if (!String.IsNullOrEmpty(msg.Text)) return TextParser.GetParsedText(msg.Text);
-            if (msg.Attachments.Count > 0) {
+            if (msg.Attachments?.Count > 0) {
                 int count = msg.Attachments.Count;
                 if (msg.Attachments.All(a => a.Type == msg.Attachments[0].Type) && msg.Geo == null) {
                     string type = msg.Attachments[0].TypeString;
@@ -99,7 +99,7 @@ namespace ELOR.Laney.Extensions {
                 }
             }
             if (msg.Geo != null) return Assets.i18n.Resources.geo;
-            if (msg.ForwardedMessages.Count > 0) return Localizer.GetDeclensionFormatted2(msg.ForwardedMessages.Count, "forwarded_message");
+            if (msg.ForwardedMessages?.Count > 0) return Localizer.GetDeclensionFormatted2(msg.ForwardedMessages.Count, "forwarded_message");
 
             return msg.IsExpired ? Assets.i18n.Resources.msg_expired : Assets.i18n.Resources.empty_message;
         }

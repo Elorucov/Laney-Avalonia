@@ -6,17 +6,18 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.627</AssemblyVersion>
-    <FileVersion>2.0.627</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.627-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.627-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.627-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.628</AssemblyVersion>
+    <FileVersion>2.0.628</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.628-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.628-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.628-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-241215-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
     <Platforms>AnyCPU</Platforms>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
     <TrimMode>copyused</TrimMode>
+    <GarbageCollectionAdaptationMode>1</GarbageCollectionAdaptationMode>
     <AutoreleasePoolSupport>false</AutoreleasePoolSupport>
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
     <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
@@ -71,6 +72,7 @@
     <None Remove="Assets\macos_installer_background.png" />
     <None Remove="Assets\placeholder.svg" />
     <None Remove="Controls\Attachments\AttachmentsContainer.xaml" />
+    <None Remove="Controls\Attachments\AudioMessageAttachment.xaml" />
     <None Remove="Controls\Attachments\BasicAttachment.xaml" />
     <None Remove="Controls\Attachments\ExtendedAttachment.xaml" />
     <None Remove="Controls\Attachments\GiftUI.xaml" />
@@ -229,6 +231,9 @@
     <Compile Update="Controls\Attachments\AttachmentsContainer.xaml.cs">
       <DependentUpon>AttachmentsContainer.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Controls\Attachments\AudioMessageAttachment.xaml.cs">
+      <DependentUpon>AudioMessageAttachment.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\ChatViewItem.xaml.cs">
       <DependentUpon>ChatViewItem.xaml</DependentUpon>
     </Compile>
@@ -268,6 +273,11 @@
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="Controls\MediaSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\Attachments\AudioMessageAttachment.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
   </ItemGroup>

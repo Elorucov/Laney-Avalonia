@@ -95,7 +95,7 @@ if ($IsMacOS) {
 
 Start-Process -NoNewWindow -Wait -FilePath 'dotnet' -ArgumentList "build-server shutdown";
 
-echo "Next build: $($nextbuild). Saving build number in .csproj...";
+<# echo "Next build: $($nextbuild). Saving build number in .csproj...";
 
 $proj.Project.FirstChild.AssemblyVersion = $newversion;
 $proj.Project.FirstChild.FileVersion = $newversion;
@@ -117,7 +117,7 @@ $settings.Encoding = New-Object System.Text.UTF8Encoding($false)
 
 $w = [System.Xml.XmlWriter]::Create($file, $settings);
 $proj.Save($w);
-$w.Close();
+$w.Close(); #>
 
 if ($IsWindows) {
     echo "All done! Check $($location)\win-<arch>\publish folder.";

@@ -1,0 +1,37 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ELOR.Laney"
+        xmlns:vkui="using:VKUI.Controls">
+
+    <Design.PreviewWith>
+    <StackPanel Width="400" Spacing="10">      
+        <StackPanel Background="{DynamicResource SystemRegionBrush}">
+          <controls:AudioMessageAttachment />
+        </StackPanel>
+    </StackPanel>
+  </Design.PreviewWith>
+ 
+  <ControlTheme x:Key="{x:Type controls:AudioMessageAttachment}" TargetType="controls:AudioMessageAttachment">
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid ColumnDefinitions="Auto *" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+          <Grid.Styles>
+            <Style Selector="Canvas#BackgroundSoundWave > Rectangle, Canvas#ForegroundSoundWave > Rectangle">
+              <Setter Property="Fill" Value="{DynamicResource VKButtonOutlineForegroundBrush}"/>
+            </Style>
+          </Grid.Styles>
+          <Button x:Name="PlayButton" Width="40" Height="40" CornerRadius="20" Margin="0,0,12,0" Classes="Outline" Padding="0">
+            <vkui:VKIcon x:Name="ButtonIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24" Foreground="{DynamicResource VKButtonOutlineForegroundBrush}" Id="{x:Static vkui:VKIconNames.Icon24Play}"/>
+          </Button>
+          <Grid x:Name="WaveContainer" VerticalAlignment="Top" HorizontalAlignment="Stretch" Grid.Column="1" Height="26">
+            <Canvas x:Name="BackgroundSoundWave" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0.5"/>
+            <Canvas x:Name="ForegroundSoundWave" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Border x:Name="Seeker" Background="Transparent" Cursor="Hand"/>
+          </Grid>
+          <TextBlock x:Name="Duration" Grid.Column="1" Classes="Caption2" VerticalAlignment="Bottom"/>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

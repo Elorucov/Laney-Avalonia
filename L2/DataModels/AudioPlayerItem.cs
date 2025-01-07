@@ -9,7 +9,7 @@ namespace ELOR.Laney.DataModels {
 
     public class AudioPlayerItem {
         public AudioType Type { get; private set; }
-        public long Id { get; private set; }
+        public int Id { get; private set; }
         public string Title { get; private set; }
         public string Subtitle { get; private set; }
         public string Performer { get; private set; }

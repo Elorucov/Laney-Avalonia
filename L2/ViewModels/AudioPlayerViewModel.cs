@@ -33,7 +33,7 @@ namespace ELOR.Laney.ViewModels {
         public ObservableCollection<AudioPlayerItem> Songs { get { return _songs; } private set { _songs = value; OnPropertyChanged(); } }
         public AudioPlayerItem CurrentSong { get { return _currentSong; } set { _currentSong = value; OnPropertyChanged(); } }
         public int CurrentSongIndex { get { return _currentSongIndex; } private set { _currentSongIndex = value; OnPropertyChanged(); } }
-        public TimeSpan Position { get { return _position; } private set { _position = value; OnPropertyChanged(); } }
+        public TimeSpan Position { get { return _position; } private set { _position = value; OnPropertyChanged(); PositionChanged?.Invoke(this, value); } }
         public PlaybackState PlaybackState { get { return _playbackState; } private set { _playbackState = value; OnPropertyChanged(); } }
         public bool RepeatOneSong { get { return Player.Loop; } set { Player.Loop = value; OnPropertyChanged(); } }
         public bool IsPlaying { get { return _isPlaying; } private set { _isPlaying = value; OnPropertyChanged(); } }
@@ -47,6 +47,7 @@ namespace ELOR.Laney.ViewModels {
         public RelayCommand OpenTracklistCommand { get { return _openTracklistCommand; } private set { _openTracklistCommand = value; OnPropertyChanged(); } }
 
         public event EventHandler<PlaybackState> PlaybackStateChanged;
+        public event EventHandler<TimeSpan> PositionChanged;
         AudioType Type;
 
         public Guid Id { get; private set; }
@@ -117,6 +118,9 @@ namespace ELOR.Laney.ViewModels {
             PropertyChanged += (a, b) => {
                 if (b.PropertyName == nameof(CurrentSong)) SwitchSong();
                 if (b.PropertyName == nameof(RepeatOneSong)) Settings.AudioPlayerLoop = RepeatOneSong;
+                if (b.PropertyName == nameof(PlaybackState)) {
+                    PlaybackStateChanged?.Invoke(this, PlaybackState);
+                };
             };
         }
 

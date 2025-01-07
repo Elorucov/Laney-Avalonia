@@ -12,6 +12,7 @@
         <ResourceInclude Source="/Styles/ChatViewDefaultResources.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/AttachmentsContainer.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/AudioAttachment.xaml"/>
+        <ResourceInclude Source="/Controls/Attachments/AudioMessageAttachment.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/BasicAttachment.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/ExtendedAttachment.xaml"/>
         <ResourceInclude Source="/Controls/Attachments/GiftUI.xaml"/>
