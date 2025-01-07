@@ -66,12 +66,19 @@ public class AudioAttachment : TemplatedControl {
             TrackName.Text = Audio.Title;
             Performer.Text = Audio.Artist;
             Duration.Text = Audio.Duration.ToTimeWithHourIfNeeded();
-            PlayButton.IsEnabled = true;
+            if (Audio.Uri != null) {
+                PlayButton.IsEnabled = true;
+            } else {
+                IsHitTestVisible = false;
+                Opacity = 0.5;
+            }
         } else {
             TrackName.Text = String.Empty;
             Performer.Text = String.Empty;
             Duration.Text = "-:--";
             PlayButton.IsEnabled = false;
+            IsHitTestVisible = true;
+            Opacity = 1;
         }
     }
 

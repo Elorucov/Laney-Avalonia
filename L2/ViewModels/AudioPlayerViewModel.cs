@@ -267,6 +267,8 @@ namespace ELOR.Laney.ViewModels {
         public static event EventHandler InstancesChanged;
 
         public static void PlaySong(List<Audio> songs, Audio selectedSong, string name) {
+            if (selectedSong.Uri == null) return;
+
             CloseVoiceMessageInstance();
             MainInstance?.Uninitialize();
             MainInstance = new AudioPlayerViewModel(songs, selectedSong, name);
