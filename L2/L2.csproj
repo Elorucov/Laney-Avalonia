@@ -53,6 +53,39 @@
     <LinkerArg Include="-mmacosx-version-min=11.0" />
   </ItemGroup>
   <ItemGroup>
+    <VlcWindowsX64ExcludeFiles Include="plugins\%2A" />
+    <VlcWindowsX64ExcludeFiles Include="hrtfs\%2A" />
+    <VlcWindowsX64ExcludeFiles Include="lua\%2A" />
+    <VlcWindowsX86ExcludeFiles Include="plugins\%2A" />
+    <VlcWindowsX86ExcludeFiles Include="hrtfs\%2A" />
+    <VlcWindowsX86ExcludeFiles Include="lua\%2A" />
+  </ItemGroup>
+  <ItemGroup>
+    <VlcWindowsX64IncludeFiles Include="libvlc.dll" />
+    <VlcWindowsX64IncludeFiles Include="libvlccore.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\access\libfilesystem_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\access\libhttp_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\access\libhttps_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\access\libtcp_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\audio_output\libmmdevice_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\audio_output\libwasapi_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\codec\liblpcm_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\codec\libmpg123_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\libau_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\libdemux_cdg_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\libdemux_stl_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\libdiracsys_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\libdirectory_demux_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\libes_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\libmpgv_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\librawaud_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\librawdv_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\demux\libwav_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\misc\libgnutls_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\packetizer\libpacketizer_mpegaudio_plugin.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AvaloniaXaml Remove="Controls\ChatListView.axaml" />
     <AvaloniaXaml Remove="Templates\CommonTemplates.axaml" />
     <AvaloniaXaml Remove="Templates\ItemTemplates.axaml" />

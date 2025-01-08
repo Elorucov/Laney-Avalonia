@@ -69,7 +69,8 @@ if ($IsWindows) {
     echo $btagw1;
     dotnet publish $projfolder --nologo -c Release -r $ctarget -o $output -p:EnableCompressionInSingleFile=true -p:PublishAOT=true -p:OptimizationPreference=Size -p:StackTraceSupport=false -p:UseSystemResourceKeys=true -p:DebuggerSupport=false -p:DebugSymbols=false -p:DebugType=None -p:Version=$btagw1 -p:DefineConstants=$const;
 
-    Get-ChildItem -Path $output -Directory | Remove-Item -Recurse;
+    Remove-Item -Recurse "$($output)/libvlc/win-x86";
+    Get-ChildItem -Path $output -Directory | Where {$_.Name -notlike 'libvlc'} | Remove-Item -Recurse;
 
     echo "$($appname) $($ctarget) is done.$([Environment]::NewLine)";
 }
