@@ -48,7 +48,9 @@ namespace ELOR.Laney.Views.Modals {
         }
 
         private async void b04_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.about_libs, String.Join("\n", App.UsedLibs));
+            string libs = String.Join("\n", App.UsedLibs);
+            libs += $"\n\nLibVLC version: {LMediaPlayer.LibVersion}";
+            VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.about_libs, libs);
             await dlg.ShowDialog(this);
         }
     }

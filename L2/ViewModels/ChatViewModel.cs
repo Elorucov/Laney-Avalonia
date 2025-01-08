@@ -1035,7 +1035,7 @@ namespace ELOR.Laney.ViewModels {
             session.ShowSystemNotification(t);
             if (sound) {
                 var bb2 = AssetsManager.OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
-                AudioPlayer.SFX?.Play(bb2);
+                LMediaPlayer.SFX?.PlayStream(bb2);
             }
         }
 

@@ -3,13 +3,10 @@ using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
-using ManagedBass;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
     public class AudioPlayerViewModel : ViewModelBase {
@@ -18,7 +15,7 @@ namespace ELOR.Laney.ViewModels {
         private AudioPlayerItem _currentSong;
         private int _currentSongIndex;
         private TimeSpan _position;
-        private PlaybackState _playbackState;
+        private bool _repeatOneSong;
         private bool _isPlaying;
         private bool _isTracklistDisplaying;
 
@@ -29,13 +26,14 @@ namespace ELOR.Laney.ViewModels {
         private RelayCommand _shareCommand;
         private RelayCommand _openTracklistCommand;
 
+        private LMediaPlayer Instance { get; set; }
+
         public string Name { get { return _name; } set { _name = value; OnPropertyChanged(); } }
         public ObservableCollection<AudioPlayerItem> Songs { get { return _songs; } private set { _songs = value; OnPropertyChanged(); } }
         public AudioPlayerItem CurrentSong { get { return _currentSong; } set { _currentSong = value; OnPropertyChanged(); } }
         public int CurrentSongIndex { get { return _currentSongIndex; } private set { _currentSongIndex = value; OnPropertyChanged(); } }
         public TimeSpan Position { get { return _position; } private set { _position = value; OnPropertyChanged(); PositionChanged?.Invoke(this, value); } }
-        public PlaybackState PlaybackState { get { return _playbackState; } private set { _playbackState = value; OnPropertyChanged(); } }
-        public bool RepeatOneSong { get { return Player.Loop; } set { Player.Loop = value; OnPropertyChanged(); } }
+        public bool RepeatOneSong { get { return _repeatOneSong; } set { _repeatOneSong = value; OnPropertyChanged(); } }
         public bool IsPlaying { get { return _isPlaying; } private set { _isPlaying = value; OnPropertyChanged(); } }
         public bool IsTracklistDisplaying { get { return _isTracklistDisplaying; } private set { _isTracklistDisplaying = value; OnPropertyChanged(); } }
 
@@ -46,17 +44,9 @@ namespace ELOR.Laney.ViewModels {
         public RelayCommand ShareCommand { get { return _shareCommand; } private set { _shareCommand = value; OnPropertyChanged(); } }
         public RelayCommand OpenTracklistCommand { get { return _openTracklistCommand; } private set { _openTracklistCommand = value; OnPropertyChanged(); } }
 
-        public event EventHandler<PlaybackState> PlaybackStateChanged;
         public event EventHandler<TimeSpan> PositionChanged;
+        public event EventHandler<bool> StateChanged;
         AudioType Type;
-
-        public Guid Id { get; private set; }
-
-        #region Private fields
-
-        private UrlMediaPlayer Player;
-
-        #endregion
 
         private AudioPlayerViewModel(List<Audio> songs, Audio currentSong, string name) {
             Log.Information($"APVM type=audio, count={songs.Count}, current={currentSong.Id}");
@@ -74,9 +64,6 @@ namespace ELOR.Laney.ViewModels {
             SwitchSong(true);
             PropertyChanged += (a, b) => {
                 if (b.PropertyName == nameof(CurrentSong)) SwitchSong();
-                if (b.PropertyName == nameof(PlaybackState)) {
-                    PlaybackStateChanged?.Invoke(this, PlaybackState);
-                };
             };
         }
 
@@ -96,9 +83,6 @@ namespace ELOR.Laney.ViewModels {
             PropertyChanged += (a, b) => {
                 if (b.PropertyName == nameof(CurrentSong)) SwitchSong();
                 if (b.PropertyName == nameof(RepeatOneSong)) Settings.AudioPlayerLoop = RepeatOneSong;
-                if (b.PropertyName == nameof(PlaybackState)) {
-                    PlaybackStateChanged?.Invoke(this, PlaybackState);
-                };
             };
         }
 
@@ -118,35 +102,22 @@ namespace ELOR.Laney.ViewModels {
             PropertyChanged += (a, b) => {
                 if (b.PropertyName == nameof(CurrentSong)) SwitchSong();
                 if (b.PropertyName == nameof(RepeatOneSong)) Settings.AudioPlayerLoop = RepeatOneSong;
-                if (b.PropertyName == nameof(PlaybackState)) {
-                    PlaybackStateChanged?.Invoke(this, PlaybackState);
-                };
             };
         }
 
-        DispatcherTimer positionTimer;
-
         private void Initialize() {
-            Player = new UrlMediaPlayer();
-            Player.PropertyChanged += Player_PropertyChanged;
-            Player.MediaLoaded += Player_MediaLoaded;
-            Player.MediaEnded += Player_MediaEnded;
+            Instance = new LMediaPlayer($"Audioplayer type: {Type}");
             RepeatOneSong = Type != AudioType.VoiceMessage ? Settings.AudioPlayerLoop : false;
             Log.Information($"APVM initialized. Repeat={RepeatOneSong}");
 
-            if (positionTimer != null) {
-                positionTimer.Stop();
-                positionTimer = null;
-            }
-            positionTimer = new DispatcherTimer { 
-                Interval = TimeSpan.FromMilliseconds(125)
-            };
-            positionTimer.Tick += PositionTimer_Tick;
-
+            Instance.MediaEnded += Player_MediaEnded;
+            Instance.PositionChanged += Instance_PositionChanged;
+            Instance.StateChanged += Instance_StateChanged;
             PlayPauseCommand = new RelayCommand(o => {
-                switch (PlaybackState) {
-                    case PlaybackState.Playing: Pause(); break;
-                    case PlaybackState.Paused: Play(); break;
+                if (Instance.IsPlaying) {
+                    Pause();
+                } else {
+                    Play();
                 }
             });
             GetPreviousCommand = new RelayCommand(o => PlayPrevious());
@@ -161,23 +132,15 @@ namespace ELOR.Laney.ViewModels {
             });
         }
 
-        private void PositionTimer_Tick(object sender, EventArgs e) {
-            if (Player != null) Position = Player.Position;
+        private void Instance_StateChanged(object sender, bool e) {
+            IsPlaying = Instance.IsPlaying;
+            StateChanged?.Invoke(this, e);
         }
 
-        private void Player_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            Debug.WriteLine($"APVM: Player's \"{e.PropertyName}\" prop changed.");
-            if (e.PropertyName == nameof(MediaPlayer.State)) {
-                CheckPlaybackState();
-            //} else if (e.PropertyName == nameof(MediaPlayer.Position)) {
-            //    Debug.WriteLine($"APVM: Player's \"{e.PropertyName}\" prop changed to {Player.Position}");
-            //    Position = Player.Position;
-            }
-        }
-
-        private void Player_MediaLoaded(int obj) {
-            Debug.WriteLine($"APVM: Media loaded.");
-            CheckPlaybackState();
+        private void Instance_PositionChanged(object sender, float e) {
+            if (CurrentSong == null) return;
+            var millis = (float)CurrentSong.Duration.TotalMilliseconds / 1f * e;
+            Position = TimeSpan.FromMilliseconds(millis);
         }
 
         private void Player_MediaEnded(object sender, EventArgs e) {
@@ -186,57 +149,38 @@ namespace ELOR.Laney.ViewModels {
 
         private void Uninitialize() {
             Log.Information($"APVM uninitialized. Type={Type}");
-            Player.PropertyChanged -= Player_PropertyChanged;
-            Player.MediaEnded -= Player_MediaEnded;
-            Player.Dispose();
-            Player = null;
+            Instance.MediaEnded -= Player_MediaEnded;
+            Instance.PositionChanged -= Instance_PositionChanged;
+            Instance.StateChanged -= Instance_StateChanged;
+            Instance.Dispose();
         }
 
-        private void CheckPlaybackState() {
-            PlaybackState = Player.State;
-            Debug.WriteLine($"APVM: State = {PlaybackState}");
-            switch (PlaybackState) {
-                case PlaybackState.Playing: IsPlaying = true; break;
-                case PlaybackState.Stopped:
-                case PlaybackState.Paused: IsPlaying = false; break;
-                case PlaybackState.Stalled: Player.Pause(); Player.Play(); break; // because after first init; BASS starts play audio and incorrectly reports "Stalled" state instead "Playing".
-            }
-        }
-
-        private async void SwitchSong(bool timeout = false) {
+        private void SwitchSong(bool timeout = false) {
             if (CurrentSong == null) return;
 
-            Pause();
+            // Pause();
             Position = TimeSpan.FromMilliseconds(0);
             CurrentSongIndex = Songs.IndexOf(CurrentSong) + 1;
             Log.Information($"APVM changing audio to {CurrentSongIndex}.");
 
-            bool result = await Player.LoadAsync(CurrentSong.Source.AbsoluteUri);
-            if (!result) {
-                var error = Bass.LastError;
-                Log.Error($"APVM error! Type={Type}, error={error}");
-                return;
-            }
-            if (timeout) await Task.Delay(100);
-            Play();
+            if (CurrentSong.Source != null) Instance.PlayURL(CurrentSong.Source);
         }
 
         #region Controls
 
         public void SetPosition(TimeSpan position) {
-            Player.Position = position;
+            if (CurrentSong == null) return;
+            Instance.SetPosition(position);
             Position = position;
         }
 
         public void Play() {
             if (Type != AudioType.VoiceMessage && VoiceMessageInstance != null) CloseVoiceMessageInstance();
-            Player.Play();
-            positionTimer?.Start();
+            Instance.Play();
         }
 
         public void Pause() {
-            positionTimer.Stop();
-            Player.Pause();
+            Instance.Pause();
         }
 
         public void PlayNext() {
@@ -267,7 +211,7 @@ namespace ELOR.Laney.ViewModels {
         public static event EventHandler InstancesChanged;
 
         public static void PlaySong(List<Audio> songs, Audio selectedSong, string name) {
-            if (selectedSong.Uri == null) return;
+            if (selectedSong.Uri == null || !LMediaPlayer.IsInitialized) return;
 
             CloseVoiceMessageInstance();
             MainInstance?.Uninitialize();
@@ -275,14 +219,18 @@ namespace ELOR.Laney.ViewModels {
             InstancesChanged?.Invoke(null, null);
         }
 
-        public static void PlayPodcast(List<Podcast> podcasts, Podcast currentPodcast, string name) {
+        public static void PlayPodcast(List<Podcast> podcasts, Podcast selectedPodcast, string name) {
+            if (selectedPodcast.Uri == null || !LMediaPlayer.IsInitialized) return;
+
             CloseVoiceMessageInstance();
             MainInstance?.Uninitialize();
-            MainInstance = new AudioPlayerViewModel(podcasts, currentPodcast, name);
+            MainInstance = new AudioPlayerViewModel(podcasts, selectedPodcast, name);
             InstancesChanged?.Invoke(null, null);
         }
 
         public static void PlayVoiceMessage(List<AudioMessage> messages, AudioMessage selectedMessage, string ownerName) {
+            if (selectedMessage.Uri == null || !LMediaPlayer.IsInitialized) return;
+
             VoiceMessageInstance?.Uninitialize();
             if (MainInstance != null) {
                 MainInstance.Pause();

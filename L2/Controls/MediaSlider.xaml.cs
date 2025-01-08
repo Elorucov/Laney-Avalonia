@@ -1,11 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Shapes;
-using Avalonia.Media;
 using ELOR.Laney.Extensions;
-using ExCSS;
-using ManagedBass;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;

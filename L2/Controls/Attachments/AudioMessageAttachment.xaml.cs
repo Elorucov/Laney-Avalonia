@@ -66,7 +66,7 @@ public class AudioMessageAttachment : TemplatedControl {
 
         PlayButton.Click += PlayButton_Click;
         if (AudioPlayerViewModel.VoiceMessageInstance != null) {
-            Instance.PlaybackStateChanged += Instance_PlaybackStateChanged;
+            Instance.StateChanged += Instance_StateChanged;
             Instance.PositionChanged += Instance_PositionChanged;
         }
         AudioPlayerViewModel.InstancesChanged += AudioPlayerViewModel_InstancesChanged;
@@ -109,8 +109,7 @@ public class AudioMessageAttachment : TemplatedControl {
         }
     }
 
-    private async void Instance_PlaybackStateChanged(object sender, ManagedBass.PlaybackState e) {
-        await Task.Delay(1); // пока нужно, ибо свойство IsPlaying у bass-вского MediaPlayer обновляется после срабатывания события PlaybackStateChanged. Позже исправим.
+    private void Instance_StateChanged(object sender, bool e) {
         CheckCurrentPlayingAudio();
     }
 
@@ -121,7 +120,7 @@ public class AudioMessageAttachment : TemplatedControl {
 
     private void AudioPlayerViewModel_InstancesChanged(object sender, EventArgs e) {
         if (Instance != null) {
-            Instance.PlaybackStateChanged += Instance_PlaybackStateChanged;
+            Instance.StateChanged += Instance_StateChanged;
             Instance.PositionChanged += Instance_PositionChanged;
         }
         CheckCurrentPlayingAudio();
@@ -131,7 +130,7 @@ public class AudioMessageAttachment : TemplatedControl {
         PlayButton.Click -= PlayButton_Click;
         Seeker.PointerPressed -= Seeker_PointerPressed;
         if (Instance != null) {
-            Instance.PlaybackStateChanged -= Instance_PlaybackStateChanged;
+            Instance.StateChanged -= Instance_StateChanged;
             Instance.PositionChanged -= Instance_PositionChanged;
         }
         AudioPlayerViewModel.InstancesChanged -= AudioPlayerViewModel_InstancesChanged;
