@@ -105,10 +105,10 @@ namespace ELOR.Laney.Helpers {
 
         public static void SetText(string plain, CTextBlock rtb, Action<string> linksClickedCallback = null) {
             rtb.Content = new AvaloniaList<CInline>();
-            if (String.IsNullOrEmpty(plain)) return;
+            if (string.IsNullOrEmpty(plain)) return;
 
             foreach (var token in GetRaw(plain)) {
-                if (String.IsNullOrEmpty(token.Item1)) {
+                if (string.IsNullOrEmpty(token.Item1)) {
                     rtb.Content.Add(BuildCRunForRTBStyle(token.Item2));
                 } else {
                     CHyperlink h = BuildCHyperlinkForRTBStyle(token.Item2, token.Item1, rtb, linksClickedCallback);
@@ -120,19 +120,19 @@ namespace ELOR.Laney.Helpers {
         #endregion
 
         public static string GetParsedText(string plain) {
-            if (String.IsNullOrEmpty(plain)) return String.Empty;
-            string text = String.Empty;
-            GetRaw(plain, true).ForEach(t => text += t.Item2);
-            return text;
+            if (string.IsNullOrEmpty(plain)) return string.Empty;
+            StringBuilder sb = new StringBuilder();
+            GetRaw(plain, true).ForEach(t => sb.Append(t.Item2));
+            return sb.ToString();
         }
 
-        public static int GetMentionId(string plain) {
+        public static long GetMentionId(string plain) {
             var u = userRegex.Match(plain);
             if (u.Success) {
-                return Int32.Parse(u.Groups[2].Value);
+                return long.Parse(u.Groups[2].Value);
             } else {
                 var g = groupRegex.Match(plain);
-                if (g.Success) return -Int32.Parse(g.Groups[2].Value);
+                if (g.Success) return -long.Parse(g.Groups[2].Value);
             }
             return 0;
         }

@@ -10,6 +10,7 @@ using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Helpers {
@@ -73,16 +74,16 @@ namespace ELOR.Laney.Helpers {
 
         public static string GetSenderNameShort(MessageViewModel msg) {
             if (msg.Action != null) return string.Empty;
-            string sender = string.Empty;
+            StringBuilder sender = new StringBuilder();
 
             if (msg.SenderId == VKSession.Main.UserId && msg.PeerId != VKSession.Main.UserId) {
-                sender = Assets.i18n.Resources.you;
+                sender.Append(Assets.i18n.Resources.you);
             } else if (msg.PeerId.IsChat()) {
-                sender = CacheManager.GetNameOnly(msg.SenderId, true);
+                sender.Append(CacheManager.GetNameOnly(msg.SenderId, true));
             }
 
-            if (!string.IsNullOrEmpty(sender)) sender += ": ";
-            return sender;
+            if (sender.Length > 0) sender.Append(": ");
+            return sender.ToString();
         }
 
         public static SolidColorBrush GetDocumentIconBackground(DocumentType type) {
@@ -133,18 +134,20 @@ namespace ELOR.Laney.Helpers {
         #region Execute
 
         public static string BuildCodeForGetMessagesByCMID(long groupId, List<KeyValuePair<long, int>> peerMessagePair, List<string> fields) {
-            string forks = "", waits = "", items = "", profiles = "", groups = "";
+            StringBuilder forks = new StringBuilder(), waits = new StringBuilder(), 
+                items = new StringBuilder(), profiles = new StringBuilder(), groups = new StringBuilder();
+
             int i = 1;
 
             foreach (var pm in peerMessagePair) {
                 string fork = $"var f{i} = fork(API.messages.getByConversationMessageId({{\"group_id\": {groupId}, \"peer_id\": {pm.Key}, \"conversation_message_ids\": {pm.Value}, \"extended\": 1, \"fields\": \"{String.Join(',', fields)}\"}}));\n";
-                forks += fork;
+                forks.Append(fork);
 
                 string wait = $"var w{i} = wait(f{i});\n";
-                waits += wait;
+                waits.Append(wait);
 
                 string item = $"response.items.push(w{i}.items[0]);\n";
-                items += item;
+                items.Append(item);
 
                 string profile = $@"if (w{i}.profiles) {{
   var pi{i} = 0;
@@ -153,7 +156,7 @@ namespace ELOR.Laney.Helpers {
     pi{i} = pi{i} + 1;
   }}
 }}";
-                profiles += profile + "\n";
+                profiles.Append(profile);
 
                 string group = $@"if (w{i}.groups) {{
   var gi{i} = 0;
@@ -162,7 +165,7 @@ namespace ELOR.Laney.Helpers {
     gi{i} = gi{i} + 1;
   }}
 }}";
-                groups += group + "\n";
+                groups.Append(group);
 
                 i++;
             }
