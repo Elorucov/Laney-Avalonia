@@ -124,7 +124,7 @@ namespace ELOR.VKAPILib {
                     headers.Add("Origin", $"https://id.vk.com");
                 }
 
-                var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
+                using var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
                 return await resp.Content.ReadAsStringAsync();
             } else {
                 using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri) { 

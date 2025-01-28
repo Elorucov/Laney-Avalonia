@@ -28,9 +28,9 @@ namespace ELOR.Laney.Core {
                 }
             }
             cachedImages.Clear();
-            GC.Collect();
+            GC.Collect(2, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
-            GC.Collect();
+            GC.Collect(2, GCCollectionMode.Aggressive);
 
             await Task.Delay(250); // память может уменьшаться не сразу, и в лог попадёт неверное значение, если не прописать Delay.
 
@@ -69,14 +69,14 @@ namespace ELOR.Laney.Core {
                         await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
                         return needResize ? await GetResizedBitmap(cachedImages[key], decodeWidth, decodeHeight) : cachedImages[key];
                     }
-                    ManualResetEventSlim mres = new ManualResetEventSlim();
+                    using ManualResetEventSlim mres = new ManualResetEventSlim();
                     bool isAdded = nowLoading.TryAdd(key, mres);
                     if (!isAdded) Log.Warning($"TryGetCachedBitmapAsync: cannot add MRES \"{key}\"!");
 
-                    var response = await LNet.GetAsync(uri);
+                    using var response = await LNet.GetAsync(uri);
                     response.EnsureSuccessStatusCode();
                     var bytes = await response.Content.ReadAsByteArrayAsync();
-                    Stream stream = new MemoryStream(bytes);
+                    using Stream stream = new MemoryStream(bytes);
                     if (bytes.Length == 0) throw new Exception("Image length is 0!");
 
                     // bitmap = WriteableBitmap.Decode(stream);

@@ -89,12 +89,12 @@ namespace ELOR.Laney.Controls {
             if (sender is Image img && img.DataContext is TabItem<object> tab) {
                 if (tab.Image != null) {
                     try {
-                        var response = await LNet.GetAsync(tab.Image);
+                        using var response = await LNet.GetAsync(tab.Image);
                         response.EnsureSuccessStatusCode();
                         var bytes = await response.Content.ReadAsByteArrayAsync();
-                        Stream stream = new MemoryStream(bytes);
+                        using Stream stream = new MemoryStream(bytes);
                         if (bytes.Length == 0) throw new Exception("Image length is 0!");
-                        var bitmap = WriteableBitmap.DecodeToWidth(stream, 22, BitmapInterpolationMode.MediumQuality);
+                        using var bitmap = WriteableBitmap.DecodeToWidth(stream, 22, BitmapInterpolationMode.MediumQuality);
                         img.Source = bitmap;
                     } catch (Exception ex) {
                         Log.Error(ex, $"EmojiStickerPickerUI: cannot load a sticker pack icon!");

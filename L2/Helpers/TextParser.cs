@@ -4,6 +4,7 @@ using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -121,9 +122,12 @@ namespace ELOR.Laney.Helpers {
 
         public static string GetParsedText(string plain) {
             if (string.IsNullOrEmpty(plain)) return string.Empty;
-            StringBuilder sb = new StringBuilder();
-            GetRaw(plain, true).ForEach(t => sb.Append(t.Item2));
-            return sb.ToString();
+            StringBuilder sb = StringBuilderCache.Acquire(plain.Length);
+
+            foreach (var token in CollectionsMarshal.AsSpan(GetRaw(plain))) {
+                sb.Append(token.Item2);
+            }
+            return StringBuilderCache.GetStringAndRelease(sb);
         }
 
         public static long GetMentionId(string plain) {

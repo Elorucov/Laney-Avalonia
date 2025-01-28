@@ -509,7 +509,6 @@ namespace ELOR.Laney.ViewModels {
                 Setup(mhr.Conversation);
                 mhr.Messages?.Reverse();
                 DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
-                GC.Collect();
 
                 int scrollTo = 0;
                 if (startMessageId > 0) scrollTo = startMessageId;
@@ -522,6 +521,9 @@ namespace ELOR.Laney.ViewModels {
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => { LoadMessages(startMessageId); });
             } finally {
                 IsLoading = false;
+
+                await Task.Delay(2000);
+                GC.Collect(2, GCCollectionMode.Aggressive);
             }
         }
 
