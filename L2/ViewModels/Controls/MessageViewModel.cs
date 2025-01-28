@@ -183,13 +183,13 @@ namespace ELOR.Laney.ViewModels.Controls {
                 SenderType = MessageVMSenderType.User;
                 User u = CacheManager.GetUser(SenderId);
                 if (u == null) Log.Warning($"MessageViewModel: user with id {SenderId} was not found in cache!");
-                SenderName = u == null ? $"id{SenderId}" : u.FullName;
+                SenderName = u == null ? $"id{SenderId}" : string.Intern(u.FullName);
                 if (u != null) SenderAvatar = u.Photo;
             } else if (SenderId.IsGroup()) {
                 SenderType = MessageVMSenderType.Group;
                 Group g = CacheManager.GetGroup(SenderId);
                 if (g == null) Log.Warning($"MessageViewModel: group with id {SenderId} was not found in cache!");
-                SenderName = g == null ? $"club{SenderId}" : g.Name;
+                SenderName = g == null ? $"club{SenderId}" : string.Intern(g.Name);
                 if (g != null) SenderAvatar = g.Photo;
             }
         }

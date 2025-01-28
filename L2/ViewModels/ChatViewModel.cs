@@ -243,7 +243,7 @@ namespace ELOR.Laney.ViewModels {
                     tmp.IsOnline = false;
                     Online = tmp;
                 } else {
-                    Title = PeerUser.FullName;
+                    Title = string.Intern(PeerUser.FullName);
                     Avatar = new Uri(PeerUser.Photo200);
                     Online = PeerUser.OnlineInfo;
                 }
@@ -251,14 +251,14 @@ namespace ELOR.Laney.ViewModels {
             } else if (PeerId.IsGroup()) { // Group
                 PeerType = PeerType.Group;
                 PeerGroup = CacheManager.GetGroup(PeerId);
-                Title = PeerGroup.Name;
+                Title = string.Intern(PeerGroup.Name);
                 Avatar = new Uri(PeerGroup.Photo200);
                 IsVerified = PeerGroup.Verified == 1;
                 Subtitle = PeerGroup.Activity?.ToLowerInvariant();
             } else if (PeerId.IsChat()) { // Chat
                 PeerType = PeerType.Chat;
                 ChatSettings = c.ChatSettings;
-                Title = ChatSettings.Title;
+                Title = string.Intern(ChatSettings.Title);
                 Avatar = ChatSettings?.Photo?.Uri;
                 if (ChatSettings.PinnedMessage != null) 
                     PinnedMessage = MessageViewModel.Create(ChatSettings.PinnedMessage, session);

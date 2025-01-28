@@ -101,11 +101,11 @@ namespace ELOR.Laney.Core {
                 string lastName = u.LastName;
                 if (shortLastName && !String.IsNullOrEmpty(lastName) && lastName.Length > 1)
                     lastName = lastName[0].ToString();
-                return new Tuple<string, string, Uri>(u.FirstName, lastName, u.Photo);
+                return new Tuple<string, string, Uri>(String.Intern(u.FirstName), lastName, u.Photo);
             } else if (id.IsGroup()) {
                 Group g = GetGroup(id);
                 if (g == null) return null;
-                return new Tuple<string, string, Uri>(g.Name, null, g.Photo);
+                return new Tuple<string, string, Uri>(String.Intern(g.Name), null, g.Photo);
             }
             return null;
         }
@@ -113,7 +113,7 @@ namespace ELOR.Laney.Core {
         public static string GetNameOnly(long id, bool shortLastName = false) {
             var t = GetNameAndAvatar(id, shortLastName);
             if (t == null) return id.ToString();
-            return id.IsUser() ? $"{t.Item1} {t.Item2}" : t.Item1;
+            return id.IsUser() ? String.Intern($"{t.Item1} {t.Item2}") : String.Intern(t.Item1);
         }
 
         public static void ClearUsersAndGroupsCache() {
