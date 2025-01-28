@@ -4,7 +4,7 @@
   <img alt="Logo" src="docs/logo_light.png">
 </picture>
 
-Это Laney 2 — кроссплатформенная версия Laney, альтернативного мессенджера ВКонтакте, написанная на платформе .NET 8 с использованием UI-фреймворка [Avalonia](https://github.com/AvaloniaUI/Avalonia).
+Это Laney 2 — кроссплатформенная версия Laney, альтернативного мессенджера ВКонтакте, написанная на платформе .NET с использованием UI-фреймворка [Avalonia](https://github.com/AvaloniaUI/Avalonia).
 
 <picture align="center">
   <source media="(prefers-color-scheme: dark)" srcset="docs/windows_dark.png">
@@ -19,10 +19,12 @@
 
 Главное отличие Laney от десктопного приложения [VK Мессенджер](https://vk.me/) — мгновенный запуск и быстрая работа приложения, а также более экономное потребление ОЗУ.
 
-> **Обратите внимание:** версия для macOS не подписана. Для запуска введите в терминале `xattr -r -d com.apple.quarantine \Applications\Laney.app`
+> **Внимание пользователям macOS:** приложение не подписано. Для запуска введите в терминале `xattr -r -d com.apple.quarantine \Applications\Laney.app`
+
+> **Внимание пользователям Linux:** установите **libvlc**. Без него Laney не сможет воспроизводить звуки уведомлений и проигрывать музыку и голосовые сообщения. Пример для Ubuntu: `sudo apt install libvlc-dev`. Если не сработает, попробуйте установить и сам **VLC**.
 
 ## Перед началом работы
-Сначала установите [.NET SDK 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) и [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell).
+Сначала установите [.NET SDK 9](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) и [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell).
 
 Для проверки корректности установки: `dotnet --version` и `pwsh -v`.
 
