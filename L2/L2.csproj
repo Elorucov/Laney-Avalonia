@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
@@ -47,6 +47,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>8632</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Label="Avalonia">
+    <AvaloniaXamlVerboseExceptions>True</AvaloniaXamlVerboseExceptions>
   </PropertyGroup>
   <!-- Temporary fix issue https://github.com/dotnet/runtime/issues/98124 -->
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
