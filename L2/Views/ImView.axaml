@@ -21,8 +21,8 @@
           <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
             <fb:FlexPanel x:Name="ChatNameContainer" Direction="Row" JustifyContent="FlexStart" Wrap="NoWrap">
               <TextBlock x:Name="ChatName" ClipToBounds="True" Classes="Default" Margin="0,1,0,0" FontWeight="Medium" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
-              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="6,3,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,3,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
             </fb:FlexPanel>
             <StackPanel x:Name="TopRight" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="32,0,12,0">
               <Border x:Name="ReadIndicator" VerticalAlignment="Top" Margin="0,2,8,0">
@@ -81,8 +81,8 @@
           <Grid x:Name="FirstLine" Height="22" ColumnDefinitions="* Auto">
             <fb:FlexPanel x:Name="ChatNameContainer" Direction="Row" JustifyContent="FlexStart" Wrap="NoWrap">
               <TextBlock x:Name="ChatName" ClipToBounds="True" MaxLines="1" Classes="Default" Margin="0,1,0,0" FontWeight="Medium" Text="{Binding Title}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
-              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Verified}" Foreground="{DynamicResource VKAccentBrush}" IsVisible="{Binding IsVerified}" Margin="6,3,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+              <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon16Muted}" Foreground="{DynamicResource VKIconTertiaryBrush}" Margin="6,3,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="{Binding PushSettings.DisabledForever}"/>
             </fb:FlexPanel>
             <StackPanel x:Name="TopRight" Grid.Column="1" Orientation="Horizontal" Margin="0,0,12,0">
               <Border x:Name="ReadIndicator" IsVisible="{Binding LastMessage, Converter={StaticResource rivc}}" VerticalAlignment="Top" Margin="0,2,8,0">
