@@ -36,6 +36,11 @@ namespace ELOR.Laney.Core {
 
             await Task.Factory.StartNew(async () => {
                 Log.Information($"StickersManager.InitKeywords: now running...");
+                Stopwatch sw = Stopwatch.StartNew();
+
+                long ram0 = Process.GetCurrentProcess().PrivateMemorySize64;
+                double ram0mb = (double)ram0 / 1048576;
+
                 do {
                     try {
                         StickersKeywordsResponse skr = await VKSession.Main.API.Store.GetStickersKeywordsAsync(currentChunk, currentHash, false).ConfigureAwait(false);
@@ -57,13 +62,25 @@ namespace ELOR.Laney.Core {
                 } while (currentChunk < totalChunks);
 
                 Chunks = currentChunk;
+                sw.Stop();
+
+                long ram1 = Process.GetCurrentProcess().PrivateMemorySize64;
+                double ram1mb = (double)ram1 / 1048576;
+
+                GC.Collect(2, GCCollectionMode.Forced);
+                GC.WaitForPendingFinalizers();
+                GC.Collect(2, GCCollectionMode.Aggressive);
+
+                long ram2 = Process.GetCurrentProcess().PrivateMemorySize64;
+                double ram2mb = (double)ram2 / 1048576;
+
+                Log.Information($"StickersManager.InitKeywords: Loading complete. Elpased: {Math.Round((double)sw.ElapsedMilliseconds * 1000, 3)} sec. RAM before load: {ram0mb} Mb; after load: {ram1mb} Mb; after GC: {ram2mb} Mb.");
             });
         }
 
         // ¯\_(ツ)_/¯
         private static void AddToDictionary(List<StickerDictionary> dicts) {
             try {
-                Stopwatch sw = Stopwatch.StartNew();
                 foreach (var dict in dicts) {
                     // Добавляем слово и подходящие к нему стикеры
                     foreach (string word in dict.Words) {
@@ -83,8 +100,7 @@ namespace ELOR.Laney.Core {
                         }
                     }
                 }
-                sw.Stop();
-                Log.Information($"StickersManager.AddToDictionary: total user words/stickers: {UserStickersForWord.Count}/{WordsForUserSticker.Count}; total promoted words/stickers: {PromotedStickersForWord.Count}/{WordsForPromotedSticker.Count}; elapsed: {sw.ElapsedMilliseconds} ms.");
+                Log.Information($"StickersManager.AddToDictionary: total user words/stickers: {UserStickersForWord.Count}/{WordsForUserSticker.Count}; total promoted words/stickers: {PromotedStickersForWord.Count}/{WordsForPromotedSticker.Count}.");
             } catch (Exception ex) {
                 Log.Error(ex, $"StickersManager.AddToDictionary error!");
             }

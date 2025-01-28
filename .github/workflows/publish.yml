@@ -20,10 +20,6 @@ jobs:
             define: WIN
             os: windows-latest
             target: win-x64
-          - kind: windows-arm
-            define: WIN
-            os: windows-latest
-            target: win-arm64
           - kind: macOS
             define: MAC
             os: macos-latest
@@ -40,7 +36,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 8.0.100
+          dotnet-version: 9.0.101
       - name: Setting repository name and owner to binary and channel variable to DEV by default
         shell: bash
         run: |

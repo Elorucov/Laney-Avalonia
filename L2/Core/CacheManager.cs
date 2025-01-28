@@ -101,11 +101,11 @@ namespace ELOR.Laney.Core {
                 string lastName = u.LastName;
                 if (shortLastName && !String.IsNullOrEmpty(lastName) && lastName.Length > 1)
                     lastName = lastName[0].ToString();
-                return new Tuple<string, string, Uri>(u.FirstName, lastName, u.Photo);
+                return new Tuple<string, string, Uri>(String.Intern(u.FirstName), lastName, u.Photo);
             } else if (id.IsGroup()) {
                 Group g = GetGroup(id);
                 if (g == null) return null;
-                return new Tuple<string, string, Uri>(g.Name, null, g.Photo);
+                return new Tuple<string, string, Uri>(String.Intern(g.Name), null, g.Photo);
             }
             return null;
         }
@@ -113,7 +113,7 @@ namespace ELOR.Laney.Core {
         public static string GetNameOnly(long id, bool shortLastName = false) {
             var t = GetNameAndAvatar(id, shortLastName);
             if (t == null) return id.ToString();
-            return id.IsUser() ? $"{t.Item1} {t.Item2}" : t.Item1;
+            return id.IsUser() ? String.Intern($"{t.Item1} {t.Item2}") : String.Intern(t.Item1);
         }
 
         public static void ClearUsersAndGroupsCache() {
@@ -144,8 +144,8 @@ namespace ELOR.Laney.Core {
 
         public static async Task<SvgImage> GetStaticReactionImageAsync(Uri uri) {
             if (uri.Scheme == "avares") {
-                var stream = AssetLoader.Open(uri);
-                StreamReader reader = new StreamReader(stream);
+                using var stream = AssetLoader.Open(uri);
+                using StreamReader reader = new StreamReader(stream);
                 string data = reader.ReadToEnd();
                 return new SvgImage {
                     Source = SvgSource.LoadFromSvg(data)
@@ -159,11 +159,11 @@ namespace ELOR.Laney.Core {
                     return ReactionsAssetData[key];
                 }
                 string data = null;
-                ManualResetEventSlim mres = new ManualResetEventSlim();
+                using ManualResetEventSlim mres = new ManualResetEventSlim();
                 bool isAdded = nowLoading.TryAdd(key, mres);
                 if (!isAdded) Log.Warning($"GetStaticReactionImage: cannot add MRES \"{uri}\"!");
 
-                var response = await LNet.GetAsync(uri);
+                using var response = await LNet.GetAsync(uri);
                 response.EnsureSuccessStatusCode();
                 data = await response.Content.ReadAsStringAsync();
                 SvgImage image = new SvgImage {
@@ -199,7 +199,7 @@ namespace ELOR.Laney.Core {
                 string filePath = Path.Combine(cachePath, uri.Segments.Last());
                 if (File.Exists(filePath)) return true;
 
-                HttpResponseMessage hmsg = await LNet.GetAsync(uri);
+                using HttpResponseMessage hmsg = await LNet.GetAsync(uri);
                 using (var stream = await hmsg.Content.ReadAsStreamAsync()) {
                     using (var fileStream = File.Open(filePath, FileMode.Create)) {
                         await stream.CopyToAsync(fileStream);

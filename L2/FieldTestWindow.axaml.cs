@@ -65,15 +65,11 @@ namespace ELOR.Laney {
 
         private void w1_Click(object? sender, RoutedEventArgs e) {
             var bb2 = AssetsManager.OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
-            AudioPlayer.SFX?.Play(bb2);
+            LMediaPlayer.SFX?.PlayStream(bb2);
         }
 
         private void w2_Click(object? sender, RoutedEventArgs e) {
-            //var response = await LNet.GetAsync(new Uri("https://elor.top/res/audios/sunrise_spring.mp3"));
-            //using (var stream = await response.Content.ReadAsStreamAsync()) {
-            //    AudioPlayer.SFX?.Play(stream);
-            //}
-            AudioPlayer.SFX?.PlayURL("https://elor.top/res/audios/sunrise_spring.mp3");
+            LMediaPlayer.SFX?.PlayURL("https://elor.top/res/audios/sunrise_spring.mp3");
         }
 
         private async void vt01_Click(object? sender, RoutedEventArgs e) {

@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
     public sealed class ImViewModel : CommonViewModel {
@@ -96,7 +97,6 @@ namespace ELOR.Laney.ViewModels {
                     }
                     _chats.AddOrUpdate(chat);
                 }
-                GC.Collect();
             } catch (Exception ex) {
                 if (_chats.Count > 0) {
                     if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) LoadConversations();
@@ -105,6 +105,8 @@ namespace ELOR.Laney.ViewModels {
                 }
             }
             IsLoading = false;
+            await Task.Delay(2000);
+            GC.Collect(2, GCCollectionMode.Aggressive);
         }
 
         #region Longpoll events

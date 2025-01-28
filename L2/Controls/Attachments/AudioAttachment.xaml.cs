@@ -54,7 +54,7 @@ public class AudioAttachment : TemplatedControl {
         Setup();
 
         PlayButton.Click += PlayButton_Click;
-        if (AudioPlayerViewModel.MainInstance != null) Instance.PlaybackStateChanged += MainInstance_PlaybackStateChanged;
+        if (AudioPlayerViewModel.MainInstance != null) Instance.StateChanged += Instance_StateChanged;
         AudioPlayerViewModel.InstancesChanged += AudioPlayerViewModel_InstancesChanged;
         Unloaded += AudioAttachment_Unloaded;
     }
@@ -66,12 +66,19 @@ public class AudioAttachment : TemplatedControl {
             TrackName.Text = Audio.Title;
             Performer.Text = Audio.Artist;
             Duration.Text = Audio.Duration.ToTimeWithHourIfNeeded();
-            PlayButton.IsEnabled = true;
+            if (Audio.Uri != null) {
+                PlayButton.IsEnabled = true;
+            } else {
+                IsHitTestVisible = false;
+                Opacity = 0.5;
+            }
         } else {
             TrackName.Text = String.Empty;
             Performer.Text = String.Empty;
             Duration.Text = "-:--";
             PlayButton.IsEnabled = false;
+            IsHitTestVisible = true;
+            Opacity = 1;
         }
     }
 
@@ -93,19 +100,18 @@ public class AudioAttachment : TemplatedControl {
         }
     }
 
-    private async void MainInstance_PlaybackStateChanged(object sender, ManagedBass.PlaybackState e) {
-        await Task.Delay(1); // пока нужно, ибо свойство IsPlaying у bass-вского MediaPlayer обновляется после срабатывания события PlaybackStateChanged. Позже исправим.
+    private void Instance_StateChanged(object sender, bool e) {
         CheckCurrentPlayingAudio();
     }
 
     private void AudioPlayerViewModel_InstancesChanged(object sender, EventArgs e) {
-        if (Instance != null) Instance.PlaybackStateChanged += MainInstance_PlaybackStateChanged;
+        if (Instance != null) Instance.StateChanged += Instance_StateChanged;
         CheckCurrentPlayingAudio();
     }
 
     private void AudioAttachment_Unloaded(object sender, RoutedEventArgs e) {
         PlayButton.Click -= PlayButton_Click;
-        if (Instance != null) Instance.PlaybackStateChanged -= MainInstance_PlaybackStateChanged;
+        if (Instance != null) Instance.StateChanged -= Instance_StateChanged;
         AudioPlayerViewModel.InstancesChanged -= AudioPlayerViewModel_InstancesChanged;
         Unloaded -= AudioAttachment_Unloaded;
     }

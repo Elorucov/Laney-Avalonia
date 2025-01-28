@@ -113,7 +113,7 @@ namespace ELOR.Laney {
             Localizer.LoadLanguage(lang);
             Debug.WriteLine("Language loaded!");
 
-            AudioPlayer.InitInstances();
+            LMediaPlayer.InitStaticInstances();
 
 #if RELEASE
 #else
@@ -278,7 +278,7 @@ namespace ELOR.Laney {
             "Avalonia.Skia.Lottie by Wiesław Šoltés",
             "ColorTextBlock.Avalonia by whistyun",
             "jp2masa.Avalonia.Flexbox",
-            "ManagedBass",
+            "LibVLCSharp",
             "Serilog",
             "Unicode.net",
         };

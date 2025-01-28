@@ -53,7 +53,7 @@ namespace ELOR.Laney.Core {
             };
 
             try {
-                var resp = await LNet.GetAsync(authUri, headers: headers);
+                using var resp = await LNet.GetAsync(authUri, headers: headers);
                 var q = resp.RequestMessage.RequestUri.Query.Substring(1).ParseQuery();
                 if (q.ContainsKey("return_auth_hash")) {
                     Log.Information($"GetOauthHashAsync: successfully fetch a return_auth_hash: {q["return_auth_hash"]}.");
@@ -72,12 +72,12 @@ namespace ELOR.Laney.Core {
                 { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/115.0.1901.203" }
             };
 
-            var resp1 = await LNet.GetAsync(authUri, headers: headers);
+            using var resp1 = await LNet.GetAsync(authUri, headers: headers);
             var vkIdUri = resp1.RequestMessage.RequestUri;
             Log.Information($"GetVKIDAuthLinkAsync: authUri is {resp1.RequestMessage.RequestUri.AbsoluteUri}");
             var q1 = vkIdUri.Query.Substring(1).ParseQuery();
 
-            var resp2 = await LNet.GetAsync(authUriLocalhost, headers: headers);
+            using var resp2 = await LNet.GetAsync(authUriLocalhost, headers: headers);
             Log.Information($"GetVKIDAuthLinkAsync: authUriLocalhost is {resp2.RequestMessage.RequestUri.AbsoluteUri}");
             var q2 = resp2.RequestMessage.RequestUri.Query.Substring(1).ParseQuery();
 

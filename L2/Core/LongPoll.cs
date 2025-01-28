@@ -50,15 +50,16 @@ namespace ELOR.Laney.Core {
 
             if (Settings.EnableLongPollLogs) {
                 long lid = groupId == 0 ? sessionId : -groupId;
-                loggerConfig = loggerConfig.WriteTo.File(Path.Combine(App.LocalDataPath, "logs", $"L2_LP_{lid}_.log"), rollingInterval: RollingInterval.Hour, retainedFileCountLimit: 10);
+                loggerConfig = loggerConfig.WriteTo.File(Path.Combine(App.LocalDataPath, "logs", $"L2_LP_{lid}_.log"),
+                    buffered: true, retainedFileCountLimit: 20, flushToDiskInterval: TimeSpan.FromSeconds(30));
             }
 
             Log = loggerConfig.CreateLogger();
         }
 
         public void SetUp(LongPollServerInfo info) {
-            // Server = info.Server;
-            Server = info.Server.Replace("im.vk.com/nim", "api.vk.com/ruim"); // TODO: параметр в настройках как в старом Laney
+            Server = info.Server;
+            // Server = info.Server.Replace("im.vk.com/nim", "api.vk.com/ruim"); // TODO: параметр в настройках как в старом Laney
             Key = info.Key;
             TimeStamp = info.TS;
             PTS = info.PTS;
@@ -161,7 +162,7 @@ namespace ELOR.Laney.Core {
             while (trying) {
                 try {
                     Log.Information("Getting LongPoll history...");
-                    var response = await API.Messages.GetLongPollHistoryAsync(groupId, LongPoll.VERSION, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
+                    var response = await API.Messages.GetLongPollHistoryAsync(groupId, VERSION, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
                     CacheManager.Add(response.Profiles);
                     CacheManager.Add(response.Groups);
                     // TODO: кешировать беседы.

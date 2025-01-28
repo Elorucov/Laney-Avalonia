@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using VKUI.Controls;
 using VKUI.Utils;
 
@@ -550,20 +551,21 @@ namespace ELOR.Laney.Controls.Attachments {
 
         private void AddPreviewInfo(IPreview preview, Button button) {
             bool isNarrow = button.Width < 128;
+            StringBuilder meta = new StringBuilder();
             if (preview is Video video) {
-                string meta = "►";
+                meta.Append("▶");
                 if (!isNarrow) {
                     if (video.Live == 1) {
-                        meta += " LIVE";
+                        meta.Append(" LIVE");
                     } else {
-                        meta += $" {video.DurationTime.ToString(video.DurationTime.Hours > 0 ? "c" : @"m\:ss")}";
+                        meta.Append($" {video.DurationTime.ToString(video.DurationTime.Hours > 0 ? "c" : @"m\:ss")}");
                     }
                 }
-                button.Content = BuildPreviewInfoUI(meta);
+                button.Content = BuildPreviewInfoUI(meta.ToString());
             } else if (preview is Document doc) {
-                string meta = doc.Extension.ToUpper();
-                if (!isNarrow) meta += $" · {doc.Size.ToFileSize()}";
-                button.Content = BuildPreviewInfoUI(meta);
+                meta.Append(doc.Extension.ToUpper());
+                if (!isNarrow) meta.Append($" · {doc.Size.ToFileSize()}");
+                button.Content = BuildPreviewInfoUI(meta.ToString());
             }
         }
 

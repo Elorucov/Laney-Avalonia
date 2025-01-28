@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ToastNotifications.Avalonia;
 using VKUI.Controls;
@@ -242,7 +243,7 @@ namespace ELOR.Laney.ViewModels {
                     tmp.IsOnline = false;
                     Online = tmp;
                 } else {
-                    Title = PeerUser.FullName;
+                    Title = string.Intern(PeerUser.FullName);
                     Avatar = new Uri(PeerUser.Photo200);
                     Online = PeerUser.OnlineInfo;
                 }
@@ -250,14 +251,14 @@ namespace ELOR.Laney.ViewModels {
             } else if (PeerId.IsGroup()) { // Group
                 PeerType = PeerType.Group;
                 PeerGroup = CacheManager.GetGroup(PeerId);
-                Title = PeerGroup.Name;
+                Title = string.Intern(PeerGroup.Name);
                 Avatar = new Uri(PeerGroup.Photo200);
                 IsVerified = PeerGroup.Verified == 1;
                 Subtitle = PeerGroup.Activity?.ToLowerInvariant();
             } else if (PeerId.IsChat()) { // Chat
                 PeerType = PeerType.Chat;
                 ChatSettings = c.ChatSettings;
-                Title = ChatSettings.Title;
+                Title = string.Intern(ChatSettings.Title);
                 Avatar = ChatSettings?.Photo?.Uri;
                 if (ChatSettings.PinnedMessage != null) 
                     PinnedMessage = MessageViewModel.Create(ChatSettings.PinnedMessage, session);
@@ -508,7 +509,6 @@ namespace ELOR.Laney.ViewModels {
                 Setup(mhr.Conversation);
                 mhr.Messages?.Reverse();
                 DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
-                GC.Collect();
 
                 int scrollTo = 0;
                 if (startMessageId > 0) scrollTo = startMessageId;
@@ -521,6 +521,9 @@ namespace ELOR.Laney.ViewModels {
                 Placeholder = PlaceholderViewModel.GetForException(ex, (o) => { LoadMessages(startMessageId); });
             } finally {
                 IsLoading = false;
+
+                await Task.Delay(2000);
+                GC.Collect(2, GCCollectionMode.Aggressive);
             }
         }
 
@@ -908,23 +911,23 @@ namespace ELOR.Laney.ViewModels {
 
                     bool has3AndMoreDifferentTypes = groupedActivities.Where(a => a.Count > 0).Count() >= 3;
 
-                    string status = String.Empty;
+                    StringBuilder status = new StringBuilder();
                     foreach (var act in groupedActivities) {
                         if (act.Count == 0) continue;
                         var type = act[0].Status;
                         string actstr = GetLocalizedActivityStatus(type, act.Count);
 
                         if (has3AndMoreDifferentTypes) {
-                            if (status.Length != 0) status += ", ";
-                            status += $"{act.Count} {actstr}";
+                            if (status.Length != 0) status.Append(", ");
+                            status.Append($"{act.Count} {actstr}");
                         } else {
-                            if (status.Length != 0) status += ", ";
+                            if (status.Length != 0) status.Append(", ");
                             List<long> ids = act.Select(s => s.MemberId).ToList();
-                            status += $"{GetNamesForActivityStatus(ids, act.Count, act.Count == 1)} {actstr}";
+                            status.Append($"{GetNamesForActivityStatus(ids, act.Count, act.Count == 1)} {actstr}");
                         }
                     }
 
-                    ActivityStatus = status.Trim() + "...";
+                    ActivityStatus = $"{status.ToString().Trim()}…";
                 }
             } catch (Exception ex) {
                 ActivityStatus = String.Empty;
@@ -942,31 +945,25 @@ namespace ELOR.Laney.ViewModels {
                 case LongPollActivityType.UploadingVideo: return Localizer.Get($"lp_act_video{suffix}");
                 case LongPollActivityType.UploadingFile: return Localizer.Get($"lp_act_file{suffix}");
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         private string GetNamesForActivityStatus(IReadOnlyList<long> ids, int count, bool showFullLastName) {
-            string r = String.Empty;
+            StringBuilder sb = new StringBuilder();
             foreach (long id in ids) {
                 if (id.IsUser()) {
                     User u = CacheManager.GetUser(id);
                     if (u != null) {
-                        string lastName = showFullLastName ? u.LastName : u.LastName[0] + ".";
-                        r = $"{u.FirstName} {lastName}";
+                        string lastName = showFullLastName ? u.LastName : $"{u.LastName[0]}.";
+                        sb.Append($"{u.FirstName} {lastName}");
                     }
                 } else if (id.IsGroup()) {
                     var g = CacheManager.GetGroup(id);
-                    if (g != null) {
-                        r = $"\"{g.Name}\"";
-                    }
+                    if (g != null) sb.Append($"\"{g.Name}\"");
                 }
             }
-            if (!String.IsNullOrEmpty(r)) {
-                if (count > 1) {
-                    r += $" {Localizer.GetFormatted("im_status_more", count - 1)}";
-                }
-            }
-            return r;
+            if (sb.Length > 0 && count > 1) sb.Append($" {Localizer.GetFormatted("im_status_more", count - 1)}");
+            return sb.ToString();
         }
 
         private async void LongPoll_NotificationsSettingsChanged(object sender, LongPollPushNotificationData e) {
@@ -1035,7 +1032,7 @@ namespace ELOR.Laney.ViewModels {
             session.ShowSystemNotification(t);
             if (sound) {
                 var bb2 = AssetsManager.OpenAsset(new Uri("avares://laney/Assets/Audio/bb2.mp3"));
-                AudioPlayer.SFX?.Play(bb2);
+                LMediaPlayer.SFX?.PlayStream(bb2);
             }
         }
 

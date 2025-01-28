@@ -27,7 +27,7 @@ namespace ELOR.VKAPILib.Objects
         public string Url { get; set; }
 
         [JsonIgnore]
-        public Uri Uri { get { return new Uri(Url); } }
+        public Uri Uri { get { return Uri.IsWellFormedUriString(Url, UriKind.Absolute) ? new Uri(Url) : null; } }
 
         [JsonPropertyName("date")]
         public int DateUnix { get; set; }
