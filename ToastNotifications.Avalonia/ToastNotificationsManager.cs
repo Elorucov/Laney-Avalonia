@@ -2,7 +2,7 @@
 using Avalonia.Media.Imaging;
 
 namespace ToastNotifications.Avalonia {
-    public class ToastNotificationsManager : INotificationManager {
+    public class ToastNotificationsManager : WindowNotificationManager {
         internal static ToastsContainer Container { get; private set; }
         public static double ExpirationMilliseconds { get; set; } = 7000;
         internal Bitmap AppLogo { get; private set; }
@@ -13,7 +13,7 @@ namespace ToastNotifications.Avalonia {
             Log = log;
         }
 
-        public void Show(INotification notification) {
+        public new void Show(INotification notification) {
             if (ExpirationMilliseconds < 1000 || ExpirationMilliseconds > 15000)
                 throw new ArgumentException($"{ExpirationMilliseconds} should be between 1000 and 15000!");
 
@@ -27,14 +27,6 @@ namespace ToastNotifications.Avalonia {
             } else {
                 throw new ArgumentException($"ToastNotification required!");
             }
-        }
-
-        public void Close(INotification notification) {
-            
-        }
-
-        public void CloseAll() {
-            
         }
     }
 }

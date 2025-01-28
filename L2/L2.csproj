@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.630</AssemblyVersion>
-    <FileVersion>2.0.630</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.630-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250108-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.630-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250108-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.630-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250108-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.631</AssemblyVersion>
+    <FileVersion>2.0.631</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.631-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250108-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.631-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250108-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.631-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250108-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -67,6 +67,10 @@
     <VlcWindowsX64IncludeFiles Include="plugins\access\libhttp_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\access\libhttps_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\access\libtcp_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\audio_filter\libnormvol_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\audio_filter\libscaletempo_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\audio_filter\libtrivial_channel_mixer_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\audio_filter\libugly_resampler_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\audio_output\libmmdevice_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\audio_output\libwasapi_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\codec\liblpcm_plugin.dll" />
@@ -171,22 +175,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.1.3" />
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.3" />
-    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.1.0.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.1.3" />
+    <PackageReference Include="Avalonia" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
+    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.2.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.3" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.1.0.1" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.1.3" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.3" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="DynamicData" Version="9.0.4" />
-    <PackageReference Include="LibVLCSharp" Version="3.9.1" />
-    <PackageReference Include="Serilog" Version="4.0.2" />
+    <PackageReference Include="DynamicData" Version="9.1.1" />
+    <PackageReference Include="LibVLCSharp" Version="3.9.2" />
+    <PackageReference Include="Serilog" Version="4.2.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
