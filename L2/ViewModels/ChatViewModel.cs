@@ -654,7 +654,10 @@ namespace ELOR.Laney.ViewModels {
                 }
 
                 bool canAddToDisplayedMessages = DisplayedMessages?.Last?.ConversationMessageId == ReceivedMessages.LastOrDefault()?.ConversationMessageId;
+
+                if (ReceivedMessages.Count >= Constants.MessagesCount) ReceivedMessages.RemoveAt(0);
                 ReceivedMessages.Add(msg);
+
                 if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
                 // if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
                 if (msg.SenderId != session.Id) UnreadMessagesCount++;
