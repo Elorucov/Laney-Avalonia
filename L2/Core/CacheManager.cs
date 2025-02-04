@@ -156,10 +156,11 @@ namespace ELOR.Laney.Core {
                 if (nowLoading.ContainsKey(key)) {
                     var lmres = nowLoading[key];
                     await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
+                    lmres.Dispose();
                     return ReactionsAssetData[key];
                 }
                 string data = null;
-                using ManualResetEventSlim mres = new ManualResetEventSlim();
+                ManualResetEventSlim mres = new ManualResetEventSlim();
                 bool isAdded = nowLoading.TryAdd(key, mres);
                 if (!isAdded) Log.Warning($"GetStaticReactionImage: cannot add MRES \"{uri}\"!");
 
