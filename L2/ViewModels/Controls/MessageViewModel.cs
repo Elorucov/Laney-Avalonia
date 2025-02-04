@@ -386,6 +386,13 @@ namespace ELOR.Laney.ViewModels.Controls {
             return message;
         }
 
+        public static void ClearCache() {
+            int count = _cachedMessages.Count;
+            _cachedMessages.Clear();
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            Log.Information($"Messages cache clear. Count: {count}");
+        }
+
         public override string ToString() {
             return _toString;
         }

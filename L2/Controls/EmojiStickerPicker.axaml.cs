@@ -1,10 +1,9 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media.Imaging;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Network;
 using ELOR.Laney.DataModels;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using NeoSmart.Unicode;
@@ -12,8 +11,6 @@ using Serilog;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
 
 namespace ELOR.Laney.Controls {
     public partial class EmojiStickerPicker : UserControl {
@@ -85,17 +82,19 @@ namespace ELOR.Laney.Controls {
         }
 
         // TODO: method to download images without caching
-        private async void PackImage_DataContextChanged(object? sender, EventArgs e) {
+        // WriteableBitmap have a issue!
+        private void PackImage_DataContextChanged(object? sender, EventArgs e) {
             if (sender is Image img && img.DataContext is TabItem<object> tab) {
                 if (tab.Image != null) {
                     try {
-                        using var response = await LNet.GetAsync(tab.Image);
-                        response.EnsureSuccessStatusCode();
-                        var bytes = await response.Content.ReadAsByteArrayAsync();
-                        using Stream stream = new MemoryStream(bytes);
-                        if (bytes.Length == 0) throw new Exception("Image length is 0!");
-                        using var bitmap = WriteableBitmap.DecodeToWidth(stream, 22, BitmapInterpolationMode.MediumQuality);
-                        img.Source = bitmap;
+                        // Закомеченный код внезапно стал приводить к падению. Возможно, после обновлении Авалонии?
+                        //using var response = await LNet.GetAsync(tab.Image);
+                        //response.EnsureSuccessStatusCode();
+                        //using Stream stream = await response.Content.ReadAsStreamAsync();
+                        //using var bitmap = WriteableBitmap.DecodeToWidth(stream, 22, BitmapInterpolationMode.MediumQuality);  
+                        //img.Source = bitmap;
+
+                        img.SetUriSourceAsync(tab.Image, 22, 22);
                     } catch (Exception ex) {
                         Log.Error(ex, $"EmojiStickerPickerUI: cannot load a sticker pack icon!");
                     }

@@ -3,6 +3,7 @@
         public const string DefaultLang = "ru-RU";
         public const int DefaultTheme = 0;
         public const int MessagesCount = 40;
+        public const int MaxCachedChatsCount = 4;
 
         // For attachment picker
         public const int OutboundAttachmentUIWidth = 88;

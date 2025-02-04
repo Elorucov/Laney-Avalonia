@@ -640,11 +640,14 @@ namespace ELOR.Laney.Core {
             GoToChat(message.PeerId, message.ConversationMessageId);
         }
 
+        Queue<ChatViewModel> openedChats = new Queue<ChatViewModel>();
         public void GoToChat(long peerId, int messageId = -1) {
             if (peerId == 0) {
                 CurrentOpenedChat = null;
                 CurrentOpenedChatChanged?.Invoke(this, 0);
                 Window.SwitchToSide(false);
+
+                MessageViewModel.ClearCache();
                 return;
             }
 
@@ -666,6 +669,13 @@ namespace ELOR.Laney.Core {
             } else {
                 gcCollectTriggerCounter++;
             }
+
+            // Clear displayed messages in older opened chats
+            if (openedChats.Count >= Constants.MaxCachedChatsCount) {
+                var oldChat = openedChats.Dequeue();
+                oldChat.DisplayedMessages.Clear();
+            }
+            openedChats.Enqueue(chat);
         }
 
         public async void Share(long fromPeerId, List<MessageViewModel> messages) {

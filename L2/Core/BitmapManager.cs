@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
-    public class BitmapManager {
+    public static class BitmapManager {
         // static ConcurrentDictionary<string, WriteableBitmap> cachedImages = new ConcurrentDictionary<string, WriteableBitmap>();
         static ConcurrentDictionary<string, Bitmap> cachedImages = new ConcurrentDictionary<string, Bitmap>();
         static ConcurrentDictionary<string, ManualResetEventSlim> nowLoading = new ConcurrentDictionary<string, ManualResetEventSlim>();

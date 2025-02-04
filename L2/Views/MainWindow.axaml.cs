@@ -108,6 +108,10 @@ namespace ELOR.Laney.Views {
             e.Cancel = true;
             SaveWindowParameters();
             Hide();
+
+            // Clear RAM.
+            MessageViewModel.ClearCache();
+            BitmapManager.ClearCachedImages();
         }
 
         private void Settings_SettingChanged(string key, object value) {
@@ -125,6 +129,7 @@ namespace ELOR.Laney.Views {
         private void SaveWindowParameters() {
             if (WindowState == WindowState.Maximized) {
                 Settings.Set(Settings.WIN_MAXIMIZED, true);
+                return;
             } else {
                 if (Position.X <= Width * -1) return; // workaround for strange bug maybe caused by last version of Avalonia
                 Settings.SetBatch(new Dictionary<string, object> {
