@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public enum BotButtonColor {
@@ -16,7 +16,7 @@ namespace ELOR.VKAPILib.Objects {
         [EnumMember(Value = "negative")]
         Negative
     }
-	
+
     public enum BotButtonType {
         Unknown,
 
@@ -43,8 +43,8 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class BotButtonAction {
-        public BotButtonAction() {}
-            
+        public BotButtonAction() { }
+
         [JsonPropertyName("type")]
         [JsonConverter(typeof(JsonStringEnumConverterEx<BotButtonType>))]
         public BotButtonType Type { get; set; }
@@ -72,8 +72,8 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class BotButton {
-        public BotButton() {}
-            
+        public BotButton() { }
+
         [JsonPropertyName("color")]
         [JsonConverter(typeof(JsonStringEnumConverterEx<BotButtonColor>))]
         public BotButtonColor Color { get; set; }
@@ -83,8 +83,8 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class BotKeyboard {
-        public BotKeyboard() {}
-            
+        public BotKeyboard() { }
+
         [JsonPropertyName("one_time")]
         public bool OneTime { get; set; }
 

@@ -168,7 +168,7 @@ namespace ELOR.Laney.Views {
             RAMInfo.Text = $"{ChatViewModel.Instances} chats | {MessageViewModel.Instances} msgs | {ELOR.VKAPILib.Objects.Message.Instances} API msgs | {Math.Round(rammb, 1)} Mb";
         }
 
-#endregion
+        #endregion
 
         #region Adaptivity and convsview / chatview navigation
 

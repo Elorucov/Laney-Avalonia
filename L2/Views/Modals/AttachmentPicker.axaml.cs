@@ -81,7 +81,7 @@ namespace ELOR.Laney.Views.Modals {
 
         private async void OpenFilePickerForPhoto(object sender, RoutedEventArgs e) {
             if (!StorageProvider.CanOpen) return;
-            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions { 
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
                 AllowMultiple = true,
                 FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.ImageAll }
             });

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Attributes {
     public class JsonStringEnumConverterEx<TEnum> : JsonConverter<TEnum> where TEnum : struct, System.Enum {

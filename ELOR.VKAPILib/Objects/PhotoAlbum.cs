@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class PhotoAlbum : Album {
-        public PhotoAlbum() {}
+        public PhotoAlbum() { }
 
         [JsonPropertyName("thumb_id")]
         public int ThumbId { get; set; }

@@ -181,7 +181,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 var layout = PhotoLayout.Create(new Size(imageFixedWidth, imageFixedWidth), sizes, 2);
                 List<Rect> thumbRects = layout.Item1;
                 Size layoutSize = layout.Item2;
-                List<bool[]> corners = layout.Item3; 
+                List<bool[]> corners = layout.Item3;
                 // top left, top right, bottom right, bottom left
                 // corners появился из-за того, что в авалонии
                 // контент не обрезается под скруглённым родителем.
@@ -454,7 +454,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Audios
             foreach (Audio a in audios) {
-                AudioAttachment aa = new AudioAttachment { 
+                AudioAttachment aa = new AudioAttachment {
                     Margin = new Thickness(0, 0, 0, 8),
                     Audio = a,
                     Name = a.ObjectType
@@ -532,7 +532,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             // Gift 
             if (Gift != null) {
-                StandartAttachments.Children.Add(new GiftUI { 
+                StandartAttachments.Children.Add(new GiftUI {
                     Gift = Gift,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Margin = new Thickness(0, 0, 0, 8),
@@ -570,7 +570,7 @@ namespace ELOR.Laney.Controls.Attachments {
         }
 
         private Border BuildPreviewInfoUI(string content) {
-            Border b = new Border { 
+            Border b = new Border {
                 Background = new SolidColorBrush(Color.FromArgb(104, 0, 0, 0)),
                 CornerRadius = new CornerRadius(10),
                 // Padding = new Thickness(6, 3),

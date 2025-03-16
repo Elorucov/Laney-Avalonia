@@ -3,8 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class ChatPreview {
-        public ChatPreview() {}
-            
+        public ChatPreview() { }
+
         [JsonPropertyName("admin_id")]
         public long AdminId { get; set; }
 
@@ -31,8 +31,8 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ChatPreviewResponse {
-        public ChatPreviewResponse() {}
-            
+        public ChatPreviewResponse() { }
+
         [JsonPropertyName("preview")]
         public ChatPreview Preview { get; set; }
 

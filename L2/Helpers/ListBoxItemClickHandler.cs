@@ -1,14 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using ELOR.Laney.Core;
-using ELOR.Laney.Extensions;
-using ELOR.Laney.Views.Modals;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.Helpers {
     public class ListBoxItemClickHandler<T> {

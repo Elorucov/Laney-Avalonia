@@ -1,12 +1,10 @@
 ﻿using Avalonia.Platform;
-using Avalonia.Platform.Storage;
 using Avalonia.Svg.Skia;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
 using ELOR.VKAPILib.Objects;
 using Serilog;
-using SkiaSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

@@ -1,10 +1,9 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using System.Runtime.InteropServices;
 
 namespace ToastNotifications.Avalonia {
     internal partial class ToastsContainer : Window {
@@ -91,7 +90,7 @@ namespace ToastNotifications.Avalonia {
                 IsWriteBarVisible = notification.OnSendClick != null,
                 Margin = new Thickness(12, 3, 12, 9)
             };
-            
+
             // Linux DE moment... (maybe also macOS?)
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
                 toast.Loaded += async (a, b) => {
@@ -106,7 +105,7 @@ namespace ToastNotifications.Avalonia {
 
             SetPosition();
 
-            DispatcherTimer timer = new DispatcherTimer { 
+            DispatcherTimer timer = new DispatcherTimer {
                 Interval = notification.Expiration,
             };
             timer.Tick += (a, b) => {

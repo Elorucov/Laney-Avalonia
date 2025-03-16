@@ -2,12 +2,12 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
-using VKUI.Controls;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using VKUI.Controls;
 using VKUI.Utils;
 
 namespace VKUI.Popups {
@@ -28,7 +28,7 @@ namespace VKUI.Popups {
         StackPanel itemsPanel;
         private List<Button> itemsButtons = new List<Button>();
         protected override Control CreatePresenter() {
-            itemsPanel = new StackPanel { 
+            itemsPanel = new StackPanel {
                 Margin = new Thickness(0, 4, 0, 4),
             };
 
@@ -56,7 +56,7 @@ namespace VKUI.Popups {
             itemsPanel.FindVisualChildrenByType(itemsButtons);
             itemsButtons.FirstOrDefault().Focus();
             itemsPanel.KeyDown += Items_KeyDown;
-            
+
         }
 
         protected override void OnClosed() {

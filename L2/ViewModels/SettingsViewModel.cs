@@ -1,6 +1,4 @@
-﻿using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
-using ELOR.Laney.DataModels;
+﻿using ELOR.Laney.DataModels;
 using ELOR.Laney.ViewModels.SettingsCategories;
 using ELOR.Laney.Views.SettingsCategories;
 using System.Collections.ObjectModel;
@@ -16,7 +14,7 @@ namespace ELOR.Laney.ViewModels {
         public SettingsCategory SelectedCategory { get { return _selectedCategory; } set { _selectedCategory = value; OnPropertyChanged(); } }
 
         public SettingsViewModel() {
-            Categories = new ObservableCollection<SettingsCategory> { 
+            Categories = new ObservableCollection<SettingsCategory> {
                 new SettingsCategory(VKIconNames.Icon28SettingsOutline, Assets.i18n.Resources.settings_general, new General(), new GeneralViewModel()),
                 new SettingsCategory(VKIconNames.Icon28PaletteOutline, Assets.i18n.Resources.settings_appearance, new Appearance(), new AppearanceViewModel()),
                 new SettingsCategory(VKIconNames.Icon28Notifications, Assets.i18n.Resources.settings_notifications, new NotificationsPage(), new NotificationsViewModel()),

@@ -49,7 +49,7 @@ namespace ELOR.Laney.Views.Modals {
             DlgText.Text = text;
 
             for (int i = 1; i <= buttons.Length; i++) {
-                Button button = new Button { 
+                Button button = new Button {
                     Tag = i,
                     Content = buttons[i - 1],
                     Margin = new Thickness(8, 0, 0, 0)

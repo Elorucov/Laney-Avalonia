@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
-using System.Text.Json.Nodes;
+﻿using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class LongPollHistoryResponse {
-        public LongPollHistoryResponse() {}
-            
+        public LongPollHistoryResponse() { }
+
         [JsonPropertyName("messages")]
         public MessagesList Messages { get; set; }
 

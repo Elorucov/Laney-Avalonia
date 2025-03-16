@@ -2,7 +2,6 @@
 using Avalonia.Platform.Storage;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
@@ -21,7 +20,7 @@ using VKUI.Popups;
 namespace ELOR.Laney.ViewModels.Controls {
     public class ComposerViewModel : CommonViewModel {
         private VKSession session;
-        
+
         private bool _isGroupSession;
         private bool _canSendMessage;
         private int _editingMessageId;
@@ -191,7 +190,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     TextSelectionStart = start;
                     TextSelectionEnd = start;
                 }
-            } catch (ArgumentOutOfRangeException oorex) { // Workaround for issue #20 that mostye not reproducible
+            } catch (ArgumentOutOfRangeException) { // Workaround for issue #20 that mostye not reproducible
                 if (String.IsNullOrEmpty(Text)) {
                     Text = e;
                 } else {
@@ -234,7 +233,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             Text = message.Text;
             Reply = message.ReplyMessage;
-            
+
             foreach (var attachment in CollectionsMarshal.AsSpan(message.Attachments)) {
                 if (attachment.Type.CanAttachToSend()) {
                     var oavm = OutboundAttachmentViewModel.FromAttachmentBase(session, attachment);
@@ -312,7 +311,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     RandomId = Random.Next(Int32.MinValue, Int32.MaxValue);
                     Log.Verbose($"Sending message result: {response.MessageId}; new random: {RandomId}");
                 } else {
-                    var response = await session.API.Messages.EditAsync(session.GroupId, Chat.PeerId, EditingMessageId, 
+                    var response = await session.API.Messages.EditAsync(session.GroupId, Chat.PeerId, EditingMessageId,
                         text, 0, 0, attachments, true, true, dontParseLinks);
                     // TODO: keep snippets и сделать недоступным добавление пересланных, если активен режим редактирования. 
                     // TODO: удаление пересланных сообщений

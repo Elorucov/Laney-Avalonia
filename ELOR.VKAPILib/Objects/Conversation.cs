@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class ConversationsResponse {
-        public ConversationsResponse() {}
+        public ConversationsResponse() { }
 
         [JsonPropertyName("count")]
         public int Count { get; set; }
@@ -23,7 +23,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ConversationItem {
-        public ConversationItem() {}
+        public ConversationItem() { }
 
         [JsonPropertyName("conversation")]
         public Conversation Conversation { get; set; }
@@ -75,7 +75,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Peer {
-        public Peer() {}
+        public Peer() { }
 
         [JsonPropertyName("id")]
         public long Id { get; set; }
@@ -89,7 +89,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PushSettings {
-        public PushSettings() {}
+        public PushSettings() { }
 
         [JsonPropertyName("disabled_until")]
         public long DisabledUntil { get; set; }
@@ -102,7 +102,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class CanWrite {
-        public CanWrite() {}
+        public CanWrite() { }
 
         [JsonPropertyName("allowed")]
         public bool Allowed { get; set; }
@@ -112,7 +112,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ChatPhoto {
-        public ChatPhoto() {}
+        public ChatPhoto() { }
 
         [JsonPropertyName("photo_50")]
         public string SmallUrl { get; set; }
@@ -135,7 +135,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ChatACL {
-        public ChatACL() {}
+        public ChatACL() { }
 
         [JsonPropertyName("can_change_info")]
         public bool CanChangeInfo { get; set; }
@@ -160,7 +160,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ChatPermissions {
-        public ChatPermissions() {}
+        public ChatPermissions() { }
 
         [JsonPropertyName("invite")]
         [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
@@ -192,7 +192,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ChatSettings {
-        public ChatSettings() {}
+        public ChatSettings() { }
 
         [JsonPropertyName("members_count")]
         public int MembersCount { get; set; }
@@ -233,7 +233,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class SortId {
-        public SortId() {}
+        public SortId() { }
 
         [JsonPropertyName("major_id")]
         public int MajorId { get; set; }
@@ -243,7 +243,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Conversation {
-        public Conversation() {}
+        public Conversation() { }
 
         [JsonPropertyName("peer")]
         public Peer Peer { get; set; }
@@ -300,7 +300,7 @@ namespace ELOR.VKAPILib.Objects {
     // Chat
 
     public class ChatMember {
-        public ChatMember() {}
+        public ChatMember() { }
 
         [JsonPropertyName("member_id")]
         public long MemberId { get; set; }
@@ -322,7 +322,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Chat {
-        public Chat() {}
+        public Chat() { }
 
         [JsonPropertyName("id")]
         public long Id { get; set; }
@@ -356,7 +356,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ChatLink {
-        public ChatLink() {}
+        public ChatLink() { }
 
         [JsonPropertyName("link")]
         public string Link { get; set; }

@@ -1,8 +1,5 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
-using Avalonia.Media;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using System;
 using System.Runtime.InteropServices;
 using VKUI.Windows;

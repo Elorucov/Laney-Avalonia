@@ -97,7 +97,7 @@ namespace ELOR.Laney.Extensions {
                 foreach (PhotoSizes s in CollectionsMarshal.AsSpan(d.Preview.Photo.Sizes)) {
                     // у файлов-фото с разрешением, например, 720x1280 (cкриншоты на телефонах)
                     // у размеров s и m ширина больше высоты!
-                    if (s.Type == "s" || s.Type == "m") continue; 
+                    if (s.Type == "s" || s.Type == "m") continue;
                     ps = s;
                     if (ElorMath.IsLargeOrEqualThanMax(s.Width, s.Height, maxWidth, maxHeight)) break;
                 }

@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class Curator {
-        public Curator() {}
+        public Curator() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }

@@ -1,11 +1,9 @@
-﻿using ELOR.VKAPILib.Attributes;
-using ELOR.VKAPILib.Objects;
+﻿using ELOR.VKAPILib.Objects;
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Methods {
 
-    
+
     public enum NameCase {
         [EnumMember(Value = "nom")]
         Nom,

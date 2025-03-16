@@ -100,7 +100,7 @@ namespace ELOR.Laney.ViewModels {
         public RelayCommand GoToLastReactedMessageCommand { get { return _goToLastReactedMessageCommand; } private set { _goToLastReactedMessageCommand = value; OnPropertyChanged(); } }
 
 
-        public SelectionModel<MessageViewModel> SelectedMessages { get; } = new SelectionModel<MessageViewModel> { 
+        public SelectionModel<MessageViewModel> SelectedMessages { get; } = new SelectionModel<MessageViewModel> {
             SingleSelect = false
         };
 
@@ -214,7 +214,7 @@ namespace ELOR.Laney.ViewModels {
             IsMarkedAsUnread = c.IsMarkedUnread;
             IsPinned = SortId.MajorId > 0 && SortId.MajorId % 16 == 0;
 
-            if (PushSettings == null) PushSettings = new PushSettings { 
+            if (PushSettings == null) PushSettings = new PushSettings {
                 NoSound = false,
                 DisabledForever = false,
                 DisabledUntil = 0
@@ -260,7 +260,7 @@ namespace ELOR.Laney.ViewModels {
                 ChatSettings = c.ChatSettings;
                 Title = string.Intern(ChatSettings.Title);
                 Avatar = ChatSettings?.Photo?.Uri;
-                if (ChatSettings.PinnedMessage != null) 
+                if (ChatSettings.PinnedMessage != null)
                     PinnedMessage = MessageViewModel.Create(ChatSettings.PinnedMessage, session);
                 UpdateSubtitleForChat();
             } else if (PeerId > 1900000000 && PeerId <= 2000000000) { // Contact?
@@ -344,9 +344,8 @@ namespace ELOR.Laney.ViewModels {
             ReceivedMessages.CollectionChanged += (a, b) => OnPropertyChanged(nameof(LastMessage));
             SelectedMessages.SelectionChanged += SelectedMessages_SelectionChanged;
 
-            PropertyChanged += (a, b) => { 
-                if (b.PropertyName == nameof(Online))
-                {
+            PropertyChanged += (a, b) => {
+                if (b.PropertyName == nameof(Online)) {
                     // make an empty subtitle if it is favorites
                     if (PeerId == session.Id) Subtitle = Assets.i18n.Resources.saved_messages;
                     else Subtitle = VKAPIHelper.GetOnlineInfo(Online, PeerUser.Sex).ToLowerInvariant();
@@ -634,7 +633,7 @@ namespace ELOR.Laney.ViewModels {
                 MessageViewModel msg = MessageViewModel.Create(message, session);
 
                 bool isMention = false;
-                if (!message.IsSilent && message.MentionedUsers != null) { 
+                if (!message.IsSilent && message.MentionedUsers != null) {
                     if (message.MentionedUsers.Count == 0) { // признак того, что пушнули всех (@all)
                         isMention = true;
                     } else {
@@ -835,7 +834,7 @@ namespace ELOR.Laney.ViewModels {
 
         // Надо задать новый объект SortId, чтобы сработало событие OnPropertyChanged для SortIndex.
         private void UpdateSortId(int major, int minor) {
-            SortId = new SortId { 
+            SortId = new SortId {
                 MajorId = major,
                 MinorId = minor
             };

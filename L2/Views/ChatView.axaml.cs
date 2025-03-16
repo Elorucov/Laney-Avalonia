@@ -53,7 +53,7 @@ namespace ELOR.Laney.Views {
                 };
                 new ItemsPresenterWidthFixer(MessagesList);
                 var ss = new ScrollSaver(MessagesListScrollViewer);
-                ss.ExtendChanged += (c, d) => { 
+                ss.ExtendChanged += (c, d) => {
                     if (scrollToMessageIndex >= 0) {
                         Debug.WriteLine($"ScrollSaver.ExtendChanged: scmi={scrollToMessageIndex}");
                         d.Handled = true;

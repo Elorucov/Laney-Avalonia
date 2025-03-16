@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;

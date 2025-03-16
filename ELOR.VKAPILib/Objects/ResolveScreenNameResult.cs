@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public enum ScreenNameType {
@@ -24,7 +24,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ResolveScreenNameResult {
-        public ResolveScreenNameResult() {}
+        public ResolveScreenNameResult() { }
 
         [JsonPropertyName("object_id")]
         public long ObjectId { get; set; }

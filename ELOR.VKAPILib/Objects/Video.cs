@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class VideoFiles {
-        public VideoFiles() {}
+        public VideoFiles() { }
 
         [JsonPropertyName("external")]
         public string External { get; set; }
@@ -24,7 +24,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Video : AttachmentBase, IPreview {
-        public Video() {}
+        public Video() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "video"; } }

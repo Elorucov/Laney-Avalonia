@@ -1,10 +1,10 @@
-using ELOR.Laney.Core.Localization;
-using ELOR.Laney.Core;
-using System;
-using VKUI.Controls;
-using System.Linq;
-using System.IO;
 using Avalonia.Controls;
+using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
+using System;
+using System.IO;
+using System.Linq;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Views.SignIn {
     public partial class MainPage : Page {
@@ -30,9 +30,9 @@ namespace ELOR.Laney.Views.SignIn {
                 Text = $"Logs folder:\n{Path.Combine(App.LocalDataPath, "logs")}"
             });
 #else
-            Middle.Children.Add(new TextBlock { 
+            Middle.Children.Add(new TextBlock {
                 FontSize = 12,
-                Margin = new Avalonia.Thickness(0,36,0,0),
+                Margin = new Avalonia.Thickness(0, 36, 0, 0),
                 Text = $"Logs folder:\n{Path.Combine(App.LocalDataPath, "logs")}"
             });
 #endif

@@ -1,19 +1,19 @@
 ﻿using Avalonia.Controls;
-using ELOR.Laney.Core.Localization;
+using Avalonia.Controls.Notifications;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
 using ELOR.Laney.ViewModels.Controls;
-using VKUI.Controls;
-using VKUI.Popups;
+using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using ELOR.Laney.Views.Modals;
-using Avalonia.Controls.Notifications;
 using System.Threading.Tasks;
-using Serilog;
+using VKUI.Controls;
+using VKUI.Popups;
 
 namespace ELOR.Laney.Helpers {
 
@@ -54,7 +54,7 @@ namespace ELOR.Laney.Helpers {
             };
             ActionSheetItem creturn = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DoorEnterArrowRightOutline },
-                Header =chat.ChatSettings?.IsGroupChannel == true ? Assets.i18n.Resources.pp_return_channel : Assets.i18n.Resources.pp_return_chat,
+                Header = chat.ChatSettings?.IsGroupChannel == true ? Assets.i18n.Resources.pp_return_channel : Assets.i18n.Resources.pp_return_chat,
             };
             ActionSheetItem gdeny = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BlockOutline },
@@ -186,8 +186,8 @@ namespace ELOR.Laney.Helpers {
 
             int totalReactions = 0;
             if (message.Reactions != null) foreach (var reaction in message.Reactions) {
-                totalReactions += reaction.Count;
-            }
+                    totalReactions += reaction.Count;
+                }
 
             ActionSheetItem debug = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
@@ -263,7 +263,7 @@ namespace ELOR.Laney.Helpers {
             if (chat.ChatSettings?.AdminIDs != null) isAdminInChat = chat.ChatSettings.AdminIDs.Contains(session.Id);
 
             bool canPin = chat.ChatSettings != null ? chat.ChatSettings.ACL.CanChangePin : false;
-            bool isMessagePinned = chat.PinnedMessage != null 
+            bool isMessagePinned = chat.PinnedMessage != null
                 ? chat.PinnedMessage.Id == message.Id : false;
 
             bool canEdit = message.CanEdit(session.Id);
@@ -388,7 +388,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static void ShowForMultipleMessages(List<MessageViewModel> messages, ChatViewModel chat, Control target) {
-            ActionSheet ash = new ActionSheet { 
+            ActionSheet ash = new ActionSheet {
                 Placement = PlacementMode.LeftEdgeAlignedTop
             };
 
@@ -496,7 +496,7 @@ namespace ELOR.Laney.Helpers {
         }
 
         private static async void DeleteMessages(VKSession session, long peerId, List<int> ids, bool forAll, bool spam) {
-            if (DemoMode.IsEnabled) return; 
+            if (DemoMode.IsEnabled) return;
             try {
                 var response = await session.API.Messages.DeleteAsync(session.GroupId, peerId, ids, spam, forAll);
                 int count = response.Where(r => r.Response == 1).Count();

@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Layout;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
@@ -14,10 +13,8 @@ using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
@@ -52,7 +49,7 @@ namespace ELOR.Laney.Controls {
         }
 #endif
 
-#endregion
+        #endregion
 
         #region Constants
 
@@ -312,7 +309,7 @@ namespace ELOR.Laney.Controls {
             var fmcborder = ForwardedMessagesContainer.BorderThickness;
             var fmsmargin = ForwardedMessagesStack.Margin;
             double fmwidth = fmcmargin.Left + fmcmargin.Right + fmcborder.Left + fmsmargin.Left;
-            
+
             if (Message.ForwardedMessages?.Count > MAX_DISPLAYED_FORWARDED_MESSAGES) {
                 Button fwdsButton = new Button {
                     Padding = new Thickness(0),
@@ -346,7 +343,7 @@ namespace ELOR.Laney.Controls {
             if (Message.Gift != null) {
                 Gift.Gift = Message.Gift;
                 Gift.HorizontalAlignment = String.IsNullOrEmpty(Message.Text) ? HorizontalAlignment.Left : HorizontalAlignment.Stretch;
-                Gift.Margin = new Thickness(4, 4, 4, String.IsNullOrEmpty(Message.Text) ? 12 : 0); 
+                Gift.Margin = new Thickness(4, 4, 4, String.IsNullOrEmpty(Message.Text) ? 12 : 0);
                 Gift.IsVisible = true;
                 MessageText.TextAlignment = TextAlignment.Center;
                 MessageText.Margin = new Thickness(mtm.Left, mtm.Top, mtm.Right, 12);
@@ -426,7 +423,7 @@ namespace ELOR.Laney.Controls {
                 string editedPlaceholder = Message.EditTime != null ? Assets.i18n.Resources.edited_indicator : "";
                 string favoritePlaceholder = Message.IsImportant ? "W" : "";
                 string outgoingPlaceholder = Message.IsOutgoing ? "WW" : "";
-                MessageText.Content.Add(new CRun { 
+                MessageText.Content.Add(new CRun {
                     Text = $"{favoritePlaceholder}{editedPlaceholder} 22:22{outgoingPlaceholder}",
                     Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
                     FontSize = 12
@@ -520,7 +517,7 @@ namespace ELOR.Laney.Controls {
             MessageAttachments.Margin = new Thickness(mam.Left, atchTopMargin, mam.Right, mam.Bottom);
 
             // Map margin-top
-            double mapTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null || 
+            double mapTopMargin = Message.IsSenderNameVisible || Message.ReplyMessage != null ||
                 !String.IsNullOrEmpty(Message.Text) || Message.Attachments.Count > 0 ? 0 : 4;
             var mapm = Map.Margin;
             Map.Margin = new Thickness(mapm.Left, mapTopMargin, mapm.Right, mapm.Bottom);

@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class App {
-        public App() {}
-        
+        public App() { }
+
         [JsonPropertyName("id")]
         public int Id { get; set; }
 

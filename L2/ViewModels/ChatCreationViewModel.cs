@@ -47,7 +47,7 @@ namespace ELOR.Laney.ViewModels {
             CustomizeChatSettingsCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             CreateCommand = new RelayCommand((o) => CreateChat());
 
-            PropertyChanged += (a, b) => { 
+            PropertyChanged += (a, b) => {
                 switch (b.PropertyName) {
                     case nameof(ChatName):
                         OnPropertyChanged(nameof(CanCreateChat));
@@ -79,7 +79,7 @@ namespace ELOR.Laney.ViewModels {
 
         private void GroupFriends() {
             // TODO: сделать отдельный класс или метод для группировки по алфавиту
-            GroupedFriends = new ObservableCollection<AlphabeticalUsers>(Friends.GroupBy(f => 
+            GroupedFriends = new ObservableCollection<AlphabeticalUsers>(Friends.GroupBy(f =>
                 !String.IsNullOrEmpty(f.FirstName) ? f.FirstName[0].ToString().ToUpper() : "~")
                 .Select(g => new AlphabeticalUsers(g, FriendsSelectionChanged)));
         }

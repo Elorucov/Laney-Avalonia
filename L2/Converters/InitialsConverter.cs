@@ -1,8 +1,8 @@
-﻿using Avalonia.Data.Converters;
-using Avalonia;
+﻿using Avalonia;
+using Avalonia.Data.Converters;
+using ELOR.Laney.Extensions;
 using System;
 using System.Globalization;
-using ELOR.Laney.Extensions;
 
 namespace ELOR.Laney.Converters {
     internal class InitialsConverter : IValueConverter {

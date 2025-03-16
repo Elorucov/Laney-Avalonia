@@ -1,6 +1,4 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
@@ -46,7 +44,7 @@ public partial class APIConsoleWindow : Window {
         });
 
         // Method.Focus();
-        timer.Tick += (a, b) => { 
+        timer.Tick += (a, b) => {
             if (TokenButton.Classes.Contains("Primary")) {
                 TokenButton.Classes.Remove("Primary");
             } else {
@@ -70,7 +68,7 @@ public partial class APIConsoleWindow : Window {
 
             await Task.Delay(100); // Required for properly focus to "method" TextBox.
             Method.Focus();
-        } catch (Exception ex) {
+        } catch (Exception) {
             TokenButton.Flyout.ShowAt(TokenButton);
         }
     }
@@ -111,10 +109,11 @@ public partial class APIConsoleWindow : Window {
 
             string response = await API.CallMethodAsync(Method.Text, parameters);
             using var jDoc = JsonDocument.Parse(response);
-            string pretty = JsonSerializer.Serialize(jDoc, new JsonSerializerOptions { 
+            string pretty = JsonSerializer.Serialize(jDoc, new JsonSerializerOptions {
                 WriteIndented = true,
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, // To decoding cyrillic letters correctly
-                TypeInfoResolver = BuildInJsonContext.Default });
+                TypeInfoResolver = BuildInJsonContext.Default
+            });
             Response.Text = pretty;
         } catch (Exception ex) {
             Response.Text = $"{ex.GetType()} 0x{ex.HResult.ToString("x8")}\n{ex.Message}";

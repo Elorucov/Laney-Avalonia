@@ -7,7 +7,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -341,8 +340,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
                 if (type == LongPollReactionEventType.IAdded) {
                     SelectedReactionId = myReactionId;
-                }
-                else if(type == LongPollReactionEventType.IRemoved) {
+                } else if (type == LongPollReactionEventType.IRemoved) {
                     SelectedReactionId = 0;
                 }
             });

@@ -2,14 +2,14 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class PodcastCover {
-        public PodcastCover() {}
+        public PodcastCover() { }
 
         [JsonPropertyName("sizes")]
         public List<PhotoSizes> Sizes { get; set; }
     }
 
     public class PodcastInfo {
-        public PodcastInfo() {}
+        public PodcastInfo() { }
 
         [JsonPropertyName("description")]
         public string Description { get; set; }
@@ -22,7 +22,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Podcast : Audio {
-        public Podcast() {}
+        public Podcast() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "podcast"; } }

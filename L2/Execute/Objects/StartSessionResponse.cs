@@ -1,10 +1,10 @@
 ﻿using ELOR.VKAPILib.Objects;
-using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.Execute.Objects {
     public class LongPollInfoForSession {
-        public LongPollInfoForSession() {}
+        public LongPollInfoForSession() { }
 
         [JsonPropertyName("session_id")]
         public long SessionId { get; set; }
@@ -14,7 +14,7 @@ namespace ELOR.Laney.Execute.Objects {
     }
 
     public class StartSessionResponse {
-        public StartSessionResponse() {}
+        public StartSessionResponse() { }
 
         [JsonPropertyName("user")]
         public User User { get; set; }

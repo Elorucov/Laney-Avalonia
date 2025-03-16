@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
 
@@ -58,7 +58,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class UserLastSeen {
-        public UserLastSeen() {}
+        public UserLastSeen() { }
 
         [JsonPropertyName("time")]
         public long TimeUnix { get; set; }
@@ -71,7 +71,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class UserOnlineInfo {
-        public UserOnlineInfo() {}
+        public UserOnlineInfo() { }
 
         [JsonPropertyName("visible")]
         public bool Visible { get; set; }
@@ -97,7 +97,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class UserCountry {
-        public UserCountry() {}
+        public UserCountry() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -107,7 +107,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class UserCareer {
-        public UserCareer() {}
+        public UserCareer() { }
 
         [JsonPropertyName("group_id")]
         public long GroupId { get; set; }
@@ -120,7 +120,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class UserOccupation {
-        public UserOccupation() {}
+        public UserOccupation() { }
 
         [JsonPropertyName("type")]
         [JsonConverter(typeof(JsonStringEnumConverterEx<UserOccupationType>))]
@@ -134,7 +134,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class User {
-        public User() {}
+        public User() { }
 
         [JsonPropertyName("id")]
         public long Id { get; set; }

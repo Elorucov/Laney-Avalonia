@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Modals;
@@ -95,7 +94,7 @@ namespace ELOR.Laney.Views.Modals {
         private void OnAttachmentContextRequested(object sender, ContextRequestedEventArgs e) {
             Button b = sender as Button;
             ConversationAttachment a = b.DataContext as ConversationAttachment;
-            
+
             ActionSheet ash = new ActionSheet();
             ActionSheetItem gotomsg = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20MessageArrowRightOutline },
@@ -112,7 +111,7 @@ namespace ELOR.Laney.Views.Modals {
         private async void OnAttachmentClick(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             Button b = sender as Button;
             ConversationAttachment a = b.DataContext as ConversationAttachment;
-            
+
             switch (a.Attachment.Type) {
                 case AttachmentType.Photo:
                     if (a.Attachment.Photo != null) Gallery.Show(new List<IPreview> { a.Attachment.Photo }, a.Attachment.Photo);

@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;

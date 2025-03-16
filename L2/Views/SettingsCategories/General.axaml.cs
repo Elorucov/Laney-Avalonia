@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Views.Modals;
 

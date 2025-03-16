@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ELOR.Laney.Helpers;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ELOR.Laney.Helpers;
-using Serilog;
 
 namespace ELOR.Laney.Core {
     public static class Settings {
@@ -56,7 +56,7 @@ namespace ELOR.Laney.Core {
             _file.Dispose();
         }
 
-#endregion
+        #endregion
 
         #region Getter/setter
 
@@ -169,7 +169,7 @@ namespace ELOR.Laney.Core {
 
         #region Settings with defaults
 
-        public static bool SentViaEnter { 
+        public static bool SentViaEnter {
             get => Get(SEND_VIA_ENTER, true);
             set => Set(SEND_VIA_ENTER, value);
         }

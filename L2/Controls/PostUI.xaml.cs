@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Markup.Xaml.Templates;
-using Avalonia.Media;
 using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
@@ -12,7 +10,6 @@ using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using VKUI.Controls;
 
@@ -99,7 +96,7 @@ namespace ELOR.Laney.Controls {
             Author.Text = message.SenderName;
             PostInfo.Text = message.SentTime.ToHumanizedString(true);
 
-            if (message.ReplyMessage != null) { 
+            if (message.ReplyMessage != null) {
                 Reply.Message = message.ReplyMessage;
                 ReplyMessageButton.IsVisible = true;
             }

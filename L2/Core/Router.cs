@@ -1,5 +1,4 @@
-﻿using ELOR.Laney.Core.Localization;
-using ELOR.Laney.Views.Modals;
+﻿using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;
 using System.Text.RegularExpressions;

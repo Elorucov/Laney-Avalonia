@@ -1,9 +1,8 @@
-using Avalonia.Controls;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using ELOR.Laney.Controls.Attachments;
-using ELOR.VKAPILib.Objects;
 using ELOR.Laney.Extensions;
+using ELOR.VKAPILib.Objects;
 using System.Linq;
 
 namespace ELOR.Laney {
@@ -42,7 +41,7 @@ namespace ELOR.Laney {
                 Render();
             }
         }
-        
+
         private async void Render() {
             if (!isUILoaded || Sticker == null || Sticker.Images == null || Sticker.Images.Count == 0) return;
             await StickerView.SetImageBackgroundAsync(Sticker.Images.LastOrDefault().Uri, Width, Height);

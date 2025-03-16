@@ -1,10 +1,9 @@
-﻿using System.Text.Json.Serialization;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class PhotoSizes {
-        public PhotoSizes() {}
+        public PhotoSizes() { }
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
@@ -40,7 +39,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Photo : AttachmentBase, IPreview {
-        public Photo() {}
+        public Photo() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "photo"; } }

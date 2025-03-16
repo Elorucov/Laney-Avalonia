@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
@@ -51,8 +50,8 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static async Task<bool> ShowErrorDialogAsync(Window owner, Tuple<string, string> errorInfo, bool hideRetry = false, string additional = null) {
-            string[] buttons = hideRetry 
-                ? new string[] { Assets.i18n.Resources.close } 
+            string[] buttons = hideRetry
+                ? new string[] { Assets.i18n.Resources.close }
                 : [Assets.i18n.Resources.retry, Assets.i18n.Resources.close];
 
             string message = String.IsNullOrEmpty(additional) ? errorInfo.Item2 : $"{additional}\n\n{errorInfo.Item2}";

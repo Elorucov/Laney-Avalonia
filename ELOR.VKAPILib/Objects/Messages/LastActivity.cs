@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class LastActivity {
-        public LastActivity() {}
-        
+        public LastActivity() { }
+
         [JsonPropertyName("online")]
         public bool Online { get; set; }
 

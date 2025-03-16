@@ -352,11 +352,11 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Notifications
             string notifIcon = group.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-            Command notifsCmd = new Command(notifIcon,group.NotificationsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, (a) => ToggleNotifications(!group.NotificationsDisabled, -group.Id));
+            Command notifsCmd = new Command(notifIcon, group.NotificationsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, (a) => ToggleNotifications(!group.NotificationsDisabled, -group.Id));
             commands.Add(notifsCmd);
 
             // Open in browser
-            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.pp_group, false,async (a) => await Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
+            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.pp_group, false, async (a) => await Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
             commands.Add(openExternalCmd);
 
             // Allow/deny messages from group
@@ -390,7 +390,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         private async void ToggleMessagesFromGroup(long groupId, bool allowed) {
             IsLoading = true;
             try {
-                bool result = allowed ? 
+                bool result = allowed ?
                     await session.API.Messages.DenyMessagesFromGroupAsync(groupId) :
                     await session.API.Messages.AllowMessagesFromGroupAsync(groupId);
                 IsLoading = false;
@@ -516,7 +516,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 Header = Assets.i18n.Resources.pp_member_admin_remove
             });
 
-            if (member.MemberId != session.Id && member.CanKick) ash.Items.Add(new ActionSheetItem { 
+            if (member.MemberId != session.Id && member.CanKick) ash.Items.Add(new ActionSheetItem {
                 Header = Assets.i18n.Resources.pp_member_kick
             });
 

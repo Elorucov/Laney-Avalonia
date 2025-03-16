@@ -1,5 +1,4 @@
 ﻿using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
@@ -32,7 +31,7 @@ namespace ELOR.Laney.ViewModels {
         public SearchViewModel(VKSession session) {
             this.session = session;
 
-            PropertyChanged += (a, b) => { 
+            PropertyChanged += (a, b) => {
                 switch (b.PropertyName) {
                     case nameof(CurrentTab):
                         DoSearch();

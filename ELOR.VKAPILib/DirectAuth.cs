@@ -1,6 +1,4 @@
-﻿using ELOR.VKAPILib.Objects;
-using ELOR.VKAPILib.Objects.Auth;
-using System.Text;
+﻿using ELOR.VKAPILib.Objects.Auth;
 using System.Text.Json;
 
 namespace ELOR.VKAPILib {

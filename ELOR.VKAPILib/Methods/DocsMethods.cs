@@ -1,5 +1,4 @@
-﻿using ELOR.VKAPILib.Attributes;
-using ELOR.VKAPILib.Objects;
+﻿using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Upload;
 
 namespace ELOR.VKAPILib.Methods {

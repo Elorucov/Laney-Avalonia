@@ -2,13 +2,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Network;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney {
     public partial class FieldTestWindow : Window {
@@ -123,17 +121,14 @@ namespace ELOR.Laney {
 
         private void OnDragEnter(object sender, DragEventArgs e) {
             Title = "Drag enter!";
-            int i = 0;
         }
 
         private void OnDragLeave(object sender, DragEventArgs e) {
             Title = "Drag leave!";
-            int i = 0;
         }
 
         private void OnDrop(object sender, DragEventArgs e) {
             Title = "Drop!";
-            int i = 0;
         }
 
         private void Button_Click(object? sender, RoutedEventArgs e) {

@@ -1,14 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Layout;
-using Avalonia.Media;
-using ELOR.Laney.Core.Localization;
-using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
-using System.Runtime.InteropServices;
-using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
     public class BotKeyboardUI : TemplatedControl {

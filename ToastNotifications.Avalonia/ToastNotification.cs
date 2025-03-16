@@ -8,7 +8,7 @@ namespace ToastNotifications.Avalonia {
         public Bitmap Avatar { get; private set; }
         public Bitmap Image { get; private set; }
         public Action<string> OnSendClick { get; set; }
-        public object AssociatedObject { get; private set; } 
+        public object AssociatedObject { get; private set; }
 
         public ToastNotification(object assObj, string header, string title, string text, string footnote = null, Bitmap avatar = null, Bitmap image = null) {
             AssociatedObject = assObj;

@@ -1,10 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using ELOR.Laney.Core.Localization;
 using System;
 using System.IO;
-using System.Text;
 
 namespace ELOR.Laney.Core {
     public static class AssetsManager {

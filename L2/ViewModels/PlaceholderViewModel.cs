@@ -1,9 +1,7 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Media;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Helpers;
-using VKUI.Controls;
 using System;
+using VKUI.Controls;
 
 namespace ELOR.Laney.ViewModels {
     public sealed class PlaceholderViewModel : ViewModelBase {

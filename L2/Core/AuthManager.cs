@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib;

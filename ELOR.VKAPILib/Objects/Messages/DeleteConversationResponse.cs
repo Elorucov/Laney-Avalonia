@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class DeleteConversationResponse {
-        public DeleteConversationResponse() {}
-        
+        public DeleteConversationResponse() { }
+
         [JsonPropertyName("last_deleted_id")]
         public int LastDeletedId { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class MarketPrice {
-        public MarketPrice() {}
+        public MarketPrice() { }
 
         [JsonPropertyName("amount")]
         public string Amount { get; set; }
@@ -12,7 +12,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class MarketCategory {
-        public MarketCategory() {}
+        public MarketCategory() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -22,7 +22,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Market : AttachmentBase {
-        public Market() {}
+        public Market() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "market"; } }

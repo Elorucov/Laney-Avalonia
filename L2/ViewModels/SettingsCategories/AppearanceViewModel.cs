@@ -1,5 +1,4 @@
 ﻿using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

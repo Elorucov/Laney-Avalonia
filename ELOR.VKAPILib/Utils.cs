@@ -1,12 +1,5 @@
-﻿using ELOR.VKAPILib.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ELOR.VKAPILib {
     internal static class Utils {
@@ -14,7 +7,7 @@ namespace ELOR.VKAPILib {
             var t = @enum.GetType().GetTypeInfo();
             EnumMemberAttribute ema = null;
             t.DeclaredMembers.ToList().ForEach(k => {
-                if(k.Name == @enum.ToString()) {
+                if (k.Name == @enum.ToString()) {
                     ema = (EnumMemberAttribute)k.GetCustomAttribute(typeof(EnumMemberAttribute));
                 }
             });

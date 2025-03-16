@@ -1,13 +1,11 @@
 ﻿using Avalonia.Collections;
 using ColorTextBlock.Avalonia;
-using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ELOR.Laney.Helpers {
     enum MatchType { User, Group, LinkInText, Mail, Url }

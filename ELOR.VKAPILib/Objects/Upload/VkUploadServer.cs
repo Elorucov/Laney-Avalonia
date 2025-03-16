@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
-using System;
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class VkUploadServer {
-        public VkUploadServer() {}
-        
+        public VkUploadServer() { }
+
         [JsonPropertyName("upload_url")]
         public string Url { get; set; }
 

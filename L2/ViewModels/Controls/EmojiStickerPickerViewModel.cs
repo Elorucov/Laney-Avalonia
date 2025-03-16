@@ -1,5 +1,4 @@
 ﻿using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Execute;
 using ELOR.VKAPILib.Objects;
@@ -7,7 +6,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using VKUI.Controls;
 
@@ -46,7 +44,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     Tabs.Add(spTab);
                 }
                 Log.Information($"EmojiStickerPickerVM: loaded {req2.Items.Count} sticker packs");
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 Log.Error(ex, "EmojiStickerPickerVM: Cannot get stickers!");
                 // TODO: snackbar.
             }

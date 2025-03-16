@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class PhotoSaveResult {
-        public PhotoSaveResult() {}
+        public PhotoSaveResult() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }

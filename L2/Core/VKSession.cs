@@ -1,35 +1,34 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
+using Avalonia.Dialogs;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using ELOR.Laney.Core.Localization;
+using Avalonia.Platform;
+using Avalonia.Threading;
+using ELOR.Laney.DataModels;
 using ELOR.Laney.Execute;
 using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Extensions;
+using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels;
+using ELOR.Laney.ViewModels.Controls;
+using ELOR.Laney.ViewModels.Modals;
 using ELOR.Laney.Views;
-using VKUI.Controls;
-using VKUI.Popups;
+using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib;
+using ELOR.VKAPILib.Objects.HandlerDatas;
+using ELOR.VKAPILib.Objects.Messages;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Avalonia.Threading;
-using ELOR.Laney.DataModels;
-using ELOR.Laney.Views.Modals;
-using ELOR.VKAPILib.Objects.HandlerDatas;
-using ELOR.Laney.Helpers;
-using Avalonia.Controls.Notifications;
-using ELOR.Laney.ViewModels.Controls;
-using ELOR.Laney.ViewModels.Modals;
-using ToastNotifications.Avalonia;
-using Avalonia.Dialogs;
-using ELOR.VKAPILib.Objects.Messages;
 using System.Diagnostics;
-using Avalonia.Platform;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using ToastNotifications.Avalonia;
+using VKUI.Controls;
+using VKUI.Popups;
 
 namespace ELOR.Laney.Core {
     public sealed class VKSession : ViewModelBase {
@@ -194,7 +193,7 @@ namespace ELOR.Laney.Core {
                 snotif.Click += async (a, b) => {
                     sysNotifTest++;
                     var ava = await BitmapManager.GetBitmapAsync(new Uri("https://elor.top/res/images/rez_ava.png"));
-					var img = await BitmapManager.GetBitmapAsync(new Uri("https://elor.top/res/images/gex_holmes.png"));
+                    var img = await BitmapManager.GetBitmapAsync(new Uri("https://elor.top/res/images/gex_holmes.png"));
                     var t = new ToastNotification(sysNotifTest, Name, $"Rez ({sysNotifTest})", "Hurray for bunny Gex!\nHe sure is a funny Gex!", "in chat\"Geckos\"", ava, img);
                     t.OnClick += async () => {
                         await new VKUIDialog("Result", t.AssociatedObject.ToString()).ShowDialog<int>(ModalWindow);
@@ -361,7 +360,7 @@ namespace ELOR.Laney.Core {
         }
 #endif
 
-#endregion
+        #endregion
 
         #region Internal
 
@@ -684,7 +683,7 @@ namespace ELOR.Laney.Core {
             SharingViewModel group = IsGroup ? new SharingViewModel(this, 0) : null;
             SharingView dlg = new SharingView(user, group);
             // session, peer_id, group_id (if message from group to user session)
-            Tuple<VKSession, long, long>  result = await dlg.ShowDialog<Tuple<VKSession, long, long>>(ModalWindow);
+            Tuple<VKSession, long, long> result = await dlg.ShowDialog<Tuple<VKSession, long, long>>(ModalWindow);
 
             if (result != null) {
                 result.Item1.ShowAndActivate();

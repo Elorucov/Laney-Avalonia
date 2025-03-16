@@ -132,7 +132,7 @@ public class MediaSlider : TemplatedControl {
 
     private async void ShowPositionPopup(TimeSpan tm, double x) {
         if (PositionPopup == null || PositionPopupTB == null) {
-            PositionPopup = new Popup { 
+            PositionPopup = new Popup {
                 IsHitTestVisible = false,
                 Placement = PlacementMode.Top,
                 PlacementTarget = SliderThumb
@@ -144,7 +144,7 @@ public class MediaSlider : TemplatedControl {
             tb.Classes.Add("Subhead");
             PositionPopupTB = tb;
 
-            VKUIFlyoutPresenter vkfp = new VKUIFlyoutPresenter { 
+            VKUIFlyoutPresenter vkfp = new VKUIFlyoutPresenter {
                 Content = tb
             };
 

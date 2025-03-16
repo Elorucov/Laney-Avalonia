@@ -1,5 +1,4 @@
 ﻿using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using Serilog;

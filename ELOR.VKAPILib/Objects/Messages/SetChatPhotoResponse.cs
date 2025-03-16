@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class SetChatPhotoResponse {
-        public SetChatPhotoResponse() {}
-        
+        public SetChatPhotoResponse() { }
+
         [JsonPropertyName("message_id")]
         public int MessageId { get; set; }
 

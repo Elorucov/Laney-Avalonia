@@ -5,6 +5,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
+using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Upload;
 using Serilog;
@@ -12,10 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using VKUI.Controls;
-using System.Text.Json;
-using ELOR.VKAPILib;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public enum OutboundAttachmentType { Attachment, ForwardedMessages, Place }
@@ -270,7 +270,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         if (vr == null) throw new ArgumentNullException("Upload error, no response!");
                         UploadProgress = 100;
                         VideoUploadResult vur = (VideoUploadResult)JsonSerializer.Deserialize(vr, typeof(VideoUploadResult), BuildInJsonContext.Default); ;
-                        Video video = new Video { 
+                        Video video = new Video {
                             Id = vur.VideoId,
                             OwnerId = vur.OwnerId,
                             AccessKey = (server as VideoUploadServer).AccessKey,
@@ -322,7 +322,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             //        break;
             //}
         }
-    
+
         public void CancelUpload() {
             uploader?.Cancel();
             uploader = null;
@@ -345,7 +345,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         // Обратите внимание и на MessageExtensions.CanAttachToSend!
         public static OutboundAttachmentViewModel FromAttachmentBase(VKSession session, Attachment attachment) {
             switch (attachment.Type) {
-                case AttachmentType.Audio: 
+                case AttachmentType.Audio:
                     return new OutboundAttachmentViewModel(session, attachment.Audio);
                 case AttachmentType.Graffiti:
                     return new OutboundAttachmentViewModel(session, attachment.Graffiti);

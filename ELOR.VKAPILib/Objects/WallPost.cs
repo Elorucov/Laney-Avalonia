@@ -1,16 +1,15 @@
 ﻿using System.Text.Json.Serialization;
-using System.Runtime.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class WallPostViews {
-        public WallPostViews() {}
+        public WallPostViews() { }
 
         [JsonPropertyName("count")]
         public int Count { get; set; }
     }
 
     public class WallPost : AttachmentBase {
-        public WallPost() {}
+        public WallPost() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "wall"; } }
@@ -64,7 +63,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class WallReply {
-        public WallReply() {}
+        public WallReply() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }

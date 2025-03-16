@@ -134,7 +134,7 @@ namespace ELOR.Laney.Helpers {
         #region Execute
 
         public static string BuildCodeForGetMessagesByCMID(long groupId, List<KeyValuePair<long, int>> peerMessagePair, List<string> fields) {
-            StringBuilder forks = new StringBuilder(), waits = new StringBuilder(), 
+            StringBuilder forks = new StringBuilder(), waits = new StringBuilder(),
                 items = new StringBuilder(), profiles = new StringBuilder(), groups = new StringBuilder();
 
             int i = 1;
