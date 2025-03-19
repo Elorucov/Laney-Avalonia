@@ -126,7 +126,7 @@ namespace ELOR.Laney.Views {
         }
 
         bool canTriggerLoadingMessages = false;
-        private async void ChatView_DataContextChanged(object sender, EventArgs e) {
+        private void ChatView_DataContextChanged(object sender, EventArgs e) {
             if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
             sw = null;
             totalDisplayedMessagesForScrollFix = 0;
@@ -143,59 +143,67 @@ namespace ELOR.Laney.Views {
                 Chat.ReceivedMessages.CollectionChanged += ReceivedMessages_CollectionChanged;
             }
 
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+                });
+            })();
         }
 
-        private async void ReceivedMessages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
-            if (!VKSession.GetByDataContext(this).Window.IsActive) return;
-            if (e.Action == NotifyCollectionChangedAction.Add && autoScrollToLastMessage && Chat.DisplayedMessages != null && Chat.DisplayedMessages.Count > 0) {
-                ObservableCollection<MessageViewModel> received = sender as ObservableCollection<MessageViewModel>;
-                await Task.Delay(10); // ибо id-ы разные почему-то...
-                int lastReceivedId = received.LastOrDefault()?.ConversationMessageId ?? 0;
-                var lastDisplayed = Chat.DisplayedMessages.Last;
-                int lastDisplayedId = lastDisplayed?.ConversationMessageId ?? 0;
-                if (lastReceivedId == lastDisplayedId && lastDisplayedId > 0) {
-                    // MessagesList.ScrollIntoView(Chat.DisplayedMessages.Count - 1);
-                    double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
-                    ForceScroll(h);
+        private void ReceivedMessages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
+            new System.Action(async () => {
+                if (!VKSession.GetByDataContext(this).Window.IsActive) return;
+                if (e.Action == NotifyCollectionChangedAction.Add && autoScrollToLastMessage && Chat.DisplayedMessages != null && Chat.DisplayedMessages.Count > 0) {
+                    ObservableCollection<MessageViewModel> received = sender as ObservableCollection<MessageViewModel>;
+                    await Task.Delay(10); // ибо id-ы разные почему-то...
+                    int lastReceivedId = received.LastOrDefault()?.ConversationMessageId ?? 0;
+                    var lastDisplayed = Chat.DisplayedMessages.Last;
+                    int lastDisplayedId = lastDisplayed?.ConversationMessageId ?? 0;
+                    if (lastReceivedId == lastDisplayedId && lastDisplayedId > 0) {
+                        // MessagesList.ScrollIntoView(Chat.DisplayedMessages.Count - 1);
+                        double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
+                        ForceScroll(h);
 
-                    // После изменения сообщения
-                    // после loading-cостояния надо ещё раз скроллить до конца.
-                    Log.Information($"Need to scroll to last message again. Message id: {lastDisplayedId}");
-                    if (lastDisplayed.State == MessageVMState.Loading) lastDisplayed.PropertyChanged += LastDisplayedMsgPropertyChanged;
+                        // После изменения сообщения
+                        // после loading-cостояния надо ещё раз скроллить до конца.
+                        Log.Information($"Need to scroll to last message again. Message id: {lastDisplayedId}");
+                        if (lastDisplayed.State == MessageVMState.Loading) lastDisplayed.PropertyChanged += LastDisplayedMsgPropertyChanged;
+                    }
                 }
-            }
+            })();
         }
 
-        private async void LastDisplayedMsgPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            if (e.PropertyName == nameof(MessageViewModel.State)) {
-                MessageViewModel msg = sender as MessageViewModel;
-                msg.PropertyChanged -= LastDisplayedMsgPropertyChanged;
+        private void LastDisplayedMsgPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            new System.Action(async () => {
+                if (e.PropertyName == nameof(MessageViewModel.State)) {
+                    MessageViewModel msg = sender as MessageViewModel;
+                    msg.PropertyChanged -= LastDisplayedMsgPropertyChanged;
 
-                await Task.Delay(10); // нужно, ибо без этого высота скролла старая.
+                    await Task.Delay(10); // нужно, ибо без этого высота скролла старая.
 
-                int lastReceivedId = Chat.ReceivedMessages.LastOrDefault()?.ConversationMessageId ?? 0;
-                if (msg.ConversationMessageId == lastReceivedId) {
-                    // Принудительно скроллим вниз
-                    double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
-                    ForceScroll(h);
-                    // MessagesListScrollViewer.ScrollToEnd();
+                    int lastReceivedId = Chat.ReceivedMessages.LastOrDefault()?.ConversationMessageId ?? 0;
+                    if (msg.ConversationMessageId == lastReceivedId) {
+                        // Принудительно скроллим вниз
+                        double h = MessagesListScrollViewer.Extent.Height - MessagesListScrollViewer.DesiredSize.Height;
+                        ForceScroll(h);
+                        // MessagesListScrollViewer.ScrollToEnd();
 
-                    Log.Information($"Scroll to message \"{msg.ConversationMessageId}\" done.");
+                        Log.Information($"Scroll to message \"{msg.ConversationMessageId}\" done.");
+                    }
                 }
-            }
+            })();
         }
 
-        private async void ForceScroll(double y) {
-            byte retries = 0;
-            while (MessagesListScrollViewer.Offset.Y < y - 2 || MessagesListScrollViewer.Offset.Y > y + 2) {
-                MessagesListScrollViewer.Offset = new Vector(0, y);
-                await Task.Yield();
-                retries++;
-                if (retries >= 5) break;
-            }
+        private void ForceScroll(double y) {
+            new System.Action(async () => {
+                byte retries = 0;
+                while (MessagesListScrollViewer.Offset.Y < y - 2 || MessagesListScrollViewer.Offset.Y > y + 2) {
+                    MessagesListScrollViewer.Offset = new Vector(0, y);
+                    await Task.Yield();
+                    retries++;
+                    if (retries >= 5) break;
+                }
+            })();
         }
 
         double oldScrollViewerHeight = 0;
@@ -209,7 +217,7 @@ namespace ELOR.Laney.Views {
             if (e.Property == ScrollViewer.ExtentProperty) CheckScroll();
         }
 
-        private async void CheckScroll() {
+        private void CheckScroll() {
             double trigger = 160;
             double dh = MessagesListScrollViewer.DesiredSize.Height;
             double h = MessagesListScrollViewer.Extent.Height - dh;
@@ -219,53 +227,57 @@ namespace ELOR.Laney.Views {
             if (h < trigger) return;
 
             if (needToSaveScroll && !canTriggerLoadingMessages && oldScrollViewerHeight != h) {
-                double diff = h - oldScrollViewerHeight;
-                double newpos = y + diff;
+                new System.Action(async () => {
+                    double diff = h - oldScrollViewerHeight;
+                    double newpos = y + diff;
 
-                int tries = 0;
-                MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
-                await Dispatcher.UIThread.InvokeAsync(async () => {
-                    while (tries < 10) {
-                        try {
-                            ForceScroll(newpos);
-                        } catch (Exception ex) {
-                            Log.Error(ex, "CheckScroll: Unable to save scroll position!");
+                    int tries = 0;
+                    MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
+                    await Dispatcher.UIThread.InvokeAsync(async () => {
+                        while (tries < 10) {
+                            try {
+                                ForceScroll(newpos);
+                            } catch (Exception ex) {
+                                Log.Error(ex, "CheckScroll: Unable to save scroll position!");
+                            }
+                            await Task.Yield();
+                            tries++;
                         }
-                        await Task.Yield();
-                        tries++;
-                    }
-                    if (MessagesListScrollViewer.Offset.Y != newpos) {
-                        Log.Error("CheckScroll: Unable to save scroll position after 10 times!");
-                    } else {
-                        Log.Information($"CheckScroll: Scroll position saved successfully! Tries: {tries}");
-                    }
-                });
-                MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+                        if (MessagesListScrollViewer.Offset.Y != newpos) {
+                            Log.Error("CheckScroll: Unable to save scroll position after 10 times!");
+                        } else {
+                            Log.Information($"CheckScroll: Scroll position saved successfully! Tries: {tries}");
+                        }
+                    }); 
+                    MessagesListScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
 
-                needToSaveScroll = false;
-                oldScrollViewerHeight = h;
+                    needToSaveScroll = false;
+                    oldScrollViewerHeight = h;
+                })();
                 return;
             }
 
             oldScrollViewerHeight = h;
-            if (y < trigger) {
-                if (canTriggerLoadingMessages) Chat.LoadPreviousMessages();
-                autoScrollToLastMessage = false;
-            } else if (y > h - trigger) {
-                if (Chat.DisplayedMessages.Last == null || Chat.LastMessage == null) return;
-                bool needLoadNextMessages = Chat.DisplayedMessages.Last.ConversationMessageId != Chat.LastMessage.ConversationMessageId;
-                if (needLoadNextMessages) {
-                    if (canTriggerLoadingMessages) Chat.LoadNextMessages();
+            new System.Action(async () => {
+                if (y < trigger) {
+                    if (canTriggerLoadingMessages) await Chat.LoadPreviousMessagesAsync();
+                    autoScrollToLastMessage = false;
+                } else if (y > h - trigger) {
+                    if (Chat.DisplayedMessages.Last == null || Chat.LastMessage == null) return;
+                    bool needLoadNextMessages = Chat.DisplayedMessages.Last.ConversationMessageId != Chat.LastMessage.ConversationMessageId;
+                    if (needLoadNextMessages) {
+                        if (canTriggerLoadingMessages) await Chat.LoadNextMessagesAsync();
+                    } else {
+                        autoScrollToLastMessage = true;
+                    }
                 } else {
-                    autoScrollToLastMessage = true;
+                    autoScrollToLastMessage = false;
                 }
-            } else {
-                autoScrollToLastMessage = false;
-            }
-            dbgScrAuto.Text = $"{autoScrollToLastMessage}";
+                dbgScrAuto.Text = $"{autoScrollToLastMessage}";
 
-            await Task.Delay(15); // надо
-            CheckFirstAndLastDisplayedMessages();
+                await Task.Delay(15); // надо
+                CheckFirstAndLastDisplayedMessages();
+            })();
         }
 
         private void TrySaveScroll(object sender, bool e) {
@@ -336,7 +348,7 @@ namespace ELOR.Laney.Views {
         #region Buttons events
 
         private void PinnedMessageButton_Click(object sender, RoutedEventArgs e) {
-            Chat.GoToMessage(Chat.PinnedMessage);
+            new System.Action(async () => await Chat.GoToMessageAsync(Chat.PinnedMessage))();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) {
@@ -358,13 +370,16 @@ namespace ELOR.Laney.Views {
 
         #region Mark message as read
 
+        // TODO: execute (mark message and reactions as read in one request).
         private void MarkReadTimer_Tick(object sender, EventArgs e) {
-            TryMarkAsRead(LastVisible);
-            if (Chat.UnreadReactions != null) TryMarkReactionsAsRead();
+            new System.Action(async () => {
+                await TryMarkAsReadAsync(LastVisible);
+                if (Chat.UnreadReactions != null) await TryMarkReactionsAsReadAsync();
+            })();
         }
 
         bool isMarking = false;
-        private async void TryMarkAsRead(MessageViewModel msg) {
+        private async Task TryMarkAsReadAsync(MessageViewModel msg) {
             if (DemoMode.IsEnabled) return;
             if (isMarking || msg == null || msg.IsOutgoing || msg.State != MessageVMState.Unread) return;
             isMarking = true;
@@ -381,7 +396,7 @@ namespace ELOR.Laney.Views {
         }
 
         bool isMarking2 = false;
-        private async void TryMarkReactionsAsRead() {
+        private async Task TryMarkReactionsAsReadAsync() {
             if (DemoMode.IsEnabled) return;
             if (isMarking2 || FirstVisible == null || LastVisible == null) return;
             var fid = FirstVisible.ConversationMessageId;
@@ -419,7 +434,7 @@ namespace ELOR.Laney.Views {
 
         #region Drag'n'drop
 
-        private async void OnDragEnter(object sender, DragEventArgs e) {
+        private void OnDragEnter(object sender, DragEventArgs e) {
             DropArea.IsVisible = true;
 
             try {
@@ -449,7 +464,7 @@ namespace ELOR.Laney.Views {
                 }
             } catch (Exception ex) {
                 DropArea.IsVisible = false;
-                await ExceptionHelper.ShowErrorDialogAsync(VKSession.GetByDataContext(this).ModalWindow, ex, true);
+                new System.Action(async () => await ExceptionHelper.ShowErrorDialogAsync(VKSession.GetByDataContext(this).ModalWindow, ex, true))();
             }
         }
 
@@ -471,17 +486,19 @@ namespace ELOR.Laney.Views {
             border.Classes.Remove("DropTargetHover");
         }
 
-        private async void OnDropOnArea(object sender, DragEventArgs e) {
+        private void OnDropOnArea(object sender, DragEventArgs e) {
             VKSession session = VKSession.GetByDataContext(this);
             Border border = sender as Border;
             border.Classes.Remove("DropTargetHover");
 
             var files = e.Data.GetFiles().Take(10);
             if (border.Name == "TopDropArea") {
-                foreach (IStorageFile file in files) {
-                    Chat.Composer.Attachments.Add(new OutboundAttachmentViewModel(session, file, Constants.FileUploadCommand));
-                    await Task.Delay(500);
-                }
+                new System.Action(async () => {
+                    foreach (IStorageFile file in files) {
+                        Chat.Composer.Attachments.Add(new OutboundAttachmentViewModel(session, file, Constants.FileUploadCommand));
+                        await Task.Delay(500);
+                    }
+                })();
             } else if (border.Name == "BottomDropArea") {
                 DroppedFilesType type = (DroppedFilesType)BottomDropArea.Tag;
                 int utype = Constants.FileUploadCommand;
@@ -491,10 +508,12 @@ namespace ELOR.Laney.Views {
                     default: utype = Constants.FileUploadCommand; break;
                 }
 
-                foreach (IStorageFile file in files) {
-                    Chat.Composer.Attachments.Add(new OutboundAttachmentViewModel(session, file, utype));
-                    await Task.Delay(500);
-                }
+                new System.Action(async () => {
+                    foreach (IStorageFile file in files) {
+                        Chat.Composer.Attachments.Add(new OutboundAttachmentViewModel(session, file, utype));
+                        await Task.Delay(500);
+                    }
+                })();
             }
         }
 

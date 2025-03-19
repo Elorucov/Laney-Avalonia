@@ -17,7 +17,7 @@ namespace ELOR.Laney.Core {
         static ConcurrentDictionary<string, ManualResetEventSlim> nowLoading = new ConcurrentDictionary<string, ManualResetEventSlim>();
         const int cachesLimit = 500;
 
-        public static async void ClearCachedImages() {
+        public static void ClearCachedImages() {
             long ram1 = System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64;
             double ram1mb = (double)ram1 / 1048576;
             // RAMInfo.Text = $"{Math.Round(rammb, 1)} Mb";
@@ -31,8 +31,6 @@ namespace ELOR.Laney.Core {
             GC.Collect(2, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
             GC.Collect(2, GCCollectionMode.Aggressive);
-
-            await Task.Delay(250); // память может уменьшаться не сразу, и в лог попадёт неверное значение, если не прописать Delay.
 
             long ram2 = System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64;
             double ram2mb = (double)ram2 / 1048576;

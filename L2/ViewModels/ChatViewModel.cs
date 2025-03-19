@@ -138,7 +138,7 @@ namespace ELOR.Laney.ViewModels {
             }
             // needSetup нужен в случае, когда мы не переходим в беседу и не загружаем сообщения,
             // но надо загрузить инфу о чате, которую можно получить при загрузке сообщений.
-            if (needSetup) GetInfoFromAPIAndSetup(lastMessage, msg);
+            if (needSetup) new System.Action(async () => await GetInfoFromAPIAndSetupAsync(lastMessage, msg))();
         }
 
         public ChatViewModel(VKSession session, Conversation c, Message lastMessage = null) {
@@ -165,13 +165,13 @@ namespace ELOR.Laney.ViewModels {
             bool isDisplayedMessagesEmpty = DisplayedMessages == null || DisplayedMessages.Count == 0;
             Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}, CMID: {2}", PeerId, isDisplayedMessagesEmpty, messageId);
             if (isDisplayedMessagesEmpty || messageId >= 0) {
-                GoToMessage(messageId);
+                new System.Action(async () => await GoToMessageAsync(messageId))();
             } else {
                 ScrollToMessageRequested?.Invoke(this, InRead);
             }
         }
 
-        private async void GetInfoFromAPIAndSetup(Message message, MessageViewModel msg) {
+        private async Task GetInfoFromAPIAndSetupAsync(Message message, MessageViewModel msg) {
             try {
                 var response = await session.API.Messages.GetConversationsByIdAsync(session.GroupId, new List<long> { PeerId }, true, VKAPIHelper.Fields);
                 CacheManager.Add(response.Profiles);
@@ -196,7 +196,7 @@ namespace ELOR.Laney.ViewModels {
                     Log.Information($"Adding message {message.PeerId}_{message.ConversationMessageId} to pending for notification... (by new chat)");
                     if (!message.IsSilent) pendingMessages.Add(message.ConversationMessageId, isMention);
                 } else {
-                    if (!message.IsSilent) ShowSystemNotification(msg, isMention);
+                    if (!message.IsSilent) await ShowSystemNotificationAsync(msg, isMention);
                 }
             } catch (Exception ex) {
                 Log.Error(ex, $"Cannot get conversation from API! Peer={PeerId}");
@@ -283,8 +283,8 @@ namespace ELOR.Laney.ViewModels {
                 OpenProfileCommand = new RelayCommand((o) => { });
             } else {
                 OpenProfileCommand = new RelayCommand(OpenPeerProfile);
-                GoToLastMessageCommand = new RelayCommand(GoToLastMessage);
-                GoToLastReactedMessageCommand = new RelayCommand(GoToLastReactedMessage);
+                GoToLastMessageCommand = new RelayCommand(async (o) => await GoToLastMessageAsync());
+                GoToLastReactedMessageCommand = new RelayCommand(async (o) => await GoToLastReactedMessageAsync());
             }
 
             UpdateRestrictionInfo();
@@ -400,11 +400,11 @@ namespace ELOR.Laney.ViewModels {
             Router.OpenPeerProfile(session, PeerId);
         }
 
-        private void GoToLastMessage(object obj) {
+        private async Task GoToLastMessageAsync() {
             if (IsLoading) return;
 
             if (DisplayedMessages?.Last?.ConversationMessageId == LastMessage?.ConversationMessageId) {
-                GoToMessage(LastMessage);
+                await GoToMessageAsync(LastMessage);
             } else {
                 Log.Information($"GoToLastMessage: last message in chat is not displayed. Showing ReceivedMessages...");
                 DisplayedMessages = new MessagesCollection(ReceivedMessages.ToList());
@@ -412,14 +412,14 @@ namespace ELOR.Laney.ViewModels {
                 if (ReceivedMessages.Count < 20) {
                     Log.Information($"GoToLastMessage: need get more messages from API to display.");
                     MessagesChunkLoaded += PrevMessagesLoaded;
-                    LoadPreviousMessages();
+                    await LoadPreviousMessagesAsync();
                 }
             }
         }
 
-        private void GoToLastReactedMessage(object obj) {
+        private async Task GoToLastReactedMessageAsync() {
             if (IsLoading) return;
-            if (UnreadReactions != null && UnreadReactions.Count > 0) GoToMessage(UnreadReactions.LastOrDefault());
+            if (UnreadReactions != null && UnreadReactions.Count > 0) await GoToMessageAsync(UnreadReactions.LastOrDefault());
         }
 
         private void PrevMessagesLoaded(object sender, bool next) {
@@ -455,20 +455,20 @@ namespace ELOR.Laney.ViewModels {
 
         #region Loading messages
 
-        public async void GoToMessage(MessageViewModel message) {
+        public async Task GoToMessageAsync(MessageViewModel message) {
             if (message == null) return;
             if (!message.IsUnavailable) {
-                GoToMessage(message.ConversationMessageId);
+                await GoToMessageAsync(message.ConversationMessageId);
             } else {
                 StandaloneMessageViewer smv = new StandaloneMessageViewer(session, message);
                 await smv.ShowDialog(session.Window);
             }
         }
 
-        public void GoToMessage(int id) {
+        public async Task GoToMessageAsync(int id) {
             if (id == 0) return;
             if (DisplayedMessages == null) {
-                LoadMessages(id);
+                await LoadMessagesAsync(id);
                 return;
             }
             MessageViewModel msg = DisplayedMessages.GetById(id);
@@ -476,11 +476,11 @@ namespace ELOR.Laney.ViewModels {
             if (msg != null) {
                 ScrollToMessageRequested?.Invoke(this, id);
             } else {
-                LoadMessages(id);
+                await LoadMessagesAsync(id);
             }
         }
 
-        private async void LoadMessages(int startMessageId = -1) {
+        private async Task LoadMessagesAsync(int startMessageId = -1) {
             if (DemoMode.IsEnabled) {
                 DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
                 var messages = ds.Messages.Where(m => m.PeerId == PeerId).ToList();
@@ -517,7 +517,7 @@ namespace ELOR.Laney.ViewModels {
                 }
                 if (scrollTo > 0 && scrollTo != LastMessage?.ConversationMessageId) ScrollToMessageRequested?.Invoke(this, scrollTo);
             } catch (Exception ex) {
-                Placeholder = PlaceholderViewModel.GetForException(ex, (o) => { LoadMessages(startMessageId); });
+                Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadMessagesAsync(startMessageId));
             } finally {
                 IsLoading = false;
 
@@ -526,7 +526,7 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        public async void LoadPreviousMessages() {
+        public async Task LoadPreviousMessagesAsync() {
             if (DemoMode.IsEnabled || DisplayedMessages?.Count == 0 || IsLoading) return;
             int count = Constants.MessagesCount;
 
@@ -546,14 +546,14 @@ namespace ELOR.Laney.ViewModels {
                 await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
                 if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) {
-                    LoadPreviousMessages();
+                    await LoadPreviousMessagesAsync();
                 }
             } finally {
                 IsLoading = false;
             }
         }
 
-        public async void LoadNextMessages() {
+        public async Task LoadNextMessagesAsync() {
             if (DemoMode.IsEnabled || DisplayedMessages?.Count == 0 || IsLoading) return;
             int count = Constants.MessagesCount;
 
@@ -573,7 +573,7 @@ namespace ELOR.Laney.ViewModels {
                 await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
                 if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) {
-                    LoadNextMessages();
+                    await LoadNextMessagesAsync();
                 }
             } finally {
                 IsLoading = false;
@@ -594,113 +594,119 @@ namespace ELOR.Laney.ViewModels {
 
         #region LongPoll events
 
-        private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, long peerId) {
+        private void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, long peerId) {
             if (peerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (flags.HasFlag(128)) { // Удаление сообщения
-                    if (messageId > InRead && UnreadMessagesCount > 0) UnreadMessagesCount--;
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (flags.HasFlag(128)) { // Удаление сообщения
+                        if (messageId > InRead && UnreadMessagesCount > 0) UnreadMessagesCount--;
 
-                    // TODO: обновление sort id после удаления сообщения
-                    //if (ReceivedMessages.LastOrDefault()?.Id == SortId.MinorId && (ChatSettings != null && !ChatSettings.IsDisappearing)) {
-                    //    if (ReceivedMessages.Count > 1) {
-                    //        MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
-                    //        UpdateSortId(SortId.MajorId, prev.Id);
-                    //    } else {
-                    //        Log.Warning("Cannot update minor_id after last message is deleted!");
-                    //    }
-                    //}
-                    if (ReceivedMessages.Count > 1) {
-                        MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
-                        UpdateSortId(SortId.MajorId, prev.Id);
-                    } else {
-                        Log.Warning("Cannot update minor_id after last message is deleted!");
+                        // TODO: обновление sort id после удаления сообщения
+                        //if (ReceivedMessages.LastOrDefault()?.Id == SortId.MinorId && (ChatSettings != null && !ChatSettings.IsDisappearing)) {
+                        //    if (ReceivedMessages.Count > 1) {
+                        //        MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
+                        //        UpdateSortId(SortId.MajorId, prev.Id);
+                        //    } else {
+                        //        Log.Warning("Cannot update minor_id after last message is deleted!");
+                        //    }
+                        //}
+                        if (ReceivedMessages.Count > 1) {
+                            MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
+                            UpdateSortId(SortId.MajorId, prev.Id);
+                        } else {
+                            Log.Warning("Cannot update minor_id after last message is deleted!");
+                        }
+
+                        MessageViewModel msg = ReceivedMessages.Where(m => m.ConversationMessageId == messageId).FirstOrDefault();
+                        if (msg != null) ReceivedMessages.Remove(msg);
+
+                        MessageViewModel dmsg = DisplayedMessages?.GetById(messageId);
+                        if (dmsg != null) DisplayedMessages.Remove(dmsg);
                     }
-
-                    MessageViewModel msg = ReceivedMessages.Where(m => m.ConversationMessageId == messageId).FirstOrDefault();
-                    if (msg != null) ReceivedMessages.Remove(msg);
-
-                    MessageViewModel dmsg = DisplayedMessages?.GetById(messageId);
-                    if (dmsg != null) DisplayedMessages.Remove(dmsg);
-                }
-            });
+                });
+            })();
         }
 
         Dictionary<int, bool> pendingMessages = new Dictionary<int, bool>();
 
-        private async void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
+        private void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
             if (message.PeerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                MessageViewModel msg = MessageViewModel.Create(message, session);
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(async () => {
+                    MessageViewModel msg = MessageViewModel.Create(message, session);
 
-                bool isMention = false;
-                if (!message.IsSilent && message.MentionedUsers != null) {
-                    if (message.MentionedUsers.Count == 0) { // признак того, что пушнули всех (@all)
-                        isMention = true;
+                    bool isMention = false;
+                    if (!message.IsSilent && message.MentionedUsers != null) {
+                        if (message.MentionedUsers.Count == 0) { // признак того, что пушнули всех (@all)
+                            isMention = true;
+                        } else {
+                            isMention = message.MentionedUsers.Contains(session.Id);
+                        }
+                    }
+
+                    if (!message.IsPartial) {
+                        bool isUnread = flags.HasFlag(1) && !flags.HasFlag(8388608);
+                        msg.State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
+                        if (!message.IsSilent) await ShowSystemNotificationAsync(msg, isMention);
                     } else {
-                        isMention = message.MentionedUsers.Contains(session.Id);
+                        if (!message.IsSilent) {
+                            Log.Information($"Adding message {message.PeerId}_{message.ConversationMessageId} to pending for notification... (by longpoll)");
+                            pendingMessages.Add(message.ConversationMessageId, isMention);
+                        }
                     }
-                }
 
-                if (!message.IsPartial) {
-                    bool isUnread = flags.HasFlag(1) && !flags.HasFlag(8388608);
-                    msg.State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
-                    if (!message.IsSilent) ShowSystemNotification(msg, isMention);
-                } else {
-                    if (!message.IsSilent) {
-                        Log.Information($"Adding message {message.PeerId}_{message.ConversationMessageId} to pending for notification... (by longpoll)");
-                        pendingMessages.Add(message.ConversationMessageId, isMention);
-                    }
-                }
+                    bool canAddToDisplayedMessages = DisplayedMessages?.Last?.ConversationMessageId == ReceivedMessages.LastOrDefault()?.ConversationMessageId;
 
-                bool canAddToDisplayedMessages = DisplayedMessages?.Last?.ConversationMessageId == ReceivedMessages.LastOrDefault()?.ConversationMessageId;
-
-                if (ReceivedMessages.Count >= Constants.MessagesCount) {
-                    var oldReceived = _receivedMessages;
-                    _receivedMessages = new ObservableCollection<MessageViewModel> { msg };
-                    oldReceived.Clear();
-                    oldReceived = null;
-                    Log.Information($"All received messages except the last one is removed from cache in chat {Id}");
-                } else {
-                    ReceivedMessages.Add(msg);
-                }
-
-                if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
-                // if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
-                if (msg.SenderId != session.Id) UnreadMessagesCount++;
-                if (canAddToDisplayedMessages) {
-                    if (DisplayedMessages == null) {
-                        DisplayedMessages = new MessagesCollection(new List<MessageViewModel>() { msg });
+                    if (ReceivedMessages.Count >= Constants.MessagesCount) {
+                        var oldReceived = _receivedMessages;
+                        _receivedMessages = new ObservableCollection<MessageViewModel> { msg };
+                        oldReceived.Clear();
+                        oldReceived = null;
+                        Log.Information($"All received messages except the last one is removed from cache in chat {Id}");
                     } else {
-                        DisplayedMessages.Insert(msg);
+                        ReceivedMessages.Add(msg);
                     }
-                }
 
-                // Remove user from activity status
-                var status = ActivityStatusUsers.RegisteredObjects.Where(m => m.MemberId == message.FromId).FirstOrDefault();
-                if (status != null) ActivityStatusUsers.Remove(status);
-            });
+                    if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
+                    // if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
+                    if (msg.SenderId != session.Id) UnreadMessagesCount++;
+                    if (canAddToDisplayedMessages) {
+                        if (DisplayedMessages == null) {
+                            DisplayedMessages = new MessagesCollection(new List<MessageViewModel>() { msg });
+                        } else {
+                            DisplayedMessages.Insert(msg);
+                        }
+                    }
+
+                    // Remove user from activity status
+                    var status = ActivityStatusUsers.RegisteredObjects.Where(m => m.MemberId == message.FromId).FirstOrDefault();
+                    if (status != null) ActivityStatusUsers.Remove(status);
+                });
+            })();
         }
 
-        private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
+        private void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
             if (PeerId != message.PeerId) return;
             bool isFullReceived = pendingMessages.ContainsKey(message.ConversationMessageId);
 
-            await Dispatcher.UIThread.InvokeAsync(async () => {
-                if (isFullReceived) {
-                    bool isMention = pendingMessages[message.ConversationMessageId];
-                    pendingMessages.Remove(message.ConversationMessageId);
-                    MessageViewModel msg = ReceivedMessages.Where(m => m.ConversationMessageId == message.ConversationMessageId).FirstOrDefault();
-                    if (msg != null) ShowSystemNotification(msg, isMention);
-                }
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(async () => {
+                    if (isFullReceived) {
+                        bool isMention = pendingMessages[message.ConversationMessageId];
+                        pendingMessages.Remove(message.ConversationMessageId);
+                        MessageViewModel msg = ReceivedMessages.Where(m => m.ConversationMessageId == message.ConversationMessageId).FirstOrDefault();
+                        if (msg != null) await ShowSystemNotificationAsync(msg, isMention);
+                    }
 
-                if (LastMessage?.ConversationMessageId == message.ConversationMessageId) {
-                    // нужно для корректной обработки смены фото чата.
-                    if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
+                    if (LastMessage?.ConversationMessageId == message.ConversationMessageId) {
+                        // нужно для корректной обработки смены фото чата.
+                        if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
 
-                    await Task.Delay(16); // ибо первым выполняется событие в объекте сообщения, и только потом тут.
-                    OnPropertyChanged(nameof(LastMessage));
-                }
-            });
+                        await Task.Delay(16); // ибо первым выполняется событие в объекте сообщения, и только потом тут.
+                        OnPropertyChanged(nameof(LastMessage));
+                    }
+                });
+            })();
         }
 
         private void ParseActionMessage(long fromId, VKAPILib.Objects.Action action, List<Attachment> attachments) {
@@ -723,48 +729,56 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        private async void UpdatePinnedMessage(int cmid) {
+        private void UpdatePinnedMessage(int cmid) {
             var msg = ReceivedMessages.Where(m => m.ConversationMessageId == cmid).FirstOrDefault();
             if (msg == null) msg = DisplayedMessages.GetById(cmid);
             if (msg != null) {
                 PinnedMessage = msg;
             } else {
-                try {
-                    var resp = await session.API.Messages.GetByConversationMessageIdAsync(session.GroupId, PeerId, new List<int> { cmid });
-                    PinnedMessage = MessageViewModel.Create(resp.Items[0], session);
-                } catch (Exception ex) {
-                    Log.Error(ex, $"Cannot get pinned message from event! peer={PeerId} cmid={cmid}");
-                }
+                new System.Action(async () => {
+                    try {
+                        var resp = await session.API.Messages.GetByConversationMessageIdAsync(session.GroupId, PeerId, new List<int> { cmid });
+                        PinnedMessage = MessageViewModel.Create(resp.Items[0], session);
+                    } catch (Exception ex) {
+                        Log.Error(ex, $"Cannot get pinned message from event! peer={PeerId} cmid={cmid}");
+                    }
+                })();
             }
         }
 
-        private async void LongPoll_MentionReceived(LongPoll longPoll, long peerId, int messageId, bool isSelfDestruct) {
+        private void LongPoll_MentionReceived(LongPoll longPoll, long peerId, int messageId, bool isSelfDestruct) {
             if (PeerId != peerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (!isSelfDestruct) {
-                    if (Mentions == null) {
-                        Mentions = new ObservableCollection<int>() { messageId };
-                    } else {
-                        Mentions.Add(messageId);
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (!isSelfDestruct) {
+                        if (Mentions == null) {
+                            Mentions = new ObservableCollection<int>() { messageId };
+                        } else {
+                            Mentions.Add(messageId);
+                        }
                     }
-                }
-            });
+                });
+            })();
         }
 
-        private async void LongPoll_IncomingMessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
+        private void LongPoll_IncomingMessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
             if (PeerId != peerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                InRead = messageId;
-                LongPoll_MessagesRead(longPoll, peerId, messageId, count);
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    InRead = messageId;
+                    LongPoll_MessagesRead(longPoll, peerId, messageId, count);
+                });
+            })();
         }
 
-        private async void LongPoll_OutgoingMessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
+        private void LongPoll_OutgoingMessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
             if (PeerId != peerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                OutRead = messageId;
-                LongPoll_MessagesRead(longPoll, peerId, messageId, count);
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    OutRead = messageId;
+                    LongPoll_MessagesRead(longPoll, peerId, messageId, count);
+                });
+            })();
         }
 
         private void LongPoll_MessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
@@ -780,56 +794,66 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        private async void LongPoll_ConversationFlagReset(LongPoll longPoll, long peerId, int flags) {
+        private void LongPoll_ConversationFlagReset(LongPoll longPoll, long peerId, int flags) {
             if (PeerId != peerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (flags.HasFlag(1048576)) IsMarkedAsUnread = false;
-                bool mention = flags.HasFlag(1024); // Упоминаний больше нет
-                bool mark = flags.HasFlag(16384); // Маркированного сообщения больше нет
-                if (mark) {
-                    HasMention = false;
-                    HasSelfDestructMessage = false;
-                }
-            });
-        }
-
-        private async void LongPoll_ConversationFlagSet(LongPoll longPoll, long peerId, int flags) {
-            if (peerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (flags.HasFlag(1048576)) IsMarkedAsUnread = true;
-                bool mention = flags.HasFlag(1024); // Наличие упоминания
-                bool mark = flags.HasFlag(16384); // Наличие маркированного сообщения
-                if (mark) {
-                    if (mention) {
-                        HasMention = true;
-                    } else {
-                        HasSelfDestructMessage = true;
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (flags.HasFlag(1048576)) IsMarkedAsUnread = false;
+                    bool mention = flags.HasFlag(1024); // Упоминаний больше нет
+                    bool mark = flags.HasFlag(16384); // Маркированного сообщения больше нет
+                    if (mark) {
+                        HasMention = false;
+                        HasSelfDestructMessage = false;
                     }
-                }
-            });
+                });
+            })();
         }
 
-        private async void LongPoll_ConversationRemoved(object sender, long peerId) {
+        private void LongPoll_ConversationFlagSet(LongPoll longPoll, long peerId, int flags) {
             if (peerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                DisplayedMessages?.Clear();
-                ReceivedMessages.Clear();
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (flags.HasFlag(1048576)) IsMarkedAsUnread = true;
+                    bool mention = flags.HasFlag(1024); // Наличие упоминания
+                    bool mark = flags.HasFlag(16384); // Наличие маркированного сообщения
+                    if (mark) {
+                        if (mention) {
+                            HasMention = true;
+                        } else {
+                            HasSelfDestructMessage = true;
+                        }
+                    }
+                });
+            })();
+        }
+
+        private void LongPoll_ConversationRemoved(object sender, long peerId) {
+            if (peerId != PeerId) return;
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    DisplayedMessages?.Clear();
+                    ReceivedMessages.Clear();
+                });
+            })();
         }
 
         // Если что, flags и есть major/minor_id.
-        private async void LongPoll_MajorIdChanged(LongPoll longPoll, long peerId, int flags) {
+        private void LongPoll_MajorIdChanged(LongPoll longPoll, long peerId, int flags) {
             if (peerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                UpdateSortId(flags, SortId.MinorId);
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    UpdateSortId(flags, SortId.MinorId);
+                });
+            })();
         }
 
-        private async void LongPoll_MinorIdChanged(LongPoll longPoll, long peerId, int flags) {
+        private void LongPoll_MinorIdChanged(LongPoll longPoll, long peerId, int flags) {
             if (peerId != PeerId || flags == 0) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                UpdateSortId(SortId.MajorId, flags);
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    UpdateSortId(SortId.MajorId, flags);
+                });
+            })();
         }
 
         // Надо задать новый объект SortId, чтобы сработало событие OnPropertyChanged для SortIndex.
@@ -840,56 +864,60 @@ namespace ELOR.Laney.ViewModels {
             };
         }
 
-        private async void LongPoll_ConversationDataChanged(LongPoll longPoll, int type, long peerId, long extra) {
+        private void LongPoll_ConversationDataChanged(LongPoll longPoll, int type, long peerId, long extra) {
             if (peerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                // TODO: 4 и 6
-                switch (type) {
-                    case 3: // Назначен новый администратор
-                        if (ChatSettings.AdminIDs == null) ChatSettings.AdminIDs = new List<long>();
-                        ChatSettings.AdminIDs?.Add(extra);
-                        break;
-                    case 7: // Выход из беседы
-                    case 8: // Исключение из беседы
-                        if (extra.IsUser()) {
-                            User user = MembersUsers?.Where(u => u.Id == extra).FirstOrDefault();
-                            if (user != null) MembersUsers?.Remove(user);
-                        } else if (extra.IsGroup()) {
-                            Group group = MembersGroups?.Where(g => g.Id == -extra).FirstOrDefault();
-                            if (group != null) MembersGroups?.Remove(group);
-                        }
-                        if (extra == session.Id) {
-                            ChatSettings.State = type == 8 ? UserStateInChat.Kicked : UserStateInChat.Left;
-                        }
-                        ChatSettings.MembersCount--;
-                        UpdateSubtitleForChat();
-                        UpdateRestrictionInfo();
-                        break;
-                    case 9: // Разжалован администратор
-                        if (ChatSettings.AdminIDs != null && ChatSettings.AdminIDs.Contains(extra)) ChatSettings.AdminIDs?.Remove(extra);
-                        break;
-                }
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    // TODO: 4 и 6
+                    switch (type) {
+                        case 3: // Назначен новый администратор
+                            if (ChatSettings.AdminIDs == null) ChatSettings.AdminIDs = new List<long>();
+                            ChatSettings.AdminIDs?.Add(extra);
+                            break;
+                        case 7: // Выход из беседы
+                        case 8: // Исключение из беседы
+                            if (extra.IsUser()) {
+                                User user = MembersUsers?.Where(u => u.Id == extra).FirstOrDefault();
+                                if (user != null) MembersUsers?.Remove(user);
+                            } else if (extra.IsGroup()) {
+                                Group group = MembersGroups?.Where(g => g.Id == -extra).FirstOrDefault();
+                                if (group != null) MembersGroups?.Remove(group);
+                            }
+                            if (extra == session.Id) {
+                                ChatSettings.State = type == 8 ? UserStateInChat.Kicked : UserStateInChat.Left;
+                            }
+                            ChatSettings.MembersCount--;
+                            UpdateSubtitleForChat();
+                            UpdateRestrictionInfo();
+                            break;
+                        case 9: // Разжалован администратор
+                            if (ChatSettings.AdminIDs != null && ChatSettings.AdminIDs.Contains(extra)) ChatSettings.AdminIDs?.Remove(extra);
+                            break;
+                    }
+                });
+            })();
         }
 
-        private async void LongPoll_ActivityStatusChanged(LongPoll longPoll, long peerId, List<LongPollActivityInfo> infos) {
+        private void LongPoll_ActivityStatusChanged(LongPoll longPoll, long peerId, List<LongPollActivityInfo> infos) {
             if (peerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                double timeout = 7000;
-                try {
-                    foreach (LongPollActivityInfo info in infos) {
-                        if (info.MemberId == session.Id) continue;
-                        var exist = ActivityStatusUsers.RegisteredObjects.Where(u => u.MemberId == info.MemberId).FirstOrDefault();
-                        if (exist != null) ActivityStatusUsers.Remove(exist);
-                        ActivityStatusUsers.Add(info, timeout);
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    double timeout = 7000;
+                    try {
+                        foreach (LongPollActivityInfo info in infos) {
+                            if (info.MemberId == session.Id) continue;
+                            var exist = ActivityStatusUsers.RegisteredObjects.Where(u => u.MemberId == info.MemberId).FirstOrDefault();
+                            if (exist != null) ActivityStatusUsers.Remove(exist);
+                            ActivityStatusUsers.Add(info, timeout);
+                        }
+                        UpdateActivityStatus();
+                    } catch (Exception ex) {
+                        ActivityStatusUsers.Clear();
+                        ActivityStatus = String.Empty;
+                        Log.Error(ex, $"Error while parsing user activity status!");
                     }
-                    UpdateActivityStatus();
-                } catch (Exception ex) {
-                    ActivityStatusUsers.Clear();
-                    ActivityStatus = String.Empty;
-                    Log.Error(ex, $"Error while parsing user activity status!");
-                }
-            });
+                });
+            })();
         }
 
         private void UpdateActivityStatus() {
@@ -975,46 +1003,52 @@ namespace ELOR.Laney.ViewModels {
             return sb.ToString();
         }
 
-        private async void LongPoll_NotificationsSettingsChanged(object sender, LongPollPushNotificationData e) {
+        private void LongPoll_NotificationsSettingsChanged(object sender, LongPollPushNotificationData e) {
             if (e.PeerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                PushSettings ps = new PushSettings {
-                    DisabledForever = e.DisabledUntil == -1,
-                    DisabledUntil = e.DisabledUntil,
-                    NoSound = e.Sound == 0
-                };
-                PushSettings = ps;
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    PushSettings ps = new PushSettings {
+                        DisabledForever = e.DisabledUntil == -1,
+                        DisabledUntil = e.DisabledUntil,
+                        NoSound = e.Sound == 0
+                    };
+                    PushSettings = ps;
+                });
+            })();
         }
 
-        private async void LongPoll_UnreadReactionsChanged(LongPoll longPoll, long peerId, List<int> cmIds) {
+        private void LongPoll_UnreadReactionsChanged(LongPoll longPoll, long peerId, List<int> cmIds) {
             if (peerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (cmIds == null || cmIds.Count == 0) {
-                    UnreadReactions = null;
-                    return;
-                }
-                UnreadReactions = new ObservableCollection<int>(cmIds);
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (cmIds == null || cmIds.Count == 0) {
+                        UnreadReactions = null;
+                        return;
+                    }
+                    UnreadReactions = new ObservableCollection<int>(cmIds);
+                });
+            })();
         }
 
-        private async void VKQueue_Online(object sender, DataModels.VKQueue.OnlineEvent e) {
+        private void VKQueue_Online(object sender, DataModels.VKQueue.OnlineEvent e) {
             if (PeerId != e.UserId) return;
             Log.Verbose($"ChatViewModel > Online event. User: {e.UserId}; IsOnline: {e.Online}; Platform: {e.Platform}; App: {e.AppId}; LastSeen: {e.LastSeen}");
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                Online.IsOnline = e.Online;
-                Online.IsMobile = e.Platform != 6 && e.Platform != 7;
-                Online.AppId = e.AppId;
-                Online.LastSeenUnix = e.LastSeenUnix;
-                OnPropertyChanged(nameof(Online));
-            });
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    Online.IsOnline = e.Online;
+                    Online.IsMobile = e.Platform != 6 && e.Platform != 7;
+                    Online.AppId = e.AppId;
+                    Online.LastSeenUnix = e.LastSeenUnix;
+                    OnPropertyChanged(nameof(Online));
+                });
+            })();
         }
 
         #endregion
 
         #region Notification
 
-        private async void ShowSystemNotification(MessageViewModel message, bool isMention) {
+        private async Task ShowSystemNotificationAsync(MessageViewModel message, bool isMention) {
             bool notifsEnabled = PeerType == PeerType.Chat ? Settings.NotificationsGroupChat : Settings.NotificationsPrivate;
             if (!notifsEnabled) return;
 

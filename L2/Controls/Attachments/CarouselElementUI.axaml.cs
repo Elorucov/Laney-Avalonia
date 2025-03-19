@@ -31,10 +31,10 @@ namespace ELOR.Laney.Controls.Attachments {
             Unloaded -= CarouselElementUI_Unloaded;
         }
 
-        private async void CarouselElementUI_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
+        private void CarouselElementUI_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
             if (e.Property == ElementProperty && Element != null) {
                 var photo = Element.Photo.GetSizeAndUriForThumbnail(CardImage.Width, CardImage.Height).Uri;
-                await CardImage.SetImageBackgroundAsync(photo, CardImage.Width, CardImage.Height);
+                new System.Action(async () => await CardImage.SetImageBackgroundAsync(photo, CardImage.Width, CardImage.Height))();
 
                 Buttons.Children.Clear();
                 VKAPIHelper.GenerateButtons(Buttons, Element.Buttons);

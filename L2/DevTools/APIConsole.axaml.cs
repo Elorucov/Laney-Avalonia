@@ -28,7 +28,7 @@ public partial class APIConsoleWindow : Window {
         AppVersion.Text = App.BuildInfo.Replace(" ", "\n");
     }
 
-    private async void APIConsoleWindow_Activated(object sender, EventArgs e) {
+    private void APIConsoleWindow_Activated(object sender, EventArgs e) {
         Activated -= APIConsoleWindow_Activated;
         Version.Text = VKAPI.Version;
 
@@ -66,8 +66,10 @@ public partial class APIConsoleWindow : Window {
             API = new VKAPI(dt, Lang.Text, App.UserAgent);
             Settings.UnlockSettingsFile(true);
 
-            await Task.Delay(100); // Required for properly focus to "method" TextBox.
-            Method.Focus();
+            new Action(async () => {
+                await Task.Delay(100); // Required for properly focus to "method" TextBox.
+                Method.Focus();
+            })();
         } catch (Exception) {
             TokenButton.Flyout.ShowAt(TokenButton);
         }
@@ -86,40 +88,42 @@ public partial class APIConsoleWindow : Window {
         Parameters.Remove(item);
     }
 
-    private async void CallMethod(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
-        CallButton.IsEnabled = false;
-        try {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            foreach (var p in Parameters) {
-                if (p.Item1 == "v" || p.Item1 == "lang" || !p.Enabled) continue;
-                if (parameters.ContainsKey(p.Item1)) {
-                    parameters[p.Item1] = p.Item2;
-                } else {
-                    parameters.Add(p.Item1, p.Item2);
+    private void CallMethod(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        new Action(async () => {
+            CallButton.IsEnabled = false;
+            try {
+                Dictionary<string, string> parameters = new Dictionary<string, string>();
+                foreach (var p in Parameters) {
+                    if (p.Item1 == "v" || p.Item1 == "lang" || !p.Enabled) continue;
+                    if (parameters.ContainsKey(p.Item1)) {
+                        parameters[p.Item1] = p.Item2;
+                    } else {
+                        parameters.Add(p.Item1, p.Item2);
+                    }
                 }
-            }
 
-            if (API == null) {
-                VKUIDialog dialog = new VKUIDialog("Access token not set!", "Without token you cannot call API methods");
-                await dialog.ShowDialog(this);
+                if (API == null) {
+                    VKUIDialog dialog = new VKUIDialog("Access token not set!", "Without token you cannot call API methods");
+                    await dialog.ShowDialog(this);
+                    CallButton.IsEnabled = true;
+                    return;
+                }
+                Response.Text = "Waiting response from VK...";
+
+                string response = await API.CallMethodAsync(Method.Text, parameters);
+                using var jDoc = JsonDocument.Parse(response);
+                string pretty = JsonSerializer.Serialize(jDoc, new JsonSerializerOptions {
+                    WriteIndented = true,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, // To decoding cyrillic letters correctly
+                    TypeInfoResolver = BuildInJsonContext.Default
+                });
+                Response.Text = pretty;
+            } catch (Exception ex) {
+                Response.Text = $"{ex.GetType()} 0x{ex.HResult.ToString("x8")}\n{ex.Message}";
+            } finally {
                 CallButton.IsEnabled = true;
-                return;
             }
-            Response.Text = "Waiting response from VK...";
-
-            string response = await API.CallMethodAsync(Method.Text, parameters);
-            using var jDoc = JsonDocument.Parse(response);
-            string pretty = JsonSerializer.Serialize(jDoc, new JsonSerializerOptions {
-                WriteIndented = true,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, // To decoding cyrillic letters correctly
-                TypeInfoResolver = BuildInJsonContext.Default
-            });
-            Response.Text = pretty;
-        } catch (Exception ex) {
-            Response.Text = $"{ex.GetType()} 0x{ex.HResult.ToString("x8")}\n{ex.Message}";
-        } finally {
-            CallButton.IsEnabled = true;
-        }
+        })();
     }
 
     // Autofocus to parameter textbox
@@ -135,16 +139,18 @@ public partial class APIConsoleWindow : Window {
         AccessToken.Focus();
     }
 
-    private async void VKUIFlyout_Closed(object? sender, EventArgs e) {
-        string token = AccessToken.Text;
-        if (!string.IsNullOrEmpty(token)) {
-            API = new VKAPI(token, Lang.Text, App.UserAgent);
-        } else {
-            VKUIDialog dialog = new VKUIDialog("Access token not set!", "Without token you cannot call API methods");
-            await dialog.ShowDialog(this);
+    private void VKUIFlyout_Closed(object? sender, EventArgs e) {
+        new Action(async () => {
+            string token = AccessToken.Text;
+            if (!string.IsNullOrEmpty(token)) {
+                API = new VKAPI(token, Lang.Text, App.UserAgent);
+            } else {
+                VKUIDialog dialog = new VKUIDialog("Access token not set!", "Without token you cannot call API methods");
+                await dialog.ShowDialog(this);
 
-            timer.Start();
-        }
+                timer.Start();
+            }
+        })();
     }
 
     private void OnLangTextChanged(object? sender, TextChangedEventArgs e) {

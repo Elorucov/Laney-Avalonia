@@ -28,27 +28,29 @@ namespace ELOR.Laney.Views.Modals {
             App.UpdateBranding(Logo.Child as Grid);
         }
 
-        private async void b00_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri("https://github.com/Elorucov/Laney-Avalonia"));
+        private void b00_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            new Action(async () => await Launcher.LaunchUriAsync(new Uri("https://github.com/Elorucov/Laney-Avalonia")))();
         }
 
-        private async void b01_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri("https://vk.com/elorlaney"));
+        private void b01_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            new Action(async () => await Launcher.LaunchUriAsync(new Uri("https://vk.com/elorlaney")))();
         }
 
-        private async void b02_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri("https://vk.com/privacy"));
+        private void b02_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            new Action(async () => await Launcher.LaunchUriAsync(new Uri("https://vk.com/privacy")))();
         }
 
-        private async void b03_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            await Launcher.LaunchUriAsync(new Uri("https://vk.com/terms"));
+        private void b03_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            new Action(async () => await Launcher.LaunchUriAsync(new Uri("https://vk.com/terms")))();
         }
 
-        private async void b04_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            string libs = String.Join("\n", App.UsedLibs);
-            libs += $"\n\nLibVLC version: {LMediaPlayer.LibVersion}";
-            VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.about_libs, libs);
-            await dlg.ShowDialog(this);
+        private void b04_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            new Action(async () => {
+                string libs = string.Join("\n", App.UsedLibs);
+                libs += $"\n\nLibVLC version: {LMediaPlayer.LibVersion}";
+                VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.about_libs, libs);
+                await dlg.ShowDialog(this);
+            })();
         }
     }
 }

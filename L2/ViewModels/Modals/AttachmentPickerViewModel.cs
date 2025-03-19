@@ -8,6 +8,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels.Modals {
     public class AttachmentPickerViewModel : ViewModelBase {
@@ -43,11 +44,11 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         public AttachmentPickerViewModel(VKSession session, Window owner) {
             this.session = session;
-            PropertyChanged += (a, b) => {
+            PropertyChanged += async (a, b) => {
                 switch (b.PropertyName) {
-                    case nameof(SelectedPhotoAlbum): Photos.Items.Clear(); noMorePhotos = false; LoadPhotos(); break;
-                    case nameof(SelectedVideoAlbum): Videos.Items.Clear(); noMoreVideos = false; LoadVideos(); break;
-                    case nameof(DocumentTypeIndex): Documents.Items.Clear(); noMoreDocs = false; LoadDocuments(); break;
+                    case nameof(SelectedPhotoAlbum): Photos.Items.Clear(); noMorePhotos = false; await LoadPhotosAsync(); break;
+                    case nameof(SelectedVideoAlbum): Videos.Items.Clear(); noMoreVideos = false; await LoadVideosAsync(); break;
+                    case nameof(DocumentTypeIndex): Documents.Items.Clear(); noMoreDocs = false; await LoadDocumentsAsync(); break;
                 }
             };
 
@@ -60,7 +61,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         #region Photos
 
-        public async void LoadPhotoAlbums() {
+        public async Task LoadPhotoAlbumsAsync() {
             if (Photos.IsLoading) return;
             Photos.Placeholder = null;
             Photos.IsLoading = true;
@@ -73,11 +74,11 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SelectedPhotoAlbum = PhotoAlbums.First();
             } catch (Exception ex) {
                 Photos.IsLoading = false;
-                Photos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadPhotoAlbums());
+                Photos.Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadPhotoAlbumsAsync());
             }
         }
 
-        public async void LoadPhotos() {
+        public async Task LoadPhotosAsync() {
             if (Photos.IsLoading || noMorePhotos) return;
             Photos.Placeholder = null;
             Photos.IsLoading = true;
@@ -100,9 +101,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 photos.Items.ForEach(Photos.Items.Add);
             } catch (Exception ex) {
                 if (Photos.Items.Count == 0) {
-                    Photos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadPhotos());
+                    Photos.Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadPhotosAsync());
                 } else {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) LoadPhotos();
+                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) await LoadPhotosAsync();
                 }
             }
             Photos.IsLoading = false;
@@ -112,7 +113,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         #region Videos
 
-        public async void LoadVideoAlbums() {
+        public async Task LoadVideoAlbumsAsync() {
             if (Videos.IsLoading) return;
             Videos.Placeholder = null;
             Videos.IsLoading = true;
@@ -124,11 +125,11 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SelectedVideoAlbum = VideoAlbums.First();
             } catch (Exception ex) {
                 Videos.IsLoading = false;
-                Videos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadVideoAlbums());
+                Videos.Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadVideoAlbumsAsync());
             }
         }
 
-        public async void LoadVideos() {
+        public async Task LoadVideosAsync() {
             if (Videos.IsLoading || noMoreVideos) return;
             Videos.Placeholder = null;
             Videos.IsLoading = true;
@@ -139,9 +140,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 videos.Items.ForEach(Videos.Items.Add);
             } catch (Exception ex) {
                 if (Videos.Items.Count == 0) {
-                    Videos.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadVideos());
+                    Videos.Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadVideosAsync());
                 } else {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) LoadVideos();
+                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) await LoadVideosAsync();
                 }
             }
             Videos.IsLoading = false;
@@ -151,7 +152,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         #region Files
 
-        public async void LoadDocuments() {
+        public async Task LoadDocumentsAsync() {
             if (Documents.IsLoading || noMoreDocs) return;
             Documents.Placeholder = null;
             Documents.IsLoading = true;
@@ -161,9 +162,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 docs.Items.ForEach(d => Documents.Items.Add(d));
             } catch (Exception ex) {
                 if (Documents.Items.Count == 0) {
-                    Documents.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadDocuments());
+                    Documents.Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadDocumentsAsync());
                 } else {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) LoadDocuments();
+                    if (await ExceptionHelper.ShowErrorDialogAsync(ownerWindow, ex)) await LoadDocumentsAsync();
                 }
             }
 

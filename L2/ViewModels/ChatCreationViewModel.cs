@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
     public class ChatCreationViewModel : CommonViewModel {
@@ -45,7 +46,7 @@ namespace ELOR.Laney.ViewModels {
             this.session = session;
             ChatPhotoSetCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
             CustomizeChatSettingsCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
-            CreateCommand = new RelayCommand((o) => CreateChat());
+            CreateCommand = new RelayCommand(async (o) => await CreateChatAsync());
 
             PropertyChanged += (a, b) => {
                 switch (b.PropertyName) {
@@ -55,10 +56,10 @@ namespace ELOR.Laney.ViewModels {
                 }
             };
 
-            LoadFriends();
+            new System.Action(async () => await LoadFriendsAsync())();
         }
 
-        private async void LoadFriends() {
+        private async Task LoadFriendsAsync() {
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
@@ -71,7 +72,7 @@ namespace ELOR.Laney.ViewModels {
                 Friends = new ObservableCollection<User>(response.Items);
                 GroupFriends();
             } catch (Exception ex) {
-                Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadFriends());
+                Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadFriendsAsync());
             }
 
             IsLoading = false;
@@ -105,7 +106,7 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        private async void CreateChat() {
+        private async Task CreateChatAsync() {
             if (String.IsNullOrEmpty(ChatName) && SelectedFriends.Count == 0) return;
             List<long> userIds = SelectedFriends.Select(u => u.Id).ToList();
             if (userIds.Count == 0) userIds.Add(session.UserId);
@@ -116,7 +117,7 @@ namespace ELOR.Laney.ViewModels {
                 GoToBackAction?.Invoke();
                 session.GoToChat(2000000000 + response.ChatId);
             } catch (Exception ex) {
-                if (await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex)) CreateChat();
+                if (await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex)) await CreateChatAsync();
             }
         }
     }
