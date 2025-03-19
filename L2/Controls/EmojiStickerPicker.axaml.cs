@@ -94,7 +94,7 @@ namespace ELOR.Laney.Controls {
                         //using var bitmap = WriteableBitmap.DecodeToWidth(stream, 22, BitmapInterpolationMode.MediumQuality);  
                         //img.Source = bitmap;
 
-                        img.SetUriSourceAsync(tab.Image, 22, 22);
+                        img.SetUriSource(tab.Image, 22, 22);
                     } catch (Exception ex) {
                         Log.Error(ex, $"EmojiStickerPickerUI: cannot load a sticker pack icon!");
                     }

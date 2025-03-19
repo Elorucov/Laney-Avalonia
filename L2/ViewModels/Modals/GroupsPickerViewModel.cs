@@ -25,26 +25,28 @@ namespace ELOR.Laney.ViewModels.Modals {
             GetGroups();
         }
 
-        private async void GetGroups() {
-            Placeholder = null;
-            IsLoading = true;
-            try {
-                var response = await session.API.Groups.GetAsync(session.UserId, new List<string> { "can_message" }, new List<string> { "editor" });
-                foreach (var group in response.Items) {
-                    if (group.CanMessage == 1) Groups.Add(group);
-                }
+        private void GetGroups() {
+            new System.Action(async () => {
+                Placeholder = null;
+                IsLoading = true;
+                try {
+                    var response = await session.API.Groups.GetAsync(session.UserId, new List<string> { "can_message" }, new List<string> { "editor" });
+                    foreach (var group in response.Items) {
+                        if (group.CanMessage == 1) Groups.Add(group);
+                    }
 
-                var selected = VKSession.GetAddedGroupIds();
-                foreach (long gid in selected) {
-                    var group = Groups.Where(g => g.Id == gid).FirstOrDefault();
-                    if (group == null) continue;
-                    int index = Groups.IndexOf(group);
-                    SelectedGroups.Select(index);
+                    var selected = VKSession.GetAddedGroupIds();
+                    foreach (long gid in selected) {
+                        var group = Groups.Where(g => g.Id == gid).FirstOrDefault();
+                        if (group == null) continue;
+                        int index = Groups.IndexOf(group);
+                        SelectedGroups.Select(index);
+                    }
+                } catch (Exception ex) {
+                    Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetGroups());
                 }
-            } catch (Exception ex) {
-                Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetGroups());
-            }
-            IsLoading = false;
+                IsLoading = false;
+            })();
         }
     }
 }

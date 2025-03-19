@@ -91,7 +91,7 @@ namespace ELOR.Laney.Controls {
             session = message.OwnerSession;
             Avatar.Background = message.SenderId.GetGradient();
             Avatar.Initials = message.SenderName.GetInitials();
-            Avatar.SetImageAsync(message.SenderAvatar, Avatar.Width, Avatar.Height);
+            Avatar.SetImage(message.SenderAvatar, Avatar.Width, Avatar.Height);
 
             Author.Text = message.SenderName;
             PostInfo.Text = message.SentTime.ToHumanizedString(true);
@@ -147,8 +147,8 @@ namespace ELOR.Laney.Controls {
             }
         }
 
-        private async void OnLinkClicked(string link) {
-            await Router.LaunchLink(session, link);
+        private void OnLinkClicked(string link) {
+            new System.Action(async () => await Router.LaunchLink(session, link))();
         }
 
         private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

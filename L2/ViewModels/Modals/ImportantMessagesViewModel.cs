@@ -3,6 +3,7 @@ using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels.Modals {
     public class ImportantMessagesViewModel : CommonViewModel {
@@ -20,7 +21,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             this.session = session;
         }
 
-        public async void Load(int offset = -1) {
+        public async Task LoadAsync(int offset = -1) {
             if (IsLoading) return;
             if (offset < 0) {
                 offset = Messages.Count + CustomOffset;
@@ -40,9 +41,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 }
             } catch (Exception ex) {
                 if (Messages.Count > 0) {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex)) Load(offset);
+                    if (await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex)) await LoadAsync(offset);
                 } else {
-                    Placeholder = PlaceholderViewModel.GetForException(ex, (o) => Load(offset));
+                    Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadAsync(offset));
                 }
             }
             IsLoading = false;

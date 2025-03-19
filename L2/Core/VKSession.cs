@@ -75,7 +75,7 @@ namespace ELOR.Laney.Core {
                     Width = 20,
                     Height = 20
                 };
-                ava.SetImageAsync(session.Avatar, ava.Width, ava.Height);
+                ava.SetImage(session.Avatar, ava.Width, ava.Height);
                 ActionSheetItem item = new ActionSheetItem {
                     Before = ava,
                     Header = session.Name,
@@ -365,7 +365,7 @@ namespace ELOR.Laney.Core {
         #region Internal
 
         bool isFirstTimeChatsLoaded = false;
-        private async void Init(bool dontUpdateSessionsList = false) {
+        private async Task InitAsync(bool dontUpdateSessionsList = false) {
             try {
                 Log.Information("Init session ({0})", Id);
                 SetUpTrayMenu(); // Чтобы можно было закрыть приложение, если будут проблемы с загрузкой
@@ -373,15 +373,16 @@ namespace ELOR.Laney.Core {
 
                 if (DemoMode.IsEnabled) {
                     ImViewModel = new ImViewModel(this);
-                    ImViewModel.LoadConversations();
+                    await ImViewModel.LoadConversationsAsync();
                     return;
                 }
-                API.CaptchaHandler = ShowCaptcha;
+                API.CaptchaHandler = ShowCaptchaAsync;
                 if (API.WebRequestCallback == null) API.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
 
                 // Load chats
                 if (!isFirstTimeChatsLoaded) {
-                    ImViewModel.LoadConversations();
+                    // Необходимо обернуть  Action, чтобы API.StartSessionAsync вызывался не после полного ожидания ImViewModel.LoadConversationsAsync, а параллельно.
+                    new Action(async () => await ImViewModel.LoadConversationsAsync())();
                     isFirstTimeChatsLoaded = true;
                 }
 
@@ -481,7 +482,7 @@ namespace ELOR.Laney.Core {
                 if (_sessions == null || _sessions.Count == 0) {
                     Log.Error(ex, "Init failed! Waiting 3 sec. before trying again...");
                     await Task.Delay(3000);
-                    Init(dontUpdateSessionsList);
+                    await InitAsync(dontUpdateSessionsList);
                 } else {
                     Log.Error(ex, "Init failed!");
                 }
@@ -502,17 +503,19 @@ namespace ELOR.Laney.Core {
             };
         }
 
-        private async Task<string> ShowCaptcha(CaptchaHandlerData arg) {
+        private async Task<string> ShowCaptchaAsync(CaptchaHandlerData arg) {
             return await ShowCaptchaAsync(Window, arg.Image);
         }
 
-        private async void ChooseGroups_Click(object sender, RoutedEventArgs e) {
-            GroupsPicker gp = new GroupsPicker(this);
-            List<long> selectedGroupIds = await gp.ShowDialog<List<long>>(Window);
-            if (selectedGroupIds == null) return;
-            Settings.Set(Settings.GROUPS, String.Join(',', selectedGroupIds));
+        private void ChooseGroups_Click(object sender, RoutedEventArgs e) {
+            new Action(async () => {
+                GroupsPicker gp = new GroupsPicker(this);
+                List<long> selectedGroupIds = await gp.ShowDialog<List<long>>(Window);
+                if (selectedGroupIds == null) return;
+                Settings.Set(Settings.GROUPS, String.Join(',', selectedGroupIds));
 
-            UpdateGroupSessions(selectedGroupIds);
+                UpdateGroupSessions(selectedGroupIds);
+            })();
         }
 
         private static void TryOpenSessionWindow(object? sender, RoutedEventArgs e) {
@@ -529,7 +532,7 @@ namespace ELOR.Laney.Core {
                 session.Window = new MainWindow();
                 session.Window.DataContext = session;
                 session.Window.Activated += (a, b) => lastSessionId = ((a as Window).DataContext as VKSession).Id;
-                session.Init(true);
+                new Action(async () => await session.InitAsync(true))();
                 session.Window.Show();
             } else {
                 Log.Information("Showing/activating window for session {0}", sessionId);
@@ -553,74 +556,78 @@ namespace ELOR.Laney.Core {
             return GetLastOpenedModalWindow(fow);
         }
 
-        private async void UpdateGroupSessions(List<long> groupIds) {
-            try {
-                foreach (VKSession s in _sessions) {
-                    if (s.IsGroup) { // TODO: Shutdown method for VKSession.
-                        s.LongPoll.Stop();
-                        s.ModalWindow?.Close();
-                        s.Window?.Close();
-                        s.Window = null;
-                        s.CurrentOpenedChat = null;
-                        BitmapManager.ClearCachedImages(); // free RAM.
+        private void UpdateGroupSessions(List<long> groupIds) {
+            new Action(async () => {
+                try {
+                    foreach (VKSession s in _sessions) {
+                        if (s.IsGroup) { // TODO: Shutdown method for VKSession.
+                            s.LongPoll.Stop();
+                            s.ModalWindow?.Close();
+                            s.Window?.Close();
+                            s.Window = null;
+                            s.CurrentOpenedChat = null;
+                            BitmapManager.ClearCachedImages(); // free RAM.
+                        }
                     }
+
+                    List<VKSession> sessions = new List<VKSession> { Main };
+
+                    var wd = new VKUIWaitDialog<StartSessionResponse>();
+                    StartSessionResponse response = await wd.ShowAsync(Window, API.GetGroupsWithLongPollAsync(groupIds));
+
+                    foreach (var group in response.Groups) {
+                        CacheManager.Add(group);
+                        if (group.CanMessage == 0) continue;
+
+                        VKSession gs = new VKSession {
+                            UserId = Main.Id,
+                            GroupId = group.Id,
+                            Name = group.Name,
+                            Avatar = new Uri(group.Photo100),
+                            API = new VKAPI(API.AccessToken, Assets.i18n.Resources.lang, App.UserAgent),
+                        };
+                        gs.ImViewModel = new ImViewModel(gs);
+                        gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
+                        sessions.Add(gs);
+
+                        var tmp = response.Templates.Where(tmps => tmps.GroupId == group.Id).FirstOrDefault();
+                        if (tmp != null) {
+                            gs.MessageTemplates = tmp.Items;
+                        } else {
+                            Log.Warning($"VKSession > UpdateGroupSessions: Message templates for group {group.Id} not found in response!");
+                        }
+
+                        var glp = response.LongPolls.Where(lps => lps.SessionId == group.Id).FirstOrDefault();
+                        if (glp != null) {
+                            gs.SetUpLongPoll(glp);
+                        } else {
+                            Log.Warning($"VKSession > UpdateGroupSessions: LongPoll for group {group.Id} not found in response!");
+                        }
+                    }
+
+                    _sessions = sessions;
+                    SetUpTrayMenu();
+                } catch (Exception ex) {
+                    if (await ExceptionHelper.ShowErrorDialogAsync(Window, ex)) UpdateGroupSessions(groupIds);
                 }
-
-                List<VKSession> sessions = new List<VKSession> { Main };
-
-                var wd = new VKUIWaitDialog<StartSessionResponse>();
-                StartSessionResponse response = await wd.ShowAsync(Window, API.GetGroupsWithLongPollAsync(groupIds));
-
-                foreach (var group in response.Groups) {
-                    CacheManager.Add(group);
-                    if (group.CanMessage == 0) continue;
-
-                    VKSession gs = new VKSession {
-                        UserId = Main.Id,
-                        GroupId = group.Id,
-                        Name = group.Name,
-                        Avatar = new Uri(group.Photo100),
-                        API = new VKAPI(API.AccessToken, Assets.i18n.Resources.lang, App.UserAgent),
-                    };
-                    gs.ImViewModel = new ImViewModel(gs);
-                    gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
-                    sessions.Add(gs);
-
-                    var tmp = response.Templates.Where(tmps => tmps.GroupId == group.Id).FirstOrDefault();
-                    if (tmp != null) {
-                        gs.MessageTemplates = tmp.Items;
-                    } else {
-                        Log.Warning($"VKSession > UpdateGroupSessions: Message templates for group {group.Id} not found in response!");
-                    }
-
-                    var glp = response.LongPolls.Where(lps => lps.SessionId == group.Id).FirstOrDefault();
-                    if (glp != null) {
-                        gs.SetUpLongPoll(glp);
-                    } else {
-                        Log.Warning($"VKSession > UpdateGroupSessions: LongPoll for group {group.Id} not found in response!");
-                    }
-                }
-
-                _sessions = sessions;
-                SetUpTrayMenu();
-            } catch (Exception ex) {
-                if (await ExceptionHelper.ShowErrorDialogAsync(Window, ex)) UpdateGroupSessions(groupIds);
-            }
+            })();
         }
 
         #endregion
 
         #region Events
 
-        private async void LongPoll_StateChanged(object sender, LongPollState e) {
+        private void LongPoll_StateChanged(object sender, LongPollState e) {
             if (Window == null) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (e == LongPollState.Working) {
-                    Name = Name; // заставит триггерить PropertyChanged в главном окне.
-                } else {
-                    Window.Title = e.ToString();
-                }
-            });
+            new Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (e == LongPollState.Working) {
+                        Name = Name; // заставит триггерить PropertyChanged в главном окне.
+                    } else {
+                        Window.Title = e.ToString();
+                    }
+                });
+            })();
         }
 
         #endregion
@@ -629,10 +636,12 @@ namespace ELOR.Laney.Core {
 
         byte gcCollectTriggerCounter = 0;
 
-        public async void GoToMessage(MessageViewModel message) {
+        public void GoToMessage(MessageViewModel message) {
             if (message.IsUnavailable) {
-                StandaloneMessageViewer smv = new StandaloneMessageViewer(this, message);
-                await smv.ShowDialog(Window);
+                new Action(async () => {
+                    StandaloneMessageViewer smv = new StandaloneMessageViewer(this, message);
+                    await smv.ShowDialog(Window);
+                })();
                 return;
             }
 
@@ -677,19 +686,22 @@ namespace ELOR.Laney.Core {
             openedChats.Enqueue(chat);
         }
 
-        public async void Share(long fromPeerId, List<MessageViewModel> messages) {
+        public void Share(long fromPeerId, List<MessageViewModel> messages) {
             if (DemoMode.IsEnabled) return;
             SharingViewModel user = new SharingViewModel(Main, GroupId);
             SharingViewModel group = IsGroup ? new SharingViewModel(this, 0) : null;
             SharingView dlg = new SharingView(user, group);
-            // session, peer_id, group_id (if message from group to user session)
-            Tuple<VKSession, long, long> result = await dlg.ShowDialog<Tuple<VKSession, long, long>>(ModalWindow);
 
-            if (result != null) {
-                result.Item1.ShowAndActivate();
-                result.Item1.GoToChat(result.Item2);
-                result.Item1.CurrentOpenedChat.Composer.AddForwardedMessages(fromPeerId, messages, result.Item3);
-            }
+            new Action(async () => {
+                // session, peer_id, group_id (if message from group to user session)
+                Tuple<VKSession, long, long> result = await dlg.ShowDialog<Tuple<VKSession, long, long>>(ModalWindow);
+
+                if (result != null) {
+                    result.Item1.ShowAndActivate();
+                    result.Item1.GoToChat(result.Item2);
+                    result.Item1.CurrentOpenedChat.Composer.AddForwardedMessages(fromPeerId, messages, result.Item3);
+                }
+            })();
         }
 
         public void TryOpenWindow() {
@@ -713,7 +725,7 @@ namespace ELOR.Laney.Core {
         public static VKSession Main { get => _sessions.FirstOrDefault(); }
         private static long lastSessionId = 0;
 
-        public static async void StartUserSession(long userId, string accessToken) {
+        public static void StartUserSession(long userId, string accessToken) {
             VKSession session = new VKSession {
                 UserId = userId,
                 Name = "...",
@@ -725,13 +737,15 @@ namespace ELOR.Laney.Core {
             session.Window.DataContext = session;
             session.ImViewModel = new ImViewModel(session);
             session.Window.Activated += (a, b) => lastSessionId = ((a as Window).DataContext as VKSession).Id;
-            session.Init();
+            new Action(async () => await session.InitAsync())();
             session.Window.Show();
 
             Settings.SettingChanged += Settings_SettingChanged;
 
-            await Task.Delay(2000); // чтобы метод api не выполнялся одновременно с другими и не поймать ошибку 6.
-            StickersManager.InitKeywords();
+            new Action(async () => {
+                await Task.Delay(2000); // чтобы метод api не выполнялся одновременно с другими и не поймать ошибку 6.
+                StickersManager.InitKeywords();
+            })();
         }
 
         private static void Settings_SettingChanged(string key, object value) {
@@ -757,14 +771,14 @@ namespace ELOR.Laney.Core {
                 _sessions.Add(session);
                 session.Window.DataContext = session;
                 if (mainSession.Id == session.Id) {
-                    session.Init();
+                    new Action(async () => await session.InitAsync())();
                     session.Window.Show();
                 }
             }
             SetUpTrayMenu();
         }
 
-        public static async void LogOut() {
+        public static void LogOut() {
             Settings.SetBatch(new Dictionary<string, object> {
                 { Settings.VK_USER_ID, null },
                 { Settings.VK_TOKEN, null }
@@ -772,8 +786,10 @@ namespace ELOR.Laney.Core {
 
             var cprc = Process.GetCurrentProcess();
             Process.Start(cprc.MainModule.FileName, Environment.CommandLine.Replace(" -delay=1000", "") + " -delay=1000");
-            await Task.Delay(200);
-            App.Current.DesktopLifetime.Shutdown(-1);
+            new Action(async () => {
+                await Task.Delay(200);
+                App.Current.DesktopLifetime.Shutdown(-1);
+            })();
         }
 
         public static async Task<string> ShowCaptchaAsync(Window parent, Uri image) {
@@ -785,7 +801,7 @@ namespace ELOR.Laney.Core {
                         Width = 130,
                         Height = 50
                     };
-                    captchaImg.SetUriSourceAsync(image, captchaImg.Width, captchaImg.Height);
+                    captchaImg.SetUriSource(image, captchaImg.Width, captchaImg.Height);
                     TextBox codeTxt = new TextBox {
                         Width = 130,
                         MaxLength = 10,

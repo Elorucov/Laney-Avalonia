@@ -34,7 +34,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 var owner = CacheManager.GetNameAndAvatar(story.OwnerId);
                 if (owner != null) {
                     AuthorName.Text = $"{owner.Item1} {owner.Item2}";
-                    AuthorAvatar.SetImageAsync(owner.Item3);
+                    AuthorAvatar.SetImage(owner.Item3);
                 }
             }
 

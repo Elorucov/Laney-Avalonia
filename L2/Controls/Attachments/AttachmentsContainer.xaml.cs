@@ -259,7 +259,7 @@ namespace ELOR.Laney.Controls.Attachments {
                     RadiusX = 14, RadiusY = 14,
                     Name = graffiti.ObjectType
                 };
-                grImage.SetImageFillAsync(graffiti.Uri, grImage.Width, grImage.Height);
+                grImage.SetImageFill(graffiti.Uri, grImage.Width, grImage.Height);
                 StandartAttachments.Children.Add(grImage);
             }
 

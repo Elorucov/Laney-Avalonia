@@ -48,29 +48,31 @@ namespace ELOR.Laney.Helpers {
             scroll.KeyDown -= Scroll_KeyDown;
         }
 
-        private async void Scroll_KeyDown(object sender, KeyEventArgs e) {
+        private void Scroll_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Up || e.Key == Key.Down) {
-                await Task.Delay(10); // надо, чтобы в FocusManager.Instance.Current был актуальный контрол
-                if (TopLevel.GetTopLevel(listBox).FocusManager == null) return;
+                new Action(async () => {
+                    await Task.Delay(10); // надо, чтобы в FocusManager был актуальный контрол
+                    if (TopLevel.GetTopLevel(listBox).FocusManager == null) return;
 
-                var el = TopLevel.GetTopLevel(listBox).FocusManager.GetFocusedElement();
-                Debug.WriteLine($"Focused on {el}");
-                object itemDC = (el as Control).DataContext;
-                if (itemDC != null) {
-                    var enumerator = listBox.Items.GetEnumerator();
-                    int index = 0;
-                    enumerator.Reset();
-                    while (enumerator.MoveNext()) {
-                        if (itemDC == enumerator.Current) {
-                            break;
+                    var el = TopLevel.GetTopLevel(listBox).FocusManager.GetFocusedElement();
+                    Debug.WriteLine($"Focused on {el}");
+                    object itemDC = (el as Control).DataContext;
+                    if (itemDC != null) {
+                        var enumerator = listBox.Items.GetEnumerator();
+                        int index = 0;
+                        enumerator.Reset();
+                        while (enumerator.MoveNext()) {
+                            if (itemDC == enumerator.Current) {
+                                break;
+                            }
+                            index++;
                         }
-                        index++;
+                        Debug.WriteLine($"Index for focused element in ListBox: {index}");
+                        if (index > 0) {
+                            listBox.ScrollIntoView(index);
+                        }
                     }
-                    Debug.WriteLine($"Index for focused element in ListBox: {index}");
-                    if (index > 0) {
-                        listBox.ScrollIntoView(index);
-                    }
-                }
+                })();
             }
         }
 

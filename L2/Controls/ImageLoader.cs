@@ -203,7 +203,7 @@ namespace ELOR.Laney.Controls {
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
             sender.Fill = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            sender.SetImageFillAsync(uri, dw, dh);
+            sender.SetImageFill(uri, dw, dh);
             // sender.Unloaded += Sender_Unloaded;
         }
 
@@ -220,7 +220,7 @@ namespace ELOR.Laney.Controls {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
-            sender.SetImageAsync(uri, dw, dh);
+            sender.SetImage(uri, dw, dh);
             // sender.Unloaded += Sender_Unloaded;
         }
 

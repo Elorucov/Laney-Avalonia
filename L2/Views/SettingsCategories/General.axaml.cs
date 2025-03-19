@@ -11,7 +11,7 @@ namespace ELOR.Laney.Views.SettingsCategories {
             oldLangId = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
         }
 
-        private async void ComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e) {
+        private void ComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e) {
             Window window = TopLevel.GetTopLevel(this) as Window;
             if (window == null) return;
 
@@ -19,8 +19,10 @@ namespace ELOR.Laney.Views.SettingsCategories {
                 TwoStringTuple value = e.AddedItems[0] as TwoStringTuple;
                 if (value.Item1 == oldLangId) return;
 
-                VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.restart_required, Assets.i18n.Resources.restart_required_ext);
-                await alert.ShowDialog(window);
+                new System.Action(async () => {
+                    VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.restart_required, Assets.i18n.Resources.restart_required_ext);
+                    await alert.ShowDialog(window);
+                })();
             }
         }
     }

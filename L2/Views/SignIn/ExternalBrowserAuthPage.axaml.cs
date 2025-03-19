@@ -5,6 +5,7 @@ using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Views.SignIn {
@@ -17,14 +18,14 @@ namespace ELOR.Laney.Views.SignIn {
         CancellationTokenSource cts = new CancellationTokenSource();
         private void ExternalBrowserAuthPage_Loaded(object sender, RoutedEventArgs e) {
             Loaded -= ExternalBrowserAuthPage_Loaded;
-            WaitAuthAsync();
+            new System.Action(async () => await WaitAuthAsync())();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) {
             cts.Cancel();
         }
 
-        private async void WaitAuthAsync() {
+        private async Task WaitAuthAsync() {
             try {
                 Tuple<long, string> result = new Tuple<long, string>(0, String.Empty);
                 result = await AuthManager.AuthViaExternalBrowserAsync(TopLevel.GetTopLevel(this) as Window, cts);

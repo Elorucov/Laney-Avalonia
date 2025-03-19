@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using VKUI.Controls;
 
 namespace ELOR.Laney.ViewModels.Controls {
@@ -25,11 +26,11 @@ namespace ELOR.Laney.ViewModels.Controls {
             Tabs.Add(emojiTab);
             SelectedTab = Tabs.FirstOrDefault();
 
-            LoadStickerPacks();
+            new System.Action(async () => await LoadStickerPacksAsync())();
         }
 
         // TODO: кэш
-        private async void LoadStickerPacks() {
+        private async Task LoadStickerPacksAsync() {
             if (DemoMode.IsEnabled) return;
             try {
                 var req1 = await session.API.GetRecentStickersAndGraffitiesAsync();
