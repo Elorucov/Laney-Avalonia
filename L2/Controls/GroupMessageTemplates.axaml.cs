@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;
@@ -38,7 +37,7 @@ public partial class GroupMessageTemplates : UserControl {
     }
 
     private void OpenTemplatesEditorModal(object? sender, RoutedEventArgs e) {
-        ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+        ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow);
     }
 
     private string NormalizeTemplate(string template, User user, User admin, string groupName) {

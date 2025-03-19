@@ -7,7 +7,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -298,61 +297,75 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         #region LongPoll events
 
-        private async void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
+        private void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
             bool isCurrentMessage = message.PeerId == PeerId && message.ConversationMessageId == ConversationMessageId;
             if (!isCurrentMessage) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                Setup(message);
-                bool isUnread = flags.HasFlag(1);
-                State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
-                MessageEdited?.Invoke(this, null);
-            });
+
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    Setup(message);
+                    bool isUnread = flags.HasFlag(1);
+                    State = isUnread ? MessageVMState.Unread : MessageVMState.Read;
+                    MessageEdited?.Invoke(this, null);
+                });
+            })();
         }
 
-        private async void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, long peerId) {
+        private void LongPoll_MessageFlagSet(LongPoll longPoll, int messageId, int flags, long peerId) {
             if (messageId != ConversationMessageId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (flags.HasFlag(8)) { // Marked as important
-                    IsImportant = true;
-                }
-            });
+
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (flags.HasFlag(8)) { // Marked as important
+                        IsImportant = true;
+                    }
+                });
+            })();
         }
 
-        private async void LongPoll_MessageFlagRemove(LongPoll longPoll, int messageId, int flags, long peerId) {
+        private void LongPoll_MessageFlagRemove(LongPoll longPoll, int messageId, int flags, long peerId) {
             if (messageId != ConversationMessageId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (flags.HasFlag(8)) { // Unmarked as important
-                    IsImportant = false;
-                }
-            });
+
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (flags.HasFlag(8)) { // Unmarked as important
+                        IsImportant = false;
+                    }
+                });
+            })();
         }
 
-        private async void LongPoll_ReactionsChanged(LongPoll longPoll, long peerId, int cmId, LongPollReactionEventType type, int myReactionId, List<MessageReaction> reactions) {
+        private void LongPoll_ReactionsChanged(LongPoll longPoll, long peerId, int cmId, LongPollReactionEventType type, int myReactionId, List<MessageReaction> reactions) {
             if (peerId != PeerId || cmId != ConversationMessageId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                bool isEmpty = Reactions.Count == 0;
-                Reactions = new ObservableCollection<MessageReaction>(reactions);
 
-                if (isEmpty && Reactions.Count > 0) {
-                    MessageEdited?.Invoke(this, null);
-                } else if (!isEmpty && Reactions.Count == 0) {
-                    MessageEdited?.Invoke(this, null);
-                }
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    bool isEmpty = Reactions.Count == 0;
+                    Reactions = new ObservableCollection<MessageReaction>(reactions);
 
-                if (type == LongPollReactionEventType.IAdded) {
-                    SelectedReactionId = myReactionId;
-                }
-                else if(type == LongPollReactionEventType.IRemoved) {
-                    SelectedReactionId = 0;
-                }
-            });
+                    if (isEmpty && Reactions.Count > 0) {
+                        MessageEdited?.Invoke(this, null);
+                    } else if (!isEmpty && Reactions.Count == 0) {
+                        MessageEdited?.Invoke(this, null);
+                    }
+
+                    if (type == LongPollReactionEventType.IAdded) {
+                        SelectedReactionId = myReactionId;
+                    } else if (type == LongPollReactionEventType.IRemoved) {
+                        SelectedReactionId = 0;
+                    }
+                });
+            })();
         }
 
-        private async void LongPoll_MessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
+        private void LongPoll_MessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
             if (peerId != PeerId) return;
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                if (ConversationMessageId <= messageId) State = MessageVMState.Read;
-            });
+
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    if (ConversationMessageId <= messageId) State = MessageVMState.Read;
+                });
+            })();
         }
 
         #endregion

@@ -1,11 +1,9 @@
-﻿using ELOR.VKAPILib.Objects;
+﻿using ELOR.Laney.DataModels;
+using ELOR.VKAPILib.Objects;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using ELOR.Laney.DataModels;
 using System.Globalization;
+using System.Linq;
 
 namespace ELOR.Laney.Core.Localization {
     public class Localizer {

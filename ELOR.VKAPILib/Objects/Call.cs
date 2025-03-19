@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ELOR.VKAPILib.Objects
-{
+namespace ELOR.VKAPILib.Objects {
     public class CallParticipants {
-        public CallParticipants() {}
-            
+        public CallParticipants() { }
+
         [JsonPropertyName("list")]
         public List<long> List { get; set; }
 
@@ -13,8 +12,8 @@ namespace ELOR.VKAPILib.Objects
     }
 
     public class Call {
-        public Call() {}
-            
+        public Call() { }
+
         [JsonPropertyName("initiator_id")]
         public long InitiatorId { get; set; }
 

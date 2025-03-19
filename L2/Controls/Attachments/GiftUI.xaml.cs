@@ -43,7 +43,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
         private void Render() {
             if (!isUILoaded || Gift == null) return;
-            GiftImage.SetImageFillAsync(Gift.ThumbUri, GiftImage.Width, GiftImage.Height);
+            GiftImage.SetImageFill(Gift.ThumbUri, GiftImage.Width, GiftImage.Height);
         }
     }
 }

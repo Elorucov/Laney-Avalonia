@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public enum BotTemplateType {
@@ -11,8 +11,8 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class BotTemplate {
-        public BotTemplate() {}
-            
+        public BotTemplate() { }
+
         [JsonPropertyName("type")]
         [JsonConverter(typeof(JsonStringEnumConverterEx<BotTemplateType>))]
         public BotTemplateType Type { get; set; }

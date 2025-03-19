@@ -1,11 +1,11 @@
 ﻿using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
     public class SearchViewModel : ViewModelBase {
@@ -32,29 +32,29 @@ namespace ELOR.Laney.ViewModels {
         public SearchViewModel(VKSession session) {
             this.session = session;
 
-            PropertyChanged += (a, b) => { 
+            PropertyChanged += async (a, b) => {
                 switch (b.PropertyName) {
                     case nameof(CurrentTab):
-                        DoSearch();
+                        await DoSearchAsync();
                         break;
                 }
             };
         }
 
-        public void DoSearch() {
+        public async Task DoSearchAsync() {
             switch (CurrentTab) {
                 case 0:
                     FoundChats?.Clear();
-                    if (!String.IsNullOrEmpty(Query)) SearchChats();
+                    if (!String.IsNullOrEmpty(Query)) await SearchChatsAsync();
                     break;
                 case 1:
                     FoundMessages?.Clear();
-                    if (!String.IsNullOrEmpty(Query)) SearchMessages();
+                    if (!String.IsNullOrEmpty(Query)) await SearchMessagesAsync();
                     break;
             }
         }
 
-        private async void SearchChats() {
+        private async Task SearchChatsAsync() {
             if (IsChatsLoading) return;
             ChatsPlaceholder = null;
             IsChatsLoading = true;
@@ -98,14 +98,14 @@ namespace ELOR.Laney.ViewModels {
             } catch (Exception ex) {
                 IsChatsLoading = false;
                 if (FoundChats != null && FoundChats.Count > 0) {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) SearchChats();
+                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) await SearchChatsAsync();
                 } else {
-                    ChatsPlaceholder = PlaceholderViewModel.GetForException(ex, (o) => SearchChats());
+                    ChatsPlaceholder = PlaceholderViewModel.GetForException(ex, async (o) => await SearchChatsAsync());
                 }
             }
         }
 
-        public async void SearchMessages() {
+        public async Task SearchMessagesAsync() {
             if (IsMessagesLoading) return;
             MessagesPlaceholder = null;
             IsMessagesLoading = true;
@@ -131,9 +131,9 @@ namespace ELOR.Laney.ViewModels {
             } catch (Exception ex) {
                 IsMessagesLoading = false;
                 if (FoundMessages != null && FoundMessages.Count > 0) {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) SearchMessages();
+                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) await SearchMessagesAsync();
                 } else {
-                    MessagesPlaceholder = PlaceholderViewModel.GetForException(ex, (o) => SearchMessages());
+                    MessagesPlaceholder = PlaceholderViewModel.GetForException(ex, async (o) => await SearchMessagesAsync());
                 }
             }
         }

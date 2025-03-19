@@ -27,10 +27,12 @@ namespace ELOR.Laney.Controls {
         }
 
         // Костыль для сохранения выделения в тексте сообщения после потери фокуса.
-        private async void MessageText_PropertyChanged(object sender, Avalonia.AvaloniaPropertyChangedEventArgs e) {
+        private void MessageText_PropertyChanged(object sender, Avalonia.AvaloniaPropertyChangedEventArgs e) {
             if (e.Property == TextBox.SelectionStartProperty || e.Property == TextBox.SelectionEndProperty) {
-                await Task.Delay(10);
-                OldSelectionRange = new Tuple<int, int>(MessageText.SelectionStart, MessageText.SelectionEnd);
+                new Action(async () => {
+                    await Task.Delay(10);
+                    OldSelectionRange = new Tuple<int, int>(MessageText.SelectionStart, MessageText.SelectionEnd);
+                })();
             }
         }
 
@@ -45,13 +47,15 @@ namespace ELOR.Laney.Controls {
             MessageText.SelectionEnd = ViewModel.TextSelectionEnd;
         }
 
-        private async void MessageText_KeyUp(object? sender, KeyEventArgs e) {
+        private void MessageText_KeyUp(object? sender, KeyEventArgs e) {
             Debug.WriteLine($"KeyUp: {e.Key}; Modifiers: {e.KeyModifiers}");
             if (e.KeyModifiers == KeyModifiers.Control && e.Key == Key.V) {
                 var window = VKSession.GetByDataContext(this).ModalWindow;
 
-                var formats = await window.Clipboard.GetFormatsAsync();
-                await new VKUIDialog("Clipboard", String.Join(", ", formats)).ShowDialog<int>(window);
+                new Action(async () => {
+                    var formats = await window.Clipboard.GetFormatsAsync();
+                    await new VKUIDialog("Clipboard", String.Join(", ", formats)).ShowDialog<int>(window);
+                })();
                 e.Handled = true;
             }
         }
@@ -59,23 +63,25 @@ namespace ELOR.Laney.Controls {
         private void MessageText_KeyDown(object sender, KeyEventArgs e) {
             Debug.WriteLine($"KeyDown: {e.Key}; Modifiers: {e.KeyModifiers}");
 
-            if (e.Key == Key.Enter) {
-                if (!Settings.SentViaEnter) {
-                    if (e.KeyModifiers == KeyModifiers.Control && ViewModel.CanSendMessage && !ViewModel.IsLoading) {
-                        e.Handled = true;
-                        ViewModel.SendMessage();
+            new Action(async () => {
+                if (e.Key == Key.Enter) {
+                    if (!Settings.SentViaEnter) {
+                        if (e.KeyModifiers == KeyModifiers.Control && ViewModel.CanSendMessage && !ViewModel.IsLoading) {
+                            e.Handled = true;
+                            await ViewModel.SendMessageAsync();
+                        } else {
+                            InsertNewLine();
+                        }
                     } else {
-                        InsertNewLine();
-                    }
-                } else {
-                    if (e.KeyModifiers != KeyModifiers.Shift && ViewModel.CanSendMessage && !ViewModel.IsLoading) {
-                        e.Handled = true;
-                        ViewModel.SendMessage();
-                    } else {
-                        InsertNewLine();
+                        if (e.KeyModifiers != KeyModifiers.Shift && ViewModel.CanSendMessage && !ViewModel.IsLoading) {
+                            e.Handled = true;
+                            await ViewModel.SendMessageAsync();
+                        } else {
+                            InsertNewLine();
+                        }
                     }
                 }
-            }
+            })();
         }
 
         // Костыль для ручного ввода символа новой строки,
@@ -132,16 +138,11 @@ namespace ELOR.Laney.Controls {
             OutboundAttachmentViewModel oavm = (sender as Button).DataContext as OutboundAttachmentViewModel;
             if (oavm != null) {
                 Exception ex = oavm.UploadException;
-
-                // Проблема в том, что проект не компилируется, если метод,
-                // название которого прописано в XAML-е в свойстве Click, асинхронный
-                // т. е. работает только private void ShowAttachmentErrorInfo,
-                // а не private async void ShowAttachmentErrorInfo
-                ShowAttachmentErrorInfo(oavm, ex);
+                new Action(async () => await ShowAttachmentErrorInfoAsync(oavm, ex))();
             }
         }
 
-        private async void ShowAttachmentErrorInfo(OutboundAttachmentViewModel oavm, Exception ex) {
+        private async Task ShowAttachmentErrorInfoAsync(OutboundAttachmentViewModel oavm, Exception ex) {
             string[] buttons = new string[] { Assets.i18n.Resources.retry, Assets.i18n.Resources.delete };
 
             VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.upload_error, ex.Message, buttons, 1);

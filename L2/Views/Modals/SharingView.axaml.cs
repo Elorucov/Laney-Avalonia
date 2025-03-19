@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
@@ -55,7 +54,7 @@ namespace ELOR.Laney.Views.Modals {
         }
 
         private void OnSearchBoxKeyUp(object sender, KeyEventArgs e) {
-            if (e.Key == Key.Enter) CurrentViewModel.SearchChats();
+            if (e.Key == Key.Enter) new Action(async () => await CurrentViewModel.SearchChatsAsync())();
         }
 
         private void SessionSwitcher_SelectionChanged(object sender, SelectionChangedEventArgs e) {

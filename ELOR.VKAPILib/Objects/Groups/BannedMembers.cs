@@ -1,7 +1,6 @@
 using ELOR.VKAPILib.Attributes;
-﻿using System.Text.Json.Serialization;
-using System;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Groups {
     public enum BanReason {

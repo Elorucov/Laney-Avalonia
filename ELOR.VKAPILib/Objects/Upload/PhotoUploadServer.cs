@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class PhotoUploadServer : VkUploadServer {
-        public PhotoUploadServer() {}
-        
+        public PhotoUploadServer() { }
+
         [JsonPropertyName("album_id")]
         public int AlbumId { get; set; }
 

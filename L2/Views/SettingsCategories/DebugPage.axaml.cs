@@ -36,7 +36,7 @@ namespace ELOR.Laney.Views.SettingsCategories {
 
             l04.IsChecked = Settings.LNetLogs;
             l04.Click += (a, b) => Settings.LNetLogs = (bool)(a as ToggleSwitch).IsChecked;
-			
+
 #endif
 
             p03.IsChecked = Settings.ShowRAMUsage;

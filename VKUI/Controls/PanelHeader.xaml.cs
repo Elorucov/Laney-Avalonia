@@ -103,7 +103,7 @@ namespace VKUI.Controls {
 
         private void SetupHeaderContent() {
             if (Content is string text) {
-                TextBlock textBlock = new TextBlock { 
+                TextBlock textBlock = new TextBlock {
                     Text = text,
                     FontWeight = Avalonia.Media.FontWeight.Bold
                 };

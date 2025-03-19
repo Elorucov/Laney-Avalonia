@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ELOR.VKAPILib.Objects
-{
+namespace ELOR.VKAPILib.Objects {
     public class Audio : AttachmentBase {
-        public Audio() {}
-            
+        public Audio() { }
+
         [JsonIgnore]
         public override string ObjectType { get { return "audio"; } }
 

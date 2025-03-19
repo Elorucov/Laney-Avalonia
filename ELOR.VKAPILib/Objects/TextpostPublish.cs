@@ -1,9 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using System;
 
 namespace ELOR.VKAPILib.Objects {
     public class TextpostPublish {
-        public TextpostPublish() {}
+        public TextpostPublish() { }
 
         [JsonPropertyName("attach_url")]
         public string Url { get; set; }

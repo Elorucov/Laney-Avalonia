@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public enum AttachmentType {
@@ -79,8 +79,8 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class AttachmentBase {
-        public AttachmentBase() {}
-            
+        public AttachmentBase() { }
+
         [JsonIgnore]
         public virtual string ObjectType { get; set; }
 
@@ -100,7 +100,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Attachment {
-        public Attachment() {}
+        public Attachment() { }
 
         [JsonPropertyName("type")]
         public string TypeString { get; set; }

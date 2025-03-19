@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class Graffiti : AttachmentBase {
-        public Graffiti() {}
+        public Graffiti() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "doc"; } }

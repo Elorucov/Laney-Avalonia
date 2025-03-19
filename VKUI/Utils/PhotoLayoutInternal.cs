@@ -136,8 +136,8 @@ namespace VKUI.Utils {
                     double heightDiff = Math.Abs(totalHeight - maxHeight);
                     if (key.IndexOf(",") != -1) {
                         string[] strArray = key.Split(',');
-                        if (int.Parse(strArray[0]) > int.Parse(strArray[1]) || 
-                            strArray.Length > 2 && 
+                        if (int.Parse(strArray[0]) > int.Parse(strArray[1]) ||
+                            strArray.Length > 2 &&
                             int.Parse(strArray[1]) > int.Parse(strArray[2])) heightDiff *= 1.1;
                     }
                     if (optimalPhotoLayout == null || heightDiff < minHeightDiff) {

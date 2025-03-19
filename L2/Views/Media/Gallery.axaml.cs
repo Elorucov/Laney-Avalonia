@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.PanAndZoom;
 using Avalonia.Styling;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using System.Collections.Generic;
@@ -46,7 +45,7 @@ namespace ELOR.Laney.Views.Media {
                     OwnerName.Text = name;
                     OwnerAvatar.Background = attachment.OwnerId.GetGradient();
                     OwnerAvatar.Initials = name;
-                    OwnerAvatar.SetImageAsync(owner.Item3, OwnerAvatar.Width, OwnerAvatar.Height);
+                    OwnerAvatar.SetImage(owner.Item3, OwnerAvatar.Width, OwnerAvatar.Height);
                 }
 
                 if (attachment is Photo photo) {
@@ -61,7 +60,7 @@ namespace ELOR.Laney.Views.Media {
             }
         }
 
-        private async void Gallery_Activated(object sender, System.EventArgs e) {
+        private void Gallery_Activated(object sender, System.EventArgs e) {
             Activated -= Gallery_Activated;
             if (items == null || items.Count == 0) {
                 Close();
@@ -69,9 +68,11 @@ namespace ELOR.Laney.Views.Media {
             }
             target = target != null ? target : items[0];
 
-            GalleryItems.ItemsSource = items;
-            await Task.Delay(100); // required.
-            GalleryItems.SelectedItem = target;
+            new System.Action(async () => {
+                GalleryItems.ItemsSource = items;
+                await Task.Delay(100); // required.
+                GalleryItems.SelectedItem = target;
+            })();
         }
 
         private void ImageDataContextChanged(object sender, System.EventArgs e) {
@@ -81,9 +82,9 @@ namespace ELOR.Laney.Views.Media {
 
             if (item is Photo photo) {
                 var p = photo.MaximalSizedPhoto;
-                image.SetUriSourceAsync(p.Uri);
+                image.SetUriSource(p.Uri);
             } else if (item is Document doc && (doc.Type == DocumentType.Image || doc.Type == DocumentType.GIF)) {
-                image.SetUriSourceAsync(doc.Uri);
+                image.SetUriSource(doc.Uri);
             }
         }
 

@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
 
@@ -13,7 +13,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class StoryLink {
-        public StoryLink() {}
+        public StoryLink() { }
 
         [JsonPropertyName("text")]
         public string Text { get; set; }
@@ -26,7 +26,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ClickableStickerAreaPoints {
-        public ClickableStickerAreaPoints() {}
+        public ClickableStickerAreaPoints() { }
 
         [JsonPropertyName("x")]
         public int X { get; set; }
@@ -36,7 +36,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ClickableSticker {
-        public ClickableSticker() {}
+        public ClickableSticker() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -85,7 +85,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ClickableStickersInfo {
-        public ClickableStickersInfo() {}
+        public ClickableStickersInfo() { }
 
         [JsonPropertyName("original_height")]
         public int OriginalHeight { get; set; }
@@ -98,7 +98,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Story : AttachmentBase {
-        public Story() {}
+        public Story() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "story"; } }

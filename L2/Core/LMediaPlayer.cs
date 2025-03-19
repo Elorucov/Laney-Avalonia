@@ -138,31 +138,39 @@ namespace ELOR.Laney.Core {
 
         #region Library Events
 
-        private async void Player_PositionChanged(object sender, MediaPlayerPositionChangedEventArgs e) {
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                Position = e.Position;
-                PositionChanged?.Invoke(this, e.Position);
-            });
+        private void Player_PositionChanged(object sender, MediaPlayerPositionChangedEventArgs e) {
+            new Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    Position = e.Position;
+                    PositionChanged?.Invoke(this, e.Position);
+                });
+            })();
         }
 
-        private async void Player_Playing(object sender, EventArgs e) {
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                IsPlaying = true;
-                StateChanged?.Invoke(this, true);
-            });
+        private void Player_Playing(object sender, EventArgs e) {
+            new Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    IsPlaying = true;
+                    StateChanged?.Invoke(this, true);
+                });
+            })();
         }
 
-        private async void Player_Paused(object sender, EventArgs e) {
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                IsPlaying = false;
-                StateChanged?.Invoke(this, false);
-            });
+        private void Player_Paused(object sender, EventArgs e) {
+            new Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    IsPlaying = false;
+                    StateChanged?.Invoke(this, false);
+                });
+            })();
         }
 
-        private async void Player_EndReached(object sender, EventArgs e) {
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                MediaEnded?.Invoke(this, e);
-            });
+        private void Player_EndReached(object sender, EventArgs e) {
+            new Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    MediaEnded?.Invoke(this, e);
+                });
+            })();
         }
 
         #endregion

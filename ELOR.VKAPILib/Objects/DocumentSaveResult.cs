@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class DocumentSaveResult {
-        public DocumentSaveResult() {}
+        public DocumentSaveResult() { }
 
         [JsonPropertyName("type")]
         public string TypeString { get; set; }

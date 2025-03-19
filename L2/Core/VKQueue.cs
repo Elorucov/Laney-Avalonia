@@ -34,7 +34,7 @@ namespace ELOR.Laney.Core {
 
         #endregion
 
-        public static async void Init(QueueSubscribeResponse config) {
+        public static async Task InitAsync(QueueSubscribeResponse config) {
             if (config == null) return;
 
             Server = config.BaseUrl;
@@ -44,7 +44,7 @@ namespace ELOR.Laney.Core {
 
             cts = new CancellationTokenSource();
             IsCycleEnabled = true;
-            await Task.Factory.StartNew(Run);
+            await Task.Factory.StartNew(RunAsync);
         }
 
         public static void Stop() {
@@ -54,7 +54,7 @@ namespace ELOR.Laney.Core {
             cts?.Cancel();
         }
 
-        private static async void Run() {
+        private static async Task RunAsync() {
             while (IsCycleEnabled) {
                 Log.Verbose($"Queue: waiting {TimeStamp}...");
                 try {

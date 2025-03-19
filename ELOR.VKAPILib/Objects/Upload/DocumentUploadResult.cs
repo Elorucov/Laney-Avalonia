@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class DocumentUploadResult {
-        public DocumentUploadResult() {}
-        
+        public DocumentUploadResult() { }
+
         [JsonPropertyName("file")]
         public string File { get; set; }
 

@@ -80,12 +80,12 @@ namespace ELOR.Laney.Views.Modals {
         }
 
         private void SearchInChatWindow_Loaded(object sender, RoutedEventArgs e) {
-            MessagesSV.RegisterIncrementalLoadingEvent(() => ViewModel.DoSearch());
+            MessagesSV.RegisterIncrementalLoadingEvent(async () => await ViewModel.DoSearchAsync());
             SearchBox.Focus();
         }
 
         private void OnSearchBoxKeyUp(object sender, KeyEventArgs e) {
-            if (e.Key == Key.Enter) ViewModel.DoSearch(true);
+            if (e.Key == Key.Enter) new System.Action(async () => await ViewModel.DoSearchAsync(true))();
         }
 
         private void OnMessageSelected(object sender, RoutedEventArgs e) {

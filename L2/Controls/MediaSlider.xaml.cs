@@ -130,9 +130,9 @@ public class MediaSlider : TemplatedControl {
         ShowPositionPopup(tm, x);
     }
 
-    private async void ShowPositionPopup(TimeSpan tm, double x) {
+    private void ShowPositionPopup(TimeSpan tm, double x) {
         if (PositionPopup == null || PositionPopupTB == null) {
-            PositionPopup = new Popup { 
+            PositionPopup = new Popup {
                 IsHitTestVisible = false,
                 Placement = PlacementMode.Top,
                 PlacementTarget = SliderThumb
@@ -144,7 +144,7 @@ public class MediaSlider : TemplatedControl {
             tb.Classes.Add("Subhead");
             PositionPopupTB = tb;
 
-            VKUIFlyoutPresenter vkfp = new VKUIFlyoutPresenter { 
+            VKUIFlyoutPresenter vkfp = new VKUIFlyoutPresenter {
                 Content = tb
             };
 
@@ -155,18 +155,20 @@ public class MediaSlider : TemplatedControl {
         PositionPopup.IsOpen = true;
         PositionPopup.UpdateLayout();
 
-        if (PositionPopup.Bounds.Width == 0) await Task.Delay(1);
-        double w = ActualWidth;
-        double t = PositionPopup.Bounds.Width;
-        double p = 0;
-        var z = x - (t / 2);
-        if (z >= 0 && z <= w - t) {
-            p = z;
-        } else if (z < 0) {
-            p = 0;
-        } else if (z > w - t) {
-            p = w - t;
-        }
+        new Action(async () => {
+            if (PositionPopup.Bounds.Width == 0) await Task.Delay(1);
+            double w = ActualWidth;
+            double t = PositionPopup.Bounds.Width;
+            double p = 0;
+            var z = x - (t / 2);
+            if (z >= 0 && z <= w - t) {
+                p = z;
+            } else if (z < 0) {
+                p = 0;
+            } else if (z > w - t) {
+                p = w - t;
+            }
+        })();
     }
 
     private void HidePositionPopup() {

@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class VideoAlbum : Album {
-        public VideoAlbum() {}
+        public VideoAlbum() { }
 
         [JsonPropertyName("count")]
         public int Count { get; set; }

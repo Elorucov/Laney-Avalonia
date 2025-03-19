@@ -13,7 +13,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class DocumentPreview {
-        public DocumentPreview() {}
+        public DocumentPreview() { }
 
         [JsonPropertyName("graffiti")]
         public Graffiti Graffiti { get; set; }
@@ -23,7 +23,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Document : AttachmentBase, IPreview {
-        public Document() {}
+        public Document() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "doc"; } }

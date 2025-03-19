@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects.Messages {
-   
+
     public class JoinChatResponse {
         public JoinChatResponse() { }
 

@@ -23,7 +23,7 @@ namespace ELOR.Laney.Controls.Attachments {
         }
 
         private void RootButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            ExceptionHelper.ShowNotImplementedDialogAsync(VKSession.GetByDataContext(this).ModalWindow);
+            ExceptionHelper.ShowNotImplementedDialog(VKSession.GetByDataContext(this).ModalWindow);
         }
 
         private void CarouselElementUI_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
@@ -31,10 +31,10 @@ namespace ELOR.Laney.Controls.Attachments {
             Unloaded -= CarouselElementUI_Unloaded;
         }
 
-        private async void CarouselElementUI_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
+        private void CarouselElementUI_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
             if (e.Property == ElementProperty && Element != null) {
                 var photo = Element.Photo.GetSizeAndUriForThumbnail(CardImage.Width, CardImage.Height).Uri;
-                await CardImage.SetImageBackgroundAsync(photo, CardImage.Width, CardImage.Height);
+                new System.Action(async () => await CardImage.SetImageBackgroundAsync(photo, CardImage.Width, CardImage.Height))();
 
                 Buttons.Children.Clear();
                 VKAPIHelper.GenerateButtons(Buttons, Element.Buttons);

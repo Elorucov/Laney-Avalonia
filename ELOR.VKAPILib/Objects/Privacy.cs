@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
 
@@ -9,18 +9,18 @@ namespace ELOR.VKAPILib.Objects {
         Binary,
 
         [EnumMember(Value = "list")]
-        List 
+        List
     }
 
     public class PrivacySettingValueOwners {
-        public PrivacySettingValueOwners() {}
+        public PrivacySettingValueOwners() { }
 
         [JsonPropertyName("allowed")]
         public List<int> Allowed { get; set; }
     }
 
     public class PrivacySettingValue {
-        public PrivacySettingValue() {}
+        public PrivacySettingValue() { }
 
         [JsonPropertyName("category")]
         public string Category { get; set; }
@@ -33,7 +33,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PrivacySetting {
-        public PrivacySetting() {}
+        public PrivacySetting() { }
 
         [JsonPropertyName("key")]
         public string Key { get; set; }
@@ -56,7 +56,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PrivacySection {
-        public PrivacySection() {}
+        public PrivacySection() { }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -69,7 +69,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PrivacyCategory {
-        public PrivacyCategory() {}
+        public PrivacyCategory() { }
 
         [JsonPropertyName("value")]
         public string Value { get; set; }
@@ -79,7 +79,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PrivacyResponse {
-        public PrivacyResponse() {}
+        public PrivacyResponse() { }
 
         [JsonPropertyName("settings")]
         public List<PrivacySetting> Settings { get; set; }

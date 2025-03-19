@@ -5,7 +5,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Avalonia.Styling;
-using DynamicData;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;

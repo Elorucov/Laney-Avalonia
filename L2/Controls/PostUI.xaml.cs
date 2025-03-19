@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Markup.Xaml.Templates;
-using Avalonia.Media;
 using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
@@ -12,7 +10,6 @@ using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using VKUI.Controls;
 
@@ -94,12 +91,12 @@ namespace ELOR.Laney.Controls {
             session = message.OwnerSession;
             Avatar.Background = message.SenderId.GetGradient();
             Avatar.Initials = message.SenderName.GetInitials();
-            Avatar.SetImageAsync(message.SenderAvatar, Avatar.Width, Avatar.Height);
+            Avatar.SetImage(message.SenderAvatar, Avatar.Width, Avatar.Height);
 
             Author.Text = message.SenderName;
             PostInfo.Text = message.SentTime.ToHumanizedString(true);
 
-            if (message.ReplyMessage != null) { 
+            if (message.ReplyMessage != null) {
                 Reply.Message = message.ReplyMessage;
                 ReplyMessageButton.IsVisible = true;
             }
@@ -150,8 +147,8 @@ namespace ELOR.Laney.Controls {
             }
         }
 
-        private async void OnLinkClicked(string link) {
-            await Router.LaunchLink(session, link);
+        private void OnLinkClicked(string link) {
+            new System.Action(async () => await Router.LaunchLink(session, link))();
         }
 
         private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

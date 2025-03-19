@@ -32,9 +32,9 @@ namespace ELOR.Laney.Views.Modals {
             RectangleGeometry rg = new RectangleGeometry(new Avalonia.Rect(Width - 64, 0, Width, 48));
             TitleBar.Clip = rg;
 
-            PhotosSV.RegisterIncrementalLoadingEvent(LoadMorePhotos);
-            VideosSV.RegisterIncrementalLoadingEvent(LoadMoreVideos);
-            DocsSV.RegisterIncrementalLoadingEvent(LoadMoreDocs);
+            PhotosSV.RegisterIncrementalLoadingEvent(async () => await ViewModel.LoadPhotosAsync());
+            VideosSV.RegisterIncrementalLoadingEvent(async () => await ViewModel.LoadVideosAsync());
+            DocsSV.RegisterIncrementalLoadingEvent(async () => await ViewModel.LoadDocumentsAsync());
 
             Tabs.SelectedIndex = tab;
             LoadTab(tab);
@@ -45,11 +45,13 @@ namespace ELOR.Laney.Views.Modals {
         }
 
         private void LoadTab(int index) {
-            switch (index) {
-                case 0: if (ViewModel.PhotoAlbums == null) ViewModel.LoadPhotoAlbums(); break;
-                case 1: if (ViewModel.VideoAlbums == null) ViewModel.LoadVideoAlbums(); break;
-                case 2: if (ViewModel.DocumentTypeIndex < 0) ViewModel.DocumentTypeIndex = 0; break;
-            }
+            new System.Action(async () => {
+                switch (index) {
+                    case 0: if (ViewModel.PhotoAlbums == null) await ViewModel.LoadPhotoAlbumsAsync(); break;
+                    case 1: if (ViewModel.VideoAlbums == null) await ViewModel.LoadVideoAlbumsAsync(); break;
+                    case 2: if (ViewModel.DocumentTypeIndex < 0) ViewModel.DocumentTypeIndex = 0; break;
+                }
+            })();
         }
 
         private void ListSelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -67,43 +69,37 @@ namespace ELOR.Laney.Views.Modals {
             }
         }
 
-        private void LoadMorePhotos() {
-            ViewModel.LoadPhotos();
-        }
-
-        private void LoadMoreVideos() {
-            ViewModel.LoadVideos();
-        }
-
-        private void LoadMoreDocs() {
-            ViewModel.LoadDocuments();
-        }
-
-        private async void OpenFilePickerForPhoto(object sender, RoutedEventArgs e) {
+        private void OpenFilePickerForPhoto(object sender, RoutedEventArgs e) {
             if (!StorageProvider.CanOpen) return;
-            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions { 
-                AllowMultiple = true,
-                FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.ImageAll }
-            });
-            if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.PhotoUploadCommand, files.ToList()));
+            new System.Action(async () => {
+                var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                    AllowMultiple = true,
+                    FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.ImageAll }
+                });
+                if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.PhotoUploadCommand, files.ToList()));
+            })();
         }
 
-        private async void OpenFilePickerForVideo(object sender, RoutedEventArgs e) {
+        private void OpenFilePickerForVideo(object sender, RoutedEventArgs e) {
             if (!StorageProvider.CanOpen) return;
-            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
-                AllowMultiple = true,
-                FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All } // Video!!!
-            });
-            if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.VideoUploadCommand, files.ToList()));
+            new System.Action(async () => {
+                var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                    AllowMultiple = true,
+                    FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All } // Video!!!
+                });
+                if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.VideoUploadCommand, files.ToList()));
+            })();
         }
 
-        private async void OpenFilePickerForDoc(object sender, RoutedEventArgs e) {
+        private void OpenFilePickerForDoc(object sender, RoutedEventArgs e) {
             if (!StorageProvider.CanOpen) return;
-            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
-                AllowMultiple = true,
-                FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All }
-            });
-            if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.FileUploadCommand, files.ToList()));
+            new System.Action(async () => {
+                var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                    AllowMultiple = true,
+                    FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.All }
+                });
+                if (files.Count > 0) Close(new Tuple<int, List<IStorageFile>>(Constants.FileUploadCommand, files.ToList()));
+            })();
         }
 
         private void CloseAndAttach(object sender, RoutedEventArgs e) {

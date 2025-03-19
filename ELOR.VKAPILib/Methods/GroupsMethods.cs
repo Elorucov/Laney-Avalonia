@@ -1,5 +1,4 @@
 ﻿using ELOR.VKAPILib.Objects;
-using ELOR.VKAPILib.Objects.Groups;
 
 namespace ELOR.VKAPILib.Methods {
     public class GroupsMethods : MethodsSectionBase {

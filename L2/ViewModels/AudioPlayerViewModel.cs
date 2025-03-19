@@ -1,5 +1,4 @@
-﻿using Avalonia.Threading;
-using ELOR.Laney.Core;
+﻿using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
@@ -127,7 +126,7 @@ namespace ELOR.Laney.ViewModels {
                 Settings.AudioPlayerLoop = RepeatOneSong;
             });
             ShareCommand = new RelayCommand(o => { });
-            OpenTracklistCommand = new RelayCommand(o => { 
+            OpenTracklistCommand = new RelayCommand(o => {
                 IsTracklistDisplaying = !IsTracklistDisplaying;
             });
         }

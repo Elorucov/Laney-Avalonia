@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class LongPollServerInfo {
-        public LongPollServerInfo() {}
+        public LongPollServerInfo() { }
 
         [JsonPropertyName("key")]
         public string Key { get; set; }
@@ -18,7 +18,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class LongPollFail {
-        public LongPollFail() {}
+        public LongPollFail() { }
 
         [JsonPropertyName("failed")]
         public int FailCode { get; set; }
@@ -28,7 +28,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class LongPollResponse {
-        public LongPollResponse() {}
+        public LongPollResponse() { }
 
         [JsonPropertyName("ts")]
         public string TS { get; set; }

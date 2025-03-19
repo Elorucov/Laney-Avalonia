@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class StoreProduct {
-        public StoreProduct() {}
+        public StoreProduct() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }

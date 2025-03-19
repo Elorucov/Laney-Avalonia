@@ -5,6 +5,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Core.Network;
 using ELOR.Laney.Extensions;
+using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Upload;
 using Serilog;
@@ -12,10 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using VKUI.Controls;
-using System.Text.Json;
-using ELOR.VKAPILib;
 
 namespace ELOR.Laney.ViewModels.Controls {
     public enum OutboundAttachmentType { Attachment, ForwardedMessages, Place }
@@ -101,27 +101,27 @@ namespace ELOR.Laney.ViewModels.Controls {
         int width = Constants.OutboundAttachmentUIWidth;
         int height = Constants.OutboundAttachmentUIHeight;
 
-        private async void SetUp(Photo p) {
+        private void SetUp(Photo p) {
             IconId = VKIconNames.Icon24Gallery;
             Type = OutboundAttachmentType.Attachment;
-            PreviewImage = await BitmapManager.GetBitmapAsync(p.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
+            new System.Action(async () => PreviewImage = await BitmapManager.GetBitmapAsync(p.GetSizeAndUriForThumbnail(width, height).Uri, width, height))();
             Attachment = p;
         }
 
-        private async void SetUp(Video v) {
+        private void SetUp(Video v) {
             IconId = VKIconNames.Icon24Video;
             Type = OutboundAttachmentType.Attachment;
             DisplayName = v.Title;
-            if (v.Image != null) PreviewImage = await BitmapManager.GetBitmapAsync(v.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
+            if (v.Image != null) new System.Action(async () => PreviewImage = await BitmapManager.GetBitmapAsync(v.GetSizeAndUriForThumbnail(width, height).Uri, width, height))();
             ExtraInfo = v.DurationTime.ToString(@"h\:mm\:ss");
             Attachment = v;
         }
 
-        private async void SetUp(Document d) {
+        private void SetUp(Document d) {
             IconId = VKIconNames.Icon24Document;
             Type = OutboundAttachmentType.Attachment;
             if (d.Preview != null) {
-                PreviewImage = await BitmapManager.GetBitmapAsync(d.GetSizeAndUriForThumbnail(width, height).Uri, width, height);
+                new System.Action(async () => PreviewImage = await BitmapManager.GetBitmapAsync(d.GetSizeAndUriForThumbnail(width, height).Uri, width, height))();
                 ExtraInfo = d.Extension.ToUpper();
             } else {
                 DisplayName = d.Title;
@@ -171,7 +171,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             Attachment = s;
         }
 
-        private async void PrepareToUpload(int type) {
+        private void PrepareToUpload(int type) {
             DisplayName = file.Name;
             uploadFileType = OutboundAttachmentUploadFileType.Doc;
 
@@ -190,15 +190,17 @@ namespace ELOR.Laney.ViewModels.Controls {
                     break;
             }
 
-            if (type == Constants.PhotoUploadCommand) {
-                await Task.Delay(100); // надо, чтобы UI вложения появился перед получением превьюхи
-                Stream stream = await file.OpenReadAsync();
-                Bitmap bitmap = await stream.TryGetBitmapFromStreamAsync(width);
-                PreviewImage = bitmap;
-                await stream.FlushAsync();
-            }
+            new System.Action(async () => {
+                if (type == Constants.PhotoUploadCommand) {
+                    await Task.Delay(100); // надо, чтобы UI вложения появился перед получением превьюхи
+                    Stream stream = await file.OpenReadAsync();
+                    Bitmap bitmap = await stream.TryGetBitmapFromStreamAsync(width);
+                    PreviewImage = bitmap;
+                    await stream.FlushAsync();
+                }
 
-            await DoUploadFileInternal(file, uploadFileType);
+                await DoUploadFileInternalAsync(file, uploadFileType);
+            })();
         }
 
         #endregion
@@ -207,11 +209,11 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private IFileUploader uploader;
 
-        public async void DoUploadFile() {
-            if (!IsUploading) await DoUploadFileInternal(file, uploadFileType);
+        public void DoUploadFile() {
+            if (!IsUploading) new System.Action(async () => await DoUploadFileInternalAsync(file, uploadFileType))();
         }
 
-        private async Task<bool> DoUploadFileInternal(IStorageFile file, OutboundAttachmentUploadFileType uploadFileType) {
+        private async Task<bool> DoUploadFileInternalAsync(IStorageFile file, OutboundAttachmentUploadFileType uploadFileType) {
             UploadException = null;
             UploadProgress = 0;
             IsUploading = true;
@@ -270,7 +272,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                         if (vr == null) throw new ArgumentNullException("Upload error, no response!");
                         UploadProgress = 100;
                         VideoUploadResult vur = (VideoUploadResult)JsonSerializer.Deserialize(vr, typeof(VideoUploadResult), BuildInJsonContext.Default); ;
-                        Video video = new Video { 
+                        Video video = new Video {
                             Id = vur.VideoId,
                             OwnerId = vur.OwnerId,
                             AccessKey = (server as VideoUploadServer).AccessKey,
@@ -296,33 +298,21 @@ namespace ELOR.Laney.ViewModels.Controls {
             }
         }
 
-        private async void Uploader_UploadFailed(object sender, Exception e) {
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                Log.Error($"Exception was thrown in uploader!", e);
-                UploadException = e;
-                IsUploading = false;
-                UploadProgress = 0;
-            });
+        private void Uploader_UploadFailed(object sender, Exception e) {
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    Log.Error($"Exception was thrown in uploader!", e);
+                    UploadException = e;
+                    IsUploading = false;
+                    UploadProgress = 0;
+                });
+            })();
         }
 
-        private async void Uploader_ProgressChanged(object sender, double percent) {
-            await Dispatcher.UIThread.InvokeAsync(() => UploadProgress = percent);
-            //switch (uploadFileType) {
-            //    case OutboundAttachmentUploadFileType.Photo:
-            //        APIHelper.SendActivity(ELOR.VKAPILib.Methods.ActivityType.Photo, peerId);
-            //        break;
-            //    case OutboundAttachmentUploadFileType.Video:
-            //        APIHelper.SendActivity(ELOR.VKAPILib.Methods.ActivityType.Video, peerId);
-            //        break;
-            //    case OutboundAttachmentUploadFileType.Doc:
-            //        APIHelper.SendActivity(ELOR.VKAPILib.Methods.ActivityType.File, peerId);
-            //        break;
-            //    case OutboundAttachmentUploadFileType.AudioMessage:
-            //        APIHelper.SendActivity(ELOR.VKAPILib.Methods.ActivityType.Audiomessage, peerId);
-            //        break;
-            //}
+        private void Uploader_ProgressChanged(object sender, double percent) {
+            new System.Action(async () => await Dispatcher.UIThread.InvokeAsync(() => UploadProgress = percent))();
         }
-    
+
         public void CancelUpload() {
             uploader?.Cancel();
             uploader = null;
@@ -345,7 +335,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         // Обратите внимание и на MessageExtensions.CanAttachToSend!
         public static OutboundAttachmentViewModel FromAttachmentBase(VKSession session, Attachment attachment) {
             switch (attachment.Type) {
-                case AttachmentType.Audio: 
+                case AttachmentType.Audio:
                     return new OutboundAttachmentViewModel(session, attachment.Audio);
                 case AttachmentType.Graffiti:
                     return new OutboundAttachmentViewModel(session, attachment.Graffiti);

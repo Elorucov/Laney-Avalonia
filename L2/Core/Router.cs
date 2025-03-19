@@ -1,5 +1,4 @@
-﻿using ELOR.Laney.Core.Localization;
-using ELOR.Laney.Views.Modals;
+﻿using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;
 using System.Text.RegularExpressions;
@@ -57,29 +56,29 @@ namespace ELOR.Laney.Core {
             switch (type) {
                 case VKLinkType.User:
                     id = ids[0].Value;
-                    OpenPeerProfile(session, Int64.Parse(id));
+                    await OpenPeerProfileAsync(session, Int64.Parse(id));
                     break;
                 case VKLinkType.Group:
                     id = ids[0].Value;
-                    OpenPeerProfile(session, Int64.Parse(id) * -1);
+                    await OpenPeerProfileAsync(session, Int64.Parse(id) * -1);
                     break;
                 case VKLinkType.Wall: // TODO: Wallpost viewer in app
                     id = $"{ids[0].Value}_{ids[1].Value}";
-                    await Launcher.LaunchUrl(url);
+                    await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.Poll:
-                    OpenPollViewer(session, Int64.Parse(ids[0].Value), Int32.Parse(ids[1].Value));
-                    await Launcher.LaunchUrl(url);
+                    await OpenPollViewerAsync(session, Int64.Parse(ids[0].Value), Int32.Parse(ids[1].Value));
+                    await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.ConversationInvite:
                     id = url;
                     if (session.GroupId != 0) break; // TODO: открыть окно превью чата в сессии юзера
-                    OpenChatPreview(session, url);
-                    await Launcher.LaunchUrl(url);
+                    await OpenChatPreviewAsync(session, url);
+                    await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.WriteVkMe:
                     id = snm[0].Value;
-                    TryResolveScreenNameAndOpenConv(session, id, url);
+                    await TryResolveScreenNameAndOpenConvAsync(session, id, url);
                     await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.Write:
@@ -89,12 +88,12 @@ namespace ELOR.Laney.Core {
                     break;
                 case VKLinkType.StickerPack:
                     string packName = spm[0].Groups[4].Value;
-                    OpenStickerPackPreview(session, packName);
+                    await OpenStickerPackPreviewAsync(session, packName);
                     await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.ScreenName:
                     id = snm[0].Value;
-                    TryResolveScreenNameAndOpenProfile(session, id, url);
+                    await TryResolveScreenNameAndOpenProfileAsync(session, id, url);
                     await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.Unknown:
@@ -107,33 +106,33 @@ namespace ELOR.Laney.Core {
 
         #endregion
 
-        public static async void OpenPeerProfile(VKSession session, long peerId) {
+        public static async Task OpenPeerProfileAsync(VKSession session, long peerId) {
             if (DemoMode.IsEnabled) return;
             PeerProfile pp = new PeerProfile(session, peerId);
             await pp.ShowDialog(session.ModalWindow);
         }
 
-        public static async void OpenPollViewer(VKSession session, long ownerId, int id) {
+        public static async Task OpenPollViewerAsync(VKSession session, long ownerId, int id) {
             VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc + $"\n\nOwner: {ownerId}, poll id: {id}");
             await alert.ShowDialog(session.ModalWindow);
         }
 
-        public static async void OpenChatPreview(VKSession session, string url) {
+        public static async Task OpenChatPreviewAsync(VKSession session, string url) {
             VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc + $"\n\nChat url: {url}");
             await alert.ShowDialog(session.ModalWindow);
         }
 
-        public static async void OpenStickerPackPreview(VKSession session, string packName) {
+        public static async Task OpenStickerPackPreviewAsync(VKSession session, string packName) {
             VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc + $"\n\nStickerpack name: {packName}");
             await alert.ShowDialog(session.ModalWindow);
         }
 
-        public static async void TryResolveScreenNameAndOpenProfile(VKSession session, string name, string fallbackUrl) {
+        public static async Task TryResolveScreenNameAndOpenProfileAsync(VKSession session, string name, string fallbackUrl) {
             VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc + $"\n\nName: {name}\nFallback: {fallbackUrl}");
             await alert.ShowDialog(session.ModalWindow);
         }
 
-        public static async void TryResolveScreenNameAndOpenConv(VKSession session, string name, string fallbackUrl) {
+        public static async Task TryResolveScreenNameAndOpenConvAsync(VKSession session, string name, string fallbackUrl) {
             VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc + $"\n\nName: {name}\nFallback: {fallbackUrl}");
             await alert.ShowDialog(session.ModalWindow);
         }

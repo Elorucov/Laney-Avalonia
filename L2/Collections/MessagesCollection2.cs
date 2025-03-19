@@ -1,7 +1,4 @@
-﻿using DynamicData;
-using ELOR.Laney.ViewModels.Controls;
-using ELOR.VKAPILib.Objects;
-using System;
+﻿using ELOR.Laney.ViewModels.Controls;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects.Messages {
     public class MessageTemplate : ICloneable {
-        public MessageTemplate() {}
-            
+        public MessageTemplate() { }
+
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
@@ -43,8 +43,8 @@ namespace ELOR.VKAPILib.Objects.Messages {
     }
 
     public class AddTemplateResponse {
-        public AddTemplateResponse() {}
-            
+        public AddTemplateResponse() { }
+
         [JsonPropertyName("template_id")]
         public int TemplateId { get; set; }
     }

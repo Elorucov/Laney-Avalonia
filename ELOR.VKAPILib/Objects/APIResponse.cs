@@ -13,7 +13,7 @@ namespace ELOR.VKAPILib.Objects {
     //}
 
     public class APIException : Exception {
-        public APIException() {}
+        public APIException() { }
 
         [JsonPropertyName("error_code")]
         public int Code { get; set; }
@@ -31,7 +31,7 @@ namespace ELOR.VKAPILib.Objects {
         public string RedirectUrl { get; set; }
 
         [JsonIgnore]
-        public Uri RedirectUri { get { return new Uri(RedirectUrl); }  }
+        public Uri RedirectUri { get { return new Uri(RedirectUrl); } }
 
         [JsonPropertyName("confirmation_text")]
         public string ConfirmationText { get; set; }

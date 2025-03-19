@@ -1,8 +1,8 @@
-﻿using ELOR.VKAPILib.Objects;
-using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
+using ELOR.VKAPILib.Objects;
 using System;
-using ELOR.VKAPILib.Attributes;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.Execute.Objects {
     public class ChatMembersList : IVKList<ChatMember> {
@@ -25,7 +25,7 @@ namespace ELOR.Laney.Execute.Objects {
     }
 
     public class ChatInfoEx {
-        public ChatInfoEx() {}
+        public ChatInfoEx() { }
 
         [JsonPropertyName("chat_id")]
         public long ChatId { get; set; }

@@ -23,6 +23,6 @@ namespace ELOR.Laney.DataModels {
     }
 
     public class AlphabeticalUsers : GroupWithSelection<string, User> {
-        public AlphabeticalUsers(IGrouping<string, User> grouping, EventHandler<SelectionModelSelectionChangedEventArgs<User>> selectionChanged) : base(grouping, selectionChanged) {}
+        public AlphabeticalUsers(IGrouping<string, User> grouping, EventHandler<SelectionModelSelectionChangedEventArgs<User>> selectionChanged) : base(grouping, selectionChanged) { }
     }
 }

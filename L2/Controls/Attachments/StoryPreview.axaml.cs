@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using System;
@@ -20,7 +19,7 @@ namespace ELOR.Laney.Controls.Attachments {
             Setup();
         }
 
-        private async void Setup() {
+        private void Setup() {
             VKSession session = VKSession.GetByDataContext(this);
 
             if (story.IsDeleted) {
@@ -35,7 +34,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 var owner = CacheManager.GetNameAndAvatar(story.OwnerId);
                 if (owner != null) {
                     AuthorName.Text = $"{owner.Item1} {owner.Item2}";
-                    AuthorAvatar.SetImageAsync(owner.Item3);
+                    AuthorAvatar.SetImage(owner.Item3);
                 }
             }
 
@@ -57,7 +56,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             if (preview == null) return;
 
-            await PreviewRoot.SetImageBackgroundAsync(preview, PreviewRoot.Width, PreviewRoot.Height);
+            new System.Action(async () => await PreviewRoot.SetImageBackgroundAsync(preview, PreviewRoot.Width, PreviewRoot.Height))();
         }
 
         private void SetRestrictionInfo(string info) {

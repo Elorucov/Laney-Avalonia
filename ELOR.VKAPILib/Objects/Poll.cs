@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public enum PollBackgroundType {
@@ -14,7 +14,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PollAnswer {
-        public PollAnswer() {}
+        public PollAnswer() { }
 
         [JsonPropertyName("id")]
         public ulong Id { get; set; }
@@ -30,7 +30,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PollBackgroundGradientPosition {
-        public PollBackgroundGradientPosition() {}
+        public PollBackgroundGradientPosition() { }
 
         [JsonPropertyName("position")]
         public double Position { get; set; }
@@ -40,7 +40,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PollBackground {
-        public PollBackground() {}
+        public PollBackground() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -69,7 +69,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class PollPhoto {
-        public PollPhoto() {}
+        public PollPhoto() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -82,7 +82,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Poll : AttachmentBase {
-        public Poll() {}
+        public Poll() { }
 
         [JsonIgnore]
         public override string ObjectType { get { return "poll"; } }

@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using ELOR.VKAPILib.Attributes;
 using System.Runtime.Serialization;
-using ELOR.VKAPILib.Attributes;
+using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public enum GroupState {
@@ -27,7 +27,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class GroupCoverImage {
-        public GroupCoverImage() {}
+        public GroupCoverImage() { }
 
         [JsonPropertyName("url")]
         public string Url { get; set; }
@@ -43,7 +43,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class GroupCover {
-        public GroupCover() {}
+        public GroupCover() { }
 
         [JsonPropertyName("enabled")]
         public int Enabled { get; set; }
@@ -53,7 +53,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class Group {
-        public Group() {}
+        public Group() { }
 
         [JsonPropertyName("id")]
         public long Id { get; set; }
@@ -133,7 +133,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class GroupsResponse {
-        public GroupsResponse() {}
+        public GroupsResponse() { }
 
         [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
@@ -144,7 +144,7 @@ namespace ELOR.VKAPILib.Objects {
 
     // Event object in messages attachments
     public class Event {
-        public Event() {}
+        public Event() { }
 
         [JsonPropertyName("id")]
         public long Id { get; set; }

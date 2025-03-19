@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class UploadError {
-        public UploadError() {}
-        
+        public UploadError() { }
+
         [JsonPropertyName("error")]
         public string Error { get; set; }
 

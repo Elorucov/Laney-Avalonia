@@ -57,7 +57,7 @@ namespace ELOR.Laney.Views {
             }
         }
 
-        private async void ChatsList_Loaded(object sender, RoutedEventArgs e) {
+        private void ChatsList_Loaded(object sender, RoutedEventArgs e) {
             // ChatsList.Loaded -= ChatsList_Loaded;
             ChatsList.SelectionChanged += ChatsList_SelectionChanged;
             new ItemsPresenterWidthFixer(ChatsList);
@@ -69,17 +69,19 @@ namespace ELOR.Laney.Views {
 
             if (DemoMode.IsEnabled) return;
 
-            bool isRegistered = false;
-            while (!isRegistered) {
-                isRegistered = await TryRegisterIncrementalLoadingEvent();
-            }
+            new System.Action(async () => {
+                bool isRegistered = false;
+                while (!isRegistered) {
+                    isRegistered = await TryRegisterIncrementalLoadingEventAsync();
+                }
+            })();
         }
 
-        private async Task<bool> TryRegisterIncrementalLoadingEvent() {
+        private async Task<bool> TryRegisterIncrementalLoadingEventAsync() {
             await Task.Yield();
             try {
                 if (Session.ImViewModel == null) return false;
-                (ChatsList?.Scroll as ScrollViewer)?.RegisterIncrementalLoadingEvent(Session.ImViewModel.LoadConversations);
+                (ChatsList?.Scroll as ScrollViewer)?.RegisterIncrementalLoadingEvent(async () => await Session.ImViewModel.LoadConversationsAsync());
                 return true;
             } catch (Exception ex) {
                 Log.Error(ex, $"A problem has occured while registering incremental loading event for ChatsList!");

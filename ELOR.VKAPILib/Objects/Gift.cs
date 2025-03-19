@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class Gift {
-        public Gift() {}
+        public Gift() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }

@@ -1,20 +1,17 @@
-﻿using Avalonia.Controls;
-using Avalonia;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using ELOR.Laney.Controls.Attachments;
+using Avalonia.Controls.Shapes;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
 using ELOR.VKAPILib.Objects;
 using System;
-using VKUI.Controls;
-using ELOR.Laney.Extensions;
-using Avalonia.Media;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
-using System.Threading.Tasks;
-using Avalonia.Input;
+using VKUI.Controls;
 
 namespace ELOR.Laney;
 
@@ -233,7 +230,7 @@ public class AudioMessageAttachment : TemplatedControl {
     }
 
     private Rectangle GetWaveformItem(int waveformItem, int left, double top) {
-        Rectangle rect = new Rectangle { 
+        Rectangle rect = new Rectangle {
             Width = 2,
             Height = waveformItem,
             Margin = new Thickness(0, 0, 1, 0)

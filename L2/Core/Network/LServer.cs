@@ -1,5 +1,4 @@
-﻿using ELOR.Laney.Core.Localization;
-using Serilog;
+﻿using Serilog;
 using System;
 using System.Diagnostics;
 using System.Net;

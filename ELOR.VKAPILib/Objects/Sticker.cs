@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
     public class StickerImage {
-        public StickerImage() {}
+        public StickerImage() { }
 
         [JsonPropertyName("url")]
         public string Url { get; set; }
@@ -20,7 +20,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class StickerRender {
-        public StickerRender() {}
+        public StickerRender() { }
 
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -36,14 +36,14 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class StickerVmoji {
-        public StickerVmoji() {}
+        public StickerVmoji() { }
 
         [JsonPropertyName("character_id")]
         public string CharacterId { get; set; }
     }
 
     public class Sticker {
-        public Sticker() {}
+        public Sticker() { }
 
         [JsonPropertyName("animation_url")]
         public string AnimationUrl { get; set; }

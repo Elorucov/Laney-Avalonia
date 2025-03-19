@@ -2,7 +2,7 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class ConversationAttachment {
-        public ConversationAttachment() {}
+        public ConversationAttachment() { }
 
         [JsonPropertyName("attachment")]
         public Attachment Attachment { get; set; }
@@ -18,7 +18,7 @@ namespace ELOR.VKAPILib.Objects {
     }
 
     public class ConversationAttachmentsResponse : IVKList<ConversationAttachment> {
-        public ConversationAttachmentsResponse() {}
+        public ConversationAttachmentsResponse() { }
 
         [JsonPropertyName("count")]
         public int Count { get; set; }

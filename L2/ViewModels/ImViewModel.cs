@@ -69,7 +69,7 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        public async void LoadConversations() {
+        public async Task LoadConversationsAsync() {
             if (DemoMode.IsEnabled) {
                 DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
                 foreach (var conv in ds.Conversations) {
@@ -99,9 +99,9 @@ namespace ELOR.Laney.ViewModels {
                 }
             } catch (Exception ex) {
                 if (_chats.Count > 0) {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) LoadConversations();
+                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) await LoadConversationsAsync();
                 } else {
-                    Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadConversations());
+                    Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadConversationsAsync());
                 }
             }
             IsLoading = false;
@@ -111,28 +111,32 @@ namespace ELOR.Laney.ViewModels {
 
         #region Longpoll events
 
-        private async void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                var lookup = _chats.Lookup(message.PeerId);
-                if (!lookup.HasValue) { // В списке нет, и нам надо его (чат) получить.
-                    ChatViewModel chat = CacheManager.GetChat(session.Id, message.PeerId);
-                    if (chat == null) {
-                        Log.Information($"Received message from peer {message.PeerId}, which is not found in cache");
-                        chat = new ChatViewModel(session, message.PeerId, message, true);
-                        if (!(IsLoading && _chats.Count == 0)) CacheManager.Add(session.Id, chat);
+        private void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    var lookup = _chats.Lookup(message.PeerId);
+                    if (!lookup.HasValue) { // В списке нет, и нам надо его (чат) получить.
+                        ChatViewModel chat = CacheManager.GetChat(session.Id, message.PeerId);
+                        if (chat == null) {
+                            Log.Information($"Received message from peer {message.PeerId}, which is not found in cache");
+                            chat = new ChatViewModel(session, message.PeerId, message, true);
+                            if (!(IsLoading && _chats.Count == 0)) CacheManager.Add(session.Id, chat);
+                        }
+                        _chats.AddOrUpdate(chat);
                     }
-                    _chats.AddOrUpdate(chat);
-                }
-            });
+                });
+            })();
         }
 
-        private async void LongPoll_ConversationRemoved(object sender, long peerId) {
-            await Dispatcher.UIThread.InvokeAsync(() => {
-                var lookup = _chats.Lookup(peerId);
-                if (lookup.HasValue) {
-                    _chats.Remove(lookup.Value);
-                }
-            });
+        private void LongPoll_ConversationRemoved(object sender, long peerId) {
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(() => {
+                    var lookup = _chats.Lookup(peerId);
+                    if (lookup.HasValue) {
+                        _chats.Remove(lookup.Value);
+                    }
+                });
+            })();
         }
 
         #endregion

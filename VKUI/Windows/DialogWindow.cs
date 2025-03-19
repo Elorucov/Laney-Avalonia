@@ -47,7 +47,7 @@ namespace VKUI.Windows {
             if (isSizeChangedFirstTime || SizeToContent == SizeToContent.WidthAndHeight) return;
             double addx = 0, addy = 0;
             double titleBarHeight = 0;
-            
+
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
                 addx = addy = 1;
@@ -68,7 +68,7 @@ namespace VKUI.Windows {
 
             var root = VisualChildren[0] as Panel;
             if (root == null) return;
-            foreach (var child in root.Children) { 
+            foreach (var child in root.Children) {
                 if (child is VisualLayerManager vlm) {
                     vlm.Padding = new Thickness(addx);
                     break;

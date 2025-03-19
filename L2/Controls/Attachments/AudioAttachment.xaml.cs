@@ -1,14 +1,12 @@
-﻿using Avalonia.Controls;
-using Avalonia;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using ELOR.VKAPILib.Objects;
-using VKUI.Controls;
-using System;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using ELOR.VKAPILib.Objects;
+using System;
+using VKUI.Controls;
 
 namespace ELOR.Laney.Controls.Attachments;
 

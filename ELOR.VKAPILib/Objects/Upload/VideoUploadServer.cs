@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects.Upload {
     public class VideoUploadServer : VkUploadServer {
-        public VideoUploadServer() {}
-            
+        public VideoUploadServer() { }
+
         [JsonPropertyName("video_id")]
         public int VideoId { get; set; }
 

@@ -1,19 +1,19 @@
 ﻿using Avalonia.Controls;
-using ELOR.Laney.Core.Localization;
+using Avalonia.Controls.Notifications;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
 using ELOR.Laney.ViewModels.Controls;
-using VKUI.Controls;
-using VKUI.Popups;
+using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using ELOR.Laney.Views.Modals;
-using Avalonia.Controls.Notifications;
 using System.Threading.Tasks;
-using Serilog;
+using VKUI.Controls;
+using VKUI.Popups;
 
 namespace ELOR.Laney.Helpers {
 
@@ -54,7 +54,7 @@ namespace ELOR.Laney.Helpers {
             };
             ActionSheetItem creturn = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20DoorEnterArrowRightOutline },
-                Header =chat.ChatSettings?.IsGroupChannel == true ? Assets.i18n.Resources.pp_return_channel : Assets.i18n.Resources.pp_return_chat,
+                Header = chat.ChatSettings?.IsGroupChannel == true ? Assets.i18n.Resources.pp_return_channel : Assets.i18n.Resources.pp_return_chat,
             };
             ActionSheetItem gdeny = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BlockOutline },
@@ -112,7 +112,7 @@ namespace ELOR.Laney.Helpers {
             clear.Click += (a, b) => TryClearChat(session, chat.PeerId);
             leave.Click += (a, b) => TryLeaveChat(session, chat.PeerId);
             creturn.Click += (a, b) => ReturnToChat(session, chat.PeerId);
-            gdeny.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+            gdeny.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow);
 
             // ¯\_(ツ)_/¯
 
@@ -139,40 +139,46 @@ namespace ELOR.Laney.Helpers {
             if (ash.Items.Count > 0) ash.ShowAt(target, true);
         }
 
-        public static async void TryClearChat(VKSession session, long peerId, System.Action onSuccess = null) {
-            VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.chat_clear_modal_title, Assets.i18n.Resources.chat_clear_modal_text, [Assets.i18n.Resources.yes, Assets.i18n.Resources.no], 2);
-            if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
-                if (DemoMode.IsEnabled) return;
-                try {
-                    var response = await session.API.Messages.DeleteConversationAsync(session.GroupId, peerId);
-                    onSuccess?.Invoke(); // TODO: Snackbar
-                } catch (Exception ex) {
-                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+        public static void TryClearChat(VKSession session, long peerId, System.Action onSuccess = null) {
+            new System.Action(async () => {
+                VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.chat_clear_modal_title, Assets.i18n.Resources.chat_clear_modal_text, [Assets.i18n.Resources.yes, Assets.i18n.Resources.no], 2);
+                if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
+                    if (DemoMode.IsEnabled) return;
+                    try {
+                        var response = await session.API.Messages.DeleteConversationAsync(session.GroupId, peerId);
+                        onSuccess?.Invoke(); // TODO: Snackbar
+                    } catch (Exception ex) {
+                        await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+                    }
                 }
-            }
+            })();
         }
 
-        public static async void TryLeaveChat(VKSession session, long peerId, System.Action onSuccess = null) {
-            VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.chat_leave_modal_title, Assets.i18n.Resources.chat_leave_modal_text, [Assets.i18n.Resources.yes, Assets.i18n.Resources.no], 2);
-            if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
-                if (DemoMode.IsEnabled) return;
-                try {
-                    var response = await session.API.Messages.RemoveChatUserAsync(session.GroupId, peerId - 2000000000, session.Id);
-                    onSuccess?.Invoke(); // TODO: Snackbar
-                } catch (Exception ex) {
-                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+        public static void TryLeaveChat(VKSession session, long peerId, System.Action onSuccess = null) {
+            new System.Action(async () => {
+                VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.chat_leave_modal_title, Assets.i18n.Resources.chat_leave_modal_text, [Assets.i18n.Resources.yes, Assets.i18n.Resources.no], 2);
+                if (await dlg.ShowDialog<int>(session.ModalWindow) == 1) {
+                    if (DemoMode.IsEnabled) return;
+                    try {
+                        var response = await session.API.Messages.RemoveChatUserAsync(session.GroupId, peerId - 2000000000, session.Id);
+                        onSuccess?.Invoke(); // TODO: Snackbar
+                    } catch (Exception ex) {
+                        await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+                    }
                 }
-            }
+            })();
         }
 
-        public static async void ReturnToChat(VKSession session, long peerId, System.Action onSuccess = null) {
+        public static void ReturnToChat(VKSession session, long peerId, System.Action onSuccess = null) {
             if (DemoMode.IsEnabled) return;
-            try {
-                var response = await session.API.Messages.AddChatUserAsync(session.GroupId, peerId - 2000000000, session.Id);
-                onSuccess?.Invoke(); // TODO: Snackbar
-            } catch (Exception ex) {
-                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
-            }
+            new System.Action(async () => {
+                try {
+                    var response = await session.API.Messages.AddChatUserAsync(session.GroupId, peerId - 2000000000, session.Id);
+                    onSuccess?.Invoke(); // TODO: Snackbar
+                } catch (Exception ex) {
+                    await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+                }
+            })();
         }
 
         #endregion
@@ -180,14 +186,14 @@ namespace ELOR.Laney.Helpers {
 
         #region For message
 
-        public static async void ShowForMessage(MessageViewModel message, ChatViewModel chat, Control target) {
+        public static void ShowForMessage(MessageViewModel message, ChatViewModel chat, Control target) {
             if (chat.PeerId != message.PeerId) return;
             ActionSheet ash = new ActionSheet();
 
             int totalReactions = 0;
             if (message.Reactions != null) foreach (var reaction in message.Reactions) {
-                totalReactions += reaction.Count;
-            }
+                    totalReactions += reaction.Count;
+                }
 
             ActionSheetItem debug = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
@@ -263,7 +269,7 @@ namespace ELOR.Laney.Helpers {
             if (chat.ChatSettings?.AdminIDs != null) isAdminInChat = chat.ChatSettings.AdminIDs.Contains(session.Id);
 
             bool canPin = chat.ChatSettings != null ? chat.ChatSettings.ACL.CanChangePin : false;
-            bool isMessagePinned = chat.PinnedMessage != null 
+            bool isMessagePinned = chat.PinnedMessage != null
                 ? chat.PinnedMessage.Id == message.Id : false;
 
             bool canEdit = message.CanEdit(session.Id);
@@ -342,8 +348,8 @@ namespace ELOR.Laney.Helpers {
                 }
             };
 
-            spam.Click += (a, b) => DeleteMessages(session, chat.PeerId, new List<int> { message.ConversationMessageId }, false, true);
-            delete.Click += (a, b) => TryDeleteMessages(canDeleteWithoutConfirmation, session, chat.PeerId, new List<int> { message.ConversationMessageId }, canDeleteForAll);
+            spam.Click += async (a, b) => await DeleteMessagesAsync(session, chat.PeerId, new List<int> { message.ConversationMessageId }, false, true);
+            delete.Click += async (a, b) => await TryDeleteMessagesAsync(canDeleteWithoutConfirmation, session, chat.PeerId, new List<int> { message.ConversationMessageId }, canDeleteForAll);
 
             // ¯\_(ツ)_/¯
 
@@ -372,23 +378,25 @@ namespace ELOR.Laney.Helpers {
 
             // Show message readers count
             if (canShowReaders) {
-                try {
-                    var wrm = await session.API.Messages.GetMessageReadPeersAsync(session.GroupId, message.PeerId, message.ConversationMessageId, 0, 3, new List<string> { "photos_50", "sex" });
-                    if (wrm.TotalCount > 0) {
-                        readers.Header = Localizer.GetDeclensionFormatted(wrm.TotalCount, "views");
-                    } else {
-                        readers.Header = Assets.i18n.Resources.views_empty;
+                new System.Action(async () => {
+                    try {
+                        var wrm = await session.API.Messages.GetMessageReadPeersAsync(session.GroupId, message.PeerId, message.ConversationMessageId, 0, 3, new List<string> { "photos_50", "sex" });
+                        if (wrm.TotalCount > 0) {
+                            readers.Header = Localizer.GetDeclensionFormatted(wrm.TotalCount, "views");
+                        } else {
+                            readers.Header = Assets.i18n.Resources.views_empty;
+                        }
+                    } catch (Exception ex) {
+                        Log.Error(ex, $"Cannot check who read message to display in context menu! {message.PeerId}_{message.ConversationMessageId}");
+                        // readers.Header = Assets.i18n.Resources.error;
+                        readers.Header = Assets.i18n.Resources.views;
                     }
-                } catch (Exception ex) {
-                    Log.Error(ex, $"Cannot check who read message to display in context menu! {message.PeerId}_{message.ConversationMessageId}");
-                    // readers.Header = Assets.i18n.Resources.error;
-                    readers.Header = Assets.i18n.Resources.views;
-                }
+                })();
             }
         }
 
         public static void ShowForMultipleMessages(List<MessageViewModel> messages, ChatViewModel chat, Control target) {
-            ActionSheet ash = new ActionSheet { 
+            ActionSheet ash = new ActionSheet {
                 Placement = PlacementMode.LeftEdgeAlignedTop
             };
 
@@ -439,8 +447,8 @@ namespace ELOR.Laney.Helpers {
                 }
             };
 
-            spam.Click += (a, b) => DeleteMessages(session, chat.PeerId, messages.Select(m => m.ConversationMessageId).ToList(), false, true);
-            delete.Click += (a, b) => TryDeleteMessages(canDeleteWithoutConfirmation, session, chat.PeerId, messages.Select(m => m.ConversationMessageId).ToList(), canDeleteForAll);
+            spam.Click += async (a, b) => await DeleteMessagesAsync(session, chat.PeerId, messages.Select(m => m.ConversationMessageId).ToList(), false, true);
+            delete.Click += async (a, b) => await TryDeleteMessagesAsync(canDeleteWithoutConfirmation, session, chat.PeerId, messages.Select(m => m.ConversationMessageId).ToList(), canDeleteForAll);
 
             // ¯\_(ツ)_/¯
 
@@ -473,9 +481,9 @@ namespace ELOR.Laney.Helpers {
             return false;
         }
 
-        private static async void TryDeleteMessages(bool withoutConfirmation, VKSession session, long peerId, List<int> ids, bool canDeleteForAll) {
+        private static async Task TryDeleteMessagesAsync(bool withoutConfirmation, VKSession session, long peerId, List<int> ids, bool canDeleteForAll) {
             if (withoutConfirmation) {
-                DeleteMessages(session, peerId, ids, false, false);
+                await DeleteMessagesAsync(session, peerId, ids, false, false);
             } else {
                 string title, subtitle = String.Empty;
 
@@ -491,12 +499,12 @@ namespace ELOR.Laney.Helpers {
 
                 if (canDeleteForAll) dlg.DialogContent = forAll;
                 int result = await dlg.ShowDialog<int>(session.ModalWindow);
-                if (result == 1) DeleteMessages(session, peerId, ids, forAll.IsChecked.Value, false);
+                if (result == 1) await DeleteMessagesAsync(session, peerId, ids, forAll.IsChecked.Value, false);
             }
         }
 
-        private static async void DeleteMessages(VKSession session, long peerId, List<int> ids, bool forAll, bool spam) {
-            if (DemoMode.IsEnabled) return; 
+        private static async Task DeleteMessagesAsync(VKSession session, long peerId, List<int> ids, bool forAll, bool spam) {
+            if (DemoMode.IsEnabled) return;
             try {
                 var response = await session.API.Messages.DeleteAsync(session.GroupId, peerId, ids, spam, forAll);
                 int count = response.Where(r => r.Response == 1).Count();

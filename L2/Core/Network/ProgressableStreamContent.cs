@@ -1,9 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Net.Http;
-using System.Net;
-using System.Threading.Tasks;
 using System.Diagnostics.Contracts;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core.Network {
     public enum ProgressableStreamStatus {

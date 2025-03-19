@@ -1,6 +1,6 @@
 ﻿using ELOR.VKAPILib.Objects;
-using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.DataModels {
     public class DemoModeSession {

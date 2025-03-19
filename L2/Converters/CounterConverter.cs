@@ -1,8 +1,8 @@
-﻿using Avalonia.Data.Converters;
-using Avalonia;
+﻿using Avalonia;
+using Avalonia.Data.Converters;
+using ELOR.Laney.Core.Localization;
 using System;
 using System.Globalization;
-using ELOR.Laney.Core.Localization;
 
 namespace ELOR.Laney.Converters {
     public class CounterConverter : IValueConverter {

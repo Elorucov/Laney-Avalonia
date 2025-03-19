@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.ViewModels.Modals;
@@ -30,9 +29,9 @@ namespace ELOR.Laney.Views.Modals {
             TitleBar.IsVisible = false;
 #endif
 
-            Loaded += (a, b) => {
-                var il = new IncrementalLoader(MessagesListSV, () => ViewModel.Load());
-                ViewModel.Load(0);
+            Loaded += async (a, b) => {
+                var il = new IncrementalLoader(MessagesListSV, async () => await ViewModel.LoadAsync());
+                await ViewModel.LoadAsync(0);
             };
         }
 
@@ -45,8 +44,10 @@ namespace ELOR.Laney.Views.Modals {
         private void GoToOffset(object sender, RoutedEventArgs e) {
             int offset = 0;
             if (Int32.TryParse(MessagesOffset.Text, out offset)) {
-                ViewModel.Messages.Clear();
-                ViewModel.Load(offset);
+                new System.Action(async () => {
+                    ViewModel.Messages.Clear();
+                    await ViewModel.LoadAsync(offset);
+                })();
             }
         }
 

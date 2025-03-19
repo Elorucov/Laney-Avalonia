@@ -1,10 +1,6 @@
-﻿using ELOR.VKAPILib.Attributes;
-using ELOR.VKAPILib.Objects;
+﻿using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;
-using System;
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 
 namespace ELOR.VKAPILib.Methods {
     public enum ConversationsFilter {
@@ -26,7 +22,7 @@ namespace ELOR.VKAPILib.Methods {
         [EnumMember(Value = "business_notify")]
         BusinessNotify
     }
-    
+
     public enum HistoryAttachmentMediaType {
         [EnumMember(Value = "photo")]
         Photo,
@@ -58,7 +54,7 @@ namespace ELOR.VKAPILib.Methods {
         [EnumMember(Value = "audio_message")]
         AudioMessage
     }
-    
+
     public enum MessageIntent {
         None,
 
@@ -71,7 +67,7 @@ namespace ELOR.VKAPILib.Methods {
         [EnumMember(Value = "bot_ad_promo")]
         BotAdPromo
     }
-    
+
     public enum ActivityType {
         [EnumMember(Value = "typing")]
         Typing,
@@ -171,7 +167,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Deletes private messages in a conversation.</summary>
         /// <param name="groupId">Group ID.</param>
         /// <param name="peerId">Destination ID.</param>
-        public async Task<DeleteConversationResponse> DeleteConversationAsync(long groupId,  long peerId) {
+        public async Task<DeleteConversationResponse> DeleteConversationAsync(long groupId, long peerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "peer_id", peerId.ToString() }
             };
@@ -437,7 +433,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="maxMsgId">Maximum ID of the message among existing ones in the local copy.</param>
         public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(long groupId, int version, int ts, int pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            if(groupId > 0) parameters.Add("group_id", groupId.ToString());
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("lp_version", version.ToString());
             parameters.Add("ts", ts.ToString());
             parameters.Add("pts", pts.ToString());
@@ -678,8 +674,8 @@ namespace ELOR.VKAPILib.Methods {
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("q", query);
             parameters.Add("count", count.ToString());
-            if(extended) parameters.Add("extended", "1");
-            if(!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
+            if (extended) parameters.Add("extended", "1");
+            if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
             return await API.CallMethodAsync<ConversationsList>("messages.searchConversations", parameters);
         }
 
@@ -785,7 +781,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="peerId">Destination ID.</param>
         public async Task<bool> UnpinAsync(long groupId, long peerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            if(groupId > 0) parameters.Add("group_id", groupId.ToString());
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
             return await API.CallMethodAsync<int>("messages.unpin", parameters) == 1;
         }

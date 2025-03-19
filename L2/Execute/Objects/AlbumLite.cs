@@ -1,9 +1,9 @@
-﻿using System.Text.Json.Serialization;
-using System;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.Execute.Objects {
     public class AlbumLite {
-        public AlbumLite() {}
+        public AlbumLite() { }
 
         [JsonPropertyName("id")]
         public int Id { get; set; }

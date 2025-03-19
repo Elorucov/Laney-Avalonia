@@ -5,7 +5,6 @@ using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.ViewModels;
-using System;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Views {
@@ -19,11 +18,11 @@ namespace ELOR.Laney.Views {
 
         private void SearchView_Loaded(object sender, RoutedEventArgs e) {
             DataContext = new SearchViewModel(VKSession.GetByDataContext(this));
-            MessagesSV.RegisterIncrementalLoadingEvent(ViewModel.SearchMessages);
+            MessagesSV.RegisterIncrementalLoadingEvent(async () => await ViewModel.SearchMessagesAsync());
         }
 
         private void OnSearchBoxKeyUp(object sender, KeyEventArgs e) {
-            if (e.Key == Key.Enter) ViewModel.DoSearch();
+            if (e.Key == Key.Enter) new System.Action(async () => await ViewModel.DoSearchAsync())();
         }
 
         private void OnChatSelected(object sender, RoutedEventArgs e) {

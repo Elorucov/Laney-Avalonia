@@ -1,10 +1,8 @@
 ﻿using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.HandlerDatas;
-using System;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -127,7 +125,7 @@ namespace ELOR.VKAPILib {
                 using var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
                 return await resp.Content.ReadAsStringAsync();
             } else {
-                using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri) { 
+                using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri) {
                     Version = new Version(2, 0)
                 }) {
                     if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
@@ -149,7 +147,7 @@ namespace ELOR.VKAPILib {
         }
 
         public async Task<T> CallMethodAsync<T>(string method, Dictionary<string, string> parameters = null, JsonSerializerContext serializerContext = null) {
-            if(parameters == null) parameters = new Dictionary<string, string>();
+            if (parameters == null) parameters = new Dictionary<string, string>();
 
             string response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
             JsonNode resp = JsonNode.Parse(response);
@@ -173,7 +171,7 @@ namespace ELOR.VKAPILib {
         }
 
         private async Task<T> HandleCaptchaRequest<T>(APIException apiex, string method, Dictionary<string, string> parameters) {
-            if(CaptchaHandler != null) {
+            if (CaptchaHandler != null) {
                 CaptchaHandlerData chd = new CaptchaHandlerData {
                     SID = apiex.CaptchaSID,
                     Image = new Uri(apiex.CaptchaImage)
@@ -200,9 +198,9 @@ namespace ELOR.VKAPILib {
         }
 
         private async Task<T> HandleActionConfirmationRequest<T>(APIException apiex, string method, Dictionary<string, string> parameters) {
-            if(ActionConfirmationHandler != null) {
+            if (ActionConfirmationHandler != null) {
                 bool result = await ActionConfirmationHandler.Invoke(apiex.ConfirmationText);
-                if(!result) throw apiex;
+                if (!result) throw apiex;
                 parameters.Add("confirm", "1");
                 return await CallMethodAsync<T>(method, parameters).ConfigureAwait(false);
             } else {

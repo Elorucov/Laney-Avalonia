@@ -2,15 +2,15 @@
 using System.Runtime.Serialization;
 
 namespace ELOR.VKAPILib.Methods {
-    public enum FriendsOrder { 
+    public enum FriendsOrder {
         [EnumMember(Value = "hints")]
-        Hints, 
-        
+        Hints,
+
         [EnumMember(Value = "random")]
-        Random, 
+        Random,
 
         [EnumMember(Value = "mobile")]
-        Mobile, 
+        Mobile,
 
         [EnumMember(Value = "name")]
         Name,

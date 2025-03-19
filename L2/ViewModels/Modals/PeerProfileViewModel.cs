@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using VKUI.Controls;
 using VKUI.Popups;
 
@@ -75,7 +76,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             this.session = session;
             Id = peerId;
             PropertyChanged += OnPropertyChanged;
-            Setup();
+            new System.Action(async () => await SetupAsync())();
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
@@ -86,21 +87,21 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
         }
 
-        private void Setup() {
+        private async Task SetupAsync() {
             Header = null;
             if (Id.IsChat()) {
                 MemberSearchQuery = null;
-                GetChat(Id);
+                await GetChatAsync(Id);
             } else if (Id.IsUser()) {
-                GetUser(Id);
+                await GetUserAsync(Id);
             } else if (Id.IsGroup()) {
-                GetGroup(Id * -1);
+                await GetGroupAsync(Id * -1);
             }
         }
 
         #region User-specific
 
-        private async void GetUser(long userId) {
+        private async Task GetUserAsync(long userId) {
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
@@ -121,7 +122,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             } catch (Exception ex) {
                 Log.Error(ex, $"Error in PeerProfileViewModel.GetUser!");
                 Header = null;
-                Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetUser(userId));
+                Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await GetUserAsync(userId));
             }
             IsLoading = false;
         }
@@ -223,14 +224,14 @@ namespace ELOR.Laney.ViewModels.Modals {
                         break;
                 }
 
-                Command friendCmd = new Command(ficon, flabel, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command friendCmd = new Command(ficon, flabel, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
                 commands.Add(friendCmd);
             }
 
             // Notifications
             if (session.UserId != user.Id) {
                 string notifIcon = user.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-                Command notifsCmd = new Command(notifIcon, user.NotificationsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, (a) => ToggleNotifications(!user.NotificationsDisabled, user.Id));
+                Command notifsCmd = new Command(notifIcon, user.NotificationsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, async (a) => await ToggleNotificationsAsync(!user.NotificationsDisabled, user.Id));
                 commands.Add(notifsCmd);
             }
 
@@ -242,13 +243,13 @@ namespace ELOR.Laney.ViewModels.Modals {
             if (session.UserId != user.Id && user.Blacklisted == 0) {
                 string banIcon = user.BlacklistedByMe == 1 ? VKIconNames.Icon20UnlockOutline : VKIconNames.Icon20BlockOutline;
                 string banLabel = user.BlacklistedByMe == 1 ? Assets.i18n.Resources.unblock : Assets.i18n.Resources.block;
-                Command banCmd = new Command(banIcon, banLabel, true, (a) => ToggleBan(user.Id, user.BlacklistedByMe == 1));
+                Command banCmd = new Command(banIcon, banLabel, true, async (a) => await ToggleBanAsync(user.Id, user.BlacklistedByMe == 1));
                 moreCommands.Add(banCmd);
             }
 
             // Clear history
             if (user.MessagesCount > 0) {
-                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
+                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, async () => await SetupAsync()));
                 moreCommands.Add(clearCmd);
             }
 
@@ -268,14 +269,14 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
         }
 
-        private async void ToggleBan(long userId, bool unban) {
+        private async Task ToggleBanAsync(long userId, bool unban) {
             IsLoading = true;
             try {
                 bool result = unban ?
                 await session.API.Account.UnbanAsync(userId) :
                 await session.API.Account.BanAsync(userId);
                 IsLoading = false;
-                Setup(); // TODO: обновить кнопку, а не всё окно.
+                await SetupAsync(); // TODO: обновить кнопку, а не всё окно.
             } catch (Exception ex) {
                 Log.Error(ex, $"Error in PeerProfileViewModel.ToggleBan!");
                 IsLoading = false;
@@ -287,7 +288,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         #region Group-specific
 
-        private async void GetGroup(long groupId) {
+        private async Task GetGroupAsync(long groupId) {
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
@@ -301,7 +302,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             } catch (Exception ex) {
                 Log.Error(ex, $"Error in PeerProfileViewModel.GetGroup!");
                 Header = null; // чтобы содержимое окна было скрыто
-                Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetGroup(groupId));
+                Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await GetGroupAsync(groupId));
             }
             IsLoading = false;
         }
@@ -352,22 +353,22 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Notifications
             string notifIcon = group.NotificationsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-            Command notifsCmd = new Command(notifIcon,group.NotificationsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, (a) => ToggleNotifications(!group.NotificationsDisabled, -group.Id));
+            Command notifsCmd = new Command(notifIcon, group.NotificationsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, async (a) => await ToggleNotificationsAsync(!group.NotificationsDisabled, -group.Id));
             commands.Add(notifsCmd);
 
             // Open in browser
-            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.pp_group, false,async (a) => await Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
+            Command openExternalCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.pp_group, false, async (a) => await Launcher.LaunchUrl($"https://vk.com/club{group.Id}"));
             commands.Add(openExternalCmd);
 
             // Allow/deny messages from group
             string banIcon = group.MessagesAllowed == 1 ? VKIconNames.Icon20BlockOutline : VKIconNames.Icon20Check;
             string banLabel = group.MessagesAllowed == 1 ? Assets.i18n.Resources.pp_deny : Assets.i18n.Resources.pp_allow;
-            Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed == 1, (a) => ToggleMessagesFromGroup(group.Id, group.MessagesAllowed == 1));
+            Command banCmd = new Command(banIcon, banLabel, group.MessagesAllowed == 1, async (a) => await ToggleMessagesFromGroupAsync(group.Id, group.MessagesAllowed == 1));
             moreCommands.Add(banCmd);
 
             // Clear history
             if (group.MessagesCount > 0) {
-                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
+                Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, async () => await SetupAsync()));
                 moreCommands.Add(clearCmd);
             }
 
@@ -387,14 +388,14 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
         }
 
-        private async void ToggleMessagesFromGroup(long groupId, bool allowed) {
+        private async Task ToggleMessagesFromGroupAsync(long groupId, bool allowed) {
             IsLoading = true;
             try {
-                bool result = allowed ? 
+                bool result = allowed ?
                     await session.API.Messages.DenyMessagesFromGroupAsync(groupId) :
                     await session.API.Messages.AllowMessagesFromGroupAsync(groupId);
                 IsLoading = false;
-                Setup(); // TODO: обновить кнопку, а не всё окно.
+                await SetupAsync(); // TODO: обновить кнопку, а не всё окно.
             } catch (Exception ex) {
                 Log.Error(ex, $"Error in PeerProfileViewModel.ToggleMessageFromGroup!");
                 IsLoading = false;
@@ -406,7 +407,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         #region Chat-specific
 
-        private async void GetChat(long peerId) {
+        private async Task GetChatAsync(long peerId) {
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
@@ -428,7 +429,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             } catch (Exception ex) {
                 Log.Error(ex, $"Error in PeerProfileViewModel.GetChat!");
                 Header = null; // чтобы содержимое окна было скрыто
-                Placeholder = PlaceholderViewModel.GetForException(ex, (o) => GetChat(peerId));
+                Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await GetChatAsync(peerId));
             }
             IsLoading = false;
         }
@@ -501,7 +502,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             profile.Click += (a, b) => {
                 // TODO: открывать профиль в текущем окне PeerProfile с возможностью вернуться назад.
                 CloseWindowRequested?.Invoke(this, null);
-                Router.OpenPeerProfile(session, member.MemberId);
+                new System.Action(async () => await Router.OpenPeerProfileAsync(session, member.MemberId))();
             };
             ash.Items.Add(profile);
 
@@ -516,7 +517,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 Header = Assets.i18n.Resources.pp_member_admin_remove
             });
 
-            if (member.MemberId != session.Id && member.CanKick) ash.Items.Add(new ActionSheetItem { 
+            if (member.MemberId != session.Id && member.CanKick) ash.Items.Add(new ActionSheetItem {
                 Header = Assets.i18n.Resources.pp_member_kick
             });
 
@@ -539,25 +540,25 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Edit
             if (chat.ACL.CanChangeInfo) {
-                Command editCmd = new Command(VKIconNames.Icon20WriteOutline, Assets.i18n.Resources.edit, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command editCmd = new Command(VKIconNames.Icon20WriteOutline, Assets.i18n.Resources.edit, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
                 commands.Add(editCmd);
             }
 
             // Add member
             if (chat.ACL.CanInvite) {
-                Command addCmd = new Command(VKIconNames.Icon20UserAddOutline, Assets.i18n.Resources.add, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command addCmd = new Command(VKIconNames.Icon20UserAddOutline, Assets.i18n.Resources.add, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
                 commands.Add(addCmd);
             }
 
             // Notifications
             bool notifsDisabled = chat.PushSettings != null && chat.PushSettings.DisabledForever;
             string notifIcon = notifsDisabled ? VKIconNames.Icon20NotificationSlashOutline : VKIconNames.Icon20NotificationOutline;
-            Command notifsCmd = new Command(notifIcon, notifsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, (a) => ToggleNotifications(!notifsDisabled, chat.PeerId));
+            Command notifsCmd = new Command(notifIcon, notifsDisabled ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled, false, async (a) => await ToggleNotificationsAsync(!notifsDisabled, chat.PeerId));
             commands.Add(notifsCmd);
 
             // Link
             if (chat.ACL.CanSeeInviteLink) {
-                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
                 commands.Add(chatLinkCmd);
             }
 
@@ -570,7 +571,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
 
             // Clear history
-            Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, Setup));
+            Command clearCmd = new Command(VKIconNames.Icon20DeleteOutline, Assets.i18n.Resources.chat_clear_history, true, (a) => ContextMenuHelper.TryClearChat(session, Id, async () => await SetupAsync()));
             moreCommands.Add(clearCmd);
 
             // Exit or return to chat/channel
@@ -580,9 +581,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 string icon = chat.State == UserStateInChat.In ? VKIconNames.Icon20DoorArrowRightOutline : VKIconNames.Icon20DoorEnterArrowRightOutline;
                 Command exitRetCmd = new Command(icon, chat.State == UserStateInChat.In ? exitLabel : returnLabel, true, (a) => {
                     if (chat.State == UserStateInChat.In) {
-                        ContextMenuHelper.TryLeaveChat(session, Id, Setup);
+                        ContextMenuHelper.TryLeaveChat(session, Id, async () => await SetupAsync());
                     } else {
-                        ContextMenuHelper.ReturnToChat(session, Id, Setup);
+                        ContextMenuHelper.ReturnToChat(session, Id, async () => await SetupAsync());
                     }
                 });
                 moreCommands.Add(exitRetCmd);
@@ -654,12 +655,12 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         }
 
-        private async void ToggleNotifications(bool enabled, long id) {
+        private async Task ToggleNotificationsAsync(bool enabled, long id) {
             IsLoading = true;
             try {
                 var result = await session.API.Account.SetSilenceModeAsync(!enabled ? 0 : -1, id, true);
                 IsLoading = false;
-                Setup(); // TODO: обновить кнопку, а не всё окно.
+                await SetupAsync(); // TODO: обновить кнопку, а не всё окно.
             } catch (Exception ex) {
                 Log.Error(ex, $"Error in PeerProfileViewModel.ToggleNotifications!");
                 IsLoading = false;
@@ -671,24 +672,24 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         #region Conversation attachments
 
-        public void LoadPhotos() {
-            LoadVM(Photos, HistoryAttachmentMediaType.Photo);
+        public async Task LoadPhotosAsync() {
+            await LoadConvAttachmentsAsync(Photos, HistoryAttachmentMediaType.Photo);
         }
 
-        public void LoadVideos() {
-            LoadVM(Videos, HistoryAttachmentMediaType.Video);
+        public async Task LoadVideosAsync() {
+            await LoadConvAttachmentsAsync(Videos, HistoryAttachmentMediaType.Video);
         }
 
-        public void LoadAudios() {
-            LoadVM(Audios, HistoryAttachmentMediaType.Audio);
+        public async Task LoadAudiosAsync() {
+            await LoadConvAttachmentsAsync(Audios, HistoryAttachmentMediaType.Audio);
         }
 
-        public void LoadDocs() {
-            LoadVM(Documents, HistoryAttachmentMediaType.Doc);
+        public async Task LoadDocsAsync() {
+            await LoadConvAttachmentsAsync(Documents, HistoryAttachmentMediaType.Doc);
         }
 
-        public void LoadLinks() {
-            LoadVM(Share, HistoryAttachmentMediaType.Share);
+        public async Task LoadLinksAsync() {
+            await LoadConvAttachmentsAsync(Share, HistoryAttachmentMediaType.Share);
         }
 
         //public void LoadGraffities() {
@@ -699,7 +700,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         //    LoadVM(AudioMessages, HistoryAttachmentMediaType.AudioMessage);
         //}
 
-        private async void LoadVM(ConversationAttachmentsTabViewModel ivm, HistoryAttachmentMediaType type) {
+        private async Task LoadConvAttachmentsAsync(ConversationAttachmentsTabViewModel ivm, HistoryAttachmentMediaType type) {
             if (ivm.IsLoading || ivm.End) return;
             ivm.Placeholder = null;
             ivm.IsLoading = true;
@@ -722,11 +723,11 @@ namespace ELOR.Laney.ViewModels.Modals {
                     ivm.End = true;
                 }
             } catch (Exception ex) {
-                Log.Error(ex, $"Error in PeerProfileViewModel.LoadVM!");
+                Log.Error(ex, $"Error in PeerProfileViewModel.LoadConvAttachmentsAsync!");
                 if (ivm.Items.Count == 0) {
-                    ivm.Placeholder = PlaceholderViewModel.GetForException(ex, (o) => LoadVM(ivm, type));
+                    ivm.Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadConvAttachmentsAsync(ivm, type));
                 } else {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex)) LoadVM(ivm, type);
+                    if (await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex)) await LoadConvAttachmentsAsync(ivm, type);
                 }
             }
             ivm.IsLoading = false;

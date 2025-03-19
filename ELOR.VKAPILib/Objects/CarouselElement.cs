@@ -2,8 +2,8 @@
 
 namespace ELOR.VKAPILib.Objects {
     public class CarouselElement {
-        public CarouselElement() {}
-            
+        public CarouselElement() { }
+
         [JsonPropertyName("title")]
         public string Title { get; set; }
 

@@ -76,7 +76,7 @@ namespace ELOR.Laney.Core.Network {
             } catch (HttpRequestException httpex) {
                 Log($"InitConnectionAsync: HttpRequestException: StatusCode = {httpex.StatusCode}!");
                 return await TryConnectToProxyServerAsync(cts);
-            } catch (TimeoutException tex) {
+            } catch (TimeoutException) {
                 Log($"InitConnectionAsync: TimeoutException!");
                 return await TryConnectToProxyServerAsync(cts);
             } catch (Exception ex) {

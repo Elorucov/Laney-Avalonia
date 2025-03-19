@@ -1,10 +1,10 @@
 ﻿using ELOR.VKAPILib.Objects;
-using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ELOR.Laney.Execute.Objects {
     public class MessagesHistoryEx {
-        public MessagesHistoryEx() {}
+        public MessagesHistoryEx() { }
 
         [JsonPropertyName("conversation")]
         public Conversation Conversation { get; set; }

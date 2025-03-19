@@ -1,7 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Data.Converters;
-using Avalonia.Svg;
-using Avalonia.Svg.Skia;
 using ELOR.Laney.Core;
 using System;
 using System.Collections.Generic;

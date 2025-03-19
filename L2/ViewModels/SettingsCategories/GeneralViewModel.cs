@@ -12,12 +12,12 @@ namespace ELOR.Laney.ViewModels.SettingsCategories {
         public bool SentViaEnter { get { return Settings.SentViaEnter; } set { Settings.SentViaEnter = value; OnPropertyChanged(); } }
         public bool DontParseLinks { get { return Settings.DontParseLinks; } set { Settings.DontParseLinks = value; OnPropertyChanged(); } }
         public bool DisableMentions { get { return Settings.DisableMentions; } set { Settings.DisableMentions = value; OnPropertyChanged(); } }
-        
+
         public bool SuggestStickers { get { return Settings.SuggestStickers; } set { Settings.SuggestStickers = value; OnPropertyChanged(); } }
         public bool AnimateStickers { get { return Settings.AnimateStickers; } set { Settings.AnimateStickers = value; OnPropertyChanged(); } }
 
-        public GeneralViewModel() { 
-            
+        public GeneralViewModel() {
+
         }
 
         private TwoStringTuple GetLang() {

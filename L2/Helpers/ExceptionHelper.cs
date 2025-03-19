@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Objects;
@@ -51,8 +50,8 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static async Task<bool> ShowErrorDialogAsync(Window owner, Tuple<string, string> errorInfo, bool hideRetry = false, string additional = null) {
-            string[] buttons = hideRetry 
-                ? new string[] { Assets.i18n.Resources.close } 
+            string[] buttons = hideRetry
+                ? new string[] { Assets.i18n.Resources.close }
                 : [Assets.i18n.Resources.retry, Assets.i18n.Resources.close];
 
             string message = String.IsNullOrEmpty(additional) ? errorInfo.Item2 : $"{additional}\n\n{errorInfo.Item2}";
@@ -69,9 +68,11 @@ namespace ELOR.Laney.Helpers {
             return await ShowErrorDialogAsync(owner, err, hideRetry, additional);
         }
 
-        public static async void ShowNotImplementedDialogAsync(Window owner) {
-            VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc);
-            await alert.ShowDialog(owner);
+        public static void ShowNotImplementedDialog(Window owner) {
+            new System.Action(async () => {
+                VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc);
+                await alert.ShowDialog(owner);
+            })();
         }
     }
 }

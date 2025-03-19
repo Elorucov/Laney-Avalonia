@@ -1,5 +1,4 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -8,6 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
+using System;
 
 namespace VKUI.Controls {
     /// <summary>
@@ -236,15 +236,15 @@ namespace VKUI.Controls {
             }
         }
 
-        private async void BackButton_Clicked(object? sender, RoutedEventArgs eventArgs) {
+        private void BackButton_Clicked(object? sender, RoutedEventArgs eventArgs) {
             if (NavigationRouter != null) {
-                await NavigationRouter.BackAsync();
+                new Action(async () => await NavigationRouter.BackAsync())();
             }
         }
 
-        private async void ForwardButton_Clicked(object? sender, RoutedEventArgs eventArgs) {
+        private void ForwardButton_Clicked(object? sender, RoutedEventArgs eventArgs) {
             if (NavigationRouter != null) {
-                await NavigationRouter.ForwardAsync();
+                new Action(async () => await NavigationRouter.ForwardAsync())();
             }
         }
     }

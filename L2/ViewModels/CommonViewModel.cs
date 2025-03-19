@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ELOR.Laney.ViewModels {
+﻿namespace ELOR.Laney.ViewModels {
     public class CommonViewModel : ViewModelBase {
         private bool _isLoading;
         private PlaceholderViewModel _placeholder;

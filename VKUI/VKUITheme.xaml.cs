@@ -1,7 +1,7 @@
-﻿using System;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
+using System;
 
 namespace VKUI {
     public class VKUITheme : Styles {
@@ -14,7 +14,7 @@ namespace VKUI {
             var fonts = _instance.Resources.MergedDictionaries[0] as ResourceDictionary;
         }
 
-        public static IResourceDictionary Icons { 
+        public static IResourceDictionary Icons {
             get => _instance.Resources.MergedDictionaries[3] as ResourceDictionary;
         }
     }
