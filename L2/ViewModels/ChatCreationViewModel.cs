@@ -44,8 +44,8 @@ namespace ELOR.Laney.ViewModels {
         public ChatCreationViewModel(VKSession session, System.Action goToBackAction) {
             GoToBackAction = goToBackAction;
             this.session = session;
-            ChatPhotoSetCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
-            CustomizeChatSettingsCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+            ChatPhotoSetCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
+            CustomizeChatSettingsCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
             CreateCommand = new RelayCommand(async (o) => await CreateChatAsync());
 
             PropertyChanged += (a, b) => {

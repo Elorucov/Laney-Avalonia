@@ -223,7 +223,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                         break;
                 }
 
-                Command friendCmd = new Command(ficon, flabel, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command friendCmd = new Command(ficon, flabel, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
                 commands.Add(friendCmd);
             }
 
@@ -539,13 +539,13 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Edit
             if (chat.ACL.CanChangeInfo) {
-                Command editCmd = new Command(VKIconNames.Icon20WriteOutline, Assets.i18n.Resources.edit, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command editCmd = new Command(VKIconNames.Icon20WriteOutline, Assets.i18n.Resources.edit, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
                 commands.Add(editCmd);
             }
 
             // Add member
             if (chat.ACL.CanInvite) {
-                Command addCmd = new Command(VKIconNames.Icon20UserAddOutline, Assets.i18n.Resources.add, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command addCmd = new Command(VKIconNames.Icon20UserAddOutline, Assets.i18n.Resources.add, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
                 commands.Add(addCmd);
             }
 
@@ -557,7 +557,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Link
             if (chat.ACL.CanSeeInviteLink) {
-                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, (a) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow));
+                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
                 commands.Add(chatLinkCmd);
             }
 

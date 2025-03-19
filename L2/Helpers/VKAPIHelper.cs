@@ -207,7 +207,7 @@ return response;
                     Button button = BuildButton(row[i]);
                     button.HorizontalAlignment = HorizontalAlignment.Stretch;
                     button.Click += (a, b) => {
-                        ExceptionHelper.ShowNotImplementedDialogAsync(VKSession.GetByDataContext(root).ModalWindow);
+                        ExceptionHelper.ShowNotImplementedDialog(VKSession.GetByDataContext(root).ModalWindow);
                     };
 
                     Grid.SetColumn(button, i);
@@ -225,7 +225,7 @@ return response;
                 button.Margin = new Thickness(button.Margin.Left, isFirstRow ? 0 : 8, button.Margin.Right, button.Margin.Bottom);
                 button.HorizontalAlignment = HorizontalAlignment.Stretch;
                 button.Click += (a, b) => {
-                    ExceptionHelper.ShowNotImplementedDialogAsync(VKSession.GetByDataContext(root).ModalWindow);
+                    ExceptionHelper.ShowNotImplementedDialog(VKSession.GetByDataContext(root).ModalWindow);
                 };
 
                 isFirstRow = false;

@@ -112,7 +112,7 @@ namespace ELOR.Laney.Helpers {
             clear.Click += (a, b) => TryClearChat(session, chat.PeerId);
             leave.Click += (a, b) => TryLeaveChat(session, chat.PeerId);
             creturn.Click += (a, b) => ReturnToChat(session, chat.PeerId);
-            gdeny.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+            gdeny.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow);
 
             // ¯\_(ツ)_/¯
 

@@ -59,7 +59,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             IsGroupSession = session.IsGroup;
             Chat = chat;
             Attachments.CollectionChanged += (a, b) => CheckCanSendMessage();
-            SendCommand = new RelayCommand((o) => SendMessage());
+            SendCommand = new RelayCommand(async (o) => await SendMessageAsync());
             RecordAudioCommand = new RelayCommand((o) => RecordAudio());
 
             Random = new Random();
@@ -107,18 +107,18 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             photo.Click += async (a, b) => {
                 AttachmentPicker ap = new AttachmentPicker(session, 10 - count, 0);
-                AddAttachments(await ap.ShowDialog<object>(session.Window));
+                await AddAttachmentsAsync(await ap.ShowDialog<object>(session.Window));
             };
             video.Click += async (a, b) => {
                 AttachmentPicker ap = new AttachmentPicker(session, 10 - count, 1);
-                AddAttachments(await ap.ShowDialog<object>(session.Window));
+                await AddAttachmentsAsync(await ap.ShowDialog<object>(session.Window));
             };
             file.Click += async (a, b) => {
                 AttachmentPicker ap = new AttachmentPicker(session, 10 - count, 2);
-                AddAttachments(await ap.ShowDialog<object>(session.Window));
+                await AddAttachmentsAsync(await ap.ShowDialog<object>(session.Window));
             };
             poll.Click += (a, b) => {
-                ExceptionHelper.ShowNotImplementedDialogAsync(session.Window);
+                ExceptionHelper.ShowNotImplementedDialog(session.Window);
             };
 
             ash.Items.Add(photo);
@@ -163,9 +163,9 @@ namespace ELOR.Laney.ViewModels.Controls {
             };
 
             picker.EmojiPicked += Picker_EmojiPicked;
-            picker.StickerPicked += (a, b) => {
+            picker.StickerPicked += async (a, b) => {
                 flyout.Hide();
-                SendSticker(b.StickerId);
+                await SendStickerAsync(b.StickerId);
             };
 
             flyout.ShowAt(target);
@@ -199,7 +199,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             }
         }
 
-        private async void AddAttachments(object pickerResult) {
+        private async Task AddAttachmentsAsync(object pickerResult) {
             if (pickerResult == null) return;
             if (pickerResult is List<AttachmentBase> attachments) {
                 foreach (AttachmentBase attachment in attachments) {
@@ -253,7 +253,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             Clear();
         }
 
-        public async void SendMessage() {
+        public async Task SendMessageAsync() {
             if (!CanSendMessage || IsLoading) return;
 
             int uploadingFiles = Attachments.Where(a => a.Type == OutboundAttachmentType.Attachment && a.IsUploading).Count();
@@ -320,18 +320,18 @@ namespace ELOR.Laney.ViewModels.Controls {
                 IsLoading = false;
             } catch (Exception ex) {
                 IsLoading = false;
-                if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) SendMessage();
+                if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) await SendMessageAsync();
             }
         }
 
-        public void SendSticker(int stickerId) {
+        public async Task SendStickerAsync(int stickerId) {
             StickerId = stickerId;
             CheckCanSendMessage();
-            SendMessage();
+            await SendMessageAsync();
         }
 
         public void RecordAudio() {
-            ExceptionHelper.ShowNotImplementedDialogAsync(session.Window);
+            ExceptionHelper.ShowNotImplementedDialog(session.Window);
         }
 
         public void Clear() {

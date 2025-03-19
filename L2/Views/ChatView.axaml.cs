@@ -363,7 +363,7 @@ namespace ELOR.Laney.Views {
             Sticker sticker = button.DataContext as Sticker;
             if (sticker == null) return;
 
-            Chat?.Composer.SendSticker(sticker.StickerId);
+            new System.Action(async () => await Chat?.Composer.SendStickerAsync(sticker.StickerId))();
         }
 
         #endregion

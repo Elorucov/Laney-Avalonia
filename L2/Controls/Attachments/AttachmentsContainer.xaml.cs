@@ -403,7 +403,7 @@ namespace ELOR.Laney.Controls.Attachments {
                             Subtitle = def,
                             Name = st.ObjectType
                         };
-                        ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+                        ba.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow);
                         StandartAttachments.Children.Add(ba);
                     } else {
                         ExtendedAttachment ea = new ExtendedAttachment {
@@ -414,8 +414,8 @@ namespace ELOR.Laney.Controls.Attachments {
                             ActionButtonText = Assets.i18n.Resources.watch,
                             Name = st.ObjectType
                         };
-                        ea.ActionButtonClick += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
-                        ea.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialogAsync(session.ModalWindow);
+                        ea.ActionButtonClick += (a, b) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow);
+                        ea.Click += (a, b) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow);
                         StandartAttachments.Children.Add(ea);
                     }
                 }
@@ -592,7 +592,7 @@ namespace ELOR.Laney.Controls.Attachments {
             if (button.Tag != null && button.Tag is Tuple<List<IPreview>, IPreview> data) {
                 if (data.Item2 is Video v) {
                     // TODO: video player
-                    ExceptionHelper.ShowNotImplementedDialogAsync(VKSession.GetByDataContext(button).ModalWindow);
+                    ExceptionHelper.ShowNotImplementedDialog(VKSession.GetByDataContext(button).ModalWindow);
                 } else {
                     List<IPreview> nonVideo = data.Item1.Where(i => i is not Video).ToList();
                     Gallery.Show(nonVideo, data.Item2);

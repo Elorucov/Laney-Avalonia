@@ -68,9 +68,11 @@ namespace ELOR.Laney.Helpers {
             return await ShowErrorDialogAsync(owner, err, hideRetry, additional);
         }
 
-        public static async void ShowNotImplementedDialogAsync(Window owner) {
-            VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc);
-            await alert.ShowDialog(owner);
+        public static void ShowNotImplementedDialog(Window owner) {
+            new System.Action(async () => {
+                VKUIDialog alert = new VKUIDialog(Assets.i18n.Resources.not_implemented, Assets.i18n.Resources.not_implemented_desc);
+                await alert.ShowDialog(owner);
+            })();
         }
     }
 }

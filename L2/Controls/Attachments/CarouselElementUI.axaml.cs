@@ -23,7 +23,7 @@ namespace ELOR.Laney.Controls.Attachments {
         }
 
         private void RootButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            ExceptionHelper.ShowNotImplementedDialogAsync(VKSession.GetByDataContext(this).ModalWindow);
+            ExceptionHelper.ShowNotImplementedDialog(VKSession.GetByDataContext(this).ModalWindow);
         }
 
         private void CarouselElementUI_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
