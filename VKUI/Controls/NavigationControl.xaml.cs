@@ -236,15 +236,15 @@ namespace VKUI.Controls {
             }
         }
 
-        private async void BackButton_Clicked(object? sender, RoutedEventArgs eventArgs) {
+        private void BackButton_Clicked(object? sender, RoutedEventArgs eventArgs) {
             if (NavigationRouter != null) {
-                await NavigationRouter.BackAsync();
+                new Action(async () => await NavigationRouter.BackAsync())();
             }
         }
 
-        private async void ForwardButton_Clicked(object? sender, RoutedEventArgs eventArgs) {
+        private void ForwardButton_Clicked(object? sender, RoutedEventArgs eventArgs) {
             if (NavigationRouter != null) {
-                await NavigationRouter.ForwardAsync();
+                new Action(async () => await NavigationRouter.ForwardAsync())();
             }
         }
     }

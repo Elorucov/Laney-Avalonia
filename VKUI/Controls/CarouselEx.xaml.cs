@@ -71,14 +71,16 @@ namespace VKUI.Controls {
             SetUpScrollViewer();
         }
 
-        private async void ListBox_Loaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private void ListBox_Loaded(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             ListBox listBox = sender as ListBox;
             listBox.Loaded -= ListBox_Loaded;
 
-            while (scrollViewer == null) {
-                scrollViewer = listBox.Scroll as ScrollViewer;
-                await Task.Delay(10);
-            }
+            new System.Action(async () => {
+                while (scrollViewer == null) {
+                    scrollViewer = listBox.Scroll as ScrollViewer;
+                    await Task.Delay(10);
+                }
+            })();
 
             SetUpScrollViewer();
         }
