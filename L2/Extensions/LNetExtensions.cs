@@ -63,7 +63,7 @@ namespace ELOR.Laney.Extensions {
         }
 
         public static async Task<bool> SetImageBackgroundAsync(this Control control, Uri source, double decodeWidth = 0, double decodeHeight = 0) {
-            if (control == null) return false;
+            if (control == null || source == null) return false;
             try {
                 Bitmap bitmap = await BitmapManager.GetBitmapAsync(source, decodeWidth, decodeHeight);
                 var brush = new ImageBrush(bitmap) {

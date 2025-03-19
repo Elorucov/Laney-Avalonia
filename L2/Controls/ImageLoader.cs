@@ -134,11 +134,12 @@ namespace ELOR.Laney.Controls {
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
             try {
-                Bitmap bitmap = null;
-                if (uri != null) new Action(async () => await BitmapManager.GetBitmapAsync(uri, dw, dh))();
-
-                if (GetSource(sender) != uri) return;
-                sender.Source = bitmap;
+                if (uri != null) new Action(async () => {
+                    if (GetSource(sender) != uri) return;
+                    Bitmap bitmap = null;
+                    bitmap = await BitmapManager.GetBitmapAsync(uri, dw, dh);
+                    sender.Source = bitmap;
+                })();
                 // sender.Unloaded += Sender_Unloaded;
             } catch (Exception ex) {
                 Log.Error(ex, "Cannot set bitmap to Image!");
