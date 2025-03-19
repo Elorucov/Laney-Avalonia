@@ -187,7 +187,7 @@
     <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.5" />
-    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.0">
+    <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

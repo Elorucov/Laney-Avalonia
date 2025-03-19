@@ -1,4 +1,5 @@
-﻿using ELOR.Laney.DataModels;
+﻿using ELOR.Laney.Core;
+using ELOR.Laney.DataModels;
 using ELOR.Laney.ViewModels.SettingsCategories;
 using ELOR.Laney.Views.SettingsCategories;
 using System.Collections.ObjectModel;
