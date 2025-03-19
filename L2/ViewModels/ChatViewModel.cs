@@ -397,7 +397,7 @@ namespace ELOR.Laney.ViewModels {
         #region Commands
 
         private void OpenPeerProfile(object o) {
-            Router.OpenPeerProfile(session, PeerId);
+            new System.Action(async () => await Router.OpenPeerProfileAsync(session, PeerId))();
         }
 
         private async Task GoToLastMessageAsync() {

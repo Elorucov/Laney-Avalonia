@@ -68,6 +68,6 @@ public partial class WhoReadMessage : DialogWindow {
         Entity entity = (sender as Control).DataContext as Entity;
         if (entity == null) return;
         Close();
-        Router.OpenPeerProfile(session, entity.Item1);
+        new System.Action(async () => await Router.OpenPeerProfileAsync(session, entity.Item1))();
     }
 }

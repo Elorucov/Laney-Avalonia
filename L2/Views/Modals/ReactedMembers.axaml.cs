@@ -9,6 +9,7 @@ using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VKUI.Windows;
 
 namespace ELOR.Laney;
@@ -36,10 +37,10 @@ public partial class ReactedMembers : DialogWindow {
 
     private void ReactedMembers_Activated(object sender, EventArgs e) {
         Activated -= ReactedMembers_Activated;
-        GetReactedPeers();
+        new System.Action(async () => await GetReactedPeersAsync())();
     }
 
-    private async void GetReactedPeers() {
+    private async Task GetReactedPeersAsync() {
         try {
             var response = await session.API.Messages.GetReactedPeersAsync(session.GroupId, peerId, cmid);
             List<ReactionGroup> tabs = new List<ReactionGroup> {
@@ -110,6 +111,6 @@ public partial class ReactedMembers : DialogWindow {
         Entity entity = (sender as Control).DataContext as Entity;
         if (entity == null) return;
         Close();
-        Router.OpenPeerProfile(session, entity.Item1);
+        new System.Action(async () => await Router.OpenPeerProfileAsync(session, entity.Item1))();
     }
 }

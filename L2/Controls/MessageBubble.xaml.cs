@@ -432,11 +432,11 @@ namespace ELOR.Laney.Controls {
             if (Settings.MessageRenderingLogs) Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} text rendered.");
         }
 
-        private async void OnLinkClicked(string link) {
-            await Router.LaunchLink(VKSession.GetByDataContext(this), link);
+        private void OnLinkClicked(string link) {
+            new Action(async () => await Router.LaunchLink(VKSession.GetByDataContext(this), link))();
         }
 
-        private async void SendOrDeleteReaction(object obj) {
+        private void SendOrDeleteReaction(object obj) {
             if (obj == null || obj is not int) return;
 
             var session = VKSession.GetByDataContext(this);
@@ -444,15 +444,18 @@ namespace ELOR.Laney.Controls {
             long peerId = Message.PeerId;
             int cmid = Message.ConversationMessageId;
             bool remove = Message.SelectedReactionId == picked;
-            try {
-                bool response = remove
-                    ? await session.API.Messages.DeleteReactionAsync(session.GroupId, peerId, cmid)
-                    : await session.API.Messages.SendReactionAsync(session.GroupId, peerId, cmid, picked);
-            } catch (Exception ex) {
-                string str = remove ? "remove" : "send";
-                Log.Error(ex, $"Failed to {str} reaction to message {peerId}_{cmid}!");
-                await ExceptionHelper.ShowErrorDialogAsync(session?.Window, ex, true);
-            }
+
+            new Action(async () => {
+                try {
+                    bool response = remove
+                        ? await session.API.Messages.DeleteReactionAsync(session.GroupId, peerId, cmid)
+                        : await session.API.Messages.SendReactionAsync(session.GroupId, peerId, cmid, picked);
+                } catch (Exception ex) {
+                    string str = remove ? "remove" : "send";
+                    Log.Error(ex, $"Failed to {str} reaction to message {peerId}_{cmid}!");
+                    await ExceptionHelper.ShowErrorDialogAsync(session?.Window, ex, true);
+                }
+            })();
         }
 
         // Смена некоторых частей UI сообщения, которые не влияют
@@ -540,7 +543,7 @@ namespace ELOR.Laney.Controls {
         #region Template events
 
         private void AvatarButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            Router.OpenPeerProfile(Message.OwnerSession, Message.SenderId);
+            new Action(async () => await Router.OpenPeerProfileAsync(Message.OwnerSession, Message.SenderId))();
         }
 
         private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

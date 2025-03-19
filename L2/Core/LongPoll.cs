@@ -100,53 +100,56 @@ namespace ELOR.Laney.Core {
 
         #endregion
 
-        public async void Run() {
+        public void Run() {
             Log.Information("Starting LongPoll...");
             StateChanged?.Invoke(this, LongPollState.Connecting);
             cts = new CancellationTokenSource();
             isRunning = true;
-            while (isRunning) {
-                try {
-                    Log.Information($"Waiting... TS: {TimeStamp}; PTS: {PTS}");
-                    StateChanged?.Invoke(this, LongPollState.Working);
 
-                    Dictionary<string, string> parameters = new Dictionary<string, string> {
-                        { "act", "a_check" },
-                        { "key", Key },
-                        { "ts", TimeStamp.ToString() },
-                        { "wait", WAIT_TIME.ToString() },
-                        { "mode", MODE.ToString() },
-                        { "version", VERSION.ToString() }
-                    };
+            new System.Action(async () => await Task.Factory.StartNew(async () => {
+                while (isRunning) {
+                    try {
+                        Log.Information($"Waiting... TS: {TimeStamp}; PTS: {PTS}");
+                        StateChanged?.Invoke(this, LongPollState.Working);
 
-                    HttpResponseMessage httpResponse = await LNet.PostAsync(new Uri($"https://{Server}"), parameters, cts: cts).ConfigureAwait(false);
-                    httpResponse.EnsureSuccessStatusCode();
-                    string respstr = await httpResponse.Content.ReadAsStringAsync();
-                    JsonNode jr = JsonNode.Parse(respstr);
-                    httpResponse.Dispose();
-                    if (jr["updates"] != null) {
-                        TimeStamp = (int)jr["ts"];
-                        PTS = (int)jr["pts"];
-                        ParseUpdates(jr["updates"].AsArray());
-                        await Task.Delay(1000).ConfigureAwait(false);
-                    } else if (jr["failed"] != null) {
-                        int errCode = (int)jr["failed"];
-                        string errText = jr["error"].ToString();
-                        Log.Error($"LongPoll error! Code {errCode}, message: {errText}. Restarting after {WAIT_AFTER_FAIL} sec...");
-                        if (errCode != 1) {
-                            StateChanged?.Invoke(this, LongPollState.Failed);
-                            await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
-                            Restart();
+                        Dictionary<string, string> parameters = new Dictionary<string, string> {
+                            { "act", "a_check" },
+                            { "key", Key },
+                            { "ts", TimeStamp.ToString() },
+                            { "wait", WAIT_TIME.ToString() },
+                            { "mode", MODE.ToString() },
+                            { "version", VERSION.ToString() }
+                        };
+
+                        HttpResponseMessage httpResponse = await LNet.PostAsync(new Uri($"https://{Server}"), parameters, cts: cts).ConfigureAwait(false);
+                        httpResponse.EnsureSuccessStatusCode();
+                        string respstr = await httpResponse.Content.ReadAsStringAsync();
+                        JsonNode jr = JsonNode.Parse(respstr);
+                        httpResponse.Dispose();
+                        if (jr["updates"] != null) {
+                            TimeStamp = (int)jr["ts"];
+                            PTS = (int)jr["pts"];
+                            await ParseUpdatesAsync(jr["updates"].AsArray());
+                            await Task.Delay(1000).ConfigureAwait(false);
+                        } else if (jr["failed"] != null) {
+                            int errCode = (int)jr["failed"];
+                            string errText = jr["error"].ToString();
+                            Log.Error($"LongPoll error! Code {errCode}, message: {errText}. Restarting after {WAIT_AFTER_FAIL} sec...");
+                            if (errCode != 1) {
+                                StateChanged?.Invoke(this, LongPollState.Failed);
+                                await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
+                                Restart();
+                            }
+                        } else {
+                            throw new ArgumentException($"A non-standart response was received!\n{respstr}");
                         }
-                    } else {
-                        throw new ArgumentException($"A non-standart response was received!\n{respstr}");
+                    } catch (Exception ex) {
+                        Log.Error(ex, $"Exception when parsing LongPoll events! Trying after {WAIT_AFTER_FAIL} sec.");
+                        StateChanged?.Invoke(this, LongPollState.Failed);
+                        await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
                     }
-                } catch (Exception ex) {
-                    Log.Error(ex, $"Exception when parsing LongPoll events! Trying after {WAIT_AFTER_FAIL} sec.");
-                    StateChanged?.Invoke(this, LongPollState.Failed);
-                    await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
                 }
-            }
+            }))();
         }
 
         public void Stop() {
@@ -154,32 +157,35 @@ namespace ELOR.Laney.Core {
             cts?.Cancel();
         }
 
-        public async void Restart() {
+        public void Restart() {
             Stop();
             StateChanged?.Invoke(this, LongPollState.Updating);
-            bool trying = true;
-            while (trying) {
-                try {
-                    Log.Information("Getting LongPoll history...");
-                    var response = await API.Messages.GetLongPollHistoryAsync(groupId, VERSION, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
-                    CacheManager.Add(response.Profiles);
-                    CacheManager.Add(response.Groups);
-                    // TODO: кешировать беседы.
-                    ParseUpdates(response.History, response.Messages.Items);
 
-                    SetUp(response.Credentials);
+            new System.Action(async () => {
+                bool trying = true;
+                while (trying) {
+                    try {
+                        Log.Information("Getting LongPoll history...");
+                        var response = await API.Messages.GetLongPollHistoryAsync(groupId, VERSION, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
+                        CacheManager.Add(response.Profiles);
+                        CacheManager.Add(response.Groups);
+                        // TODO: кешировать беседы.
+                        await ParseUpdatesAsync(response.History, response.Messages.Items);
 
-                    if (response.More) PTS = response.NewPTS;
-                    trying = response.More;
-                } catch (Exception ex) {
-                    Log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
-                    await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
+                        SetUp(response.Credentials);
+
+                        if (response.More) PTS = response.NewPTS;
+                        trying = response.More;
+                    } catch (Exception ex) {
+                        Log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
+                        await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
+                    }
                 }
-            }
-            Run();
+                Run();
+            })();
         }
 
-        private void ParseUpdates(JsonArray updates, List<Message> messages = null) {
+        private async Task ParseUpdatesAsync(JsonArray updates, List<Message> messages = null) {
             // peer id, CMID, is edited.
             List<Tuple<long, int, bool>> MessagesFromAPI = new List<Tuple<long, int, bool>>();
             Dictionary<int, int> MessagesFromAPIFlags = new Dictionary<int, int>();
@@ -343,7 +349,7 @@ namespace ELOR.Laney.Core {
             }
 
             if (MessagesFromAPI.Count > 0) {
-                GetMessagesFromAPI(MessagesFromAPI, MessagesFromAPIFlags);
+                await GetMessagesFromAPIAsync(MessagesFromAPI, MessagesFromAPIFlags);
             }
         }
 
@@ -430,7 +436,7 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        private async void GetMessagesFromAPI(List<Tuple<long, int, bool>> messagesFromAPI, Dictionary<int, int> flags) {
+        private async Task GetMessagesFromAPIAsync(List<Tuple<long, int, bool>> messagesFromAPI, Dictionary<int, int> flags) {
             string debugPairs = "N/A";
             try {
                 List<KeyValuePair<long, int>> peerMessagePair = new List<KeyValuePair<long, int>>();

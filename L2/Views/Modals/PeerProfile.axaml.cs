@@ -41,11 +41,11 @@ namespace ELOR.Laney.Views.Modals {
 
             Unloaded += (a, b) => BitmapManager.ClearCachedImages();
 
-            new IncrementalLoader(PhotosSV, ViewModel.LoadPhotos);
-            new IncrementalLoader(VideosSV, ViewModel.LoadVideos);
+            new IncrementalLoader(PhotosSV, async () => await ViewModel.LoadPhotosAsync());
+            new IncrementalLoader(VideosSV, async () => await ViewModel.LoadVideosAsync());
             // TODO: Audios here
-            new IncrementalLoader(DocsSV, ViewModel.LoadDocs);
-            new IncrementalLoader(LinksSV, ViewModel.LoadLinks);
+            new IncrementalLoader(DocsSV, async () => await ViewModel.LoadDocsAsync());
+            new IncrementalLoader(LinksSV, async () => await ViewModel.LoadLinksAsync());
 
             // RelativeSource is not working when CompiledBindings=true!
             FirstButton.CommandParameter = FirstButton;
@@ -70,20 +70,23 @@ namespace ELOR.Laney.Views.Modals {
 
         private void Tabs_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e) {
             if (Tabs == null) return; // Без этого произойдёт краш при открытии PeerProfile, фиг знает кто вызывает это событие, если Tabs == null...
-            switch (Tabs.SelectedIndex) {
-                case 1:
-                    if (ViewModel.Photos.Items.Count == 0 && !ViewModel.Photos.End) ViewModel.LoadPhotos();
-                    break;
-                case 2:
-                    if (ViewModel.Videos.Items.Count == 0 && !ViewModel.Videos.End) ViewModel.LoadVideos();
-                    break;
-                case 4:
-                    if (ViewModel.Documents.Items.Count == 0 && !ViewModel.Documents.End) ViewModel.LoadDocs();
-                    break;
-                case 5:
-                    if (ViewModel.Share.Items.Count == 0 && !ViewModel.Share.End) ViewModel.LoadLinks();
-                    break;
-            }
+
+            new System.Action(async () => {
+                switch (Tabs.SelectedIndex) {
+                    case 1:
+                        if (ViewModel.Photos.Items.Count == 0 && !ViewModel.Photos.End) await ViewModel.LoadPhotosAsync();
+                        break;
+                    case 2:
+                        if (ViewModel.Videos.Items.Count == 0 && !ViewModel.Videos.End) await ViewModel.LoadVideosAsync();
+                        break;
+                    case 4:
+                        if (ViewModel.Documents.Items.Count == 0 && !ViewModel.Documents.End) await ViewModel.LoadDocsAsync();
+                        break;
+                    case 5:
+                        if (ViewModel.Share.Items.Count == 0 && !ViewModel.Share.End) await ViewModel.LoadLinksAsync();
+                        break;
+                }
+            })();
         }
 
         private void ViewModel_CloseWindowRequested(object sender, EventArgs e) {
@@ -108,7 +111,7 @@ namespace ELOR.Laney.Views.Modals {
             ash.ShowAt(b, true);
         }
 
-        private async void OnAttachmentClick(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private void OnAttachmentClick(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             Button b = sender as Button;
             ConversationAttachment a = b.DataContext as ConversationAttachment;
 
@@ -122,7 +125,7 @@ namespace ELOR.Laney.Views.Modals {
                     }
                     break;
                 case AttachmentType.Link:
-                    await Router.LaunchLink(session, a.Attachment.Link.Uri);
+                    new System.Action(async () => await Router.LaunchLink(session, a.Attachment.Link.Uri))();
                     break;
             }
         }

@@ -3,6 +3,7 @@ using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels.Modals {
     public class SearchInChatViewModel : CommonViewModel {
@@ -20,7 +21,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             this.peerId = peerId;
         }
 
-        public async void DoSearch(bool clear = false) {
+        public async Task DoSearchAsync(bool clear = false) {
             if (clear) Messages = null;
             if (String.IsNullOrEmpty(Query)) return;
             if (IsLoading) return;
@@ -50,9 +51,9 @@ namespace ELOR.Laney.ViewModels.Modals {
             } catch (Exception ex) {
                 IsLoading = false;
                 if (Messages != null && Messages.Count > 0) {
-                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) DoSearch();
+                    if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) await DoSearchAsync();
                 } else {
-                    Placeholder = PlaceholderViewModel.GetForException(ex, (o) => DoSearch());
+                    Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await DoSearchAsync());
                 }
             }
         }

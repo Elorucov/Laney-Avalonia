@@ -49,7 +49,8 @@ public partial class AudioPlayerWindow : DialogWindow {
         Grid g = sender as Grid;
         TextBlock tb = g.Tag as TextBlock;
         var available = g.Bounds.Width - g.ColumnDefinitions[0].Width.Value - g.ColumnDefinitions[2].Width.Value;
-        tb.MaxWidth = available / 10 * 6;
+        double maxWidth = available / 10 * 6;
+        if (maxWidth > 0) tb.MaxWidth = available / 10 * 6;
     }
 
     private void UpdateOrdinalNumber(object? sender, System.EventArgs e) {

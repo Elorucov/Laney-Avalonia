@@ -33,7 +33,7 @@ public partial class ReactionsPicker : UserControl {
         ReactionsList.ItemsSource = entities;
     }
 
-    private async void OnReactionClick(object obj) {
+    private void OnReactionClick(object obj) {
         parentPopup?.Hide();
 
         if (DemoMode.IsEnabled) return;
@@ -42,15 +42,18 @@ public partial class ReactionsPicker : UserControl {
         var session = VKSession.GetByDataContext(popupTarget);
         int picked = Convert.ToInt32(obj);
         bool remove = selectedReactionId == picked;
-        try {
-            bool response = remove
-                ? await session.API.Messages.DeleteReactionAsync(session.GroupId, peerId, cmid)
-                : await session.API.Messages.SendReactionAsync(session.GroupId, peerId, cmid, picked);
-        } catch (Exception ex) {
-            string str = remove ? "remove" : "send";
-            Log.Error(ex, $"Failed to {str} reaction to message {peerId}_{cmid}!");
-            await ExceptionHelper.ShowErrorDialogAsync(session?.Window, ex, true);
-        }
+
+        new Action(async () => {
+            try {
+                bool response = remove
+                    ? await session.API.Messages.DeleteReactionAsync(session.GroupId, peerId, cmid)
+                    : await session.API.Messages.SendReactionAsync(session.GroupId, peerId, cmid, picked);
+            } catch (Exception ex) {
+                string str = remove ? "remove" : "send";
+                Log.Error(ex, $"Failed to {str} reaction to message {peerId}_{cmid}!");
+                await ExceptionHelper.ShowErrorDialogAsync(session?.Window, ex, true);
+            }
+        })();
     }
 
     private void Button_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {

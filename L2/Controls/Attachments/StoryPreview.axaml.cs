@@ -19,7 +19,7 @@ namespace ELOR.Laney.Controls.Attachments {
             Setup();
         }
 
-        private async void Setup() {
+        private void Setup() {
             VKSession session = VKSession.GetByDataContext(this);
 
             if (story.IsDeleted) {
@@ -56,7 +56,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
             if (preview == null) return;
 
-            await PreviewRoot.SetImageBackgroundAsync(preview, PreviewRoot.Width, PreviewRoot.Height);
+            new System.Action(async () => await PreviewRoot.SetImageBackgroundAsync(preview, PreviewRoot.Width, PreviewRoot.Height))();
         }
 
         private void SetRestrictionInfo(string info) {
