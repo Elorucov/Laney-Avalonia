@@ -20,9 +20,7 @@ namespace ELOR.Laney.Converters {
                     CornerRadius = new CornerRadius(4)
                 };
                 if (d.Preview != null) {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    b.SetImageBackgroundAsync(d.GetSizeAndUriForThumbnail(b.Width, b.Height).Uri, b.Width, b.Height);
-#pragma warning restore CS4014
+                    new System.Action(async () => await b.SetImageBackgroundAsync(d.GetSizeAndUriForThumbnail(b.Width, b.Height).Uri, b.Width, b.Height))();
                 } else {
                     b.Child = new VKIcon {
                         Foreground = new SolidColorBrush(Colors.White),

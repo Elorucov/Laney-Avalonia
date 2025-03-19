@@ -191,7 +191,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="DynamicData" Version="9.1.2" />
+    <PackageReference Include="DynamicData" Version="9.2.1" />
     <PackageReference Include="LibVLCSharp" Version="3.9.2" />
     <PackageReference Include="Serilog" Version="4.2.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />

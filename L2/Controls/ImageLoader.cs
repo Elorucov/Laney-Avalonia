@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Svg.Skia;
 using Avalonia.VisualTree;
 using ELOR.Laney.Core;
@@ -42,12 +43,12 @@ namespace ELOR.Laney.Controls {
             control.AttachedToVisualTree -= OnAttachedToVisualTree;
 
             Uri? uri = control.Resources["uri"] as Uri;
-            RegisterLoadImageAfterAppearingOnScreen(control, uri);
+            new Action(async () => await RegisterLoadImageAfterAppearingOnScreen(control, uri))();
         }
 
         static Dictionary<ScrollViewer, Dictionary<Control, Uri>> registeredControlsInScroll = new Dictionary<ScrollViewer, Dictionary<Control, Uri>>();
 
-        private static async void RegisterLoadImageAfterAppearingOnScreen(Control sender, Uri? uri) {
+        private static async Task RegisterLoadImageAfterAppearingOnScreen(Control sender, Uri? uri) {
             await Task.Delay(8);
             var parentScroll = sender.FindAncestorOfType<ListBox>();
             if (parentScroll != null) {
@@ -124,18 +125,18 @@ namespace ELOR.Laney.Controls {
                 sender.Resources.Add("uri", uri);
                 sender.AttachedToVisualTree += OnAttachedToVisualTree;
             } else {
-                RegisterLoadImageAfterAppearingOnScreen(sender, uri);
+                new Action(async () => await RegisterLoadImageAfterAppearingOnScreen(sender, uri))();
             }
         }
 
-        private static async void OnSourceChangedInternal(Image sender, Uri? uri) {
+        private static void OnSourceChangedInternal(Image sender, Uri? uri) {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
             try {
-                var bitmap = uri == null
-                ? null
-                : await BitmapManager.GetBitmapAsync(uri, dw, dh);
+                Bitmap bitmap = null;
+                if (uri != null) new Action(async () => await BitmapManager.GetBitmapAsync(uri, dw, dh))();
+
                 if (GetSource(sender) != uri) return;
                 sender.Source = bitmap;
                 // sender.Unloaded += Sender_Unloaded;
@@ -145,7 +146,7 @@ namespace ELOR.Laney.Controls {
             }
         }
 
-        private static async void OnSvgSourceChanged(Image sender, Uri uri) {
+        private static void OnSvgSourceChanged(Image sender, Uri uri) {
             if (uri == null) {
                 sender.Source = null;
                 return;
@@ -153,9 +154,11 @@ namespace ELOR.Laney.Controls {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
-            SvgImage image = await CacheManager.GetStaticReactionImageAsync(uri);
-            if (image == null) return;
-            sender.Source = image;
+            new Action(async () => {
+                SvgImage image = await CacheManager.GetStaticReactionImageAsync(uri);
+                if (image == null) return;
+                sender.Source = image;
+            })();
             // sender.Unloaded += Sender_Unloaded;
         }
 
@@ -164,25 +167,25 @@ namespace ELOR.Laney.Controls {
                 sender.Resources.Add("uri", uri);
                 sender.AttachedToVisualTree += OnAttachedToVisualTree;
             } else {
-                RegisterLoadImageAfterAppearingOnScreen(sender, uri);
+                new Action(async () => await RegisterLoadImageAfterAppearingOnScreen(sender, uri))();
             }
         }
 
-        private static async void OnBackgroundSourceChangedInternal(TemplatedControl sender, Uri uri) {
+        private static void OnBackgroundSourceChangedInternal(TemplatedControl sender, Uri uri) {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            await sender.SetImageBackgroundAsync(uri, dw, dh);
+            new Action(async () => await sender.SetImageBackgroundAsync(uri, dw, dh))();
             // sender.Unloaded += Sender_Unloaded;
         }
 
-        private static async void OnBackgroundSourceChangedInternal(Border sender, Uri uri) {
+        private static void OnBackgroundSourceChangedInternal(Border sender, Uri uri) {
             double dw = sender.Width != 0 ? sender.Width : sender.DesiredSize.Width;
             double dh = sender.Height != 0 ? sender.Height : sender.DesiredSize.Height;
 
             sender.Background = App.GetResource<SolidColorBrush>("VKBackgroundHoverBrush");
-            await sender.SetImageBackgroundAsync(uri, dw, dh);
+            new Action(async () => await sender.SetImageBackgroundAsync(uri, dw, dh))();
             // sender.Unloaded += Sender_Unloaded;
         }
 
@@ -191,7 +194,7 @@ namespace ELOR.Laney.Controls {
                 sender.Resources.Add("uri", uri);
                 sender.AttachedToVisualTree += OnAttachedToVisualTree;
             } else {
-                RegisterLoadImageAfterAppearingOnScreen(sender, uri);
+                new Action(async () => await RegisterLoadImageAfterAppearingOnScreen(sender, uri))();
             }
         }
 
@@ -209,7 +212,7 @@ namespace ELOR.Laney.Controls {
                 sender.Resources.Add("uri", uri);
                 sender.AttachedToVisualTree += OnAttachedToVisualTree;
             } else {
-                RegisterLoadImageAfterAppearingOnScreen(sender, uri);
+                new Action(async () => await RegisterLoadImageAfterAppearingOnScreen(sender, uri))();
             }
         }
 
