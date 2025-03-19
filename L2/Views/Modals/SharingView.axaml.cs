@@ -54,7 +54,7 @@ namespace ELOR.Laney.Views.Modals {
         }
 
         private void OnSearchBoxKeyUp(object sender, KeyEventArgs e) {
-            if (e.Key == Key.Enter) CurrentViewModel.SearchChats();
+            if (e.Key == Key.Enter) new Action(async () => await CurrentViewModel.SearchChatsAsync())();
         }
 
         private void SessionSwitcher_SelectionChanged(object sender, SelectionChangedEventArgs e) {

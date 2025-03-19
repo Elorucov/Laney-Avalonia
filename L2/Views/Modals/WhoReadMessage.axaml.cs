@@ -7,6 +7,7 @@ using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using VKUI.Windows;
 
 namespace ELOR.Laney;
@@ -35,10 +36,10 @@ public partial class WhoReadMessage : DialogWindow {
 
     private void WhoReadMessage_Activated(object sender, EventArgs e) {
         Activated -= WhoReadMessage_Activated;
-        GetMembersWhoReadMessage();
+        new System.Action(async () => await GetMembersWhoReadMessageAsync())();
     }
 
-    private async void GetMembersWhoReadMessage() {
+    private async Task GetMembersWhoReadMessageAsync() {
         try {
             LoadingIndicator.IsVisible = true;
             var response = await session.API.Messages.GetMessageReadPeersAsync(session.GroupId, peerId, cmid, 0, 50, VKAPIHelper.Fields);

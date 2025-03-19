@@ -18,7 +18,7 @@ namespace ELOR.Laney.Core {
         public static int Chunks { get; private set; } = 0;
 
         static bool initialized = false;
-        public static async void InitKeywords() {
+        public static async Task InitKeywordsAsync() {
             if (!Settings.SuggestStickers || initialized) return;
             initialized = true;
 

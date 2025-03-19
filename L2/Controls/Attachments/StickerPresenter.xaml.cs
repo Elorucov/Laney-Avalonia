@@ -34,7 +34,7 @@ namespace ELOR.Laney.Controls.Attachments {
             base.OnApplyTemplate(e);
             StickerView = e.NameScope.Find<Border>(nameof(StickerView));
             isUILoaded = true;
-            Render();
+            new System.Action(async () => await RenderAsync())();
         }
 
         #endregion
@@ -43,11 +43,11 @@ namespace ELOR.Laney.Controls.Attachments {
             base.OnPropertyChanged(change);
 
             if (change.Property == StickerProperty) {
-                Render();
+                new System.Action(async () => await RenderAsync())();
             }
         }
 
-        private async void Render() {
+        private async Task RenderAsync() {
             if (!isUILoaded || Sticker == null) return;
             await StickerView.SetImageBackgroundAsync(Sticker.GetSizeAndUriForThumbnail(this.Width).Uri, Width, Height);
             // ImageLoader.SetBackgroundSource(StickerView, Sticker.GetSizeAndUriForThumbnail(this.Width).Uri);

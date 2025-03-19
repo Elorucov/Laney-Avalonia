@@ -461,7 +461,7 @@ namespace ELOR.Laney.Core {
                     Name = currentUser.FullName;
                     Avatar = new Uri(currentUser.Photo100);
 
-                    VKQueue.Init(info.QueueConfig);
+                    await VKQueue.InitAsync(info.QueueConfig);
                 } else {
                     var currentGroup = _sessions.Where(s => s.Id == Id).FirstOrDefault();
                     Name = currentGroup.Name;
@@ -744,14 +744,14 @@ namespace ELOR.Laney.Core {
 
             new Action(async () => {
                 await Task.Delay(2000); // чтобы метод api не выполнялся одновременно с другими и не поймать ошибку 6.
-                StickersManager.InitKeywords();
+                await StickersManager.InitKeywordsAsync();
             })();
         }
 
         private static void Settings_SettingChanged(string key, object value) {
             switch (key) {
                 case Settings.STICKERS_SUGGEST:
-                    StickersManager.InitKeywords();
+                    new Action(async () => await StickersManager.InitKeywordsAsync())();
                     break;
             }
         }

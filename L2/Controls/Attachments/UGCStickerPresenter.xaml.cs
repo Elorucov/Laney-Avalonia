@@ -4,6 +4,7 @@ using Avalonia.Controls.Primitives;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney {
     public class UGCStickerPresenter : TemplatedControl {
@@ -29,7 +30,7 @@ namespace ELOR.Laney {
             base.OnApplyTemplate(e);
             StickerView = e.NameScope.Find<Border>(nameof(StickerView));
             isUILoaded = true;
-            Render();
+            new System.Action(async () => await RenderAsync())();
         }
 
         #endregion
@@ -38,11 +39,11 @@ namespace ELOR.Laney {
             base.OnPropertyChanged(change);
 
             if (change.Property == StickerProperty) {
-                Render();
+                new System.Action(async () => await RenderAsync())();
             }
         }
 
-        private async void Render() {
+        private async Task RenderAsync() {
             if (!isUILoaded || Sticker == null || Sticker.Images == null || Sticker.Images.Count == 0) return;
             await StickerView.SetImageBackgroundAsync(Sticker.Images.LastOrDefault().Uri, Width, Height);
         }

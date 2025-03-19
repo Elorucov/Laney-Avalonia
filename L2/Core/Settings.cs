@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace ELOR.Laney.Core {
     public static class Settings {
@@ -40,14 +41,22 @@ namespace ELOR.Laney.Core {
             }
         }
 
-        private static async void UpdateFile() {
+        private static readonly SemaphoreSlim fileWriteSemaphore = new SemaphoreSlim(1, 1);
+        private static void UpdateFile() {
             string content = ElorPrefs.SerializeToXML(_settings);
             byte[] bytes = Encoding.UTF8.GetBytes(content);
 
-            _file.Position = 0;
-            _file.SetLength(bytes.Length);
-            await _file.WriteAsync(bytes);
-            await _file.FlushAsync();
+            new Action(async () => {
+                await fileWriteSemaphore.WaitAsync();
+                try {
+                    _file.Position = 0;
+                    _file.SetLength(bytes.Length);
+                    await _file.WriteAsync(bytes);
+                    await _file.FlushAsync();
+                } finally {
+                    fileWriteSemaphore.Release();
+                }
+            })();
         }
 
         public static void UnlockSettingsFile(bool doNotUpdateFile = false) {

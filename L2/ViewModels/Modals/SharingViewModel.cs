@@ -4,6 +4,7 @@ using ELOR.Laney.Helpers;
 using Serilog;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels.Modals {
     public enum SharingContentType { Messages, Attachments }
@@ -36,7 +37,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             }
         }
 
-        public async void SearchChats() {
+        public async Task SearchChatsAsync() {
             if (IsLoading) return;
             Chats.Clear();
             Placeholder = null;
@@ -76,9 +77,9 @@ namespace ELOR.Laney.ViewModels.Modals {
                 IsLoading = false;
                 if (Chats != null && Chats.Count > 0) {
                     Log.Error(ex, $"Error in SharingViewModel.SearchChats!");
-                    if (await ExceptionHelper.ShowErrorDialogAsync(Session.ModalWindow, ex)) SearchChats();
+                    if (await ExceptionHelper.ShowErrorDialogAsync(Session.ModalWindow, ex)) await SearchChatsAsync();
                 } else {
-                    Placeholder = PlaceholderViewModel.GetForException(ex, (o) => SearchChats());
+                    Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await SearchChatsAsync());
                 }
             }
         }
