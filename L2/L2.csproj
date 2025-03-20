@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.635</AssemblyVersion>
-    <FileVersion>2.0.635</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.635-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250304-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.635-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250304-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.635-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250304-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.636</AssemblyVersion>
+    <FileVersion>2.0.636</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.636-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250304-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.636-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250304-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.636-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250304-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -184,7 +184,9 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.2.5" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.5" />
-    <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Labs.Lottie" Version="11.2.0" />
+    <PackageReference Include="Avalonia.Labs.Panels" Version="11.2.0" />
+    <PackageReference Include="Avalonia.Labs.Qr" Version="11.2.0" />
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.5" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
@@ -214,12 +216,6 @@
   <ItemGroup>
     <Reference Include="ColorTextBlock.Avalonia">
       <HintPath>..\Libraries\ColorTextBlock.Avalonia.dll</HintPath>
-    </Reference>
-    <Reference Include="Avalonia.Flexbox">
-      <HintPath>..\Libraries\Avalonia.Flexbox.dll</HintPath>
-    </Reference>
-    <Reference Include="Avalonia.Labs.Qr">
-      <HintPath>..\Libraries\Avalonia.Labs.Qr.dll</HintPath>
     </Reference>
     <!--<Reference Include="DesktopNotifications">
       <HintPath>..\Libraries\DesktopNotifications.dll</HintPath>

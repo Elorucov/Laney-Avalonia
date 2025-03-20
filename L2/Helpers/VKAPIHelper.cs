@@ -131,68 +131,6 @@ namespace ELOR.Laney.Helpers {
             return from;
         }
 
-        #region Execute
-
-        public static string BuildCodeForGetMessagesByCMID(long groupId, List<KeyValuePair<long, int>> peerMessagePair, List<string> fields) {
-            StringBuilder forks = new StringBuilder(), waits = new StringBuilder(),
-                items = new StringBuilder(), profiles = new StringBuilder(), groups = new StringBuilder();
-
-            int i = 1;
-
-            foreach (var pm in peerMessagePair) {
-                string fork = $"var f{i} = fork(API.messages.getByConversationMessageId({{\"group_id\": {groupId}, \"peer_id\": {pm.Key}, \"conversation_message_ids\": {pm.Value}, \"extended\": 1, \"fields\": \"{String.Join(',', fields)}\"}}));\n";
-                forks.Append(fork);
-
-                string wait = $"var w{i} = wait(f{i});\n";
-                waits.Append(wait);
-
-                string item = $"response.items.push(w{i}.items[0]);\n";
-                items.Append(item);
-
-                string profile = $@"if (w{i}.profiles) {{
-  var pi{i} = 0;
-  while (pi{i} < w{i}.profiles.length) {{
-    response.profiles.push(w{i}.profiles[pi{i}]);
-    pi{i} = pi{i} + 1;
-  }}
-}}";
-                profiles.Append(profile);
-
-                string group = $@"if (w{i}.groups) {{
-  var gi{i} = 0;
-  while (gi{i} < w{i}.groups.length) {{
-    response.groups.push(w{i}.groups[gi{i}]);
-    gi{i} = gi{i} + 1;
-  }}
-}}";
-                groups.Append(group);
-
-                i++;
-            }
-
-            string code = $@"
-var response = {{items: [],
-  profiles: [],
-  groups: []
-}};
-
-{forks}
-
-{waits}
-
-{items}
-
-{profiles}
-
-{groups}
-
-return response;
-";
-            return code;
-        }
-
-        #endregion
-
         // TODO: убрать методы кнопок ботов в отдельный класс.
 
         internal static void GenerateButtons(StackPanel root, List<List<BotButton>> buttons) {

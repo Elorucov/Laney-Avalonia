@@ -407,12 +407,16 @@ namespace ELOR.Laney.ViewModels {
                 await GoToMessageAsync(LastMessage);
             } else {
                 Log.Information($"GoToLastMessage: last message in chat is not displayed. Showing ReceivedMessages...");
-                DisplayedMessages = new MessagesCollection(ReceivedMessages.ToList());
-                ScrollToMessageRequested?.Invoke(this, LastMessage.ConversationMessageId);
-                if (ReceivedMessages.Count < 20) {
-                    Log.Information($"GoToLastMessage: need get more messages from API to display.");
-                    MessagesChunkLoaded += PrevMessagesLoaded;
-                    await LoadPreviousMessagesAsync();
+                if (ReceivedMessages.Count > 10) {
+                    DisplayedMessages = new MessagesCollection(ReceivedMessages.ToList());
+                    ScrollToMessageRequested?.Invoke(this, LastMessage.ConversationMessageId);
+                    if (ReceivedMessages.Count < 20) {
+                        Log.Information($"GoToLastMessage: need get more messages from API to display.");
+                        MessagesChunkLoaded += PrevMessagesLoaded;
+                        await LoadPreviousMessagesAsync();
+                    }
+                } else {
+                    await GoToMessageAsync(LastMessage);
                 }
             }
         }

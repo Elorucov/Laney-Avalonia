@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Helpers {
     public static class ExceptionHelper {
+        public static bool IsExceptionAboutNoConnection(Exception ex) {
+            return ex is System.Net.Http.HttpRequestException httpex &&
+                httpex.InnerException != null && httpex.InnerException is SocketException sex && sex.ErrorCode == 11001;
+        }
+
         public static Tuple<string, string> GetDefaultErrorInfo(Exception ex) {
             Tuple<string, string> result = new Tuple<string, string>(String.Empty, String.Empty);
             if (ex is APIException apiEx) {

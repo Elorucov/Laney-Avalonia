@@ -619,6 +619,7 @@ namespace ELOR.Laney.Core {
 
         private void LongPoll_StateChanged(object sender, LongPollState e) {
             if (Window == null) return;
+            Log.Information($"VKSession > LongPoll state changed to {e}");
             new Action(async () => {
                 await Dispatcher.UIThread.InvokeAsync(() => {
                     if (e == LongPollState.Working) {
