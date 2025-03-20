@@ -1,8 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Labs.Lottie;
 using Avalonia.Media;
-using Avalonia.Skia.Lottie;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;

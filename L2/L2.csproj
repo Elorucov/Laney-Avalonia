@@ -184,7 +184,7 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.2.5" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.5" />
-    <PackageReference Include="Avalonia.Skia.Lottie" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Labs.Lottie" Version="11.2.0" />
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.5" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
