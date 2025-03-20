@@ -39,6 +39,9 @@ namespace ELOR.Laney.Core {
         private bool isRunning = false;
         private Logger Log;
 
+        private LongPollState _state;
+        public LongPollState State { get { return _state; } private set { _state = value; StateChanged?.Invoke(this, value);  } }
+
         public LongPoll(VKAPI api, long sessionId, long groupId) {
             API = api;
             this.sessionId = sessionId;
@@ -50,7 +53,7 @@ namespace ELOR.Laney.Core {
             if (Settings.EnableLongPollLogs) {
                 long lid = groupId == 0 ? sessionId : -groupId;
                 loggerConfig = loggerConfig.WriteTo.File(Path.Combine(App.LocalDataPath, "logs", $"L2_LP_{lid}_.log"),
-                    buffered: true, retainedFileCountLimit: 20, flushToDiskInterval: TimeSpan.FromSeconds(30));
+                    buffered: true, retainedFileCountLimit: 20, flushToDiskInterval: TimeSpan.FromSeconds(30)).MinimumLevel.Information();
             }
 
             Log = loggerConfig.CreateLogger();
@@ -102,7 +105,7 @@ namespace ELOR.Laney.Core {
 
         public void Run() {
             Log.Information("Starting LongPoll...");
-            StateChanged?.Invoke(this, LongPollState.Connecting);
+            if (State != LongPollState.Updating) State = LongPollState.Connecting;
             cts = new CancellationTokenSource();
             isRunning = true;
 
@@ -110,7 +113,7 @@ namespace ELOR.Laney.Core {
                 while (isRunning) {
                     try {
                         Log.Information($"Waiting... TS: {TimeStamp}; PTS: {PTS}");
-                        StateChanged?.Invoke(this, LongPollState.Working);
+                        State = State == LongPollState.Failed || State == LongPollState.NoInternet ? LongPollState.Updating : LongPollState.Working;
 
                         Dictionary<string, string> parameters = new Dictionary<string, string> {
                             { "act", "a_check" },
@@ -130,13 +133,14 @@ namespace ELOR.Laney.Core {
                             TimeStamp = (int)jr["ts"];
                             PTS = (int)jr["pts"];
                             await ParseUpdatesAsync(jr["updates"].AsArray());
+                            if (State == LongPollState.Updating) State = LongPollState.Working;
                             await Task.Delay(1000).ConfigureAwait(false);
                         } else if (jr["failed"] != null) {
                             int errCode = (int)jr["failed"];
                             string errText = jr["error"].ToString();
                             Log.Error($"LongPoll error! Code {errCode}, message: {errText}. Restarting after {WAIT_AFTER_FAIL} sec...");
                             if (errCode != 1) {
-                                StateChanged?.Invoke(this, LongPollState.Failed);
+                                State = LongPollState.Failed;
                                 await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
                                 Restart();
                             }
@@ -144,8 +148,10 @@ namespace ELOR.Laney.Core {
                             throw new ArgumentException($"A non-standart response was received!\n{respstr}");
                         }
                     } catch (Exception ex) {
+                        bool isConnectionLost = ExceptionHelper.IsExceptionAboutNoConnection(ex);
+
                         Log.Error(ex, $"Exception when parsing LongPoll events! Trying after {WAIT_AFTER_FAIL} sec.");
-                        StateChanged?.Invoke(this, LongPollState.Failed);
+                        State = isConnectionLost ? LongPollState.NoInternet : LongPollState.Failed;
                         await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
                     }
                 }
@@ -159,9 +165,9 @@ namespace ELOR.Laney.Core {
 
         public void Restart() {
             Stop();
-            StateChanged?.Invoke(this, LongPollState.Updating);
+            State = LongPollState.Updating;
 
-            new System.Action(async () => {
+            new System.Action(async () => await Task.Factory.StartNew(async () => {
                 bool trying = true;
                 while (trying) {
                     try {
@@ -182,7 +188,7 @@ namespace ELOR.Laney.Core {
                     }
                 }
                 Run();
-            })();
+            }))();
         }
 
         private async Task ParseUpdatesAsync(JsonArray updates, List<Message> messages = null) {
@@ -449,16 +455,11 @@ namespace ELOR.Laney.Core {
                 debugPairs = String.Join(", ", isEditedCMIDs.Keys.ToList());
                 Log.Information($"Need to get this messages from API: {debugPairs}.");
 
-                string code = VKAPIHelper.BuildCodeForGetMessagesByCMID(groupId, peerMessagePair, VKAPIHelper.Fields);
-
-                MessagesList response = await API.CallMethodAsync<MessagesList>("execute", new Dictionary<string, string> {
-                    { "code", code }
-                });
+                MessagesList response = await API.Messages.GetByIdAsync(groupId, peerMessagePair, 0, true, VKAPIHelper.Fields);
                 if (response.Items.Count > 0) {
                     CacheManager.Add(response.Profiles);
                     CacheManager.Add(response.Groups);
                     foreach (Message msg in response.Items) {
-
                         int flag = flags[msg.ConversationMessageId];
                         bool isEdited = isEditedCMIDs[$"{msg.PeerId}_{msg.ConversationMessageId}"];
                         Log.Information($"Successfully received message ({msg.PeerId}_{msg.ConversationMessageId}) from API. Is edited: {isEdited}");

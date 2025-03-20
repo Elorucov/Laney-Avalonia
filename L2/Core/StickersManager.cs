@@ -72,7 +72,7 @@ namespace ELOR.Laney.Core {
                 long ram2 = Process.GetCurrentProcess().PrivateMemorySize64;
                 double ram2mb = (double)ram2 / 1048576;
 
-                Log.Information($"StickersManager.InitKeywords: Loading complete. Elpased: {Math.Round((double)sw.ElapsedMilliseconds * 1000, 3)} sec. RAM before load: {ram0mb} Mb; after load: {ram1mb} Mb; after GC: {ram2mb} Mb.");
+                Log.Information($"StickersManager.InitKeywords: Loading complete. Elpased: {Math.Round(sw.Elapsed.TotalSeconds, 3)} sec. RAM before load: {ram0mb} Mb; after load: {ram1mb} Mb; after GC: {ram2mb} Mb.");
             });
         }
 

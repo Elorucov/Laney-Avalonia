@@ -2,7 +2,7 @@
 
 namespace ELOR.Laney.DataModels {
     public enum LongPollState {
-        Connecting, Updating, Working, Failed
+        Connecting, Updating, Working, Failed, NoInternet
     }
 
     public enum LongPollActivityType {

@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace ELOR.VKAPILib {
     internal static class Utils {
@@ -37,6 +39,17 @@ namespace ELOR.VKAPILib {
 
         internal static string Combine(this List<string> items, char sym = ',') {
             return String.Join(sym.ToString(), items);
+        }
+
+        internal static string Combine<TKey, TValue>(this List<KeyValuePair<TKey, TValue>> items, char sym = ',') {
+            StringBuilder sb = new StringBuilder();
+            foreach (var pair in CollectionsMarshal.AsSpan(items)) {
+                sb.Append($"{pair.Key.ToString()}_{pair.Value.ToString()}");
+                sb.Append(sym);
+            }
+            sb.Remove(sb.Length - 2, 1);
+            string result = sb.ToString();
+            return result;
         }
 
         internal static string ToVKFormat(this DateTime d) {

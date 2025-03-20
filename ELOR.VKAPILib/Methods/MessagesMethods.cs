@@ -277,13 +277,13 @@ namespace ELOR.VKAPILib.Methods {
 
         /// <summary>Returns messages by their IDs.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
-        /// <param name="messageIds">Message IDs.</param>
+        /// <param name="peerCmids">Conversation message IDs.</param>
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
-        public async Task<MessagesList> GetByIdAsync(long groupId, List<int> messageIds, int previewLength, bool extended = false, List<string> fields = null) {
+        public async Task<MessagesList> GetByIdAsync(long groupId, List<KeyValuePair<long, int>> peerCmids, int previewLength, bool extended = false, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
-            parameters.Add("message_ids", messageIds.Combine());
+            parameters.Add("peer_cmids", peerCmids.Combine());
             if (previewLength > 0) parameters.Add("preview_length", previewLength.ToString());
             if (extended) parameters.Add("extended", "1");
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
