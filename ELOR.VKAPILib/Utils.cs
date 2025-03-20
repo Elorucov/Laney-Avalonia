@@ -47,9 +47,8 @@ namespace ELOR.VKAPILib {
                 sb.Append($"{pair.Key.ToString()}_{pair.Value.ToString()}");
                 sb.Append(sym);
             }
-            sb.Remove(sb.Length - 2, 1);
-            string result = sb.ToString();
-            return result;
+            sb.Remove(sb.Length - 1, 1);
+            return sb.ToString();
         }
 
         internal static string ToVKFormat(this DateTime d) {

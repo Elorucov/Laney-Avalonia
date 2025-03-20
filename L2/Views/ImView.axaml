@@ -4,7 +4,7 @@
              xmlns:controls="using:ELOR.Laney.Controls"
              xmlns:core="using:ELOR.Laney.Core"
              xmlns:vm="using:ELOR.Laney.ViewModels"
-             xmlns:fb="using:Avalonia.Flexbox"
+             xmlns:fb="using:Avalonia.Labs.Panels"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

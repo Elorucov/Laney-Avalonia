@@ -471,7 +471,7 @@ namespace ELOR.Laney.Core {
                     }
                 }
             } catch (Exception ex) {
-                Log.Error(ex, $"An error occured while getting messages from API! Messages: {debugPairs}.");
+                Log.Error(ex, $"An error occured while getting messages from API! Messages: {debugPairs}: {ex.Message}");
             }
         }
 
