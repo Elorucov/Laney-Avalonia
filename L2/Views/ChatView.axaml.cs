@@ -81,10 +81,14 @@ namespace ELOR.Laney.Views {
             BottomDropArea.AddHandler(DragDrop.DropEvent, OnDropOnArea);
         }
 
+
         Stopwatch sw = null;
-        private void CVI_Initialized(object sender, EventArgs e) {
+        int currentScrollFixIteration = 0;
+
+        private void CVI_DataContextChanged(object sender, EventArgs e) {
             canTriggerLoadingMessages = false;
             if (sw == null) {
+                currentScrollFixIteration = 0;
                 sw = Stopwatch.StartNew();
                 Log.Information($"Starting rendering ChatViewItem-s...");
             }
@@ -93,23 +97,20 @@ namespace ELOR.Laney.Views {
         // Выполняется после apply template у ChatViewItem.
         // Удобно с помощью этого скроллить куда надо.
 
-        int totalDisplayedMessagesForScrollFix = 0;
-        int currentScrollFixIteration = 0;
-
         private void CVI_Loaded(object sender, RoutedEventArgs e) {
             if (Chat == null) return;
-            if (totalDisplayedMessagesForScrollFix == 0) totalDisplayedMessagesForScrollFix = Chat.DisplayedMessages.Count;
-            currentScrollFixIteration++;
-            // Debug.WriteLine($"{currentScrollFixIteration}/{totalDisplayedMessagesForScrollFix}");
+            Debug.WriteLine($"{currentScrollFixIteration}/{Chat.DisplayedMessages.Count}");
 
-            if (totalDisplayedMessagesForScrollFix == currentScrollFixIteration) {
+            if (Chat.DisplayedMessages.Count == currentScrollFixIteration) {
                 sw.Stop();
                 long ms = sw.ElapsedMilliseconds;
                 currentScrollFixIteration = 0;
 
-                Log.Information($"All ChatViewItem are rendered. Count: {totalDisplayedMessagesForScrollFix}, time: {ms} ms.");
+                Log.Information($"All ChatViewItem are rendered. Count: {Chat.DisplayedMessages.Count}, time: {ms} ms.");
                 canTriggerLoadingMessages = true;
+                sw = null;
             }
+            currentScrollFixIteration++;
         }
 
         private void Settings_SettingChanged(string key, object value) {
@@ -129,7 +130,6 @@ namespace ELOR.Laney.Views {
         private void ChatView_DataContextChanged(object sender, EventArgs e) {
             if (MessagesListScrollViewer != null) MessagesListScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
             sw = null;
-            totalDisplayedMessagesForScrollFix = 0;
             if (Chat != null) {
                 Chat.ScrollToMessageRequested -= ScrollToMessage;
                 Chat.MessagesChunkLoaded -= TrySaveScroll;

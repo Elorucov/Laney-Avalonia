@@ -166,7 +166,7 @@
       </ListBox.ItemsPanel>
       <ListBox.ItemTemplate>
         <DataTemplate x:DataType="vmc:MessageViewModel">
-          <controls:ChatViewItem Initialized="CVI_Initialized" Loaded="CVI_Loaded" Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
+          <controls:ChatViewItem DataContextChanged="CVI_DataContextChanged" Loaded="CVI_Loaded" Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
