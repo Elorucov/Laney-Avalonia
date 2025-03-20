@@ -58,6 +58,7 @@ namespace ELOR.Laney.Views {
                         Debug.WriteLine($"ScrollSaver.ExtendChanged: scmi={scrollToMessageIndex}");
                         d.Handled = true;
                         MessagesList.ScrollIntoView(scrollToMessageIndex);
+                        scrollToMessageIndex = -1;
                     }
                 };
             };
@@ -100,6 +101,7 @@ namespace ELOR.Laney.Views {
         private void CVI_Loaded(object sender, RoutedEventArgs e) {
             if (Chat == null) return;
             Debug.WriteLine($"{currentScrollFixIteration}/{Chat.DisplayedMessages.Count}");
+            currentScrollFixIteration++;
 
             if (Chat.DisplayedMessages.Count == currentScrollFixIteration) {
                 sw.Stop();
@@ -110,7 +112,6 @@ namespace ELOR.Laney.Views {
                 canTriggerLoadingMessages = true;
                 sw = null;
             }
-            currentScrollFixIteration++;
         }
 
         private void Settings_SettingChanged(string key, object value) {
