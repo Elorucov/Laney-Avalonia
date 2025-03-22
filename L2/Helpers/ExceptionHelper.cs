@@ -5,14 +5,18 @@ using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Helpers {
     public static class ExceptionHelper {
         public static bool IsExceptionAboutNoConnection(Exception ex) {
-            return ex is System.Net.Http.HttpRequestException httpex &&
-                httpex.InnerException != null && httpex.InnerException is SocketException sex && sex.ErrorCode == 11001;
+            HttpRequestException httpex = ex as HttpRequestException;
+            if (httpex == null) return false;
+            return httpex.InnerException != null && 
+                (httpex.InnerException is SocketException sex && sex.ErrorCode == 11001) || // No internet/host
+                (httpex.InnerException is IOException || httpex.InnerException is ObjectDisposedException); // Aborted
         }
 
         public static Tuple<string, string> GetDefaultErrorInfo(Exception ex) {

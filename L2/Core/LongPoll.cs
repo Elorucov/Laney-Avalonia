@@ -4,6 +4,7 @@ using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
+using ELOR.VKAPILib.Objects.Messages;
 using Serilog;
 using Serilog.Core;
 using System;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -79,6 +81,7 @@ namespace ELOR.Laney.Core {
         public delegate void ReactionsChangedDelegate(LongPoll longPoll, long peerId, int cmId, LongPollReactionEventType type, int myReactionId, List<MessageReaction> reactions);
         public delegate void UnreadReactionsChangedDelegate(LongPoll longPoll, long peerId, List<int> cmIds);
 
+        public event EventHandler NeedFullResync; // if getLongPollHistory failed.
         public event MessageFlagsDelegate MessageFlagSet; // 10002
         public event MessageFlagsDelegate MessageFlagRemove; // 10003
         public event MessageReceivedDelegate MessageReceived; // 10004
@@ -171,7 +174,7 @@ namespace ELOR.Laney.Core {
                 bool trying = true;
                 while (trying) {
                     try {
-                        Log.Information("Getting LongPoll history...");
+                        Log.Information($"Getting LongPoll history... PTS: {PTS}");
                         var response = await API.Messages.GetLongPollHistoryAsync(groupId, VERSION, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
                         CacheManager.Add(response.Profiles);
                         CacheManager.Add(response.Groups);
@@ -183,11 +186,17 @@ namespace ELOR.Laney.Core {
                         if (response.More) PTS = response.NewPTS;
                         trying = response.More;
                     } catch (Exception ex) {
-                        Log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
-                        await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
+                        if (ExceptionHelper.IsExceptionAboutNoConnection(ex)) {
+                            Log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
+                            await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
+                        } else {
+                            Log.Error(ex, $"Exception while getting LongPoll history! Required full resync.");
+                            trying = false;
+                            NeedFullResync?.Invoke(this, null);
+                        }
                     }
                 }
-                Run();
+                if (Server != null) Run();
             }))();
         }
 
@@ -198,6 +207,7 @@ namespace ELOR.Laney.Core {
 
             // TODO: для каждого события (кроме 10004, 10005 и 10018) создать отдельный метод.
             foreach (JsonArray u in updates) {
+                Log.Information(string.Join(',', u));
                 int eventId = (int)u[0];
                 switch (eventId) {
                     case 10002:
@@ -253,7 +263,7 @@ namespace ELOR.Laney.Core {
                         break;
                     case 10005:
                     case 10018:
-                        bool isDeletedBeforeEvent2 = u.Count <= 3;
+                        bool isDeletedBeforeEvent2 = u.Count <= 4;
                         int editedMsgId = (int)u[1];
                         long peerId5 = (long)u[3];
                         Message editMsgFromHistory = messages?.Where(m => m.ConversationMessageId == editedMsgId).FirstOrDefault();
@@ -346,9 +356,11 @@ namespace ELOR.Laney.Core {
                         CallbackReceived?.Invoke(this, cbData);
                         break;
                     case 601:
+                        Log.Information($"EVENT {eventId}: length: {u.Count}");
                         ParseReactionsAndInvoke(u.Select(n => (long)n.Deserialize(typeof(long), L2JsonSerializerContext.Default)).ToArray());
                         break;
                     case 602:
+                        Log.Information($"EVENT {eventId}: length: {u.Count}");
                         ParseUnreadReactionsAndInvoke(u.Select(n => (int)n.Deserialize(typeof(int), L2JsonSerializerContext.Default)).ToArray());
                         break;
                 }
