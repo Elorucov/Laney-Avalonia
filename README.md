@@ -1,8 +1,8 @@
-<picture align="center">
-  <source media="(prefers-color-scheme: dark)" srcset="docs/logo_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/logo_light.png">
+<p align="center"><picture>
+  <source media="(prefers-color-scheme: dark)" width="480px" srcset="docs/logo_dark.png">
+  <source media="(prefers-color-scheme: light)" width="480px" srcset="docs/logo_light.png">
   <img alt="Logo" src="docs/logo_light.png">
-</picture>
+</picture></p>
 
 Это Laney 2 — кроссплатформенная версия Laney, альтернативного мессенджера ВКонтакте, написанная на платформе .NET с использованием UI-фреймворка [Avalonia](https://github.com/AvaloniaUI/Avalonia).
 
@@ -100,6 +100,7 @@ pwsh ./build_aot.ps1 -channel RELEASE
 
 ### Известные баги
 + Из-за анимированных стикеров увеличивается потребление ОЗУ. Проблема на стороне используемой библиотеки.
++ Могут быть проблемы с сохранением позиции сообщений при переключении чатов и при подгрузке старых сообщений.
 
 ## Планы на будущее:
 + Выделить проект VKUI в отдельный репозиторий, чтобы другие разработчики могли использовать VKUI в своих Avalonia-приложениях. Возможно, ещё и ELOR.VKAPILib, но пока не планирую.
