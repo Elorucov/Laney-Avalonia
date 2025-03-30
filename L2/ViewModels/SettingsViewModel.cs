@@ -26,7 +26,7 @@ namespace ELOR.Laney.ViewModels {
             };
 
 #if RELEASE
-            if (Settings.Get("god", false)) Categories.Add(new SettingsCategory(VKIconNames.Icon28BugOutline, "Debug", new DebugPage(), null));
+            if (ELOR.Laney.Core.Settings.Get("god", false)) Categories.Add(new SettingsCategory(VKIconNames.Icon28BugOutline, "Debug", new DebugPage(), null));
 #endif
 
             SelectedCategory = Categories.FirstOrDefault();
