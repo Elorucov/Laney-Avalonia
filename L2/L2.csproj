@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.640</AssemblyVersion>
-    <FileVersion>2.0.640</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.640-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.640-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.640-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.641</AssemblyVersion>
+    <FileVersion>2.0.641</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.641-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.641-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.641-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -318,6 +318,9 @@
     <AvaloniaXaml Include="Controls\MessagesListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaXaml>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers\Hash\MurmurHash.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Assets\i18n\Resources.Designer.cs">

@@ -3,7 +3,9 @@ using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
+using ELOR.Laney.Helpers.Hash;
 using ELOR.VKAPILib.Objects;
+using ExCSS;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,7 @@ namespace ELOR.Laney.ViewModels.Controls {
     }
 
     public sealed class MessageViewModel : ViewModelBase, IComparable, IMessageListItem {
-        private static Dictionary<UInt128, MessageViewModel> _cachedMessages = new Dictionary<UInt128, MessageViewModel>();
+        private static Dictionary<uint, MessageViewModel> _cachedMessages = new Dictionary<uint, MessageViewModel>();
         private static uint _instances;
 
         private VKSession session;
@@ -372,28 +374,30 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         #endregion
 
-        private static UInt128 CalcHashFast(long peerId, int cmid, int id) {
-            byte[] data = new byte[16];
-            BitConverter.GetBytes(peerId).CopyTo(data, 0);
-            BitConverter.GetBytes(cmid).CopyTo(data, 8);
-            BitConverter.GetBytes(id).CopyTo(data, 12);
-            ulong a = BitConverter.ToUInt64(data, 0);
-            ulong b = BitConverter.ToUInt64(data, 8);
-            return a * b;
-        }
-
-        //private static uint CalcHashMinRAM(long peerId, int cmid, int id) {
-        //    byte[] data = new byte[16];
+        //private static UInt128 CalcHashFast(long peerId, long fromId, int cmid, long time) {
+        //    byte[] data = new byte[28];
         //    BitConverter.GetBytes(peerId).CopyTo(data, 0);
-        //    BitConverter.GetBytes(cmid).CopyTo(data, 8);
-        //    BitConverter.GetBytes(id).CopyTo(data, 12);
-        //    return MurmurHash.Shared.Hash(data);
+        //    BitConverter.GetBytes(fromId).CopyTo(data, 8);
+        //    BitConverter.GetBytes(cmid).CopyTo(data, 16);
+        //    BitConverter.GetBytes(time).CopyTo(data, 20);
+        //    ulong a = BitConverter.ToUInt64(data, 0);
+        //    ulong b = BitConverter.ToUInt64(data, 8);
+        //    return a * b;
         //}
+
+        private static uint CalcHashMinRAM(long peerId, long fromId, int cmid, long time) {
+            byte[] data = new byte[28];
+            BitConverter.GetBytes(peerId).CopyTo(data, 0);
+            BitConverter.GetBytes(fromId).CopyTo(data, 8);
+            BitConverter.GetBytes(cmid).CopyTo(data, 16);
+            BitConverter.GetBytes(time).CopyTo(data, 20);
+            return MurmurHash.Shared.Hash(data);
+        }
 
         // Further optimizations: check the last cmid in chat, and if msg.cmid > last, do not find in cache, just add here.
         public static MessageViewModel Create(Message msg, VKSession session = null) {
-            // uint hash = CalcHashMinRAM(msg.PeerId, msg.ConversationMessageId, msg.Id);
-            UInt128 hash = CalcHashFast(msg.PeerId, msg.ConversationMessageId, msg.Id);
+            uint hash = CalcHashMinRAM(msg.PeerId, msg.FromId, msg.ConversationMessageId, msg.DateUnix);
+            // UInt128 hash = CalcHashFast(msg.PeerId, msg.ConversationMessageId, msg.Id);
             if (_cachedMessages.ContainsKey(hash)) return _cachedMessages[hash];
 
             MessageViewModel message = new MessageViewModel(msg, session);
