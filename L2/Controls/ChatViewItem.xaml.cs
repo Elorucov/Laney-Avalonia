@@ -61,17 +61,21 @@ namespace ELOR.Laney.Controls {
             base.OnPropertyChanged(change);
             if (change.Property == MessageProperty) {
                 MessageViewModel old = change.OldValue as MessageViewModel;
+
                 if (old != null) {
                     old.PropertyChanged -= MessagePropertyChanged;
                 }
 
                 if (Root == null) return;
-                Root.Children.Clear();
-                if (change.NewValue == null) return;
+                if (change.NewValue == null) {
+                    Root.Children.Clear();
+                    return;
+                }
 
                 MessageViewModel newm = change.NewValue as MessageViewModel;
-                if (newm.Id == old.Id) return;
+                if (newm.ConversationMessageId == old.ConversationMessageId && newm.PeerId == old.PeerId) return;
 
+                Root.Children.Clear();
                 RenderContent(newm);
                 newm.PropertyChanged += MessagePropertyChanged;
             }

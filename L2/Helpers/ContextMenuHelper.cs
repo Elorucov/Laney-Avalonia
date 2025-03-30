@@ -197,7 +197,7 @@ namespace ELOR.Laney.Helpers {
 
             ActionSheetItem debug = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
-                Header = $"ID: {message.Id}, CMID: {message.ConversationMessageId}"
+                Header = $"ID: {message.GlobalId}, CMID: {message.ConversationMessageId}"
             };
             ActionSheetItem readers = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20ViewOutline },
@@ -270,7 +270,7 @@ namespace ELOR.Laney.Helpers {
 
             bool canPin = chat.ChatSettings != null ? chat.ChatSettings.ACL.CanChangePin : false;
             bool isMessagePinned = chat.PinnedMessage != null
-                ? chat.PinnedMessage.Id == message.Id : false;
+                ? chat.PinnedMessage.ConversationMessageId == message.ConversationMessageId : false;
 
             bool canEdit = message.CanEdit(session.Id);
 

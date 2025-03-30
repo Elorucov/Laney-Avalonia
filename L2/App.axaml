@@ -23,6 +23,7 @@
         <ResourceInclude Source="/Controls/CompactMessage.xaml"/>
         <ResourceInclude Source="/Controls/MediaSlider.xaml"/>
         <ResourceInclude Source="/Controls/MessageBubble.xaml"/>
+        <ResourceInclude Source="/Controls/MessagesListBox.xaml"/>
         <ResourceInclude Source="/Controls/PostUI.xaml"/>
         <ResourceInclude Source="/Templates/CommonTemplates.axaml"/>
         <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>

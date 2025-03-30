@@ -14,7 +14,7 @@ namespace ELOR.Laney.Helpers {
         public static bool IsExceptionAboutNoConnection(Exception ex) {
             HttpRequestException httpex = ex as HttpRequestException;
             if (httpex == null) return false;
-            return httpex.InnerException != null && 
+            return httpex.InnerException != null &&
                 (httpex.InnerException is SocketException sex && sex.ErrorCode == 11001) || // No internet/host
                 (httpex.InnerException is IOException || httpex.InnerException is ObjectDisposedException); // Aborted
         }

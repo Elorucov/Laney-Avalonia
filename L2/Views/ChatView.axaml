@@ -153,23 +153,23 @@
       </Grid>
     </Border>
 
-    <ListBox x:Name="MessagesList" Classes="MessagesList" Grid.Row="2" VerticalAlignment="Bottom" SelectionMode="Multiple,Toggle" Selection="{Binding SelectedMessages, Mode=TwoWay}" ItemsSource="{Binding DisplayedMessages, Mode=OneWay}">
-      <ListBox.Styles>
+    <controls:MessagesListBox x:Name="MessagesList" Classes="MessagesList" Grid.Row="2" VerticalAlignment="Bottom" SelectionMode="Multiple,Toggle" Selection="{Binding SelectedMessages, Mode=TwoWay}" ItemsSource="{Binding DisplayedMessages, Mode=OneWay}">
+      <controls:MessagesListBox.Styles>
         <Style Selector="ListBoxItem:nth-last-child(1)">
           <Setter Property="Margin" Value="0,0,0,4"/>
         </Style>
-      </ListBox.Styles>
-      <ListBox.ItemsPanel>
+      </controls:MessagesListBox.Styles>
+      <controls:MessagesListBox.ItemsPanel>
         <ItemsPanelTemplate>
           <StackPanel/>
         </ItemsPanelTemplate>
-      </ListBox.ItemsPanel>
-      <ListBox.ItemTemplate>
+      </controls:MessagesListBox.ItemsPanel>
+      <controls:MessagesListBox.ItemTemplate>
         <DataTemplate x:DataType="vmc:MessageViewModel">
-          <controls:ChatViewItem DataContextChanged="CVI_DataContextChanged" Loaded="CVI_Loaded" Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
+          <controls:ChatViewItem Message="{Binding}" ContextRequested="ChatViewItem_ContextRequested"/>
         </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+      </controls:MessagesListBox.ItemTemplate>
+    </controls:MessagesListBox>
     
     <Grid Grid.Row="2" x:Name="EmptyListContainer" IsVisible="{Binding !DisplayedMessages.Count}">
       <vkui:Spinner x:Name="LoadingSpinner" HorizontalAlignment="Center" Width="32" Height="32" IsVisible="{Binding IsLoading, Mode=OneWay}"/>

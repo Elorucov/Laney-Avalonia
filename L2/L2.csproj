@@ -178,17 +178,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.2.5" />
+    <PackageReference Include="Avalonia" Version="11.2.6" />
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
     <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.2.5" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.6" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.5" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.6" />
     <PackageReference Include="Avalonia.Labs.Lottie" Version="11.2.0" />
     <PackageReference Include="Avalonia.Labs.Panels" Version="11.2.0" />
     <PackageReference Include="Avalonia.Labs.Qr" Version="11.2.0" />
     <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.5" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.6" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -313,6 +313,11 @@
     <AvaloniaResource Include="Controls\Attachments\AudioMessageAttachment.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaXaml Include="Controls\MessagesListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaXaml>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Assets\i18n\Resources.Designer.cs">

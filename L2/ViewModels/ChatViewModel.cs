@@ -2,6 +2,7 @@
 using Avalonia.Controls.Selection;
 using Avalonia.Threading;
 using ELOR.Laney.Collections;
+using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
@@ -18,12 +19,13 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ToastNotifications.Avalonia;
 using VKUI.Controls;
 
 namespace ELOR.Laney.ViewModels {
-    public sealed class ChatViewModel : CommonViewModel, IContainsScrollSaverList {
+    public sealed class ChatViewModel : CommonViewModel, IMessagesListHolder {
         private static uint _instances = 0;
         private VKSession session;
 
@@ -113,7 +115,7 @@ namespace ELOR.Laney.ViewModels {
         private User PeerUser;
         private Group PeerGroup;
 
-        public event EventHandler<int> ScrollToMessageRequested;
+        public event EventHandler<IMessageListItem> ScrollToMessageRequested;
         public event EventHandler<bool> MessagesChunkLoaded; // получение сообщений (false - предыдущих, true - следующих)
         public EventHandler<MessageViewModel> MessageAddedToLast;
 
@@ -166,8 +168,6 @@ namespace ELOR.Laney.ViewModels {
             Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}, CMID: {2}", PeerId, isDisplayedMessagesEmpty, messageId);
             if (isDisplayedMessagesEmpty || messageId >= 0) {
                 new System.Action(async () => await GoToMessageAsync(messageId))();
-            } else {
-                ScrollToMessageRequested?.Invoke(this, InRead);
             }
         }
 
@@ -409,11 +409,11 @@ namespace ELOR.Laney.ViewModels {
                 Log.Information($"GoToLastMessage: last message in chat is not displayed. Showing ReceivedMessages...");
                 if (ReceivedMessages.Count > 10) {
                     DisplayedMessages = new MessagesCollection(ReceivedMessages.ToList());
-                    ScrollToMessageRequested?.Invoke(this, LastMessage.ConversationMessageId);
+                    ScrollToMessageRequested?.Invoke(this, LastMessage);
                     if (ReceivedMessages.Count < 20) {
                         Log.Information($"GoToLastMessage: need get more messages from API to display.");
                         MessagesChunkLoaded += PrevMessagesLoaded;
-                        await LoadPreviousMessagesAsync();
+                        await LoadPreviousMessagesAsync(null);
                     }
                 } else {
                     await GoToMessageAsync(LastMessage);
@@ -429,7 +429,7 @@ namespace ELOR.Laney.ViewModels {
         private void PrevMessagesLoaded(object sender, bool next) {
             if (next) return;
             MessagesChunkLoaded -= PrevMessagesLoaded;
-            ScrollToMessageRequested?.Invoke(this, LastMessage.ConversationMessageId);
+            ScrollToMessageRequested?.Invoke(this, LastMessage);
         }
 
         public void ClearSelectedMessages() {
@@ -478,7 +478,7 @@ namespace ELOR.Laney.ViewModels {
             MessageViewModel msg = DisplayedMessages.GetById(id);
             // TODO: искать ещё и в received messages.
             if (msg != null) {
-                ScrollToMessageRequested?.Invoke(this, id);
+                ScrollToMessageRequested?.Invoke(this, msg);
             } else {
                 await LoadMessagesAsync(id);
             }
@@ -516,10 +516,16 @@ namespace ELOR.Laney.ViewModels {
                 int scrollTo = 0;
                 if (startMessageId > 0) scrollTo = startMessageId;
                 if (startMessageId == -1) {
-                    // ScrollToMessageRequested?.Invoke(this, Math.Min(InRead, OutRead));
                     scrollTo = InRead;
                 }
-                if (scrollTo > 0 && scrollTo != LastMessage?.ConversationMessageId) ScrollToMessageRequested?.Invoke(this, scrollTo);
+                if (scrollTo > 0) {
+                    MessageViewModel scrollToMsg = DisplayedMessages.SingleOrDefault(m => m.ConversationMessageId == scrollTo);
+                    if (scrollToMsg != null) {
+                        ScrollToMessageRequested?.Invoke(this, scrollToMsg);
+                    } else {
+                        Log.Warning($"LoadMessages: cannot find message with cmid {scrollTo}, so cannot scroll to this message!");
+                    }
+                }
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadMessagesAsync(startMessageId));
             } finally {
@@ -530,7 +536,7 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
-        public async Task LoadPreviousMessagesAsync() {
+        public async Task LoadPreviousMessagesAsync(CancellationToken? ct) {
             if (DemoMode.IsEnabled || DisplayedMessages?.Count == 0 || IsLoading) return;
             int count = Constants.MessagesCount;
 
@@ -547,18 +553,18 @@ namespace ELOR.Laney.ViewModels {
                     FixState(msg);
                     return msg;
                 }).ToList());
-                await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
                 if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) {
-                    await LoadPreviousMessagesAsync();
+                    await LoadPreviousMessagesAsync(ct);
                 }
             } finally {
                 IsLoading = false;
             }
         }
 
-        public async Task LoadNextMessagesAsync() {
+        public async Task LoadNextMessagesAsync(CancellationToken? ct) {
             if (DemoMode.IsEnabled || DisplayedMessages?.Count == 0 || IsLoading) return;
+            if (LastMessage?.ConversationMessageId == DisplayedMessages.LastOrDefault()?.ConversationMessageId) return;
             int count = Constants.MessagesCount;
 
             try {
@@ -574,10 +580,9 @@ namespace ELOR.Laney.ViewModels {
                     FixState(msg);
                     return msg;
                 }).ToList());
-                await Task.Delay(100); // Нужно, чтобы не триггерилось подгрузка пред/след сообщений из-за scrollviewer-а.
             } catch (Exception ex) {
                 if (await ExceptionHelper.ShowErrorDialogAsync(session.Window, ex)) {
-                    await LoadNextMessagesAsync();
+                    await LoadNextMessagesAsync(ct);
                 }
             } finally {
                 IsLoading = false;
@@ -616,7 +621,7 @@ namespace ELOR.Laney.ViewModels {
                         //}
                         if (ReceivedMessages.Count > 1) {
                             MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
-                            UpdateSortId(SortId.MajorId, prev.Id);
+                            UpdateSortId(SortId.MajorId, prev.GlobalId);
                         } else {
                             Log.Warning("Cannot update minor_id after last message is deleted!");
                         }

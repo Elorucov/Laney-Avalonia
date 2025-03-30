@@ -1,4 +1,5 @@
 ﻿using Avalonia.Threading;
+using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
@@ -23,7 +24,7 @@ namespace ELOR.Laney.ViewModels.Controls {
         Empty, Standart, Complex, SingleImage, Story, Sticker, StoryWithSticker, Graffiti, Gift
     }
 
-    public sealed class MessageViewModel : ViewModelBase, IComparable {
+    public sealed class MessageViewModel : ViewModelBase, IComparable, IMessageListItem {
         private static Dictionary<UInt128, MessageViewModel> _cachedMessages = new Dictionary<UInt128, MessageViewModel>();
         private static uint _instances;
 
@@ -66,7 +67,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         private int _imagesCount;
         private Uri _previewImageUri;
 
-        public int Id { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
+        public int Id => ConversationMessageId; // required for IMessageListItem
+        public int GlobalId { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
         public long PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
         public int RandomId { get { return _randomId; } private set { _randomId = value; OnPropertyChanged(); } }
         public int ConversationMessageId { get { return _conversationMessageId; } private set { _conversationMessageId = value; OnPropertyChanged(); } }
@@ -128,7 +130,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         private void Setup(Message msg) {
             _toString = msg.ToNormalString();
-            Id = msg.Id;
+            GlobalId = msg.Id;
             PeerId = msg.PeerId;
             RandomId = msg.RandomId;
             ConversationMessageId = msg.ConversationMessageId;
@@ -173,7 +175,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
             if (DemoMode.IsEnabled) {
                 DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
-                if (ds.Times != null && ds.Times.ContainsKey(Id.ToString())) SentTime = DateTime.Now.AddSeconds(-ds.Times[Id.ToString()]);
+                if (ds.Times != null && ds.Times.ContainsKey(GlobalId.ToString())) SentTime = DateTime.Now.AddSeconds(-ds.Times[GlobalId.ToString()]);
             }
         }
 

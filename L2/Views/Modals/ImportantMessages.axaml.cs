@@ -60,7 +60,7 @@ namespace ELOR.Laney.Views.Modals {
 
             ActionSheetItem debug = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
-                Header = $"ID: {message.Id}, CMID: {message.ConversationMessageId}"
+                Header = $"ID: {message.GlobalId}, CMID: {message.ConversationMessageId}"
             };
             ActionSheetItem go = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20MessageArrowRightOutline },
@@ -77,7 +77,7 @@ namespace ELOR.Laney.Views.Modals {
 
             unmark.Click += async (a, b) => {
                 try {
-                    var response = await session.API.Messages.MarkAsImportantAsync(message.PeerId, new List<int> { message.Id }, false);
+                    var response = await session.API.Messages.MarkAsImportantAsync(message.PeerId, new List<int> { message.ConversationMessageId }, false);
                     ViewModel.RemoveMessageFromLoaded(message);
                 } catch (Exception ex) {
                     await ExceptionHelper.ShowErrorDialogAsync(this, ex, true);

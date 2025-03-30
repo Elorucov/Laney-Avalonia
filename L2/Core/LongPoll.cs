@@ -4,7 +4,6 @@ using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
-using ELOR.VKAPILib.Objects.Messages;
 using Serilog;
 using Serilog.Core;
 using System;
@@ -14,7 +13,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,7 +40,7 @@ namespace ELOR.Laney.Core {
         private Logger Log;
 
         private LongPollState _state;
-        public LongPollState State { get { return _state; } private set { _state = value; StateChanged?.Invoke(this, value);  } }
+        public LongPollState State { get { return _state; } private set { _state = value; StateChanged?.Invoke(this, value); } }
 
         public LongPoll(VKAPI api, long sessionId, long groupId) {
             API = api;
