@@ -64,6 +64,7 @@ namespace ELOR.Laney.ViewModels {
             //    });
 
             if (!DemoMode.IsEnabled) {
+                session.LongPoll.NeedFullResync += LongPoll_NeedFullResync;
                 session.LongPoll.MessageReceived += LongPoll_MessageReceived;
                 session.LongPoll.ConversationRemoved += LongPoll_ConversationRemoved;
             }
@@ -110,6 +111,15 @@ namespace ELOR.Laney.ViewModels {
         }
 
         #region Longpoll events
+
+        private void LongPoll_NeedFullResync(object sender, EventArgs e) {
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(async () => {
+                    _chats.Clear();
+                    await LoadConversationsAsync();
+                });
+            })();
+        }
 
         private void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
             new System.Action(async () => {

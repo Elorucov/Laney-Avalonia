@@ -1,6 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vkui="using:VKUI.Controls">
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:ctrls="using:ELOR.Laney.Controls">
     <Design.PreviewWith>
         <ListBox Classes="MessagesList" SelectionMode="Multiple,Toggle">
             <TextBlock VerticalAlignment="Center" Text="AAA"/>
@@ -11,15 +12,15 @@
         </ListBox>
     </Design.PreviewWith>
 
-  <Style Selector="ListBox.MessagesList">
+  <Style Selector="ctrls|MessagesListBox.MessagesList">
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
   </Style>
 
-  <Style Selector="ListBox[SelectionMode=Multiple].MessagesList ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon, ListBox[SelectionMode=Multiple,Toggle].MessagesList ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon">
+  <Style Selector="ctrls|MessagesListBox[SelectionMode=Multiple].MessagesList ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon, ListBox[SelectionMode=Multiple,Toggle].MessagesList ListBoxItem /template/ vkui|VKIcon#PART_CheckIcon">
     <Setter Property="IsVisible" Value="False"/>
   </Style>
 
-  <Style Selector="ListBox.MessagesList ListBoxItem">
+  <Style Selector="ctrls|MessagesListBox.MessagesList ListBoxItem">
     <Setter Property="Padding" Value="0"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
