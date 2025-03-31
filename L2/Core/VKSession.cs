@@ -671,8 +671,7 @@ namespace ELOR.Laney.Core {
                 // Clear displayed messages in older opened chats
                 if (openedChats.Count >= Constants.MaxCachedChatsCount) {
                     var oldChat = openedChats.Dequeue();
-                    oldChat.DisplayedMessages.Clear();
-                    oldChat.ReceivedMessages.Clear();
+                    oldChat.Unload();
                 }
             }
             CurrentOpenedChat = chat;
