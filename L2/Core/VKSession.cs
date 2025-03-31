@@ -667,6 +667,13 @@ namespace ELOR.Laney.Core {
             if (chat == null) {
                 chat = new ChatViewModel(this, peerId);
                 CacheManager.Add(Id, chat);
+
+                // Clear displayed messages in older opened chats
+                if (openedChats.Count >= Constants.MaxCachedChatsCount) {
+                    var oldChat = openedChats.Dequeue();
+                    oldChat.DisplayedMessages.Clear();
+                    oldChat.ReceivedMessages.Clear();
+                }
             }
             CurrentOpenedChat = chat;
             CurrentOpenedChatChanged?.Invoke(this, chat.PeerId);
@@ -677,12 +684,6 @@ namespace ELOR.Laney.Core {
                 BitmapManager.ClearCachedImages();
             } else {
                 gcCollectTriggerCounter++;
-            }
-
-            // Clear displayed messages in older opened chats
-            if (openedChats.Count >= Constants.MaxCachedChatsCount) {
-                var oldChat = openedChats.Dequeue();
-                oldChat.DisplayedMessages.Clear();
             }
             openedChats.Enqueue(chat);
         }
