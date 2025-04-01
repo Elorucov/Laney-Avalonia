@@ -91,6 +91,28 @@ namespace ELOR.Laney.Core {
             }
         }
 
+        public static void RemoveChat(ChatViewModel chat) {
+            if (!CachedChats.ContainsKey(chat.OwnedSessionId)) return;
+            try {
+                var list = CachedChats[chat.OwnedSessionId];
+                if (list.Contains(chat)) {
+                    chat.Unload();
+                    list.Remove(chat);
+                } else {
+                    Log.Warning($"CacheManager.RemoveChat: chat VM itself {chat.Id} not found in cache. Try find via id.");
+                    chat = list.FirstOrDefault(i => i.PeerId == chat.PeerId);
+                    if (chat != null) {
+                        chat.Unload();
+                        list.Remove(chat);
+                    } else {
+                        Log.Warning($"CacheManager.RemoveChat: chat {chat.Id} not found in cache. Nothing to remove");
+                    }
+                }
+            } catch (Exception ex) {
+                Log.Error(ex, $"Error while removing chat with id {chat.Id} from cache!");
+            }
+        }
+
         // First name, last name, avatar
         public static Tuple<string, string, Uri> GetNameAndAvatar(long id, bool shortLastName = false) {
             if (id.IsUser()) {

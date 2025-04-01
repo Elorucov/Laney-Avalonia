@@ -130,7 +130,6 @@ namespace ELOR.Laney.ViewModels {
                         if (chat == null) {
                             Log.Information($"Received message from peer {message.PeerId}, which is not found in cache");
                             chat = new ChatViewModel(session, message.PeerId, message, true);
-                            if (!(IsLoading && _chats.Count == 0)) CacheManager.Add(session.Id, chat);
                         }
                         _chats.AddOrUpdate(chat);
                     }
@@ -144,6 +143,7 @@ namespace ELOR.Laney.ViewModels {
                     var lookup = _chats.Lookup(peerId);
                     if (lookup.HasValue) {
                         _chats.Remove(lookup.Value);
+                        CacheManager.RemoveChat(lookup.Value);
                     }
                 });
             })();

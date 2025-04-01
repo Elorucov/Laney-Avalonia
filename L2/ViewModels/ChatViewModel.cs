@@ -110,6 +110,7 @@ namespace ELOR.Laney.ViewModels {
         public List<Group> MembersGroups { get; private set; } = new List<Group>();
 
         public long Id => PeerId;
+        public long OwnedSessionId => session.Id;
         public static uint Instances => _instances;
 
         private User PeerUser;
@@ -1107,6 +1108,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         public void Unload() {
+            Log.Information($"Unloading chat {Id}...");
             if (!DemoMode.IsEnabled) {
                 session.LongPoll.MessageFlagSet -= LongPoll_MessageFlagSet;
                 session.LongPoll.MessageReceived -= LongPoll_MessageReceived;
@@ -1128,8 +1130,8 @@ namespace ELOR.Laney.ViewModels {
             }
 
             ActivityStatusUsers.Elapsed -= ActivityStatusUsers_Elapsed;
-            DisplayedMessages.Clear();
-            ReceivedMessages.Clear();
+            DisplayedMessages?.Clear();
+            ReceivedMessages?.Clear();
         }
     }
 }
