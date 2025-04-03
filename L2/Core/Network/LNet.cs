@@ -260,8 +260,8 @@ namespace ELOR.Laney.Core.Network {
             };
 
             bool needTimeoutCheckForPing = fixedUri.AbsoluteUri == pingUrl;
-            if (client == null) client = new HttpClient(handler, false) { Timeout = TimeSpan.FromSeconds(90) };
-            if (needTimeoutCheckForPing && tclient == null) tclient = new HttpClient(thandler, false) { Timeout = TimeSpan.FromSeconds(30) };
+            if (client == null) client = new HttpClient(handler, false) { Timeout = TimeSpan.FromSeconds(30) };
+            if (needTimeoutCheckForPing && tclient == null) tclient = new HttpClient(thandler, false) { Timeout = TimeSpan.FromSeconds(2) };
 
             HttpClient cc = needTimeoutCheckForPing ? tclient : client;
             cc.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };

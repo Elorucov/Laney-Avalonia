@@ -208,8 +208,6 @@ namespace ELOR.Laney.Core {
                 Log.Information(string.Join(',', u));
                 int eventId = (int)u[0];
                 switch (eventId) {
-                    case 2:
-                    case 3:
                     case 10002:
                     case 10003:
                         int msgId = (int)u[1];
@@ -220,21 +218,16 @@ namespace ELOR.Laney.Core {
                         if (eventId == 10003) MessageFlagRemove?.Invoke(this, msgId, flags, peerId);
                         else MessageFlagSet?.Invoke(this, msgId, flags, peerId);
                         if (hasMessage) {
-                            Message msgFromHistory3 = messages?.SingleOrDefault(m => m.Id == msgId); // если парсим события из getLongPollHistory, то в receivedMsgId будет id, а не cmid
+                            Message msgFromHistory3 = messages?.SingleOrDefault(m => m.ConversationMessageId == msgId);
                             if (msgFromHistory3 != null) {
                                 MessageReceived?.Invoke(this, msgFromHistory3, flags);
                                 if (u.Count > 6) CheckMentions(u[6], msgFromHistory3.ConversationMessageId, peerId);
                             } else {
-                                if (messages != null) {
-                                    Log.Warning($"Cannot find message with id {msgId} in history, so unable to get cmid and restore message!");
-                                } else {
-                                    MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId, msgId, false));
-                                    MessagesFromAPIFlags.Add(msgId, (int)u[2]);
-                                }
+                                MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId, msgId, false));
+                                MessagesFromAPIFlags.Add(msgId, flags);
                             }
                         }
                         break;
-                    case 4:
                     case 10004:
                         bool isDeletedBeforeEvent = u.Count <= 4;
                         int receivedMsgId = (int)u[1];
@@ -242,7 +235,7 @@ namespace ELOR.Laney.Core {
                         long peerId4 = !isDeletedBeforeEvent ? (long)u[4] : 0;
                         Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, minorId={minor}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
                         if (isDeletedBeforeEvent) break;
-                        Message msgFromHistory = messages?.SingleOrDefault(m => m.Id == receivedMsgId && m.PeerId == peerId4); // если парсим события из getLongPollHistory, то в receivedMsgId будет id, а не cmid
+                        Message msgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4);
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, (int)u[2]);
                             if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
@@ -266,14 +259,12 @@ namespace ELOR.Laney.Core {
                         }
                         MinorIdChanged?.Invoke(this, peerId4, minor);
                         break;
-                    case 5:
-                    case 18:
                     case 10005:
                     case 10018:
                         bool isDeletedBeforeEvent2 = u.Count <= 4;
                         int editedMsgId = (int)u[1];
                         long peerId5 = (long)u[3];
-                        Message editMsgFromHistory = messages?.SingleOrDefault(m => m.Id == editedMsgId && m.PeerId == peerId5); // если парсим события из getLongPollHistory, то в editedMsgId будет id, а не cmid
+                        Message editMsgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == editedMsgId && m.PeerId == peerId5);
                         Log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent2}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2]);
