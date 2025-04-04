@@ -8,6 +8,9 @@ namespace ELOR.Laney.Execute.Objects {
         [JsonPropertyName("messages_count")]
         public int MessagesCount { get; set; }
 
+        [JsonPropertyName("last_cmid")]
+        public int LastCMID { get; set; }
+
         [JsonPropertyName("notifications_disabled")]
         public bool NotificationsDisabled { get; set; }
 

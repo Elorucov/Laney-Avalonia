@@ -355,6 +355,7 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<MessagesHistoryResponse>("messages.getHistory", parameters);
         }
 
+        /// TODO: List<HistoryAttachmentMediaType> attachmentTypes instead mediaType
         /// <summary>Returns media files from the dialog or group chat.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Peer ID.</param>
@@ -365,12 +366,13 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="fields">List of additional fields for users and communities.</param>
         /// <param name="preserveOrder">Preserve order.</param>
         /// <param name="maxForwardsLevel">Preserve order.</param>
-        public async Task<ConversationAttachmentsResponse> GetHistoryAttachmentsAsync(long groupId, long peerId, HistoryAttachmentMediaType mediaType, int startFrom, int count, bool photoSizes, bool preserveOrder = false, int maxForwardsLevel = 45, List<string> fields = null) {
+        public async Task<ConversationAttachmentsResponse> GetHistoryAttachmentsAsync(long groupId, long peerId, HistoryAttachmentMediaType mediaType, int cmid, int offset, int count, bool photoSizes, bool preserveOrder = false, int maxForwardsLevel = 45, List<string> fields = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
-            parameters.Add("media_type", mediaType.ToEnumMemberAttribute());
-            parameters.Add("start_from", startFrom.ToString());
+            parameters.Add("attachment_types", mediaType.ToEnumMemberAttribute());
+            parameters.Add("cmid", cmid.ToString());
+            parameters.Add("offset", offset.ToString());
             parameters.Add("count", count.ToString());
             if (photoSizes) parameters.Add("photo_sizes", "1");
             if (preserveOrder) parameters.Add("preserve_order", "1");
@@ -442,7 +444,10 @@ namespace ELOR.VKAPILib.Methods {
             parameters.Add("msgs_limit", msgsLimit.ToString());
             if (maxMsgId > 0) parameters.Add("max_msg_id", maxMsgId.ToString());
             parameters.Add("credentials", "1");
-            if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
+            if (!fields.IsNullOrEmpty()) {
+                parameters.Add("extended", "1");
+                parameters.Add("fields", fields.Combine());
+            }
             return await API.CallMethodAsync<LongPollHistoryResponse>("messages.getLongPollHistory", parameters);
         }
 

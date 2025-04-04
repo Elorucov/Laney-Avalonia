@@ -35,18 +35,22 @@ namespace ELOR.Laney.Core {
         }
 
         public static void Add(User user) {
-            if (CachedUsers.ContainsKey(user.Id)) {
-                CachedUsers[user.Id] = user;
-            } else {
-                CachedUsers.Add(user.Id, user);
+            lock (CachedUsers) {
+                if (CachedUsers.ContainsKey(user.Id)) {
+                    CachedUsers[user.Id] = user;
+                } else {
+                    CachedUsers.Add(user.Id, user);
+                }
             }
         }
 
         public static void Add(Group group) {
-            if (CachedGroups.ContainsKey(group.Id)) {
-                CachedGroups[group.Id] = group;
-            } else {
-                CachedGroups.Add(group.Id, group);
+            lock (CachedGroups) {
+                if (CachedGroups.ContainsKey(group.Id)) {
+                    CachedGroups[group.Id] = group;
+                } else {
+                    CachedGroups.Add(group.Id, group);
+                }
             }
         }
 
@@ -88,6 +92,28 @@ namespace ELOR.Laney.Core {
             } catch (Exception ex) {
                 Log.Error(ex, $"Error while getting chat with id {peerId} from cache!");
                 return null;
+            }
+        }
+
+        public static void RemoveChat(ChatViewModel chat) {
+            if (!CachedChats.ContainsKey(chat.OwnedSessionId)) return;
+            try {
+                var list = CachedChats[chat.OwnedSessionId];
+                if (list.Contains(chat)) {
+                    chat.Unload();
+                    list.Remove(chat);
+                } else {
+                    Log.Warning($"CacheManager.RemoveChat: chat VM itself {chat.Id} not found in cache. Try find via id.");
+                    chat = list.FirstOrDefault(i => i.PeerId == chat.PeerId);
+                    if (chat != null) {
+                        chat.Unload();
+                        list.Remove(chat);
+                    } else {
+                        Log.Warning($"CacheManager.RemoveChat: chat {chat.Id} not found in cache. Nothing to remove");
+                    }
+                }
+            } catch (Exception ex) {
+                Log.Error(ex, $"Error while removing chat with id {chat.Id} from cache!");
             }
         }
 

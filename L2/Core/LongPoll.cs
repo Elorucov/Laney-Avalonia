@@ -140,11 +140,10 @@ namespace ELOR.Laney.Core {
                             int errCode = (int)jr["failed"];
                             string errText = jr["error"].ToString();
                             Log.Error($"LongPoll error! Code {errCode}, message: {errText}. Restarting after {WAIT_AFTER_FAIL} sec...");
-                            if (errCode != 1) {
-                                State = LongPollState.Failed;
-                                await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
-                                Restart();
-                            }
+
+                            State = LongPollState.Failed;
+                            await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
+                            Restart();
                         } else {
                             throw new ArgumentException($"A non-standart response was received!\n{respstr}");
                         }
@@ -198,6 +197,7 @@ namespace ELOR.Laney.Core {
             }))();
         }
 
+        // messages — признак того, что метод вызывается после метода getLongPollHistory (если не null)
         private async Task ParseUpdatesAsync(JsonArray updates, List<Message> messages = null) {
             // peer id, CMID, is edited.
             List<Tuple<long, int, bool>> MessagesFromAPI = new List<Tuple<long, int, bool>>();
@@ -218,26 +218,26 @@ namespace ELOR.Laney.Core {
                         if (eventId == 10003) MessageFlagRemove?.Invoke(this, msgId, flags, peerId);
                         else MessageFlagSet?.Invoke(this, msgId, flags, peerId);
                         if (hasMessage) {
-                            Message msgFromHistory3 = messages?.Where(m => m.Id == msgId).FirstOrDefault();
+                            Message msgFromHistory3 = messages?.SingleOrDefault(m => m.ConversationMessageId == msgId);
                             if (msgFromHistory3 != null) {
                                 MessageReceived?.Invoke(this, msgFromHistory3, flags);
-                                if (u.Count > 6) CheckMentions(u[6], msgId, (long)u[3]);
+                                if (u.Count > 6) CheckMentions(u[6], msgFromHistory3.ConversationMessageId, peerId);
                             } else {
                                 MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId, msgId, false));
-                                MessagesFromAPIFlags.Add(msgId, (int)u[2]);
+                                MessagesFromAPIFlags.Add(msgId, flags);
                             }
                         }
                         break;
                     case 10004:
-                        bool isDeletedBeforeEvent = u.Count <= 4;
+                        bool isDeletedBeforeEvent = u.Count == 4;
                         int receivedMsgId = (int)u[1];
-                        int minor = (int)u[3];
-                        long peerId4 = !isDeletedBeforeEvent ? (long)u[4] : 0;
-                        Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, minorId={minor}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
-                        if (isDeletedBeforeEvent) break;
-                        Message msgFromHistory = messages?.Where(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4).FirstOrDefault();
+                        int minor = !isDeletedBeforeEvent ? (int)u[3] : 0;
+                        long peerId4 = !isDeletedBeforeEvent ? (long)u[4] : (long)u[3];
+                        Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
+                        Message msgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4);
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, (int)u[2]);
+                            minor = msgFromHistory.Id;
                             if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
                         } else {
                             bool isPartial = false;
@@ -245,26 +245,27 @@ namespace ELOR.Laney.Core {
                             Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
                                 MessageReceived?.Invoke(this, rmsg, (int)u[2]);
-                                if (u.Count > 6) CheckMentions(u[7], receivedMsgId, peerId4);
+                                minor = rmsg.Id;
+                                if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
                                 if (isPartial) {
                                     Log.Information($"Received message ({peerId4}_{receivedMsgId}) is partial. Added to queue for getting these from API.");
                                     MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, true));
                                     MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                                 }
                             } else {
-                                Log.Error(ex, $"An error occured while building message from LP! Message ID: {(int)u[1]}");
+                                Log.Error(ex, $"An error occured while building message from LP! Message ID: {receivedMsgId}");
                                 MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, false));
                                 MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                             }
                         }
-                        MinorIdChanged?.Invoke(this, peerId4, minor);
+                        if (minor != 0) MinorIdChanged?.Invoke(this, peerId4, minor);
                         break;
                     case 10005:
                     case 10018:
-                        bool isDeletedBeforeEvent2 = u.Count <= 4;
+                        bool isDeletedBeforeEvent2 = u.Count == 4;
                         int editedMsgId = (int)u[1];
                         long peerId5 = (long)u[3];
-                        Message editMsgFromHistory = messages?.Where(m => m.ConversationMessageId == editedMsgId).FirstOrDefault();
+                        Message editMsgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == editedMsgId && m.PeerId == peerId5);
                         Log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent2}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2]);
@@ -359,9 +360,11 @@ namespace ELOR.Laney.Core {
                         break;
                     case 602:
                         Log.Information($"EVENT {eventId}: length: {u.Count}");
-                        ParseUnreadReactionsAndInvoke(u.Select(n => (int)n.Deserialize(typeof(int), L2JsonSerializerContext.Default)).ToArray());
+                        ParseUnreadReactionsAndInvoke(u.Select(n => (long)n.Deserialize(typeof(long), L2JsonSerializerContext.Default)).ToArray());
                         break;
                 }
+
+                await Task.Delay(16); 
             }
 
             if (MessagesFromAPI.Count > 0) {
@@ -412,11 +415,14 @@ namespace ELOR.Laney.Core {
             });
         }
 
-        private void ParseUnreadReactionsAndInvoke(int[] u) {
-            int peerId = u[1];
-            int cmidsCount = u[2];
+        private void ParseUnreadReactionsAndInvoke(long[] u) {
+            long peerId = u[1];
+            long cmidsCount = u[2];
             List<int> cmIds = new List<int>();
-            if (cmidsCount > 0) cmIds = u.Skip(3).ToList();
+            if (cmidsCount > 0) 
+                foreach (var cmid in u.Skip(3)) {
+                    cmIds.Add((int)cmid);
+                }
             UnreadReactionsChanged?.Invoke(this, peerId, cmIds);
         }
 
@@ -490,5 +496,17 @@ namespace ELOR.Laney.Core {
             Log.Information($"Is sender name for {id} exist in cache: {isCached}");
             return isCached;
         }
+
+        #region Debug
+
+        public void DebugFireDeleteConvoEvent(long peerId) {
+            ConversationRemoved?.Invoke(this, peerId);
+        }
+
+        public void DebugInvalidateLPKey() {
+            Key = string.Empty;
+        }
+
+        #endregion
     }
 }

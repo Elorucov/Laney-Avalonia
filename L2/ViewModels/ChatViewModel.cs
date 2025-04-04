@@ -110,6 +110,7 @@ namespace ELOR.Laney.ViewModels {
         public List<Group> MembersGroups { get; private set; } = new List<Group>();
 
         public long Id => PeerId;
+        public long OwnedSessionId => session.Id;
         public static uint Instances => _instances;
 
         private User PeerUser;
@@ -377,7 +378,11 @@ namespace ELOR.Laney.ViewModels {
                 if (!session.IsGroup) VKQueue.Online += VKQueue_Online;
             }
 
-            ActivityStatusUsers.Elapsed += (a, b) => UpdateActivityStatus();
+            ActivityStatusUsers.Elapsed += ActivityStatusUsers_Elapsed;
+        }
+
+        private void ActivityStatusUsers_Elapsed(object sender, LongPollActivityInfo e) {
+            UpdateActivityStatus();
         }
 
         private void SelectedMessages_SelectionChanged(object sender, SelectionModelSelectionChangedEventArgs<MessageViewModel> e) {
@@ -1100,6 +1105,33 @@ namespace ELOR.Laney.ViewModels {
             if (SortId.MajorId == 0) return (ulong)SortId.MinorId;
             ulong index = ((ulong)SortId.MajorId * 100000000) + (ulong)SortId.MinorId;
             return index;
+        }
+
+        public void Unload() {
+            Log.Information($"Unloading chat {Id}...");
+            if (!DemoMode.IsEnabled) {
+                session.LongPoll.MessageFlagSet -= LongPoll_MessageFlagSet;
+                session.LongPoll.MessageReceived -= LongPoll_MessageReceived;
+                session.LongPoll.MessageEdited -= LongPoll_MessageEdited;
+                session.LongPoll.MentionReceived -= LongPoll_MentionReceived;
+                session.LongPoll.IncomingMessagesRead -= LongPoll_IncomingMessagesRead;
+                session.LongPoll.OutgoingMessagesRead -= LongPoll_OutgoingMessagesRead;
+                session.LongPoll.ConversationFlagReset -= LongPoll_ConversationFlagReset;
+                session.LongPoll.ConversationFlagSet -= LongPoll_ConversationFlagSet;
+                session.LongPoll.ConversationRemoved -= LongPoll_ConversationRemoved;
+                session.LongPoll.MajorIdChanged -= LongPoll_MajorIdChanged;
+                session.LongPoll.MinorIdChanged -= LongPoll_MinorIdChanged;
+                session.LongPoll.ConversationDataChanged -= LongPoll_ConversationDataChanged;
+                session.LongPoll.ActivityStatusChanged -= LongPoll_ActivityStatusChanged;
+                session.LongPoll.NotificationsSettingsChanged -= LongPoll_NotificationsSettingsChanged;
+                session.LongPoll.UnreadReactionsChanged -= LongPoll_UnreadReactionsChanged;
+
+                if (!session.IsGroup) VKQueue.Online -= VKQueue_Online;
+            }
+
+            ActivityStatusUsers.Elapsed -= ActivityStatusUsers_Elapsed;
+            DisplayedMessages?.Clear();
+            ReceivedMessages?.Clear();
         }
     }
 }

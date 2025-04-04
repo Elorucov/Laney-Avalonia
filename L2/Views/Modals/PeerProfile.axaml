@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:atch="using:ELOR.Laney.Controls.Attachments"
         xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
         xmlns:vko="using:ELOR.VKAPILib.Objects"
         xmlns:vkw="using:VKUI.Windows"
@@ -46,6 +47,12 @@
             <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Attachment.Document.Size, Converter={StaticResource fsc}}"/>
           </StackPanel>
         </Grid>
+      </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="AudioTemplate" x:DataType="vko:ConversationAttachment">
+      <Button Classes="Tertiary" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" ContextRequested="OnAttachmentContextRequested" Click="OnAttachmentClick">
+        <atch:AudioAttachment Margin="12,6" Audio="{Binding Attachment.Audio}"/>
       </Button>
     </DataTemplate>
 
@@ -190,7 +197,30 @@
       </TabItem>
       
       <TabItem Header="{x:Static i18n:Resources.audio}">
-        <vkui:Placeholder VerticalAlignment="Center" Header="{x:Static i18n:Resources.not_implemented}" Text="{x:Static i18n:Resources.not_implemented_desc}"/>
+        <ScrollViewer x:Name="AudiosSV" DataContext="{Binding Audios}" Grid.Row="1">
+          <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
+            <ItemsRepeater x:Name="AudiosList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource AudioTemplate}">
+              <ItemsRepeater.Layout>
+                <StackLayout/>
+              </ItemsRepeater.Layout>
+            </ItemsRepeater>
+
+            <Border MinHeight="32">
+              <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+            </Border>
+
+            <Border IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKBackgroundContentBrush}">
+              <vkui:Placeholder VerticalAlignment="Center"
+                                      Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                                      Header="{Binding Placeholder.Header, Mode=OneWay}"
+                                      Text="{Binding Placeholder.Text, Mode=OneWay}">
+                <vkui:Placeholder.Action>
+                  <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButton, Mode=OneWay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+                </vkui:Placeholder.Action>
+              </vkui:Placeholder>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
       </TabItem>
       
       <TabItem Header="{x:Static i18n:Resources.doc}">

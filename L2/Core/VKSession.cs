@@ -205,6 +205,13 @@ namespace ELOR.Laney.Core {
                 };
                 devmenu.Add(snotif);
 
+                ActionSheetItem lpht = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
+                    Header = "Invalidate LP key",
+                };
+                lpht.Click += (a, b) => LongPoll.DebugInvalidateLPKey();
+                devmenu.Add(lpht);
+
                 ActionSheetItem imgc = new ActionSheetItem {
                     Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
                     Header = "Clear images cache",
@@ -667,6 +674,12 @@ namespace ELOR.Laney.Core {
             if (chat == null) {
                 chat = new ChatViewModel(this, peerId);
                 CacheManager.Add(Id, chat);
+
+                // Clear displayed messages in older opened chats
+                if (openedChats.Count >= Constants.MaxCachedChatsCount) {
+                    var oldChat = openedChats.Dequeue();
+                    oldChat.Unload();
+                }
             }
             CurrentOpenedChat = chat;
             CurrentOpenedChatChanged?.Invoke(this, chat.PeerId);
@@ -677,12 +690,6 @@ namespace ELOR.Laney.Core {
                 BitmapManager.ClearCachedImages();
             } else {
                 gcCollectTriggerCounter++;
-            }
-
-            // Clear displayed messages in older opened chats
-            if (openedChats.Count >= Constants.MaxCachedChatsCount) {
-                var oldChat = openedChats.Dequeue();
-                oldChat.DisplayedMessages.Clear();
             }
             openedChats.Enqueue(chat);
         }

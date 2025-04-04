@@ -28,6 +28,11 @@ namespace ELOR.Laney.Helpers {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
                 Header = $"ID: {chat.PeerId} ({chat.PeerType})"
             };
+            ActionSheetItem debugDeleteConvoVisually = new ActionSheetItem {
+                Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
+                Header = $"Simulate chat deleted event"
+            };
+
             ActionSheetItem read = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20MessageOutline },
                 Header = Assets.i18n.Resources.mark_read,
@@ -73,6 +78,10 @@ namespace ELOR.Laney.Helpers {
 
             // Actions
 
+            debugDeleteConvoVisually.Click += (a, b) => {
+                session.LongPoll.DebugFireDeleteConvoEvent(chat.PeerId);
+            };
+
             notifon.Click += async (a, b) => {
                 if (DemoMode.IsEnabled) return;
                 try {
@@ -116,7 +125,10 @@ namespace ELOR.Laney.Helpers {
 
             // ¯\_(ツ)_/¯
 
-            if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
+            if (Settings.ShowDevItemsInContextMenus) {
+                ash.Items.Add(debug);
+                ash.Items.Add(debugDeleteConvoVisually);
+            }
             if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
 
             if (chat.UnreadMessagesCount > 0 || chat.IsMarkedAsUnread) ash.Items.Add(read);

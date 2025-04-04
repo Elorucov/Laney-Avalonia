@@ -32,7 +32,7 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
 
-        [JsonPropertyName("next_from")]
+        [JsonPropertyName("cmid_next_from")]
         public string NextFrom { get; set; }
     }
 }

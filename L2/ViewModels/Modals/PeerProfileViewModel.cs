@@ -21,7 +21,6 @@ using VKUI.Popups;
 
 namespace ELOR.Laney.ViewModels.Modals {
     public class ConversationAttachmentsTabViewModel : ItemsViewModel<ConversationAttachment> {
-        public int StartFrom { get; set; } = 0;
         public bool End { get; set; } = false;
     }
 
@@ -68,6 +67,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         public Command ThirdCommand { get { return _thirdCommand; } private set { _thirdCommand = value; OnPropertyChanged(); } }
         public Command MoreCommand { get { return _moreCommand; } private set { _moreCommand = value; OnPropertyChanged(); } }
 
+        private int _lastCmid = 0;
         private VKSession session;
         private ObservableCollection<Entity> allMembers = new ObservableCollection<Entity>();
         public event EventHandler CloseWindowRequested;
@@ -107,6 +107,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             Placeholder = null;
             try {
                 UserEx user = await session.API.GetUserCardAsync(userId);
+                _lastCmid = user.LastCMID;
                 Header = String.Join(" ", new string[2] { user.FirstName, user.LastName });
                 if (user.Photo != null) Avatar = user.Photo;
                 Subhead = VKAPIHelper.GetOnlineInfo(user.OnlineInfo, user.Sex).ToLowerInvariant();
@@ -297,6 +298,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 Header = group.Name;
                 if (group.Photo != null) Avatar = group.Photo;
                 Subhead = group.Activity;
+                _lastCmid = group.LastCMID;
                 SetupInfo(group);
                 SetupCommands(group);
             } catch (Exception ex) {
@@ -413,6 +415,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             Placeholder = null;
             try {
                 ChatInfoEx chat = await session.API.GetChatAsync(peerId - 2000000000, VKAPIHelper.Fields);
+                _lastCmid = chat.LastCMID;
                 Header = chat.Name;
                 if (chat.PhotoUri != null) Avatar = chat.PhotoUri;
 
@@ -705,15 +708,13 @@ namespace ELOR.Laney.ViewModels.Modals {
             ivm.Placeholder = null;
             ivm.IsLoading = true;
             try {
-                ConversationAttachmentsResponse resp = await session.API.Messages.GetHistoryAttachmentsAsync(session.GroupId, Id, type, ivm.StartFrom, 60, true, fields: VKAPIHelper.Fields);
+                ConversationAttachmentsResponse resp = await session.API.Messages.GetHistoryAttachmentsAsync(session.GroupId, Id, type, _lastCmid, ivm.Items.Count, Constants.AttachmentsCountPerRequest, true, fields: VKAPIHelper.Fields);
                 CacheManager.Add(resp.Profiles);
                 CacheManager.Add(resp.Groups);
-                resp.Items.ForEach(ivm.Items.Add);
-                if (!String.IsNullOrEmpty(resp.NextFrom)) {
-                    ivm.StartFrom = Int32.Parse(resp.NextFrom.Split('/')[0]) - 1;
-                } else {
-                    if (ivm.Items.Count > 0) ivm.End = true;
+                foreach (var item in CollectionsMarshal.AsSpan(resp.Items)) {
+                    ivm.Items.Add(item);
                 }
+                if (resp.Items.Count < Constants.AttachmentsCountPerRequest) ivm.End = true;
 
                 if (ivm.Items.Count == 0) {
                     ivm.Placeholder = new PlaceholderViewModel {
