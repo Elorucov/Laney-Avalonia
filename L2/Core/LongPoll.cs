@@ -229,10 +229,10 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 10004:
-                        bool isDeletedBeforeEvent = u.Count <= 4;
+                        bool isDeletedBeforeEvent = u.Count == 4;
                         int receivedMsgId = (int)u[1];
-                        int minor = !isDeletedBeforeEvent ? (int)u[4] : 0;
-                        long peerId4 = (long)u[3];
+                        int minor = !isDeletedBeforeEvent ? (int)u[3] : 0;
+                        long peerId4 = !isDeletedBeforeEvent ? (long)u[4] : (long)u[3];
                         Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
                         Message msgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4);
                         if (msgFromHistory != null) {
@@ -262,7 +262,7 @@ namespace ELOR.Laney.Core {
                         break;
                     case 10005:
                     case 10018:
-                        bool isDeletedBeforeEvent2 = u.Count <= 4;
+                        bool isDeletedBeforeEvent2 = u.Count == 4;
                         int editedMsgId = (int)u[1];
                         long peerId5 = (long)u[3];
                         Message editMsgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == editedMsgId && m.PeerId == peerId5);
@@ -364,7 +364,7 @@ namespace ELOR.Laney.Core {
                         break;
                 }
 
-                await Task.Delay(32); 
+                await Task.Delay(16); 
             }
 
             if (MessagesFromAPI.Count > 0) {

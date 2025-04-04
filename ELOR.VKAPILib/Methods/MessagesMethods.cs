@@ -442,7 +442,10 @@ namespace ELOR.VKAPILib.Methods {
             parameters.Add("msgs_limit", msgsLimit.ToString());
             if (maxMsgId > 0) parameters.Add("max_msg_id", maxMsgId.ToString());
             parameters.Add("credentials", "1");
-            if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
+            if (!fields.IsNullOrEmpty()) {
+                parameters.Add("extended", "1");
+                parameters.Add("fields", fields.Combine());
+            }
             return await API.CallMethodAsync<LongPollHistoryResponse>("messages.getLongPollHistory", parameters);
         }
 

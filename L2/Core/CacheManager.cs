@@ -35,18 +35,22 @@ namespace ELOR.Laney.Core {
         }
 
         public static void Add(User user) {
-            if (CachedUsers.ContainsKey(user.Id)) {
-                CachedUsers[user.Id] = user;
-            } else {
-                CachedUsers.Add(user.Id, user);
+            lock (CachedUsers) {
+                if (CachedUsers.ContainsKey(user.Id)) {
+                    CachedUsers[user.Id] = user;
+                } else {
+                    CachedUsers.Add(user.Id, user);
+                }
             }
         }
 
         public static void Add(Group group) {
-            if (CachedGroups.ContainsKey(group.Id)) {
-                CachedGroups[group.Id] = group;
-            } else {
-                CachedGroups.Add(group.Id, group);
+            lock (CachedGroups) {
+                if (CachedGroups.ContainsKey(group.Id)) {
+                    CachedGroups[group.Id] = group;
+                } else {
+                    CachedGroups.Add(group.Id, group);
+                }
             }
         }
 
