@@ -205,6 +205,13 @@ namespace ELOR.Laney.Core {
                 };
                 devmenu.Add(snotif);
 
+                ActionSheetItem lpht = new ActionSheetItem {
+                    Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
+                    Header = "Invalidate LP key",
+                };
+                lpht.Click += (a, b) => LongPoll.DebugInvalidateLPKey();
+                devmenu.Add(lpht);
+
                 ActionSheetItem imgc = new ActionSheetItem {
                     Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
                     Header = "Clear images cache",

@@ -231,13 +231,13 @@ namespace ELOR.Laney.Core {
                     case 10004:
                         bool isDeletedBeforeEvent = u.Count <= 4;
                         int receivedMsgId = (int)u[1];
-                        int minor = (int)u[3];
-                        long peerId4 = !isDeletedBeforeEvent ? (long)u[4] : 0;
-                        Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, minorId={minor}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
-                        if (isDeletedBeforeEvent) break;
+                        int minor = !isDeletedBeforeEvent ? (int)u[4] : 0;
+                        long peerId4 = (long)u[3];
+                        Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
                         Message msgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4);
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, (int)u[2]);
+                            minor = msgFromHistory.Id;
                             if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
                         } else {
                             bool isPartial = false;
@@ -245,19 +245,20 @@ namespace ELOR.Laney.Core {
                             Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
                                 MessageReceived?.Invoke(this, rmsg, (int)u[2]);
-                                if (u.Count > 6) CheckMentions(u[7], receivedMsgId, peerId4);
+                                minor = rmsg.Id;
+                                if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
                                 if (isPartial) {
                                     Log.Information($"Received message ({peerId4}_{receivedMsgId}) is partial. Added to queue for getting these from API.");
                                     MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, true));
                                     MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                                 }
                             } else {
-                                Log.Error(ex, $"An error occured while building message from LP! Message ID: {(int)u[1]}");
+                                Log.Error(ex, $"An error occured while building message from LP! Message ID: {receivedMsgId}");
                                 MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, false));
                                 MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                             }
                         }
-                        MinorIdChanged?.Invoke(this, peerId4, minor);
+                        if (minor != 0) MinorIdChanged?.Invoke(this, peerId4, minor);
                         break;
                     case 10005:
                     case 10018:
@@ -497,6 +498,10 @@ namespace ELOR.Laney.Core {
 
         public void DebugFireDeleteConvoEvent(long peerId) {
             ConversationRemoved?.Invoke(this, peerId);
+        }
+
+        public void DebugInvalidateLPKey() {
+            Key = string.Empty;
         }
 
         #endregion
