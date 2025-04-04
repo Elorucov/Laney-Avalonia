@@ -360,7 +360,7 @@ namespace ELOR.Laney.Core {
                         break;
                     case 602:
                         Log.Information($"EVENT {eventId}: length: {u.Count}");
-                        ParseUnreadReactionsAndInvoke(u.Select(n => (int)n.Deserialize(typeof(int), L2JsonSerializerContext.Default)).ToArray());
+                        ParseUnreadReactionsAndInvoke(u.Select(n => (long)n.Deserialize(typeof(long), L2JsonSerializerContext.Default)).ToArray());
                         break;
                 }
 
@@ -415,11 +415,14 @@ namespace ELOR.Laney.Core {
             });
         }
 
-        private void ParseUnreadReactionsAndInvoke(int[] u) {
-            int peerId = u[1];
-            int cmidsCount = u[2];
+        private void ParseUnreadReactionsAndInvoke(long[] u) {
+            long peerId = u[1];
+            long cmidsCount = u[2];
             List<int> cmIds = new List<int>();
-            if (cmidsCount > 0) cmIds = u.Skip(3).ToList();
+            if (cmidsCount > 0) 
+                foreach (var cmid in u.Skip(3)) {
+                    cmIds.Add((int)cmid);
+                }
             UnreadReactionsChanged?.Invoke(this, peerId, cmIds);
         }
 
