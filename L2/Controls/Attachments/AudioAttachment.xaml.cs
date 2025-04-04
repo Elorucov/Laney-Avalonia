@@ -70,6 +70,7 @@ public class AudioAttachment : TemplatedControl {
                 IsHitTestVisible = false;
                 Opacity = 0.5;
             }
+            CheckCurrentPlayingAudio();
         } else {
             TrackName.Text = String.Empty;
             Performer.Text = String.Empty;

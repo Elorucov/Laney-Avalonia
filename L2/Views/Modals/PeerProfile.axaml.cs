@@ -1,12 +1,15 @@
 ﻿using Avalonia.Controls;
+using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
+using ELOR.Laney.ViewModels;
 using ELOR.Laney.ViewModels.Modals;
 using ELOR.Laney.Views.Media;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using VKUI.Controls;
 using VKUI.Popups;
 using VKUI.Windows;
@@ -43,7 +46,7 @@ namespace ELOR.Laney.Views.Modals {
 
             new IncrementalLoader(PhotosSV, async () => await ViewModel.LoadPhotosAsync());
             new IncrementalLoader(VideosSV, async () => await ViewModel.LoadVideosAsync());
-            // TODO: Audios here
+            new IncrementalLoader(AudiosSV, async () => await ViewModel.LoadAudiosAsync());
             new IncrementalLoader(DocsSV, async () => await ViewModel.LoadDocsAsync());
             new IncrementalLoader(LinksSV, async () => await ViewModel.LoadLinksAsync());
 
@@ -78,6 +81,9 @@ namespace ELOR.Laney.Views.Modals {
                         break;
                     case 2:
                         if (ViewModel.Videos.Items.Count == 0 && !ViewModel.Videos.End) await ViewModel.LoadVideosAsync();
+                        break;
+                    case 3:
+                        if (ViewModel.Audios.Items.Count == 0 && !ViewModel.Audios.End) await ViewModel.LoadAudiosAsync();
                         break;
                     case 4:
                         if (ViewModel.Documents.Items.Count == 0 && !ViewModel.Documents.End) await ViewModel.LoadDocsAsync();
@@ -117,7 +123,15 @@ namespace ELOR.Laney.Views.Modals {
 
             switch (a.Attachment.Type) {
                 case AttachmentType.Photo:
+                    // TODO: Show all loaded photos in gallery.
                     if (a.Attachment.Photo != null) Gallery.Show(new List<IPreview> { a.Attachment.Photo }, a.Attachment.Photo);
+                    break;
+                case AttachmentType.Audio:
+                    if (a.Attachment.Audio != null) {
+                        // TODO: remove duplicate audios before sending list to audioplayer.
+                        List<Audio> audios = ViewModel.Audios.Items.Select(aa => aa.Attachment.Audio).ToList();
+                        AudioPlayerViewModel.PlaySong(audios, a.Attachment.Audio, ViewModel.Header);
+                    }
                     break;
                 case AttachmentType.Document:
                     if (a.Attachment.Document.Type == DocumentType.Image || a.Attachment.Document.Type == DocumentType.GIF) {

@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:ELOR.Laney"
+        xmlns:controls="using:ELOR.Laney.Controls.Attachments"
         xmlns:vkui="using:VKUI.Controls">
 
     <Design.PreviewWith>
