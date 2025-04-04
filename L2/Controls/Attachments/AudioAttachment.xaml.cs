@@ -51,6 +51,7 @@ public class AudioAttachment : TemplatedControl {
 
         Setup();
 
+        PropertyChanged += AudioAttachment_PropertyChanged;
         PlayButton.Click += PlayButton_Click;
         if (AudioPlayerViewModel.MainInstance != null) Instance.StateChanged += Instance_StateChanged;
         AudioPlayerViewModel.InstancesChanged += AudioPlayerViewModel_InstancesChanged;
@@ -87,6 +88,12 @@ public class AudioAttachment : TemplatedControl {
         var u = t?.CurrentSong;
     }
 
+    private void AudioAttachment_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
+        if (e.Property == AudioProperty) {
+            Setup();
+        }
+    }
+
     private void PlayButton_Click(object sender, RoutedEventArgs e) {
         if (IsThisAudioSelected) {
             if (Instance.IsPlaying) {
@@ -109,6 +116,7 @@ public class AudioAttachment : TemplatedControl {
     }
 
     private void AudioAttachment_Unloaded(object sender, RoutedEventArgs e) {
+        PropertyChanged -= AudioAttachment_PropertyChanged;
         PlayButton.Click -= PlayButton_Click;
         if (Instance != null) Instance.StateChanged -= Instance_StateChanged;
         AudioPlayerViewModel.InstancesChanged -= AudioPlayerViewModel_InstancesChanged;

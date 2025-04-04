@@ -57,6 +57,9 @@ namespace ELOR.Laney.Execute.Objects {
         [JsonPropertyName("online_count")]
         public int OnlineCount { get; set; }
 
+        [JsonPropertyName("last_cmid")]
+        public int LastCMID { get; set; }
+
         [JsonPropertyName("push_settings")]
         public PushSettings PushSettings { get; set; }
 

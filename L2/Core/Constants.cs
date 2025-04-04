@@ -15,6 +15,9 @@
         public const int VideoUploadCommand = 1;
         public const int FileUploadCommand = 2;
 
+        // For chat attachments (peer profile)
+        public const int AttachmentsCountPerRequest = 60;
+
         // For message UI
         public const string ATCHC_INBUBBLE = "InBubble";
     }
