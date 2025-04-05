@@ -23,7 +23,7 @@ namespace ELOR.Laney.Core {
 
     public sealed class LongPoll {
         public const int WAIT_AFTER_FAIL = 3;
-        public const int VERSION = 19;
+        public const int VERSION = 21;
         public const int WAIT_TIME = 25;
         public const int MODE = 234;
 
@@ -57,6 +57,7 @@ namespace ELOR.Laney.Core {
             }
 
             Log = loggerConfig.CreateLogger();
+            State = LongPollState.Connecting;
         }
 
         public void SetUp(LongPollServerInfo info) {
@@ -106,7 +107,6 @@ namespace ELOR.Laney.Core {
 
         public void Run() {
             Log.Information("Starting LongPoll...");
-            if (State != LongPollState.Updating) State = LongPollState.Connecting;
             cts = new CancellationTokenSource();
             isRunning = true;
 
@@ -114,7 +114,7 @@ namespace ELOR.Laney.Core {
                 while (isRunning) {
                     try {
                         Log.Information($"Waiting... TS: {TimeStamp}; PTS: {PTS}");
-                        State = State == LongPollState.Failed || State == LongPollState.NoInternet ? LongPollState.Updating : LongPollState.Working;
+                        if (State == LongPollState.Updating || State == LongPollState.Connecting) State = LongPollState.Working;
 
                         Dictionary<string, string> parameters = new Dictionary<string, string> {
                             { "act", "a_check" },
@@ -131,10 +131,10 @@ namespace ELOR.Laney.Core {
                         JsonNode jr = JsonNode.Parse(respstr);
                         httpResponse.Dispose();
                         if (jr["updates"] != null) {
+                            await ParseUpdatesAsync(jr["updates"].AsArray());
                             TimeStamp = (int)jr["ts"];
                             PTS = (int)jr["pts"];
-                            await ParseUpdatesAsync(jr["updates"].AsArray());
-                            if (State == LongPollState.Updating) State = LongPollState.Working;
+                            State = LongPollState.Working;
                             await Task.Delay(1000).ConfigureAwait(false);
                         } else if (jr["failed"] != null) {
                             int errCode = (int)jr["failed"];
@@ -149,10 +149,14 @@ namespace ELOR.Laney.Core {
                         }
                     } catch (Exception ex) {
                         bool isConnectionLost = ExceptionHelper.IsExceptionAboutNoConnection(ex);
-
                         Log.Error(ex, $"Exception when parsing LongPoll events! Trying after {WAIT_AFTER_FAIL} sec.");
-                        State = isConnectionLost ? LongPollState.NoInternet : LongPollState.Failed;
-                        await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
+
+                        if (isConnectionLost) {
+                            State = isConnectionLost ? LongPollState.NoInternet : LongPollState.Failed;
+                            await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
+                        } else {
+                            Restart();
+                        }
                     }
                 }
             }))();
@@ -165,12 +169,12 @@ namespace ELOR.Laney.Core {
 
         public void Restart() {
             Stop();
-            State = LongPollState.Updating;
 
             new System.Action(async () => await Task.Factory.StartNew(async () => {
                 bool trying = true;
                 while (trying) {
                     try {
+                        State = LongPollState.Updating;
                         Log.Information($"Getting LongPoll history... PTS: {PTS}");
                         var response = await API.Messages.GetLongPollHistoryAsync(groupId, VERSION, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
                         CacheManager.Add(response.Profiles);
@@ -183,7 +187,9 @@ namespace ELOR.Laney.Core {
                         if (response.More) PTS = response.NewPTS;
                         trying = response.More;
                     } catch (Exception ex) {
-                        if (ExceptionHelper.IsExceptionAboutNoConnection(ex)) {
+                        bool isConnectionLost = ExceptionHelper.IsExceptionAboutNoConnection(ex);
+                        State = isConnectionLost ? LongPollState.NoInternet : LongPollState.Failed;
+                        if (isConnectionLost) {
                             Log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
                             await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
                         } else {
@@ -229,11 +235,12 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 10004:
-                        bool isDeletedBeforeEvent = u.Count == 4;
+                        bool isDeletedBeforeEvent = u.Count == 4 && messages == null;
                         int receivedMsgId = (int)u[1];
-                        int minor = !isDeletedBeforeEvent ? (int)u[3] : 0;
-                        long peerId4 = !isDeletedBeforeEvent ? (long)u[4] : (long)u[3];
+                        int minor = isDeletedBeforeEvent ? (int)u[3] : (int)u[4];
+                        long peerId4 = isDeletedBeforeEvent ? 0 : (long)u[3];
                         Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
+                        if (isDeletedBeforeEvent) break;
                         Message msgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4);
                         if (msgFromHistory != null) {
                             MessageReceived?.Invoke(this, msgFromHistory, (int)u[2]);

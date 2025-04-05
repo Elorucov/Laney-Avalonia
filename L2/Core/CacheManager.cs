@@ -180,7 +180,7 @@ namespace ELOR.Laney.Core {
                 if (nowLoading.ContainsKey(key)) {
                     var lmres = nowLoading[key];
                     await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
-                    lmres.Dispose();
+                    // lmres.Dispose();
                     return ReactionsAssetData[key];
                 }
                 string data = null;
