@@ -23,7 +23,7 @@ namespace ELOR.Laney.Core {
 
     public sealed class LongPoll {
         public const int WAIT_AFTER_FAIL = 3;
-        public const int VERSION = 21;
+        public const int VERSION = 19;
         public const int WAIT_TIME = 25;
         public const int MODE = 234;
 
@@ -176,13 +176,14 @@ namespace ELOR.Laney.Core {
                     try {
                         State = LongPollState.Updating;
                         Log.Information($"Getting LongPoll history... PTS: {PTS}");
-                        var response = await API.Messages.GetLongPollHistoryAsync(groupId, VERSION, TimeStamp, PTS, 0, false, 1000, 500, 0, VKAPIHelper.Fields).ConfigureAwait(false);
+                        var response = await API.Messages.GetLongPollHistoryAsync(groupId, VERSION, TimeStamp, PTS, 0, false, 1000, 1000, 0, VKAPIHelper.Fields).ConfigureAwait(false);
                         CacheManager.Add(response.Profiles);
                         CacheManager.Add(response.Groups);
-                        // TODO: кешировать беседы.
-                        await ParseUpdatesAsync(response.History, response.Messages.Items);
 
                         SetUp(response.Credentials);
+
+                        // TODO: кешировать беседы.
+                        await ParseUpdatesAsync(response.History, response.Messages.Items);
 
                         if (response.More) PTS = response.NewPTS;
                         trying = response.More;
@@ -269,14 +270,15 @@ namespace ELOR.Laney.Core {
                         break;
                     case 10005:
                     case 10018:
-                        bool isDeletedBeforeEvent2 = u.Count == 4;
+                        bool isDeletedBeforeEvent2 = u.Count == 4 && messages == null;
                         int editedMsgId = (int)u[1];
                         long peerId5 = (long)u[3];
+                        if (isDeletedBeforeEvent2) break;
                         Message editMsgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == editedMsgId && m.PeerId == peerId5);
                         Log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent2}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2]);
-                            if (!isDeletedBeforeEvent2) CheckMentions(u[6], editedMsgId, peerId5);
+                            if (u.Count > 6) CheckMentions(u[6], editedMsgId, peerId5);
                         } else {
                             bool contains = MessagesFromAPI.Where(m => m.Item2 == editedMsgId).FirstOrDefault() != null;
                             if (!contains) {
@@ -324,7 +326,7 @@ namespace ELOR.Laney.Core {
                     case 52:
                         int updateType = (int)u[1];
                         long peerId52 = (long)u[2];
-                        int extra = (int)u[3];
+                        long extra = (long)u[3];
                         Log.Information($"EVENT {eventId}: updateType={updateType}, peer={peerId52}, extra={extra}");
                         ConversationDataChanged?.Invoke(this, updateType, peerId52, extra);
                         break;
@@ -391,7 +393,7 @@ namespace ELOR.Laney.Core {
                 pos = 5;
             }
 
-            bool changedByMe = type == LongPollReactionEventType.IAdded || type == LongPollReactionEventType.IRemoved;
+            // bool changedByMe = type == LongPollReactionEventType.IAdded || type == LongPollReactionEventType.IRemoved;
             long i3 = u[pos];
             long i4 = pos + 1;
             List<MessageReaction> reactions = new List<MessageReaction>();
