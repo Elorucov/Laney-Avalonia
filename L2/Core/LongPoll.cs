@@ -387,28 +387,27 @@ namespace ELOR.Laney.Core {
             long peerId = u[2];
             long cmId = u[3];
 
-            int pos = 4;
+            int start = 4;
             if (type == LongPollReactionEventType.IAdded) {
                 myReaction = u[4];
-                pos = 5;
+                start = 5;
             }
 
-            // bool changedByMe = type == LongPollReactionEventType.IAdded || type == LongPollReactionEventType.IRemoved;
-            long i3 = u[pos];
-            long i4 = pos + 1;
+            long reactionsCount = u[start];
+            long reactionStart = start + 1;
             List<MessageReaction> reactions = new List<MessageReaction>();
 
-            for (long i = 0; i < i3; i++) {
-                Tuple<long, MessageReaction> b = ParseReactions(u, i4);
-                i4 = b.Item1;
+            for (long i = 0; i < reactionsCount; i++) {
+                Tuple<long, MessageReaction> b = ParseReactions(u, reactionStart);
+                reactionStart = b.Item1;
                 reactions.Add(b.Item2);
             }
             ReactionsChanged?.Invoke(this, peerId, Convert.ToInt32(cmId), type, Convert.ToInt32(myReaction), reactions);
         }
 
         private Tuple<long, MessageReaction> ParseReactions(long[] u, long start) {
-            long i2 = u[start];
-            long i3 = start + 1;
+            long dataCount = u[start];
+            long dataStart = start + 1;
             long reactionId = u[start + 1];
             long count = u[start + 2];
             long end = u[start + 3];
@@ -417,7 +416,7 @@ namespace ELOR.Laney.Core {
             for (int j = 0; j < end; j++) {
                 members.Add(u[start + 4 + j]);
             }
-            return new Tuple<long, MessageReaction>(i3 + i2, new MessageReaction {
+            return new Tuple<long, MessageReaction>(dataStart + dataCount, new MessageReaction {
                 ReactionId = Convert.ToInt32(reactionId),
                 Count = Convert.ToInt32(count),
                 UserIds = members
