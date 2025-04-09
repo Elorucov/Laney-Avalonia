@@ -194,7 +194,7 @@ namespace ELOR.Laney.Core {
                             Log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
                             await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
                         } else {
-                            Log.Error(ex, $"Exception while getting LongPoll history! Required full resync.");
+                            Log.Error(ex, $"Exception while getting LongPoll history! Required full resync. Has credentials: {Server != null}");
                             trying = false;
                             NeedFullResync?.Invoke(this, null);
                         }
@@ -238,7 +238,7 @@ namespace ELOR.Laney.Core {
                     case 10004:
                         bool isDeletedBeforeEvent = u.Count == 4 && messages == null;
                         int receivedMsgId = (int)u[1];
-                        int minor = isDeletedBeforeEvent ? (int)u[3] : (int)u[4];
+                        int minor = messages != null ? (isDeletedBeforeEvent ? (int)u[3] : (int)u[4]) : 0;
                         long peerId4 = isDeletedBeforeEvent ? 0 : (long)u[3];
                         Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
                         if (isDeletedBeforeEvent) break;
@@ -398,14 +398,14 @@ namespace ELOR.Laney.Core {
             List<MessageReaction> reactions = new List<MessageReaction>();
 
             for (long i = 0; i < reactionsCount; i++) {
-                Tuple<long, MessageReaction> b = ParseReactions(u, reactionStart);
+                Tuple<long, MessageReaction> b = ParseReaction(u, reactionStart);
                 reactionStart = b.Item1;
                 reactions.Add(b.Item2);
             }
             ReactionsChanged?.Invoke(this, peerId, Convert.ToInt32(cmId), type, Convert.ToInt32(myReaction), reactions);
         }
 
-        private Tuple<long, MessageReaction> ParseReactions(long[] u, long start) {
+        private Tuple<long, MessageReaction> ParseReaction(long[] u, long start) {
             long dataCount = u[start];
             long dataStart = start + 1;
             long reactionId = u[start + 1];
