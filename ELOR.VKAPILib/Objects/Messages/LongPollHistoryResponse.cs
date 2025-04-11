@@ -8,6 +8,9 @@ namespace ELOR.VKAPILib.Objects.Messages {
         [JsonPropertyName("messages")]
         public MessagesList Messages { get; set; }
 
+        [JsonPropertyName("conversations")]
+        public List<Conversation> Conversations { get; set; }
+
         [JsonPropertyName("profiles")]
         public List<User> Profiles { get; set; }
 

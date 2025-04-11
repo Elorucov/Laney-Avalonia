@@ -183,7 +183,7 @@ namespace ELOR.Laney.Core {
                         SetUp(response.Credentials);
 
                         // TODO: кешировать беседы.
-                        await ParseUpdatesAsync(response.History, response.Messages.Items);
+                        await ParseUpdatesAsync(response.History, response.Messages.Items, response.Conversations);
 
                         if (response.More) PTS = response.NewPTS;
                         trying = response.More;
@@ -204,8 +204,8 @@ namespace ELOR.Laney.Core {
             }))();
         }
 
-        // messages — признак того, что метод вызывается после метода getLongPollHistory (если не null)
-        private async Task ParseUpdatesAsync(JsonArray updates, List<Message> messages = null) {
+        // messages и convos — признак того, что метод вызывается после метода getLongPollHistory (если не null)
+        private async Task ParseUpdatesAsync(JsonArray updates, List<Message> messages = null, List<Conversation> convos = null) {
             // peer id, CMID, is edited.
             List<Tuple<long, int, bool>> MessagesFromAPI = new List<Tuple<long, int, bool>>();
             Dictionary<int, int> MessagesFromAPIFlags = new Dictionary<int, int>();
@@ -288,18 +288,22 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 10006:
+                    case 10007:
                         long peerId6 = (long)u[1];
                         int msgId6 = (int)u[2];
-                        int count6 = u.Count > 3 ? (int)u[3] : 0;
+                        int count6 = 0;
+                        if (convos != null) {
+                            var convo = convos.SingleOrDefault(c => c.Peer.Id == peerId6);
+                            if (convo != null) count6 = convo.UnreadCount;
+                        } else {
+                            count6 = u.Count > 3 ? (int)u[3] : 0;
+                        }
                         Log.Information($"EVENT {eventId}: peer={peerId6}, msg={msgId6}, count={count6}");
-                        IncomingMessagesRead?.Invoke(this, peerId6, msgId6, count6);
-                        break;
-                    case 10007:
-                        long peerId7 = (long)u[1];
-                        int msgId7 = (int)u[2];
-                        int count7 = u.Count > 3 ? (int)u[3] : 0;
-                        Log.Information($"EVENT {eventId}: peer={peerId7}, msg={msgId7}, count={count7}");
-                        OutgoingMessagesRead?.Invoke(this, peerId7, msgId7, count7);
+                        if (eventId == 10006) {
+                            IncomingMessagesRead?.Invoke(this, peerId6, msgId6, count6);
+                        } else {
+                            OutgoingMessagesRead?.Invoke(this, peerId6, msgId6, count6);
+                        }
                         break;
                     case 10:
                     case 12:
