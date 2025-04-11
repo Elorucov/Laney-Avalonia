@@ -238,7 +238,7 @@ namespace ELOR.Laney.Core {
                     case 10004:
                         bool isDeletedBeforeEvent = u.Count == 4 && messages == null;
                         int receivedMsgId = (int)u[1];
-                        int minor = messages != null ? (isDeletedBeforeEvent ? (int)u[3] : (int)u[4]) : 0;
+                        int minor = messages == null ? (isDeletedBeforeEvent ? (int)u[3] : (int)u[4]) : 0;
                         long peerId4 = isDeletedBeforeEvent ? 0 : (long)u[3];
                         Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
                         if (isDeletedBeforeEvent) break;
@@ -372,8 +372,6 @@ namespace ELOR.Laney.Core {
                         ParseUnreadReactionsAndInvoke(u.Select(n => (long)n.Deserialize(typeof(long), L2JsonSerializerContext.Default)).ToArray());
                         break;
                 }
-
-                await Task.Delay(16); 
             }
 
             if (MessagesFromAPI.Count > 0) {
