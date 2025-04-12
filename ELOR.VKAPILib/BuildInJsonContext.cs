@@ -28,6 +28,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(AddTemplateResponse))]
     [JsonSerializable(typeof(ChatLink))]
     [JsonSerializable(typeof(ChatPreviewResponse))]
+    [JsonSerializable(typeof(ChatMembersList))]
     [JsonSerializable(typeof(CreateChatResponse))]
     [JsonSerializable(typeof(ConversationAttachmentsResponse))]
     [JsonSerializable(typeof(ConversationsResponse))]

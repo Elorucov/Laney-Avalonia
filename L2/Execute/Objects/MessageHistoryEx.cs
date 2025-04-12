@@ -21,6 +21,9 @@ namespace ELOR.Laney.Execute.Objects {
         [JsonPropertyName("groups")]
         public List<Group> Groups { get; set; }
 
+        [JsonPropertyName("members")]
+        public List<ChatMember> Members { get; set; }
+
         [JsonPropertyName("mentioned_profiles")]
         public List<User> MentionedProfiles { get; set; }
 

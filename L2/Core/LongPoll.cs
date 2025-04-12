@@ -75,7 +75,7 @@ namespace ELOR.Laney.Core {
         public delegate void ConversationFlagsDelegate(LongPoll longPoll, long peerId, int flags);
         public delegate void MentionDelegate(LongPoll longPoll, long peerId, int messageId, bool isSelfDestruct);
         public delegate void ReadInfoDelegate(LongPoll longPoll, long peerId, int messageId, int count);
-        public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, long peerId, long extra);
+        public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, long peerId, long extra, Conversation? convo);
         public delegate void ActivityStatusDelegate(LongPoll longPoll, long peerId, List<LongPollActivityInfo> infos);
         public delegate void ReactionsChangedDelegate(LongPoll longPoll, long peerId, int cmId, LongPollReactionEventType type, int myReactionId, List<MessageReaction> reactions);
         public delegate void UnreadReactionsChangedDelegate(LongPoll longPoll, long peerId, List<int> cmIds);
@@ -332,7 +332,8 @@ namespace ELOR.Laney.Core {
                         long peerId52 = (long)u[2];
                         long extra = (long)u[3];
                         Log.Information($"EVENT {eventId}: updateType={updateType}, peer={peerId52}, extra={extra}");
-                        ConversationDataChanged?.Invoke(this, updateType, peerId52, extra);
+                        Conversation convo52 = convos?.SingleOrDefault(c => c.Peer.Id == peerId52);
+                        ConversationDataChanged?.Invoke(this, updateType, peerId52, extra, convo52);
                         break;
                     case 63:
                     case 64:
@@ -381,6 +382,8 @@ namespace ELOR.Laney.Core {
             if (MessagesFromAPI.Count > 0) {
                 await GetMessagesFromAPIAsync(MessagesFromAPI, MessagesFromAPIFlags);
             }
+
+            await Task.Delay(16);
         }
 
         private void ParseReactionsAndInvoke(long[] u) {

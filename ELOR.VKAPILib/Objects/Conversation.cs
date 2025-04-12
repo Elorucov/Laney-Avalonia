@@ -155,6 +155,21 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("can_see_invite_link")]
         public bool CanSeeInviteLink { get; set; }
 
+        [JsonPropertyName("can_moderate")]
+        public bool CanModerate { get; set; }
+
+        [JsonPropertyName("can_copy_chat")]
+        public bool CanCopyChat { get; set; }
+
+        [JsonPropertyName("can_call")]
+        public bool CanCall { get; set; }
+
+        [JsonPropertyName("can_use_mass_mentions")]
+        public bool CanUseMassMentions { get; set; }
+
+        [JsonPropertyName("can_change_style")]
+        public bool CanChangeStyle { get; set; }
+
         [JsonPropertyName("can_send_reactions")]
         public bool CanSendReactions { get; set; }
     }
@@ -189,6 +204,10 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("change_admins")]
         [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers ChangeAdmins { get; set; }
+
+        [JsonPropertyName("change_style")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+        public ChatSettingsChangers ChangeStyle { get; set; }
     }
 
     public class ChatSettings {
