@@ -1166,4 +1166,16 @@ to attach them as files</value>
     <data name="views_empty" xml:space="preserve">
         <value>No views</value>
     </data>
+    <data name="writing_disabled_for_you" xml:space="preserve">
+        <value>The chat administrator restricted you from messaging</value>
+    </data>
+    <data name="writing_disabled_for_you_until" xml:space="preserve">
+        <value>The chat administrator restricted you from messaging until {0}</value>
+    </data>
+    <data name="writing_disabled_for_all" xml:space="preserve">
+        <value>Only the administrator can write in this chat</value>
+    </data>
+    <data name="writing_disabled_for_all_until" xml:space="preserve">
+        <value>The chat administrator has restricted messaging until {0}</value>
+    </data>
 </root>

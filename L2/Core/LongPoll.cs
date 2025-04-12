@@ -77,6 +77,7 @@ namespace ELOR.Laney.Core {
         public delegate void ReadInfoDelegate(LongPoll longPoll, long peerId, int messageId, int count);
         public delegate void ConversationDataDelegate(LongPoll longPoll, int updateType, long peerId, long extra, Conversation? convo);
         public delegate void ActivityStatusDelegate(LongPoll longPoll, long peerId, List<LongPollActivityInfo> infos);
+        public delegate void CanWriteChangedDelegate(LongPoll longPoll, long peerId, long memberId, bool isRestrictedToWrite, long until);
         public delegate void ReactionsChangedDelegate(LongPoll longPoll, long peerId, int cmId, LongPollReactionEventType type, int myReactionId, List<MessageReaction> reactions);
         public delegate void UnreadReactionsChangedDelegate(LongPoll longPoll, long peerId, List<int> cmIds);
 
@@ -94,8 +95,9 @@ namespace ELOR.Laney.Core {
         public event ConversationFlagsDelegate MajorIdChanged; // 20
         public event ConversationFlagsDelegate MinorIdChanged; // 21
         public event ConversationDataDelegate ConversationDataChanged; // 52
-        public event ActivityStatusDelegate ActivityStatusChanged; // 63-67
+        public event ActivityStatusDelegate ActivityStatusChanged; // 63-68
         public event EventHandler<int> UnreadCounterUpdated; // 80
+        public event CanWriteChangedDelegate CanWriteChanged; // 91
         public event EventHandler<LongPollPushNotificationData> NotificationsSettingsChanged; // 114
         public event EventHandler<LongPollCallbackResponse> CallbackReceived; // 119
         public event ReactionsChangedDelegate ReactionsChanged; // 601
@@ -236,10 +238,16 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 10004:
-                        bool isDeletedBeforeEvent = u.Count == 4 && messages == null;
+                        bool isDeletedBeforeEvent = u.Count == 4;
                         int receivedMsgId = (int)u[1];
-                        int minor = messages == null ? (isDeletedBeforeEvent ? (int)u[3] : (int)u[4]) : 0;
-                        long peerId4 = isDeletedBeforeEvent ? 0 : (long)u[3];
+                        int minor = messages == null ? (int)u[3] : 0;
+                        long peerId4 = isDeletedBeforeEvent ? 0 : (long)u[4];
+                        if (messages != null) { // gLPH
+                            peerId4 = (long)u[3];
+                        } else {
+                            peerId4 = isDeletedBeforeEvent ? 0 : (long)u[4];
+                            minor = (int)u[3];
+                        }
                         Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
                         if (isDeletedBeforeEvent) break;
                         Message msgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4);
@@ -340,6 +348,7 @@ namespace ELOR.Laney.Core {
                     case 65:
                     case 66:
                     case 67:
+                    case 68:
                         LongPollActivityType type = GetLPActivityType(eventId);
                         long peerId63 = (long)u[1];
                         long[] userIds = (long[])u[2].Deserialize(typeof(long[]), L2JsonSerializerContext.Default);
@@ -357,6 +366,15 @@ namespace ELOR.Laney.Core {
                         int unreadCount = (int)u[1];
                         Log.Information($"EVENT {eventId}: count={unreadCount}");
                         UnreadCounterUpdated?.Invoke(this, unreadCount);
+                        break;
+                    case 91:
+                        int restrictionType = (int)u[1];
+                        long peerId91 = (long)u[2];
+                        long memberId = (long)u[3];
+                        bool isDeny = restrictionType == 1 || restrictionType == 2;
+                        long until = restrictionType == 1 ? (long)u[5] : 0;
+                        Log.Information($"EVENT {eventId}: peer={peerId91}, memberId={memberId}, isDeny={isDeny}, until={until}");
+                        CanWriteChanged?.Invoke(this, peerId91, memberId, isDeny, until);
                         break;
                     case 114:
                         var data = (LongPollPushNotificationData)u[1].Deserialize(typeof(LongPollPushNotificationData), L2JsonSerializerContext.Default);
@@ -468,6 +486,7 @@ namespace ELOR.Laney.Core {
                 case 65: return LongPollActivityType.UploadingPhoto;
                 case 66: return LongPollActivityType.UploadingVideo;
                 case 67: return LongPollActivityType.UploadingFile;
+                case 68: return LongPollActivityType.UploadingVideoMessage;
             }
         }
 

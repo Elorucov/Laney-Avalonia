@@ -206,7 +206,7 @@ namespace ELOR.Laney.ViewModels {
         }
 
         bool _isConvoRefreshing = false;
-        private async Task RefreshConvoInfoAsync(Conversation convo, bool needRefreshChatMembers = false) {
+        private async Task RefreshConvoInfoAsync(Conversation convo = null, bool needRefreshChatMembers = false) {
             if (_isConvoRefreshing) return;
             _isConvoRefreshing = true;
             try {
@@ -228,7 +228,8 @@ namespace ELOR.Laney.ViewModels {
 
         bool _isMembersLoading = false;
         private async Task LoadMembersAsync() {
-            if (ChatSettings.State != UserStateInChat.In || _isMembersLoading) return;
+            if (PeerType != PeerType.Chat) return;
+            if (ChatSettings.State != UserStateInChat.In || ChatSettings.IsGroupChannel || _isMembersLoading) return;
 
             _isMembersLoading = true;
             try {
@@ -354,7 +355,21 @@ namespace ELOR.Laney.ViewModels {
                 if (ChatSettings.State != UserStateInChat.In) {
                     RestrictionReason = Localizer.Get($"chat_{ChatSettings.State.ToString().ToLower()}");
                 } else {
-                    RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Assets.i18n.Resources.cannot_write);
+                    DateTime restrictedUntil = DateTime.Now;
+                    if (CanWrite.Reason == 983) {
+                        var test = DateTimeOffset.FromUnixTimeSeconds(CanWrite.Until);
+                        restrictedUntil = DateTimeOffset.FromUnixTimeSeconds(CanWrite.Until).LocalDateTime;
+                        RestrictionReason = CanWrite.Until > 0
+                            ? Localizer.GetFormatted("writing_disabled_for_you_until", restrictedUntil.ToHumanizedString(true))
+                            : Assets.i18n.Resources.writing_disabled_for_you;
+                    } else if (CanWrite.Reason == 1012) {
+                        restrictedUntil = DateTimeOffset.FromUnixTimeSeconds(ChatSettings.WritingDisabled.UntilTS).LocalDateTime;
+                        RestrictionReason = ChatSettings.WritingDisabled.UntilTS > 0
+                            ? Localizer.GetFormatted("writing_disabled_for_all_until", restrictedUntil.ToHumanizedString(true))
+                            : Assets.i18n.Resources.writing_disabled_for_all;
+                    } else {
+                        RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Assets.i18n.Resources.cannot_write);
+                    }
                 }
             } else if (PeerType == PeerType.User) {
                 switch (CanWrite.Reason) {
@@ -416,6 +431,7 @@ namespace ELOR.Laney.ViewModels {
                 session.LongPoll.MinorIdChanged += LongPoll_MinorIdChanged;
                 session.LongPoll.ConversationDataChanged += LongPoll_ConversationDataChanged;
                 session.LongPoll.ActivityStatusChanged += LongPoll_ActivityStatusChanged;
+                session.LongPoll.CanWriteChanged += LongPoll_CanWriteChanged;
                 session.LongPoll.NotificationsSettingsChanged += LongPoll_NotificationsSettingsChanged;
                 session.LongPoll.UnreadReactionsChanged += LongPoll_UnreadReactionsChanged;
 
@@ -986,6 +1002,29 @@ namespace ELOR.Laney.ViewModels {
                         ActivityStatusUsers.Clear();
                         ActivityStatus = String.Empty;
                         Log.Error(ex, $"Error while parsing user activity status!");
+                    }
+                });
+            })();
+        }
+
+        private void LongPoll_CanWriteChanged(LongPoll longPoll, long peerId, long memberId, bool isRestrictedToWrite, long untilTime) {
+            if (peerId != PeerId) return;
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(async () => {
+                    ChatMember member = Members.SingleOrDefault(m => m.MemberId == memberId);
+                    if (member != null) member.IsRestrictedToWrite = isRestrictedToWrite;
+
+                    if (memberId == session.Id) {
+                        if (isRestrictedToWrite) {
+                            CanWrite = new CanWrite {
+                                Allowed = false,
+                                Reason = 983,
+                                Until = untilTime
+                            };
+                            UpdateRestrictionInfo();
+                        } else {
+                            await RefreshConvoInfoAsync();
+                        }
                     }
                 });
             })();

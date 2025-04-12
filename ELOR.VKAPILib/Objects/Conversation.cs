@@ -109,6 +109,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("reason")]
         public int Reason { get; set; }
+
+        [JsonPropertyName("until")]
+        public long Until { get; set; }
     }
 
     public class ChatPhoto {
@@ -210,6 +213,16 @@ namespace ELOR.VKAPILib.Objects {
         public ChatSettingsChangers ChangeStyle { get; set; }
     }
 
+    public class WritingDisabledInfo {
+        public WritingDisabledInfo() { }
+
+        [JsonPropertyName("until_ts")]
+        public long UntilTS { get; set; }
+
+        [JsonPropertyName("value")]
+        public bool Value { get; set; }
+    }
+
     public class ChatSettings {
         public ChatSettings() { }
 
@@ -249,6 +262,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("theme")]
         public string Theme { get; set; }
+
+        [JsonPropertyName("writing_disabled")]
+        public WritingDisabledInfo WritingDisabled { get; set; }
     }
 
     public class SortId {
@@ -338,6 +354,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("is_admin")]
         public bool IsAdmin { get; set; }
+
+        [JsonPropertyName("is_restricted_to_write")]
+        public bool IsRestrictedToWrite { get; set; }
     }
 
     public class Chat {

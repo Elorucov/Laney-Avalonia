@@ -1262,4 +1262,16 @@
   <data name="_continue" xml:space="preserve">
     <value>Продолжить</value>
   </data>
+  <data name="writing_disabled_for_you" xml:space="preserve">
+    <value>Администратор чата запретил вам отправлять сообщения</value>
+  </data>
+  <data name="writing_disabled_for_you_until" xml:space="preserve">
+    <value>Администратор чата запретил вам отправлять сообщения до {0}</value>
+  </data>
+  <data name="writing_disabled_for_all" xml:space="preserve">
+    <value>В этот чат может писать только администратор</value>
+  </data>
+  <data name="writing_disabled_for_all_until" xml:space="preserve">
+    <value>Администратор чата запретил отправлять сообщения до {0}</value>
+  </data>
 </root>
