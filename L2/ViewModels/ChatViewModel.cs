@@ -106,6 +106,7 @@ namespace ELOR.Laney.ViewModels {
             SingleSelect = false
         };
 
+        public List<ChatMember> Members { get; private set; } = new List<ChatMember>();
         public List<User> MembersUsers { get; private set; } = new List<User>();
         public List<Group> MembersGroups { get; private set; } = new List<Group>();
 
@@ -204,6 +205,50 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
+        bool _isConvoRefreshing = false;
+        private async Task RefreshConvoInfoAsync(Conversation convo = null, bool needRefreshChatMembers = false) {
+            if (_isConvoRefreshing) return;
+            _isConvoRefreshing = true;
+            try {
+                Log.Information($"RefreshConvoInfo peer: {PeerId}, needRefreshChatMembers: {needRefreshChatMembers}");
+                if (convo != null) {
+                    Setup(convo);
+                } else {
+                    var response = await session.API.Messages.GetConversationsByIdAsync(session.GroupId, new List<long> { PeerId }, true, VKAPIHelper.Fields);
+                    if (response.Items.Count > 0) Setup(response.Items[0]);
+                }
+
+                if (needRefreshChatMembers) await LoadMembersAsync();
+            } catch (Exception ex) {
+                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+            } finally {
+                _isConvoRefreshing = false;
+            }
+        }
+
+        bool _isMembersLoading = false;
+        private async Task LoadMembersAsync() {
+            if (PeerType != PeerType.Chat) return;
+            if (ChatSettings.State != UserStateInChat.In || ChatSettings.IsGroupChannel || _isMembersLoading) return;
+
+            _isMembersLoading = true;
+            try {
+                Log.Information($"LoadMembers peer: {PeerId}");
+                var response = await session.API.Messages.GetConversationMembersAsync(session.GroupId, PeerId, extended: true, fields: VKAPIHelper.Fields);
+                Members = response.Items;
+
+                CacheManager.Add(response.Profiles);
+                CacheManager.Add(response.Groups);
+
+                MembersUsers = response.Profiles;
+                MembersGroups = response.Groups;
+            } catch (Exception ex) {
+                await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
+            } finally {
+                _isMembersLoading = false;
+            }
+        }
+
         private void Setup(Conversation c) {
             PeerId = c.Peer.Id;
             if (SortId?.MajorId != c.SortId.MajorId || SortId?.MinorId != c.SortId.MinorId) SortId = c.SortId; // чтобы не дёргался listbox.
@@ -264,10 +309,10 @@ namespace ELOR.Laney.ViewModels {
                 if (ChatSettings.PinnedMessage != null)
                     PinnedMessage = MessageViewModel.Create(ChatSettings.PinnedMessage, session);
                 UpdateSubtitleForChat();
-            } else if (PeerId > 1900000000 && PeerId <= 2000000000) { // Contact?
+            } else if (PeerId.IsContact()) { // Contact?
                 PeerType = PeerType.Contact;
                 Title = $"Contact {PeerId}";
-            } else if (PeerId < -2000000000) { // E-mail
+            } else if (PeerId.IsEmail()) { // E-mail
                 PeerType = PeerType.Email;
                 Title = $"E-Mail {PeerId}";
             }
@@ -310,7 +355,20 @@ namespace ELOR.Laney.ViewModels {
                 if (ChatSettings.State != UserStateInChat.In) {
                     RestrictionReason = Localizer.Get($"chat_{ChatSettings.State.ToString().ToLower()}");
                 } else {
-                    RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Assets.i18n.Resources.cannot_write);
+                    DateTime restrictedUntil = DateTime.Now;
+                    if (CanWrite.Reason == 983) {
+                        restrictedUntil = DateTimeOffset.FromUnixTimeSeconds(CanWrite.Until).LocalDateTime;
+                        RestrictionReason = CanWrite.Until > 0
+                            ? Localizer.GetFormatted("writing_disabled_for_you_until", restrictedUntil.ToHumanizedString(true))
+                            : Assets.i18n.Resources.writing_disabled_for_you;
+                    } else if (CanWrite.Reason == 1012) {
+                        restrictedUntil = DateTimeOffset.FromUnixTimeSeconds(ChatSettings.WritingDisabled.UntilTS).LocalDateTime;
+                        RestrictionReason = ChatSettings.WritingDisabled.UntilTS > 0
+                            ? Localizer.GetFormatted("writing_disabled_for_all_until", restrictedUntil.ToHumanizedString(true))
+                            : Assets.i18n.Resources.writing_disabled_for_all;
+                    } else {
+                        RestrictionReason = VKAPIHelper.GetUnderstandableErrorMessage(CanWrite.Reason, Assets.i18n.Resources.cannot_write);
+                    }
                 }
             } else if (PeerType == PeerType.User) {
                 switch (CanWrite.Reason) {
@@ -372,6 +430,7 @@ namespace ELOR.Laney.ViewModels {
                 session.LongPoll.MinorIdChanged += LongPoll_MinorIdChanged;
                 session.LongPoll.ConversationDataChanged += LongPoll_ConversationDataChanged;
                 session.LongPoll.ActivityStatusChanged += LongPoll_ActivityStatusChanged;
+                session.LongPoll.CanWriteChanged += LongPoll_CanWriteChanged;
                 session.LongPoll.NotificationsSettingsChanged += LongPoll_NotificationsSettingsChanged;
                 session.LongPoll.UnreadReactionsChanged += LongPoll_UnreadReactionsChanged;
 
@@ -507,13 +566,14 @@ namespace ELOR.Laney.ViewModels {
                 Log.Information("LoadMessages peer: {0}, count: {1}, startMessageId: {2}", PeerId, count, startMessageId);
                 IsLoading = true;
                 int offset = -count / 2;
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, offset, count, startMessageId, false, VKAPIHelper.Fields);
+
+                // TODO: use messages.getHistory, т. к. участников получаем сразу после первой загрузки сообщений.
+                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, offset, count, startMessageId, false, VKAPIHelper.Fields, true);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
                 CacheManager.Add(mhr.MentionedProfiles);
                 CacheManager.Add(mhr.MentionedGroups);
-                MembersUsers = mhr.Profiles;
-                MembersGroups = mhr.Groups;
+
                 Setup(mhr.Conversation);
                 mhr.Messages?.Reverse();
                 DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
@@ -531,6 +591,8 @@ namespace ELOR.Laney.ViewModels {
                         Log.Warning($"LoadMessages: cannot find message with cmid {scrollTo}, so cannot scroll to this message!");
                     }
                 }
+
+                if (Members.Count == 0) await LoadMembersAsync();
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadMessagesAsync(startMessageId));
             } finally {
@@ -614,16 +676,6 @@ namespace ELOR.Laney.ViewModels {
                 await Dispatcher.UIThread.InvokeAsync(() => {
                     if (flags.HasFlag(128)) { // Удаление сообщения
                         if (messageId > InRead && UnreadMessagesCount > 0) UnreadMessagesCount--;
-
-                        // TODO: обновление sort id после удаления сообщения
-                        //if (ReceivedMessages.LastOrDefault()?.Id == SortId.MinorId && (ChatSettings != null && !ChatSettings.IsDisappearing)) {
-                        //    if (ReceivedMessages.Count > 1) {
-                        //        MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
-                        //        UpdateSortId(SortId.MajorId, prev.Id);
-                        //    } else {
-                        //        Log.Warning("Cannot update minor_id after last message is deleted!");
-                        //    }
-                        //}
                         if (ReceivedMessages.Count > 1) {
                             MessageViewModel prev = ReceivedMessages[ReceivedMessages.Count - 2];
                             UpdateSortId(SortId.MajorId, prev.GlobalId);
@@ -681,7 +733,7 @@ namespace ELOR.Laney.ViewModels {
                         ReceivedMessages.Add(msg);
                     }
 
-                    if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
+                    // if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
                     // if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
                     if (msg.SenderId != session.Id) UnreadMessagesCount++;
                     if (canAddToDisplayedMessages) {
@@ -714,7 +766,7 @@ namespace ELOR.Laney.ViewModels {
 
                     if (LastMessage?.ConversationMessageId == message.ConversationMessageId) {
                         // нужно для корректной обработки смены фото чата.
-                        if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
+                        //if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
 
                         await Task.Delay(16); // ибо первым выполняется событие в объекте сообщения, и только потом тут.
                         OnPropertyChanged(nameof(LastMessage));
@@ -723,25 +775,25 @@ namespace ELOR.Laney.ViewModels {
             })();
         }
 
-        private void ParseActionMessage(long fromId, VKAPILib.Objects.Action action, List<Attachment> attachments) {
-            switch (action.Type) {
-                case "chat_title_update":
-                    Title = action.Text;
-                    break;
-                case "chat_photo_update":
-                    if (attachments != null) Avatar = attachments[0].Photo.GetSizeAndUriForThumbnail(Constants.ChatHeaderAvatarSize, Constants.ChatHeaderAvatarSize).Uri;
-                    break;
-                case "chat_photo_remove":
-                    Avatar = new Uri("https://vk.com/images/icons/im_multichat_200.png");
-                    break;
-                case "chat_pin_message":
-                    UpdatePinnedMessage(action.ConversationMessageId);
-                    break;
-                case "chat_unpin_message":
-                    PinnedMessage = null;
-                    break;
-            }
-        }
+        //private void ParseActionMessage(long fromId, VKAPILib.Objects.Action action, List<Attachment> attachments) {
+        //    switch (action.Type) {
+        //        case "chat_title_update":
+        //            Title = action.Text;
+        //            break;
+        //        case "chat_photo_update":
+        //            if (attachments != null) Avatar = attachments[0].Photo.GetSizeAndUriForThumbnail(Constants.ChatHeaderAvatarSize, Constants.ChatHeaderAvatarSize).Uri;
+        //            break;
+        //        case "chat_photo_remove":
+        //            Avatar = new Uri("https://vk.com/images/icons/im_multichat_200.png");
+        //            break;
+        //        case "chat_pin_message":
+        //            UpdatePinnedMessage(action.ConversationMessageId);
+        //            break;
+        //        case "chat_unpin_message":
+        //            PinnedMessage = null;
+        //            break;
+        //    }
+        //}
 
         private void UpdatePinnedMessage(int cmid) {
             var msg = ReceivedMessages.Where(m => m.ConversationMessageId == cmid).FirstOrDefault();
@@ -878,22 +930,42 @@ namespace ELOR.Laney.ViewModels {
             };
         }
 
-        private void LongPoll_ConversationDataChanged(LongPoll longPoll, int type, long peerId, long extra) {
+        private void LongPoll_ConversationDataChanged(LongPoll longPoll, int type, long peerId, long extra, Conversation convo) {
             if (peerId != PeerId) return;
             new System.Action(async () => {
-                await Dispatcher.UIThread.InvokeAsync(() => {
-                    // TODO: 4 и 6
+                await Dispatcher.UIThread.InvokeAsync(async () => {
+                    // TODO: type 6
                     switch (type) {
+                        case 1: // Измененилось название чата
+                        case 2: // Обновилась аватарка чата
+                        case 4: // Изменились права доступа в чате
+                        case 10: // Изменился баннер (будет поддерживаться в будущем)
+                        // case 19: // Начало или окончание звонка
+                            await RefreshConvoInfoAsync(convo, type == 4);
+                            break;
                         case 3: // Назначен новый администратор
                             if (ChatSettings.AdminIDs == null) ChatSettings.AdminIDs = new List<long>();
                             ChatSettings.AdminIDs?.Add(extra);
                             break;
+                        case 5: // Закрепление или открепление сообщения
+                            if (extra == 0) {
+                                PinnedMessage = null;
+                            } else {
+                                UpdatePinnedMessage(Convert.ToInt32(extra));
+                            }
+                            break;
                         case 7: // Выход из беседы
                         case 8: // Исключение из беседы
                             if (extra.IsUser()) {
+                                var um = Members.SingleOrDefault(m => m.MemberId == extra);
+                                if (um != null) Members.Remove(um);
+
                                 User user = MembersUsers?.Where(u => u.Id == extra).FirstOrDefault();
                                 if (user != null) MembersUsers?.Remove(user);
                             } else if (extra.IsGroup()) {
+                                var gm = Members.SingleOrDefault(m => m.MemberId == -extra);
+                                if (gm != null) Members.Remove(gm);
+
                                 Group group = MembersGroups?.Where(g => g.Id == -extra).FirstOrDefault();
                                 if (group != null) MembersGroups?.Remove(group);
                             }
@@ -916,7 +988,7 @@ namespace ELOR.Laney.ViewModels {
             if (peerId != PeerId) return;
             new System.Action(async () => {
                 await Dispatcher.UIThread.InvokeAsync(() => {
-                    double timeout = 7000;
+                    double timeout = 5000;
                     try {
                         foreach (LongPollActivityInfo info in infos) {
                             if (info.MemberId == session.Id) continue;
@@ -929,6 +1001,29 @@ namespace ELOR.Laney.ViewModels {
                         ActivityStatusUsers.Clear();
                         ActivityStatus = String.Empty;
                         Log.Error(ex, $"Error while parsing user activity status!");
+                    }
+                });
+            })();
+        }
+
+        private void LongPoll_CanWriteChanged(LongPoll longPoll, long peerId, long memberId, bool isRestrictedToWrite, long untilTime) {
+            if (peerId != PeerId) return;
+            new System.Action(async () => {
+                await Dispatcher.UIThread.InvokeAsync(async () => {
+                    ChatMember member = Members.SingleOrDefault(m => m.MemberId == memberId);
+                    if (member != null) member.IsRestrictedToWrite = isRestrictedToWrite;
+
+                    if (memberId == session.Id) {
+                        if (isRestrictedToWrite) {
+                            CanWrite = new CanWrite {
+                                Allowed = false,
+                                Reason = 983,
+                                Until = untilTime
+                            };
+                            UpdateRestrictionInfo();
+                        } else {
+                            await RefreshConvoInfoAsync();
+                        }
                     }
                 });
             })();

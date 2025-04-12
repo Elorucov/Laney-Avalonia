@@ -147,6 +147,22 @@ namespace ELOR.VKAPILib.Objects {
         public List<Group> Groups { get; set; }
     }
 
+    public class ChatMembersList : IVKList<ChatMember> {
+        public ChatMembersList() { }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("items")]
+        public List<ChatMember> Items { get; set; }
+
+        [JsonPropertyName("profiles")]
+        public List<User> Profiles { get; set; }
+
+        [JsonPropertyName("groups")]
+        public List<Group> Groups { get; set; }
+    }
+
     public class MessageTemplatesList {
         public MessageTemplatesList() { }
 

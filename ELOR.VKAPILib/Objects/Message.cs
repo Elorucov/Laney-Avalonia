@@ -313,7 +313,7 @@ namespace ELOR.VKAPILib.Objects {
                     if (additional.ContainsKey("source_text")) act.Text = additional["source_text"].ToString();
                     if (additional.ContainsKey("source_old_text")) act.OldText = additional["source_old_text"].ToString();
                     if (additional.ContainsKey("source_mid")) act.MemberId = Int64.Parse(additional["source_mid"].GetValue<string>());
-                    if (additional.ContainsKey("source_chat_local_id")) act.ConversationMessageId = (int)additional["source_chat_local_id"];
+                    if (additional.ContainsKey("source_chat_local_id")) Int64.Parse(additional["source_chat_local_id"].GetValue<string>());
                     if (additional.ContainsKey("source_style")) act.Style = additional["source_style"].ToString();
                     if (act.Type == "chat_photo_update") needToGetFullMsgFromAPI = true;
                     message.Action = act;

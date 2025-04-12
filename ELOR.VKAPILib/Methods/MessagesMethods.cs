@@ -333,6 +333,24 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<ConversationsList>("messages.getConversationsById", parameters);
         }
 
+        /// <summary>Returns members of the conversation.</summary>
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        /// <param name="peerId">Destination ID.</param>
+        /// <param name="offset">Offset.</param>
+        /// <param name="count">Count.</param>
+        /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
+        /// <param name="fields">List of additional fields for users and communities.</param>
+        public async Task<ChatMembersList> GetConversationMembersAsync(long groupId, long peerId, int offset = 0, int count = 0, bool extended = false, List<string> fields = null) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            parameters.Add("peer_id", peerId.ToString());
+            if (offset > 0) parameters.Add("offset", offset.ToString());
+            if (count > 0) parameters.Add("count", count.ToString());
+            if (extended) parameters.Add("extended", "1");
+            if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
+            return await API.CallMethodAsync<ChatMembersList>("messages.getConversationMembers", parameters);
+        }
+
         /// <summary>Returns message history for the specified user or group chat.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Peer ID.</param>
@@ -360,7 +378,8 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Peer ID.</param>
         /// <param name="mediaType">Type of media files to return.</param>
-        /// <param name="startFrom">Message ID to start return results from.</param>
+        /// <param name="cmid">Conversation message ID to start return results from.</param>
+        /// <param name="offset">Offset related from cmid.</param>
         /// <param name="count">Number of messages to return.</param>
         /// <param name="photoSizes">true — to return photo sizes.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>

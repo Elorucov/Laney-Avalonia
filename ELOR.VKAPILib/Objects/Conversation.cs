@@ -109,6 +109,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("reason")]
         public int Reason { get; set; }
+
+        [JsonPropertyName("until")]
+        public long Until { get; set; }
     }
 
     public class ChatPhoto {
@@ -155,6 +158,21 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("can_see_invite_link")]
         public bool CanSeeInviteLink { get; set; }
 
+        [JsonPropertyName("can_moderate")]
+        public bool CanModerate { get; set; }
+
+        [JsonPropertyName("can_copy_chat")]
+        public bool CanCopyChat { get; set; }
+
+        [JsonPropertyName("can_call")]
+        public bool CanCall { get; set; }
+
+        [JsonPropertyName("can_use_mass_mentions")]
+        public bool CanUseMassMentions { get; set; }
+
+        [JsonPropertyName("can_change_style")]
+        public bool CanChangeStyle { get; set; }
+
         [JsonPropertyName("can_send_reactions")]
         public bool CanSendReactions { get; set; }
     }
@@ -189,6 +207,20 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("change_admins")]
         [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
         public ChatSettingsChangers ChangeAdmins { get; set; }
+
+        [JsonPropertyName("change_style")]
+        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+        public ChatSettingsChangers ChangeStyle { get; set; }
+    }
+
+    public class WritingDisabledInfo {
+        public WritingDisabledInfo() { }
+
+        [JsonPropertyName("until_ts")]
+        public long UntilTS { get; set; }
+
+        [JsonPropertyName("value")]
+        public bool Value { get; set; }
     }
 
     public class ChatSettings {
@@ -230,6 +262,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("theme")]
         public string Theme { get; set; }
+
+        [JsonPropertyName("writing_disabled")]
+        public WritingDisabledInfo WritingDisabled { get; set; }
     }
 
     public class SortId {
@@ -319,6 +354,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("is_admin")]
         public bool IsAdmin { get; set; }
+
+        [JsonPropertyName("is_restricted_to_write")]
+        public bool IsRestrictedToWrite { get; set; }
     }
 
     public class Chat {

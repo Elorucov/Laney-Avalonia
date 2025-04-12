@@ -23,6 +23,10 @@ namespace ELOR.Laney.Extensions {
             return (flag & num) != 0;
         }
 
+        public static bool HasFlag(this long num, long flag) {
+            return (flag & num) != 0;
+        }
+
         public static Avalonia.Size ToAvaloniaSize(this System.Drawing.Size size) {
             return new Avalonia.Size(size.Width, size.Height);
         }
@@ -173,6 +177,14 @@ namespace ELOR.Laney.Extensions {
 
         public static bool IsChat(this long id) {
             return id > 2e9 && id < 2e9 + 1e8;
+        }
+
+        public static bool IsContact(this long id) {
+            return id > 1900000000 && id <= 2000000000;
+        }
+
+        public static bool IsEmail(this long id) {
+            return id < -2000000000;
         }
     }
 }

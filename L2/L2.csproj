@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.645</AssemblyVersion>
-    <FileVersion>2.0.645</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.645-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.645-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.645-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.647</AssemblyVersion>
+    <FileVersion>2.0.647</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.647-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.647-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.647-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>

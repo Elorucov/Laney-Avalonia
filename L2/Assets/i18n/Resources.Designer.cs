@@ -3459,6 +3459,42 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only the administrator can write in this chat.
+        /// </summary>
+        public static string writing_disabled_for_all {
+            get {
+                return ResourceManager.GetString("writing_disabled_for_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The chat administrator has restricted messaging until {0}.
+        /// </summary>
+        public static string writing_disabled_for_all_until {
+            get {
+                return ResourceManager.GetString("writing_disabled_for_all_until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The chat administrator restricted you from messaging.
+        /// </summary>
+        public static string writing_disabled_for_you {
+            get {
+                return ResourceManager.GetString("writing_disabled_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The chat administrator restricted you from messaging until {0}.
+        /// </summary>
+        public static string writing_disabled_for_you_until {
+            get {
+                return ResourceManager.GetString("writing_disabled_for_you_until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} y.
         /// </summary>
         public static string years_short {
