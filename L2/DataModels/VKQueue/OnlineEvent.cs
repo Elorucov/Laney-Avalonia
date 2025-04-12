@@ -19,6 +19,6 @@ namespace ELOR.Laney.DataModels.VKQueue {
         public int LastSeenUnix { get; set; }
 
         [JsonIgnore]
-        public DateTime LastSeen { get { return DateTimeOffset.FromUnixTimeSeconds(LastSeenUnix).DateTime.ToLocalTime(); } }
+        public DateTime LastSeen { get { return DateTimeOffset.FromUnixTimeSeconds(LastSeenUnix).LocalDateTime; } }
     }
 }

@@ -357,7 +357,6 @@ namespace ELOR.Laney.ViewModels {
                 } else {
                     DateTime restrictedUntil = DateTime.Now;
                     if (CanWrite.Reason == 983) {
-                        var test = DateTimeOffset.FromUnixTimeSeconds(CanWrite.Until);
                         restrictedUntil = DateTimeOffset.FromUnixTimeSeconds(CanWrite.Until).LocalDateTime;
                         RestrictionReason = CanWrite.Until > 0
                             ? Localizer.GetFormatted("writing_disabled_for_you_until", restrictedUntil.ToHumanizedString(true))
