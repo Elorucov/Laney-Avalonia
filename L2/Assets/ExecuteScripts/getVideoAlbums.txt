@@ -1,0 +1,18 @@
+var owner_id = parseInt(Args.owner_id);
+var response = [];
+
+var albums = API.video.getAlbums({"owner_id": owner_id, "need_system": 1, "extended": 1});
+var i = 0;
+while (i < albums.items.length) {
+  var album = albums.items[i];
+  var lite = {
+    id: album.id,
+    title: album.title,
+    size: album.count
+  };
+  if (album.image) lite.thumb = album.image[album.image.length - 1].url;
+  response.push(lite);
+  i = i + 1;
+}
+
+return response;

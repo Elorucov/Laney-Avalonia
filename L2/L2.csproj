@@ -104,12 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
-    <None Remove="Assets\Audio\bb2.mp3" />
-    <None Remove="Assets\Logo\icon.icns" />
-    <None Remove="Assets\Logo\Laney.png" />
-    <None Remove="Assets\Logo\Tray\t32cw.png" />
-    <None Remove="Assets\Logo\Tray\t32mb.png" />
-    <None Remove="Assets\Logo\Tray\t32mw.png" />
     <None Remove="Assets\macos_installer_background.png" />
     <None Remove="Assets\placeholder.svg" />
     <None Remove="Controls\Attachments\AttachmentsContainer.xaml" />
@@ -128,7 +122,9 @@
     <None Remove="Styles\ChatViewDefaultResources.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Assets/**" />
+    <AvaloniaResource Include="Assets/Audio/**" />
+    <AvaloniaResource Include="Assets/Logo/**" />
+    <AvaloniaResource Include="Assets/ExecuteScripts/**" />
     <AvaloniaXaml Remove="Helpers\Hash\**" />
     <Compile Remove="Helpers\Hash\**" />
     <EmbeddedResource Remove="Helpers\Hash\**" />

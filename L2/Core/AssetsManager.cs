@@ -2,10 +2,25 @@
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class AssetsManager {
+        static readonly Dictionary<string, string> _loadedContents = new Dictionary<string, string>();
+
+        public static async Task<string> GetStringFromUriAsync(Uri uri) {
+            if (_loadedContents.ContainsKey(uri.AbsoluteUri)) return _loadedContents[uri.AbsoluteUri];
+
+            Stream str = OpenAsset(uri);
+            using StreamReader sr = new StreamReader(str, Encoding.UTF8);
+            string content = await sr.ReadToEndAsync();
+            _loadedContents.Add(uri.AbsoluteUri, content);
+            return content;
+        }
+
         public static Bitmap GetBitmapFromUri(Uri uri) {
             Stream stream = OpenAsset(uri);
             var b = new Bitmap(stream);
