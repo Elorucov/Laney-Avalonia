@@ -173,6 +173,7 @@ namespace ELOR.Laney.Controls {
             if (_restoreScrollAttempts == 0) {
                 _isPreviousMessagesLoadTriggered = false;
                 _canChangeScroll = true;
+                return;
             }
             _restoreScrollAttempts--;
 
