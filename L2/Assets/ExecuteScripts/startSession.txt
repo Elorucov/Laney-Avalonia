@@ -1,0 +1,54 @@
+var l = parseInt(Args.lp_version);
+var groups = Args.group_ids;
+var fields = Args.fields;
+
+if (l == 0) l = 19;
+var response = {};
+var forks = {
+  "ra": fork(API.messages.getReactionsAssets()),
+  "queue": fork(API.queue.subscribe({"queue_ids": "onlfriends_" + response.user.id})),
+  "user": fork(API.users.get({"fields": fields})),
+  "groups": fork(API.groups.getById({"group_ids": groups, "extended": 1, "fields": "can_message"})),
+  "ulp": fork(API.messages.getLongPollServer({"version": l, "need_pts": 1}))
+};
+
+var ra = wait(forks.ra);
+var queue = wait(forks.queue);
+var u = wait(forks.user);
+var gs = groups ? wait(forks.groups) : null;
+var ulp = wait(forks.ulp);
+
+response.reactions_assets = ra.assets;
+response.available_reactions = ra.reaction_ids;
+response.queue_config = queue;
+if (!response.queue_config) response.queue_config = null;
+response.user = u[0];
+response.groups = gs == null ? [] : gs.groups;
+
+response.longpolls = [];
+response.longpolls.push({
+  "session_id": response.user.id,
+  "longpoll": ulp
+});
+
+response.templates = [];
+
+var i = 0;
+while(i < response.groups.length) {
+  var group = response.groups[i];
+  if (group.can_message == 1 && group.admin_level >= 2) {
+    var groupId = group.id * -1;
+    var glp = API.messages.getLongPollServer({"version": l, "need_pts": 1, "group_id": group.id});
+    response.longpolls.push({
+      "session_id": groupId,
+      "longpoll": glp
+    });
+    
+    var templates = API.messages.getTemplates({"group_id": group.id});
+    templates.group_id = group.id;
+    response.templates.push(templates);
+  }
+  i = i + 1;
+}
+
+return response;

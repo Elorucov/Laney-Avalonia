@@ -1,0 +1,82 @@
+var cid = Args.chat_id;
+var f = Args.fields;
+var peerid = 2000000000 + parseInt(cid);
+
+if (!f) {
+  f = "online_info,sex,photo_100";
+}
+
+var resp = {};
+var msgr = API.messages.getConversationsById({"peer_ids": peerid, "extended":"1"});
+var memr = null;
+if (msgr.items[0].chat_settings.is_disappearing) {
+  resp.is_casper_chat = true;
+} else {
+  resp.is_casper_chat = false;
+}
+
+resp.last_cmid = msgr.items[0].last_conversation_message_id; // required for getHistoryAttachments
+resp.pinned_messages_count = msgr.items[0].chat_settings.pinned_messages_count;
+resp.pinned_message = msgr.items[0].chat_settings.pinned_message;
+
+resp.chat_id = msgr.items[0].peer.local_id;
+resp.peer_id = msgr.items[0].peer.id;
+resp.name = msgr.items[0].chat_settings.title;
+var photo = msgr.items[0].chat_settings.photo;
+  
+if (photo.photo_50) {
+  resp.photo = photo.photo_50;
+}
+if (photo.photo_100) {
+  resp.photo = photo.photo_100;
+}
+if (photo.photo_200) {
+  resp.photo = photo.photo_200;
+}
+  
+resp.owner_id = msgr.items[0].chat_settings.owner_id;
+resp.members_count = 0;
+  
+resp.description = msgr.items[0].chat_settings.description;
+resp.online_count = 0;
+
+if (msgr.items[0].chat_settings.is_group_channel) {
+  resp.is_channel = msgr.items[0].chat_settings.is_group_channel;
+} else {
+  resp.is_channel = false;
+}
+if (msgr.items[0].chat_settings.is_big_chat) {
+  resp.is_big_chat = msgr.items[0].chat_settings.is_big_chat;
+} else {
+  resp.is_big_chat = false;
+}
+
+resp.push_settings = msgr.items[0].push_settings;
+resp.acl = msgr.items[0].chat_settings.acl;
+resp.state = msgr.items[0].chat_settings.state;
+resp.permissions = msgr.items[0].chat_settings.permissions;
+resp.writing_disabled = msgr.items[0].chat_settings.writing_disabled;
+
+if(!resp.is_channel && resp.state == "in") {
+    memr = API.messages.getConversationMembers({"peer_id": peerid, "fields": f, "extended": "1"});
+}
+
+resp.members_count = msgr.items[0].chat_settings.members_count;
+if (resp.members_count == null) resp.members_count = 0;
+if(memr != null) {
+    resp.members = memr;
+    resp.members_count = memr.count;
+    
+    if (resp.members_count <= 400) {
+      var u = memr.profiles@.online_info;
+      var i = 0;
+      while (i < u.length) {
+        if (u[i].is_online) {
+          resp.online_count = resp.online_count + 1;
+        }
+        i = i + 1;
+      }
+    }
+}
+
+return resp;

@@ -134,7 +134,7 @@ namespace ELOR.Laney.Controls {
                 double v = Scroll.Viewport.Height;
                 double h = Scroll.Extent.Height;
                 double o = Scroll.Offset.Y;
-                if (h > v * 3) // To trigger incremental loading correctly, scrollable height should be 3 times larger than display height.
+                if (h > v * 2) // To trigger incremental loading correctly, scrollable height should be 3 times larger than display height.
                 {
                     if (o < v && !_isPreviousMessagesLoadTriggered) // Load previous
                     {
@@ -173,6 +173,7 @@ namespace ELOR.Laney.Controls {
             if (_restoreScrollAttempts == 0) {
                 _isPreviousMessagesLoadTriggered = false;
                 _canChangeScroll = true;
+                return;
             }
             _restoreScrollAttempts--;
 

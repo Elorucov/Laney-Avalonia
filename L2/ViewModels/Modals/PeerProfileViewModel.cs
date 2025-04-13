@@ -106,7 +106,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             IsLoading = true;
             Placeholder = null;
             try {
-                UserEx user = await session.API.GetUserCardAsync(userId);
+                UserEx user = await session.API.GetUserCardAsync(userId, VKAPIHelper.UserFields);
                 _lastCmid = user.LastCMID;
                 Header = String.Join(" ", new string[2] { user.FirstName, user.LastName });
                 if (user.Photo != null) Avatar = user.Photo;
@@ -294,7 +294,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             IsLoading = true;
             Placeholder = null;
             try {
-                GroupEx group = await session.API.GetGroupCardAsync(groupId);
+                GroupEx group = await session.API.GetGroupCardAsync(groupId, VKAPIHelper.GroupFields);
                 Header = group.Name;
                 if (group.Photo != null) Avatar = group.Photo;
                 Subhead = group.Activity;

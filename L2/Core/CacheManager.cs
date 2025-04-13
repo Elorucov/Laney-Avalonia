@@ -121,23 +121,23 @@ namespace ELOR.Laney.Core {
         public static Tuple<string, string, Uri> GetNameAndAvatar(long id, bool shortLastName = false) {
             if (id.IsUser()) {
                 User u = GetUser(id);
-                if (u == null) return null;
-                string lastName = u.LastName;
+                if (u == null) return new Tuple<string, string, Uri>($"User {id}", null, null);
+                string lastName = String.Intern(u.LastName);
                 if (shortLastName && !String.IsNullOrEmpty(lastName) && lastName.Length > 1)
                     lastName = lastName[0].ToString();
                 return new Tuple<string, string, Uri>(String.Intern(u.FirstName), lastName, u.Photo);
             } else if (id.IsGroup()) {
                 Group g = GetGroup(id);
-                if (g == null) return null;
+                if (g == null) return new Tuple<string, string, Uri>($"Group {-id}", null, null);
                 return new Tuple<string, string, Uri>(String.Intern(g.Name), null, g.Photo);
             }
-            return null;
+            return new Tuple<string, string, Uri>($"Unknown {id}", null, null);
         }
 
         public static string GetNameOnly(long id, bool shortLastName = false) {
             var t = GetNameAndAvatar(id, shortLastName);
             if (t == null) return id.ToString();
-            return id.IsUser() ? String.Intern($"{t.Item1} {t.Item2}") : String.Intern(t.Item1);
+            return id.IsUser() ? String.Join(" ", new[] { t.Item1, t.Item2 }) : String.Intern(t.Item1);
         }
 
         public static void ClearUsersAndGroupsCache() {

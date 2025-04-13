@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.647</AssemblyVersion>
-    <FileVersion>2.0.647</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.647-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.647-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.647-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.648</AssemblyVersion>
+    <FileVersion>2.0.648</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.648-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.648-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.648-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -66,6 +66,8 @@
   <ItemGroup>
     <VlcWindowsX64IncludeFiles Include="libvlc.dll" />
     <VlcWindowsX64IncludeFiles Include="libvlccore.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\access\libaccess_imem_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\access\libimem_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\access\libfilesystem_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\access\libhttp_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\access\libhttps_plugin.dll" />
@@ -89,6 +91,8 @@
     <VlcWindowsX64IncludeFiles Include="plugins\demux\librawdv_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\demux\libwav_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\misc\libgnutls_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\stream_filter\libprefetch_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\stream_filter\libskiptags_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\packetizer\libpacketizer_mpegaudio_plugin.dll" />
   </ItemGroup>
 
@@ -104,12 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
-    <None Remove="Assets\Audio\bb2.mp3" />
-    <None Remove="Assets\Logo\icon.icns" />
-    <None Remove="Assets\Logo\Laney.png" />
-    <None Remove="Assets\Logo\Tray\t32cw.png" />
-    <None Remove="Assets\Logo\Tray\t32mb.png" />
-    <None Remove="Assets\Logo\Tray\t32mw.png" />
     <None Remove="Assets\macos_installer_background.png" />
     <None Remove="Assets\placeholder.svg" />
     <None Remove="Controls\Attachments\AttachmentsContainer.xaml" />
@@ -128,7 +126,9 @@
     <None Remove="Styles\ChatViewDefaultResources.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Assets/**" />
+    <AvaloniaResource Include="Assets/Audio/**" />
+    <AvaloniaResource Include="Assets/Logo/**" />
+    <AvaloniaResource Include="Assets/ExecuteScripts/**" />
     <AvaloniaXaml Remove="Helpers\Hash\**" />
     <Compile Remove="Helpers\Hash\**" />
     <EmbeddedResource Remove="Helpers\Hash\**" />
@@ -178,17 +178,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.0-beta1" />
+    <PackageReference Include="Avalonia" Version="11.3.0-beta2" />
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
     <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.0-beta1" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.0-beta2" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0-beta1" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0-beta2" />
     <PackageReference Include="Avalonia.Labs.Lottie" Version="11.2.0" />
     <PackageReference Include="Avalonia.Labs.Panels" Version="11.2.0" />
     <PackageReference Include="Avalonia.Labs.Qr" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.0-beta1" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.7" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.0-beta2" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

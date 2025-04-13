@@ -1,0 +1,16 @@
+var forks = {
+  "rs": fork(API.messages.getRecentStickers()),
+  "fs": fork(API.store.getFavoriteStickers()),
+  "rg": fork(API.messages.getRecentGraffities({"limit":32}))
+};
+
+var rs = wait(forks.rs);
+var fs = wait(forks.fs);
+var rg = wait(forks.rg);
+
+var resp = {};
+resp.recent_stickers = rs.items;
+resp.favorite_stickers = fs.items;
+resp.graffities = rg;
+
+return resp;

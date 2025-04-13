@@ -528,7 +528,7 @@ namespace ELOR.Laney.ViewModels {
             if (!message.IsUnavailable) {
                 await GoToMessageAsync(message.ConversationMessageId);
             } else {
-                StandaloneMessageViewer smv = new StandaloneMessageViewer(session, message);
+                StandaloneMessageViewer smv = new StandaloneMessageViewer(session, message.RootMessage);
                 await smv.ShowDialog(session.Window);
             }
         }
@@ -552,7 +552,7 @@ namespace ELOR.Laney.ViewModels {
             if (DemoMode.IsEnabled) {
                 DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
                 var messages = ds.Messages.Where(m => m.PeerId == PeerId).ToList();
-                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(messages, session, FixState));
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(messages, session, true, FixState));
 
                 return;
             }
@@ -568,15 +568,13 @@ namespace ELOR.Laney.ViewModels {
                 int offset = -count / 2;
 
                 // TODO: use messages.getHistory, т. к. участников получаем сразу после первой загрузки сообщений.
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, offset, count, startMessageId, false, VKAPIHelper.Fields, true);
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, offset, count, startMessageId, true, VKAPIHelper.Fields, false);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
-                CacheManager.Add(mhr.MentionedProfiles);
-                CacheManager.Add(mhr.MentionedGroups);
 
-                Setup(mhr.Conversation);
-                mhr.Messages?.Reverse();
-                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
+                Setup(mhr.Conversations[0]);
+                mhr.Items?.Reverse();
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Items, session, false, FixState));
 
                 int scrollTo = 0;
                 if (startMessageId > 0) scrollTo = startMessageId;
@@ -592,7 +590,10 @@ namespace ELOR.Laney.ViewModels {
                     }
                 }
 
-                if (Members.Count == 0) await LoadMembersAsync();
+                if (Members.Count == 0) {
+                    IsLoading = false; // нужно чтобы LoadMembers не блочило переход по сообщениям
+                    await LoadMembersAsync();
+                }
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadMessagesAsync(startMessageId));
             } finally {
@@ -610,12 +611,12 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadPreviousMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages?.Count);
                 IsLoading = true;
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, false, VKAPIHelper.Fields, true);
-                CacheManager.Add(mhr.MentionedProfiles);
-                CacheManager.Add(mhr.MentionedGroups);
-                mhr.Messages.Reverse();
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, true, VKAPIHelper.Fields, false);
+                CacheManager.Add(mhr.Profiles);
+                CacheManager.Add(mhr.Groups);
+                mhr.Items?.Reverse();
                 MessagesChunkLoaded?.Invoke(this, false);
-                DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
+                DisplayedMessages.InsertRange(mhr.Items?.Select(m => {
                     var msg = MessageViewModel.Create(m, session);
                     FixState(msg);
                     return msg;
@@ -637,12 +638,12 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadNextMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages.Count);
                 IsLoading = true;
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, false, VKAPIHelper.Fields, false);
-                CacheManager.Add(mhr.MentionedProfiles);
-                CacheManager.Add(mhr.MentionedGroups);
-                mhr.Messages.Reverse();
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, true, VKAPIHelper.Fields, false);
+                CacheManager.Add(mhr.Profiles);
+                CacheManager.Add(mhr.Groups);
+                mhr.Items?.Reverse();
                 MessagesChunkLoaded?.Invoke(this, true);
-                DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
+                DisplayedMessages.InsertRange(mhr.Items?.Select(m => {
                     var msg = MessageViewModel.Create(m, session);
                     FixState(msg);
                     return msg;
@@ -1051,8 +1052,9 @@ namespace ELOR.Laney.ViewModels {
                     var photo = acts.Where(a => a?.Status == LongPollActivityType.UploadingPhoto).ToList();
                     var video = acts.Where(a => a?.Status == LongPollActivityType.UploadingVideo).ToList();
                     var file = acts.Where(a => a?.Status == LongPollActivityType.UploadingFile).ToList();
+                    var circle = acts.Where(a => a?.Status == LongPollActivityType.UploadingVideoMessage).ToList();
                     List<List<LongPollActivityInfo>> groupedActivities = new List<List<LongPollActivityInfo>> {
-                        typing, voice, photo, video, file
+                        typing, voice, photo, video, file, circle
                     };
 
                     bool has3AndMoreDifferentTypes = groupedActivities.Where(a => a.Count > 0).Count() >= 3;
@@ -1090,6 +1092,7 @@ namespace ELOR.Laney.ViewModels {
                 case LongPollActivityType.UploadingPhoto: return Localizer.Get($"lp_act_photo{suffix}");
                 case LongPollActivityType.UploadingVideo: return Localizer.Get($"lp_act_video{suffix}");
                 case LongPollActivityType.UploadingFile: return Localizer.Get($"lp_act_file{suffix}");
+                case LongPollActivityType.UploadingVideoMessage: return Localizer.Get($"lp_act_videomsg{suffix}");
             }
             return string.Empty;
         }

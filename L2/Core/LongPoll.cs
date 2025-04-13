@@ -238,10 +238,10 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 10004:
-                        bool isDeletedBeforeEvent = u.Count == 4;
+                        bool isDeletedBeforeEvent = u.Count == 4 && messages == null;
                         int receivedMsgId = (int)u[1];
-                        int minor = messages == null ? (int)u[3] : 0;
-                        long peerId4 = isDeletedBeforeEvent ? 0 : (long)u[4];
+                        int minor = 0;
+                        long peerId4 = 0;
                         if (messages != null) { // gLPH
                             peerId4 = (long)u[3];
                         } else {

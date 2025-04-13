@@ -17,6 +17,7 @@ using ELOR.Laney.ViewModels.Modals;
 using ELOR.Laney.Views;
 using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib;
+using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.HandlerDatas;
 using ELOR.VKAPILib.Objects.Messages;
 using Serilog;
@@ -389,7 +390,7 @@ namespace ELOR.Laney.Core {
                 // Load chats
                 if (!isFirstTimeChatsLoaded) {
                     // Необходимо обернуть  Action, чтобы API.StartSessionAsync вызывался не после полного ожидания ImViewModel.LoadConversationsAsync, а параллельно.
-                    new Action(async () => await ImViewModel.LoadConversationsAsync())();
+                    new System.Action(async () => await ImViewModel.LoadConversationsAsync())();
                     isFirstTimeChatsLoaded = true;
                 }
 
@@ -515,7 +516,7 @@ namespace ELOR.Laney.Core {
         }
 
         private void ChooseGroups_Click(object sender, RoutedEventArgs e) {
-            new Action(async () => {
+            new System.Action(async () => {
                 GroupsPicker gp = new GroupsPicker(this);
                 List<long> selectedGroupIds = await gp.ShowDialog<List<long>>(Window);
                 if (selectedGroupIds == null) return;
@@ -539,7 +540,7 @@ namespace ELOR.Laney.Core {
                 session.Window = new MainWindow();
                 session.Window.DataContext = session;
                 session.Window.Activated += (a, b) => lastSessionId = ((a as Window).DataContext as VKSession).Id;
-                new Action(async () => await session.InitAsync(true))();
+                new System.Action(async () => await session.InitAsync(true))();
                 session.Window.Show();
             } else {
                 Log.Information("Showing/activating window for session {0}", sessionId);
@@ -564,7 +565,7 @@ namespace ELOR.Laney.Core {
         }
 
         private void UpdateGroupSessions(List<long> groupIds) {
-            new Action(async () => {
+            new System.Action(async () => {
                 try {
                     foreach (VKSession s in _sessions) {
                         if (s.IsGroup) { // TODO: Shutdown method for VKSession.
@@ -627,7 +628,7 @@ namespace ELOR.Laney.Core {
         private void LongPoll_StateChanged(object sender, LongPollState e) {
             if (Window == null) return;
             Log.Information($"VKSession > LongPoll state changed to {e}");
-            new Action(async () => {
+            new System.Action(async () => {
                 await Dispatcher.UIThread.InvokeAsync(() => {
                     if (e == LongPollState.Working) {
                         Name = Name; // заставит триггерить PropertyChanged в главном окне.
@@ -644,9 +645,9 @@ namespace ELOR.Laney.Core {
 
         byte gcCollectTriggerCounter = 0;
 
-        public void GoToMessage(MessageViewModel message) {
+        public void GoToMessage(Message message) {
             if (message.IsUnavailable) {
-                new Action(async () => {
+                new System.Action(async () => {
                     StandaloneMessageViewer smv = new StandaloneMessageViewer(this, message);
                     await smv.ShowDialog(Window);
                 })();
@@ -700,7 +701,7 @@ namespace ELOR.Laney.Core {
             SharingViewModel group = IsGroup ? new SharingViewModel(this, 0) : null;
             SharingView dlg = new SharingView(user, group);
 
-            new Action(async () => {
+            new System.Action(async () => {
                 // session, peer_id, group_id (if message from group to user session)
                 Tuple<VKSession, long, long> result = await dlg.ShowDialog<Tuple<VKSession, long, long>>(ModalWindow);
 
@@ -745,12 +746,12 @@ namespace ELOR.Laney.Core {
             session.Window.DataContext = session;
             session.ImViewModel = new ImViewModel(session);
             session.Window.Activated += (a, b) => lastSessionId = ((a as Window).DataContext as VKSession).Id;
-            new Action(async () => await session.InitAsync())();
+            new System.Action(async () => await session.InitAsync())();
             session.Window.Show();
 
             Settings.SettingChanged += Settings_SettingChanged;
 
-            new Action(async () => {
+            new System.Action(async () => {
                 await Task.Delay(2000); // чтобы метод api не выполнялся одновременно с другими и не поймать ошибку 6.
                 await StickersManager.InitKeywordsAsync();
             })();
@@ -759,7 +760,7 @@ namespace ELOR.Laney.Core {
         private static void Settings_SettingChanged(string key, object value) {
             switch (key) {
                 case Settings.STICKERS_SUGGEST:
-                    new Action(async () => await StickersManager.InitKeywordsAsync())();
+                    new System.Action(async () => await StickersManager.InitKeywordsAsync())();
                     break;
             }
         }
@@ -779,7 +780,7 @@ namespace ELOR.Laney.Core {
                 _sessions.Add(session);
                 session.Window.DataContext = session;
                 if (mainSession.Id == session.Id) {
-                    new Action(async () => await session.InitAsync())();
+                    new System.Action(async () => await session.InitAsync())();
                     session.Window.Show();
                 }
             }
@@ -794,7 +795,7 @@ namespace ELOR.Laney.Core {
 
             var cprc = Process.GetCurrentProcess();
             Process.Start(cprc.MainModule.FileName, Environment.CommandLine.Replace(" -delay=1000", "") + " -delay=1000");
-            new Action(async () => {
+            new System.Action(async () => {
                 await Task.Delay(200);
                 App.Current.DesktopLifetime.Shutdown(-1);
             })();

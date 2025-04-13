@@ -5,6 +5,8 @@
         public const int MessagesCount = 40;
         public const int MaxCachedChatsCount = 4;
 
+        public const string ExecuteCodePath = "avares://laney/Assets/ExecuteScripts/";
+
         // For attachment picker
         public const int OutboundAttachmentUIWidth = 88;
         public const int OutboundAttachmentUIHeight = 88;

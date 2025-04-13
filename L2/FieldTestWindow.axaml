@@ -166,7 +166,8 @@
       <StackPanel Margin="0,8,0,0">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Audio test"/>
         <Button x:Name="w1" Margin="8" Content="Play SFX"/>
-        <Button x:Name="w2" Margin="8" Content="Play audio from web"/>
+        <Button x:Name="w2" Margin="8" Content="Play audio from device"/>
+        <Button x:Name="w3" Margin="8" Content="Play audio from web"/>
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">

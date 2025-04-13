@@ -1,6 +1,7 @@
 ﻿using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
+using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -11,10 +12,10 @@ namespace ELOR.Laney.ViewModels.Modals {
         private long peerId;
 
         private string _query;
-        private ObservableCollection<MessageViewModel> _messages;
+        private ObservableCollection<Message> _messages;
 
         public string Query { get { return _query; } set { _query = value; OnPropertyChanged(); } }
-        public ObservableCollection<MessageViewModel> Messages { get { return _messages; } private set { _messages = value; OnPropertyChanged(); } }
+        public ObservableCollection<Message> Messages { get { return _messages; } private set { _messages = value; OnPropertyChanged(); } }
 
         public SearchInChatViewModel(VKSession session, long peerId) {
             this.session = session;
@@ -40,11 +41,10 @@ namespace ELOR.Laney.ViewModels.Modals {
                 CacheManager.Add(response.Profiles);
                 CacheManager.Add(response.Groups);
 
-                var msgs = MessageViewModel.BuildFromAPI(response.Items, session);
                 if (Messages == null) {
-                    Messages = new ObservableCollection<MessageViewModel>(msgs);
+                    Messages = new ObservableCollection<Message>(response.Items);
                 } else {
-                    foreach (var msg in msgs) {
+                    foreach (var msg in response.Items) {
                         Messages.Add(msg);
                     }
                 }

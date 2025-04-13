@@ -1,6 +1,7 @@
 ﻿using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
+using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -9,10 +10,10 @@ namespace ELOR.Laney.ViewModels.Modals {
     public class ImportantMessagesViewModel : CommonViewModel {
         private VKSession session;
 
-        private ObservableCollection<MessageViewModel> _messages = new ObservableCollection<MessageViewModel>();
+        private ObservableCollection<Message> _messages = new ObservableCollection<Message>();
         private int _count = 0;
 
-        public ObservableCollection<MessageViewModel> Messages { get { return _messages; } private set { _messages = value; OnPropertyChanged(); } }
+        public ObservableCollection<Message> Messages { get { return _messages; } private set { _messages = value; OnPropertyChanged(); } }
         public int Count { get { return _count; } private set { _count = value; OnPropertyChanged(); } }
 
         public int CustomOffset { get; private set; }
@@ -37,7 +38,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 CacheManager.Add(response.Groups);
                 Count = response.Messages.Count;
                 foreach (var message in response.Messages.Items) {
-                    Messages.Add(MessageViewModel.Create(message, session));
+                    Messages.Add(message);
                 }
             } catch (Exception ex) {
                 if (Messages.Count > 0) {
@@ -49,7 +50,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             IsLoading = false;
         }
 
-        public void RemoveMessageFromLoaded(MessageViewModel message) {
+        public void RemoveMessageFromLoaded(Message message) {
             Messages.Remove(message);
             Count--;
         }

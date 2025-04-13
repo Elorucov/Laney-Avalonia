@@ -13,7 +13,7 @@ namespace ELOR.Laney.Views.Modals {
     public partial class SearchInChatWindow : DialogWindow {
         private VKSession session;
         private long peerId;
-        private SearchInChatViewModel ViewModel { get { return Root.DataContext as SearchInChatViewModel; } }
+        private SearchInChatViewModel ViewModel { get { return DataContext as SearchInChatViewModel; } }
 
         public SearchInChatWindow() {
             InitializeComponent();
@@ -30,8 +30,7 @@ namespace ELOR.Laney.Views.Modals {
             TitleBar.IsVisible = false;
 #endif
 
-            DataContext = session;
-            Root.DataContext = new SearchInChatViewModel(session, peerId);
+            DataContext = new SearchInChatViewModel(session, peerId);
             session.CurrentOpenedChatChanged += Session_CurrentOpenedChatChanged;
 
             // TODO: set transparency for system window itself, not for a content on window!
@@ -89,7 +88,7 @@ namespace ELOR.Laney.Views.Modals {
         }
 
         private void OnMessageSelected(object sender, RoutedEventArgs e) {
-            MessageViewModel item = (sender as Control).DataContext as MessageViewModel;
+            Message item = (sender as Control).DataContext as Message;
             session.GoToChat(item.PeerId, item.ConversationMessageId);
         }
     }

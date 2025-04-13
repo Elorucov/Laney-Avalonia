@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
-using ELOR.Laney.ViewModels.Controls;
+using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using VKUI.Windows;
@@ -16,7 +16,7 @@ public partial class StandaloneMessageViewer : DialogWindow {
         throw new ArgumentNullException("message", "Message not passed!");
     }
 
-    public StandaloneMessageViewer(VKSession session, MessageViewModel message) {
+    public StandaloneMessageViewer(VKSession session, Message message) {
         InitializeComponent();
         if (message == null) throw new ArgumentNullException("message", "Message not passed!");
 #if LINUX      
@@ -32,7 +32,7 @@ public partial class StandaloneMessageViewer : DialogWindow {
         ScrollRoot.Content = ui;
     }
 
-    public StandaloneMessageViewer(VKSession session, List<MessageViewModel> messages) {
+    public StandaloneMessageViewer(VKSession session, List<Message> messages) {
         InitializeComponent();
         if (messages == null || messages.Count == 0) throw new ArgumentNullException("messages", "Messages not passed!");
         Title = Localizer.GetDeclensionFormatted(messages.Count, "message");

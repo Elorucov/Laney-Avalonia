@@ -20,6 +20,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(LongList))]
     [JsonSerializable(typeof(MarkAsImportantResponse))]
     [JsonSerializable(typeof(MessagesList))]
+    [JsonSerializable(typeof(MessagesHistoryResponse))]
     [JsonSerializable(typeof(MessageSendResponse))]
     [JsonSerializable(typeof(MessageTemplatesList))]
     [JsonSerializable(typeof(PhotosList))]

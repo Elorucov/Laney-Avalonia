@@ -232,7 +232,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             EditingMessageId = message.ConversationMessageId;
 
             Text = message.Text;
-            Reply = message.ReplyMessage;
+            if (message.ReplyMessage != null) Reply = MessageViewModel.Create(message.ReplyMessage, session);
 
             foreach (var attachment in CollectionsMarshal.AsSpan(message.Attachments)) {
                 if (attachment.Type.CanAttachToSend()) {

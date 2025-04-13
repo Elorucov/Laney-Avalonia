@@ -1,0 +1,30 @@
+var owner_id = parseInt(Args.owner_id);
+var response = [];
+
+var all = API.photos.getAll({"owner_id": owner_id});
+if (all.count > 0) {
+  var fp = all.items[0];
+  var lite = {
+    id: 0,
+    title: "Cringe (probably not all)",
+    size: all.count,
+    thumb: fp.sizes[fp.sizes.length - 1].url,
+  };
+  response.push(lite);
+}
+
+var albums = API.photos.getAlbums({"owner_id": owner_id, "need_system": 1, "need_covers": 1, "photo_sizes": 1});
+var i = 0;
+while (i < albums.items.length) {
+  var album = albums.items[i];
+  var lite = {
+    id: album.id,
+    title: album.title,
+    size: album.size,
+    thumb: album.sizes[album.sizes.length - 2].url,
+  };
+  response.push(lite);
+  i = i + 1;
+}
+
+return response;

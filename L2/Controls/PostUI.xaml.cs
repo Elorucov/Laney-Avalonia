@@ -9,6 +9,7 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
+using Serilog;
 using System;
 using System.Linq;
 using VKUI.Controls;
@@ -21,7 +22,7 @@ namespace ELOR.Laney.Controls {
         #region Properties
 
         public static readonly StyledProperty<object> PostProperty =
-            AvaloniaProperty.Register<MessageBubble, object>(nameof(Post));
+            AvaloniaProperty.Register<PostUI, object>(nameof(Post));
 
         public object Post {
             get => GetValue(PostProperty);
@@ -60,12 +61,12 @@ namespace ELOR.Laney.Controls {
             ReplyMessageButton.Click += ReplyMessageButton_Click;
 
             isUILoaded = true;
-            if (Post is MessageViewModel message) {
+            if (Post is Message message) {
                 RenderElement(message);
             } else if (Post is WallPost post) {
                 // RenderElement(post);
             } else {
-                throw new ArgumentException($"Post property must be {nameof(WallPost)} or {nameof(MessageViewModel)}");
+                throw new ArgumentException($"Post property must be {nameof(WallPost)} or {nameof(Message)}");
             }
         }
 
@@ -77,24 +78,27 @@ namespace ELOR.Laney.Controls {
 
             if (change.Property == PostProperty) {
                 if (Post == null) return;
-                if (Post is MessageViewModel message) {
+                if (Post is Message message) {
                     RenderElement(message);
                 } else if (Post is WallPost post) {
                     // RenderElement(post);
                 } else {
-                    throw new ArgumentException($"Post property must be {nameof(WallPost)} or {nameof(MessageViewModel)}");
+                    throw new ArgumentException($"Post property must be {nameof(WallPost)} or {nameof(Message)}");
                 }
             }
         }
 
-        private void RenderElement(MessageViewModel message) {
-            session = message.OwnerSession;
-            Avatar.Background = message.SenderId.GetGradient();
-            Avatar.Initials = message.SenderName.GetInitials();
-            Avatar.SetImage(message.SenderAvatar, Avatar.Width, Avatar.Height);
+        private void RenderElement(Message message) {
+            session = VKSession.GetByDataContext(this);
+            Avatar.Background = message.FromId.GetGradient();
 
-            Author.Text = message.SenderName;
-            PostInfo.Text = message.SentTime.ToHumanizedString(true);
+            var data = CacheManager.GetNameAndAvatar(message.FromId);
+            string author = String.Join(" ", new[] { data.Item1, data.Item2 });
+            Avatar.Initials = author.GetInitials();
+            Avatar.SetImage(data.Item3, Avatar.Width, Avatar.Height);
+            Author.Text = author;
+
+            PostInfo.Text = message.DateTime.ToHumanizedString(true);
 
             if (message.ReplyMessage != null) {
                 Reply.Message = message.ReplyMessage;
@@ -107,43 +111,45 @@ namespace ELOR.Laney.Controls {
             Attachments.IsVisible = message.Attachments.Count > 0;
             if (message.Attachments.Count > 0) {
                 Attachments.Width = Width - Attachments.Margin.Left;
-                Attachments.Gift = message.Gift;
-                Attachments.Owner = message.SenderName;
+                Attachments.Gift = message.Attachments?.SingleOrDefault(a => a.Gift != null)?.Gift;
+                Attachments.Owner = CacheManager.GetNameOnly(message.FromId);
                 Attachments.Attachments = message.Attachments;
             }
 
             Map.Width = Width - Map.Margin.Left;
             Map.Height = Map.Width / 2;
-            Map.IsVisible = message.Location != null;
+            Map.IsVisible = message.Geo != null;
 
             ForwardedMessagesStack.Children.Clear();
-            ForwardedMessagesContainer.IsVisible = message.ForwardedMessages.Count > 0;
-            var fmcmargin = ForwardedMessagesContainer.Margin;
-            var fmcborder = ForwardedMessagesContainer.BorderThickness;
-            var fmsmargin = ForwardedMessagesStack.Margin;
-            double fmwidth = fmcmargin.Left + fmcmargin.Right + fmcborder.Left + fmsmargin.Left;
-            foreach (var msg in message.ForwardedMessages.Take(MAX_DISPLAYED_FORWARDED_MESSAGES)) {
-                ForwardedMessagesStack.Children.Add(new PostUI {
-                    Width = Width - fmwidth,
-                    Post = msg
-                });
-            }
-            if (message.ForwardedMessages?.Count > MAX_DISPLAYED_FORWARDED_MESSAGES) {
-                int nextFwds = message.ForwardedMessages.Count - MAX_DISPLAYED_FORWARDED_MESSAGES;
+            ForwardedMessagesContainer.IsVisible = message.ForwardedMessages?.Count > 0;
+            if (message.ForwardedMessages?.Count > 0) {
+                var fmcmargin = ForwardedMessagesContainer.Margin;
+                var fmcborder = ForwardedMessagesContainer.BorderThickness;
+                var fmsmargin = ForwardedMessagesStack.Margin;
+                double fmwidth = fmcmargin.Left + fmcmargin.Right + fmcborder.Left + fmsmargin.Left;
+                foreach (var msg in message.ForwardedMessages.Take(MAX_DISPLAYED_FORWARDED_MESSAGES)) {
+                    ForwardedMessagesStack.Children.Add(new PostUI {
+                        Width = Width - fmwidth,
+                        Post = msg
+                    });
+                }
+                if (message.ForwardedMessages.Count > MAX_DISPLAYED_FORWARDED_MESSAGES) {
+                    int nextFwds = message.ForwardedMessages.Count - MAX_DISPLAYED_FORWARDED_MESSAGES;
 
-                Button fwdsButton = new Button {
-                    Padding = new Thickness(0),
-                    MinHeight = 16,
-                    Margin = new Thickness(0, -6, 0, 0),
-                    ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplateAccent"),
-                    Content = Localizer.GetDeclensionFormatted(nextFwds, "forwarded_message_more")
-                };
-                fwdsButton.Classes.Add("Tertiary");
-                fwdsButton.Click += async (a, b) => {
-                    StandaloneMessageViewer smv = new StandaloneMessageViewer(message.OwnerSession, message.ForwardedMessages);
-                    await smv.ShowDialog(message.OwnerSession.ModalWindow);
-                };
-                ForwardedMessagesStack.Children.Add(fwdsButton);
+                    Button fwdsButton = new Button {
+                        Padding = new Thickness(0),
+                        MinHeight = 16,
+                        Margin = new Thickness(0, -6, 0, 0),
+                        ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplateAccent"),
+                        Content = Localizer.GetDeclensionFormatted(nextFwds, "forwarded_message_more")
+                    };
+                    fwdsButton.Classes.Add("Tertiary");
+                    fwdsButton.Click += async (a, b) => {
+                        StandaloneMessageViewer smv = new StandaloneMessageViewer(session, message.ForwardedMessages);
+                        await smv.ShowDialog(session.ModalWindow);
+                    };
+                    ForwardedMessagesStack.Children.Add(fwdsButton);
+                }
             }
         }
 

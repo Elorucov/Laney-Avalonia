@@ -1,0 +1,34 @@
+var l = parseInt(Args.lp_version);
+var groups = Args.group_ids;
+
+if (l == 0) l = 19;
+var response = {};
+var forks = {
+  "groups": fork(API.groups.getById({"group_ids": groups, "extended": 1, "fields": "can_message"}))
+};
+
+var gs = groups ? wait(forks.groups) : null;
+response.groups = gs == null ? [] : gs.groups;
+
+response.longpolls = [];
+response.templates = [];
+
+var i = 0;
+while(i < response.groups.length) {
+  var group = response.groups[i];
+  if (group.can_message == 1 && group.admin_level >= 2) {
+    var groupId = group.id * -1;
+    var glp = API.messages.getLongPollServer({"version": l, "need_pts": 1, "group_id": group.id});
+    response.longpolls.push({
+      "session_id": groupId,
+      "longpoll": glp
+    });
+    
+    var templates = API.messages.getTemplates({"group_id": group.id});
+    templates.group_id = group.id;
+    response.templates.push(templates);
+  }
+  i = i + 1;
+}
+
+return response;
