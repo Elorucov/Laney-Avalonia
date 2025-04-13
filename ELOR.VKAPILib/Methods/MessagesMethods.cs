@@ -356,17 +356,17 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="peerId">Peer ID.</param>
         /// <param name="offset">Offset needed to return a specific subset of messages.</param>
         /// <param name="count">Number of messages to return.</param>
-        /// <param name="startMessageId">Starting message ID from which to return history.</param>
+        /// <param name="startCMID">Starting conversation message ID from which to return history.</param>
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
         /// <param name="rev">Sort order.</param>
-        public async Task<MessagesHistoryResponse> GetHistoryAsync(long groupId, long peerId, int offset, int count, int startMessageId, bool extended = false, List<string> fields = null, bool rev = false) {
+        public async Task<MessagesHistoryResponse> GetHistoryAsync(long groupId, long peerId, int offset, int count, int startCMID, bool extended = false, List<string> fields = null, bool rev = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
             parameters.Add("offset", offset.ToString());
             parameters.Add("count", count.ToString());
-            parameters.Add("start_message_id", startMessageId.ToString());
+            parameters.Add("start_cmid", startCMID.ToString());
             if (rev) parameters.Add("rev", "1");
             if (extended) parameters.Add("extended", "1");
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());

@@ -568,15 +568,13 @@ namespace ELOR.Laney.ViewModels {
                 int offset = -count / 2;
 
                 // TODO: use messages.getHistory, т. к. участников получаем сразу после первой загрузки сообщений.
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, offset, count, startMessageId, false, VKAPIHelper.Fields, true);
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, offset, count, startMessageId, true, VKAPIHelper.Fields, false);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
-                CacheManager.Add(mhr.MentionedProfiles);
-                CacheManager.Add(mhr.MentionedGroups);
 
-                Setup(mhr.Conversation);
-                mhr.Messages?.Reverse();
-                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Messages, session, FixState));
+                Setup(mhr.Conversations[0]);
+                mhr.Items?.Reverse();
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Items, session, FixState));
 
                 int scrollTo = 0;
                 if (startMessageId > 0) scrollTo = startMessageId;
@@ -610,12 +608,12 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadPreviousMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages?.Count);
                 IsLoading = true;
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, false, VKAPIHelper.Fields, true);
-                CacheManager.Add(mhr.MentionedProfiles);
-                CacheManager.Add(mhr.MentionedGroups);
-                mhr.Messages.Reverse();
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, true, VKAPIHelper.Fields, false);
+                CacheManager.Add(mhr.Profiles);
+                CacheManager.Add(mhr.Groups);
+                mhr.Items?.Reverse();
                 MessagesChunkLoaded?.Invoke(this, false);
-                DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
+                DisplayedMessages.InsertRange(mhr.Items?.Select(m => {
                     var msg = MessageViewModel.Create(m, session);
                     FixState(msg);
                     return msg;
@@ -637,12 +635,12 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadNextMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages.Count);
                 IsLoading = true;
-                MessagesHistoryEx mhr = await session.API.GetHistoryWithMembersAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, false, VKAPIHelper.Fields, false);
-                CacheManager.Add(mhr.MentionedProfiles);
-                CacheManager.Add(mhr.MentionedGroups);
-                mhr.Messages.Reverse();
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, true, VKAPIHelper.Fields, false);
+                CacheManager.Add(mhr.Profiles);
+                CacheManager.Add(mhr.Groups);
+                mhr.Items?.Reverse();
                 MessagesChunkLoaded?.Invoke(this, true);
-                DisplayedMessages.InsertRange(mhr.Messages.Select(m => {
+                DisplayedMessages.InsertRange(mhr.Items?.Select(m => {
                     var msg = MessageViewModel.Create(m, session);
                     FixState(msg);
                     return msg;

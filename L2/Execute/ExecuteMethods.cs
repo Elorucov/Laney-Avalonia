@@ -24,20 +24,6 @@ namespace ELOR.Laney.Execute {
             return await API.CallMethodAsync<StartSessionResponse>("execute.l2GetGroupsAndLP", parameters, L2JsonSerializerContext.Default);
         }
 
-        public static async Task<MessagesHistoryEx> GetHistoryWithMembersAsync(this VKAPI API, long groupId, long peerId, int offset, int count, int startCMID, bool rev, List<string> fields, bool dontReturnMembers = false) {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
-            parameters.Add("peer_id", peerId.ToString());
-            parameters.Add("offset", offset.ToString());
-            parameters.Add("count", count.ToString());
-            parameters.Add("start_cmid", startCMID.ToString());
-            if (rev) parameters.Add("rev", "1");
-            if (dontReturnMembers) parameters.Add("do_not_return_members", "1");
-            parameters.Add("fields", string.Join(",", fields));
-            parameters.Add("func_v", "6");
-            return await API.CallMethodAsync<MessagesHistoryEx>("execute.getHistoryWithMembers", parameters, L2JsonSerializerContext.Default);
-        }
-
         public static async Task<List<AlbumLite>> GetPhotoAlbumsAsync(this VKAPI API, long ownerId) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "owner_id", ownerId.ToString() }
