@@ -135,10 +135,10 @@ namespace ELOR.VKAPILib.Objects {
         }
 
         [JsonIgnore]
-        public DateTime DateTime { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToLocalTime(); } }
+        public DateTime DateTime { get { return DateTimeOffset.FromUnixTimeSeconds(DateUnix).LocalDateTime; } }
 
         [JsonIgnore]
-        public DateTime UpdateTime { get { return DateTimeOffset.FromUnixTimeSeconds(UpdateTimeUnix).DateTime.ToLocalTime(); } }
+        public DateTime UpdateTime { get { return DateTimeOffset.FromUnixTimeSeconds(UpdateTimeUnix).LocalDateTime; } }
 
         //
 

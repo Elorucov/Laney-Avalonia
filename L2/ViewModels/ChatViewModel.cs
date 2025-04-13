@@ -528,7 +528,7 @@ namespace ELOR.Laney.ViewModels {
             if (!message.IsUnavailable) {
                 await GoToMessageAsync(message.ConversationMessageId);
             } else {
-                StandaloneMessageViewer smv = new StandaloneMessageViewer(session, message);
+                StandaloneMessageViewer smv = new StandaloneMessageViewer(session, message.RootMessage);
                 await smv.ShowDialog(session.Window);
             }
         }
@@ -552,7 +552,7 @@ namespace ELOR.Laney.ViewModels {
             if (DemoMode.IsEnabled) {
                 DemoModeSession ds = DemoMode.GetDemoSessionById(session.Id);
                 var messages = ds.Messages.Where(m => m.PeerId == PeerId).ToList();
-                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(messages, session, FixState));
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(messages, session, true, FixState));
 
                 return;
             }
@@ -574,7 +574,7 @@ namespace ELOR.Laney.ViewModels {
 
                 Setup(mhr.Conversations[0]);
                 mhr.Items?.Reverse();
-                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Items, session, FixState));
+                DisplayedMessages = new MessagesCollection(MessageViewModel.BuildFromAPI(mhr.Items, session, false, FixState));
 
                 int scrollTo = 0;
                 if (startMessageId > 0) scrollTo = startMessageId;

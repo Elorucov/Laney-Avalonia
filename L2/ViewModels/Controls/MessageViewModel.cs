@@ -5,7 +5,6 @@ using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers.Hash;
 using ELOR.VKAPILib.Objects;
-using ExCSS;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -47,8 +46,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         private DateTime? _editTime;
         private string _text;
         private List<Attachment> _attachments = new List<Attachment>();
-        private List<MessageViewModel> _forwardedMessages = new List<MessageViewModel>();
-        private MessageViewModel _replyMessage;
+        private List<Message> _forwardedMessages = new List<Message>();
+        private Message _replyMessage;
         private Geo _location;
         private VKAPILib.Objects.Action _action;
         private BotKeyboard _keyboard;
@@ -69,6 +68,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         private int _imagesCount;
         private Uri _previewImageUri;
 
+        private Message _rootMessage;
+
         public int Id => ConversationMessageId; // required for IMessageListItem
         public int GlobalId { get { return _id; } private set { _id = value; OnPropertyChanged(); } }
         public long PeerId { get { return _peerId; } private set { _peerId = value; OnPropertyChanged(); } }
@@ -84,8 +85,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public DateTime? EditTime { get { return _editTime; } private set { _editTime = value; OnPropertyChanged(); } }
         public string Text { get { return _text; } private set { _text = value; OnPropertyChanged(); } }
         public List<Attachment> Attachments { get { return _attachments; } private set { _attachments = value; OnPropertyChanged(); } }
-        public List<MessageViewModel> ForwardedMessages { get { return _forwardedMessages; } private set { _forwardedMessages = value; OnPropertyChanged(); } }
-        public MessageViewModel ReplyMessage { get { return _replyMessage; } private set { _replyMessage = value; OnPropertyChanged(); } }
+        public List<Message> ForwardedMessages { get { return _forwardedMessages; } private set { _forwardedMessages = value; OnPropertyChanged(); } }
+        public Message ReplyMessage { get { return _replyMessage; } private set { _replyMessage = value; OnPropertyChanged(); } }
         public Geo Location { get { return _location; } private set { _location = value; OnPropertyChanged(); } }
         public VKAPILib.Objects.Action Action { get { return _action; } private set { _action = value; OnPropertyChanged(); } }
         public BotKeyboard Keyboard { get { return _keyboard; } private set { _keyboard = value; OnPropertyChanged(); } }
@@ -109,6 +110,8 @@ namespace ELOR.Laney.ViewModels.Controls {
         public Uri PreviewImageUri { get { return _previewImageUri; } private set { _previewImageUri = value; OnPropertyChanged(); } }
         public bool CanShowInUI { get { return Action == null && !IsExpired; } }
 
+        public Message RootMessage => _rootMessage; // доступно только если IsUnavailable = true;
+
         public VKSession OwnerSession => session;
 
         public static uint Instances => _instances;
@@ -119,18 +122,20 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         #endregion
 
-        public MessageViewModel(Message msg, VKSession session = null) {
+        public MessageViewModel(Message msg, bool dontListenEvents = false, VKSession session = null) {
             _instances++;
             this.session = session;
-            Setup(msg);
-            PropertyChanged += MessageViewModel_PropertyChanged;
+            Setup(msg, dontListenEvents);
+            if (!dontListenEvents) PropertyChanged += MessageViewModel_PropertyChanged;
         }
 
         ~MessageViewModel() {
             _instances--;
         }
 
-        private void Setup(Message msg) {
+        private void Setup(Message msg, bool dontListenEvents = false) {
+            if (msg.IsUnavailable) _rootMessage = msg;
+
             _toString = msg.ToNormalString();
             GlobalId = msg.Id;
             PeerId = msg.PeerId;
@@ -144,7 +149,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             Text = msg.Text;
             if (msg.Attachments != null) Attachments = msg.Attachments;
             Location = msg.Geo;
-            if (msg.ReplyMessage != null) ReplyMessage = Create(msg.ReplyMessage, session);
+            if (msg.ReplyMessage != null) ReplyMessage = msg.ReplyMessage;
             Action = msg.Action;
             Keyboard = msg.Keyboard;
             Template = msg.Template;
@@ -158,7 +163,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             if (msg.ForwardedMessages != null) {
                 ForwardedMessages.Clear();
                 foreach (var fmsg in msg.ForwardedMessages) {
-                    ForwardedMessages.Add(Create(fmsg, session));
+                    ForwardedMessages.Add(fmsg);
                 }
             }
 
@@ -166,7 +171,7 @@ namespace ELOR.Laney.ViewModels.Controls {
             UpdateUIType();
             if (msg.IsPartial || State != MessageVMState.Read) State = MessageVMState.Loading;
 
-            if (session != null && !DemoMode.IsEnabled) {
+            if (session != null && !DemoMode.IsEnabled && !dontListenEvents) {
                 session.LongPoll.MessageEdited += LongPoll_MessageEdited;
                 session.LongPoll.MessageFlagSet += LongPoll_MessageFlagSet;
                 session.LongPoll.MessageFlagRemove += LongPoll_MessageFlagRemove;
@@ -184,23 +189,20 @@ namespace ELOR.Laney.ViewModels.Controls {
         private void SetSenderNameAndAvatar() {
             if (SenderId.IsUser()) {
                 SenderType = MessageVMSenderType.User;
-                User u = CacheManager.GetUser(SenderId);
-                if (u == null) Log.Warning($"MessageViewModel: user with id {SenderId} was not found in cache!");
-                SenderName = u == null ? $"id{SenderId}" : string.Intern(u.FullName);
-                if (u != null) SenderAvatar = u.Photo;
             } else if (SenderId.IsGroup()) {
                 SenderType = MessageVMSenderType.Group;
-                Group g = CacheManager.GetGroup(SenderId);
-                if (g == null) Log.Warning($"MessageViewModel: group with id {SenderId} was not found in cache!");
-                SenderName = g == null ? $"club{SenderId}" : string.Intern(g.Name);
-                if (g != null) SenderAvatar = g.Photo;
             }
+
+            var data = CacheManager.GetNameAndAvatar(SenderId);
+            string author = String.Join(" ", new[] { data.Item1, data.Item2 });
+            SenderName = author;
+            SenderAvatar = data.Item3;
         }
 
         private void MessageViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == nameof(Attachments) || e.PropertyName == nameof(Text)
                  || e.PropertyName == nameof(ReplyMessage) || e.PropertyName == nameof(ForwardedMessages)
-                  || e.PropertyName == nameof(Geo) || e.PropertyName == nameof(Keyboard)) {
+                 || e.PropertyName == nameof(Geo) || e.PropertyName == nameof(Keyboard)) {
                 UpdateUIType();
             } else if (e.PropertyName == nameof(IsExpired) || e.PropertyName == nameof(Action)) {
                 OnPropertyChanged(nameof(CanShowInUI));
@@ -218,7 +220,7 @@ namespace ELOR.Laney.ViewModels.Controls {
                     UIType = MessageUIType.SingleImage;
                 } else if (a.Type == AttachmentType.Sticker && String.IsNullOrEmpty(Text)) {
                     UIType = MessageUIType.Sticker;
-                    PreviewImageUri = a.Sticker.GetSizeAndUriForThumbnail(64).Uri;
+                    PreviewImageUri = a.Sticker.GetSizeAndUriForThumbnail(Constants.CompactMessagePreviewSize).Uri;
                     return;
                 } else if (a.Type == AttachmentType.UGCSticker && String.IsNullOrEmpty(Text)) {
                     UIType = MessageUIType.Sticker;
@@ -385,22 +387,23 @@ namespace ELOR.Laney.ViewModels.Controls {
         //    return a * b;
         //}
 
-        private static uint CalcHashMinRAM(long peerId, long fromId, int cmid, long time) {
-            byte[] data = new byte[28];
+        private static uint CalcHashMinRAM(long peerId, long fromId, int cmid, long time, bool flag1) {
+            byte[] data = new byte[29];
             BitConverter.GetBytes(peerId).CopyTo(data, 0);
             BitConverter.GetBytes(fromId).CopyTo(data, 8);
             BitConverter.GetBytes(cmid).CopyTo(data, 16);
             BitConverter.GetBytes(time).CopyTo(data, 20);
+            data[28] = (byte)(flag1 ? 1 : 0);
             return MurmurHash.Shared.Hash(data);
         }
 
         // Further optimizations: check the last cmid in chat, and if msg.cmid > last, do not find in cache, just add here.
-        public static MessageViewModel Create(Message msg, VKSession session = null) {
-            uint hash = CalcHashMinRAM(msg.PeerId, msg.FromId, msg.ConversationMessageId, msg.DateUnix);
+        public static MessageViewModel Create(Message msg, VKSession session = null, bool dontListenEvents = false) {
+            uint hash = CalcHashMinRAM(msg.PeerId, msg.FromId, msg.ConversationMessageId, msg.DateUnix, dontListenEvents);
             // UInt128 hash = CalcHashFast(msg.PeerId, msg.ConversationMessageId, msg.Id);
             if (_cachedMessages.ContainsKey(hash)) return _cachedMessages[hash];
 
-            MessageViewModel message = new MessageViewModel(msg, session);
+            MessageViewModel message = new MessageViewModel(msg, dontListenEvents, session);
             _cachedMessages.Add(hash, message);
             return message;
         }
@@ -416,10 +419,10 @@ namespace ELOR.Laney.ViewModels.Controls {
             return _toString;
         }
 
-        public static List<MessageViewModel> BuildFromAPI(List<Message> messages, VKSession session, Action<MessageViewModel> afterBuild = null) {
+        public static List<MessageViewModel> BuildFromAPI(List<Message> messages, VKSession session, bool dontListenEvents = false, Action<MessageViewModel> afterBuild = null) {
             List<MessageViewModel> vms = new List<MessageViewModel>();
             foreach (var message in CollectionsMarshal.AsSpan(messages)) {
-                MessageViewModel mvm = Create(message, session);
+                MessageViewModel mvm = Create(message, session, dontListenEvents);
                 afterBuild?.Invoke(mvm);
                 vms.Add(mvm);
             }

@@ -4,6 +4,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.ViewModels.Modals;
+using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
 using VKUI.Controls;
@@ -37,7 +38,7 @@ namespace ELOR.Laney.Views.Modals {
 
 
         private void OnMessageSelected(object sender, RoutedEventArgs e) {
-            MessageViewModel item = (sender as Control).DataContext as MessageViewModel;
+            Message item = (sender as Control).DataContext as Message;
             Close(item);
         }
 
@@ -53,14 +54,14 @@ namespace ELOR.Laney.Views.Modals {
 
         private void MessageContextRequested(object sender, ContextRequestedEventArgs e) {
             Control p = sender as Control;
-            MessageViewModel message = p?.DataContext as MessageViewModel;
+            Message message = p?.DataContext as Message;
             if (message == null) return;
 
             ActionSheet ash = new ActionSheet();
 
             ActionSheetItem debug = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20BugOutline },
-                Header = $"ID: {message.GlobalId}, CMID: {message.ConversationMessageId}"
+                Header = $"ID: {message.Id}, CMID: {message.ConversationMessageId}"
             };
             ActionSheetItem go = new ActionSheetItem {
                 Before = new VKIcon { Id = VKIconNames.Icon20MessageArrowRightOutline },
@@ -86,7 +87,7 @@ namespace ELOR.Laney.Views.Modals {
 
             if (Settings.ShowDevItemsInContextMenus) ash.Items.Add(debug);
             ash.Items.Add(go);
-            if (message.IsImportant) ash.Items.Add(unmark);
+            if (message.Important) ash.Items.Add(unmark);
 
 
             if (ash.Items.Count > 0) ash.ShowAt(p, true);
