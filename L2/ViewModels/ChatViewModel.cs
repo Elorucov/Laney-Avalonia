@@ -1049,8 +1049,9 @@ namespace ELOR.Laney.ViewModels {
                     var photo = acts.Where(a => a?.Status == LongPollActivityType.UploadingPhoto).ToList();
                     var video = acts.Where(a => a?.Status == LongPollActivityType.UploadingVideo).ToList();
                     var file = acts.Where(a => a?.Status == LongPollActivityType.UploadingFile).ToList();
+                    var circle = acts.Where(a => a?.Status == LongPollActivityType.UploadingVideoMessage).ToList();
                     List<List<LongPollActivityInfo>> groupedActivities = new List<List<LongPollActivityInfo>> {
-                        typing, voice, photo, video, file
+                        typing, voice, photo, video, file, circle
                     };
 
                     bool has3AndMoreDifferentTypes = groupedActivities.Where(a => a.Count > 0).Count() >= 3;
@@ -1088,6 +1089,7 @@ namespace ELOR.Laney.ViewModels {
                 case LongPollActivityType.UploadingPhoto: return Localizer.Get($"lp_act_photo{suffix}");
                 case LongPollActivityType.UploadingVideo: return Localizer.Get($"lp_act_video{suffix}");
                 case LongPollActivityType.UploadingFile: return Localizer.Get($"lp_act_file{suffix}");
+                case LongPollActivityType.UploadingVideoMessage: return Localizer.Get($"lp_act_videomsg{suffix}");
             }
             return string.Empty;
         }

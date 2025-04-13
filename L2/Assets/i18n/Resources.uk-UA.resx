@@ -873,6 +873,12 @@
   <data name="lp_act_file_single" xml:space="preserve">
     <value>надсилає файл</value>
   </data>
+  <data name="lp_act_videomsg_multi" xml:space="preserve">
+    <value>записують відеоповідомлення</value>
+  </data>
+  <data name="lp_act_videomsg_single" xml:space="preserve">
+    <value>записує відеоповідомлення</value>
+  </data>
   <data name="im_status_more" xml:space="preserve">
     <value>і ще {0}</value>
   </data>

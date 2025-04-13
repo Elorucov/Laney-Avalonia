@@ -1497,6 +1497,24 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to recording a videomessage.
+        /// </summary>
+        public static string lp_act_videomsg_multi {
+            get {
+                return ResourceManager.GetString("lp_act_videomsg_multi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to recording a videomessage.
+        /// </summary>
+        public static string lp_act_videomsg_single {
+            get {
+                return ResourceManager.GetString("lp_act_videomsg_single", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to recording audio.
         /// </summary>
         public static string lp_act_voice_multi {
