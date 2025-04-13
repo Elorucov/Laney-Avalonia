@@ -590,7 +590,10 @@ namespace ELOR.Laney.ViewModels {
                     }
                 }
 
-                if (Members.Count == 0) await LoadMembersAsync();
+                if (Members.Count == 0) {
+                    IsLoading = false; // нужно чтобы LoadMembers не блочило переход по сообщениям
+                    await LoadMembersAsync();
+                }
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadMessagesAsync(startMessageId));
             } finally {
