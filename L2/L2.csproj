@@ -66,6 +66,8 @@
   <ItemGroup>
     <VlcWindowsX64IncludeFiles Include="libvlc.dll" />
     <VlcWindowsX64IncludeFiles Include="libvlccore.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\access\libaccess_imem_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\access\libimem_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\access\libfilesystem_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\access\libhttp_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\access\libhttps_plugin.dll" />
@@ -89,6 +91,8 @@
     <VlcWindowsX64IncludeFiles Include="plugins\demux\librawdv_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\demux\libwav_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\misc\libgnutls_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\stream_filter\libprefetch_plugin.dll" />
+    <VlcWindowsX64IncludeFiles Include="plugins\stream_filter\libskiptags_plugin.dll" />
     <VlcWindowsX64IncludeFiles Include="plugins\packetizer\libpacketizer_mpegaudio_plugin.dll" />
   </ItemGroup>
 
@@ -174,17 +178,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.0-beta1" />
+    <PackageReference Include="Avalonia" Version="11.3.0-beta2" />
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
     <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.0-beta1" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.0-beta2" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0-beta1" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0-beta2" />
     <PackageReference Include="Avalonia.Labs.Lottie" Version="11.2.0" />
     <PackageReference Include="Avalonia.Labs.Panels" Version="11.2.0" />
     <PackageReference Include="Avalonia.Labs.Qr" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.0-beta1" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.7" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.0-beta2" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

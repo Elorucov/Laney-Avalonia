@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
@@ -21,6 +22,7 @@ namespace ELOR.Laney {
 
             w1.Click += w1_Click;
             w2.Click += w2_Click;
+            w3.Click += w3_Click;
 
             buildInfo.Text = $"The infos listed below is changed when building on CI/CD\nBuild tag: {App.BuildInfoFull}\nRepository: {App.RepoInfo}\nBuilder username and hostname: {App.BuildHost}";
             setResult.Text += $"\n\nSettings file location:\n{Settings.FilePath}";
@@ -69,6 +71,20 @@ namespace ELOR.Laney {
         }
 
         private void w2_Click(object? sender, RoutedEventArgs e) {
+            new Action(async () => {
+                var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                    AllowMultiple = false
+                });
+
+                if (files?.Count > 0) {
+                    var file = files[0];
+                    using var stream = await file.OpenReadAsync();
+                    LMediaPlayer.SFX?.PlayStream(stream);
+                }
+            })();
+        }
+
+        private void w3_Click(object? sender, RoutedEventArgs e) {
             LMediaPlayer.SFX?.PlayURL("https://elor.top/res/audios/sunrise_spring.mp3");
         }
 
