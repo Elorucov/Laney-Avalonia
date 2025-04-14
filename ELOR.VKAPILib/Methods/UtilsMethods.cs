@@ -13,8 +13,9 @@ namespace ELOR.VKAPILib.Methods {
 
             // Знали бы разработчики VK API, какую боль в заднице испытывают программисты на строго-типизированных языках,
             // разрабатывая библиотеки для VK API...
-            string response = await API.SendRequestAsync("utils.resolveScreenName", API.GetNormalizedParameters(parameters));
-            var jr = JsonNode.Parse(response);
+            using var response = await API.SendRequestAsync("utils.resolveScreenName", API.GetNormalizedParameters(parameters));
+            using var respStream = await response.ReadAsStreamAsync();
+            var jr = await JsonNode.ParseAsync(respStream);
             if (jr["response"] is JsonArray) {
                 return null;
             } else {

@@ -72,7 +72,7 @@ namespace ELOR.VKAPILib {
             HttpClientHandler handler = new HttpClientHandler() {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
-            HttpClient = new HttpClient(handler);
+            HttpClient = new HttpClient(handler, false);
             HttpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             HttpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate");
             if (!String.IsNullOrEmpty(userAgent)) HttpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
@@ -107,12 +107,12 @@ namespace ELOR.VKAPILib {
             return prmkv;
         }
 
-        public async Task<string> SendRequestAsync(string method, Dictionary<string, string> parameters = null) {
+        public async Task<HttpContent> SendRequestAsync(string method, Dictionary<string, string> parameters = null) {
             string requestUri = $@"https://{Domain}/method/{method}";
             return await SendRequestAsync(new Uri(requestUri), parameters);
         }
 
-        internal async Task<string> SendRequestAsync(Uri uri, Dictionary<string, string> parameters = null) {
+        internal async Task<HttpContent> SendRequestAsync(Uri uri, Dictionary<string, string> parameters = null) {
             if (WebRequestCallback != null) {
                 Dictionary<string, string> headers = new Dictionary<string, string> {
                     { "Accept-Encoding", "gzip,deflate" }
@@ -122,8 +122,8 @@ namespace ELOR.VKAPILib {
                     headers.Add("Origin", $"https://id.vk.com");
                 }
 
-                using var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
-                return await resp.Content.ReadAsStringAsync();
+                var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
+                return resp.Content;
             } else {
                 using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri) {
                     Version = new Version(2, 0)
@@ -132,25 +132,27 @@ namespace ELOR.VKAPILib {
                         hmsg.Headers.Add("Origin", $"https://id.vk.com");
                     }
                     hmsg.Content = new FormUrlEncodedContent(parameters);
-                    using (var resp = await HttpClient.SendAsync(hmsg)) {
-                        return await resp.Content.ReadAsStringAsync();
-                    }
+
+                    var resp = await HttpClient.SendAsync(hmsg);
+                    return resp.Content;
                 }
             }
         }
 
-        public async Task<string> CallMethodAsync(string method, Dictionary<string, string> parameters = null) {
+        public async Task<JsonDocument> CallMethodAsync(string method, Dictionary<string, string> parameters = null) {
             if (parameters == null) parameters = new Dictionary<string, string>();
 
-            string response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            return response;
+            var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
+            var stream = await response.ReadAsStreamAsync();
+            return await JsonDocument.ParseAsync(stream);
         }
 
         public async Task<T> CallMethodAsync<T>(string method, Dictionary<string, string> parameters = null, JsonSerializerContext serializerContext = null) {
             if (parameters == null) parameters = new Dictionary<string, string>();
 
-            string response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            JsonNode resp = JsonNode.Parse(response);
+            var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
+            var respStream = await response.ReadAsStreamAsync();
+            JsonNode resp = await JsonNode.ParseAsync(respStream);
             if (resp["error"] != null) {
                 APIException apiex = (APIException)resp["error"].Deserialize(typeof(APIException), BuildInJsonContext.Default);
                 switch (apiex.Code) {

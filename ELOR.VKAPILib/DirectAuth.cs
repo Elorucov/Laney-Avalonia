@@ -21,8 +21,10 @@ namespace ELOR.VKAPILib {
             VKAPI api = new VKAPI(null, "en", userAgent);
             api.WebRequestCallback = webRequestCallback;
 
-            string response = await api.SendRequestAsync(new Uri("https://oauth.vk.com/get_anonym_token"), p);
-            AnonymToken atr = (AnonymToken)JsonSerializer.Deserialize(response, typeof(AnonymToken), BuildInJsonContext.Default);
+            using var response = await api.SendRequestAsync(new Uri("https://oauth.vk.com/get_anonym_token"), p);
+            using var respStream = await response.ReadAsStreamAsync();
+
+            AnonymToken atr = (AnonymToken)await JsonSerializer.DeserializeAsync(respStream, typeof(AnonymToken), BuildInJsonContext.Default);
             api.AccessToken = atr.Token;
             return api;
         }
@@ -43,8 +45,10 @@ namespace ELOR.VKAPILib {
             if (!String.IsNullOrEmpty(captchaSid)) p.Add("captcha_sid", captchaSid);
             if (!String.IsNullOrEmpty(captchaKey)) p.Add("captcha_key", captchaKey);
 
-            string response = await api.SendRequestAsync(new Uri("https://oauth.vk.com/token"), p);
-            DirectAuthResponse das = (DirectAuthResponse)JsonSerializer.Deserialize(response, typeof(DirectAuthResponse), BuildInJsonContext.Default);
+            using var response = await api.SendRequestAsync(new Uri("https://oauth.vk.com/token"), p);
+            using var respStream = await response.ReadAsStreamAsync();
+
+            DirectAuthResponse das = (DirectAuthResponse)await JsonSerializer.DeserializeAsync(respStream, typeof(DirectAuthResponse), BuildInJsonContext.Default);
             return das;
         }
     }
