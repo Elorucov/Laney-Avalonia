@@ -27,7 +27,7 @@ namespace ELOR.Laney.Views {
 
         private void OnChatSelected(object sender, RoutedEventArgs e) {
             Entity item = (sender as Control).DataContext as Entity;
-            VKSession.GetByDataContext(this).GoToChat(item.Item1);
+            VKSession.GetByDataContext(this).GoToChat(item.Id);
         }
 
         private void OnMessageSelected(object sender, RoutedEventArgs e) {

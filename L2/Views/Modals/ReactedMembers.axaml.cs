@@ -102,15 +102,15 @@ public partial class ReactedMembers : DialogWindow {
         Image img = sender as Image;
         Entity en = img.DataContext as Entity;
         img.Source = null;
-        if (en == null || String.IsNullOrEmpty(en.Item4)) return;
+        if (en == null || String.IsNullOrEmpty(en.Description)) return;
 
-        ImageLoader.SetSvgSource(img, new Uri(en.Item4));
+        ImageLoader.SetSvgSource(img, new Uri(en.Description));
     }
 
     private void OpenProfile(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
         Entity entity = (sender as Control).DataContext as Entity;
         if (entity == null) return;
         Close();
-        new System.Action(async () => await Router.OpenPeerProfileAsync(session, entity.Item1))();
+        new System.Action(async () => await Router.OpenPeerProfileAsync(session, entity.Id))();
     }
 }

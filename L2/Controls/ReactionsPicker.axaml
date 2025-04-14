@@ -16,8 +16,8 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
           <DataTemplate x:DataType="mdl:Entity">
-            <Button Classes="Tertiary" Loaded="Button_Loaded" Width="40" Height="40" Margin="2,0" Padding="0" CornerRadius="20" Command="{Binding Item5.Action}" CommandParameter="{Binding Item1}">
-              <Image controls:ImageLoader.SvgSource="{Binding Item2}" Width="36" Height="36"/>
+            <Button Classes="Tertiary" Loaded="Button_Loaded" Width="40" Height="40" Margin="2,0" Padding="0" CornerRadius="20" Command="{Binding Command.Action}" CommandParameter="{Binding Id}">
+              <Image controls:ImageLoader.SvgSource="{Binding ImageUri}" Width="36" Height="36"/>
             </Button>
           </DataTemplate>
         </ItemsControl.ItemTemplate>

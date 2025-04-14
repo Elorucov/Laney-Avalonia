@@ -579,8 +579,8 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Exit or return to chat/channel
             if (chat.State != UserStateInChat.Kicked) {
-                string exitLabel = chat.IsChannel ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled;
-                string returnLabel = chat.IsChannel ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled;
+                string exitLabel = chat.IsChannel ? Assets.i18n.Resources.pp_exit_channel : Assets.i18n.Resources.pp_exit_chat;
+                string returnLabel = chat.IsChannel ? Assets.i18n.Resources.pp_return_channel : Assets.i18n.Resources.pp_return_chat;
                 string icon = chat.State == UserStateInChat.In ? VKIconNames.Icon20DoorArrowRightOutline : VKIconNames.Icon20DoorEnterArrowRightOutline;
                 Command exitRetCmd = new Command(icon, chat.State == UserStateInChat.In ? exitLabel : returnLabel, true, (a) => {
                     if (chat.State == UserStateInChat.In) {
@@ -611,7 +611,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         private void SearchMember() {
             if (IsLoading) return;
             if (!String.IsNullOrWhiteSpace(MemberSearchQuery)) {
-                var foundMembers = allMembers.Where(m => m.Item3.ToLower().Contains(MemberSearchQuery.ToLower()));
+                var foundMembers = allMembers.Where(m => m.Name.ToLower().Contains(MemberSearchQuery.ToLower()));
                 DisplayedMembers = new ObservableCollection<Entity>(foundMembers);
             } else {
                 DisplayedMembers = allMembers;
