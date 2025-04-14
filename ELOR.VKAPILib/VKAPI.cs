@@ -142,16 +142,16 @@ namespace ELOR.VKAPILib {
         public async Task<JsonDocument> CallMethodAsync(string method, Dictionary<string, string> parameters = null) {
             if (parameters == null) parameters = new Dictionary<string, string>();
 
-            var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            var stream = await response.ReadAsStreamAsync();
+            using var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
+            using var stream = await response.ReadAsStreamAsync();
             return await JsonDocument.ParseAsync(stream);
         }
 
         public async Task<T> CallMethodAsync<T>(string method, Dictionary<string, string> parameters = null, JsonSerializerContext serializerContext = null) {
             if (parameters == null) parameters = new Dictionary<string, string>();
 
-            var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            var respStream = await response.ReadAsStreamAsync();
+            using var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
+            using var respStream = await response.ReadAsStreamAsync();
             JsonNode resp = await JsonNode.ParseAsync(respStream);
             if (resp["error"] != null) {
                 APIException apiex = (APIException)resp["error"].Deserialize(typeof(APIException), BuildInJsonContext.Default);
