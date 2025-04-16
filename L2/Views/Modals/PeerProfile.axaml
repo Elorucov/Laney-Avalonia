@@ -73,6 +73,8 @@
   </vkw:DialogWindow.Resources>
   
   <Grid x:Name="Root" Grid.RowDefinitions="Auto Auto *">
+    <Border x:Name="HeaderBackground" Grid.RowSpan="2" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Background="{DynamicResource VKGradientTintBrush}"/>
+    
     <Grid x:Name="PeerInfo" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="24" ColumnDefinitions="Auto *">
       <vkui:Avatar x:Name="PeerAva" Width="80" Height="80" Margin="0,0,20,0" Initials="{Binding Header, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Avatar}"/>
       <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -81,49 +83,51 @@
       </StackPanel>
     </Grid>
 
-    <Border x:Name="CommandsArea" Grid.Row="1" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="9,0">
+    <Border x:Name="CommandsArea" Grid.Row="1" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="9,0,9,12">
       <Grid ColumnDefinitions="* * * Auto">
         <Grid.Styles>
           <Style Selector="Button">
-            <Setter Property="Background" Value="{DynamicResource VKBackgroundLightBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource VKBackgroundContrastBrush}"/>
             <Setter Property="Padding" Value="3,6"/>
             <Setter Property="Margin" Value="3,0"/>
           </Style>
           <Style Selector="Button TextBlock">
-            <!-- Чтобы юзеру не казался, что текст находится выше относительно иконки -->
-            <Setter Property="Margin" Value="0,1,0,0"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource VKAccentBrush}"/>
           </Style>
         </Grid.Styles>
         <Button x:Name="FirstButton" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding FirstCommand.Action}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <vkui:VKIcon Margin="0,0,6,0" Id="{Binding FirstCommand.IconId}"/>
+            <vkui:VKIcon Classes="ButtonIn" Margin="0,0,6,0" Id="{Binding FirstCommand.IconId}"/>
             <TextBlock Classes="Default Caption1" Text="{Binding FirstCommand.Label}"/>
           </StackPanel>
         </Button>
         <Button x:Name="SecondButton" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding SecondCommand.Action}" IsVisible="{Binding SecondCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <vkui:VKIcon Margin="0,0,6,0" Id="{Binding SecondCommand.IconId}"/>
+            <vkui:VKIcon Classes="ButtonIn" Margin="0,0,6,0" Id="{Binding SecondCommand.IconId}"/>
             <TextBlock Classes="Default Caption1" Text="{Binding SecondCommand.Label}"/>
           </StackPanel>
         </Button>
         <Button x:Name="ThirdButton" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding ThirdCommand.Action}" IsVisible="{Binding ThirdCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <vkui:VKIcon Margin="0,0,6,0" Id="{Binding ThirdCommand.IconId}"/>
+            <vkui:VKIcon Classes="ButtonIn" Margin="0,0,6,0" Id="{Binding ThirdCommand.IconId}"/>
             <TextBlock Classes="Default Caption1" Text="{Binding ThirdCommand.Label}"/>
           </StackPanel>
         </Button>
         <Button x:Name="MoreButton" Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="0" Width="44" Command="{Binding MoreCommand.Action}" IsVisible="{Binding MoreCommand, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28MoreHorizontal}"/>
+            <vkui:VKIcon Classes="ButtonIn" Id="{x:Static vkui:VKIconNames.Icon28MoreHorizontal}"/>
           </StackPanel>
         </Button>
       </Grid>
     </Border>
 
-    <TabControl x:Name="Tabs" Grid.Row="2" SelectionChanged="Tabs_SelectionChanged" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Margin="0,14,0,0" Classes="Accent">
+    <Grid x:Name="ContentBackground" Grid.Row="2" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+      <Rectangle Fill="{DynamicResource VKGradientTintEndBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="12"/>
+      <Border CornerRadius="12,12,0,0" Background="{DynamicResource VKBackgroundContentBrush}"/>
+    </Grid>
+    
+    <TabControl x:Name="Tabs" Grid.Row="2" Margin="0,2,0,0" SelectionChanged="Tabs_SelectionChanged" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Classes="Accent">
       <TabItem x:Name="UserInfoTab" Header="{x:Static i18n:Resources.info}">
         <ScrollViewer>
           <ItemsControl Margin="0,-3,0,6" ItemsSource="{Binding Information}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>

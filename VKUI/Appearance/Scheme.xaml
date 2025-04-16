@@ -14,6 +14,7 @@
       <SolidColorBrush x:Key="VKAttachPickerTabInactiveIconBrush" Color="{StaticResource VKSteelGray400Color}"/>
       <SolidColorBrush x:Key="VKAttachPickerTabInactiveTextBrush" Color="{StaticResource VKSteelGray400Color}"/>
       <SolidColorBrush x:Key="VKBackgroundContentBrush" Color="{StaticResource VKWhiteColor}"/>
+      <SolidColorBrush x:Key="VKBackgroundContrastBrush" Color="{StaticResource VKWhiteColor}"/> <!-- Custom -->
       <SolidColorBrush x:Key="VKBackgroundHoverBrush" Color="{StaticResource VKBlackColor}" Opacity="0.04"/>
       <SolidColorBrush x:Key="VKBackgroundHighlightedBrush" Color="{StaticResource VKBlackAlpha8Color}"/>
       <SolidColorBrush x:Key="VKBackgroundKeyboardBrush" Color="{StaticResource VKGray100Color}"/>
@@ -244,13 +245,25 @@
       <LinearGradientBrush x:Key="TransparentToContentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
         <LinearGradientBrush.GradientStops>
           <GradientStop Offset="0" Color="Transparent"/>
-          <GradientStop Offset="100" Color="{StaticResource VKWhiteColor}"/>
+          <GradientStop Offset="1" Color="{StaticResource VKWhiteColor}"/>
         </LinearGradientBrush.GradientStops>
       </LinearGradientBrush>
       <LinearGradientBrush x:Key="ContentToTransparentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
         <LinearGradientBrush.GradientStops>
           <GradientStop Offset="0" Color="{StaticResource VKWhiteColor}"/>
-          <GradientStop Offset="100" Color="Transparent"/>
+          <GradientStop Offset="1" Color="Transparent"/>
+        </LinearGradientBrush.GradientStops>
+      </LinearGradientBrush>
+
+      <SolidColorBrush x:Key="VKGradientTintEndBrush" Color="#F9F9F9"/>
+      <LinearGradientBrush x:Key="VKGradientTintBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+        <LinearGradientBrush.GradientStops>
+          <GradientStop Color="#00F9F9F9" Offset="0"/>
+          <GradientStop Color="#0DF9F9F9" Offset="0.15"/>
+          <GradientStop Color="#33F9F9F9" Offset="0.3"/>
+          <GradientStop Color="#CDF9F9F9" Offset="0.7"/>
+          <GradientStop Color="#F3F9F9F9" Offset="0.85"/>
+          <GradientStop Color="#FFF9F9F9" Offset="1"/>
         </LinearGradientBrush.GradientStops>
       </LinearGradientBrush>
     </ResourceDictionary>
@@ -268,6 +281,7 @@
       <SolidColorBrush x:Key="VKAttachPickerTabInactiveIconBrush" Color="{StaticResource VKGray100Color}"/>
       <SolidColorBrush x:Key="VKAttachPickerTabInactiveTextBrush" Color="{StaticResource VKGray500Color}"/>
       <SolidColorBrush x:Key="VKBackgroundContentBrush" Color="{StaticResource VKGray900Color}"/>
+      <SolidColorBrush x:Key="VKBackgroundContrastBrush" Color="{StaticResource VKGray800Color}"/> <!-- Custom -->
       <SolidColorBrush x:Key="VKBackgroundHoverBrush" Color="{StaticResource VKWhiteColor}" Opacity="0.04"/>
       <SolidColorBrush x:Key="VKBackgroundHighlightedBrush" Color="{StaticResource VKWhiteAlpha8Color}"/>
       <SolidColorBrush x:Key="VKBackgroundKeyboardBrush" Color="{StaticResource VKGray800Color}"/>
@@ -498,13 +512,25 @@
       <LinearGradientBrush x:Key="TransparentToContentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
         <LinearGradientBrush.GradientStops>
           <GradientStop Offset="0" Color="#19191A00"/>
-          <GradientStop Offset="100" Color="{StaticResource VKGray900Color}"/>
+          <GradientStop Offset="1" Color="{StaticResource VKGray900Color}"/>
         </LinearGradientBrush.GradientStops>
       </LinearGradientBrush>
       <LinearGradientBrush x:Key="ContentToTransparentGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
         <LinearGradientBrush.GradientStops>
           <GradientStop Offset="0" Color="{StaticResource VKGray900Color}"/>
-          <GradientStop Offset="100" Color="#19191A00"/>
+          <GradientStop Offset="1" Color="#19191A00"/>
+        </LinearGradientBrush.GradientStops>
+      </LinearGradientBrush>
+
+      <SolidColorBrush x:Key="VKGradientTintEndBrush" Color="#202021"/>
+      <LinearGradientBrush x:Key="VKGradientTintBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+        <LinearGradientBrush.GradientStops>
+          <GradientStop Color="#00202021" Offset="0"/>
+          <GradientStop Color="#0D202021" Offset="0.15"/>
+          <GradientStop Color="#33202021" Offset="0.3"/>
+          <GradientStop Color="#CD202021" Offset="0.7"/>
+          <GradientStop Color="#F3202021" Offset="0.85"/>
+          <GradientStop Color="#FF202021" Offset="1"/>
         </LinearGradientBrush.GradientStops>
       </LinearGradientBrush>
     </ResourceDictionary>

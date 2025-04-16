@@ -849,7 +849,6 @@ namespace ELOR.Laney.ViewModels {
         }
 
         private void LongPoll_MessagesRead(LongPoll longPoll, long peerId, int messageId, int count) {
-            if (PeerId != peerId) return;
             UnreadMessagesCount = count;
 
             if (Mentions != null && Mentions.Count > 0) {
