@@ -87,7 +87,6 @@
       <Grid ColumnDefinitions="* * * Auto">
         <Grid.Styles>
           <Style Selector="Button">
-            <Setter Property="Background" Value="{DynamicResource VKBackgroundContrastBrush}"/>
             <Setter Property="Padding" Value="3,6"/>
             <Setter Property="Margin" Value="3,0"/>
           </Style>
@@ -124,7 +123,7 @@
 
     <Grid x:Name="ContentBackground" Grid.Row="2" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
       <Rectangle Fill="{DynamicResource VKGradientTintEndBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="12"/>
-      <Border CornerRadius="12,12,0,0" Background="{DynamicResource VKBackgroundContentBrush}"/>
+      <Border CornerRadius="12,12,0,0" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="{StaticResource VKElevation3}"/>
     </Grid>
     
     <TabControl x:Name="Tabs" Grid.Row="2" Margin="0,2,0,0" SelectionChanged="Tabs_SelectionChanged" IsVisible="{Binding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Classes="Accent">

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
@@ -36,6 +37,8 @@ namespace ELOR.Laney {
             AddHandler(DragDrop.DragEnterEvent, OnDragEnter);
             AddHandler(DragDrop.DragLeaveEvent, OnDragLeave);
             AddHandler(DragDrop.DropEvent, OnDrop);
+
+            PTarget.Effect = new ImmutableDropShadowEffect(0, 4, 8, Color.FromRgb(0, 0, 0), 0.2);
         }
 
         private void MainWindow_EffectiveViewportChanged(object? sender, Avalonia.Layout.EffectiveViewportChangedEventArgs e) {
