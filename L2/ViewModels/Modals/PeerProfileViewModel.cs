@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using DynamicData;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
@@ -20,18 +21,61 @@ using VKUI.Controls;
 using VKUI.Popups;
 
 namespace ELOR.Laney.ViewModels.Modals {
-    public class ConversationAttachmentsTabViewModel : ItemsViewModel<ConversationAttachment> {
+    public sealed class ConversationAttachmentsTabViewModel : ItemsViewModel<ConversationAttachment> {
         public bool End { get; set; } = false;
     }
 
-    public class PeerProfileViewModel : CommonViewModel {
+    public sealed class ChatMembersTabViewModel : ItemsViewModel<Entity> {
+        private List<Entity> _allMembers;
+
+        private string _searchQuery;
+        public string SearchQuery { get { return _searchQuery; } set { _searchQuery = value; OnPropertyChanged(); } }
+        public bool SearchAvailable { get { return Items.Count > 0; } }
+
+        public ChatMembersTabViewModel(ObservableCollection<Entity> displayedItems, Func<List<Entity>> getAllMembersCallback) : base(displayedItems) {
+            _allMembers = getAllMembersCallback();
+            PropertyChanged += OnPropertyChanged;
+            Items.CollectionChanged += Items_CollectionChanged;
+        }
+
+        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+            OnPropertyChanged(nameof(SearchAvailable));
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+            switch (e.PropertyName) {
+                case nameof(SearchQuery):
+                    SearchMember();
+                    break;
+            }
+        }
+
+        private void SearchMember() {
+            if (IsLoading) return;
+            Items.CollectionChanged -= Items_CollectionChanged; // Required, because searchbox is temporary disappear and focus losing from that searchbox.
+            Items.Clear();
+            if (!String.IsNullOrWhiteSpace(SearchQuery)) {
+                var foundMembers = _allMembers.Where(m => m.Name.ToLower().Contains(SearchQuery.ToLower()));
+                Items.AddRange(foundMembers);
+            } else {
+                Items.AddRange(_allMembers);
+            }
+            Items.CollectionChanged += Items_CollectionChanged;
+        }
+
+        ~ChatMembersTabViewModel() {
+            PropertyChanged -= OnPropertyChanged;
+            Items.CollectionChanged -= Items_CollectionChanged;
+        }
+    }
+
+    public sealed class PeerProfileViewModel : CommonViewModel {
         private long _id;
         private string _header;
         private string _subhead;
         private Uri _avatar;
         private ObservableCollection<TwoStringTuple> _information = new ObservableCollection<TwoStringTuple>();
-        private ObservableCollection<Entity> _displayedMembers;
-        private string _memberSearchQuery;
+        private ChatMembersTabViewModel _chatMembers;
 
         private ConversationAttachmentsTabViewModel _photos = new ConversationAttachmentsTabViewModel();
         private ConversationAttachmentsTabViewModel _videos = new ConversationAttachmentsTabViewModel();
@@ -51,8 +95,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         public string Subhead { get { return _subhead; } private set { _subhead = value; OnPropertyChanged(); } }
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
         public ObservableCollection<TwoStringTuple> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
-        public ObservableCollection<Entity> DisplayedMembers { get { return _displayedMembers; } private set { _displayedMembers = value; OnPropertyChanged(); } }
-        public string MemberSearchQuery { get { return _memberSearchQuery; } set { _memberSearchQuery = value; OnPropertyChanged(); } }
+        public ChatMembersTabViewModel ChatMembers { get { return _chatMembers; } private set { _chatMembers = value; OnPropertyChanged(); } }
 
         public ConversationAttachmentsTabViewModel Photos { get { return _photos; } set { _photos = value; OnPropertyChanged(); } }
         public ConversationAttachmentsTabViewModel Videos { get { return _videos; } set { _videos = value; OnPropertyChanged(); } }
@@ -69,28 +112,20 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         private int _lastCmid = 0;
         private VKSession session;
-        private ObservableCollection<Entity> allMembers = new ObservableCollection<Entity>();
+        private List<Entity> _allMembers = new List<Entity>();
+        private ObservableCollection<Entity> _displayedMembers = new ObservableCollection<Entity>();
         public event EventHandler CloseWindowRequested;
 
         public PeerProfileViewModel(VKSession session, long peerId) {
             this.session = session;
             Id = peerId;
-            PropertyChanged += OnPropertyChanged;
             new System.Action(async () => await SetupAsync())();
-        }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            switch (e.PropertyName) {
-                case nameof(MemberSearchQuery):
-                    SearchMember();
-                    break;
-            }
         }
 
         private async Task SetupAsync() {
             Header = null;
             if (Id.IsChat()) {
-                MemberSearchQuery = null;
+                ChatMembers = null;
                 await GetChatAsync(Id);
             } else if (Id.IsUser()) {
                 await GetUserAsync(Id);
@@ -427,25 +462,45 @@ namespace ELOR.Laney.ViewModels.Modals {
                     Subhead = chat.State == UserStateInChat.Left ? Assets.i18n.Resources.chat_left : Assets.i18n.Resources.chat_kicked.ToLowerInvariant();
                 }
 
-                if (!chat.IsChannel) SetupMembers(chat);
                 SetupCommands(chat);
+                if (!chat.IsChannel && chat.State == UserStateInChat.In) {
+                    if (ChatMembers == null) ChatMembers = new ChatMembersTabViewModel(_displayedMembers, () => _allMembers);
+                    IsLoading = false; // required, see PeerProfile.axaml.cs > ViewModel_PropertyChanged
+                    await LoadChatMembersAsync(chat);
+                }
             } catch (Exception ex) {
-                Log.Error(ex, $"Error in PeerProfileViewModel.GetChat!");
+                Log.Error(ex, $"Error in PeerProfileViewModel.GetChatAsync!");
                 Header = null; // чтобы содержимое окна было скрыто
                 Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await GetChatAsync(peerId));
+            } finally {
+                IsLoading = false;
             }
-            IsLoading = false;
         }
 
-        private void SetupMembers(ChatInfoEx chat) {
-            allMembers.Clear();
-            DisplayedMembers = null;
-            if (chat.Members == null) return;
+        private async Task LoadChatMembersAsync(ChatInfoEx chat) {
+            if (ChatMembers.IsLoading) return;
+            try {
+                ChatMembers.IsLoading = true;
+                _allMembers.Clear();
+                _displayedMembers.Clear();
 
-            CacheManager.Add(chat.Members?.Profiles);
-            CacheManager.Add(chat.Members?.Groups);
+                var response = await session.API.Messages.GetConversationMembersAsync(session.GroupId, Id, extended: true, fields: VKAPIHelper.Fields);
+                CacheManager.Add(response.Profiles);
+                CacheManager.Add(response.Groups);
+                SetupMembers(chat, response.Items);
+                _displayedMembers.AddRange(_allMembers);
+            } catch (Exception ex) {
+                Log.Error(ex, $"Error in PeerProfileViewModel.LoadChatMembersAsync!");
+                _displayedMembers.Clear(); // вдруг краш произойдёт при парсинге участников, а часть из них уже были добавлены в список/UI, их надо удалить.
+                ChatMembers.Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadChatMembersAsync(chat));
+            } finally {
+                ChatMembers.IsLoading = false;
+            }
+        }
 
-            foreach (var member in CollectionsMarshal.AsSpan(chat.Members.Items)) {
+        private void SetupMembers(ChatInfoEx chat, List<ChatMember> members) {
+            if (members == null || members.Count == 0) return;
+            foreach (var member in CollectionsMarshal.AsSpan(members)) {
                 string name = member.MemberId.ToString();
                 string desc = String.Empty;
                 long mid = member.MemberId;
@@ -488,9 +543,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                 }
 
                 Command command = SetUpMemberCommand(chat, member);
-
-                allMembers.Add(new Entity(mid, avatar, name, desc, command));
-                DisplayedMembers = allMembers;
+                _allMembers.Add(new Entity(mid, avatar, name, desc, command));
             }
         }
 
@@ -605,16 +658,6 @@ namespace ELOR.Laney.ViewModels.Modals {
                 SecondCommand = commands[1];
                 ThirdCommand = commands[2];
                 MoreCommand = moreCommand;
-            }
-        }
-
-        private void SearchMember() {
-            if (IsLoading) return;
-            if (!String.IsNullOrWhiteSpace(MemberSearchQuery)) {
-                var foundMembers = allMembers.Where(m => m.Name.ToLower().Contains(MemberSearchQuery.ToLower()));
-                DisplayedMembers = new ObservableCollection<Entity>(foundMembers);
-            } else {
-                DisplayedMembers = allMembers;
             }
         }
 

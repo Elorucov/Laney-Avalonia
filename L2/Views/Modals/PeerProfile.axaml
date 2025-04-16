@@ -5,6 +5,7 @@
         xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:controls="using:ELOR.Laney.Controls"
         xmlns:atch="using:ELOR.Laney.Controls.Attachments"
+        xmlns:vmc="using:ELOR.Laney.ViewModels"
         xmlns:vm="using:ELOR.Laney.ViewModels.Modals"
         xmlns:vko="using:ELOR.VKAPILib.Objects"
         xmlns:vkw="using:VKUI.Windows"
@@ -133,19 +134,38 @@
         </ScrollViewer>
       </TabItem>
       <TabItem x:Name="ChatMembersTab" Header="{x:Static i18n:Resources.members}">
-        <Grid RowDefinitions="Auto *">
-          <TextBox Classes="Search" Margin="12,2,12,0" Text="{Binding MemberSearchQuery}" Watermark="{x:Static i18n:Resources.pp_search_members}"/>
-          <ScrollViewer Grid.Row="1">
-            <ItemsRepeater Margin="0,6" ItemsSource="{Binding DisplayedMembers}" ItemTemplate="{StaticResource DefaultEntityItemTemplate}">
-              <ItemsRepeater.Layout>
-                <StackLayout/>
-              </ItemsRepeater.Layout>
-            </ItemsRepeater>
-          </ScrollViewer>
-        </Grid>
+        <Border DataContext="{Binding ChatMembers}">
+          <Grid RowDefinitions="Auto *" x:DataType="vm:ChatMembersTabViewModel">
+            <TextBox Classes="Search" Margin="12,2,12,0" Text="{Binding SearchQuery}" IsVisible="{Binding SearchAvailable}" Watermark="{x:Static i18n:Resources.pp_search_members}"/>
+            <ScrollViewer Grid.Row="1">
+              <StackPanel>
+                <ItemsRepeater Margin="0,6" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource DefaultEntityItemTemplate}">
+                  <ItemsRepeater.Layout>
+                    <StackLayout/>
+                  </ItemsRepeater.Layout>
+                </ItemsRepeater>
+
+                <Border MinHeight="32">
+                  <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+                </Border>
+
+                <Border IsVisible="{Binding Placeholder, Mode=OneWay, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" Background="{DynamicResource VKBackgroundContentBrush}">
+                  <vkui:Placeholder VerticalAlignment="Center"
+                                          Icon="{Binding Placeholder.Icon, Mode=OneWay}"
+                                          Header="{Binding Placeholder.Header, Mode=OneWay}"
+                                          Text="{Binding Placeholder.Text, Mode=OneWay}">
+                    <vkui:Placeholder.Action>
+                      <Button Classes="Primary" IsVisible="{Binding Placeholder.ActionButton, Mode=OneWay, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Content="{Binding Placeholder.ActionButton, Mode=OneWay}" Command="{Binding Placeholder.ActionButtonFunc, Mode=OneWay}"/>
+                    </vkui:Placeholder.Action>
+                  </vkui:Placeholder>
+                </Border>
+              </StackPanel>
+            </ScrollViewer>
+          </Grid>
+        </Border>
       </TabItem>
       
-      <TabItem Header="{x:Static i18n:Resources.photo}">
+      <TabItem Tag="1" Header="{x:Static i18n:Resources.photo}">
         <ScrollViewer x:Name="PhotosSV" DataContext="{Binding Photos}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="PhotosList" MaxWidth="520" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource PhotoTemplate}">
@@ -171,8 +191,8 @@
           </StackPanel>
         </ScrollViewer>
       </TabItem>
-      
-      <TabItem Header="{x:Static i18n:Resources.video}">
+
+      <TabItem Tag="2" Header="{x:Static i18n:Resources.video}">
         <ScrollViewer x:Name="VideosSV" DataContext="{Binding Videos}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="VideosList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource VideoTemplate}">
@@ -198,8 +218,8 @@
           </StackPanel>
         </ScrollViewer>
       </TabItem>
-      
-      <TabItem Header="{x:Static i18n:Resources.audio}">
+
+      <TabItem Tag="3" Header="{x:Static i18n:Resources.audio}">
         <ScrollViewer x:Name="AudiosSV" DataContext="{Binding Audios}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="AudiosList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource AudioTemplate}">
@@ -225,8 +245,8 @@
           </StackPanel>
         </ScrollViewer>
       </TabItem>
-      
-      <TabItem Header="{x:Static i18n:Resources.doc}">
+
+      <TabItem Tag="4" Header="{x:Static i18n:Resources.doc}">
         <ScrollViewer x:Name="DocsSV" DataContext="{Binding Documents}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="DocsList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource DocTemplate}">
@@ -252,8 +272,8 @@
           </StackPanel>
         </ScrollViewer>
       </TabItem>
-      
-      <TabItem Header="{x:Static i18n:Resources.links}">
+
+      <TabItem Tag="5" Header="{x:Static i18n:Resources.links}">
         <ScrollViewer x:Name="LinksSV" DataContext="{Binding Share}" Grid.Row="1">
           <StackPanel x:DataType="vm:ConversationAttachmentsTabViewModel">
             <ItemsRepeater x:Name="LinksList" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource LinkTemplate}">

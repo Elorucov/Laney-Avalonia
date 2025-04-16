@@ -66,16 +66,20 @@ namespace ELOR.Laney.Views.Modals {
             if (e.PropertyName == nameof(PeerProfileViewModel.IsLoading) && !ViewModel.IsLoading) {
                 if (ViewModel.Placeholder == null) ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
 
-                // Remove members tab for channels.
-                if (ViewModel.Id.IsChat() && ViewModel.DisplayedMembers.Count == 0) Tabs.Items.Remove(ChatMembersTab);
+                // Remove members tab for channels or unavailable chats.
+                if (ViewModel.Id.IsChat() && ViewModel.ChatMembers == null) Tabs.Items.Remove(ChatMembersTab);
             }
         }
 
         private void Tabs_SelectionChanged(object sender, Avalonia.Controls.SelectionChangedEventArgs e) {
             if (Tabs == null) return; // Без этого произойдёт краш при открытии PeerProfile, фиг знает кто вызывает это событие, если Tabs == null...
 
+            TabItem tab = Tabs.SelectedItem as TabItem;
+            if (tab == null || tab.Tag == null) return;
+            int.TryParse(tab.Tag.ToString(), out int id);
+
             new System.Action(async () => {
-                switch (Tabs.SelectedIndex) {
+                switch (id) {
                     case 1:
                         if (ViewModel.Photos.Items.Count == 0 && !ViewModel.Photos.End) await ViewModel.LoadPhotosAsync();
                         break;

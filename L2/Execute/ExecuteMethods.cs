@@ -74,9 +74,8 @@ namespace ELOR.Laney.Execute {
 
         public static async Task<ChatInfoEx> GetChatAsync(this VKAPI API, long chatId, List<string> fields) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
-                { "code", await GetCodeAsync("getChatInfoWithMembers") },
-                { "chat_id", chatId.ToString() },
-                { "fields", string.Join(",", fields) }
+                { "code", await GetCodeAsync("getChatInfo") },
+                { "chat_id", chatId.ToString() }
             };
             return await API.CallMethodAsync<ChatInfoEx>("execute", parameters, L2JsonSerializerContext.Default);
         }

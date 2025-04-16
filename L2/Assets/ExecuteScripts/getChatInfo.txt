@@ -1,10 +1,5 @@
 var cid = Args.chat_id;
-var f = Args.fields;
 var peerid = 2000000000 + parseInt(cid);
-
-if (!f) {
-  f = "online_info,sex,photo_100";
-}
 
 var resp = {};
 var msgr = API.messages.getConversationsById({"peer_ids": peerid, "extended":"1"});
@@ -57,26 +52,7 @@ resp.state = msgr.items[0].chat_settings.state;
 resp.permissions = msgr.items[0].chat_settings.permissions;
 resp.writing_disabled = msgr.items[0].chat_settings.writing_disabled;
 
-if(!resp.is_channel && resp.state == "in") {
-    memr = API.messages.getConversationMembers({"peer_id": peerid, "fields": f, "extended": "1"});
-}
-
 resp.members_count = msgr.items[0].chat_settings.members_count;
 if (resp.members_count == null) resp.members_count = 0;
-if(memr != null) {
-    resp.members = memr;
-    resp.members_count = memr.count;
-    
-    if (resp.members_count <= 400) {
-      var u = memr.profiles@.online_info;
-      var i = 0;
-      while (i < u.length) {
-        if (u[i].is_online) {
-          resp.online_count = resp.online_count + 1;
-        }
-        i = i + 1;
-      }
-    }
-}
 
 return resp;

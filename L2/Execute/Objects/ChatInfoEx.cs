@@ -73,9 +73,6 @@ namespace ELOR.Laney.Execute.Objects {
         [JsonConverter(typeof(JsonStringEnumConverterEx<UserStateInChat>))]
         public UserStateInChat State { get; set; }
 
-        [JsonPropertyName("members")]
-        public ChatMembersList Members { get; set; }
-
         [JsonPropertyName("pinned_message")]
         public Message PinnedMessage { get; set; }
     }
