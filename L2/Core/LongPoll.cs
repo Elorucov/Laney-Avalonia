@@ -71,7 +71,7 @@ namespace ELOR.Laney.Core {
         #region Events
 
         public delegate void MessageFlagsDelegate(LongPoll longPoll, int messageId, int flags, long peerId);
-        public delegate void MessageReceivedDelegate(LongPoll longPoll, Message message, int flags);
+        public delegate void MessageReceivedDelegate(LongPoll longPoll, Message message, int flags, bool incrementUnreadCounter);
         public delegate void ConversationFlagsDelegate(LongPoll longPoll, long peerId, int flags);
         public delegate void MentionDelegate(LongPoll longPoll, long peerId, int messageId, bool isSelfDestruct);
         public delegate void ReadInfoDelegate(LongPoll longPoll, long peerId, int messageId, int count);
@@ -150,7 +150,7 @@ namespace ELOR.Laney.Core {
                             throw new ArgumentException($"A non-standart response was received!\n{respstr}");
                         }
                     } catch (Exception ex) {
-                        bool isConnectionLost = ExceptionHelper.IsExceptionAboutNoConnection(ex);
+                        bool isConnectionLost = ExceptionHelper.IsExceptionAboutNetworkIssue(ex);
                         Log.Error(ex, $"Exception when parsing LongPoll events! Trying after {WAIT_AFTER_FAIL} sec.");
 
                         if (isConnectionLost) {
@@ -190,7 +190,7 @@ namespace ELOR.Laney.Core {
                         if (response.More) PTS = response.NewPTS;
                         trying = response.More;
                     } catch (Exception ex) {
-                        bool isConnectionLost = ExceptionHelper.IsExceptionAboutNoConnection(ex);
+                        bool isConnectionLost = ExceptionHelper.IsExceptionAboutNetworkIssue(ex);
                         State = isConnectionLost ? LongPollState.NoInternet : LongPollState.Failed;
                         if (isConnectionLost) {
                             Log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
@@ -229,7 +229,7 @@ namespace ELOR.Laney.Core {
                         if (hasMessage) {
                             Message msgFromHistory3 = messages?.SingleOrDefault(m => m.ConversationMessageId == msgId);
                             if (msgFromHistory3 != null) {
-                                MessageReceived?.Invoke(this, msgFromHistory3, flags);
+                                MessageReceived?.Invoke(this, msgFromHistory3, flags, false);
                                 if (u.Count > 6) CheckMentions(u[6], msgFromHistory3.ConversationMessageId, peerId);
                             } else {
                                 MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId, msgId, false));
@@ -252,7 +252,7 @@ namespace ELOR.Laney.Core {
                         if (isDeletedBeforeEvent) break;
                         Message msgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4);
                         if (msgFromHistory != null) {
-                            MessageReceived?.Invoke(this, msgFromHistory, (int)u[2]);
+                            MessageReceived?.Invoke(this, msgFromHistory, (int)u[2], false);
                             minor = msgFromHistory.Id;
                             if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
                         } else {
@@ -260,7 +260,7 @@ namespace ELOR.Laney.Core {
                             Exception ex = null;
                             Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
-                                MessageReceived?.Invoke(this, rmsg, (int)u[2]);
+                                MessageReceived?.Invoke(this, rmsg, (int)u[2], true);
                                 minor = rmsg.Id;
                                 if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
                                 if (isPartial) {
@@ -285,7 +285,7 @@ namespace ELOR.Laney.Core {
                         Message editMsgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == editedMsgId && m.PeerId == peerId5);
                         Log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent2}");
                         if (editMsgFromHistory != null) {
-                            MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2]);
+                            MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2], false);
                             if (u.Count > 6) CheckMentions(u[6], editedMsgId, peerId5);
                         } else {
                             bool contains = MessagesFromAPI.Where(m => m.Item2 == editedMsgId).FirstOrDefault() != null;
@@ -512,9 +512,9 @@ namespace ELOR.Laney.Core {
                         bool isEdited = isEditedCMIDs[$"{msg.PeerId}_{msg.ConversationMessageId}"];
                         Log.Information($"Successfully received message ({msg.PeerId}_{msg.ConversationMessageId}) from API. Is edited: {isEdited}");
                         if (isEdited) {
-                            MessageEdited?.Invoke(this, msg, flag);
+                            MessageEdited?.Invoke(this, msg, flag, false);
                         } else {
-                            MessageReceived?.Invoke(this, msg, flag);
+                            MessageReceived?.Invoke(this, msg, flag, true);
                         }
                     }
                 }

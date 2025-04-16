@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Helpers {
     public static class ExceptionHelper {
-        public static bool IsExceptionAboutNoConnection(Exception ex) {
+        public static bool IsExceptionAboutNetworkIssue(Exception ex) {
+            if (ex is TaskCanceledException) return true; // Host may doesn't send response and HttpClient throws TaskCancelledException.
             HttpRequestException httpex = ex as HttpRequestException;
             if (httpex == null) return false;
             return httpex.InnerException != null &&

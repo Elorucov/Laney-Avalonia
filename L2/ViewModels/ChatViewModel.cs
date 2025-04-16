@@ -696,7 +696,7 @@ namespace ELOR.Laney.ViewModels {
 
         Dictionary<int, bool> pendingMessages = new Dictionary<int, bool>();
 
-        private void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
+        private void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags, bool incrementUnreadCounter) {
             if (message.PeerId != PeerId) return;
             new System.Action(async () => {
                 await Dispatcher.UIThread.InvokeAsync(async () => {
@@ -736,7 +736,7 @@ namespace ELOR.Laney.ViewModels {
 
                     // if (message.Action != null) ParseActionMessage(message.FromId, message.Action, message.Attachments);
                     // if (!flags.HasFlag(65536)) UpdateSortId(SortId.MajorId, msg.Id);
-                    if (msg.SenderId != session.Id) UnreadMessagesCount++;
+                    if (msg.SenderId != session.Id && incrementUnreadCounter) UnreadMessagesCount++;
                     if (canAddToDisplayedMessages) {
                         if (DisplayedMessages == null) {
                             DisplayedMessages = new MessagesCollection(new List<MessageViewModel>() { msg });
@@ -752,7 +752,7 @@ namespace ELOR.Laney.ViewModels {
             })();
         }
 
-        private void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
+        private void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags, bool incrementUnreadCounter) {
             if (PeerId != message.PeerId) return;
             bool isFullReceived = pendingMessages.ContainsKey(message.ConversationMessageId);
 
