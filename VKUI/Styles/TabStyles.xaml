@@ -144,7 +144,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Grid Name="PART_Root" Margin="0" MinHeight="{TemplateBinding MinHeight}">
-          <Border Name="PART_SelectionBorder" IsVisible="False" Margin="0,10" CornerRadius="{TemplateBinding CornerRadius}" Background="{DynamicResource VKModalCardBackgroundBrush}" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" BorderThickness="1" BoxShadow="0 4 8 #0A000000, 0 0 4 #0C000000"/>
+          <Border Name="PART_SelectionBorder" IsVisible="False" Margin="0,10" CornerRadius="{TemplateBinding CornerRadius}" Background="{DynamicResource VKBackgroundContrastBrush}" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" BorderThickness="1" BoxShadow="{StaticResource VKElevation2}"/>
           <ContentPresenter Name="PART_ContentPresenter"
                           Margin="0,10"
                           Padding="{TemplateBinding Padding}"

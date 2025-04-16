@@ -61,6 +61,6 @@ public partial class ReactionsPicker : UserControl {
         Entity entity = b.DataContext as Entity;
         if (entity == null) return;
 
-        if (Convert.ToInt64(selectedReactionId) == entity.Item1) b.Classes.Remove("Tertiary");
+        if (Convert.ToInt64(selectedReactionId) == entity.Id) b.Classes.Remove("Tertiary");
     }
 }

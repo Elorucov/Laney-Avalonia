@@ -110,9 +110,8 @@ public partial class APIConsoleWindow : Window {
                 }
                 Response.Text = "Waiting response from VK...";
 
-                string response = await API.CallMethodAsync(Method.Text, parameters);
-                using var jDoc = JsonDocument.Parse(response);
-                string pretty = JsonSerializer.Serialize(jDoc, new JsonSerializerOptions {
+                using var response = await API.CallMethodAsync(Method.Text, parameters);
+                string pretty = JsonSerializer.Serialize(response, new JsonSerializerOptions {
                     WriteIndented = true,
                     Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, // To decoding cyrillic letters correctly
                     TypeInfoResolver = BuildInJsonContext.Default

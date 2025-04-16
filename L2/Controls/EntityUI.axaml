@@ -9,16 +9,16 @@
              x:Class="ELOR.Laney.Controls.EntityUI">
   <Grid ColumnDefinitions="Auto * Auto" MinHeight="40" Background="Transparent" x:DataType="mdl:Entity">
     <vkui:Avatar Width="40" Height="40" Margin="0,0,12,0" VerticalAlignment="Top"
-                 Initials="{Binding Item3, Converter={StaticResource ic}}"
-                 Background="{Binding Item1, Converter={StaticResource agc}}"
-                 controls:ImageLoader.Image="{Binding Item2}"/>
+                 Initials="{Binding Name, Converter={StaticResource ic}}"
+                 Background="{Binding Id, Converter={StaticResource agc}}"
+                 controls:ImageLoader.Image="{Binding ImageUri}"/>
     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-      <TextBlock Text="{Binding Item3}" Classes="Default" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
-      <!--<TextBlock Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{Binding Item4, Converter={x:Static StringConverters.IsNotNullOrEmpty}, TargetNullValue=False, FallbackValue=False}" Text="{Binding Item4}"/>-->
-      <TextBlock x:Name="Subtitle" Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Item4}"/>
+      <TextBlock Text="{Binding Name}" Classes="Default" FontWeight="Regular" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+      <TextBlock Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" IsVisible="{Binding Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}, TargetNullValue=False, FallbackValue=False}" Text="{Binding Description}"/>
+      <!--<TextBlock x:Name="Subtitle" Classes="Caption1" FontWeight="Regular" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{Binding Description}"/>-->
     </StackPanel>
-    <Button x:Name="CommandButton" Grid.Column="2" Classes="Tertiary" Padding="0" Width="32" Height="32" IsVisible="{Binding Item5, Converter={x:Static ObjectConverters.IsNotNull}}" ToolTip.Tip="{Binding Item5.Label}" Command="{Binding Item5.Action}">
-      <vkui:VKIcon Id="{Binding Item5.IconId}"/>
+    <Button x:Name="CommandButton" Grid.Column="2" Classes="Tertiary" Padding="0" Width="32" Height="32" IsVisible="{Binding Command, Converter={x:Static ObjectConverters.IsNotNull}}" ToolTip.Tip="{Binding Command.Label}" Command="{Binding Command.Action}">
+      <vkui:VKIcon Id="{Binding Command.IconId}"/>
     </Button>
   </Grid>
 </UserControl>

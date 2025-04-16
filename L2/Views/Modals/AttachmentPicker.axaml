@@ -99,7 +99,7 @@
                 </ListBox.ItemsPanel>
               </ListBox>
 
-              <Border MinHeight="32">
+              <Border MinHeight="72">
                 <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Photos.IsLoading}"/>
               </Border>
             </StackPanel>
@@ -139,7 +139,7 @@
 
               <ListBox x:Name="VideosList" Margin="0,6,0,0" ItemsSource="{Binding Videos.Items}" ItemTemplate="{StaticResource VideoTemplate}" SelectionMode="Multiple,Toggle" SelectionChanged="ListSelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
-              <Border MinHeight="32">
+              <Border MinHeight="72">
                 <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Videos.IsLoading}"/>
               </Border>
             </StackPanel>
@@ -178,7 +178,7 @@
             <StackPanel>
               <ListBox x:Name="DocsList" Margin="0,6,0,0" SelectionChanged="ListSelectionChanged" ItemsSource="{Binding Documents.Items}" ItemTemplate="{StaticResource DocTemplate}" SelectionMode="Multiple,Toggle" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
-              <Border MinHeight="32">
+              <Border MinHeight="72">
                 <vkui:Spinner Width="24" Height="24" HorizontalAlignment="Center" IsVisible="{Binding Documents.IsLoading}"/>
               </Border>
             </StackPanel>

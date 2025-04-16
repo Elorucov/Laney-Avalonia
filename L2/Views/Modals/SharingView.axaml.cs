@@ -50,7 +50,7 @@ namespace ELOR.Laney.Views.Modals {
         }
 
         private void ItemClicked(Entity chat) {
-            Close(new Tuple<VKSession, long, long>(CurrentViewModel.Session, chat.Item1, CurrentViewModel.GroupId));
+            Close(new Tuple<VKSession, long, long>(CurrentViewModel.Session, chat.Id, CurrentViewModel.GroupId));
         }
 
         private void OnSearchBoxKeyUp(object sender, KeyEventArgs e) {

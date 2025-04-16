@@ -303,7 +303,7 @@ namespace ELOR.Laney.ViewModels.Controls {
 
         #region LongPoll events
 
-        private void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags) {
+        private void LongPoll_MessageEdited(LongPoll longPoll, Message message, int flags, bool incrementUnreadCounter) {
             bool isCurrentMessage = message.PeerId == PeerId && message.ConversationMessageId == ConversationMessageId;
             if (!isCurrentMessage) return;
 

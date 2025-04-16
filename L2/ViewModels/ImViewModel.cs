@@ -121,7 +121,7 @@ namespace ELOR.Laney.ViewModels {
             })();
         }
 
-        private void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags) {
+        private void LongPoll_MessageReceived(LongPoll longPoll, Message message, int flags, bool incrementUnreadCounter) {
             new System.Action(async () => {
                 await Dispatcher.UIThread.InvokeAsync(() => {
                     var lookup = _chats.Lookup(message.PeerId);

@@ -270,14 +270,14 @@ namespace ELOR.Laney.Core.Network {
 #if RELEASE
             string paramstr = "";
 #else
-            string paramstr = " | ";
+            StringBuilder paramstr = new StringBuilder();
             if (parameters != null) {
+                paramstr.Append(" | ");
                 foreach (var p in parameters) {
-                    if (p.Key == "access_token") continue;
-                    paramstr += $"{p.Key}={p.Value.Replace("\n", "").Replace("\r\n", "")}; ";
+                    string value = p.Value.Replace("\n", "").Replace("\r\n", "");
+                    if (p.Key == "access_token" || p.Key == "code") continue;
+                    paramstr.Append($"{p.Key}={value}; ");
                 }
-            } else {
-                paramstr = String.Empty;
             }
 #endif
 #if !RELEASE

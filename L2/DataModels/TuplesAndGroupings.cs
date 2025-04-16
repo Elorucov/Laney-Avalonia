@@ -20,8 +20,22 @@ namespace ELOR.Laney.DataModels {
         public string Item2 { get { return _item2; } set { _item2 = value; OnPropertyChanged(nameof(Item2)); } }
     }
 
-    public class Entity : Tuple<long, Uri, string, string, Command> {
-        public Entity(long item1, Uri item2, string item3, string item4, Command item5) : base(item1, item2, item3, item4, item5) { }
+    public record Entity {
+        public long Id { get; private set; }
+        public Uri ImageUri { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public List<string> IconIds { get; private set; }
+        public Command Command { get; private set; }
+
+        public Entity(long id, Uri imageUri, string name, string description, Command command) {
+            Id = id;
+            ImageUri = imageUri;
+            Name = name;
+            Description = description;
+            Command = command;
+            IconIds = new List<string>();
+        }
     }
 
     public class ReactionGroup : Tuple<int, int, List<Entity>> {

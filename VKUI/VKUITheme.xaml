@@ -8,7 +8,7 @@
       <BoxShadows x:Key="VKElevation2">0 4 8 #0A000000, 0 0 4 #0F000000</BoxShadows>
       <BoxShadows x:Key="VKElevation3">0 0 2 #14000000, 0 4 16 #14000000</BoxShadows>
       <BoxShadows x:Key="VKElevation4">0 0 8 #1F000000, 0 16 16 #29000000</BoxShadows>
-      
+            
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://VKUI/Appearance/Fonts.xaml"/>
         <ResourceInclude Source="avares://VKUI/Appearance/Palette.xaml"/>

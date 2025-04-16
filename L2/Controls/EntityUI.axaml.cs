@@ -8,8 +8,8 @@ namespace ELOR.Laney.Controls {
         public EntityUI() {
             InitializeComponent();
             Loaded += (a, b) => CommandButton.CommandParameter = CommandButton;
-            PropertyChanged += EntityUI_PropertyChanged;
-            Unloaded += (a, b) => PropertyChanged -= EntityUI_PropertyChanged;
+            // PropertyChanged += EntityUI_PropertyChanged;
+            // Unloaded += (a, b) => PropertyChanged -= EntityUI_PropertyChanged;
         }
 
         public static readonly StyledProperty<Entity> EntityProperty =
@@ -24,8 +24,8 @@ namespace ELOR.Laney.Controls {
         }
 
         // Binding (EntityUI.axaml#17) is not working idk why...
-        private void EntityUI_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
-            if (e.Property == EntityProperty && Entity != null) Subtitle.IsVisible = !String.IsNullOrWhiteSpace(Entity.Item4);
-        }
+        //private void EntityUI_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e) {
+        //    if (e.Property == EntityProperty && Entity != null) Subtitle.IsVisible = !String.IsNullOrWhiteSpace(Entity.Description);
+        //}
     }
 }
