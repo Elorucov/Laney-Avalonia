@@ -366,34 +366,7 @@ namespace ELOR.Laney.Controls {
             }
 
             // Time & indicator class & reactions panel
-            IndicatorContainer.Classes.RemoveAll([INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE]);
-            if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
-                IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
-            } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
-                if (hasReply) {
-                    if (Message.Reactions?.Count > 0) {
-                        IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-                        Grid.SetRow(IndicatorContainer, 2);
-                    } else {
-                        IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
-                    }
-                } else {
-                    IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
-                }
-                IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
-            } else if (uiType == MessageUIType.Complex &&
-                (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
-                Message.ForwardedMessages.Count == 0) {
-                if (Message.Reactions?.Count > 0) {
-                    IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-                    Grid.SetRow(IndicatorContainer, 2);
-                } else {
-                    IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
-                }
-            } else {
-                IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-                if (Message.Reactions?.Count > 0) Grid.SetRow(IndicatorContainer, 2);
-            }
+            UpdateIndicatorsUI(uiType, hasReply);
 
             // UI
             ChangeUI();
@@ -470,6 +443,8 @@ namespace ELOR.Laney.Controls {
             // Avatar visibility
             SenderAvatar.Opacity = Message.IsSenderAvatarVisible ? 1 : 0;
 
+            UpdateIndicatorsUI(Message.UIType, Message.ReplyMessage != null);
+
             // Message state
             var state = Message.State;
             ReadIndicator.IsVisible = !IsOutgoing && state == MessageVMState.Unread;
@@ -538,6 +513,43 @@ namespace ELOR.Laney.Controls {
             ReactionsContainer.Margin = new Thickness(rside, rtop, rcm.Right, rcm.Bottom);
 
             if (Settings.MessageRenderingLogs) Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} ChangeUI completed.");
+        }
+
+        private void UpdateIndicatorsUI(MessageUIType uiType, bool hasReply) {
+            IndicatorContainer.Classes.RemoveAll([INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE]);
+            if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
+                IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
+            } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
+                if (hasReply) {
+                    if (Message.Reactions?.Count > 0) {
+                        IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                        Grid.SetRow(IndicatorContainer, 2);
+                    } else {
+                        IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+                        Grid.SetRow(IndicatorContainer, 0);
+                    }
+                } else {
+                    IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
+                }
+                IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
+            } else if (uiType == MessageUIType.Complex &&
+                (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
+                Message.ForwardedMessages.Count == 0) {
+                if (Message.Reactions?.Count > 0) {
+                    IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                    Grid.SetRow(IndicatorContainer, 2);
+                } else {
+                    IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+                    Grid.SetRow(IndicatorContainer, 0);
+                }
+            } else {
+                IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                if (Message.Reactions?.Count > 0) {
+                    Grid.SetRow(IndicatorContainer, 2);
+                } else {
+                    Grid.SetRow(IndicatorContainer, 0);
+                }
+            }
         }
 
         #region Template events

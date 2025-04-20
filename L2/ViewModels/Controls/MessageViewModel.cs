@@ -268,6 +268,11 @@ namespace ELOR.Laney.ViewModels.Controls {
                 UIType = isAllAttachmentsAreSnippets ? MessageUIType.Standart : MessageUIType.Complex;
             }
 
+            if (Location != null) {
+                UIType = MessageUIType.Complex;
+                return;
+            }
+
             Gift = Attachments.Where(a => a.Type == AttachmentType.Gift).FirstOrDefault()?.Gift;
 
             var images = Attachments

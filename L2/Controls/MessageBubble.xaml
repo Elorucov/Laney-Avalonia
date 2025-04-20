@@ -129,8 +129,8 @@
                 <vkui:VKIcon x:Name="StateIndicator" Id="Icon16CheckDoubleOutline" Width="12" Height="12" Margin="4,0,0,0"/>
               </StackPanel>
             </Border>
-            <controls:BotKeyboardUI x:Name="BotKeyboard" Grid.Row="1" Margin="12,4,12,12" MinWidth="296" Keyboard="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-            <Border x:Name="ReactionsContainer" Grid.Row="2" Margin="12,0,12,8" HorizontalAlignment="Left" Tag="{Binding Message.SelectedReactionId, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Reactions.Count, RelativeSource={RelativeSource TemplatedParent}}">
+            <controls:BotKeyboardUI x:Name="BotKeyboard" Grid.Row="1" Margin="12,4,12,12" MinWidth="296" Keyboard="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Keyboard, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+            <Border x:Name="ReactionsContainer" Grid.Row="2" Margin="12,0,12,8" HorizontalAlignment="Left" Tag="{Binding Message.SelectedReactionId, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Reactions.Count, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
               <ItemsControl x:Name="ReactionsList" HorizontalAlignment="Left" ItemsSource="{Binding Message.Reactions, RelativeSource={RelativeSource TemplatedParent}}">
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>

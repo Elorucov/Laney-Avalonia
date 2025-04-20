@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using ColorTextBlock.Avalonia;
 using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
@@ -40,7 +41,7 @@ namespace ELOR.Laney.Controls {
         Button ReplyMessageButton;
         CompactMessage Reply;
         AttachmentsContainer Attachments;
-        Border Map;
+        Rectangle Map;
         Border ForwardedMessagesContainer;
         StackPanel ForwardedMessagesStack;
 
@@ -54,7 +55,7 @@ namespace ELOR.Laney.Controls {
             ReplyMessageButton = e.NameScope.Find<Button>(nameof(ReplyMessageButton));
             Reply = e.NameScope.Find<CompactMessage>(nameof(Reply));
             Attachments = e.NameScope.Find<AttachmentsContainer>(nameof(Attachments));
-            Map = e.NameScope.Find<Border>(nameof(Map));
+            Map = e.NameScope.Find<Rectangle>(nameof(Map));
             ForwardedMessagesContainer = e.NameScope.Find<Border>(nameof(ForwardedMessagesContainer));
             ForwardedMessagesStack = e.NameScope.Find<StackPanel>(nameof(ForwardedMessagesStack));
 
@@ -77,7 +78,9 @@ namespace ELOR.Laney.Controls {
             if (!isUILoaded) return;
 
             if (change.Property == PostProperty) {
-                if (Post == null) return;
+                if (Post == null) {
+                    ClearUI();
+                }
                 if (Post is Message message) {
                     RenderElement(message);
                 } else if (Post is WallPost post) {
@@ -86,6 +89,21 @@ namespace ELOR.Laney.Controls {
                     throw new ArgumentException($"Post property must be {nameof(WallPost)} or {nameof(Message)}");
                 }
             }
+        }
+
+        private void ClearUI() {
+            Avatar.Initials = null;
+            Avatar.Image = null;
+            Author.Text = null;
+            PostInfo.Text = null;
+            Reply.Message = null;
+            ReplyMessageButton.IsVisible = false;
+            PostText.IsVisible = false;
+            PostText.Content.Clear();
+            Attachments.IsVisible = false;
+            Attachments.Attachments = null;
+            Attachments.Gift = null;
+            Map.IsVisible = false;
         }
 
         private void RenderElement(Message message) {
@@ -103,6 +121,9 @@ namespace ELOR.Laney.Controls {
             if (message.ReplyMessage != null) {
                 Reply.Message = message.ReplyMessage;
                 ReplyMessageButton.IsVisible = true;
+            } else {
+                Reply.Message = null;
+                ReplyMessageButton.IsVisible = false;
             }
 
             TextParser.SetText(message.Text, PostText, OnLinkClicked);
@@ -116,9 +137,7 @@ namespace ELOR.Laney.Controls {
                 Attachments.Attachments = message.Attachments;
             }
 
-            Map.Width = Width - Map.Margin.Left;
-            Map.Height = Map.Width / 2;
-            Map.IsVisible = message.Geo != null;
+            TrySetupMap(message);
 
             ForwardedMessagesStack.Children.Clear();
             ForwardedMessagesContainer.IsVisible = message.ForwardedMessages?.Count > 0;
@@ -150,6 +169,26 @@ namespace ELOR.Laney.Controls {
                     };
                     ForwardedMessagesStack.Children.Add(fwdsButton);
                 }
+            }
+        }
+
+        private void TrySetupMap(Message message) {
+            if (Bounds.Width == 0) {
+                Log.Warning($"PostUI > TrySetupMap: UI is not ready, so its width is 0. Trying in next frame...");
+                var tl = TopLevel.GetTopLevel(this);
+                tl.RequestAnimationFrame((t) => TrySetupMap(message));
+                return;
+            }
+            Log.Warning($"PostUI > TrySetupMap: UI width is {Bounds.Width}.");
+            Map.Width = Bounds.Width - Map.Margin.Left;
+            Map.Height = Map.Width / 2;
+            Map.IsVisible = message.Geo != null;
+            if (message.Geo != null) {
+                var glong = message.Geo.Coordinates.Longitude.ToString().Replace(",", ".");
+                var glat = message.Geo.Coordinates.Latitude.ToString().Replace(",", ".");
+                var w = Math.Ceiling(Map.Width * App.Current.DPI);
+                var h = Math.Ceiling(Map.Height * App.Current.DPI);
+                Map.SetImageFill(new Uri($"https://static-maps.yandex.ru/1.x/?ll={glong},{glat}&size={w},{h}&z=12&lang=ru_RU&l=pmap&pt={glong},{glat},vkbkm"), Map.Width, Map.Height);
             }
         }
 

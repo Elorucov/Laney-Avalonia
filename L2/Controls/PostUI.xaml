@@ -24,9 +24,7 @@
           </Button>
           <ctb:CTextBlock x:Name="PostText" IsVisible="False" FontSize="16" LineHeight="20" Margin="0,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
           <atch:AttachmentsContainer x:Name="Attachments" NoMargins="True" Margin="0,0,0,0" IsVisible="False"/>
-          <Border x:Name="Map" Margin="0,0,0,0" IsVisible="False" Background="#3f7f7f7f" CornerRadius="4">
-            <TextBlock Margin="8" FontStyle="Italic" Text="Map"/>
-          </Border>
+          <Rectangle x:Name="Map" Margin="0,0,0,0" IsVisible="False" RadiusX="4" RadiusY="4"/>
           <Border x:Name="ForwardedMessagesContainer" Margin="0,-4,0,0" IsVisible="False" BorderBrush="{DynamicResource VKImForwardLineTintBrush}" BorderThickness="2,0,0,0">
             <StackPanel x:Name="ForwardedMessagesStack" Margin="8,0,0,0" Spacing="12"/>
           </Border>
