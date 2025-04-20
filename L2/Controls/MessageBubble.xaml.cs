@@ -198,7 +198,7 @@ namespace ELOR.Laney.Controls {
                 case nameof(MessageViewModel.Text):
                     if (isUILoaded && Message.CanShowInUI) {
                         if (Settings.MessageRenderingLogs) Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
-                        SetText(Message.Text);
+                        UpdateText();
                         if (Settings.MessageRenderingLogs) Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
                     }
                     break;
@@ -354,7 +354,7 @@ namespace ELOR.Laney.Controls {
             }
 
             // Text
-            SetText(Message.Text);
+            UpdateText();
 
             // Map
             if (Message.Location != null) {
@@ -387,8 +387,16 @@ namespace ELOR.Laney.Controls {
             ReactionsContainer.Margin = new Thickness(rcm.Left, rcm.Top, indicatorsWidth, rcm.Bottom);
         }
 
+        private void UpdateText() {
+            SetText(Message.UIType == MessageUIType.Empty ? Assets.i18n.Resources.empty_message : Message.Text);
+            if (Message.UIType == MessageUIType.Empty) {
+                MessageText.Classes.Add("Empty");
+            }
+        }
+
         private void SetText(string text) {
             if (Settings.MessageRenderingLogs) Log.Verbose($">>> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} setting text...");
+            MessageText.Classes.Clear();
             TextParser.SetText(text, MessageText, OnLinkClicked);
 
             // Empty space for sent time/status
