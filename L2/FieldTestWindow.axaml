@@ -48,6 +48,47 @@
         </StackPanel>
       </Grid>
 
+      <StackPanel Margin="8,8,0,0" HorizontalAlignment="Left" Spacing="4">
+        <StackPanel Orientation="Horizontal" Spacing="4">
+          <Button VerticalAlignment="Top" Classes="Primary">Primary</Button>
+          <Button VerticalAlignment="Top">Secondary</Button>
+          <Button VerticalAlignment="Top" Classes="Tertiary">Tertiary</Button>
+          <Button VerticalAlignment="Top" Classes="Outline">Outline</Button>
+          <Button VerticalAlignment="Top" Classes="Commerce">Commerce</Button>
+          <Button VerticalAlignment="Top" Classes="Negative">Negative</Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Spacing="4">
+          <Button VerticalAlignment="Top" Classes="Medium Primary">Primary</Button>
+          <Button VerticalAlignment="Top" Classes="Medium">Secondary</Button>
+          <Button VerticalAlignment="Top" Classes="Medium Tertiary">Tertiary</Button>
+          <Button VerticalAlignment="Top" Classes="Medium Outline">Outline</Button>
+          <Button VerticalAlignment="Top" Classes="Medium Commerce">Commerce</Button>
+          <Button VerticalAlignment="Top" Classes="Medium Negative">Negative</Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Spacing="4">
+          <Button VerticalAlignment="Top" Classes="Large Primary">Primary</Button>
+          <Button VerticalAlignment="Top" Classes="Large">Secondary</Button>
+          <Button VerticalAlignment="Top" Classes="Large Tertiary">Tertiary</Button>
+          <Button VerticalAlignment="Top" Classes="Large Outline">Outline</Button>
+          <Button VerticalAlignment="Top" Classes="Large Commerce">Commerce</Button>
+          <Button VerticalAlignment="Top" Classes="Large Negative">Negative</Button>
+        </StackPanel>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Border test"/>
+        <StackPanel Margin="8,0" Orientation="Horizontal" Spacing="4">
+          <Border VerticalAlignment="Top" Background="{DynamicResource VKButtonSecondaryBackgroundBrush}">
+            <TextBlock Classes="Title1" Text="Test"/>
+          </Border>
+          <Border VerticalAlignment="Top" Background="{DynamicResource VKButtonSecondaryBackgroundBrush}" BorderBrush="{DynamicResource VKButtonOutlineBorderBrush}" BorderThickness="4" Margin="-4">
+            <TextBlock Classes="Title1" Text="Test"/>
+          </Border>
+        </StackPanel>
+      </StackPanel>
+
       <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Popup test"/>
         <Button x:Name="PTarget" Margin="8,0" Content="Click me!" Click="Button_Click"/>
