@@ -11,7 +11,7 @@
       <ControlTemplate>
         <Button x:Name="EAButton" Classes="Tertiary" Background="{TemplateBinding Background}" Padding="0" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" HorizontalContentAlignment="Stretch">
           <Grid MinHeight="80" ColumnDefinitions="Auto *">
-            <Border x:Name="PreviewImage" Background="{DynamicResource VKBackgroundHoverBrush}" IsVisible="{Binding Preview, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Top" Width="80" Height="80" CornerRadius="8" Margin="0,0,12,0"/>
+            <Border x:Name="PreviewImage" Background="{DynamicResource VKBackgroundHoverBrush}" IsVisible="{Binding Preview, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Top" Width="80" Height="80" CornerRadius="12" Margin="0,0,12,0"/>
             <StackPanel Grid.Column="1" VerticalAlignment="Top">
               <TextBlock x:Name="EATitle" Classes="Subhead" FontWeight="Medium" Foreground="{DynamicResource VKTextPrimaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap" MaxLines="2" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
               <TextBlock x:Name="EASub" Classes="Subhead" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,1,0,0" MaxLines="1" Text="{Binding Subtitle, RelativeSource={RelativeSource TemplatedParent}}"/>
