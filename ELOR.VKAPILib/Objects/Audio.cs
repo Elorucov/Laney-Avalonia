@@ -1,6 +1,16 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace ELOR.VKAPILib.Objects {
+    public class AudioThumb {
+        public AudioThumb() { }
+
+        [JsonPropertyName("photo_270")]
+        public string Photo270 { get; set; }
+
+        [JsonIgnore]
+        public Uri Uri => Uri.IsWellFormedUriString(Photo270, UriKind.Absolute) ? new Uri(Photo270) : null;
+    }
+
     public class Audio : AttachmentBase {
         public Audio() { }
 
@@ -21,6 +31,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("artist")]
         public string Artist { get; set; }
+
+        [JsonPropertyName("thumb")]
+        public AudioThumb Thumb { get; set; }
 
         [JsonPropertyName("url")]
         public string Url { get; set; }

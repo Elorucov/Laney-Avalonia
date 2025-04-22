@@ -30,6 +30,7 @@ namespace ELOR.Laney.DataModels {
             Duration = TimeSpan.FromSeconds(audio.Duration);
             Source = audio.Uri;
             CoverPlaceholderIconId = VKIconNames.Icon28SongOutline;
+            CoverUrl = audio.Thumb?.Uri;
         }
 
         public AudioPlayerItem(Podcast podcast) {
