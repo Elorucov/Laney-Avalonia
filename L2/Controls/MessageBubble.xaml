@@ -119,7 +119,7 @@
                 </DockPanel>
               </Button>
               <atch:GiftUI x:Name="Gift" Margin="4,4,4,0"/>
-              <ctb:CTextBlock x:Name="MessageText" Margin="12,0,12,8" FontSize="15" LineHeight="20" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Content.Count, RelativeSource={RelativeSource Self}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+              <ctb:CTextBlock x:Name="MessageText" Margin="12,0,12,8" FontSize="15" LineHeight="20" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Content.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource nzc}, ConverterParameter=0}"/>
               <atch:AttachmentsContainer x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
               <Rectangle x:Name="Map" Margin="4,0,4,4" IsVisible="{Binding Message.Location, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" RadiusX="14" RadiusY="14"/>
               <Border x:Name="ForwardedMessagesContainer" Margin="12,0,12,22" IsVisible="False" BorderBrush="{DynamicResource VKImForwardLineTintBrush}">

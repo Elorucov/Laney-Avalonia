@@ -400,10 +400,11 @@ namespace ELOR.Laney.Controls {
             TextParser.SetText(text, MessageText, OnLinkClicked);
 
             // Empty space for sent time/status
-            if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0 && (Message.Reactions == null || Message.Reactions.Count == 0)) {
+            if (MessageText.Content.Count > 0 && Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0 && (Message.Reactions == null || Message.Reactions.Count == 0)) {
                 string editedPlaceholder = Message.EditTime != null ? Assets.i18n.Resources.edited_indicator : "";
                 string favoritePlaceholder = Message.IsImportant ? "W" : "";
                 string outgoingPlaceholder = Message.IsOutgoing ? "WW" : "";
+                if (Message.ConversationMessageId == 3618) Debugger.Break();
                 MessageText.Content.Add(new CRun {
                     Text = $"{favoritePlaceholder}{editedPlaceholder} 22:22{outgoingPlaceholder}",
                     Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),

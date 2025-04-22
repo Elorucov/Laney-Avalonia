@@ -39,6 +39,7 @@
     <conv:DocumentIconConverter x:Key="dic"/>
     <conv:FileSizeConverter x:Key="fsc"/>
     <conv:InitialsConverter x:Key="ic"/>
+    <conv:IsNotZeroConverter x:Key="nzc"/>
     <conv:MessageSenderNameConverter x:Key="msnc"/>
     <conv:MessageInChatConverter x:Key="micc"/>
     <conv:OnlineIconConverter x:Key="oic"/>
