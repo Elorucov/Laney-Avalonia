@@ -277,6 +277,7 @@ namespace ELOR.Laney.Helpers {
             }
 
             bool canShowReaders = message.IsOutgoing && chat.ChatSettings?.State == UserStateInChat.In;
+            bool canShowReactions = totalReactions > 0 && chat.PeerType == PeerType.Chat;
             bool isAdminInChat = false;
             if (chat.ChatSettings?.AdminIDs != null) isAdminInChat = chat.ChatSettings.AdminIDs.Contains(session.Id);
 
@@ -369,8 +370,8 @@ namespace ELOR.Laney.Helpers {
             if (canShowContextMenu) {
                 if (ash.Items.Count > 0) ash.Items.Add(new ActionSheetItem());
                 if (canShowReaders) ash.Items.Add(readers);
-                if (totalReactions > 0) ash.Items.Add(reactions);
-                if (canShowReaders || totalReactions > 0) ash.Items.Add(new ActionSheetItem());
+                if (canShowReactions) ash.Items.Add(reactions);
+                if (canShowReaders || canShowReactions) ash.Items.Add(new ActionSheetItem());
                 if (chat.CanWrite.Allowed) ash.Items.Add(reply);
                 if (canReplyPrivately && chat.PeerType == PeerType.Chat) ash.Items.Add(repriv);
                 ash.Items.Add(forward);
