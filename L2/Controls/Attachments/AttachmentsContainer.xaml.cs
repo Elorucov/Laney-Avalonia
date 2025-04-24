@@ -602,7 +602,7 @@ namespace ELOR.Laney.Controls.Attachments {
 
         private BasicAttachment GetCallInfoControl(Call call) {
             bool isCurrentUserInitiator = call.InitiatorId == VKSession.GetByDataContext(this).UserId;
-            string title = isCurrentUserInitiator ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled;
+            string title = isCurrentUserInitiator ? Assets.i18n.Resources.outgoing_call : Assets.i18n.Resources.incoming_call;
             string subtitle = String.Empty;
 
             if (call.Participants != null) {
@@ -613,7 +613,7 @@ namespace ELOR.Laney.Controls.Attachments {
             switch (call.State) {
                 case "reached": subtitle += call.Duration.ToString(call.Duration.Hours > 0 ? @"h\:mm\:ss" : @"m\:ss"); break;
                 case "canceled_by_receiver": subtitle += isCurrentUserInitiator ? Assets.i18n.Resources.call_declined : Assets.i18n.Resources.call_cancelled; break;
-                case "canceled_by_initiator": subtitle += isCurrentUserInitiator ? Assets.i18n.Resources.disabled : Assets.i18n.Resources.enabled; break;
+                case "canceled_by_initiator": subtitle += isCurrentUserInitiator ? Assets.i18n.Resources.call_cancelled : Assets.i18n.Resources.call_missed; break;
                 default: subtitle += call.State; break;
             }
 

@@ -83,7 +83,7 @@
           <Border VerticalAlignment="Top" Background="{DynamicResource VKButtonSecondaryBackgroundBrush}">
             <TextBlock Classes="Title1" Text="Test"/>
           </Border>
-          <Border VerticalAlignment="Top" Background="{DynamicResource VKButtonSecondaryBackgroundBrush}" BorderBrush="{DynamicResource VKButtonOutlineBorderBrush}" BorderThickness="4" Margin="-4">
+          <Border VerticalAlignment="Top" Background="{DynamicResource VKButtonSecondaryBackgroundBrush}" BorderBrush="{DynamicResource VKButtonOutlineBorderBrush}" BorderThickness="4" Padding="-4">
             <TextBlock Classes="Title1" Text="Test"/>
           </Border>
         </StackPanel>
