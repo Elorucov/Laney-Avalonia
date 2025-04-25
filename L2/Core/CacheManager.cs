@@ -212,6 +212,7 @@ namespace ELOR.Laney.Core {
                 }
             } catch (Exception ex) {
                 Log.Error(ex, $"Error while getting reaction image from {uri}!");
+                return null;
             }
         }
 
