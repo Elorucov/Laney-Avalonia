@@ -80,6 +80,7 @@ namespace ELOR.Laney.Controls {
             if (change.Property == PostProperty) {
                 if (Post == null) {
                     ClearUI();
+                    return;
                 }
                 if (Post is Message message) {
                     RenderElement(message);
