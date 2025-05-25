@@ -3,23 +3,30 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vkui="using:VKUI.Controls"
+        xmlns:labs="using:Avalonia.Labs.Controls"
         xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         xmlns:paz="using:Avalonia.Controls.PanAndZoom"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ELOR.Laney.Views.Media.Gallery"
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Title="{x:Static i18n:Resources.wnd_gallery}" Icon="avares://laney/Assets/Logo/icon.ico">
+
   <Grid RowDefinitions="Auto * Auto Auto">
 
-    <vkui:FlipView x:Name="GalleryItems" Grid.RowSpan="4" SelectionChanged="GalleryItems_SelectionChanged">
-      <vkui:FlipView.ItemTemplate>
+    <labs:FlipView x:Name="GalleryItems" Grid.RowSpan="4" SelectedIndex="0">
+      <labs:FlipView.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </labs:FlipView.ItemsPanel>
+      <labs:FlipView.ItemTemplate>
         <DataTemplate>
           <paz:ZoomBorder HorizontalAlignment="Stretch" VerticalAlignment="Stretch" EnableConstrains="True" MinZoomX="1" MaxZoomX="2" MinZoomY="1" MaxZoomY="2" Loaded="ZoomBorder_Loaded" PropertyChanged="ZoomBorder_PropertyChanged">
             <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" DataContextChanged="ImageDataContextChanged"/>
           </paz:ZoomBorder>
         </DataTemplate>
-      </vkui:FlipView.ItemTemplate>
-    </vkui:FlipView>
+      </labs:FlipView.ItemTemplate>
+    </labs:FlipView>
       
     <Rectangle Grid.Row="2" Grid.RowSpan="2" Margin="0,-32,0,0">
       <Rectangle.Fill>
@@ -33,8 +40,8 @@
     </Rectangle>
   
     <TextBlock x:Name="Description" Grid.Row="2" Margin="12,12,12,0"/>
-    <Grid Grid.Row="3" Margin="12" Height="48" ColumnDefinitions="Auto * Auto">
-      <vkui:Avatar x:Name="OwnerAvatar" IsVisible="False" Width="48" Height="48" Margin="0,0,12,0"/>
+    <Grid x:Name="OwnerInfo" Grid.Row="3" Margin="12" Height="48" ColumnDefinitions="Auto * Auto">
+      <vkui:Avatar x:Name="OwnerAvatar" Width="48" Height="48" Margin="0,0,12,0"/>
       <StackPanel Grid.Column="1" VerticalAlignment="Center">
         <TextBlock x:Name="OwnerName" FontWeight="Medium"/>
         <TextBlock x:Name="Date" Classes="Subhead" Margin="0,2,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
