@@ -44,9 +44,13 @@ namespace ELOR.Laney {
                 .MinimumLevel.Verbose();
 #endif
 
+#if DEBUG
+            loggerConfig.WriteTo.Debug();
+#endif
+
             if (Settings.EnableLogs)
                 loggerConfig = loggerConfig.WriteTo.File(Path.Combine(localDataPath, "logs", $"L2_{DateTimeOffset.Now.ToUnixTimeSeconds()}.log"),
-                    buffered: true, retainedFileCountLimit: 20, flushToDiskInterval: TimeSpan.FromSeconds(20));
+                    buffered: true, retainedFileCountLimit: 10, flushToDiskInterval: TimeSpan.FromSeconds(20));
 
             Log.Logger = loggerConfig.CreateLogger();
             Log.Information("Laney is starting up. Build: {0}, Repo: {1}", App.BuildInfo, App.RepoInfo);

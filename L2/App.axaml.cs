@@ -278,7 +278,9 @@ namespace ELOR.Laney {
             "Avalonia.Labs.Qr",
             "ColorTextBlock.Avalonia by whistyun",
             "LibVLCSharp",
+            "PanAndZoom by Wiesław Šoltés",
             "Serilog",
+            "Svg.Skia by Wiesław Šoltés",
             "Unicode.net",
         };
 

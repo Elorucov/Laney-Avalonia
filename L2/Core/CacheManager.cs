@@ -167,47 +167,52 @@ namespace ELOR.Laney.Core {
         }
 
         public static async Task<SvgImage> GetStaticReactionImageAsync(Uri uri) {
-            if (uri.Scheme == "avares") {
-                using var stream = AssetLoader.Open(uri);
-                using StreamReader reader = new StreamReader(stream);
-                string data = reader.ReadToEnd();
-                return new SvgImage {
-                    Source = SvgSource.LoadFromSvg(data)
-                };
-            }
-            string key = uri.AbsoluteUri;
-            if (!ReactionsAssetData.ContainsKey(key)) {
-                if (nowLoading.ContainsKey(key)) {
-                    var lmres = nowLoading[key];
-                    await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
-                    // lmres.Dispose();
+            try {
+                if (uri.Scheme == "avares") {
+                    using var stream = AssetLoader.Open(uri);
+                    using StreamReader reader = new StreamReader(stream);
+                    string data = reader.ReadToEnd();
+                    return new SvgImage {
+                        Source = SvgSource.LoadFromSvg(data)
+                    };
+                }
+                string key = uri.AbsoluteUri;
+                if (!ReactionsAssetData.ContainsKey(key)) {
+                    if (nowLoading.ContainsKey(key)) {
+                        var lmres = nowLoading[key];
+                        await Task.Factory.StartNew(lmres.Wait).ConfigureAwait(true);
+                        // lmres.Dispose();
+                        return ReactionsAssetData[key];
+                    }
+                    string data = null;
+                    ManualResetEventSlim mres = new ManualResetEventSlim();
+                    bool isAdded = nowLoading.TryAdd(key, mres);
+                    if (!isAdded) Log.Warning($"GetStaticReactionImage: cannot add MRES \"{uri}\"!");
+
+                    using var response = await LNet.GetAsync(uri);
+                    response.EnsureSuccessStatusCode();
+                    data = await response.Content.ReadAsStringAsync();
+                    SvgImage image = new SvgImage {
+                        Source = SvgSource.LoadFromSvg(data)
+                    };
+
+                    if (!ReactionsAssetData.ContainsKey(key)) {
+                        bool isAdded2 = ReactionsAssetData.TryAdd(key, image);
+                        if (!isAdded2) Log.Warning($"GetStaticReactionImage: cannot add svg asset data \"{uri}\"!");
+                    }
+
+                    ManualResetEventSlim outmres = null;
+                    bool isRemoved2 = nowLoading.TryRemove(key, out outmres);
+                    if (!isRemoved2) Log.Warning($"GetStaticReactionImage: cannot remove MRES \"{uri}\"!");
+                    mres.Set();
+                    // mres.Dispose();
+                    return image;
+                } else {
                     return ReactionsAssetData[key];
                 }
-                string data = null;
-                ManualResetEventSlim mres = new ManualResetEventSlim();
-                bool isAdded = nowLoading.TryAdd(key, mres);
-                if (!isAdded) Log.Warning($"GetStaticReactionImage: cannot add MRES \"{uri}\"!");
-
-                using var response = await LNet.GetAsync(uri);
-                response.EnsureSuccessStatusCode();
-                data = await response.Content.ReadAsStringAsync();
-                SvgImage image = new SvgImage {
-                    Source = SvgSource.LoadFromSvg(data)
-                };
-
-                if (!ReactionsAssetData.ContainsKey(key)) {
-                    bool isAdded2 = ReactionsAssetData.TryAdd(key, image);
-                    if (!isAdded2) Log.Warning($"GetStaticReactionImage: cannot add svg asset data \"{uri}\"!");
-                }
-
-                ManualResetEventSlim outmres = null;
-                bool isRemoved2 = nowLoading.TryRemove(key, out outmres);
-                if (!isRemoved2) Log.Warning($"GetStaticReactionImage: cannot remove MRES \"{uri}\"!");
-                mres.Set();
-                // mres.Dispose();
-                return image;
-            } else {
-                return ReactionsAssetData[key];
+            } catch (Exception ex) {
+                Log.Error(ex, $"Error while getting reaction image from {uri}!");
+                return null;
             }
         }
 

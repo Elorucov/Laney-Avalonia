@@ -94,6 +94,11 @@
             <Style Selector="Border.ImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon, Border.ComplexImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
               <Setter Property="Foreground" Value="White"/>
             </Style>
+
+            <!-- Message text -->
+            <Style Selector="ctb|CTextBlock.Empty">
+              <Setter Property="Foreground" Value="{DynamicResource VKTextSecondaryBrush}"/>
+            </Style>
           </Grid.Styles>
         <Button x:Name="AvatarButton" Classes="Tertiary" Padding="0" VerticalAlignment="Bottom" Margin="0,0,8,2" Width="32" Height="32">
             <vkui:Avatar x:Name="SenderAvatar" Foreground="White" Width="32" Height="32"
@@ -114,7 +119,7 @@
                 </DockPanel>
               </Button>
               <atch:GiftUI x:Name="Gift" Margin="4,4,4,0"/>
-              <ctb:CTextBlock x:Name="MessageText" Margin="12,0,12,8" FontSize="15" LineHeight="20" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Message.Text, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+              <ctb:CTextBlock x:Name="MessageText" Margin="12,0,12,8" FontSize="15" LineHeight="20" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}" IsVisible="{Binding Content.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource nzc}, ConverterParameter=0}"/>
               <atch:AttachmentsContainer x:Name="MessageAttachments" IsVisible="{Binding Message.Attachments.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
               <Rectangle x:Name="Map" Margin="4,0,4,4" IsVisible="{Binding Message.Location, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" RadiusX="14" RadiusY="14"/>
               <Border x:Name="ForwardedMessagesContainer" Margin="12,0,12,22" IsVisible="False" BorderBrush="{DynamicResource VKImForwardLineTintBrush}">
@@ -129,8 +134,8 @@
                 <vkui:VKIcon x:Name="StateIndicator" Id="Icon16CheckDoubleOutline" Width="12" Height="12" Margin="4,0,0,0"/>
               </StackPanel>
             </Border>
-            <controls:BotKeyboardUI x:Name="BotKeyboard" Grid.Row="1" Margin="12,4,12,12" MinWidth="296" Keyboard="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-            <Border x:Name="ReactionsContainer" Grid.Row="2" Margin="12,0,12,8" HorizontalAlignment="Left" Tag="{Binding Message.SelectedReactionId, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Reactions.Count, RelativeSource={RelativeSource TemplatedParent}}">
+            <controls:BotKeyboardUI x:Name="BotKeyboard" Grid.Row="1" Margin="12,4,12,12" MinWidth="296" Keyboard="{Binding Message.Keyboard, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Keyboard, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+            <Border x:Name="ReactionsContainer" Grid.Row="2" Margin="12,0,12,8" HorizontalAlignment="Left" Tag="{Binding Message.SelectedReactionId, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding Message.Reactions.Count, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
               <ItemsControl x:Name="ReactionsList" HorizontalAlignment="Left" ItemsSource="{Binding Message.Reactions, RelativeSource={RelativeSource TemplatedParent}}">
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>

@@ -198,7 +198,7 @@ namespace ELOR.Laney.Controls {
                 case nameof(MessageViewModel.Text):
                     if (isUILoaded && Message.CanShowInUI) {
                         if (Settings.MessageRenderingLogs) Log.Verbose($">> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
-                        SetText(Message.Text);
+                        UpdateText();
                         if (Settings.MessageRenderingLogs) Log.Verbose($"<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} Message.Text prop changed.");
                     }
                     break;
@@ -354,7 +354,7 @@ namespace ELOR.Laney.Controls {
             }
 
             // Text
-            SetText(Message.Text);
+            UpdateText();
 
             // Map
             if (Message.Location != null) {
@@ -366,34 +366,7 @@ namespace ELOR.Laney.Controls {
             }
 
             // Time & indicator class & reactions panel
-            IndicatorContainer.Classes.RemoveAll([INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE]);
-            if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
-                IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
-            } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
-                if (hasReply) {
-                    if (Message.Reactions?.Count > 0) {
-                        IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-                        Grid.SetRow(IndicatorContainer, 2);
-                    } else {
-                        IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
-                    }
-                } else {
-                    IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
-                }
-                IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
-            } else if (uiType == MessageUIType.Complex &&
-                (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
-                Message.ForwardedMessages.Count == 0) {
-                if (Message.Reactions?.Count > 0) {
-                    IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-                    Grid.SetRow(IndicatorContainer, 2);
-                } else {
-                    IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
-                }
-            } else {
-                IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
-                if (Message.Reactions?.Count > 0) Grid.SetRow(IndicatorContainer, 2);
-            }
+            UpdateIndicatorsUI(uiType, hasReply);
 
             // UI
             ChangeUI();
@@ -414,15 +387,24 @@ namespace ELOR.Laney.Controls {
             ReactionsContainer.Margin = new Thickness(rcm.Left, rcm.Top, indicatorsWidth, rcm.Bottom);
         }
 
+        private void UpdateText() {
+            SetText(Message.UIType == MessageUIType.Empty ? Assets.i18n.Resources.empty_message : Message.Text);
+            if (Message.UIType == MessageUIType.Empty) {
+                MessageText.Classes.Add("Empty");
+            }
+        }
+
         private void SetText(string text) {
             if (Settings.MessageRenderingLogs) Log.Verbose($">>> MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} setting text...");
+            MessageText.Classes.Clear();
             TextParser.SetText(text, MessageText, OnLinkClicked);
 
             // Empty space for sent time/status
-            if (Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0 && (Message.Reactions == null || Message.Reactions.Count == 0)) {
+            if (MessageText.Content.Count > 0 && Message.Attachments.Count == 0 && Message.ForwardedMessages.Count == 0 && (Message.Reactions == null || Message.Reactions.Count == 0)) {
                 string editedPlaceholder = Message.EditTime != null ? Assets.i18n.Resources.edited_indicator : "";
                 string favoritePlaceholder = Message.IsImportant ? "W" : "";
                 string outgoingPlaceholder = Message.IsOutgoing ? "WW" : "";
+                if (Message.ConversationMessageId == 3618) Debugger.Break();
                 MessageText.Content.Add(new CRun {
                     Text = $"{favoritePlaceholder}{editedPlaceholder} 22:22{outgoingPlaceholder}",
                     Foreground = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
@@ -469,6 +451,8 @@ namespace ELOR.Laney.Controls {
 
             // Avatar visibility
             SenderAvatar.Opacity = Message.IsSenderAvatarVisible ? 1 : 0;
+
+            UpdateIndicatorsUI(Message.UIType, Message.ReplyMessage != null);
 
             // Message state
             var state = Message.State;
@@ -538,6 +522,43 @@ namespace ELOR.Laney.Controls {
             ReactionsContainer.Margin = new Thickness(rside, rtop, rcm.Right, rcm.Bottom);
 
             if (Settings.MessageRenderingLogs) Log.Verbose($"<<< MessageBubble: {Message.PeerId}_{Message.ConversationMessageId} ChangeUI completed.");
+        }
+
+        private void UpdateIndicatorsUI(MessageUIType uiType, bool hasReply) {
+            IndicatorContainer.Classes.RemoveAll([INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE]);
+            if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
+                IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
+            } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
+                if (hasReply) {
+                    if (Message.Reactions?.Count > 0) {
+                        IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                        Grid.SetRow(IndicatorContainer, 2);
+                    } else {
+                        IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+                        Grid.SetRow(IndicatorContainer, 0);
+                    }
+                } else {
+                    IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
+                }
+                IndicatorContainer.Classes.Add(hasReply ? INDICATOR_COMPLEX_IMAGE : INDICATOR_IMAGE);
+            } else if (uiType == MessageUIType.Complex &&
+                (Message.ImagesCount == Message.Attachments.Count || Message.Location != null) &&
+                Message.ForwardedMessages.Count == 0) {
+                if (Message.Reactions?.Count > 0) {
+                    IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                    Grid.SetRow(IndicatorContainer, 2);
+                } else {
+                    IndicatorContainer.Classes.Add(INDICATOR_COMPLEX_IMAGE);
+                    Grid.SetRow(IndicatorContainer, 0);
+                }
+            } else {
+                IndicatorContainer.Classes.Add(INDICATOR_DEFAULT);
+                if (Message.Reactions?.Count > 0) {
+                    Grid.SetRow(IndicatorContainer, 2);
+                } else {
+                    Grid.SetRow(IndicatorContainer, 0);
+                }
+            }
         }
 
         #region Template events

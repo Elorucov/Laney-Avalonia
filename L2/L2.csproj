@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.649</AssemblyVersion>
-    <FileVersion>2.0.649</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.649-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.649-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.649-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.650</AssemblyVersion>
+    <FileVersion>2.0.650</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.650-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.650-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.650-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250330-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -178,25 +178,28 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.0-beta2" />
+    <PackageReference Include="Avalonia" Version="11.3.0" />
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
-    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.0-beta2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0-beta2" />
-    <PackageReference Include="Avalonia.Labs.Lottie" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Labs.Panels" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Labs.Qr" Version="11.2.0" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.7" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.0-beta2" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Labs.Controls" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Labs.Lottie" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Labs.Notifications" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Labs.Panels" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Labs.Qr" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.0" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="DynamicData" Version="9.2.1" />
-    <PackageReference Include="LibVLCSharp" Version="3.9.2" />
-    <PackageReference Include="Serilog" Version="4.2.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="DynamicData" Version="9.3.2" />
+    <PackageReference Include="LibVLCSharp" Version="3.9.3" />
+    <PackageReference Include="PanAndZoom" Version="11.3.0.1" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.1" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="VideoLAN.LibVLC.Mac" Version="3.1.3.1" />

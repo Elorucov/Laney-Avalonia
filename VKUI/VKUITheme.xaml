@@ -19,8 +19,6 @@
         <ResourceInclude Source="avares://VKUI/Controls/Avatar.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/CarouselEx.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/Cell.xaml" />
-        <ResourceInclude Source="avares://VKUI/Controls/FlipViewItem.xaml" />
-        <ResourceInclude Source="avares://VKUI/Controls/FlipView.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/NavigationControl.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/NotificationCard.xaml" />
         <ResourceInclude Source="avares://VKUI/Controls/PanelHeader.xaml" />
@@ -36,11 +34,6 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Styles.Resources>
-
-  <Style Selector="vkui|FlipView > vkui|FlipViewItem">
-    <Setter Property="Width" Value="{Binding $parent.Bounds.Width}"/>
-    <Setter Property="Height" Value="{Binding $parent.Bounds.Height}"/>
-  </Style>
 
   <!-- Segoe UI on Windows and, as I found out recently, SFUI on macOS renders bad on current version of Avalonia (line-height issue).
   That's why we using Roboto on Windows and macOS currently, but by design we need use system font for these OS-->

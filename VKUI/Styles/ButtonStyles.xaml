@@ -3,7 +3,7 @@
         xmlns:vkui="using:VKUI.Controls">
     <Design.PreviewWith>
       <StackPanel Margin="8">
-        <Button Margin="8" Classes="Primary Large" CornerRadius="22" Content="Large"/>
+        <Button Margin="8" Classes="Primary Large" CornerRadius="18" Content="Large"/>
         <Button Margin="8" Classes="Primary Medium" Content="Medium"/>
         <Button Margin="8" Classes="Tertiary" Content="Tertiary"/>
         <Button Margin="8" Classes="Outline" Content="Outline"/>
@@ -19,7 +19,7 @@
           <StackPanel Orientation="Horizontal">
             <TextBlock Classes="ButtonIn" Text="Attach"/>
             <Border Margin="8,0,0,0" MinWidth="16" Height="16" CornerRadius="8" Background="{DynamicResource VKButtonPrimaryForegroundBrush}">
-              <TextBlock Margin="4,0" Classes="Subhead" FontWeight="Medium" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="4"/>
+              <TextBlock Margin="4,0" Classes="Caption1" FontWeight="Medium" TextAlignment="Center" Foreground="{DynamicResource VKButtonPrimaryBackgroundBrush}" Text="4"/>
             </Border>
           </StackPanel>
         </Button>
@@ -34,8 +34,9 @@
     <Setter Property="Cursor" Value="Hand"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="MinHeight" Value="28"/>
-    <Setter Property="Padding" Value="16,6,16,6"/>
+    <Setter Property="Padding" Value="16,5,16,5"/>
     <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="BackgroundSizing" Value="InnerBorderEdge"/>
     <Setter Property="Background" Value="{DynamicResource VKButtonSecondaryBackgroundBrush}"/>
     <Setter Property="Foreground" Value="{DynamicResource VKButtonSecondaryForegroundBrush}"/>
     <Setter Property="FontSize" Value="13"/>
@@ -46,10 +47,12 @@
       <ControlTemplate>
         <Grid x:Name="PART_Root" Cursor="Hand">
           <Border x:Name="PART_Background" Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
+                  CornerRadius="{TemplateBinding CornerRadius}"/>
+          
+          <Border x:Name="PART_Border" BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
                   CornerRadius="{TemplateBinding CornerRadius}"/>
-
+           
           <Border x:Name="PART_Hover" CornerRadius="{TemplateBinding CornerRadius}" IsHitTestVisible="False"/>
           <ContentPresenter x:Name="PART_Presenter"
                           BorderThickness="{TemplateBinding BorderThickness}"

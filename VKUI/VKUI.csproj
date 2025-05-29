@@ -35,8 +35,6 @@
     <None Remove="Controls\Avatar.xaml" />
     <None Remove="Controls\CarouselEx.xaml" />
     <None Remove="Controls\Cell.xaml" />
-    <None Remove="Controls\FlipView.xaml" />
-    <None Remove="Controls\FlipViewItem.xaml" />
     <None Remove="Controls\NavigationControl.xaml" />
     <None Remove="Controls\PanelHeader.xaml" />
     <None Remove="Controls\Placeholder.xaml" />
@@ -81,12 +79,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.0-beta1" />
-    <PackageReference Include="Dotnet.Bundle" Version="*" />
-    <PackageReference Include="Avalonia" Version="11.3.0-beta1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.0-beta1" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.0" />
+    <PackageReference Include="Avalonia" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0-beta1" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="**/*.xaml" />
@@ -133,12 +130,6 @@
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
     <AvaloniaResource Update="Controls\CarouselEx.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </AvaloniaResource>
-    <AvaloniaResource Update="Controls\FlipView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </AvaloniaResource>
-    <AvaloniaResource Update="Controls\FlipViewItem.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
     <AvaloniaResource Update="Controls\NavigationControl.xaml">

@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:ELOR.Laney.Controls.Attachments">
   <Design.PreviewWith>
-    <controls:ExtendedAttachment Width="304" Margin="12" Title="Сито" Subtitle="Набор стикеров" ActionButtonText="Открыть" Preview="https://vk.com/sticker/packs/1621/icon/square_4x.png"/>
+    <controls:ExtendedAttachment Width="304" Margin="12" Title="Сито" Subtitle="Набор стикеров" ActionButtonText="Открыть" Preview="https://vk.com/sticker/packs/10107/icon/square_4x.png"/>
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type controls:ExtendedAttachment}" TargetType="controls:ExtendedAttachment">
@@ -11,11 +11,11 @@
       <ControlTemplate>
         <Button x:Name="EAButton" Classes="Tertiary" Background="{TemplateBinding Background}" Padding="0" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" HorizontalContentAlignment="Stretch">
           <Grid MinHeight="80" ColumnDefinitions="Auto *">
-            <Border x:Name="PreviewImage" Background="{DynamicResource VKBackgroundHoverBrush}" IsVisible="{Binding Preview, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Top" Width="80" Height="80" CornerRadius="14" Margin="0,0,10,0"/>
+            <Border x:Name="PreviewImage" Background="{DynamicResource VKBackgroundHoverBrush}" IsVisible="{Binding Preview, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" VerticalAlignment="Top" Width="80" Height="80" CornerRadius="12" Margin="0,0,12,0"/>
             <StackPanel Grid.Column="1" VerticalAlignment="Top">
-              <TextBlock x:Name="EATitle" Classes="Subhead" FontWeight="Medium" Foreground="{DynamicResource VKTextPrimaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap" MaxLines="2" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
-              <TextBlock x:Name="EASub" Classes="Caption2" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" MaxLines="2" Text="{Binding Subtitle, RelativeSource={RelativeSource TemplatedParent}}"/>
-              <Button x:Name="ActionButton" Classes="Outline" Margin="0,7,0,0" IsVisible="{Binding ActionButtonText, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{Binding ActionButtonText, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock x:Name="EATitle" Classes="Subhead" FontWeight="Medium" Foreground="{DynamicResource VKTextPrimaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap" MaxLines="1" Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <TextBlock x:Name="EASub" Classes="Subhead" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,1,0,0" MaxLines="1" Text="{Binding Subtitle, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <Button x:Name="ActionButton" Classes="Outline" Margin="0,8,0,0" IsVisible="{Binding ActionButtonText, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.IsNotNull}}" Content="{Binding ActionButtonText, RelativeSource={RelativeSource TemplatedParent}}"/>
             </StackPanel>
           </Grid>
         </Button>

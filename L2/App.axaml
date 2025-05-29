@@ -3,6 +3,7 @@
              xmlns:theme="using:Avalonia.Themes.Simple"
              xmlns:ui="using:VKUI"
              xmlns:vkui="using:VKUI.Controls"
+             xmlns:labs="using:Avalonia.Labs.Controls"
              xmlns:conv="using:ELOR.Laney.Converters"
              xmlns:ctb="using:ColorTextBlock.Avalonia"
              x:Class="ELOR.Laney.App">
@@ -29,6 +30,22 @@
         <ResourceInclude Source="/Templates/ItemTemplates.axaml"/>
         <ResourceInclude Source="avares://ToastNotifications.Avalonia/Toast.xaml"/>
       </ResourceDictionary.MergedDictionaries>
+
+      <!-- Resources below required for Avalonia.Labs.FlipView, because it references to Fluent theme's resources, which not used in Laney! -->
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+          <SolidColorBrush x:Key="SystemControlBackgroundBaseLowBrush" Color="{StaticResource VKWhiteColor}"/>
+          <SolidColorBrush x:Key="SystemControlBackgroundChromeWhiteBrush" Color="{StaticResource VKBlue400Color}"/>
+          <SolidColorBrush x:Key="SystemControlForegroundTransparentBrush" Color="Transparent"/>
+          <SolidColorBrush x:Key="SystemControlHighlightTransparentBrush" Color="Transparent"/>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="SystemControlBackgroundBaseLowBrush" Color="{StaticResource VKGray500Color}"/>
+          <SolidColorBrush x:Key="SystemControlBackgroundChromeWhiteBrush" Color="{StaticResource VKGray900Color}"/>
+          <SolidColorBrush x:Key="SystemControlForegroundTransparentBrush" Color="Transparent"/>
+          <SolidColorBrush x:Key="SystemControlHighlightTransparentBrush" Color="Transparent"/>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
     </ResourceDictionary>
 
     <conv:AvatarGradientConverter x:Key="agc"/>
@@ -39,6 +56,7 @@
     <conv:DocumentIconConverter x:Key="dic"/>
     <conv:FileSizeConverter x:Key="fsc"/>
     <conv:InitialsConverter x:Key="ic"/>
+    <conv:IsNotZeroConverter x:Key="nzc"/>
     <conv:MessageSenderNameConverter x:Key="msnc"/>
     <conv:MessageInChatConverter x:Key="micc"/>
     <conv:OnlineIconConverter x:Key="oic"/>
@@ -120,6 +138,7 @@
   </Application.Resources>
   <Application.Styles>
     <theme:SimpleTheme/>
+    <labs:ControlThemes/>
     <ui:VKUITheme/>
     
     <StyleInclude Source="avares://Laney/Styles/ListBoxStyles.axaml"/>
