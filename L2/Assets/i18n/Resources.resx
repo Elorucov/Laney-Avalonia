@@ -412,13 +412,13 @@
     <value>{0} forwarded messages</value>
   </data>
   <data name="forwarded_message_more_nom" xml:space="preserve">
-    <value>{0} more message</value>
+    <value>{0} more message</value>
   </data>
   <data name="forwarded_message_more_gen" xml:space="preserve">
-    <value>{0} more messages</value>
+    <value>{0} more messages</value>
   </data>
   <data name="forwarded_message_more_plu" xml:space="preserve">
-    <value>{0} more messages</value>
+    <value>{0} more messages</value>
   </data>
   <data name="attachment" xml:space="preserve">
     <value>Attachment</value>
@@ -652,16 +652,16 @@
     <value>joined the call via link</value>
   </data>
   <data name="msg_action_style_update_m" xml:space="preserve">
-    <value>changed the chat theme to</value>
+    <value>changed the chat theme to</value>
   </data>
   <data name="msg_action_style_update_f" xml:space="preserve">
-    <value>changed the chat theme to</value>
+    <value>changed the chat theme to</value>
   </data>
   <data name="msg_action_style_reset_m" xml:space="preserve">
-    <value>reset the chat theme</value>
+    <value>reset the chat theme</value>
   </data>
   <data name="msg_action_style_reset_f" xml:space="preserve">
-    <value>reset the chat theme</value>
+    <value>reset the chat theme</value>
   </data>
   <data name="msg_expired" xml:space="preserve">
     <value>Message self-destructed</value>
@@ -883,19 +883,19 @@
     <value>Search members</value>
   </data>
   <data name="pp_attachments_photo" xml:space="preserve">
-    <value>Photos from the chat will be displayed here</value>
+    <value>Photos from the chat will be displayed here</value>
   </data>
   <data name="pp_attachments_video" xml:space="preserve">
-    <value>Videos from the chat will be displayed here</value>
+    <value>Videos from the chat will be displayed here</value>
   </data>
   <data name="pp_attachments_audio" xml:space="preserve">
-    <value>Music from the chat will be displayed here</value>
+    <value>Music from the chat will be displayed here</value>
   </data>
   <data name="pp_attachments_doc" xml:space="preserve">
-    <value>Files from the chat will be displayed here</value>
+    <value>Files from the chat will be displayed here</value>
   </data>
   <data name="pp_attachments_share" xml:space="preserve">
-    <value>Links from the chat will be displayed here</value>
+    <value>Links from the chat will be displayed here</value>
   </data>
   <data name="admin" xml:space="preserve">
     <value>admin</value>
@@ -1042,7 +1042,7 @@
     <value>Name</value>
   </data>
   <data name="chat_creation_name_footnote" xml:space="preserve">
-    <value>Enter a name and upload an optional photo</value>
+    <value>Enter a name and upload an optional photo</value>
   </data>
   <data name="msg_delete_dialog_single_title" xml:space="preserve">
     <value>Delete message</value>
@@ -1139,11 +1139,11 @@
   </data>
   <data name="drop_without_compression_desc" xml:space="preserve">
     <value>Drag and drop files here
-to attach them to the message</value>
+to attach them to the message</value>
   </data>
   <data name="drop_photos_quick" xml:space="preserve">
     <value>Drag and drop photos here
-to attach them to the message</value>
+to attach them to the message</value>
   </data>
   <data name="drop_photos_file" xml:space="preserve">
     <value>Drag and drop photos here
@@ -1151,7 +1151,7 @@ to attach them as files (uncompressed)</value>
   </data>
   <data name="drop_videos_quick" xml:space="preserve">
     <value>Drag and drop videos here
-to attach them to the message</value>
+to attach them to the message</value>
   </data>
   <data name="drop_videos_file" xml:space="preserve">
     <value>Drag and drop videos here
