@@ -16,6 +16,7 @@ namespace ELOR.Laney.Views.Modals {
 
         public SharingView() {
             InitializeComponent();
+            if (!Design.IsDesignMode) throw new ArgumentException();
         }
 
         public SharingView(SharingViewModel user, SharingViewModel group) {

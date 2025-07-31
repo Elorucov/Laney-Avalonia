@@ -97,7 +97,7 @@ namespace ELOR.Laney.Controls {
                     // высота равна приблизительно сохранённому значению, ок, восстановим скролл тогда, мало ли какое-то сообщение поменялось...
                     Debug.WriteLine($"Cannot restore scroll. Height is changed, but STILL WRONG!. Height: {h}; saved height: {scrollInfo.Height}.");
                     //if (h > scrollInfo.Height - 100 && h < scrollInfo.Height + 100) {
-                        
+
                     //} else {
                     //    TopLevel.GetTopLevel(this).RequestAnimationFrame((t) => RestoreScroll(scrollInfo, h));
                     //    return;

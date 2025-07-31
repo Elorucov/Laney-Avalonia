@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using ELOR.Laney.DataModels;
-using System;
 
 namespace ELOR.Laney.Controls {
     public partial class EntityUI : UserControl {

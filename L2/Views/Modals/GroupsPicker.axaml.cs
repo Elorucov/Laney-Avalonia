@@ -1,5 +1,7 @@
+using Avalonia.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.ViewModels.Modals;
+using System;
 using System.Linq;
 using VKUI.Windows;
 
@@ -8,6 +10,7 @@ namespace ELOR.Laney.Views.Modals;
 public partial class GroupsPicker : DialogWindow {
     public GroupsPicker() {
         InitializeComponent();
+        if (!Design.IsDesignMode) throw new ArgumentException();
     }
 
     public GroupsPicker(VKSession session) {

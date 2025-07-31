@@ -4,9 +4,9 @@ using Avalonia.Interactivity;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
-using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.ViewModels.Modals;
 using ELOR.VKAPILib.Objects;
+using System;
 using VKUI.Windows;
 
 namespace ELOR.Laney.Views.Modals {
@@ -17,6 +17,7 @@ namespace ELOR.Laney.Views.Modals {
 
         public SearchInChatWindow() {
             InitializeComponent();
+            if (!Design.IsDesignMode) throw new ArgumentException();
         }
 
         public SearchInChatWindow(VKSession session, long peerId, Window owner) {

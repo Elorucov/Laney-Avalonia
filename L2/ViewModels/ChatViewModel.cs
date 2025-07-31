@@ -6,8 +6,6 @@ using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.DataModels;
-using ELOR.Laney.Execute;
-using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
@@ -940,7 +938,7 @@ namespace ELOR.Laney.ViewModels {
                         case 2: // Обновилась аватарка чата
                         case 4: // Изменились права доступа в чате
                         case 10: // Изменился баннер (будет поддерживаться в будущем)
-                        // case 19: // Начало или окончание звонка
+                                 // case 19: // Начало или окончание звонка
                             await RefreshConvoInfoAsync(convo, type == 4);
                             break;
                         case 3: // Назначен новый администратор

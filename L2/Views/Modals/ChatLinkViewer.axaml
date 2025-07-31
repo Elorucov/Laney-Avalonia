@@ -1,0 +1,29 @@
+<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
+        xmlns:vkw="using:VKUI.Windows"
+        xmlns:vkui="using:VKUI.Controls"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="270"
+        x:Class="ELOR.Laney.ChatLinkViewer"
+        Width="420" SizeToContent="Height"
+        Title="{x:Static i18n:Resources.chatlink_title}"
+        Loaded="GetInviteLinkEvent">
+  <Grid RowDefinitions="Auto Auto Auto">
+    <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="False"/>
+    <StackPanel x:Name="ContentRoot" Margin="24">
+      <TextBlock x:Name="DlgHeader" TextWrapping="Wrap" Classes="Title2" FontWeight="Medium" Margin="0,0,0,8" Text="{x:Static i18n:Resources.chatlink_title}"/>
+      <StackPanel x:Name="ContentArea" Spacing="8">
+        <CheckBox x:Name="ShowMessagesCheck" Click="GetInviteLinkEvent"/>
+        <TextBox x:Name="LinkBox"/>
+        <TextBlock TextWrapping="Wrap" Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Text="{x:Static i18n:Resources.chatlink_invalidation_info}"/>
+      </StackPanel>
+    </StackPanel>
+    <StackPanel x:Name="Buttons" Grid.Row="2" Margin="24,0,24,16" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+      <vkui:Spinner x:Name="LoadingSpinner" IsVisible="False" Width="24" Height="24"/>
+      <!--<Button x:Name="CopyButton" Classes="Medium Primary" Content="{x:Static i18n:Resources.copy}"/>-->
+      <Button x:Name="RefreshButton" Classes="Medium" Content="{x:Static i18n:Resources.chatlink_refresh}" Click="RefreshLink"/>
+    </StackPanel>
+  </Grid>
+</vkw:DialogWindow>

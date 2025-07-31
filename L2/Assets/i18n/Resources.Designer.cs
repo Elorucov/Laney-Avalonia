@@ -511,7 +511,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter a name and upload an optional photo.
+        ///   Looks up a localized string similar to Enter a name and upload an optional photo.
         /// </summary>
         public static string chat_creation_name_footnote {
             get {
@@ -574,6 +574,42 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show last {0} messages.
+        /// </summary>
+        public static string chatinvite_show_n_messages {
+            get {
+                return ResourceManager.GetString("chatinvite_show_n_messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to make the invitation invalid, you can revoke the link by creating a new one..
+        /// </summary>
+        public static string chatlink_invalidation_info {
+            get {
+                return ResourceManager.GetString("chatlink_invalidation_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new.
+        /// </summary>
+        public static string chatlink_refresh {
+            get {
+                return ResourceManager.GetString("chatlink_refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invite link.
+        /// </summary>
+        public static string chatlink_title {
+            get {
+                return ResourceManager.GetString("chatlink_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chats.
         /// </summary>
         public static string chats {
@@ -606,6 +642,15 @@ namespace ELOR.Laney.Assets.i18n {
         public static string commtemplate_greeting {
             get {
                 return ResourceManager.GetString("commtemplate_greeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        public static string copy {
+            get {
+                return ResourceManager.GetString("copy", resourceCulture);
             }
         }
         
@@ -810,7 +855,7 @@ namespace ELOR.Laney.Assets.i18n {
         
         /// <summary>
         ///   Looks up a localized string similar to Drag and drop photos here
-        ///to attach them to the message.
+        ///to attach them to the message.
         /// </summary>
         public static string drop_photos_quick {
             get {
@@ -839,7 +884,7 @@ namespace ELOR.Laney.Assets.i18n {
         
         /// <summary>
         ///   Looks up a localized string similar to Drag and drop videos here
-        ///to attach them to the message.
+        ///to attach them to the message.
         /// </summary>
         public static string drop_videos_quick {
             get {
@@ -858,7 +903,7 @@ namespace ELOR.Laney.Assets.i18n {
         
         /// <summary>
         ///   Looks up a localized string similar to Drag and drop files here
-        ///to attach them to the message.
+        ///to attach them to the message.
         /// </summary>
         public static string drop_without_compression_desc {
             get {
@@ -1101,7 +1146,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} more messages.
+        ///   Looks up a localized string similar to {0} more messages.
         /// </summary>
         public static string forwarded_message_more_gen {
             get {
@@ -1110,7 +1155,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} more message.
+        ///   Looks up a localized string similar to {0} more message.
         /// </summary>
         public static string forwarded_message_more_nom {
             get {
@@ -1119,7 +1164,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} more messages.
+        ///   Looks up a localized string similar to {0} more messages.
         /// </summary>
         public static string forwarded_message_more_plu {
             get {
@@ -2028,7 +2073,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to reset the chat theme.
+        ///   Looks up a localized string similar to reset the chat theme.
         /// </summary>
         public static string msg_action_style_reset_f {
             get {
@@ -2037,7 +2082,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to reset the chat theme.
+        ///   Looks up a localized string similar to reset the chat theme.
         /// </summary>
         public static string msg_action_style_reset_m {
             get {
@@ -2046,7 +2091,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to changed the chat theme to.
+        ///   Looks up a localized string similar to changed the chat theme to.
         /// </summary>
         public static string msg_action_style_update_f {
             get {
@@ -2055,7 +2100,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to changed the chat theme to.
+        ///   Looks up a localized string similar to changed the chat theme to.
         /// </summary>
         public static string msg_action_style_update_m {
             get {
@@ -2487,7 +2532,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Music from the chat will be displayed here.
+        ///   Looks up a localized string similar to Music from the chat will be displayed here.
         /// </summary>
         public static string pp_attachments_audio {
             get {
@@ -2496,7 +2541,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Files from the chat will be displayed here.
+        ///   Looks up a localized string similar to Files from the chat will be displayed here.
         /// </summary>
         public static string pp_attachments_doc {
             get {
@@ -2505,7 +2550,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photos from the chat will be displayed here.
+        ///   Looks up a localized string similar to Photos from the chat will be displayed here.
         /// </summary>
         public static string pp_attachments_photo {
             get {
@@ -2514,7 +2559,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Links from the chat will be displayed here.
+        ///   Looks up a localized string similar to Links from the chat will be displayed here.
         /// </summary>
         public static string pp_attachments_share {
             get {
@@ -2523,7 +2568,7 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Videos from the chat will be displayed here.
+        ///   Looks up a localized string similar to Videos from the chat will be displayed here.
         /// </summary>
         public static string pp_attachments_video {
             get {

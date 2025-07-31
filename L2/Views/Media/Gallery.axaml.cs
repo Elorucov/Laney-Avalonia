@@ -1,11 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.PanAndZoom;
-using Avalonia.Labs.Controls;
 using Avalonia.Styling;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.VKAPILib.Objects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using ELOR.Laney.Controls.Attachments;
 using ELOR.Laney.Core;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
@@ -19,7 +18,10 @@ namespace ELOR.Laney.Views.Modals {
         PeerProfileViewModel ViewModel { get => DataContext as PeerProfileViewModel; }
         VKSession session;
 
-        public PeerProfile() { }
+        public PeerProfile() {
+            InitializeComponent();
+            if (!Design.IsDesignMode) throw new ArgumentException();
+        }
 
         public PeerProfile(VKSession session, long peerId) {
             InitializeComponent();

@@ -614,7 +614,12 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Link
             if (chat.ACL.CanSeeInviteLink) {
-                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
+                var act = new System.Action<object>((o) => {
+                    ChatLinkViewer modal = new ChatLinkViewer(session, Id);
+                    modal.ShowDialog(session.ModalWindow);
+                });
+
+                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, act);
                 commands.Add(chatLinkCmd);
             }
 
