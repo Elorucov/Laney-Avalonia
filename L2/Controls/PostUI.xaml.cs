@@ -8,7 +8,6 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
-using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;

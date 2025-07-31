@@ -20,6 +20,7 @@ public partial class WhoReadMessage : DialogWindow {
 
     public WhoReadMessage() {
         InitializeComponent();
+        if (!Design.IsDesignMode) throw new ArgumentException();
     }
 
     public WhoReadMessage(VKSession session, long peerId, int cmid) {

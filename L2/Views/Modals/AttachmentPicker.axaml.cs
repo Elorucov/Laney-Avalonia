@@ -18,6 +18,7 @@ namespace ELOR.Laney.Views.Modals {
 
         public AttachmentPicker() {
             InitializeComponent();
+            if (!Design.IsDesignMode) throw new ArgumentException();
         }
 
         public AttachmentPicker(VKSession session, int limit, int tab = 0) {

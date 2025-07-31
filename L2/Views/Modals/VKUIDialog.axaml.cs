@@ -17,6 +17,7 @@ namespace ELOR.Laney.Views.Modals {
 
         public VKUIDialog() {
             InitializeComponent();
+            if (!Design.IsDesignMode) throw new ArgumentException();
         }
 
         public VKUIDialog(string header, string text) {
@@ -51,8 +52,7 @@ namespace ELOR.Laney.Views.Modals {
             for (int i = 1; i <= buttons.Length; i++) {
                 Button button = new Button {
                     Tag = i,
-                    Content = buttons[i - 1],
-                    Margin = new Thickness(8, 0, 0, 0)
+                    Content = buttons[i - 1]
                 };
                 button.Classes.Add("Medium");
                 if (i == primaryButton) button.Classes.Add("Primary");

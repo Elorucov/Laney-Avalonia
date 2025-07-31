@@ -424,11 +424,13 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Receives a link to invite a user to the chat.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Peer ID.</param>
+        /// <param name="visibleMessagesCount">Visible messages count.</param>
         /// <param name="reset">true — to generate new link (revoke previous).</param>
-        public async Task<ChatLink> GetInviteLinkAsync(long groupId, long peerId, bool reset = false) {
+        public async Task<ChatLink> GetInviteLinkAsync(long groupId, long peerId, int visibleMessagesCount = 0, bool reset = false) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
+            if (visibleMessagesCount > 0) parameters.Add("visible_messages_count", visibleMessagesCount.ToString());
             if (reset) parameters.Add("reset", "1");
             return await API.CallMethodAsync<ChatLink>("messages.getInviteLink", parameters);
         }

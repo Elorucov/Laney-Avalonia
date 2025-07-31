@@ -6,7 +6,7 @@ namespace ELOR.Laney.DataModels {
     }
 
     public enum LongPollActivityType {
-        Typing = 0, RecordingAudioMessage = 1, 
+        Typing = 0, RecordingAudioMessage = 1,
         UploadingPhoto = 2, UploadingVideo = 3, UploadingFile = 4, UploadingVideoMessage = 5
     }
 

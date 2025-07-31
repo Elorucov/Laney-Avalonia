@@ -231,6 +231,9 @@
   <data name="go" xml:space="preserve">
     <value>Перейти</value>
   </data>
+  <data name="_continue" xml:space="preserve">
+    <value>Продолжить</value>
+  </data>
   <data name="sign_in_direct" xml:space="preserve">
     <value>Вход по логину и паролю</value>
   </data>
@@ -1265,9 +1268,6 @@
   <data name="views_empty" xml:space="preserve">
     <value>Нет просмотров</value>
   </data>
-  <data name="_continue" xml:space="preserve">
-    <value>Продолжить</value>
-  </data>
   <data name="writing_disabled_for_you" xml:space="preserve">
     <value>Администратор чата запретил вам отправлять сообщения</value>
   </data>
@@ -1279,5 +1279,20 @@
   </data>
   <data name="writing_disabled_for_all_until" xml:space="preserve">
     <value>Администратор чата запретил отправлять сообщения до {0}</value>
+  </data>
+  <data name="chatlink_title" xml:space="preserve">
+    <value>Ссылка на чат</value>
+  </data>
+  <data name="chatlink_invalidation_info" xml:space="preserve">
+    <value>Чтобы приглашение стало недействительным, Вы можете аннулировать ссылку, создав новую.</value>
+  </data>
+  <data name="chatinvite_show_n_messages" xml:space="preserve">
+    <value>Показать последние {0} сообщений</value>
+  </data>
+  <data name="copy" xml:space="preserve">
+    <value>Скопировать</value>
+  </data>
+  <data name="chatlink_refresh" xml:space="preserve">
+    <value>Создать новую</value>
   </data>
 </root>

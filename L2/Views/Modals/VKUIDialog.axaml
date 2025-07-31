@@ -12,10 +12,10 @@
   <Grid RowDefinitions="Auto Auto Auto">
     <vkui:WindowTitleBar x:Name="TitleBar" CanShowTitle="False" CanMove="False"/>
     <StackPanel x:Name="ContentRoot" Margin="24">
-      <TextBlock x:Name="DlgHeader" TextWrapping="Wrap" Classes="Headline" FontWeight="Medium" Margin="0,0,0,8"/>
+      <TextBlock x:Name="DlgHeader" TextWrapping="Wrap" Classes="Title2" FontWeight="Medium" Margin="0,0,0,8"/>
       <TextBlock x:Name="DlgText" IsVisible="False" TextWrapping="Wrap" Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
       <ContentPresenter x:Name="ContentArea" Margin="0,8,0,0" IsVisible="False"/>
     </StackPanel>
-    <StackPanel x:Name="Buttons" Grid.Row="2" Margin="24,0,24,16" Orientation="Horizontal" HorizontalAlignment="Right"/>
+    <StackPanel x:Name="Buttons" Grid.Row="2" Margin="24,0,24,16" Spacing="8" Orientation="Horizontal" HorizontalAlignment="Right"/>
   </Grid>
 </vkw:DialogWindow>

@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
-using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.ViewModels.Modals;
 using ELOR.VKAPILib.Objects;
 using System;
@@ -15,6 +14,7 @@ namespace ELOR.Laney.Views.Modals {
     public partial class ImportantMessages : DialogWindow {
         public ImportantMessages() {
             InitializeComponent();
+            if (!Design.IsDesignMode) throw new ArgumentException();
         }
 
         private ImportantMessagesViewModel ViewModel { get { return DataContext as ImportantMessagesViewModel; } }

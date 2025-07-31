@@ -21,7 +21,7 @@ public partial class ReactedMembers : DialogWindow {
 
     public ReactedMembers() {
         InitializeComponent();
-        // throw new System.Exception();
+        if (!Design.IsDesignMode) throw new ArgumentException();
     }
 
     public ReactedMembers(VKSession session, long peerId, int cmid) {

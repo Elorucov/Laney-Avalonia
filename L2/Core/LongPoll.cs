@@ -450,7 +450,7 @@ namespace ELOR.Laney.Core {
             long peerId = u[1];
             long cmidsCount = u[2];
             List<int> cmIds = new List<int>();
-            if (cmidsCount > 0) 
+            if (cmidsCount > 0)
                 foreach (var cmid in u.Skip(3)) {
                     cmIds.Add((int)cmid);
                 }

@@ -614,7 +614,12 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Link
             if (chat.ACL.CanSeeInviteLink) {
-                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
+                var act = new System.Action<object>((o) => {
+                    ChatLinkViewer modal = new ChatLinkViewer(session, Id);
+                    modal.ShowDialog(session.ModalWindow);
+                });
+
+                Command chatLinkCmd = new Command(VKIconNames.Icon20LinkCircleOutline, Assets.i18n.Resources.link, false, act);
                 commands.Add(chatLinkCmd);
             }
 
@@ -748,6 +753,18 @@ namespace ELOR.Laney.ViewModels.Modals {
 
         private async Task LoadConvAttachmentsAsync(ConversationAttachmentsTabViewModel ivm, HistoryAttachmentMediaType type) {
             if (ivm.IsLoading || ivm.End) return;
+
+            // Т. к. в пустых чатах, разумеется, нет cmid, то мы не будем отправлять запрос API,
+            // а сразу отобразим плейсхолдер об отсутствующих вложениях.
+            if (_lastCmid == 0) {
+                ivm.Placeholder = new PlaceholderViewModel {
+                    Text = Localizer.Get($"pp_attachments_{type}".ToLower()),
+                    ActionButton = null
+                };
+                ivm.End = true;
+                return;
+            }
+
             ivm.Placeholder = null;
             ivm.IsLoading = true;
             try {

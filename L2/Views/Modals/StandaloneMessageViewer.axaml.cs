@@ -13,7 +13,7 @@ namespace ELOR.Laney;
 public partial class StandaloneMessageViewer : DialogWindow {
     public StandaloneMessageViewer() {
         InitializeComponent();
-        throw new ArgumentNullException("message", "Message not passed!");
+        if (!Design.IsDesignMode) throw new ArgumentException();
     }
 
     public StandaloneMessageViewer(VKSession session, Message message) {

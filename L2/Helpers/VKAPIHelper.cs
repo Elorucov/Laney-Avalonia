@@ -15,7 +15,7 @@ using VKUI.Controls;
 
 namespace ELOR.Laney.Helpers {
     public static class VKAPIHelper {
-        public static readonly List<string> Fields = new List<string>() { 
+        public static readonly List<string> Fields = new List<string>() {
             "photo_200", "photo_100", "photo_50",
             "ban_info", "blacklisted", "blacklisted_by_me", "can_message", "can_write_private_message", "friend_status",
             "is_messages_blocked", "online_info", "domain", "verified", "sex", "activity",
@@ -23,16 +23,16 @@ namespace ELOR.Laney.Helpers {
             "last_name_gen", "last_name_dat", "last_name_acc", "last_name_ins", "last_name_abl", "photo_avg_color"
         };
 
-        public static readonly List<string> UserFields = new List<string>() { 
-            "has_photo", "photo_avg_color", "verified", "sex", 
+        public static readonly List<string> UserFields = new List<string>() {
+            "has_photo", "photo_avg_color", "verified", "sex",
             "bdate", "city", "country", "occupation", "has_photo", "photo_50", "photo_100", "photo_200",
             "online_info", "domain", "has_mobile", "contacts", "site", "universities", "schools", "status", "followers_count", "activities",
             "can_write_private_message", "can_send_friend_request", "is_favorite", "timezone", "screen_name", "maiden_name", "is_friend", "friend_status",
             "career", "blacklisted", "blacklisted_by_me", "first_name_gen", "first_name_acc", "last_name_gen", "last_name_acc"
         };
 
-        public static readonly List<string> GroupFields = new List<string>() { 
-            "has_photo", "photo_avg_color", "name_history", 
+        public static readonly List<string> GroupFields = new List<string>() {
+            "has_photo", "photo_avg_color", "name_history",
             "city", "country", "can_message", "place", "description", "members_count", "activity",
             "status", "verified", "site", "photo_200", "photo_100", "photo_50", "ban_info", "can_message", "is_messages_blocked", "domain"
         };

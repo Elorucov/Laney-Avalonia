@@ -8,7 +8,6 @@ using Avalonia.Styling;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
 using ELOR.Laney.Extensions;
-using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -114,22 +113,12 @@ namespace ELOR.Laney {
 
             LMediaPlayer.InitStaticInstances();
 
-#if RELEASE
-#else
+#if !RELEASE && !DEBUG
             if (IsExpired) {
                 DesktopLifetime.MainWindow = new VKUIDialog(Assets.i18n.Resources.error, "This version is expired!");
                 DesktopLifetime.MainWindow.Closed += (a, b) => Process.GetCurrentProcess().Kill();
                 DesktopLifetime.MainWindow.Show();
             }
-
-            // Checking all avalonia resources.
-            // Надо для сравнения между обычной компиляцией и AOT
-            // var uris = AssetLoader.GetAssets(new Uri("avares://laney/"), new Uri("avares://laney/"));
-            // Log.Information("Found resources:");
-            // foreach (var uri in uris) {
-            //     Log.Information($"> {uri}");
-            // }
-
 #endif
         }
 
@@ -215,7 +204,7 @@ namespace ELOR.Laney {
 
 #if RELEASE
 #else
-        public static DateTime ExpirationDate => BuildTime.Date.AddDays(60);
+        public static DateTime ExpirationDate => BuildTime.Date.AddDays(90);
         public static bool IsExpired => DateTime.Now.Date > ExpirationDate;
 #endif
 
