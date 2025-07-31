@@ -110,12 +110,11 @@ namespace ELOR.Laney {
             string lang = Settings.Get(Settings.LANGUAGE, Constants.DefaultLang);
             Localizer.LoadLanguage(lang);
             Debug.WriteLine("Language loaded!");
-
             LMediaPlayer.InitStaticInstances();
 
 #if !RELEASE && !DEBUG
             if (IsExpired) {
-                DesktopLifetime.MainWindow = new VKUIDialog(Assets.i18n.Resources.error, "This version is expired!");
+                DesktopLifetime.MainWindow = new Views.Modals.VKUIDialog(Assets.i18n.Resources.error, "This version is expired!");
                 DesktopLifetime.MainWindow.Closed += (a, b) => Process.GetCurrentProcess().Kill();
                 DesktopLifetime.MainWindow.Show();
             }
