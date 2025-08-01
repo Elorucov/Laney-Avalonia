@@ -137,7 +137,7 @@
         <TabItem.Header>
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{x:Static i18n:Resources.members}"/>
-            <TextBlock Margin="8,0,0,0" FontWeight="Regular" Text="{Binding MembersCount}" IsVisible="{Binding MembersCount}"/>
+            <TextBlock Margin="8,0,0,0" FontWeight="Regular" Foreground="{DynamicResource VKAccentAlternateBrush}" Text="{Binding MembersCount}" IsVisible="{Binding MembersCount}"/>
           </StackPanel>
         </TabItem.Header>
         <Border DataContext="{Binding ChatMembers}">
