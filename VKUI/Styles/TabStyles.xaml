@@ -25,7 +25,14 @@
             <TabItem Header="Yulia3"/>
           </TabControl>
           <TabControl Classes="Accent" Width="360">
-            <TabItem Header="Anna"/>
+            <TabItem Header="Text in header"/>
+            <TabItem>
+              <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="Text in TextBlock in Header"/>
+                </StackPanel>
+              </TabItem.Header>
+            </TabItem>
           </TabControl>
         </StackPanel>
     </Design.PreviewWith>
@@ -158,15 +165,6 @@
                           Content="{TemplateBinding Header}"
                           ContentTemplate="{TemplateBinding HeaderTemplate}"
                           CornerRadius="{TemplateBinding CornerRadius}">
-            <ContentPresenter.Styles>
-              <Style Selector="TextBlock">
-                <!--<Setter Property="FontFamily" Value="{StaticResource VKSansText}" />-->
-                <Setter Property="FontWeight" Value="Medium" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="LineHeight" Value="18" />
-                <Setter Property="BaselineOffset" Value="18" />
-              </Style>
-            </ContentPresenter.Styles>
           </ContentPresenter>
         </Grid>
       </ControlTemplate>
@@ -196,5 +194,14 @@
   </Style>
   <Style Selector="TabControl.Accent > TabItem:selected:focus:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="{DynamicResource VKBackgroundHoverBrush}" />
+  </Style>
+
+  <!-- Overriding all TextBlock styles inside TabItem header -->
+  <Style Selector="TabControl.Accent > TabItem TextBlock">
+    <!--<Setter Property="FontFamily" Value="{StaticResource VKSansText}" />-->
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="LineHeight" Value="18" />
+    <Setter Property="BaselineOffset" Value="18" />
   </Style>
 </Styles>

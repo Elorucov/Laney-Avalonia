@@ -1298,4 +1298,7 @@ to attach them as files</value>
   <data name="chatlink_refresh" xml:space="preserve">
     <value>Create new</value>
   </data>
+  <data name="unban_date" xml:space="preserve">
+    <value>Unban date</value>
+  </data>
 </root>

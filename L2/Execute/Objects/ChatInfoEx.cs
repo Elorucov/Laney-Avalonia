@@ -36,6 +36,9 @@ namespace ELOR.Laney.Execute.Objects {
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
         [JsonPropertyName("photo")]
         public string Photo { get; set; }
 

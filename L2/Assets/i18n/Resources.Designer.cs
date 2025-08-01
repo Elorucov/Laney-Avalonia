@@ -3270,6 +3270,15 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unban date.
+        /// </summary>
+        public static string unban_date {
+            get {
+                return ResourceManager.GetString("unban_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unblock.
         /// </summary>
         public static string unblock {

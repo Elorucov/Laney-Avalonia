@@ -28,7 +28,7 @@ namespace ELOR.Laney.Helpers {
             "bdate", "city", "country", "occupation", "has_photo", "photo_50", "photo_100", "photo_200",
             "online_info", "domain", "has_mobile", "contacts", "site", "universities", "schools", "status", "followers_count", "activities",
             "can_write_private_message", "can_send_friend_request", "is_favorite", "timezone", "screen_name", "maiden_name", "is_friend", "friend_status",
-            "career", "blacklisted", "blacklisted_by_me", "first_name_gen", "first_name_acc", "last_name_gen", "last_name_acc"
+            "career", "blacklisted", "blacklisted_by_me", "first_name_gen", "first_name_acc", "last_name_gen", "last_name_acc", "owner_state"
         };
 
         public static readonly List<string> GroupFields = new List<string>() {

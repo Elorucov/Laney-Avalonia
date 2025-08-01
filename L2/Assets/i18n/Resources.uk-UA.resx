@@ -1295,4 +1295,7 @@
   <data name="chatlink_refresh" xml:space="preserve">
     <value>Створити нове</value>
   </data>
+  <data name="unban_date" xml:space="preserve">
+    <value>Дата розблокування</value>
+  </data>
 </root>

@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using VKUI.Controls;
 using VKUI.Popups;
@@ -74,6 +75,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         private string _header;
         private string _subhead;
         private Uri _avatar;
+        private int _membersCount;
         private ObservableCollection<TwoStringTuple> _information = new ObservableCollection<TwoStringTuple>();
         private ChatMembersTabViewModel _chatMembers;
 
@@ -94,6 +96,7 @@ namespace ELOR.Laney.ViewModels.Modals {
         public string Header { get { return _header; } private set { _header = value; OnPropertyChanged(); } }
         public string Subhead { get { return _subhead; } private set { _subhead = value; OnPropertyChanged(); } }
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
+        public int MembersCount { get { return _membersCount; } private set { _membersCount = value; OnPropertyChanged(); } }
         public ObservableCollection<TwoStringTuple> Information { get { return _information; } private set { _information = value; OnPropertyChanged(); } }
         public ChatMembersTabViewModel ChatMembers { get { return _chatMembers; } private set { _chatMembers = value; OnPropertyChanged(); } }
 
@@ -166,7 +169,13 @@ namespace ELOR.Laney.ViewModels.Modals {
         private void SetupInfo(UserEx user) {
             Information.Clear();
 
-            Information.Add(new TwoStringTuple(VKIconNames.Icon20BugOutline, user.Id.ToString()));
+            // Owner state (по умолчанию возвращается у забаненных юзеров, но мб и в других случаях, хз)
+            if (user.OwnerState != null) {
+                StringBuilder sb = new StringBuilder();
+                if (!string.IsNullOrEmpty(user.OwnerState.Description)) sb.AppendLine(user.OwnerState.Description);
+                if (user.OwnerState.UnbanDate > 0) sb.AppendLine($"{Assets.i18n.Resources.unban_date}: {DateTimeOffset.FromUnixTimeSeconds(user.OwnerState.UnbanDate).DateTime.ToHumanizedString()}");
+                Information.Add(new TwoStringTuple(VKIconNames.Icon20InfoCircleOutline, sb.ToString().Trim()));
+            }
 
             // Banned/deleted/blocked...
             if (user.Blacklisted == 1) {
@@ -213,6 +222,8 @@ namespace ELOR.Laney.ViewModels.Modals {
             // Followers
             if (user.Followers > 0)
                 Information.Add(new TwoStringTuple(VKIconNames.Icon20FollowersOutline, Localizer.GetDeclensionFormatted(user.Followers, "follower")));
+
+            Information.Add(new TwoStringTuple(VKIconNames.Icon20BugOutline, user.Id.ToString()));
         }
 
         private void SetupCommands(UserEx user) {
@@ -455,9 +466,17 @@ namespace ELOR.Laney.ViewModels.Modals {
                 if (chat.PhotoUri != null) Avatar = chat.PhotoUri;
 
                 if (chat.State == UserStateInChat.In) {
-                    Subhead = String.Empty;
-                    if (chat.IsCasperChat) Subhead = $"{Assets.i18n.Resources.casper_chat.ToLowerInvariant()}, ";
-                    Subhead += Localizer.GetDeclensionFormatted(chat.MembersCount, "members_sub");
+                    MembersCount = chat.MembersCount;
+                    Subhead = string.Empty;
+
+                    if (string.IsNullOrEmpty(chat.Description)) {
+                        StringBuilder sb = new StringBuilder();
+                        if (chat.IsCasperChat) sb.Append($"{Assets.i18n.Resources.casper_chat.ToLowerInvariant()}, ");
+                        sb.Append(Localizer.GetDeclensionFormatted(chat.MembersCount, "members_sub"));
+                        Subhead = sb.ToString();
+                    } else {
+                        Subhead = chat.Description;
+                    }
                 } else {
                     Subhead = chat.State == UserStateInChat.Left ? Assets.i18n.Resources.chat_left : Assets.i18n.Resources.chat_kicked.ToLowerInvariant();
                 }
