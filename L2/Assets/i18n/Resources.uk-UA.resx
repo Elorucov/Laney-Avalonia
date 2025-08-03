@@ -1298,4 +1298,55 @@
   <data name="unban_date" xml:space="preserve">
     <value>Дата розблокування</value>
   </data>
+  <data name="chat_permission_key_invite" xml:space="preserve">
+    <value>Хто може запрошувати учасників до чату</value>
+  </data>
+  <data name="chat_permission_key_change_info" xml:space="preserve">
+    <value>Хто може редагувати інформацію чату</value>
+  </data>
+  <data name="chat_permission_key_change_pin" xml:space="preserve">
+    <value>Хто може змінювати закріплене повідомлення</value>
+  </data>
+  <data name="chat_permission_key_use_mass_mentions" xml:space="preserve">
+    <value>Хто може надсилати масові згадки</value>
+  </data>
+  <data name="chat_permission_key_see_invite_link" xml:space="preserve">
+    <value>Хто може бачити посилання на чат</value>
+  </data>
+  <data name="chat_permission_key_call" xml:space="preserve">
+    <value>Хто може починати групові дзвінки</value>
+  </data>
+  <data name="chat_permission_key_change_admins" xml:space="preserve">
+    <value>Хто може призначати адміністраторів</value>
+  </data>
+  <data name="chat_permission_key_change_style" xml:space="preserve">
+    <value>Хто може змінювати оформлення чату</value>
+  </data>
+  <data name="chat_permission_value_owner_and_admins" xml:space="preserve">
+    <value>Організатор і адміністратори</value>
+  </data>
+  <data name="chat_permission_value_owner" xml:space="preserve">
+    <value>Лише організатор</value>
+  </data>
+  <data name="chat_permission_value_all" xml:space="preserve">
+    <value>Всі</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Назва</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Опис</value>
+  </data>
+  <data name="chat_editor" xml:space="preserve">
+    <value>Редагування чату</value>
+  </data>
+  <data name="chat_editor_change_photo" xml:space="preserve">
+    <value>Оновити фото</value>
+  </data>
+  <data name="chat_editor_generate_photo" xml:space="preserve">
+    <value>Створити із стікерів</value>
+  </data>
+  <data name="chat_editor_delete_photo" xml:space="preserve">
+    <value>Видалити фото</value>
+  </data>
 </root>

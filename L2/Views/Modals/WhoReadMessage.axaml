@@ -12,7 +12,7 @@
         xmlns:dm="using:ELOR.Laney.DataModels"
         mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="576"
         Width="360" Height="540"
-        x:Class="ELOR.Laney.WhoReadMessage"
+        x:Class="ELOR.Laney.Views.Modals.WhoReadMessage"
         Title="{x:Static i18n:Resources.views}">
   <Grid RowDefinitions="Auto Auto *">
     <vkui:WindowTitleBar x:Name="TitleBar" CanMove="False"/>

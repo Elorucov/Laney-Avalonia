@@ -7,6 +7,7 @@ using ELOR.Laney.Execute;
 using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
+using ELOR.Laney.Views.Modals;
 using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using Serilog;
@@ -467,16 +468,7 @@ namespace ELOR.Laney.ViewModels.Modals {
 
                 if (chat.State == UserStateInChat.In) {
                     MembersCount = chat.MembersCount;
-                    Subhead = string.Empty;
-
-                    if (string.IsNullOrEmpty(chat.Description)) {
-                        StringBuilder sb = new StringBuilder();
-                        if (chat.IsCasperChat) sb.Append($"{Assets.i18n.Resources.casper_chat.ToLowerInvariant()}, ");
-                        sb.Append(Localizer.GetDeclensionFormatted(chat.MembersCount, "members_sub"));
-                        Subhead = sb.ToString();
-                    } else {
-                        Subhead = chat.Description;
-                    }
+                    SetDescriprion(chat);
                 } else {
                     Subhead = chat.State == UserStateInChat.Left ? Assets.i18n.Resources.chat_left : Assets.i18n.Resources.chat_kicked.ToLowerInvariant();
                 }
@@ -493,6 +485,19 @@ namespace ELOR.Laney.ViewModels.Modals {
                 Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await GetChatAsync(peerId));
             } finally {
                 IsLoading = false;
+            }
+        }
+
+        private void SetDescriprion(ChatInfoEx chat) {
+            Subhead = string.Empty;
+
+            if (string.IsNullOrEmpty(chat.Description)) {
+                StringBuilder sb = new StringBuilder();
+                if (chat.IsCasperChat) sb.Append($"{Assets.i18n.Resources.casper_chat.ToLowerInvariant()}, ");
+                sb.Append(Localizer.GetDeclensionFormatted(chat.MembersCount, "members_sub"));
+                Subhead = sb.ToString();
+            } else {
+                Subhead = chat.Description;
             }
         }
 
@@ -615,7 +620,25 @@ namespace ELOR.Laney.ViewModels.Modals {
 
             // Edit
             if (chat.ACL.CanChangeInfo) {
-                Command editCmd = new Command(VKIconNames.Icon20WriteOutline, Assets.i18n.Resources.edit, false, (a) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
+                var act = new Action<object>(async (o) => {
+                    ChatEditor modal = new ChatEditor(session, chat.ChatId, chat.Name, chat.Description, chat.Photo, chat.Permissions);
+                    var result = await modal.ShowDialog<ChatEditorResult>(session.ModalWindow);
+                    if (result != null) {
+                        // фото меняется сразу, а не при нажатии на кнопку "save" в ChatEditor, 
+                        // и это приводит к тому, что закрытие CE крестиком не обновит фото в PeerProfile,
+                        // т. е. не прилетит в result. Поэтому у CE есть свойство Photo, где хранится актуальное фото
+                        chat.Name = result.Name;
+                        chat.Description = result.Description;
+                        chat.Photo = modal.Photo;
+                        chat.Permissions = result.Permissions;
+
+                        Header = chat.Name;
+                        if (chat.PhotoUri != null) Avatar = chat.PhotoUri;
+                        SetDescriprion(chat);
+                    }
+                });
+
+                Command editCmd = new Command(VKIconNames.Icon20WriteOutline, Assets.i18n.Resources.edit, false, act);
                 commands.Add(editCmd);
             }
 

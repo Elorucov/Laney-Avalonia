@@ -28,7 +28,7 @@ namespace ELOR.Laney.Execute.Objects {
         public ChatInfoEx() { }
 
         [JsonPropertyName("chat_id")]
-        public long ChatId { get; set; }
+        public int ChatId { get; set; }
 
         [JsonPropertyName("peer_id")]
         public long PeerId { get; set; }
@@ -70,7 +70,7 @@ namespace ELOR.Laney.Execute.Objects {
         public ChatACL ACL { get; set; }
 
         [JsonPropertyName("permissions")]
-        public ChatPermissions Permissions { get; set; }
+        public Dictionary<string, string> Permissions { get; set; }
 
         [JsonPropertyName("state")]
         [JsonConverter(typeof(JsonStringEnumConverterEx<UserStateInChat>))]

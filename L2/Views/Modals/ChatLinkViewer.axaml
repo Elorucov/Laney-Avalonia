@@ -6,7 +6,7 @@
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
         mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="270"
-        x:Class="ELOR.Laney.ChatLinkViewer"
+        x:Class="ELOR.Laney.Views.Modals.ChatLinkViewer"
         Width="420" SizeToContent="Height"
         Title="{x:Static i18n:Resources.chatlink_title}"
         Loaded="GetInviteLinkEvent">

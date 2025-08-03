@@ -1301,4 +1301,55 @@ to attach them as files</value>
   <data name="unban_date" xml:space="preserve">
     <value>Unban date</value>
   </data>
+  <data name="chat_permission_key_invite" xml:space="preserve">
+    <value>Who can invite members to the chat</value>
+  </data>
+  <data name="chat_permission_key_change_info" xml:space="preserve">
+    <value>Who can edit chat information</value>
+  </data>
+  <data name="chat_permission_key_change_pin" xml:space="preserve">
+    <value>Who can change the pinned message</value>
+  </data>
+  <data name="chat_permission_key_use_mass_mentions" xml:space="preserve">
+    <value>Who can send mass mentions</value>
+  </data>
+  <data name="chat_permission_key_see_invite_link" xml:space="preserve">
+    <value>Who can see the chat invite link</value>
+  </data>
+  <data name="chat_permission_key_call" xml:space="preserve">
+    <value>Who can start group calls</value>
+  </data>
+  <data name="chat_permission_key_change_admins" xml:space="preserve">
+    <value>Who can add administrators</value>
+  </data>
+  <data name="chat_permission_key_change_style" xml:space="preserve">
+    <value>Who can change the chat theme</value>
+  </data>
+  <data name="chat_permission_value_owner_and_admins" xml:space="preserve">
+    <value>Owner and administrators</value>
+  </data>
+  <data name="chat_permission_value_owner" xml:space="preserve">
+    <value>Owner only</value>
+  </data>
+  <data name="chat_permission_value_all" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="chat_editor" xml:space="preserve">
+    <value>Edit chat</value>
+  </data>
+  <data name="chat_editor_change_photo" xml:space="preserve">
+    <value>Change photo</value>
+  </data>
+  <data name="chat_editor_generate_photo" xml:space="preserve">
+    <value>Create from stickers</value>
+  </data>
+  <data name="chat_editor_delete_photo" xml:space="preserve">
+    <value>Remove photo</value>
+  </data>
 </root>

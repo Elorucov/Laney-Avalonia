@@ -9,6 +9,8 @@ using ELOR.Laney.Views.Modals;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using VKUI.Controls;
+using VKUI.Popups;
 
 namespace ELOR.Laney {
     public partial class FieldTestWindow : Window {
@@ -156,6 +158,23 @@ namespace ELOR.Laney {
 
         private void Button_Click(object? sender, RoutedEventArgs e) {
             PTest.IsOpen = true;
+        }
+
+        private void ActionSheetTest(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+            ActionSheet ash = new ActionSheet();
+            ash.Items.Add(new ActionSheetItem() {
+                Header = "Item 1",
+                Before = new VKIcon { Id = VKIconNames.Icon20FavoriteOutline }
+            });
+            ash.Items.Add(new ActionSheetItem() {
+                Header = "Item 2"
+            });
+            ash.Items.Add(new ActionSheetItem());
+            ash.Items.Add(new ActionSheetItem() {
+                Header = "Checked",
+                Before = new VKIcon { Id = VKIconNames.Icon20Check }
+            });
+            ash.ShowAt(sender as Button);
         }
     }
 }

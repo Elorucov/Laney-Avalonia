@@ -8,7 +8,7 @@
         xmlns:vkui="using:VKUI.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Width="512" Height="640" MaxHeight="640"
-        x:Class="ELOR.Laney.StandaloneMessageViewer"
+        x:Class="ELOR.Laney.Views.Modals.StandaloneMessageViewer"
         Title="{x:Static i18n:Resources.message}">
   <Grid RowDefinitions="Auto *">
     <ScrollViewer x:Name="ScrollRoot" Grid.Row="1">

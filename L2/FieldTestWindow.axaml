@@ -78,6 +78,27 @@
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Flyouts"/>
+        <StackPanel Margin="8,0" Orientation="Horizontal" Spacing="4">
+          <Button Content="ActionSheet (legacy)" Click="ActionSheetTest"/>
+          <Button Content="MenuFlyout">
+            <Button.Flyout>
+              <MenuFlyout>
+                <MenuItem Header="Simple"/>
+                <MenuItem Header="Cascade">
+                  <MenuItem Header="Simple"/>
+                  <MenuItem Header="Simple"/>
+                </MenuItem>
+                <MenuItem Header="Simple"/>
+                <Separator/>
+                <MenuItem Icon="{x:Static controls:VKIconNames.Icon20BugOutline}" Header="Simple"/>
+              </MenuFlyout>
+            </Button.Flyout>
+          </Button>
+        </StackPanel>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0" HorizontalAlignment="Left">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Border test"/>
         <StackPanel Margin="8,0" Orientation="Horizontal" Spacing="4">
           <Border VerticalAlignment="Top" Background="{DynamicResource VKButtonSecondaryBackgroundBrush}">

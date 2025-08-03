@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VKUI.Windows;
 
-namespace ELOR.Laney;
+namespace ELOR.Laney.Views.Modals;
 
 public partial class ReactedMembers : DialogWindow {
     long peerId;

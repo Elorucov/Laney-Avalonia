@@ -60,17 +60,18 @@ namespace VKUI.Controls {
 
             isTemplateLoaded = true;
             Root.Click += HandleClick;
-            DetachedFromVisualTree += ActionSheetItem_DetachedFromVisualTree;
+            // Unloaded += ActionSheetItem_Unloaded;
 
             SetBeforeContent(Before, BeforeContainer);
             CheckVisibility(Header, HeaderText);
             CheckVisibility(Subtitle, SubtitleText);
         }
 
-        private void ActionSheetItem_DetachedFromVisualTree(object? sender, VisualTreeAttachmentEventArgs e) {
-            Root.Click -= HandleClick;
-            DetachedFromVisualTree -= ActionSheetItem_DetachedFromVisualTree;
-        }
+        // After opening ActionSheet 2-nd time, HandleClick not working because Unloaded called after hiding AS 1-st time.
+        //private void ActionSheetItem_Unloaded(object sender, RoutedEventArgs e) {
+        //    Root.Click -= HandleClick;
+        //    Unloaded -= ActionSheetItem_Unloaded;
+        //}
 
         private void HandleClick(object? sender, RoutedEventArgs e) {
             Click?.Invoke(this, e);

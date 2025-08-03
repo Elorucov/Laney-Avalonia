@@ -10,9 +10,9 @@
         xmlns:vko="using:ELOR.VKAPILib.Objects"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
-        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="640"
+        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="700"
         x:Class="ELOR.Laney.Views.Modals.PeerProfile" x:DataType="vm:PeerProfileViewModel"
-        Width="540" Height="640"
+        Width="540" Height="700"
         Title="{x:Static i18n:Resources.wnd_peerprofile}">
 
   <vkw:DialogWindow.Resources>
