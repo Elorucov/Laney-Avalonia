@@ -1,16 +1,23 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Localization;
+using ELOR.Laney.Core.Network;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
+using ELOR.VKAPILib.Objects;
+using ELOR.VKAPILib.Objects.Messages;
+using ELOR.VKAPILib.Objects.Upload;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 using VKUI.Controls;
 using VKUI.Popups;
 using VKUI.Windows;
@@ -32,8 +39,10 @@ public partial class ChatEditor : DialogWindow {
     private readonly int _chatId;
     private readonly string _name;
     private readonly string _description;
-    private readonly string _photo;
+    private string _photo;
     private readonly Dictionary<string, string> _permissions;
+
+    private Exception _uploaderException;
 
     // Нужно, т. к. фото меняется сразу, без закрытия окна нажатием на "save", 
     // а тот кто открыл это окно должен узнать актуальное фото, даже если юзер сменил фото и закрыл окно нажатием на крестик
@@ -138,30 +147,89 @@ public partial class ChatEditor : DialogWindow {
             Before = new VKIcon { Id = VKIconNames.Icon20WriteOutline },
             Header = Assets.i18n.Resources.chat_editor_change_photo
         };
-        change.Click += ShowUCModal;
+        change.Click += ShowFilePicker;
 
-        ActionSheetItem generate = new ActionSheetItem {
-            Before = new VKIcon { Id = VKIconNames.Icon20Stars },
-            Header = Assets.i18n.Resources.chat_editor_generate_photo
-        };
-        generate.Click += ShowUCModal;
+        //ActionSheetItem generate = new ActionSheetItem {
+        //    Before = new VKIcon { Id = VKIconNames.Icon20Stars },
+        //    Header = Assets.i18n.Resources.chat_editor_generate_photo
+        //};
+        //generate.Click += ShowUCModal;
 
         ActionSheetItem delete = new ActionSheetItem {
             Before = new VKIcon { Id = VKIconNames.Icon20DeleteOutline },
             Header = Assets.i18n.Resources.chat_editor_delete_photo
         };
         delete.Classes.Add("Destructive");
-        delete.Click += ShowUCModal;
+        delete.Click += DeleteChatPhoto;
 
-        ash.Items.Add(change);
-        ash.Items.Add(generate);
+        // // сообщество может обновить фото только с помощью токена сообщества, у метода photos.getChatUploadServer нет параметра group_id.
+        if (!_session.IsGroup) {
+            ash.Items.Add(change);
+            // ash.Items.Add(generate);
+        }
         ash.Items.Add(delete);
 
         ash.ShowAt(sender as Button);
     }
 
-    private void ShowUCModal(object sender, RoutedEventArgs e) {
-        ExceptionHelper.ShowNotImplementedDialog(this);
+    private void ShowFilePicker(object sender, RoutedEventArgs e) {
+        new System.Action(async () => {
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                AllowMultiple = false,
+                FileTypeFilter = new List<FilePickerFileType> { FilePickerFileTypes.ImageAll }
+            });
+
+            if (files.Count > 0) {
+                await ChangePhotoAsync(files[0]);
+            }
+        })();
+    }
+
+    private async Task ChangePhotoAsync(IStorageFile file) {
+        VKUIWaitDialog<SetChatPhotoResponse> wd = new VKUIWaitDialog<SetChatPhotoResponse>();
+        try {
+            var response = await wd.ShowAsync(this, ChangePhotoInternalAsync(file));
+            _photo = response.Chat.Photo;
+            if (!string.IsNullOrEmpty(_photo) && Uri.IsWellFormedUriString(_photo, UriKind.Absolute))
+                ChatAvatar.SetImage(new Uri(_photo));
+        } catch (Exception ex) {
+            if (await ExceptionHelper.ShowErrorDialogAsync(this, ex)) await ChangePhotoAsync(file);
+        }
+    }
+
+    private async Task<SetChatPhotoResponse> ChangePhotoInternalAsync(IStorageFile file) {
+        var server = await _session.API.Photos.GetChatUploadServerAsync(_chatId);
+        Log.Information("{0}: got upload server: {1}", nameof(ChatEditor), server.Uri);
+
+        var uploader = new VKHttpClientFileUploader("file", server.Uri, file);
+        uploader.UploadFailed += Uploader_UploadFailed;
+
+        var uploaderResponse = await uploader.UploadAsync();
+        if (uploaderResponse == null) throw _uploaderException ?? new ArgumentNullException("Uploaded without errors, but server returns no response!");
+        Log.Information("{0}: response from upload server: {1}", nameof(ChatEditor), uploaderResponse);
+
+        JsonNode uploaderResponseJson = JsonNode.Parse(uploaderResponse);
+        if (uploaderResponseJson["response"] == null) throw new ApplicationException("Server doesn't return success result!");
+
+        return await _session.API.Messages.SetChatPhotoAsync(uploaderResponseJson["response"].GetValue<string>());
+    }
+
+    private void Uploader_UploadFailed(object sender, Exception e) {
+        _uploaderException = e;
+        Log.Error(e, "{0}: an error occurred while uploading a new chat photo for chat {1}", nameof(ChatEditor), _chatId);
+    }
+
+    private void DeleteChatPhoto(object sender, RoutedEventArgs e) {
+        new System.Action(async () => {
+            VKUIWaitDialog<SetChatPhotoResponse> wd = new VKUIWaitDialog<SetChatPhotoResponse>();
+            try {
+                var response = await wd.ShowAsync(this, _session.API.Messages.DeleteChatPhotoAsync(_session.GroupId, _chatId));
+                _photo = null;
+                ChatAvatar.Image = null;
+            } catch (Exception ex) {
+                if (await ExceptionHelper.ShowErrorDialogAsync(this, ex)) DeleteChatPhoto(sender, e);
+            }
+        })();
     }
 
     private void OnSaveClick(object? sender, RoutedEventArgs e) {
@@ -171,7 +239,7 @@ public partial class ChatEditor : DialogWindow {
             return;
         }
 
-        new Action(async () => {
+        new System.Action(async () => {
             Button button = sender as Button;
             string newName = ChatName.Text;
             string newDesc = ChatDescription.Text;

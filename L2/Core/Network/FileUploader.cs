@@ -62,16 +62,12 @@ namespace ELOR.Laney.Core.Network {
                             Log.Information($"VKHttpClientFileUploader: Starting upload file \"{_file.Name}\" to \"{_uploadUri.ToString()}\"");
                             HttpResponseMessage response = await httpClient.SendAsync(hrm, HttpCompletionOption.ResponseContentRead);
 
-                            Log.Information($"VKHttpClientFileUploader: response encoding: {response.Content.Headers.ContentType.CharSet}");
-                            if (response.Content.Headers.ContentType.CharSet == "windows-1251") {
-                                string responseString = null;
-                                using (var sr = new StreamReader(await response.Content.ReadAsStreamAsync(), Encoding.UTF8)) {
-                                    responseString = sr.ReadToEnd();
-                                }
-                                return responseString;
-                            } else {
-                                return await response.Content.ReadAsStringAsync();
+                            Log.Information($"VKHttpClientFileUploader: response encoding: {response.Content.Headers.ContentType?.CharSet ?? "N/A"}");
+                            string responseString = null;
+                            using (var sr = new StreamReader(await response.Content.ReadAsStreamAsync(), Encoding.UTF8)) {
+                                responseString = sr.ReadToEnd();
                             }
+                            return responseString;
                         }
                     }
                 }

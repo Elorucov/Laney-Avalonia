@@ -623,17 +623,19 @@ namespace ELOR.Laney.ViewModels.Modals {
                 var act = new Action<object>(async (o) => {
                     ChatEditor modal = new ChatEditor(session, chat.ChatId, chat.Name, chat.Description, chat.Photo, chat.Permissions);
                     var result = await modal.ShowDialog<ChatEditorResult>(session.ModalWindow);
+
+                    // фото меняется сразу, а не при нажатии на кнопку "save" в ChatEditor, 
+                    // и это приводит к тому, что закрытие CE крестиком не обновит фото в PeerProfile,
+                    // т. е. не прилетит в result. Поэтому у CE есть свойство Photo, где хранится актуальное фото
+                    chat.Photo = modal.Photo;
+
                     if (result != null) {
-                        // фото меняется сразу, а не при нажатии на кнопку "save" в ChatEditor, 
-                        // и это приводит к тому, что закрытие CE крестиком не обновит фото в PeerProfile,
-                        // т. е. не прилетит в result. Поэтому у CE есть свойство Photo, где хранится актуальное фото
                         chat.Name = result.Name;
                         chat.Description = result.Description;
-                        chat.Photo = modal.Photo;
                         chat.Permissions = result.Permissions;
 
                         Header = chat.Name;
-                        if (chat.PhotoUri != null) Avatar = chat.PhotoUri;
+                        Avatar = chat.PhotoUri != null ? chat.PhotoUri : null;
                         SetDescriprion(chat);
                     }
                 });

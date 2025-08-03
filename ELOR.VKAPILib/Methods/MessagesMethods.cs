@@ -157,7 +157,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Deletes a chat's cover picture.</summary>
         /// <param name="groupId">Group ID.</param>
         /// <param name="chatId">Chat ID.</param>
-        public async Task<SetChatPhotoResponse> DeleteChatPhotoAsync(long groupId, long chatId) {
+        public async Task<SetChatPhotoResponse> DeleteChatPhotoAsync(long groupId, int chatId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("chat_id", chatId.ToString());
