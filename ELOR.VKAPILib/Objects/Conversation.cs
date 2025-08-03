@@ -177,41 +177,41 @@ namespace ELOR.VKAPILib.Objects {
         public bool CanSendReactions { get; set; }
     }
 
-    public class ChatPermissions {
-        public ChatPermissions() { }
+    //public class ChatPermissions {
+    //    public ChatPermissions() { }
 
-        [JsonPropertyName("invite")]
-        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
-        public ChatSettingsChangers Invite { get; set; }
+    //    [JsonPropertyName("invite")]
+    //    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+    //    public ChatSettingsChangers Invite { get; set; }
 
-        [JsonPropertyName("change_info")]
-        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
-        public ChatSettingsChangers ChangeInfo { get; set; }
+    //    [JsonPropertyName("change_info")]
+    //    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+    //    public ChatSettingsChangers ChangeInfo { get; set; }
 
-        [JsonPropertyName("change_pin")]
-        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
-        public ChatSettingsChangers ChangePin { get; set; }
+    //    [JsonPropertyName("change_pin")]
+    //    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+    //    public ChatSettingsChangers ChangePin { get; set; }
 
-        [JsonPropertyName("use_mass_mentions")]
-        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
-        public ChatSettingsChangers UseMassMentions { get; set; }
+    //    [JsonPropertyName("use_mass_mentions")]
+    //    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+    //    public ChatSettingsChangers UseMassMentions { get; set; }
 
-        [JsonPropertyName("see_invite_link")]
-        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
-        public ChatSettingsChangers SeeInviteLink { get; set; }
+    //    [JsonPropertyName("see_invite_link")]
+    //    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+    //    public ChatSettingsChangers SeeInviteLink { get; set; }
 
-        [JsonPropertyName("call")]
-        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
-        public ChatSettingsChangers Call { get; set; }
+    //    [JsonPropertyName("call")]
+    //    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+    //    public ChatSettingsChangers Call { get; set; }
 
-        [JsonPropertyName("change_admins")]
-        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
-        public ChatSettingsChangers ChangeAdmins { get; set; }
+    //    [JsonPropertyName("change_admins")]
+    //    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+    //    public ChatSettingsChangers ChangeAdmins { get; set; }
 
-        [JsonPropertyName("change_style")]
-        [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
-        public ChatSettingsChangers ChangeStyle { get; set; }
-    }
+    //    [JsonPropertyName("change_style")]
+    //    [JsonConverter(typeof(JsonStringEnumConverterEx<ChatSettingsChangers>))]
+    //    public ChatSettingsChangers ChangeStyle { get; set; }
+    //}
 
     public class WritingDisabledInfo {
         public WritingDisabledInfo() { }
@@ -258,7 +258,7 @@ namespace ELOR.VKAPILib.Objects {
         public bool IsDisappearing { get; set; }
 
         [JsonPropertyName("permissions")]
-        public ChatPermissions Permissions { get; set; }
+        public Dictionary<string, string> Permissions { get; set; }
 
         [JsonPropertyName("theme")]
         public string Theme { get; set; }

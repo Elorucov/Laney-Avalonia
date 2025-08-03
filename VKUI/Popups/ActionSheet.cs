@@ -24,6 +24,7 @@ namespace VKUI.Popups {
 
         public bool CloseAfterClick { get; set; } = true;
         public Control Above { get; set; }
+        public object Tag { get; set; }
 
         StackPanel itemsPanel;
         private List<Button> itemsButtons = new List<Button>();
@@ -54,7 +55,7 @@ namespace VKUI.Popups {
         protected override void OnOpened() {
             base.OnOpened();
             itemsPanel.FindVisualChildrenByType(itemsButtons);
-            itemsButtons.FirstOrDefault().Focus();
+            itemsButtons.FirstOrDefault()?.Focus();
             itemsPanel.KeyDown += Items_KeyDown;
 
         }

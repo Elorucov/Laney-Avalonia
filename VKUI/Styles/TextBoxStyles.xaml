@@ -1,8 +1,14 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:sys="using:System"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <StackPanel Margin="8">
             <TextBox Margin="8" Watermark="Hello!" Text="Test"/>
+            <TextBox Margin="8" Watermark="Hello!" Text="Invalid">
+              <DataValidationErrors.Error>
+                <sys:ApplicationException/>
+              </DataValidationErrors.Error>
+            </TextBox>
             <TextBox Margin="8" Classes="Search" Watermark="Hello!"/>
             <TextBox Margin="8" Classes="WriteBar" Watermark="Hello!"/>
             <TextBox Margin="8" Classes="Transparent" Watermark="Hello!"/>
@@ -23,6 +29,9 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DataValidationErrors>
+          <DataValidationErrors.ErrorTemplate>
+            <DataTemplate/> <!-- to remove exclamation mark -->
+          </DataValidationErrors.ErrorTemplate>
           <Panel>
             <Border
               Name="PART_BorderElement"
@@ -82,6 +91,11 @@
     
   <Style Selector="TextBox /template/ TextBlock#PART_Watermark">
     <Setter Property="Foreground" Value="{DynamicResource VKFieldTextPlaceholderBrush}" />
+  </Style>
+
+  <Style Selector="TextBox:error /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="{DynamicResource VKFieldErrorBackgroundBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource VKFieldErrorBorderBrush}"/>
   </Style>
     
   <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">

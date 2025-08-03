@@ -10,9 +10,9 @@
         xmlns:vko="using:ELOR.VKAPILib.Objects"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
-        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="640"
+        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="700"
         x:Class="ELOR.Laney.Views.Modals.PeerProfile" x:DataType="vm:PeerProfileViewModel"
-        Width="540" Height="640"
+        Width="540" Height="700"
         Title="{x:Static i18n:Resources.wnd_peerprofile}">
 
   <vkw:DialogWindow.Resources>
@@ -80,7 +80,7 @@
       <vkui:Avatar x:Name="PeerAva" Width="80" Height="80" Margin="0,0,20,0" Initials="{Binding Header, Converter={StaticResource ic}}" Background="{Binding Id, Converter={StaticResource agc}}" controls:ImageLoader.Image="{Binding Avatar}"/>
       <StackPanel Grid.Column="1" VerticalAlignment="Center">
         <TextBlock FontSize="19" LineHeight="23" FontWeight="Medium" TextWrapping="Wrap" MaxLines="2" Margin="0,0,0,8" Text="{Binding Header}"/>
-        <TextBlock Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Subhead}"/>
+        <TextBlock Classes="Subhead" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{Binding Subhead}" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis"/>
       </StackPanel>
     </Grid>
 
@@ -133,7 +133,13 @@
           <ItemsControl Margin="0,-3,0,6" ItemsSource="{Binding Information}" ItemTemplate="{StaticResource PeerInfoTemplate}"/>
         </ScrollViewer>
       </TabItem>
-      <TabItem x:Name="ChatMembersTab" Header="{x:Static i18n:Resources.members}">
+      <TabItem x:Name="ChatMembersTab">
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{x:Static i18n:Resources.members}"/>
+            <TextBlock Margin="8,0,0,0" FontWeight="Regular" Foreground="{DynamicResource VKAccentAlternateBrush}" Text="{Binding MembersCount}" IsVisible="{Binding MembersCount}"/>
+          </StackPanel>
+        </TabItem.Header>
         <Border DataContext="{Binding ChatMembers}">
           <Grid RowDefinitions="Auto *" x:DataType="vm:ChatMembersTabViewModel">
             <TextBox Classes="Search" Margin="12,2,12,0" Text="{Binding SearchQuery}" IsVisible="{Binding SearchAvailable}" Watermark="{x:Static i18n:Resources.pp_search_members}"/>

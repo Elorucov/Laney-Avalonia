@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vkw="using:VKUI.Windows"
         xmlns:vkui="using:VKUI.Controls"
+        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
         mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="80"
         x:Class="ELOR.Laney.Views.Modals.VKUIWaitDialog"
         Width="360" Height="80" WindowStartupLocation="CenterOwner"
@@ -11,6 +12,6 @@
         CanResize="False">
   <Grid Margin="24" ColumnDefinitions="Auto *">
     <vkui:Spinner Width="32" Height="32" Margin="0,0,24,0"/>
-    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Please wait..."/>
+    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Static i18n:Resources.wait}"/>
   </Grid>
 </vkw:DialogWindow>

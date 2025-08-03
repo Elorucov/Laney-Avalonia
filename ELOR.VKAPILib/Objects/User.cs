@@ -133,6 +133,16 @@ namespace ELOR.VKAPILib.Objects {
         public string Name { get; set; }
     }
 
+    public class UserOwnerState {
+        public UserOwnerState() { }
+
+        [JsonPropertyName("unban_date")]
+        public long UnbanDate { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+    }
+
     public class User {
         public User() { }
 
@@ -269,5 +279,8 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("verified")]
         public int Verified { get; set; }
+
+        [JsonPropertyName("owner_state")]
+        public UserOwnerState OwnerState { get; set; }
     }
 }

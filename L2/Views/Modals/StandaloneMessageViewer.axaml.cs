@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using VKUI.Windows;
 
-namespace ELOR.Laney;
+namespace ELOR.Laney.Views.Modals;
 
 public partial class StandaloneMessageViewer : DialogWindow {
     public StandaloneMessageViewer() {

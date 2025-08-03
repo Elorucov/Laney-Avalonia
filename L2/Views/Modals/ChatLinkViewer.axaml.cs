@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 using VKUI.Windows;
 
-namespace ELOR.Laney;
+namespace ELOR.Laney.Views.Modals;
 
 public partial class ChatLinkViewer : DialogWindow {
     public ChatLinkViewer() {
@@ -38,7 +38,7 @@ public partial class ChatLinkViewer : DialogWindow {
         SetIsLoading(true);
 
         try {
-            var response = await _session.API.Messages.GetInviteLinkAsync(_session.GroupId, _peerId, 
+            var response = await _session.API.Messages.GetInviteLinkAsync(_session.GroupId, _peerId,
                 ShowMessagesCheck.IsChecked == true ? Constants.DefaultVisibleMessagesCount : 0, reset);
 
             LinkBox.Text = response.Link;

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
@@ -36,14 +37,14 @@ namespace ELOR.Laney.ViewModels {
         public RelayCommand CreateCommand { get { return _createCommand; } private set { _createCommand = value; OnPropertyChanged(); } }
 
         // private StorageFile ChatPhoto;
-        public ObservableCollection<User> Friends = new ObservableCollection<User>();
-        private ChatPermissions Permissions;
-        private VKSession session;
-        private System.Action GoToBackAction;
+        public readonly ObservableCollection<User> _friends = new ObservableCollection<User>();
+        private readonly Dictionary<string, string> _permissions;
+        private readonly VKSession _session;
+        private readonly System.Action _goToBackAction;
 
         public ChatCreationViewModel(VKSession session, System.Action goToBackAction) {
-            GoToBackAction = goToBackAction;
-            this.session = session;
+            _goToBackAction = goToBackAction;
+            _session = session;
             ChatPhotoSetCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
             CustomizeChatSettingsCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
             CreateCommand = new RelayCommand(async (o) => await CreateChatAsync());
@@ -63,13 +64,13 @@ namespace ELOR.Laney.ViewModels {
             if (IsLoading) return;
             IsLoading = true;
             Placeholder = null;
-            Friends.Clear();
+            _friends.Clear();
             GroupedFriends = null;
 
             try {
-                var response = await session.API.Friends.GetAsync(VKAPIHelper.UserFields, order: FriendsOrder.Name);
+                var response = await _session.API.Friends.GetAsync(VKAPIHelper.UserFields, order: FriendsOrder.Name);
                 // CacheManager.Add(response.Items);
-                Friends = new ObservableCollection<User>(response.Items);
+                foreach (var item in CollectionsMarshal.AsSpan(response.Items)) _friends.Add(item);
                 GroupFriends();
             } catch (Exception ex) {
                 Placeholder = PlaceholderViewModel.GetForException(ex, async (o) => await LoadFriendsAsync());
@@ -80,7 +81,7 @@ namespace ELOR.Laney.ViewModels {
 
         private void GroupFriends() {
             // TODO: сделать отдельный класс или метод для группировки по алфавиту
-            GroupedFriends = new ObservableCollection<AlphabeticalUsers>(Friends.GroupBy(f =>
+            GroupedFriends = new ObservableCollection<AlphabeticalUsers>(_friends.GroupBy(f =>
                 !String.IsNullOrEmpty(f.FirstName) ? f.FirstName[0].ToString().ToUpper() : "~")
                 .Select(g => new AlphabeticalUsers(g, FriendsSelectionChanged)));
         }
@@ -109,15 +110,15 @@ namespace ELOR.Laney.ViewModels {
         private async Task CreateChatAsync() {
             if (String.IsNullOrEmpty(ChatName) && SelectedFriends.Count == 0) return;
             List<long> userIds = SelectedFriends.Select(u => u.Id).ToList();
-            if (userIds.Count == 0) userIds.Add(session.UserId);
+            if (userIds.Count == 0) userIds.Add(_session.UserId);
 
             VKUIWaitDialog<CreateChatResponse> wd = new VKUIWaitDialog<CreateChatResponse>();
             try {
-                CreateChatResponse response = await wd.ShowAsync(session.ModalWindow, session.API.Messages.CreateChatAsync(0, userIds, ChatName));
-                GoToBackAction?.Invoke();
-                session.GoToChat(2000000000 + response.ChatId);
+                CreateChatResponse response = await wd.ShowAsync(_session.ModalWindow, _session.API.Messages.CreateChatAsync(0, userIds, ChatName));
+                _goToBackAction?.Invoke();
+                _session.GoToChat(2000000000 + response.ChatId);
             } catch (Exception ex) {
-                if (await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex)) await CreateChatAsync();
+                if (await ExceptionHelper.ShowErrorDialogAsync(_session.ModalWindow, ex)) await CreateChatAsync();
             }
         }
     }

@@ -12,7 +12,7 @@
         xmlns:dm="using:ELOR.Laney.DataModels"
         mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="576"
         Width="360" Height="540"
-        x:Class="ELOR.Laney.ReactedMembers"
+        x:Class="ELOR.Laney.Views.Modals.ReactedMembers"
         Title="Reacted members">
 
   <Grid RowDefinitions="Auto Auto *">

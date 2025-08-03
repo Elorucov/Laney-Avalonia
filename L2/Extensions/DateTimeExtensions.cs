@@ -1,5 +1,6 @@
 ﻿using ELOR.Laney.Core.Localization;
 using System;
+using System.Text;
 
 namespace ELOR.Laney.Extensions {
     public static class DateTimeExtensions {
@@ -60,16 +61,16 @@ namespace ELOR.Laney.Extensions {
 
         public static string ToHumanizedString(this DateTime target, bool noAt = false) {
             DateTime current = DateTime.Now;
-            string text = String.Empty;
-            if (current.Date != target.Date) text = target.ToHumanizedDateString() + " ";
-            string at = noAt && text.Length == 0 ? "" : $"{Assets.i18n.Resources.time_at} ";
-            text += $"{at}{target.ToString("H:mm")}";
-            return text;
+            StringBuilder sb = new StringBuilder();
+            if (current.Date != target.Date) sb.Append($"{target.ToHumanizedDateString()} ");
+            string at = noAt && sb.Length == 0 ? "" : $"{Assets.i18n.Resources.time_at} ";
+            sb.Append(at);
+            sb.Append(target.ToString("H:mm"));
+            return sb.ToString();
         }
 
         public static string ToHumanizedTimeOrDateString(this DateTime target) {
             DateTime current = DateTime.Now;
-            string text = String.Empty;
             if (current.Date != target.Date) {
                 return target.ToHumanizedDateString();
             } else {

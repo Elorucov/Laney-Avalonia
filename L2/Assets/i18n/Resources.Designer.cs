@@ -538,6 +538,42 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit chat.
+        /// </summary>
+        public static string chat_editor {
+            get {
+                return ResourceManager.GetString("chat_editor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change photo.
+        /// </summary>
+        public static string chat_editor_change_photo {
+            get {
+                return ResourceManager.GetString("chat_editor_change_photo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove photo.
+        /// </summary>
+        public static string chat_editor_delete_photo {
+            get {
+                return ResourceManager.GetString("chat_editor_delete_photo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create from stickers.
+        /// </summary>
+        public static string chat_editor_generate_photo {
+            get {
+                return ResourceManager.GetString("chat_editor_generate_photo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You were removed from the chat.
         /// </summary>
         public static string chat_kicked {
@@ -570,6 +606,105 @@ namespace ELOR.Laney.Assets.i18n {
         public static string chat_left {
             get {
                 return ResourceManager.GetString("chat_left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who can start group calls.
+        /// </summary>
+        public static string chat_permission_key_call {
+            get {
+                return ResourceManager.GetString("chat_permission_key_call", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who can add administrators.
+        /// </summary>
+        public static string chat_permission_key_change_admins {
+            get {
+                return ResourceManager.GetString("chat_permission_key_change_admins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who can edit chat information.
+        /// </summary>
+        public static string chat_permission_key_change_info {
+            get {
+                return ResourceManager.GetString("chat_permission_key_change_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who can change the pinned message.
+        /// </summary>
+        public static string chat_permission_key_change_pin {
+            get {
+                return ResourceManager.GetString("chat_permission_key_change_pin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who can change the chat theme.
+        /// </summary>
+        public static string chat_permission_key_change_style {
+            get {
+                return ResourceManager.GetString("chat_permission_key_change_style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who can invite members to the chat.
+        /// </summary>
+        public static string chat_permission_key_invite {
+            get {
+                return ResourceManager.GetString("chat_permission_key_invite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who can see the chat invite link.
+        /// </summary>
+        public static string chat_permission_key_see_invite_link {
+            get {
+                return ResourceManager.GetString("chat_permission_key_see_invite_link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who can send mass mentions.
+        /// </summary>
+        public static string chat_permission_key_use_mass_mentions {
+            get {
+                return ResourceManager.GetString("chat_permission_key_use_mass_mentions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string chat_permission_value_all {
+            get {
+                return ResourceManager.GetString("chat_permission_value_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner only.
+        /// </summary>
+        public static string chat_permission_value_owner {
+            get {
+                return ResourceManager.GetString("chat_permission_value_owner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner and administrators.
+        /// </summary>
+        public static string chat_permission_value_owner_and_admins {
+            get {
+                return ResourceManager.GetString("chat_permission_value_owner_and_admins", resourceCulture);
             }
         }
         
@@ -777,6 +912,15 @@ namespace ELOR.Laney.Assets.i18n {
         public static string delete_for_all {
             get {
                 return ResourceManager.GetString("delete_for_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string description {
+            get {
+                return ResourceManager.GetString("description", resourceCulture);
             }
         }
         
@@ -2226,6 +2370,15 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string name {
+            get {
+                return ResourceManager.GetString("name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Narrative.
         /// </summary>
         public static string narrative {
@@ -3266,6 +3419,15 @@ namespace ELOR.Laney.Assets.i18n {
         public static string ugc_sticker {
             get {
                 return ResourceManager.GetString("ugc_sticker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unban date.
+        /// </summary>
+        public static string unban_date {
+            get {
+                return ResourceManager.GetString("unban_date", resourceCulture);
             }
         }
         

@@ -157,7 +157,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Deletes a chat's cover picture.</summary>
         /// <param name="groupId">Group ID.</param>
         /// <param name="chatId">Chat ID.</param>
-        public async Task<SetChatPhotoResponse> DeleteChatPhotoAsync(long groupId, long chatId) {
+        public async Task<SetChatPhotoResponse> DeleteChatPhotoAsync(long groupId, int chatId) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("chat_id", chatId.ToString());
@@ -236,14 +236,16 @@ namespace ELOR.VKAPILib.Methods {
         /// <summary>Edits the title of a chat.</summary>
         /// <param name="chatId">Chat ID.</param>
         /// <param name="title">New title of the chat.</param>
+        /// <param name="description">New description of the chat.</param>
         /// <param name="permissions">Permissions.</param>
-        public async Task<bool> EditChatAsync(long chatId, string title, string permissions = null) {
+        public async Task<bool> EditChatAsync(int chatId, string title = null, string description = null, string permissions = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "chat_id", chatId.ToString() }
             };
             if (!String.IsNullOrEmpty(title)) parameters.Add("title", title);
+            if (!String.IsNullOrEmpty(description)) parameters.Add("description", description);
             if (!String.IsNullOrEmpty(permissions)) parameters.Add("permissions", permissions);
-            return await API.CallMethodAsync<bool>("messages.editChat", parameters);
+            return await API.CallMethodAsync<int>("messages.editChat", parameters) == 1;
         }
 
         /// <remarks>This method is undocumented!</remarks>

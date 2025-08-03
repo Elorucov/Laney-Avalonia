@@ -1295,4 +1295,58 @@
   <data name="chatlink_refresh" xml:space="preserve">
     <value>Создать новую</value>
   </data>
+  <data name="unban_date" xml:space="preserve">
+    <value>Дата разблокировки</value>
+  </data>
+  <data name="chat_permission_key_invite" xml:space="preserve">
+    <value>Кто может приглашать участников в чат</value>
+  </data>
+  <data name="chat_permission_key_change_info" xml:space="preserve">
+    <value>Кто может редактировать информацию чата</value>
+  </data>
+  <data name="chat_permission_key_change_pin" xml:space="preserve">
+    <value>Кто может менять закреплённое сообщение</value>
+  </data>
+  <data name="chat_permission_key_use_mass_mentions" xml:space="preserve">
+    <value>Кто может отправлять массовые упоминания</value>
+  </data>
+  <data name="chat_permission_key_see_invite_link" xml:space="preserve">
+    <value>Кто может видеть ссылку на чат</value>
+  </data>
+  <data name="chat_permission_key_call" xml:space="preserve">
+    <value>Кто может начинать групповые звонки</value>
+  </data>
+  <data name="chat_permission_key_change_admins" xml:space="preserve">
+    <value>Кто может назначать администраторов</value>
+  </data>
+  <data name="chat_permission_key_change_style" xml:space="preserve">
+    <value>Кто может менять оформление чата</value>
+  </data>
+  <data name="chat_permission_value_owner_and_admins" xml:space="preserve">
+    <value>Создатель и администраторы</value>
+  </data>
+  <data name="chat_permission_value_owner" xml:space="preserve">
+    <value>Только создатель</value>
+  </data>
+  <data name="chat_permission_value_all" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="chat_editor" xml:space="preserve">
+    <value>Редактирование чата</value>
+  </data>
+  <data name="chat_editor_change_photo" xml:space="preserve">
+    <value>Обновить фото</value>
+  </data>
+  <data name="chat_editor_generate_photo" xml:space="preserve">
+    <value>Создать из стикеров</value>
+  </data>
+  <data name="chat_editor_delete_photo" xml:space="preserve">
+    <value>Удалить фото</value>
+  </data>
 </root>

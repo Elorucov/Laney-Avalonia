@@ -62,6 +62,15 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<PhotosList>("photos.get", parameters);
         }
 
+        /// <summary>Returns an upload link for chat cover pictures.</summary>
+        /// <param name="chatId">Chat ID.</param>
+        public async Task<VkUploadServer> GetChatUploadServerAsync(int chatId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "chat_id", chatId.ToString() }
+            };
+            return await API.CallMethodAsync<VkUploadServer>("photos.getChatUploadServer", parameters);
+        }
+
         /// <summary>Returns the server address for photo upload in a private message for a user.</summary>
         /// <param name="peerId">Peer ID (for community messages).</param>
         public async Task<PhotoUploadServer> GetMessagesUploadServerAsync(long groupId, long peerId = 0) {

@@ -28,12 +28,10 @@
       </vkui:PanelHeader.RightButtons>
     </vkui:PanelHeader>
     <Grid Grid.Row="1" ColumnDefinitions="Auto *" Margin="6,6,6,7">
-      <Button VerticalAlignment="Top" BorderThickness="1" Background="{DynamicResource VKFieldBackgroundBrush}" BorderBrush="{DynamicResource VKImageBorderBrush}" Margin="6" Padding="0" Width="72" Height="72" CornerRadius="36" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="{Binding ChatPhotoSetCommand}">
-        <Grid>
-          <vkui:VKIcon Foreground="{DynamicResource VKIconTertiaryBrush}" Id="{x:Static vkui:VKIconNames.Icon28CameraAddOutline}"/>
-        </Grid>
+      <Button VerticalAlignment="Top" BorderThickness="1" Background="{DynamicResource VKFieldBackgroundBrush}" BorderBrush="{DynamicResource VKImageBorderBrush}" Margin="6" Padding="0" Width="64" Height="64" CornerRadius="36" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="{Binding ChatPhotoSetCommand}">
+        <vkui:VKIcon Foreground="{DynamicResource VKIconTertiaryBrush}" Id="{x:Static vkui:VKIconNames.Icon28CameraAddOutline}"/>
       </Button>
-      <StackPanel Grid.Column="1" Margin="6">
+      <StackPanel Grid.Column="1" Margin="6,8,6,6">
         <TextBox x:Name="ChatName" Watermark="{x:Static i18n:Resources.chat_creation_name_watermark}" Text="{Binding ChatName, Mode=TwoWay}"/>
         <TextBlock Classes="Caption1" Foreground="{DynamicResource VKTextSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap" Text="{x:Static i18n:Resources.chat_creation_name_footnote}"/>
       </StackPanel>
