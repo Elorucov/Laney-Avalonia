@@ -8,9 +8,7 @@ using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
-using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;
-using ELOR.VKAPILib.Objects.Upload;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -26,7 +24,7 @@ namespace ELOR.Laney.Views.Modals;
 
 public partial class ChatEditor : DialogWindow {
     enum ChatEditorMode {
-        ChatEditor, PermissionEditorForNewChat
+        ChatEditor, PermissionEditor
     }
 
     public ChatEditor() {
@@ -61,8 +59,18 @@ public partial class ChatEditor : DialogWindow {
         Setup();
     }
 
+    public ChatEditor(VKSession session, Dictionary<string, string> permissions) {
+        InitializeComponent();
+        _mode = ChatEditorMode.PermissionEditor;
+        _session = session;
+        _permissions = permissions;
+
+        Setup();
+    }
+
     private void Setup() {
         if (_mode == ChatEditorMode.ChatEditor) {
+            ChatMainInfos.IsVisible = true;
             ChatName.Text = _name;
             ChatDescription.Text = _description;
 
@@ -205,8 +213,8 @@ public partial class ChatEditor : DialogWindow {
         uploader.UploadFailed += Uploader_UploadFailed;
 
         var uploaderResponse = await uploader.UploadAsync();
-        if (uploaderResponse == null) throw _uploaderException ?? new ArgumentNullException("Uploaded without errors, but server returns no response!");
         Log.Information("{0}: response from upload server: {1}", nameof(ChatEditor), uploaderResponse);
+        if (uploaderResponse == null) throw _uploaderException ?? new ArgumentNullException("Uploaded without errors, but server returns no response!");
 
         JsonNode uploaderResponseJson = JsonNode.Parse(uploaderResponse);
         if (uploaderResponseJson["response"] == null) throw new ApplicationException("Server doesn't return success result!");
@@ -233,7 +241,7 @@ public partial class ChatEditor : DialogWindow {
     }
 
     private void OnSaveClick(object? sender, RoutedEventArgs e) {
-        if (string.IsNullOrEmpty(ChatName.Text)) {
+        if (_mode == ChatEditorMode.ChatEditor && string.IsNullOrEmpty(ChatName.Text)) {
             DataValidationErrors.SetError(ChatName, new ApplicationException("Required"));
             ChatName.Focus();
             return;

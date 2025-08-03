@@ -4,6 +4,7 @@ using ELOR.Laney.Core;
 using ELOR.Laney.DataModels;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
+using ELOR.VKAPILib;
 using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using System;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.ViewModels {
@@ -36,9 +38,19 @@ namespace ELOR.Laney.ViewModels {
         public RelayCommand CustomizeChatSettingsCommand { get { return _customizeChatSettingsCommand; } private set { _customizeChatSettingsCommand = value; OnPropertyChanged("CustomizeChatSetingsCommand"); } }
         public RelayCommand CreateCommand { get { return _createCommand; } private set { _createCommand = value; OnPropertyChanged(); } }
 
+        private Dictionary<string, string> _permissions = new Dictionary<string, string> {
+            { "invite", "owner_and_admins" },
+            { "change_info", "owner_and_admins"},
+            { "change_pin", "owner_and_admins" },
+            { "use_mass_mentions", "owner_and_admins" },
+            { "see_invite_link", "owner_and_admins" },
+            { "call", "all" },
+            { "change_admins", "owner" },
+            { "change_style", "owner_and_admins" }
+        };
+
         // private StorageFile ChatPhoto;
         public readonly ObservableCollection<User> _friends = new ObservableCollection<User>();
-        private readonly Dictionary<string, string> _permissions;
         private readonly VKSession _session;
         private readonly System.Action _goToBackAction;
 
@@ -46,7 +58,7 @@ namespace ELOR.Laney.ViewModels {
             _goToBackAction = goToBackAction;
             _session = session;
             ChatPhotoSetCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
-            CustomizeChatSettingsCommand = new RelayCommand((o) => ExceptionHelper.ShowNotImplementedDialog(session.ModalWindow));
+            CustomizeChatSettingsCommand = new RelayCommand((o) => OpenPermissionsEditor());
             CreateCommand = new RelayCommand(async (o) => await CreateChatAsync());
 
             PropertyChanged += (a, b) => {
@@ -107,14 +119,26 @@ namespace ELOR.Laney.ViewModels {
             }
         }
 
+        private void OpenPermissionsEditor() {
+            new System.Action(async () => {
+                ChatEditor modal = new ChatEditor(_session, _permissions);
+                var result = await modal.ShowDialog<ChatEditorResult>(_session.Window);
+                if (result != null) _permissions = result.Permissions;
+            })();
+        }
+
         private async Task CreateChatAsync() {
             if (String.IsNullOrEmpty(ChatName) && SelectedFriends.Count == 0) return;
             List<long> userIds = SelectedFriends.Select(u => u.Id).ToList();
             if (userIds.Count == 0) userIds.Add(_session.UserId);
 
+            string permissions = JsonSerializer.Serialize(_permissions, new JsonSerializerOptions {
+                TypeInfoResolver = BuildInJsonContext.Default
+            });
+
             VKUIWaitDialog<CreateChatResponse> wd = new VKUIWaitDialog<CreateChatResponse>();
             try {
-                CreateChatResponse response = await wd.ShowAsync(_session.ModalWindow, _session.API.Messages.CreateChatAsync(0, userIds, ChatName));
+                CreateChatResponse response = await wd.ShowAsync(_session.ModalWindow, _session.API.Messages.CreateChatAsync(0, userIds, ChatName, permissions));
                 _goToBackAction?.Invoke();
                 _session.GoToChat(2000000000 + response.ChatId);
             } catch (Exception ex) {
