@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 using ELOR.Laney.Controls;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib.Objects;
@@ -57,6 +58,7 @@ namespace ELOR.Laney.Extensions {
         public static Size GetOriginalSize(this IPreview preview) {
             if (preview is Photo p) {
                 var msp = p.MaximalSizedPhoto;
+                if (msp == null) return new Size(0, 0);
                 return new Size(msp.Width, msp.Height);
             } else if (preview is Video v) {
                 return new Size(v.Width, v.Height);
@@ -114,8 +116,17 @@ namespace ELOR.Laney.Extensions {
             return ps;
         }
 
-        public static StickerImage GetSizeAndUriForThumbnail(this Sticker sticker, double maxWidth = MessageBubble.STICKER_WIDTH) {
+        // needBorder нужен для отрисовки "обрамления" у стикеров. Полезно в тёмной теме и в случае, когда стикер отображается поверх фона чата.
+        // При null обрамление рисуется в зависимости от текущей темы.
+        public static StickerImage GetSizeAndUriForThumbnail(this Sticker sticker, double maxWidth = MessageBubble.STICKER_WIDTH, bool? needBorder = null) {
             maxWidth = maxWidth * App.Current.DPI;
+
+            bool needBorderReally = needBorder.HasValue
+                ? needBorder.Value
+                : App.Current.ActualThemeVariant == ThemeVariant.Dark;
+
+            string theme = needBorderReally ? "b" : string.Empty;
+
             if (sticker.IsPartial) {
                 int[] sizes = new int[] { 64, 128, 256, 352, 512 };
                 int size = 0;
@@ -126,7 +137,10 @@ namespace ELOR.Laney.Extensions {
                 return new StickerImage {
                     Width = size,
                     Height = size,
-                    Url = $"https://vk.com/sticker/1-{sticker.StickerId}-{size}b" // TODO: theme!
+
+                    // TODO: theme!
+                    // Url = $"https://vk.com/sticker/1-{sticker.StickerId}-{size}{theme}b" // png
+                    Url = $"https://vk.com/sticker/1-{sticker.StickerId}-{size}{theme}w"   // webp
                 };
             } else {
                 StickerImage ps = null;

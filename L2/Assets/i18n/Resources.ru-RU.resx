@@ -1349,4 +1349,16 @@
   <data name="chat_editor_delete_photo" xml:space="preserve">
     <value>Удалить фото</value>
   </data>
+  <data name="qr_signin_p1_title" xml:space="preserve">
+    <value>Вход по QR-коду</value>
+  </data>
+  <data name="qr_signin_p1_desc" xml:space="preserve">
+    <value>Отсканируйте QR-код сканером в приложении ВКонтакте или камерой устройства</value>
+  </data>
+  <data name="qr_signin_p2_title" xml:space="preserve">
+    <value>Подтвердите вход</value>
+  </data>
+  <data name="qr_signin_p2_desc" xml:space="preserve">
+    <value>Убедитесь, что на экране отображаются данные вашего устройства, и нажмите кнопку Продолжить</value>
+  </data>
 </root>

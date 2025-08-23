@@ -86,6 +86,15 @@ namespace ELOR.Laney.Extensions {
         }
 
         public static async Task<HttpResponseMessage> SendRequestToAPIViaLNetAsync(Uri uri, Dictionary<string, string> parameters, Dictionary<string, string> headers) {
+            // With "Accept: image/webp", VK API returns links to images in... you guess it... WEBP format.
+            // BUT IT'S NOT WORKING FOR 3-RD PARTY CLIENTS!
+            if (headers != null) {
+                headers.TryAdd("Accept", "image/webp");
+            } else {
+                headers = new Dictionary<string, string> {
+                    { "Accept", "image/webp" }
+                };
+            }
             return await LNet.PostAsync(uri, parameters, headers);
         }
     }
