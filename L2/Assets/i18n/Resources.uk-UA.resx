@@ -1349,4 +1349,16 @@
   <data name="chat_editor_delete_photo" xml:space="preserve">
     <value>Видалити фото</value>
   </data>
+  <data name="qr_signin_p1_title" xml:space="preserve">
+    <value>Вхід за допомогою QR-коду</value>
+  </data>
+  <data name="qr_signin_p1_desc" xml:space="preserve">
+    <value>Відскануйте QR-код сканером в додаткуVK або камерою пристрою</value>
+  </data>
+  <data name="qr_signin_p2_title" xml:space="preserve">
+    <value>Підтвердьте вхід</value>
+  </data>
+  <data name="qr_signin_p2_desc" xml:space="preserve">
+    <value>Переконайтеся, що на екрані відображаються дані вашого пристрою, і натисніть кнопку Продовжити</value>
+  </data>
 </root>

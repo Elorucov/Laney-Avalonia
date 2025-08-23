@@ -2901,6 +2901,42 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan the QR code with the VK app or your device&apos;s camera.
+        /// </summary>
+        public static string qr_signin_p1_desc {
+            get {
+                return ResourceManager.GetString("qr_signin_p1_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign in with QR code.
+        /// </summary>
+        public static string qr_signin_p1_title {
+            get {
+                return ResourceManager.GetString("qr_signin_p1_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make sure that your device&apos;s data is shown on the screen and press Continue.
+        /// </summary>
+        public static string qr_signin_p2_desc {
+            get {
+                return ResourceManager.GetString("qr_signin_p2_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify it&apos;s you.
+        /// </summary>
+        public static string qr_signin_p2_title {
+            get {
+                return ResourceManager.GetString("qr_signin_p2_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} reactions.
         /// </summary>
         public static string reactions_gen {

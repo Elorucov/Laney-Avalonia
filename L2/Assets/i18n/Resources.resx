@@ -1352,4 +1352,16 @@ to attach them as files</value>
   <data name="chat_editor_delete_photo" xml:space="preserve">
     <value>Remove photo</value>
   </data>
+  <data name="qr_signin_p1_title" xml:space="preserve">
+    <value>Sign in with QR code</value>
+  </data>
+  <data name="qr_signin_p1_desc" xml:space="preserve">
+    <value>Scan the QR code with the VK app or your device's camera</value>
+  </data>
+  <data name="qr_signin_p2_title" xml:space="preserve">
+    <value>Verify it's you</value>
+  </data>
+  <data name="qr_signin_p2_desc" xml:space="preserve">
+    <value>Make sure that your device's data is shown on the screen and press Continue</value>
+  </data>
 </root>

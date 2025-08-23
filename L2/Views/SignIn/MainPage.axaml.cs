@@ -38,9 +38,9 @@ namespace ELOR.Laney.Views.SignIn {
 #endif
         }
 
-        private void GoToExternalAuthPage(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            NavigationRouter.NavigateToAsync(new ExternalBrowserAuthPage());
-        }
+        //private void GoToExternalAuthPage(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        //    NavigationRouter.NavigateToAsync(new ExternalBrowserAuthPage());
+        //}
 
         private void GoToDirectAuthPage(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
             NavigationRouter.NavigateToAsync(new QRAuthPage());

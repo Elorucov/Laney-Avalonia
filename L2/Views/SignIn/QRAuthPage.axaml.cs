@@ -49,22 +49,21 @@ namespace ELOR.Laney.Views.SignIn {
                         var response = await api.Auth.CheckAuthCodeAsync(Assets.i18n.Resources.lang, AuthManager.APP_ID, authHash);
                         if (response.Status >= 2) isWorking = false;
                         await Dispatcher.UIThread.InvokeAsync(async () => {
-                            // PageDesc.Text = $"Status: {response.Status}";
                             switch (response.Status) {
                                 case 1:
                                     Loading.IsVisible = true;
                                     QrCodeControl.IsVisible = false;
-                                    PageDesc.Text = $"Now press the \"Confirm\" button on your device";
+                                    PageTitle.Text = Assets.i18n.Resources.qr_signin_p2_title;
+                                    PageDesc.Text = Assets.i18n.Resources.qr_signin_p2_desc;
                                     break;
                                 case 2:
-                                    PageDesc.Text = $"Authorizing, please wait...";
-                                    // TODO: navigate to PostDirectAuthPage and refucktor
+                                    await NavigationRouter.NavigateToAsync(new PostDirectAuthPage(response.SuperAppToken));
                                     break;
                                 case 3:
                                     await NavigationRouter.BackAsync();
                                     break;
                                 default:
-                                    PageDesc.Text = $"Status: {response.Status}";
+                                    if (response.Status != 0) PageDesc.Text = $"Status: {response.Status}";
                                     break;
                             }
                         });

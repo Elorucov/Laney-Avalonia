@@ -1,8 +1,6 @@
 using Avalonia.Controls;
 using ELOR.Laney.Core;
-using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
-using ELOR.VKAPILib;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -15,19 +13,17 @@ namespace ELOR.Laney.Views.SignIn {
             InitializeComponent();
         }
 
-        public PostDirectAuthPage(long userId, string temporaryAccessToken) {
+        public PostDirectAuthPage(string superAppToken) {
             InitializeComponent();
             Log.Information($"{nameof(PostDirectAuthPage)} initialized.");
-            Loaded += (a, b) => FinishAuthProcess(userId, temporaryAccessToken);
+            Loaded += (a, b) => FinishAuthProcess(superAppToken);
         }
 
-        private async void FinishAuthProcess(long userId, string temporaryAccessToken) {
+        private async void FinishAuthProcess(string superAppToken) {
             byte attempts = 0;
             Exception lastEx = null;
             Window window = TopLevel.GetTopLevel(this) as Window;
 
-            VKAPI tempAPI = new VKAPI(temporaryAccessToken, Assets.i18n.Resources.lang, App.UserAgent);
-            tempAPI.WebRequestCallback = LNetExtensions.SendRequestToAPIViaLNetAsync;
             do {
                 if (attempts > 0) await Task.Delay(500).ConfigureAwait(false);
                 attempts++;
@@ -37,7 +33,7 @@ namespace ELOR.Laney.Views.SignIn {
                     if (String.IsNullOrEmpty(hash)) continue;
                     Log.Information($"{nameof(PostDirectAuthPage)}: Oauth hash received!");
 
-                    var response = await tempAPI.Auth.GetOauthTokenAsync(AuthManager.APP_ID, AuthManager.SCOPE, hash);
+                    var response = await AuthManager.DoConnectCodeAuthAsync(superAppToken, AuthManager.APP_ID, AuthManager.SCOPE, hash);
                     Log.Information($"{nameof(PostDirectAuthPage)}: Access token received!");
                     Settings.SetBatch(new Dictionary<string, object> {
                         { Settings.VK_USER_ID, response.UserId },
@@ -51,7 +47,7 @@ namespace ELOR.Laney.Views.SignIn {
                     Log.Error(ex, $"{nameof(PostDirectAuthPage)}: failed!");
                     lastEx = ex;
                 }
-            } while (attempts < 10);
+            } while (attempts < 2);
 
             if (lastEx != null) {
                 var result = await ExceptionHelper.ShowErrorDialogAsync(window, lastEx, true);
