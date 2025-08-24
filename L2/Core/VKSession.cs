@@ -46,7 +46,8 @@ namespace ELOR.Laney.Core {
         public ImViewModel ImViewModel { get { return _imViewModel; } private set { _imViewModel = value; OnPropertyChanged(); } }
         public ChatViewModel CurrentOpenedChat { get { return _currentOpenedChat; } set { _currentOpenedChat = value; OnPropertyChanged(); } }
 
-        public bool IsGroup { get => GroupId > 0; }
+        public bool IsGroup => GroupId > 0;
+        public bool IsVKM => Settings.Get<bool>(Settings.IS_VKM_MODE);
         public VKAPI API { get; private set; }
         public LongPoll LongPoll { get; private set; }
         public MainWindow Window { get; private set; }

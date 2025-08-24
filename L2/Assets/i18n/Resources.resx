@@ -1364,4 +1364,10 @@ to attach them as files</value>
   <data name="qr_signin_p2_desc" xml:space="preserve">
     <value>Make sure that your device's data is shown on the screen and press Continue</value>
   </data>
+  <data name="note_warn" xml:space="preserve">
+    <value>Please note!</value>
+  </data>
+  <data name="offclient_auth_notice" xml:space="preserve">
+    <value>Login will be done on behalf of the "VK Messenger" app</value>
+  </data>
 </root>

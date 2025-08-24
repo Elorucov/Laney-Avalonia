@@ -19,15 +19,11 @@
       
       <ContentPresenter x:Name="Logo" ContentTemplate="{StaticResource LogoFull}" Margin="0,0,0,64" />
       
-      <!--<Button x:Name="SignInBtnVKExternal" Classes="Large" Background="#0077ff" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,0,0,12" Padding="0" Click="GoToExternalAuthPage">
+      <Button x:Name="SignInBtnDirect" Classes="Large Primary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Margin="0,0,0,12" Click="GoToDirectAuthPage">
         <Grid ColumnDefinitions="44 * 44">
-          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28LogoVk}" Foreground="White" Margin="8"/>
-          <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Text="{x:Static i18n:Resources.sign_in_vk_id}"/>
+          <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28QrCodeOutline}" Foreground="White" Margin="8"/>
+          <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Text="{x:Static i18n:Resources.sign_in_qr}"/>
         </Grid>
-      </Button>-->
-      
-      <Button x:Name="SignInBtnDirect" Classes="Large Primary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="12" Margin="0,0,0,12" Click="GoToDirectAuthPage">
-        <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="{x:Static i18n:Resources.sign_in_qr}"/>
       </Button>
       
     </StackPanel>

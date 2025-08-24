@@ -2424,6 +2424,15 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please note!.
+        /// </summary>
+        public static string note_warn {
+            get {
+                return ResourceManager.GetString("note_warn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing was found.
         /// </summary>
         public static string nothing_found {
@@ -2447,6 +2456,15 @@ namespace ELOR.Laney.Assets.i18n {
         public static string notifications_enable {
             get {
                 return ResourceManager.GetString("notifications_enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login will be done on behalf of the &quot;VK Messenger&quot; app.
+        /// </summary>
+        public static string offclient_auth_notice {
+            get {
+                return ResourceManager.GetString("offclient_auth_notice", resourceCulture);
             }
         }
         

@@ -16,10 +16,10 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<GetAuthCodeResponse>("auth.getAuthCode", parameters);
         }
 
-        public async Task<CheckAuthCodeResponse> CheckAuthCodeAsync(string lang, int clientId, string hash) {
+        public async Task<CheckAuthCodeResponse> CheckAuthCodeAsync(string lang, int clientId, string hash, bool webAuth) {
             var parameters = new Dictionary<string, string> {
                 { "lang", lang },
-                { "web_auth", "1" },
+                { "web_auth", webAuth ? "1" : "0" },
                 { "client_id", clientId.ToString() },
                 { "auth_hash", hash },
             };
