@@ -130,8 +130,8 @@ namespace ELOR.Laney.Core {
 
                         HttpResponseMessage httpResponse = await LNet.PostAsync(new Uri($"https://{_server}"), parameters, cts: _cts).ConfigureAwait(false);
                         httpResponse.EnsureSuccessStatusCode();
-                        string respstr = await httpResponse.Content.ReadAsStringAsync();
-                        JsonNode jr = JsonNode.Parse(respstr);
+                        var respstr = await httpResponse.Content.ReadAsStreamAsync();
+                        JsonNode jr = await JsonNode.ParseAsync(respstr);
                         httpResponse.Dispose();
                         if (jr["updates"] != null) {
                             await ParseUpdatesAsync(jr["updates"].AsArray());
