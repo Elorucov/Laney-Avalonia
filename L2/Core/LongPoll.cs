@@ -27,25 +27,27 @@ namespace ELOR.Laney.Core {
         public const int WAIT_TIME = 25;
         public const int MODE = 234;
 
-        private string Server;
-        private string Key;
-        private int TimeStamp;
-        private int PTS;
+        private string _server;
+        private string _key;
+        private int _timeStamp;
+        private int _pts;
+        private bool _isRunning = false;
+        private CancellationTokenSource _cts;
 
-        private long sessionId = 0;
-        private long groupId = 0;
-        private VKAPI API;
-        private CancellationTokenSource cts;
-        private bool isRunning = false;
-        private Logger Log;
+        private readonly bool _isOfficialClient = false;
+        private readonly long _sessionId = 0;
+        private readonly long _groupId = 0;
+        private readonly VKAPI _api;
+        private readonly Logger _log;
 
         private LongPollState _state;
         public LongPollState State { get { return _state; } private set { _state = value; StateChanged?.Invoke(this, value); } }
 
-        public LongPoll(VKAPI api, long sessionId, long groupId) {
-            API = api;
-            this.sessionId = sessionId;
-            this.groupId = groupId;
+        public LongPoll(VKAPI api, long sessionId, long groupId, bool isOfficialClient = false) {
+            _api = api;
+            _sessionId = sessionId;
+            _groupId = groupId;
+            _isOfficialClient = isOfficialClient;
 
             var loggerConfig = new LoggerConfiguration()
                 .MinimumLevel.Information();
@@ -56,16 +58,15 @@ namespace ELOR.Laney.Core {
                     buffered: true, retainedFileCountLimit: 20, flushToDiskInterval: TimeSpan.FromSeconds(30)).MinimumLevel.Information();
             }
 
-            Log = loggerConfig.CreateLogger();
+            _log = loggerConfig.CreateLogger();
             State = LongPollState.Connecting;
         }
 
         public void SetUp(LongPollServerInfo info) {
-            Server = info.Server;
-            // Server = info.Server.Replace("im.vk.com/nim", "api.vk.com/ruim"); // TODO: параметр в настройках как в старом Laney
-            Key = info.Key;
-            TimeStamp = info.TS;
-            PTS = info.PTS;
+            _server = info.Server;
+            _key = info.Key;
+            _timeStamp = info.TS;
+            _pts = info.PTS;
         }
 
         #region Events
@@ -108,40 +109,40 @@ namespace ELOR.Laney.Core {
         #endregion
 
         public void Run() {
-            Log.Information("Starting LongPoll...");
-            cts = new CancellationTokenSource();
-            isRunning = true;
+            _log.Information("Starting LongPoll...");
+            _cts = new CancellationTokenSource();
+            _isRunning = true;
 
             new System.Action(async () => await Task.Factory.StartNew(async () => {
-                while (isRunning) {
+                while (_isRunning) {
                     try {
-                        Log.Information($"Waiting... TS: {TimeStamp}; PTS: {PTS}");
+                        _log.Information($"Waiting... TS: {_timeStamp}; PTS: {_pts}");
                         if (State == LongPollState.Updating || State == LongPollState.Connecting) State = LongPollState.Working;
 
                         Dictionary<string, string> parameters = new Dictionary<string, string> {
                             { "act", "a_check" },
-                            { "key", Key },
-                            { "ts", TimeStamp.ToString() },
+                            { "key", _key },
+                            { "ts", _timeStamp.ToString() },
                             { "wait", WAIT_TIME.ToString() },
                             { "mode", MODE.ToString() },
                             { "version", VERSION.ToString() }
                         };
 
-                        HttpResponseMessage httpResponse = await LNet.PostAsync(new Uri($"https://{Server}"), parameters, cts: cts).ConfigureAwait(false);
+                        HttpResponseMessage httpResponse = await LNet.PostAsync(new Uri($"https://{_server}"), parameters, cts: _cts).ConfigureAwait(false);
                         httpResponse.EnsureSuccessStatusCode();
                         string respstr = await httpResponse.Content.ReadAsStringAsync();
                         JsonNode jr = JsonNode.Parse(respstr);
                         httpResponse.Dispose();
                         if (jr["updates"] != null) {
                             await ParseUpdatesAsync(jr["updates"].AsArray());
-                            TimeStamp = (int)jr["ts"];
-                            PTS = (int)jr["pts"];
+                            _timeStamp = (int)jr["ts"];
+                            _pts = (int)jr["pts"];
                             State = LongPollState.Working;
                             await Task.Delay(1000).ConfigureAwait(false);
                         } else if (jr["failed"] != null) {
                             int errCode = (int)jr["failed"];
                             string errText = jr["error"].ToString();
-                            Log.Error($"LongPoll error! Code {errCode}, message: {errText}. Restarting after {WAIT_AFTER_FAIL} sec...");
+                            _log.Error($"LongPoll error! Code {errCode}, message: {errText}. Restarting after {WAIT_AFTER_FAIL} sec...");
 
                             State = LongPollState.Failed;
                             await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
@@ -151,7 +152,7 @@ namespace ELOR.Laney.Core {
                         }
                     } catch (Exception ex) {
                         bool isConnectionLost = ExceptionHelper.IsExceptionAboutNetworkIssue(ex);
-                        Log.Error(ex, $"Exception when parsing LongPoll events! Trying after {WAIT_AFTER_FAIL} sec.");
+                        _log.Error(ex, $"Exception when parsing LongPoll events! Trying after {WAIT_AFTER_FAIL} sec.");
 
                         if (isConnectionLost) {
                             State = isConnectionLost ? LongPollState.NoInternet : LongPollState.Failed;
@@ -165,8 +166,8 @@ namespace ELOR.Laney.Core {
         }
 
         public void Stop() {
-            isRunning = false;
-            cts?.Cancel();
+            _isRunning = false;
+            _cts?.Cancel();
         }
 
         public void Restart() {
@@ -177,8 +178,8 @@ namespace ELOR.Laney.Core {
                 while (trying) {
                     try {
                         State = LongPollState.Updating;
-                        Log.Information($"Getting LongPoll history... PTS: {PTS}");
-                        var response = await API.Messages.GetLongPollHistoryAsync(groupId, VERSION, TimeStamp, PTS, 0, false, 1000, 1000, 0, VKAPIHelper.Fields).ConfigureAwait(false);
+                        _log.Information($"Getting LongPoll history... PTS: {_pts}, isOfficialClient={_isOfficialClient}");
+                        var response = await _api.Messages.GetLongPollHistoryAsync(_groupId, VERSION, _timeStamp, _pts, 0, false, 1000, 1000, 0, VKAPIHelper.Fields).ConfigureAwait(false);
                         CacheManager.Add(response.Profiles);
                         CacheManager.Add(response.Groups);
 
@@ -187,22 +188,22 @@ namespace ELOR.Laney.Core {
                         // TODO: кешировать беседы.
                         await ParseUpdatesAsync(response.History, response.Messages.Items, response.Conversations);
 
-                        if (response.More) PTS = response.NewPTS;
+                        if (response.More) _pts = response.NewPTS;
                         trying = response.More;
                     } catch (Exception ex) {
                         bool isConnectionLost = ExceptionHelper.IsExceptionAboutNetworkIssue(ex);
                         State = isConnectionLost ? LongPollState.NoInternet : LongPollState.Failed;
                         if (isConnectionLost) {
-                            Log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
+                            _log.Error(ex, $"Exception while getting LongPoll history! Trying after {WAIT_AFTER_FAIL} sec.");
                             await Task.Delay(WAIT_AFTER_FAIL * 1000).ConfigureAwait(false);
                         } else {
-                            Log.Error(ex, $"Exception while getting LongPoll history! Required full resync. Has credentials: {Server != null}");
+                            _log.Error(ex, $"Exception while getting LongPoll history! Required full resync. Has credentials: {_server != null}");
                             trying = false;
                             NeedFullResync?.Invoke(this, null);
                         }
                     }
                 }
-                if (Server != null) Run();
+                if (_server != null) Run();
             }))();
         }
 
@@ -214,7 +215,7 @@ namespace ELOR.Laney.Core {
 
             // TODO: для каждого события (кроме 10004, 10005 и 10018) создать отдельный метод.
             foreach (JsonArray u in updates) {
-                Log.Information(string.Join(',', u));
+                _log.Information(string.Join(',', u));
                 int eventId = (int)u[0];
                 switch (eventId) {
                     case 10002:
@@ -223,7 +224,7 @@ namespace ELOR.Laney.Core {
                         int flags = (int)u[2];
                         long peerId = (long)u[3];
                         bool hasMessage = u.Count > 4; // удалённое у текущего юзера сообщение восстановилось
-                        Log.Information($"EVENT {eventId}: msg={msgId}, flags={flags}, peer={peerId}, hasMessage={hasMessage}");
+                        _log.Information($"EVENT {eventId}: msg={msgId}, flags={flags}, peer={peerId}, hasMessage={hasMessage}");
                         if (eventId == 10003) MessageFlagRemove?.Invoke(this, msgId, flags, peerId);
                         else MessageFlagSet?.Invoke(this, msgId, flags, peerId);
                         if (hasMessage) {
@@ -238,17 +239,19 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 10004:
-                        bool isDeletedBeforeEvent = u.Count == 4 && messages == null;
+                        int fieldsCountForDeleted = _isOfficialClient ? 5 : 4;
+                        bool isDeletedBeforeEvent = u.Count == fieldsCountForDeleted && messages == null;
                         int receivedMsgId = (int)u[1];
                         int minor = 0;
                         long peerId4 = 0;
-                        if (messages != null) { // gLPH
-                            peerId4 = (long)u[3];
+                        bool gLPH = messages != null;
+                        if (gLPH) {
+                            peerId4 = _isOfficialClient ? (long)u[4] : (long)u[3];
                         } else {
                             peerId4 = isDeletedBeforeEvent ? 0 : (long)u[4];
                             minor = (int)u[3];
                         }
-                        Log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}");
+                        _log.Information($"EVENT {eventId}: peer={peerId4}, msg={receivedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent}, from getLongPollHistory={gLPH}");
                         if (isDeletedBeforeEvent) break;
                         Message msgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == receivedMsgId && m.PeerId == peerId4);
                         if (msgFromHistory != null) {
@@ -258,18 +261,18 @@ namespace ELOR.Laney.Core {
                         } else {
                             bool isPartial = false;
                             Exception ex = null;
-                            Message rmsg = Message.BuildFromLP(u, sessionId, CheckIsCached, out isPartial, out ex);
+                            Message rmsg = Message.BuildFromLP(u, _sessionId, CheckIsCached, out isPartial, out ex);
                             if (ex == null && rmsg != null) {
                                 MessageReceived?.Invoke(this, rmsg, (int)u[2], true);
                                 minor = rmsg.Id;
                                 if (u.Count > 7) CheckMentions(u[7], receivedMsgId, peerId4);
                                 if (isPartial) {
-                                    Log.Information($"Received message ({peerId4}_{receivedMsgId}) is partial. Added to queue for getting these from API.");
+                                    _log.Information($"Received message ({peerId4}_{receivedMsgId}) is partial. Added to queue for getting these from API.");
                                     MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, true));
                                     MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                                 }
                             } else {
-                                Log.Error(ex, $"An error occured while building message from LP! Message ID: {receivedMsgId}");
+                                _log.Error(ex, $"An error occured while building message from LP! Message ID: {receivedMsgId}");
                                 MessagesFromAPI.Add(new Tuple<long, int, bool>(peerId4, receivedMsgId, false));
                                 MessagesFromAPIFlags.Add(receivedMsgId, (int)u[2]);
                             }
@@ -283,7 +286,7 @@ namespace ELOR.Laney.Core {
                         long peerId5 = (long)u[3];
                         if (isDeletedBeforeEvent2) break;
                         Message editMsgFromHistory = messages?.SingleOrDefault(m => m.ConversationMessageId == editedMsgId && m.PeerId == peerId5);
-                        Log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent2}");
+                        _log.Information($"EVENT {eventId}: peer={peerId5}, msg={editedMsgId}, isDeletedBeforeEvent={isDeletedBeforeEvent2}");
                         if (editMsgFromHistory != null) {
                             MessageEdited?.Invoke(this, editMsgFromHistory, (int)u[2], false);
                             if (u.Count > 6) CheckMentions(u[6], editedMsgId, peerId5);
@@ -306,7 +309,7 @@ namespace ELOR.Laney.Core {
                         } else {
                             count6 = u.Count > 3 ? (int)u[3] : 0;
                         }
-                        Log.Information($"EVENT {eventId}: peer={peerId6}, msg={msgId6}, count={count6}");
+                        _log.Information($"EVENT {eventId}: peer={peerId6}, msg={msgId6}, count={count6}");
                         if (eventId == 10006) {
                             IncomingMessagesRead?.Invoke(this, peerId6, msgId6, count6);
                         } else {
@@ -317,21 +320,21 @@ namespace ELOR.Laney.Core {
                     case 12:
                         long peerId10 = (long)u[1];
                         int flags10 = (int)u[2];
-                        Log.Information($"EVENT {eventId}: peer={peerId10}, flags={flags10}");
+                        _log.Information($"EVENT {eventId}: peer={peerId10}, flags={flags10}");
                         if (eventId == 10) ConversationFlagReset?.Invoke(this, peerId10, flags10);
                         else ConversationFlagSet?.Invoke(this, peerId10, flags10);
                         break;
                     case 10013:
                         long peerId13 = (long)u[1];
                         int msgId13 = (int)u[2];
-                        Log.Information($"EVENT {eventId}: peer={peerId13}, msg={msgId13}");
+                        _log.Information($"EVENT {eventId}: peer={peerId13}, msg={msgId13}");
                         ConversationRemoved?.Invoke(this, peerId13);
                         break;
                     case 20:
                     case 21:
                         long peerId20 = (long)u[1];
                         int sortId = (int)u[2];
-                        Log.Information($"EVENT {eventId}: peer={peerId20}, major/minor={sortId}");
+                        _log.Information($"EVENT {eventId}: peer={peerId20}, major/minor={sortId}");
                         if (eventId == 20) MajorIdChanged?.Invoke(this, peerId20, sortId);
                         else MinorIdChanged?.Invoke(this, peerId20, sortId);
                         break;
@@ -339,7 +342,7 @@ namespace ELOR.Laney.Core {
                         int updateType = (int)u[1];
                         long peerId52 = (long)u[2];
                         long extra = (long)u[3];
-                        Log.Information($"EVENT {eventId}: updateType={updateType}, peer={peerId52}, extra={extra}");
+                        _log.Information($"EVENT {eventId}: updateType={updateType}, peer={peerId52}, extra={extra}");
                         Conversation convo52 = convos?.SingleOrDefault(c => c.Peer.Id == peerId52);
                         ConversationDataChanged?.Invoke(this, updateType, peerId52, extra, convo52);
                         break;
@@ -353,7 +356,7 @@ namespace ELOR.Laney.Core {
                         long peerId63 = (long)u[1];
                         long[] userIds = (long[])u[2].Deserialize(typeof(long[]), L2JsonSerializerContext.Default);
                         int totalCount = (int)u[3];
-                        Log.Information($"EVENT {eventId}: peer={peerId63}, users={String.Join(", ", userIds)}, count={totalCount}");
+                        _log.Information($"EVENT {eventId}: peer={peerId63}, users={String.Join(", ", userIds)}, count={totalCount}");
 
                         List<LongPollActivityInfo> acts = new List<LongPollActivityInfo>();
                         foreach (var userId in userIds) {
@@ -364,7 +367,7 @@ namespace ELOR.Laney.Core {
                         break;
                     case 80:
                         int unreadCount = (int)u[1];
-                        Log.Information($"EVENT {eventId}: count={unreadCount}");
+                        _log.Information($"EVENT {eventId}: count={unreadCount}");
                         UnreadCounterUpdated?.Invoke(this, unreadCount);
                         break;
                     case 91:
@@ -373,25 +376,25 @@ namespace ELOR.Laney.Core {
                         long memberId = (long)u[3];
                         bool isDeny = restrictionType == 1 || restrictionType == 2;
                         long until = restrictionType == 1 ? (long)u[5] : 0;
-                        Log.Information($"EVENT {eventId}: peer={peerId91}, memberId={memberId}, isDeny={isDeny}, until={until}");
+                        _log.Information($"EVENT {eventId}: peer={peerId91}, memberId={memberId}, isDeny={isDeny}, until={until}");
                         CanWriteChanged?.Invoke(this, peerId91, memberId, isDeny, until);
                         break;
                     case 114:
                         var data = (LongPollPushNotificationData)u[1].Deserialize(typeof(LongPollPushNotificationData), L2JsonSerializerContext.Default);
-                        Log.Information($"EVENT {eventId}: peer={data.PeerId}, sound={data.Sound}, disabledUntil={data.DisabledUntil}");
+                        _log.Information($"EVENT {eventId}: peer={data.PeerId}, sound={data.Sound}, disabledUntil={data.DisabledUntil}");
                         NotificationsSettingsChanged?.Invoke(this, data);
                         break;
                     case 119:
                         var cbData = (LongPollCallbackResponse)u[1].Deserialize(typeof(LongPollCallbackResponse), L2JsonSerializerContext.Default);
-                        Log.Information($"EVENT {eventId}: peer={cbData.PeerId}, owner={cbData.OwnerId}, event={cbData.EventId} action={cbData.Action?.Type}");
+                        _log.Information($"EVENT {eventId}: peer={cbData.PeerId}, owner={cbData.OwnerId}, event={cbData.EventId} action={cbData.Action?.Type}");
                         CallbackReceived?.Invoke(this, cbData);
                         break;
                     case 601:
-                        Log.Information($"EVENT {eventId}: length: {u.Count}");
+                        _log.Information($"EVENT {eventId}: length: {u.Count}");
                         ParseReactionsAndInvoke(u.Select(n => (long)n.Deserialize(typeof(long), L2JsonSerializerContext.Default)).ToArray());
                         break;
                     case 602:
-                        Log.Information($"EVENT {eventId}: length: {u.Count}");
+                        _log.Information($"EVENT {eventId}: length: {u.Count}");
                         ParseUnreadReactionsAndInvoke(u.Select(n => (long)n.Deserialize(typeof(long), L2JsonSerializerContext.Default)).ToArray());
                         break;
                 }
@@ -470,12 +473,12 @@ namespace ELOR.Laney.Core {
                             MentionReceived?.Invoke(this, peerId, messageId, isBomb);
                         } else {
                             JsonArray u1 = o[1].AsArray();
-                            if (Int64.Parse(u1.FirstOrDefault().ToString()) == sessionId) MentionReceived?.Invoke(this, peerId, messageId, isBomb);
+                            if (Int64.Parse(u1.FirstOrDefault().ToString()) == _sessionId) MentionReceived?.Invoke(this, peerId, messageId, isBomb);
                         }
                     }
                 }
             } catch (Exception ex) {
-                Log.Error(ex, $"Cannot check mentions, \"marked_users\" parsing error!");
+                _log.Error(ex, $"Cannot check mentions, \"marked_users\" parsing error!");
             }
         }
 
@@ -501,16 +504,16 @@ namespace ELOR.Laney.Core {
                     isEditedCMIDs.Add($"{pair.Item1}_{pair.Item2}", pair.Item3);
                 }
                 debugPairs = String.Join(", ", isEditedCMIDs.Keys.ToList());
-                Log.Information($"Need to get this messages from API: {debugPairs}.");
+                _log.Information($"Need to get this messages from API: {debugPairs}.");
 
-                MessagesList response = await API.Messages.GetByIdAsync(groupId, peerMessagePair, 0, true, VKAPIHelper.Fields);
+                MessagesList response = await _api.Messages.GetByIdAsync(_groupId, peerMessagePair, 0, true, VKAPIHelper.Fields);
                 if (response.Items.Count > 0) {
                     CacheManager.Add(response.Profiles);
                     CacheManager.Add(response.Groups);
                     foreach (Message msg in response.Items) {
                         int flag = flags[msg.ConversationMessageId];
                         bool isEdited = isEditedCMIDs[$"{msg.PeerId}_{msg.ConversationMessageId}"];
-                        Log.Information($"Successfully received message ({msg.PeerId}_{msg.ConversationMessageId}) from API. Is edited: {isEdited}");
+                        _log.Information($"Successfully received message ({msg.PeerId}_{msg.ConversationMessageId}) from API. Is edited: {isEdited}");
                         if (isEdited) {
                             MessageEdited?.Invoke(this, msg, flag, false);
                         } else {
@@ -519,13 +522,13 @@ namespace ELOR.Laney.Core {
                     }
                 }
             } catch (Exception ex) {
-                Log.Error(ex, $"An error occured while getting messages from API! Messages: {debugPairs}: {ex.Message}");
+                _log.Error(ex, $"An error occured while getting messages from API! Messages: {debugPairs}: {ex.Message}");
             }
         }
 
         private bool CheckIsCached(long id) {
             bool isCached = CacheManager.GetUser(id) != null || CacheManager.GetGroup(id) != null;
-            Log.Information($"Is sender name for {id} exist in cache: {isCached}");
+            _log.Information($"Is sender name for {id} exist in cache: {isCached}");
             return isCached;
         }
 
@@ -536,7 +539,7 @@ namespace ELOR.Laney.Core {
         }
 
         public void DebugInvalidateLPKey() {
-            Key = string.Empty;
+            _key = string.Empty;
         }
 
         #endregion
