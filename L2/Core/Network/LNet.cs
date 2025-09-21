@@ -39,7 +39,7 @@ namespace ELOR.Laney.Core.Network {
         static HttpClient client;
         static HttpClient tclient;
 
-        static string pingUrl = "https://vk.com/ping.txt";
+        static string pingUrl = "https://vk.ru/ping.txt";
         const string pingHash = "BCC08EA1CFB021F5595C3190D1FADC49";
 
         static string gfburl = "https://firebaseremoteconfig.googleapis.com/v1/projects/841415684880/namespaces/firebase:fetch";

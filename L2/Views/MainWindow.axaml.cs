@@ -89,19 +89,24 @@ namespace ELOR.Laney.Views {
         }
 
         private void SetSessionNameInWindowTitle(string name) {
+            string appName = GetAppName();
 #if RELEASE
-            Title = $"{name} - Laney";
+            Title = $"{name} - {appName}";
             if (DemoMode.IsEnabled) {
                 Title += $" (demo mode)";
             }
 #elif BETA
-            Title = $"{name} - Laney beta";
+            Title = $"{name} - {appName} beta";
             if (DemoMode.IsEnabled) {
                 Title += $" (demo mode)";
             }
 #else
-            Title = $"{name} - Laney dev";
+            Title = $"{name} - {appName} dev";
 #endif
+        }
+
+        private string GetAppName() {
+            return Session.IsVKM ? "Laney+" : "Laney";
         }
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e) {
@@ -137,7 +142,7 @@ namespace ELOR.Laney.Views {
                     { Settings.WIN_SIZE_H, Height },
                     { Settings.WIN_POS_X, Position.X },
                     { Settings.WIN_POS_Y, Position.Y },
-                    { Settings.WIN_MAXIMIZED, false }
+                    { Settings.WIN_MAXIMIZED, WindowState == WindowState.Maximized }
                 });
             }
         }

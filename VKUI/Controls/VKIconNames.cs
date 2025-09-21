@@ -151,6 +151,7 @@
         public const string Icon28PictureOutline = "Icon28PictureOutline";
         public const string Icon28PodcastOutline = "Icon28PodcastOutline";
         public const string Icon28PrivacyOutline = "Icon28PrivacyOutline";
+        public const string Icon28QrCodeOutline = "Icon28QrCodeOutline";
         public const string Icon28SearchOutline = "Icon28SearchOutline";
         public const string Icon28SettingsOutline = "Icon28SettingsOutline";
         public const string Icon28Send = "Icon28Send";

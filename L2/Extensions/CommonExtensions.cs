@@ -139,8 +139,8 @@ namespace ELOR.Laney.Extensions {
                     Height = size,
 
                     // TODO: theme!
-                    // Url = $"https://vk.com/sticker/1-{sticker.StickerId}-{size}{theme}b" // png
-                    Url = $"https://vk.com/sticker/1-{sticker.StickerId}-{size}{theme}w"   // webp
+                    // Url = $"https://vk.ru/sticker/1-{sticker.StickerId}-{size}{theme}b" // png
+                    Url = $"https://vk.ru/sticker/1-{sticker.StickerId}-{size}{theme}w"   // webp
                 };
             } else {
                 StickerImage ps = null;

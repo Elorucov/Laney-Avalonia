@@ -258,7 +258,7 @@ namespace ELOR.VKAPILib.Objects {
                 if (Uri.IsWellFormedUriString(Photo200, UriKind.Absolute)) return new Uri(Photo200);
                 if (Uri.IsWellFormedUriString(Photo100, UriKind.Absolute)) return new Uri(Photo100);
                 if (Uri.IsWellFormedUriString(Photo50, UriKind.Absolute)) return new Uri(Photo50);
-                return new Uri("https://vk.com/images/camera_200.png");
+                return new Uri("https://vk.ru/images/camera_200.png");
             }
         }
 

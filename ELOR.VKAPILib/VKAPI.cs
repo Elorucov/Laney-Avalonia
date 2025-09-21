@@ -42,7 +42,7 @@ namespace ELOR.VKAPILib {
         private string _accessToken;
         private string _language;
         private string _domain;
-        private static string _version = "5.251";
+        private static string _version = "5.259";
 
         public string AccessToken { get { return _accessToken; } internal set { _accessToken = value; } }
         public string Language { get { return _language; } set { _language = value; } }
@@ -63,7 +63,7 @@ namespace ELOR.VKAPILib {
 
         #endregion
 
-        public VKAPI(string accessToken, string language, string userAgent, string domain = "api.vk.com") {
+        public VKAPI(string accessToken, string language, string userAgent, string domain = "api.vk.ru") {
             _accessToken = accessToken;
             _language = language;
             UserAgent = userAgent;
@@ -119,7 +119,7 @@ namespace ELOR.VKAPILib {
                 };
                 if (!String.IsNullOrEmpty(UserAgent)) headers.Add("User-Agent", UserAgent);
                 if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
-                    headers.Add("Origin", $"https://id.vk.com");
+                    headers.Add("Origin", $"https://id.vk.ru");
                 }
 
                 var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
@@ -129,7 +129,7 @@ namespace ELOR.VKAPILib {
                     Version = new Version(2, 0)
                 }) {
                     if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
-                        hmsg.Headers.Add("Origin", $"https://id.vk.com");
+                        hmsg.Headers.Add("Origin", $"https://id.vk.ru");
                     }
                     hmsg.Content = new FormUrlEncodedContent(parameters);
 

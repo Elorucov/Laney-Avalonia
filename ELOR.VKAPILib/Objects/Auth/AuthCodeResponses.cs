@@ -20,7 +20,13 @@ namespace ELOR.VKAPILib.Objects.Auth {
 
     public class CheckAuthCodeResponse {
         [JsonPropertyName("status")]
-        public int Status { get; set; } // 0 — not scanned, 1 — scanned and waiting to confirm, 2 — success, 3 — canceled.
+        public int Status { get; set; } // 0 — not scanned, 1 — scanned and waiting to confirm, 2 — success, 3 — canceled, 4 — failed.
+
+        [JsonPropertyName("user_id")]
+        public long UserId { get; private set; }
+
+        [JsonPropertyName("provider_app_id")]
+        public int ProviderAppId { get; private set; }
 
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }

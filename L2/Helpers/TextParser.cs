@@ -29,7 +29,7 @@ namespace ELOR.Laney.Helpers {
         static Regex mailRegex = new Regex(@"([\w\d.]+)@([a-zA-Z0-9а-яА-Я.]{2,256}\.[a-zа-я]{2,8})", RegexOptions.Compiled);
         static Regex userRegex = new Regex(@"\[(id)(\d+)\|(.*?)\]", RegexOptions.Compiled);
         static Regex groupRegex = new Regex(@"\[(club|public|event)(\d+)\|(.*?)\]", RegexOptions.Compiled);
-        static Regex linkInTextRegex = new Regex(@"\[((?:http|https):\/\/vk.com\/[\w\d\W.]*?)\|((.*?)+?)\]", RegexOptions.Compiled);
+        static Regex linkInTextRegex = new Regex(@"\[((?:http|https):\/\/vk.(com|ru)\/[\w\d\W.]*?)\|((.*?)+?)\]", RegexOptions.Compiled);
 
         #region Internal parsing methods
 

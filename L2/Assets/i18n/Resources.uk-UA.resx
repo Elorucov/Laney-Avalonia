@@ -1361,4 +1361,10 @@
   <data name="qr_signin_p2_desc" xml:space="preserve">
     <value>Переконайтеся, що на екрані відображаються дані вашого пристрою, і натисніть кнопку Продовжити</value>
   </data>
+  <data name="note_warn" xml:space="preserve">
+    <value>Увага!</value>
+  </data>
+  <data name="offclient_auth_notice" xml:space="preserve">
+    <value>Вхід до аккаунту буде здійснено від імені програми «VK Месенджер»</value>
+  </data>
 </root>

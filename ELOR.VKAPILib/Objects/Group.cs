@@ -100,7 +100,7 @@ namespace ELOR.VKAPILib.Objects {
             get {
                 if (Uri.IsWellFormedUriString(Photo200, UriKind.Absolute)) return new Uri(Photo200);
                 if (Uri.IsWellFormedUriString(Photo100, UriKind.Absolute)) return new Uri(Photo100);
-                return new Uri("https://vk.com/images/community_200.png");
+                return new Uri("https://vk.ru/images/community_200.png");
             }
         }
 

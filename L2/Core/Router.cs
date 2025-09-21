@@ -24,7 +24,7 @@ namespace ELOR.Laney.Core {
 
         private static readonly Regex idsReg = new Regex(@"(?![A-Za-z]\S)[-0-9]+", RegexOptions.Compiled);
         private static readonly Regex screenNameReg = new Regex(@"(?<=(http(s)?://)?vk.(com|ru|me)/)([A-Za-z0-9._/-]+)", RegexOptions.Compiled);
-        private static readonly Regex writeIdReg = new Regex(@"(?!(http(s)?://)?vk.com/write)[-0-9]+", RegexOptions.Compiled);
+        private static readonly Regex writeIdReg = new Regex(@"(?!(http(s)?://)?vk.(com|ru)/write)[-0-9]+", RegexOptions.Compiled);
 
         public static VKLinkType GetLinkType(string url) {
             if (userReg.IsMatch(url)) return VKLinkType.User;

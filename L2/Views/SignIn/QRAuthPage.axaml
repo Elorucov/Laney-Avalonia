@@ -21,7 +21,7 @@
     <StackPanel Grid.Row="1" Margin="24,12">
       <TextBlock x:Name="PageTitle" Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="{x:Static i18n:Resources.qr_signin_p1_title}"/>
       <TextBlock x:Name="PageDesc" Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="{x:Static i18n:Resources.qr_signin_p1_desc}"/>
-      <qr:QrCode x:Name="QrCodeControl" IsVisible="False" Width="256" Height="256"/>
+      <qr:QrCode x:Name="QrCodeControl" IsVisible="False" Width="256" Height="256" Background="White" Foreground="Black"/>
       <vkui:Spinner x:Name="Loading" Width="44" Height="44" Margin="106"/>
     </StackPanel>
   </Grid>
