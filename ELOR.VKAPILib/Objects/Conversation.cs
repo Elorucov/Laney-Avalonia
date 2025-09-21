@@ -132,7 +132,7 @@ namespace ELOR.VKAPILib.Objects {
                 if (!String.IsNullOrEmpty(BigUrl)) return new Uri(BigUrl);
                 if (!String.IsNullOrEmpty(MediumUrl)) return new Uri(MediumUrl);
                 if (!String.IsNullOrEmpty(SmallUrl)) return new Uri(SmallUrl);
-                return new Uri("https://vk.com/images/icons/im_multichat_200.png");
+                return new Uri("https://vk.ru/images/icons/im_multichat_200.png");
             }
         }
     }

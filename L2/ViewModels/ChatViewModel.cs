@@ -281,7 +281,7 @@ namespace ELOR.Laney.ViewModels {
                 IsFavoritesChat = PeerId == session.Id;
                 if (IsFavoritesChat) {
                     Title = Assets.i18n.Resources.favorites;
-                    Avatar = new Uri("https://vk.com/images/icons/im_favorites_200.png");
+                    Avatar = new Uri("https://vk.ru/images/icons/im_favorites_200.png");
                     // make favorites offline
                     var tmp = PeerUser.OnlineInfo;
                     tmp.IsMobile = false;
@@ -784,7 +784,7 @@ namespace ELOR.Laney.ViewModels {
         //            if (attachments != null) Avatar = attachments[0].Photo.GetSizeAndUriForThumbnail(Constants.ChatHeaderAvatarSize, Constants.ChatHeaderAvatarSize).Uri;
         //            break;
         //        case "chat_photo_remove":
-        //            Avatar = new Uri("https://vk.com/images/icons/im_multichat_200.png");
+        //            Avatar = new Uri("https://vk.ru/images/icons/im_multichat_200.png");
         //            break;
         //        case "chat_pin_message":
         //            UpdatePinnedMessage(action.ConversationMessageId);

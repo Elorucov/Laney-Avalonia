@@ -23,11 +23,11 @@ namespace ELOR.Laney.Core {
         public const string OFFICIAL_CLIENT_SECRET = "4UyuCUsdK8pVCNoeQuGi";
 
         public const int SCOPE = 995414;
-        static Uri authUri = new Uri($"https://oauth.vk.com/authorize?client_id={CLIENT_ID}&redirect_uri=https://oauth.vk.com/blank.html&scope={SCOPE}&response_type=token&revoke=1");
+        static Uri authUri = new Uri($"https://oauth.vk.ru/authorize?client_id={CLIENT_ID}&redirect_uri=https://oauth.vk.ru/blank.html&scope={SCOPE}&response_type=token&revoke=1");
 
         public static async Task<string> GetOauthHashAsync() {
             Dictionary<string, string> headers = new Dictionary<string, string> {
-                { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/115.0.1901.203" }
+                { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0" }
             };
 
             try {
@@ -46,7 +46,7 @@ namespace ELOR.Laney.Core {
         }
 
         public static async Task<OauthResponse> DoConnectCodeAuthAsync(string superAppToken, int appId, int oauthScope, string returnAuthHash) {
-            var hr = await LNet.PostAsync(new Uri($"https://login.vk.com"), new Dictionary<string, string> {
+            var hr = await LNet.PostAsync(new Uri($"https://login.vk.ru"), new Dictionary<string, string> {
                 { "act", "connect_code_auth" },
                 { "token", superAppToken },
                 { "app_id", appId.ToString() },
@@ -58,7 +58,7 @@ namespace ELOR.Laney.Core {
                 { "version", "1" },
                 { "to", "aHR0cHM6Ly9vYXV0aC52ay5jb20vYmxhbmsuaHRtbA==" }
             }, new Dictionary<string, string> {
-                { "Origin", $"https://id.vk.com" }
+                { "Origin", $"https://id.vk.ru" }
             });
             var response = await hr.Content.ReadAsStreamAsync();
             var root = await JsonNode.ParseAsync(response);
@@ -86,7 +86,7 @@ namespace ELOR.Laney.Core {
                 .ToString();
 
             // string cookiestr = String.Join("\n", cookies);
-            var hr = await LNet.PostAsync(new Uri($"https://login.vk.com"), new Dictionary<string, string> {
+            var hr = await LNet.PostAsync(new Uri($"https://login.vk.ru"), new Dictionary<string, string> {
                 { "act", "connect_internal" },
                 { "app_id", appId.ToString() },
                 { "uuid", "" },
@@ -95,7 +95,7 @@ namespace ELOR.Laney.Core {
                 { "oauth_version", "1" },
                 { "version", "1" }
             }, new Dictionary<string, string> {
-                { "Origin", $"https://id.vk.com" }
+                { "Origin", $"https://id.vk.ru" }
             });
             var response = await hr.Content.ReadAsStreamAsync();
 
