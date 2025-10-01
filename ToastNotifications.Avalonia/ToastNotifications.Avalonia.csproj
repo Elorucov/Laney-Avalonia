@@ -16,8 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.4" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.4" />
+    <PackageReference Include="Avalonia" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.6" />
+    <!-- Experimental SkiaSharp 3 -->
+    <PackageVersion Include="SkiaSharp" Version="3.119.0" />
+    <PackageVersion Include="SkiaSharp.HarfBuzz" Version="3.119.0" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.0" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.iOS" Version="3.119.0" />
   </ItemGroup>
 
   <ItemGroup>
