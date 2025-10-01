@@ -23,7 +23,6 @@
     <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
     <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
     <InvariantGlobalization>false</InvariantGlobalization>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <ApplicationIcon>Assets/Logo/icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -50,6 +49,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Avalonia">
     <AvaloniaXamlVerboseExceptions>True</AvaloniaXamlVerboseExceptions>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <!-- Temporary fix issue https://github.com/dotnet/runtime/issues/98124 -->
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
@@ -178,17 +178,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.6" />
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.6" />
+    <PackageReference Include="Avalonia" Version="12.0.999-cibuild0059095-alpha" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.2.999-cibuild0046261-alpha" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.0.999-cibuild0059095-alpha" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.6" />
-    <PackageReference Include="Avalonia.Labs.Controls" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Labs.Lottie" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Labs.Notifications" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Labs.Panels" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Labs.Qr" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.6" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="12.0.999-cibuild0059095-alpha" />
+    <PackageReference Include="Avalonia.Labs.Controls" Version="11.3.999" />
+    <PackageReference Include="Avalonia.Labs.Lottie" Version="11.3.999" />
+    <PackageReference Include="Avalonia.Labs.Notifications" Version="11.3.999" />
+    <PackageReference Include="Avalonia.Labs.Panels" Version="11.3.999" />
+    <PackageReference Include="Avalonia.Labs.Qr" Version="11.3.999" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="12.0.999-cibuild0059095-alpha" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -205,12 +205,6 @@
     <PackageReference Include="Unicode.net" Version="2.0.0" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="VideoLAN.LibVLC.Mac" Version="3.1.3.1" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
-    <!-- Experimental SkiaSharp 3 -->
-    <PackageVersion Include="SkiaSharp" Version="3.119.0" />
-    <PackageVersion Include="SkiaSharp.HarfBuzz" Version="3.119.0" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.0" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.iOS" Version="3.119.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
