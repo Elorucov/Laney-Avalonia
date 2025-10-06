@@ -79,11 +79,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.2.999-cibuild0046261-alpha" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="12.0.999-cibuild0059095-alpha" />
-    <PackageReference Include="Avalonia" Version="12.0.999-cibuild0059095-alpha" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.0.999-cibuild0059095-alpha" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="12.0.999-cibuild0059215-alpha" />
+    <PackageReference Include="Avalonia" Version="12.0.999-cibuild0059215-alpha" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.0.999-cibuild0059215-alpha" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="12.0.999-cibuild0059095-alpha" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="12.0.999-cibuild0059215-alpha" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="**/*.xaml" />
