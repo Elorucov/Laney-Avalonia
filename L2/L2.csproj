@@ -6,17 +6,19 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.663</AssemblyVersion>
-    <FileVersion>2.0.663</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.663-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.663-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.663-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.664</AssemblyVersion>
+    <FileVersion>2.0.664</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.664-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.664-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.664-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
     <Platforms>AnyCPU</Platforms>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
     <TrimMode>copyused</TrimMode>
+    <!-- Necessary before Avalonia 12.0, was used for accessiblity APIs -->
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
     <GarbageCollectionAdaptationMode>1</GarbageCollectionAdaptationMode>
     <AutoreleasePoolSupport>false</AutoreleasePoolSupport>
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
@@ -178,17 +180,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.7" />
+    <PackageReference Include="Avalonia" Version="11.3.8" />
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.8" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.7" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.8" />
     <PackageReference Include="Avalonia.Labs.Controls" Version="11.3.1" />
     <PackageReference Include="Avalonia.Labs.Lottie" Version="11.3.1" />
     <PackageReference Include="Avalonia.Labs.Notifications" Version="11.3.1" />
     <PackageReference Include="Avalonia.Labs.Panels" Version="11.3.1" />
     <PackageReference Include="Avalonia.Labs.Qr" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.7" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.8" />
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="Chisel" Version="1.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

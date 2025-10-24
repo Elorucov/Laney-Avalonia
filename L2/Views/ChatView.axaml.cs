@@ -239,9 +239,10 @@ namespace ELOR.Laney.Views {
 
         // TODO: execute (mark message and reactions as read in one request).
         private void MarkReadTimer_Tick(object sender, EventArgs e) {
+            if (Chat == null) return;
             new System.Action(async () => {
                 await TryMarkAsReadAsync(LastVisible);
-                if (Chat.UnreadReactions != null) await TryMarkReactionsAsReadAsync();
+                if (Chat?.UnreadReactions != null) await TryMarkReactionsAsReadAsync();
             })();
         }
 
