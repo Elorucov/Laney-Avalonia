@@ -38,14 +38,11 @@
     </ResourceDictionary>
   </Styles.Resources>
 
-  <!-- Segoe UI on Windows and, as I found out recently, SFUI on macOS renders bad on current version of Avalonia (line-height issue).
-  That's why we using Roboto on Windows and macOS currently, but by design we need use system font for these OS-->
   <OnPlatform>
     <OnPlatform.Default>
       <StyleInclude Source="/TypographyCustomFont.xaml"/>
     </OnPlatform.Default>
     <OnPlatform.macOS>
-      <!-- <StyleInclude Source="/Typography.xaml"/> -->
       <StyleInclude Source="/TypographyCustomFont.xaml"/>
     </OnPlatform.macOS>
   </OnPlatform>
