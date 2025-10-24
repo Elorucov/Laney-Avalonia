@@ -71,6 +71,7 @@ namespace ELOR.Laney.DataModels {
             string inviteuserbycalljoinlink = Localizer.Get("msg_action_invite_user_by_call_join_link", actionerSex);
             string inviteuserbycallsuffix = !String.IsNullOrWhiteSpace(Assets.i18n.Resources.msg_action_invite_user_by_call) ? $" {Assets.i18n.Resources.msg_action_invite_user_by_call}" : String.Empty;
             string styleupdate = String.IsNullOrEmpty(act.Style) ? Localizer.Get("msg_action_style_reset", actionerSex) : $"{Localizer.Get("msg_action_style_update", actionerSex)} «{act.Style}»";
+            string ownerchanged = Localizer.Get("msg_action_owner_changed", memberSex);
 
             switch (act.Type) {
                 case "chat_create":
@@ -133,10 +134,20 @@ namespace ELOR.Laney.DataModels {
                 case "conversation_style_update":
                     ActionText = styleupdate;
                     break;
+                case "chat_owner_changed":
+                    ObjectId = act.MemberId;
+                    ObjectDisplayName = memberNameGen;
+                    ActionText = ownerchanged;
+                    break;
+                default:
+                    ActionText = String.Format(Assets.i18n.Resources.unsupported, act.Type);
+                    InitiatorDisplayName = string.Empty;
+                    break;
             }
         }
 
         public override string ToString() {
+            if (string.IsNullOrEmpty(InitiatorDisplayName)) return ActionText;
             return String.Join(" ", new List<string> { InitiatorDisplayName, ActionText, ObjectDisplayName, Suffix }).Trim();
         }
     }

@@ -1370,4 +1370,13 @@ to attach them as files</value>
   <data name="offclient_auth_notice" xml:space="preserve">
     <value>Login will be done on behalf of the "VK Messenger" app</value>
   </data>
+  <data name="unsupported" xml:space="preserve">
+    <value>Not supported: {0}</value>
+  </data>
+  <data name="msg_action_owner_changed_f" xml:space="preserve">
+    <value>changed the chat owner to</value>
+  </data>
+  <data name="msg_action_owner_changed_m" xml:space="preserve">
+    <value>changed the chat owner to</value>
+  </data>
 </root>

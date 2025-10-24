@@ -1367,4 +1367,13 @@
   <data name="offclient_auth_notice" xml:space="preserve">
     <value>Вход в аккаунт будет совершён от имени приложения «VK Мессенджер»</value>
   </data>
+  <data name="unsupported" xml:space="preserve">
+    <value>Не поддерживается: {0}</value>
+  </data>
+  <data name="msg_action_owner_changed_f" xml:space="preserve">
+    <value>сменила владельца чата на</value>
+  </data>
+  <data name="msg_action_owner_changed_m" xml:space="preserve">
+    <value>сменил владельца чата на</value>
+  </data>
 </root>

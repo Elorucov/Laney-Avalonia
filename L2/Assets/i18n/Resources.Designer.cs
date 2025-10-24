@@ -2109,6 +2109,24 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to changed the chat owner to.
+        /// </summary>
+        public static string msg_action_owner_changed_f {
+            get {
+                return ResourceManager.GetString("msg_action_owner_changed_f", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to changed the chat owner to.
+        /// </summary>
+        public static string msg_action_owner_changed_m {
+            get {
+                return ResourceManager.GetString("msg_action_owner_changed_m", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to deleted the group chat photo.
         /// </summary>
         public static string msg_action_photo_remove_f {
@@ -3509,6 +3527,15 @@ namespace ELOR.Laney.Assets.i18n {
         public static string unpin {
             get {
                 return ResourceManager.GetString("unpin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not supported: {0}.
+        /// </summary>
+        public static string unsupported {
+            get {
+                return ResourceManager.GetString("unsupported", resourceCulture);
             }
         }
         
