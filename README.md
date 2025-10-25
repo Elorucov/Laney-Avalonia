@@ -29,7 +29,7 @@
 
 ## Клонирование и запуск
 ```bash
-git clone https://github.com/Elorucov/Laney-Avalonia.git
+git clone --recurse-submodules https://github.com/Elorucov/Laney-Avalonia.git
 cd Laney-Avalonia/L2
 dotnet run
 ```

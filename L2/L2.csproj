@@ -215,14 +215,12 @@
     <ProjectReference Include="..\ELOR.VKAPILib\ELOR.VKAPILib.csproj" />
     <ProjectReference Include="..\ToastNotifications.Avalonia\ToastNotifications.Avalonia.csproj" />
     <ProjectReference Include="..\VKUI\VKUI.csproj" />
+    <ProjectReference Include="..\External\Markdown.Avalonia\ColorTextBlock.Avalonia\ColorTextBlock.Avalonia.csproj" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\SettingsCategories\Appearance.axaml" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ColorTextBlock.Avalonia">
-      <HintPath>..\Libraries\ColorTextBlock.Avalonia.dll</HintPath>
-    </Reference>
     <!--<Reference Include="DesktopNotifications">
       <HintPath>..\Libraries\DesktopNotifications.dll</HintPath>
     </Reference>

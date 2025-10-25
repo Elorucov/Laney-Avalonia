@@ -1,5 +1,6 @@
 ﻿using Avalonia.Collections;
 using ColorTextBlock.Avalonia;
+using ELOR.Laney.Assets.i18n;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,7 +96,11 @@ namespace ELOR.Laney.Helpers {
         }
 
         private static CHyperlink BuildCHyperlinkForRTBStyle(string text, string link, CTextBlock rtb, Action<string> clickedCallback) {
-            CHyperlink hl = new CHyperlink(new List<CInline> { new CRun() { Text = text } }) {
+            CHyperlink hl = new CHyperlink(new List<CInline> { 
+                new CRun() {
+                    Text = text
+                } 
+            }) {
                 CommandParameter = link
             };
             hl.Command = (a) => clickedCallback?.Invoke(a);

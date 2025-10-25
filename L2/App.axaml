@@ -151,6 +151,10 @@
       <Setter Property="Foreground" Value="{DynamicResource VKTextLinkBrush}"/>
     </Style>
 
+    <Style Selector="ctb|CRun">
+      <Setter Property="LetterSpacing" Value="{StaticResource TextDefaultLetterSpacing}"/>
+    </Style>
+
     <Style Selector="Button.Hyperlink">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Padding" Value="0"/>
