@@ -1,0 +1,50 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:ELOR.Laney.Controls"
+        xmlns:atch="using:ELOR.Laney.Controls.Attachments"
+        xmlns:vkui="using:VKUI.Controls"
+        xmlns:ctb="using:ColorTextBlock.Avalonia">
+
+  <ControlTheme x:Key="{x:Type controls:ForwardedMessage}" TargetType="controls:ForwardedMessage">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid ColumnDefinitions="Auto *">
+          <vkui:Avatar x:Name="Avatar" VerticalAlignment="Top" Width="24" Height="24" Margin="0,0,10,0" Foreground="White"/>
+          <StackPanel Grid.Column="1">
+            <Grid Grid.Column="1" VerticalAlignment="Center" ColumnDefinitions="Auto *" Margin="0,0,0,2">
+              <TextBlock x:Name="Author" Classes="Caption1" FontWeight="Medium" Foreground="{DynamicResource VKImTextNameBrush}"/>
+              <TextBlock x:Name="MessageInfo" Grid.Column="1" Classes="Caption1" Margin="8,0,0,0" Foreground="{DynamicResource VKTextSecondaryBrush}"/>
+            </Grid>
+            <StackPanel Spacing="4">
+              <Button x:Name="ReplyMessageButton" Classes="Tertiary" Margin="0,4,0,0" Padding="0" CornerRadius="0" IsVisible="False">
+                <DockPanel>
+                  <Rectangle Fill="{DynamicResource VKImTextNameBrush}" Width="2" RadiusX="1" RadiusY="1" Margin="0,0,6,0" VerticalAlignment="Stretch"/>
+                  <controls:CompactMessage x:Name="Reply"/>
+                </DockPanel>
+              </Button>
+              <ctb:CTextBlock x:Name="MessageText" IsVisible="False" FontSize="16" LineHeight="20" Margin="0,0,0,0" TextWrapping="Wrap" Foreground="{DynamicResource VKTextPrimaryBrush}"/>
+              <atch:AttachmentsContainer x:Name="Attachments" NoMargins="True" Margin="0,0,0,0" IsVisible="False"/>
+              <Rectangle x:Name="Map" Margin="0,0,0,0" IsVisible="False" RadiusX="4" RadiusY="4"/>
+              <Border x:Name="ForwardedMessagesContainer" Margin="0,-4,0,0" IsVisible="False" BorderBrush="{DynamicResource VKImForwardLineTintBrush}" BorderThickness="2,0,0,0">
+                <StackPanel x:Name="ForwardedMessagesStack" Margin="8,0,0,0" Spacing="12"/>
+              </Border>
+              <Button x:Name="CMButton" IsVisible="False" Padding="8" Background="{DynamicResource NestedMessageBackgroundBrush}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <StackPanel>
+                  <Grid ColumnDefinitions="Auto *">
+                    <vkui:Avatar x:Name="CMSenderAvatar" VerticalAlignment="Top" Width="16" Height="16" Margin="0,0,6,0"/>
+                    <StackPanel Grid.Column="1">
+                      <TextBlock x:Name="CMSenderName" Classes="Caption1" MaxLines="1" Margin="0,0,0,2" FontWeight="SemiBold" Foreground="{DynamicResource VKImTextNameBrush}"/>
+                      <TextBlock x:Name="CMText" TextTrimming="CharacterEllipsis" MaxLines="1" Classes="Default"/>
+                    </StackPanel>
+                  </Grid>
+                  <!-- TODO: remove left margin and add avatarstack instead -->
+                  <TextBlock x:Name="CMMore" Margin="22,10,0,0" IsVisible="False" Foreground="{DynamicResource VKTextLinkBrush}"  Classes="Caption1"/>
+                </StackPanel>
+              </Button>
+            </StackPanel>
+          </StackPanel>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

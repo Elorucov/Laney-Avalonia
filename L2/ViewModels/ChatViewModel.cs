@@ -567,7 +567,7 @@ namespace ELOR.Laney.ViewModels {
                 int offset = -count / 2;
 
                 // TODO: use messages.getHistory, т. к. участников получаем сразу после первой загрузки сообщений.
-                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, offset, count, startMessageId, true, VKAPIHelper.Fields, false);
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, offset, count, startMessageId, true, VKAPIHelper.Fields, false, Constants.NestedMessagesLimit);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
 
@@ -610,7 +610,7 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadPreviousMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages?.Count);
                 IsLoading = true;
-                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, true, VKAPIHelper.Fields, false);
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, true, VKAPIHelper.Fields, false, Constants.NestedMessagesLimit);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
                 mhr.Items?.Reverse();
@@ -637,7 +637,7 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadNextMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages.Count);
                 IsLoading = true;
-                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, true, VKAPIHelper.Fields, false);
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, true, VKAPIHelper.Fields, false, Constants.NestedMessagesLimit);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
                 mhr.Items?.Reverse();
@@ -1051,8 +1051,10 @@ namespace ELOR.Laney.ViewModels {
                     var video = acts.Where(a => a?.Status == LongPollActivityType.UploadingVideo).ToList();
                     var file = acts.Where(a => a?.Status == LongPollActivityType.UploadingFile).ToList();
                     var circle = acts.Where(a => a?.Status == LongPollActivityType.UploadingVideoMessage).ToList();
+                    var choosingFile = acts.Where(a => a?.Status == LongPollActivityType.ChoosingFile).ToList();
+                    var choosingTemplate = acts.Where(a => a?.Status == LongPollActivityType.ChoosingTemplate).ToList();
                     List<List<LongPollActivityInfo>> groupedActivities = new List<List<LongPollActivityInfo>> {
-                        typing, voice, photo, video, file, circle
+                        typing, voice, photo, video, file, circle, choosingFile, choosingTemplate
                     };
 
                     bool has3AndMoreDifferentTypes = groupedActivities.Where(a => a.Count > 0).Count() >= 3;
@@ -1091,6 +1093,8 @@ namespace ELOR.Laney.ViewModels {
                 case LongPollActivityType.UploadingVideo: return Localizer.Get($"lp_act_video{suffix}");
                 case LongPollActivityType.UploadingFile: return Localizer.Get($"lp_act_file{suffix}");
                 case LongPollActivityType.UploadingVideoMessage: return Localizer.Get($"lp_act_videomsg{suffix}");
+                case LongPollActivityType.ChoosingFile: return Localizer.Get($"lp_act_choosing_file{suffix}");
+                case LongPollActivityType.ChoosingTemplate: return Localizer.Get($"lp_act_choosing_template{suffix}");
             }
             return string.Empty;
         }

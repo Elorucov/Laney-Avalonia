@@ -1,0 +1,3 @@
+[submodule "External/Markdown.Avalonia"]
+	path = External/Markdown.Avalonia
+	url = https://github.com/Elorucov/Markdown.Avalonia

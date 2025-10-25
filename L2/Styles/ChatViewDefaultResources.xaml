@@ -8,12 +8,14 @@
       <SolidColorBrush x:Key="MessageBubbleDefaultIncomingBrush" Color="{StaticResource VKWhiteColor}"/>
       <SolidColorBrush x:Key="MessageBubbleDefaultOutgoingBrush" Color="{StaticResource VKWhiteBlue20Color}"/>
       <SolidColorBrush x:Key="MessageBubbleOutgoingTextSecondaryBrush" Color="#2688eb"/>
+      <SolidColorBrush x:Key="NestedMessageBackgroundBrush" Color="{StaticResource VKAzure300Color}" Opacity="0.08"/>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
       <SolidColorBrush x:Key="MessageBubbleDefaultIncomingBrush" Color="{StaticResource VKGray800Color}"/>
       <SolidColorBrush x:Key="MessageBubbleDefaultOutgoingBrush" Color="#1e2f42"/>
       <SolidColorBrush x:Key="MessageBubbleOutgoingTextSecondaryBrush" Color="#529ef4"/>
+      <SolidColorBrush x:Key="NestedMessageBackgroundBrush" Color="{StaticResource VKSky300Color}" Opacity="0.08"/>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>

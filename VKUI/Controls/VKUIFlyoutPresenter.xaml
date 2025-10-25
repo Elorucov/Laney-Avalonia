@@ -39,7 +39,7 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type controls:VKUIFlyoutPresenter}" TargetType="controls:VKUIFlyoutPresenter">
-    <Setter Property="TextElement.FontFamily" Value="avares://VKUI/Fonts#Roboto"/>
+    <Setter Property="TextElement.FontFamily" Value="{StaticResource VKSansText}"/>
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel>

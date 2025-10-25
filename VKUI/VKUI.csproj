@@ -45,11 +45,6 @@
     <None Remove="Controls\VKUIFlyoutPresenter.xaml" />
     <None Remove="Controls\WindowNotificationManager.xaml" />
     <None Remove="Controls\WindowTitleBar.xaml" />
-    <None Remove="Fonts\Roboto-Bold.ttf" />
-    <None Remove="Fonts\Roboto-Light.ttf" />
-    <None Remove="Fonts\Roboto-Medium.ttf" />
-    <None Remove="Fonts\Roboto-Regular.ttf" />
-    <None Remove="Fonts\Roboto-SemiBold.ttf" />
     <None Remove="Fonts\VKSansDisplay-Bold.otf" />
     <None Remove="Fonts\VKSansDisplay-Regular.otf" />
     <None Remove="Fonts\VKSansText-Bold.ttf" />
@@ -99,20 +94,14 @@
     <AvaloniaResource Remove="Styles\ToggleSwitchStyles.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Fonts\Roboto-Bold.ttf" />
-    <AvaloniaResource Include="Fonts\Roboto-Light.ttf" />
-    <AvaloniaResource Include="Fonts\Roboto-Medium.ttf" />
-    <AvaloniaResource Include="Fonts\Roboto-Regular.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-Bold.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-Light.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-Medium.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-Regular.ttf" />
+    <AvaloniaResource Include="Fonts\VKSansText-SemiBold.ttf" />
     <AvaloniaResource Include="Fonts\VKSansDisplay-Bold.otf" />
     <AvaloniaResource Include="Fonts\VKSansDisplay-Regular.otf" />
   </ItemGroup>
-  <!--<ItemGroup Condition="$(RuntimeIdentifier.StartsWith('linux'))">
-    <AvaloniaResource Include="Fonts\Roboto-Bold.ttf" />
-    <AvaloniaResource Include="Fonts\Roboto-Light.ttf" />
-    <AvaloniaResource Include="Fonts\Roboto-Medium.ttf" />
-    <AvaloniaResource Include="Fonts\Roboto-Regular.ttf" />
-    <AvaloniaResource Include="Fonts\Roboto-SemiBold.ttf" />
-  </ItemGroup>-->
   <ItemGroup>
     <AvaloniaXaml Include="Styles\ButtonStyles.xaml" />
     <AvaloniaXaml Include="Styles\ComboBoxStyles.xaml" />

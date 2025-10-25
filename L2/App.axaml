@@ -22,6 +22,7 @@
         <ResourceInclude Source="/Controls/BotKeyboardUI.xaml"/>
         <ResourceInclude Source="/Controls/ChatViewItem.xaml"/>
         <ResourceInclude Source="/Controls/CompactMessage.xaml"/>
+        <ResourceInclude Source="/Controls/ForwardedMessage.xaml"/>
         <ResourceInclude Source="/Controls/MediaSlider.xaml"/>
         <ResourceInclude Source="/Controls/MessageBubble.xaml"/>
         <ResourceInclude Source="/Controls/MessagesListBox.xaml"/>
@@ -149,6 +150,10 @@
 
     <Style Selector="ctb|CHyperlink">
       <Setter Property="Foreground" Value="{DynamicResource VKTextLinkBrush}"/>
+    </Style>
+
+    <Style Selector="ctb|CRun">
+      <Setter Property="LetterSpacing" Value="{StaticResource TextDefaultLetterSpacing}"/>
     </Style>
 
     <Style Selector="Button.Hyperlink">

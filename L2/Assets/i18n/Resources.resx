@@ -1379,4 +1379,16 @@ to attach them as files</value>
   <data name="msg_action_owner_changed_m" xml:space="preserve">
     <value>changed the chat owner to</value>
   </data>
+  <data name="lp_act_choosing_file_single" xml:space="preserve">
+    <value>is choosing a file</value>
+  </data>
+  <data name="lp_act_choosing_file_multi" xml:space="preserve">
+    <value>is choosing a file</value>
+  </data>
+  <data name="lp_act_choosing_template_multi" xml:space="preserve">
+    <value>is choosing a template</value>
+  </data>
+  <data name="lp_act_choosing_template_single" xml:space="preserve">
+    <value>is choosing a template</value>
+  </data>
 </root>

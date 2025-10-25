@@ -12,10 +12,15 @@ using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.ViewModels.Controls;
 using ELOR.Laney.Views.Modals;
+using ELOR.VKAPILib.Objects;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Controls {
@@ -311,32 +316,25 @@ namespace ELOR.Laney.Controls {
             var fmsmargin = ForwardedMessagesStack.Margin;
             double fmwidth = fmcmargin.Left + fmcmargin.Right + fmcborder.Left + fmsmargin.Left;
 
-            if (Message.ForwardedMessages?.Count > MAX_DISPLAYED_FORWARDED_MESSAGES) {
-                Button fwdsButton = new Button {
-                    Padding = new Thickness(0),
-                    MinHeight = 16,
-                    ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplateAccent"),
-                    Content = Localizer.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message")
-                };
-                fwdsButton.Classes.Add("Tertiary");
-                fwdsButton.Click += async (a, b) => {
-                    StandaloneMessageViewer smv = new StandaloneMessageViewer(Message.OwnerSession, Message.ForwardedMessages);
-                    await smv.ShowDialog(Message.OwnerSession.ModalWindow);
-                };
-                ForwardedMessagesStack.Children.Add(fwdsButton);
-            } else {
-                ForwardedMessagesStack.Children.Add(new ContentControl {
-                    ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplate"),
-                    Content = Localizer.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message"),
-                    Margin = new Thickness(0, 0, 0, -4),
-                    Height = 16
+            ForwardedMessagesStack.Children.Add(new ContentControl {
+                ContentTemplate = App.Current.GetCommonTemplate("ForwardedMessagesInfoTemplate"),
+                Content = Localizer.GetDeclensionFormatted(Message.ForwardedMessages.Count, "forwarded_message"),
+                Margin = new Thickness(0, 0, 0, -4),
+                Height = 16
+            });
+            foreach (var message in Message.ForwardedMessages) {
+                ForwardedMessagesStack.Children.Add(new ForwardedMessage {
+                    Width = BubbleRoot.Width - fmwidth,
+                    Message = message,
+                    SnippetMessageClick = async () => {
+                        if (Message.HasMoreNestedMessage) {
+                            await GetFullMessageAndShowForwardedAsync(message.PeerId, message.ConversationMessageId);
+                        } else {
+                            StandaloneMessageViewer smv = new StandaloneMessageViewer(Message.OwnerSession, message);
+                            await smv.ShowDialog(Message.OwnerSession.ModalWindow);
+                        }
+                    }
                 });
-                foreach (var message in Message.ForwardedMessages) {
-                    ForwardedMessagesStack.Children.Add(new PostUI {
-                        Width = BubbleRoot.Width - fmwidth,
-                        Post = message
-                    });
-                }
             }
 
             // Gift
@@ -380,6 +378,36 @@ namespace ELOR.Laney.Controls {
             }
         }
 
+        private async Task GetFullMessageAndShowForwardedAsync(long peerId, int cmid) {
+            try {
+                var session = Message.OwnerSession;
+                VKUIWaitDialog<MessagesList> wd = new VKUIWaitDialog<MessagesList>();
+                MessagesList response = await wd.ShowAsync(session.ModalWindow, session.API.Messages.GetByConversationMessageIdAsync(0, Message.PeerId, new List<int> { Message.ConversationMessageId }));
+
+                if (response.Items.Count > 0) {
+                    FindInForwardedAndShowMessage(response.Items.FirstOrDefault(), ref peerId, ref cmid);
+                }
+            } catch (Exception ex) {
+                await ExceptionHelper.ShowErrorDialogAsync(Message.OwnerSession.ModalWindow, ex);
+            }
+        }
+
+        private void FindInForwardedAndShowMessage(Message message, ref long peerId, ref int cmid) {
+            if (message.ForwardedMessages == null || message.ForwardedMessages.Count == 0) return;
+
+            foreach (var curMsg in CollectionsMarshal.AsSpan(message.ForwardedMessages)) {
+                if (curMsg.PeerId == peerId && curMsg.ConversationMessageId == cmid) {
+                    new System.Action(async () => {
+                        await Task.Delay(32); // required!
+                        StandaloneMessageViewer smv = new StandaloneMessageViewer(Message.OwnerSession, curMsg);
+                        await smv.ShowDialog(Message.OwnerSession.ModalWindow);
+                    })();
+                    return;
+                }
+                FindInForwardedAndShowMessage(curMsg, ref peerId, ref cmid);
+            }
+        }
+
         private void BubbleRoot_SizeChanged(object sender, SizeChangedEventArgs e) {
             double indicatorsWidth = IndicatorContainer.DesiredSize.Width;
             Debug.WriteLine($"IC Width: {indicatorsWidth}");
@@ -416,7 +444,7 @@ namespace ELOR.Laney.Controls {
         }
 
         private void OnLinkClicked(string link) {
-            new Action(async () => await Router.LaunchLink(VKSession.GetByDataContext(this), link))();
+            new System.Action(async () => await Router.LaunchLink(VKSession.GetByDataContext(this), link))();
         }
 
         private void SendOrDeleteReaction(object obj) {
@@ -428,7 +456,7 @@ namespace ELOR.Laney.Controls {
             int cmid = Message.ConversationMessageId;
             bool remove = Message.SelectedReactionId == picked;
 
-            new Action(async () => {
+            new System.Action(async () => {
                 try {
                     bool response = remove
                         ? await session.API.Messages.DeleteReactionAsync(session.GroupId, peerId, cmid)
@@ -565,7 +593,7 @@ namespace ELOR.Laney.Controls {
         #region Template events
 
         private void AvatarButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            new Action(async () => await Router.OpenPeerProfileAsync(Message.OwnerSession, Message.SenderId))();
+            new System.Action(async () => await Router.OpenPeerProfileAsync(Message.OwnerSession, Message.SenderId))();
         }
 
         private void ReplyMessageButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) {

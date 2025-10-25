@@ -86,7 +86,7 @@ namespace ELOR.Laney.ViewModels {
             IsLoading = true;
             Placeholder = null;
             try {
-                var response = await session.API.Messages.GetConversationsAsync(session.GroupId, VKAPIHelper.Fields, ConversationsFilter.All, true, 60, _chats.Count);
+                var response = await session.API.Messages.GetConversationsAsync(session.GroupId, VKAPIHelper.Fields, ConversationsFilter.All, true, 60, _chats.Count, Constants.NestedMessagesLimit);
                 CacheManager.Add(response.Profiles);
                 CacheManager.Add(response.Groups);
 

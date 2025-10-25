@@ -9,6 +9,8 @@
       <BoxShadows x:Key="VKElevation3">0 0 2 #14000000, 0 4 16 #14000000</BoxShadows>
       <BoxShadows x:Key="VKElevation4">0 0 8 #1F000000, 0 16 16 #29000000</BoxShadows>
 
+      <x:Double x:Key="TextDefaultLetterSpacing">-0.2</x:Double>
+
       <!-- To remove margin in NavigationControl -->
       <Thickness x:Key="NavigationControlPageMargin">0</Thickness>
       
@@ -38,14 +40,11 @@
     </ResourceDictionary>
   </Styles.Resources>
 
-  <!-- Segoe UI on Windows and, as I found out recently, SFUI on macOS renders bad on current version of Avalonia (line-height issue).
-  That's why we using Roboto on Windows and macOS currently, but by design we need use system font for these OS-->
   <OnPlatform>
     <OnPlatform.Default>
       <StyleInclude Source="/TypographyCustomFont.xaml"/>
     </OnPlatform.Default>
     <OnPlatform.macOS>
-      <!-- <StyleInclude Source="/Typography.xaml"/> -->
       <StyleInclude Source="/TypographyCustomFont.xaml"/>
     </OnPlatform.macOS>
   </OnPlatform>

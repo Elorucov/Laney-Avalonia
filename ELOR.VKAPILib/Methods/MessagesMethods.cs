@@ -312,7 +312,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="count">Number of conversations to return.</param>
         /// <param name="offset">Offset needed to return a specific subset of conversations.</param>
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
-        public async Task<ConversationsResponse> GetConversationsAsync(long groupId, List<string> fields, ConversationsFilter filter, bool extended = false, int count = 60, int offset = 0) {
+        public async Task<ConversationsResponse> GetConversationsAsync(long groupId, List<string> fields, ConversationsFilter filter, bool extended = false, int count = 60, int offset = 0, int nestedLimit = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("filter", filter.ToEnumMemberAttribute());
@@ -320,6 +320,7 @@ namespace ELOR.VKAPILib.Methods {
             parameters.Add("offset", offset.ToString());
             if (extended) parameters.Add("extended", "1");
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
+            if (nestedLimit > 0) parameters.Add("nested_limit", nestedLimit.ToString());
             return await API.CallMethodAsync<ConversationsResponse>("messages.getConversations", parameters);
         }
 
@@ -364,7 +365,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="extended">true – return additional information about users and communities in users and communities fields.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>
         /// <param name="rev">Sort order.</param>
-        public async Task<MessagesHistoryResponse> GetHistoryAsync(long groupId, long peerId, int offset, int count, int startCMID, bool extended = false, List<string> fields = null, bool rev = false) {
+        public async Task<MessagesHistoryResponse> GetHistoryAsync(long groupId, long peerId, int offset, int count, int startCMID, bool extended = false, List<string> fields = null, bool rev = false, int nestedLimit = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("peer_id", peerId.ToString());
@@ -374,6 +375,7 @@ namespace ELOR.VKAPILib.Methods {
             if (rev) parameters.Add("rev", "1");
             if (extended) parameters.Add("extended", "1");
             if (!fields.IsNullOrEmpty()) parameters.Add("fields", fields.Combine());
+            if (nestedLimit > 0) parameters.Add("nested_limit", nestedLimit.ToString());
             return await API.CallMethodAsync<MessagesHistoryResponse>("messages.getHistory", parameters);
         }
 
@@ -458,7 +460,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="eventsLimit">Maximum number of events to return. (minimum 1000)</param>
         /// <param name="msgsLimit">Maximum number of messages to return. (minimum 200)</param>
         /// <param name="maxMsgId">Maximum ID of the message among existing ones in the local copy.</param>
-        public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(long groupId, int version, int ts, int pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null) {
+        public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(long groupId, int version, int ts, int pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null, int nestedLimit = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("lp_version", version.ToString());
@@ -472,6 +474,7 @@ namespace ELOR.VKAPILib.Methods {
             if (!fields.IsNullOrEmpty()) {
                 parameters.Add("extended", "1");
                 parameters.Add("fields", fields.Combine());
+                if (nestedLimit > 0) parameters.Add("nested_limit", nestedLimit.ToString());
             }
             return await API.CallMethodAsync<LongPollHistoryResponse>("messages.getLongPollHistory", parameters);
         }
