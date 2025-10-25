@@ -1614,6 +1614,42 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to is choosing a file.
+        /// </summary>
+        public static string lp_act_choosing_file_multi {
+            get {
+                return ResourceManager.GetString("lp_act_choosing_file_multi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is choosing a file.
+        /// </summary>
+        public static string lp_act_choosing_file_single {
+            get {
+                return ResourceManager.GetString("lp_act_choosing_file_single", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is choosing a template.
+        /// </summary>
+        public static string lp_act_choosing_template_multi {
+            get {
+                return ResourceManager.GetString("lp_act_choosing_template_multi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is choosing a template.
+        /// </summary>
+        public static string lp_act_choosing_template_single {
+            get {
+                return ResourceManager.GetString("lp_act_choosing_template_single", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is sending a file.
         /// </summary>
         public static string lp_act_file_multi {

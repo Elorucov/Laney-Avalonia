@@ -352,6 +352,8 @@ namespace ELOR.Laney.Core {
                     case 66:
                     case 67:
                     case 68:
+                    case 69:
+                    case 70:
                         LongPollActivityType type = GetLPActivityType(eventId);
                         long peerId63 = (long)u[1];
                         long[] userIds = (long[])u[2].Deserialize(typeof(long[]), L2JsonSerializerContext.Default);
@@ -490,6 +492,8 @@ namespace ELOR.Laney.Core {
                 case 66: return LongPollActivityType.UploadingVideo;
                 case 67: return LongPollActivityType.UploadingFile;
                 case 68: return LongPollActivityType.UploadingVideoMessage;
+                case 69: return LongPollActivityType.ChoosingFile;
+                case 70: return LongPollActivityType.ChoosingTemplate;
             }
         }
 

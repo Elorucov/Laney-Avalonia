@@ -1376,4 +1376,16 @@
   <data name="msg_action_owner_changed_m" xml:space="preserve">
     <value>сменил владельца чата на</value>
   </data>
+  <data name="lp_act_choosing_file_single" xml:space="preserve">
+    <value>выбирает файл</value>
+  </data>
+  <data name="lp_act_choosing_file_multi" xml:space="preserve">
+    <value>выбирают файл</value>
+  </data>
+  <data name="lp_act_choosing_template_multi" xml:space="preserve">
+    <value>выбирают шаблон</value>
+  </data>
+  <data name="lp_act_choosing_template_single" xml:space="preserve">
+    <value>выбирает шаблон</value>
+  </data>
 </root>

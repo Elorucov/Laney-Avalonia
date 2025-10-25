@@ -5,9 +5,10 @@ namespace ELOR.Laney.DataModels {
         Connecting, Updating, Working, Failed, NoInternet
     }
 
-    public enum LongPollActivityType {
+    public enum LongPollActivityType : byte {
         Typing = 0, RecordingAudioMessage = 1,
-        UploadingPhoto = 2, UploadingVideo = 3, UploadingFile = 4, UploadingVideoMessage = 5
+        UploadingPhoto = 2, UploadingVideo = 3, UploadingFile = 4, UploadingVideoMessage = 5,
+        ChoosingFile = 6, ChoosingTemplate = 7
     }
 
     public class LongPollActivityInfo {
