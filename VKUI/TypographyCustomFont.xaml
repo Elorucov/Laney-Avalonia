@@ -72,4 +72,7 @@
   <Style Selector="TextBlock.Display">
     <Setter Property="FontFamily" Value="{StaticResource VKSansDisplay}"/>
   </Style>
+  <Style Selector=":is(TextBlock):not(.Display)">
+    <Setter Property="LetterSpacing" Value="{StaticResource TextDefaultLetterSpacing}"/>
+  </Style>
 </Styles>

@@ -9,6 +9,8 @@
       <BoxShadows x:Key="VKElevation3">0 0 2 #14000000, 0 4 16 #14000000</BoxShadows>
       <BoxShadows x:Key="VKElevation4">0 0 8 #1F000000, 0 16 16 #29000000</BoxShadows>
 
+      <x:Double x:Key="TextDefaultLetterSpacing">-0.2</x:Double>
+
       <!-- To remove margin in NavigationControl -->
       <Thickness x:Key="NavigationControlPageMargin">0</Thickness>
       
