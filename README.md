@@ -7,13 +7,13 @@
 Это Laney 2 — кроссплатформенная версия Laney, альтернативного мессенджера ВКонтакте, написанная на платформе .NET с использованием UI-фреймворка [Avalonia](https://github.com/AvaloniaUI/Avalonia).
 
 <picture align="center">
-  <source media="(prefers-color-scheme: dark)" srcset="docs/windows_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/windows_light.png">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/windows_dark.webp">
+  <source media="(prefers-color-scheme: light)" srcset="docs/windows_light.webp">
   <img alt="Windows screenshot" src="docs/windows_light.png">
 </picture>
 
 ## О приложении
-Первая версия Laney разрабатывается с 2018 года, является UWP-приложением, которое работает на компьютере и смартфоне на Windows 10, и в Xbox.
+[Первая версия Laney](https://github.com/Elorucov/Laney-Legacy) разрабатывается с 2018 года, является UWP-приложением, которое работает на компьютере и смартфоне на Windows 10, и в Xbox.
 
 В связи с желанием разработчика и пользователей иметь кроссплатформенную версию Laney, а также с устареванием платформы UWP, в конце 2021-го года было принято решение написать с нуля новую версию.
 
@@ -40,7 +40,7 @@ dotnet run
 - На Windows: `pwsh .\build_aot.ps1`
 - На Linux/macOS: `pwsh ./build_aot.ps1`
 
-Скрипт скомпилирует релизную версию программы (т. е. выполнит `dotnet publish -c Release`), автоматически увеличивая номер сборки после компиляции. Для Windows и macOS будут скомпилированы x86-64 и arm64-версии, для Linux — только x86-64. 32-битные версии не поддерживаются.
+Скрипт скомпилирует релизную версию программы (т. е. выполнит `dotnet publish -c Release`). Для Windows и macOS будут скомпилированы x86-64 и arm64-версии, для Linux — только x86-64. 32-битные версии не поддерживаются.
 
 Скрипт в конце выведет путь к скомпилированной программе.
 
@@ -67,10 +67,7 @@ pwsh ./build_aot.ps1 -channel RELEASE
 Описание файла находится [тут](docs/demomode.md)
 
 ## CI/CD
-При пуше в ветку beta и release автоматически запустится Action, который соберёт и выложит сборки в разделе Releases. Не забудьте перед пушем сменить версию приложния в `L2.csproj` и в `MacOS_layout\Contents\Info.plist`, для этого можно запустить сборку локально (см. раздел **Сборка**). 
-
-> [!WARNING]  
-> **Обратите внимание:** из-за того, что скрипт старый, а файл `Info.plist` создан недавно, скрипт не будет автоматически обновлять версию в этом файле. Обновите вручную.
+При пуше в ветку beta и release автоматически запустится Action, который соберёт и выложит сборки в разделе Releases. Не забудьте перед пушем сменить версию приложния в `L2.csproj` и в `MacOS_layout\Contents\Info.plist`.
 
 ## TODO:
 На данный момент реализована приблизительно половина функциональности из старой версии Laney, но пока отсутствуют следующие фичи:
