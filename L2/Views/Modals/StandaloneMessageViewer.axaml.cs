@@ -16,7 +16,12 @@ public partial class StandaloneMessageViewer : DialogWindow {
         if (!Design.IsDesignMode) throw new ArgumentException();
     }
 
-    public StandaloneMessageViewer(VKSession session, Message message) {
+    public StandaloneMessageViewer(VKSession session) {
+        InitializeComponent();
+        DataContext = session;
+    }
+
+    public StandaloneMessageViewer(VKSession session, Message message) : this(session) {
         InitializeComponent();
         if (message == null) throw new ArgumentNullException("message", "Message not passed!");
 #if LINUX      
@@ -32,7 +37,7 @@ public partial class StandaloneMessageViewer : DialogWindow {
         ScrollRoot.Content = ui;
     }
 
-    public StandaloneMessageViewer(VKSession session, List<Message> messages) {
+    public StandaloneMessageViewer(VKSession session, List<Message> messages) : this(session) {
         InitializeComponent();
         if (messages == null || messages.Count == 0) throw new ArgumentNullException("messages", "Messages not passed!");
         Title = Localizer.GetDeclensionFormatted(messages.Count, "message");

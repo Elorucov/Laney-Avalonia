@@ -567,7 +567,7 @@ namespace ELOR.Laney.ViewModels {
                 int offset = -count / 2;
 
                 // TODO: use messages.getHistory, т. к. участников получаем сразу после первой загрузки сообщений.
-                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, offset, count, startMessageId, true, VKAPIHelper.Fields, false);
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, offset, count, startMessageId, true, VKAPIHelper.Fields, false, Constants.NestedMessagesLimit);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
 
@@ -610,7 +610,7 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadPreviousMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages?.Count);
                 IsLoading = true;
-                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, true, VKAPIHelper.Fields, false);
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, 1, count, DisplayedMessages.First.ConversationMessageId, true, VKAPIHelper.Fields, false, Constants.NestedMessagesLimit);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
                 mhr.Items?.Reverse();
@@ -637,7 +637,7 @@ namespace ELOR.Laney.ViewModels {
             try {
                 Log.Information("LoadNextMessages peer: {0}, count: {1}, displayed messages count: {2}", PeerId, count, DisplayedMessages.Count);
                 IsLoading = true;
-                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, true, VKAPIHelper.Fields, false);
+                MessagesHistoryResponse mhr = await session.API.Messages.GetHistoryAsync(session.GroupId, PeerId, -count, count, DisplayedMessages.Last.ConversationMessageId, true, VKAPIHelper.Fields, false, Constants.NestedMessagesLimit);
                 CacheManager.Add(mhr.Profiles);
                 CacheManager.Add(mhr.Groups);
                 mhr.Items?.Reverse();

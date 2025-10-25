@@ -179,7 +179,7 @@ namespace ELOR.Laney.Core {
                     try {
                         State = LongPollState.Updating;
                         _log.Information($"Getting LongPoll history... PTS: {_pts}, isOfficialClient={_isOfficialClient}");
-                        var response = await _api.Messages.GetLongPollHistoryAsync(_groupId, VERSION, _timeStamp, _pts, 0, false, 1000, 1000, 0, VKAPIHelper.Fields).ConfigureAwait(false);
+                        var response = await _api.Messages.GetLongPollHistoryAsync(_groupId, VERSION, _timeStamp, _pts, 0, false, 1000, 1000, 0, VKAPIHelper.Fields, Constants.NestedMessagesLimit).ConfigureAwait(false);
                         CacheManager.Add(response.Profiles);
                         CacheManager.Add(response.Groups);
 

@@ -5,6 +5,7 @@
         public const int MessagesCount = 40;
         public const int MaxCachedChatsCount = 4;
         public const int DefaultVisibleMessagesCount = 250;
+        public const int NestedMessagesLimit = 2;
 
         public const string ExecuteCodePath = "avares://laney/Assets/ExecuteScripts/";
 

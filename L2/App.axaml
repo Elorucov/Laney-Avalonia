@@ -22,6 +22,7 @@
         <ResourceInclude Source="/Controls/BotKeyboardUI.xaml"/>
         <ResourceInclude Source="/Controls/ChatViewItem.xaml"/>
         <ResourceInclude Source="/Controls/CompactMessage.xaml"/>
+        <ResourceInclude Source="/Controls/ForwardedMessage.xaml"/>
         <ResourceInclude Source="/Controls/MediaSlider.xaml"/>
         <ResourceInclude Source="/Controls/MessageBubble.xaml"/>
         <ResourceInclude Source="/Controls/MessagesListBox.xaml"/>

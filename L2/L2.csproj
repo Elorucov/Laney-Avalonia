@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.664</AssemblyVersion>
-    <FileVersion>2.0.664</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.664-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.664-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.664-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250830-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.665</AssemblyVersion>
+    <FileVersion>2.0.665</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.665-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.665-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.665-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -124,7 +124,6 @@
     <None Remove="Controls\CompactMessage.xaml" />
     <None Remove="Controls\MediaSlider.xaml" />
     <None Remove="Controls\MessageBubble.xaml" />
-    <None Remove="Controls\PostUI.xaml" />
     <None Remove="Styles\ChatViewDefaultResources.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +153,9 @@
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
     <AvaloniaResource Include="Controls\BotKeyboardUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Controls\ForwardedMessage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaResource>
     <AvaloniaResource Include="Styles\ChatViewDefaultResources.xaml">
@@ -282,6 +284,9 @@
     </Compile>
     <Compile Update="Controls\MessageBubble.xaml.cs">
       <DependentUpon>MessageBubble.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\PostUI - Copy.xaml.cs">
+      <DependentUpon>PostUI.xaml</DependentUpon>
     </Compile>
     <Compile Update="Controls\PostUI.xaml.cs">
       <DependentUpon>PostUI.xaml</DependentUpon>

@@ -217,6 +217,12 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("reactions")]
         public List<MessageReaction> Reactions { get; set; }
 
+        [JsonPropertyName("nested_msgs_has_more")]
+        public bool NestedMessagesHasMore { get; set; }
+
+        [JsonPropertyName("nested_msgs_count")]
+        public int NestedMessagesCount { get; set; }
+
         [JsonIgnore]
         public bool IsPartial { get; private set; }
 
