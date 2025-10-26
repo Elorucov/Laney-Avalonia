@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using ZstdSharp;
 
 namespace ELOR.VKAPILib {
     public class VKAPI {
@@ -53,6 +54,8 @@ namespace ELOR.VKAPILib {
 
         private HttpClient HttpClient;
 
+        public const string DefaultDomain = "api.vk.me";
+
         #endregion
 
         #region Events
@@ -63,7 +66,7 @@ namespace ELOR.VKAPILib {
 
         #endregion
 
-        public VKAPI(string accessToken, string language, string userAgent, string domain = "api.vk.ru") {
+        public VKAPI(string accessToken, string language, string userAgent, string domain = DefaultDomain) {
             _accessToken = accessToken;
             _language = language;
             UserAgent = userAgent;
@@ -74,7 +77,8 @@ namespace ELOR.VKAPILib {
             };
             HttpClient = new HttpClient(handler, false);
             HttpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-            HttpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate");
+            HttpClient.DefaultRequestHeaders.Add("Accept-Encoding", "zstd,gzip,deflate");
+            HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Encoding", "zstd");
             if (!String.IsNullOrEmpty(userAgent)) HttpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
 
             Account = new AccountMethods(this);
@@ -115,7 +119,8 @@ namespace ELOR.VKAPILib {
         internal async Task<HttpContent> SendRequestAsync(Uri uri, Dictionary<string, string> parameters = null) {
             if (WebRequestCallback != null) {
                 Dictionary<string, string> headers = new Dictionary<string, string> {
-                    { "Accept-Encoding", "gzip,deflate" }
+                    { "Accept-Encoding", "zstd,gzip,deflate" },
+                    { "Content-Encoding", "zstd" }
                 };
                 if (!String.IsNullOrEmpty(UserAgent)) headers.Add("User-Agent", UserAgent);
                 if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
@@ -125,17 +130,16 @@ namespace ELOR.VKAPILib {
                 var resp = await WebRequestCallback.Invoke(uri, parameters, headers);
                 return resp.Content;
             } else {
-                using (HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri) {
+                using HttpRequestMessage hmsg = new HttpRequestMessage(HttpMethod.Post, uri) {
                     Version = new Version(2, 0)
-                }) {
-                    if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
-                        hmsg.Headers.Add("Origin", $"https://id.vk.ru");
-                    }
-                    hmsg.Content = new FormUrlEncodedContent(parameters);
-
-                    var resp = await HttpClient.SendAsync(hmsg);
-                    return resp.Content;
+                };
+                if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
+                    hmsg.Headers.Add("Origin", $"https://id.vk.ru");
                 }
+                hmsg.Content = new FormUrlEncodedContent(parameters);
+
+                var resp = await HttpClient.SendAsync(hmsg);
+                return resp.Content;
             }
         }
 
@@ -143,16 +147,19 @@ namespace ELOR.VKAPILib {
             if (parameters == null) parameters = new Dictionary<string, string>();
 
             using var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            using var stream = await response.ReadAsStreamAsync();
-            return await JsonDocument.ParseAsync(stream);
+            using var compressedStream = await response.ReadAsStreamAsync();
+            using var decompressedStream = new DecompressionStream(compressedStream);
+            return await JsonDocument.ParseAsync(decompressedStream);
         }
 
         public async Task<T> CallMethodAsync<T>(string method, Dictionary<string, string> parameters = null, JsonSerializerContext serializerContext = null) {
             if (parameters == null) parameters = new Dictionary<string, string>();
 
             using var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            using var respStream = await response.ReadAsStreamAsync();
-            JsonNode resp = await JsonNode.ParseAsync(respStream);
+            using var compressedStream = await response.ReadAsStreamAsync();
+            using var decompressedStream = new DecompressionStream(compressedStream);
+
+            JsonNode resp = await JsonNode.ParseAsync(decompressedStream);
             if (resp["error"] != null) {
                 APIException apiex = (APIException)resp["error"].Deserialize(typeof(APIException), BuildInJsonContext.Default);
                 switch (apiex.Code) {

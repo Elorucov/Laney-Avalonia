@@ -270,6 +270,7 @@ namespace ELOR.Laney {
             "Serilog",
             "Svg.Skia by Wiesław Šoltés",
             "Unicode.net",
+            "ZstdSharp.Port"
         };
 
         #endregion

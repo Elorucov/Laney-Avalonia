@@ -6,11 +6,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.665</AssemblyVersion>
-    <FileVersion>2.0.665</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.665-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.665-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.665-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.666</AssemblyVersion>
+    <FileVersion>2.0.666</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.666-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.666-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.666-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-250930-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -209,6 +209,7 @@
     <PackageReference Include="Unicode.net" Version="2.0.0" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="VideoLAN.LibVLC.Mac" Version="3.1.3.1" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
+    <PackageReference Include="ZstdSharp.Port" Version="0.8.6" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
