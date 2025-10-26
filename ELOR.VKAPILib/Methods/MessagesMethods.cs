@@ -294,6 +294,17 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<MessagesList>("messages.getById", parameters);
         }
 
+        /// <summary>Returns count of chat users online.</summary>
+        /// <param name="peerId">Peer ID.</param>
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        public async Task<ChatOnlineResponse> GetChatOnlineAsync(long groupId, long peerId) {
+            Dictionary<string, string> parameters = new Dictionary<string, string> {
+                { "peer_id", peerId.ToString() }
+            };
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            return await API.CallMethodAsync<ChatOnlineResponse>("messages.getChatOnline", parameters);
+        }
+
         /// <summary>Allows to receive chat preview by the invitation link.</summary>
         /// <param name="link">Invitation link.</param>
         /// <param name="fields">List of additional fields for users and communities.</param>

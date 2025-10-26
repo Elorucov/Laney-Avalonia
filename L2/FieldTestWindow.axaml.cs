@@ -7,8 +7,6 @@ using ELOR.Laney.Core;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using VKUI.Controls;
 using VKUI.Popups;
 
@@ -65,6 +63,10 @@ namespace ELOR.Laney {
             }
 
             new System.Action(async () => {
+                if (VKSession.Main == null) {
+                    await new VKUIDialog("Sorry", "Main session is not available!").ShowDialog(this);
+                    return;
+                }
                 var result = await Router.LaunchLink(VKSession.Main, url);
                 routerResult.Text = $"Type: {result.Item1}";
             })();
@@ -93,57 +95,6 @@ namespace ELOR.Laney {
             LMediaPlayer.SFX?.PlayURL("https://elor.top/res/audios/sunrise_spring.mp3");
         }
 
-        private void vt01_Click(object? sender, RoutedEventArgs e) {
-            new System.Action(async () => {
-                var formats = await Clipboard.GetFormatsAsync();
-                string str = String.Join(", ", formats);
-                string export = Path.Combine(App.LocalDataPath, "clipboardtest");
-                if (formats.Length > 0) {
-                    Directory.CreateDirectory(export);
-
-                    int result = await new VKUIDialog("Save data from clipboard?", $"Clipboard contains {formats.Length} object(s): {str}.\n\nAll these object saved as binary file in:\n{export}\n\nContinue?", new string[] { "Yes", "No" }, 1).ShowDialog<int>(this);
-                    if (result == 1) {
-                        Dictionary<string, string> nonbinary = new Dictionary<string, string>();
-                        foreach (string format in formats) {
-                            try {
-                                var data = await Clipboard.GetDataAsync(format);
-                                if (data == null) {
-                                    nonbinary.Add(format, "empty");
-                                    continue;
-                                } else if (data is byte[] binary) {
-                                    string path = Path.Combine(export, $"{format}.bin");
-                                    var fs = File.Create(path);
-                                    await fs.WriteAsync(binary);
-                                    await fs.FlushAsync();
-                                } else if (data is string text) {
-                                    string path = Path.Combine(export, $"{format}.txt");
-                                    await File.WriteAllTextAsync(path, text);
-                                } else {
-                                    nonbinary.Add(format, data.GetType().ToString());
-                                    continue;
-                                }
-                            } catch (Exception ex) {
-                                nonbinary.Add(format, $"failed with {ex.GetType()}\n");
-                                continue;
-                            }
-                        }
-
-                        if (nonbinary.Count > 0) {
-                            string str2 = "";
-                            foreach (var nb in nonbinary) {
-                                str2 += $"{nb.Key}: {nb.Value}\n";
-                            }
-                            await new VKUIDialog(nonbinary.Count == formats.Length ? "Failed to save all objects!" : "Failed to save some objects", str2.Trim()).ShowDialog<int>(this);
-                        } else {
-                            await new VKUIDialog("All done!", $"Check folder:\n{export}").ShowDialog<int>(this);
-                        }
-                    }
-                } else {
-                    await new VKUIDialog("Failed", "Clipboard is empty.").ShowDialog<int>(this);
-                }
-            })();
-        }
-
         private void OnDragEnter(object sender, DragEventArgs e) {
             Title = "Drag enter!";
         }
@@ -160,7 +111,7 @@ namespace ELOR.Laney {
             PTest.IsOpen = true;
         }
 
-        private void ActionSheetTest(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
+        private void ActionSheetTest(object? sender, RoutedEventArgs e) {
             ActionSheet ash = new ActionSheet();
             ash.Items.Add(new ActionSheetItem() {
                 Header = "Item 1",

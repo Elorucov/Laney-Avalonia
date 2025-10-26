@@ -36,6 +36,7 @@ namespace ELOR.Laney.ViewModels {
         private Uri _avatar;
         private bool _isVerified;
         private UserOnlineInfo _online;
+        private int _onlineMembersCount;
         private SortId _sortId;
         private int _unreadMessagesCount;
         private ObservableCollection<MessageViewModel> _receivedMessages = new ObservableCollection<MessageViewModel>();
@@ -70,6 +71,7 @@ namespace ELOR.Laney.ViewModels {
         public Uri Avatar { get { return _avatar; } private set { _avatar = value; OnPropertyChanged(); } }
         public bool IsVerified { get { return _isVerified; } private set { _isVerified = value; OnPropertyChanged(); } }
         public UserOnlineInfo Online { get { return _online; } set { _online = value; OnPropertyChanged(); } }
+        public int OnlineMembersCount { get { return _onlineMembersCount; } set { _onlineMembersCount = value; OnPropertyChanged(); } }
         public string Initials { get { return _title.GetInitials(PeerId.IsChat() || PeerId.IsGroup()); } }
         public SortId SortId { get { return _sortId; } set { _sortId = value; OnPropertyChanged(); OnPropertyChanged(nameof(SortIndex)); } }
         public ulong SortIndex { get { return GetSortIndex(); } }
@@ -112,6 +114,8 @@ namespace ELOR.Laney.ViewModels {
         public long Id => PeerId;
         public long OwnedSessionId => session.Id;
         public static uint Instances => _instances;
+
+        private long _onlineMembersCountLastUpdateTime = 0;
 
         private User PeerUser;
         private Group PeerGroup;
@@ -169,6 +173,10 @@ namespace ELOR.Laney.ViewModels {
             Log.Information("Chat {0} is opened. isDisplayedMessagesEmpty: {1}, CMID: {2}", PeerId, isDisplayedMessagesEmpty, messageId);
             if (isDisplayedMessagesEmpty || messageId >= 0) {
                 new System.Action(async () => await GoToMessageAsync(messageId))();
+            } else {
+                new System.Action(async () => {
+                    await UpdateOnlineMembersCountAsync();
+                })();
             }
         }
 
@@ -242,9 +250,33 @@ namespace ELOR.Laney.ViewModels {
                 MembersUsers = response.Profiles;
                 MembersGroups = response.Groups;
             } catch (Exception ex) {
+                // TODO: snackbar
                 await ExceptionHelper.ShowErrorDialogAsync(session.ModalWindow, ex, true);
             } finally {
                 _isMembersLoading = false;
+            }
+        }
+
+        bool _isGettingOnlineMembersCountInProcess = false;
+        private const int OMCountUpdateInverval = 300;
+        public async Task UpdateOnlineMembersCountAsync() {
+            if (PeerType != PeerType.Chat) return;
+            if (ChatSettings.State != UserStateInChat.In || ChatSettings.IsGroupChannel || _isGettingOnlineMembersCountInProcess) return;
+            if (_onlineMembersCountLastUpdateTime + OMCountUpdateInverval > DateTimeOffset.Now.ToUnixTimeSeconds()) {
+                Log.Warning($"UpdateOnlineMembersCountAsync: too early to update counter!");
+                return;
+            }
+
+            _isGettingOnlineMembersCountInProcess = true;
+            try {
+                Log.Information($"UpdateOnlineMembersCountAsync peer: {PeerId}");
+                var response = await session.API.Messages.GetChatOnlineAsync(session.GroupId, PeerId);
+                OnlineMembersCount = response.OnlineCount;
+                _onlineMembersCountLastUpdateTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            } catch (Exception ex) {
+                Log.Error(ex, "UpdateOnlineMembersCountAsync");
+            } finally {
+                _isGettingOnlineMembersCountInProcess = false;
             }
         }
 
@@ -338,8 +370,12 @@ namespace ELOR.Laney.ViewModels {
         private void UpdateSubtitleForChat() {
             if (ChatSettings.State == UserStateInChat.In) {
                 Subtitle = String.Empty;
-                if (ChatSettings.IsDisappearing) Subtitle = $"{Assets.i18n.Resources.casper_chat.ToLowerInvariant()}, ";
-                Subtitle += Localizer.GetDeclensionFormatted(ChatSettings.MembersCount, "members_sub");
+                StringBuilder sb = new StringBuilder();
+
+                if (ChatSettings.IsDisappearing) sb.Append($"{Assets.i18n.Resources.casper_chat.ToLowerInvariant()}, ");
+                sb.Append(Localizer.GetDeclensionFormatted(ChatSettings.MembersCount, "members_sub"));
+                if (OnlineMembersCount > 0) sb.Append($", {OnlineMembersCount} {Assets.i18n.Resources.online}");
+                Subtitle = sb.ToString();
             } else {
                 Subtitle = ChatSettings.State == UserStateInChat.Left ? Assets.i18n.Resources.chat_left.ToLowerInvariant() : Assets.i18n.Resources.chat_kicked.ToLowerInvariant();
             }
@@ -407,6 +443,10 @@ namespace ELOR.Laney.ViewModels {
                     // make an empty subtitle if it is favorites
                     if (PeerId == session.Id) Subtitle = Assets.i18n.Resources.saved_messages;
                     else Subtitle = VKAPIHelper.GetOnlineInfo(Online, PeerUser.Sex).ToLowerInvariant();
+                }
+
+                if (b.PropertyName == nameof(OnlineMembersCount)) {
+                    UpdateSubtitleForChat();
                 }
 
                 if (b.PropertyName == nameof(HasMention) || b.PropertyName == nameof(HasSelfDestructMessage))
@@ -591,6 +631,7 @@ namespace ELOR.Laney.ViewModels {
 
                 if (Members.Count == 0) {
                     IsLoading = false; // нужно чтобы LoadMembers не блочило переход по сообщениям
+                    await UpdateOnlineMembersCountAsync();
                     await LoadMembersAsync();
                 }
             } catch (Exception ex) {

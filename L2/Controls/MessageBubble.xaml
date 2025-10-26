@@ -63,7 +63,7 @@
             </Style>
             
             <!-- Time & indicators -->
-            <Style Selector="Border.DefaultIndicator">
+            <Style Selector="Border.DefaultIndicator, Border.GiftIndicator">
               <Setter Property="Background" Value="Transparent"/>
               <Setter Property="Margin" Value="0,0,5,2"/>
             </Style>
@@ -93,6 +93,14 @@
 
             <Style Selector="Border.ImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon, Border.ComplexImageIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
               <Setter Property="Foreground" Value="White"/>
+            </Style>
+
+            <Style Selector="Border.GiftIndicator > StackPanel#IndicatorStack > TextBlock">
+              <Setter Property="Foreground" Value="{DynamicResource GiftMessageIndicatorForegroundBrush}"/>
+            </Style>
+
+            <Style Selector="Border.GiftIndicator > StackPanel#IndicatorStack > vkui|VKIcon">
+              <Setter Property="Foreground" Value="{DynamicResource GiftMessageIndicatorForegroundBrush}"/>
             </Style>
 
             <!-- Message text -->

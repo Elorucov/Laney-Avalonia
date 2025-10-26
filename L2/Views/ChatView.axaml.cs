@@ -23,6 +23,8 @@ using VKUI.Controls;
 namespace ELOR.Laney.Views {
     public sealed partial class ChatView : UserControl, IMainWindowRightView {
         ChatViewModel Chat { get; set; }
+        Window OwnerWindow => TopLevel.GetTopLevel(this) as Window;
+
         ScrollViewer MessagesListScrollViewer;
         DispatcherTimer markReadTimer;
 
@@ -47,6 +49,8 @@ namespace ELOR.Laney.Views {
                 }
 
                 new ItemsPresenterWidthFixer(MessagesList);
+
+                OwnerWindow.Activated += OwnerWindow_Activated;
             };
 
             BackButton.Click += (a, b) => BackButtonClick?.Invoke(this, null);
@@ -74,6 +78,12 @@ namespace ELOR.Laney.Views {
                     DebugOverlay.IsVisible = (bool)value;
                     break;
             }
+        }
+
+        private void OwnerWindow_Activated(object sender, EventArgs e) {
+            new System.Action(async () => {
+                await Chat?.UpdateOnlineMembersCountAsync();
+            })();
         }
 
         public event EventHandler BackButtonClick;
