@@ -237,12 +237,7 @@
         <Border x:Name="droptest" Width="256" Height="256" HorizontalAlignment="Left" Background="Transparent" DragDrop.AllowDrop="True">
           <Image x:Name="webptest" IsHitTestVisible="False" Width="256" Height="256" ctrls:ImageLoader.Source="https://sun1-30.userapi.com/8u2UmktysriV0Q-ILL7_A7vV5GLjKECwDVplTw/McWSoC2aIF0.webp"/>
         </Border>
-        <TextBlock TextWrapping="Wrap" Text="You can drop file to image for testing Drag'n'Drop API"/>
-      </StackPanel>
-
-      <StackPanel Margin="0,8,0,0">
-        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Various tests"/>
-        <Button x:Name="vt01" Margin="8" Click="vt01_Click" Content="Dump clipboard content to local folder"/>
+        <TextBlock Margin="8,0" TextWrapping="Wrap" Text="You can drop file to image for testing Drag'n'Drop API"/>
       </StackPanel>
       
       <StackPanel Margin="0,8,0,0">
