@@ -1,6 +1,7 @@
 ﻿using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.HandlerDatas;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -78,7 +79,6 @@ namespace ELOR.VKAPILib {
             HttpClient = new HttpClient(handler, false);
             HttpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             HttpClient.DefaultRequestHeaders.Add("Accept-Encoding", "zstd,gzip,deflate");
-            HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Encoding", "zstd");
             if (!String.IsNullOrEmpty(userAgent)) HttpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
 
             Account = new AccountMethods(this);
@@ -119,8 +119,7 @@ namespace ELOR.VKAPILib {
         internal async Task<HttpContent> SendRequestAsync(Uri uri, Dictionary<string, string> parameters = null) {
             if (WebRequestCallback != null) {
                 Dictionary<string, string> headers = new Dictionary<string, string> {
-                    { "Accept-Encoding", "zstd,gzip,deflate" },
-                    { "Content-Encoding", "zstd" }
+                    { "Accept-Encoding", "zstd,gzip,deflate" }
                 };
                 if (!String.IsNullOrEmpty(UserAgent)) headers.Add("User-Agent", UserAgent);
                 if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
@@ -147,19 +146,29 @@ namespace ELOR.VKAPILib {
             if (parameters == null) parameters = new Dictionary<string, string>();
 
             using var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            using var compressedStream = await response.ReadAsStreamAsync();
-            using var decompressedStream = new DecompressionStream(compressedStream);
-            return await JsonDocument.ParseAsync(decompressedStream);
+            using var responseStream = await response.ReadAsStreamAsync();
+            if (response.Headers.ContentEncoding.Contains("zstd")) {
+                using var decompressedStream = new DecompressionStream(responseStream);
+                return await JsonDocument.ParseAsync(decompressedStream);
+            } else {
+                return await JsonDocument.ParseAsync(responseStream);
+            }
         }
 
         public async Task<T> CallMethodAsync<T>(string method, Dictionary<string, string> parameters = null, JsonSerializerContext serializerContext = null) {
             if (parameters == null) parameters = new Dictionary<string, string>();
 
             using var response = await SendRequestAsync(method, GetNormalizedParameters(parameters));
-            using var compressedStream = await response.ReadAsStreamAsync();
-            using var decompressedStream = new DecompressionStream(compressedStream);
 
-            JsonNode resp = await JsonNode.ParseAsync(decompressedStream);
+            using var responseStream = await response.ReadAsStreamAsync();
+            JsonNode resp = null;
+            if (response.Headers.ContentEncoding.Contains("zstd")) {
+                using var decompressedStream = new DecompressionStream(responseStream);
+                resp = await JsonNode.ParseAsync(decompressedStream);
+            } else {
+                resp = await JsonNode.ParseAsync(responseStream);
+            }
+            
             if (resp["error"] != null) {
                 APIException apiex = (APIException)resp["error"].Deserialize(typeof(APIException), BuildInJsonContext.Default);
                 switch (apiex.Code) {

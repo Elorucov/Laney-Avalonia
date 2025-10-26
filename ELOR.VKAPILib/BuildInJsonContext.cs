@@ -69,6 +69,7 @@ namespace ELOR.VKAPILib {
     [JsonSerializable(typeof(AnonymToken))]
     [JsonSerializable(typeof(GetAuthCodeResponse))]
     [JsonSerializable(typeof(CheckAuthCodeResponse))]
+    [JsonSerializable(typeof(ChatOnlineResponse))]
     [JsonSerializable(typeof(JsonDocument))] // Required for Serialize method
     public partial class BuildInJsonContext : JsonSerializerContext { }
 }

@@ -10,12 +10,23 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core.Network {
     public class LNet {
-        static HttpClient client;
+        static HttpClient defaultClient;
+        static HttpClient zstdClient;
 
         public static event EventHandler<string> DebugLog;
         private static void Log(string text) {
             Debug.WriteLine($"LNet: {text}");
             DebugLog?.Invoke(null, text);
+        }
+
+        private static HttpClient GetConfiguredHttpClient() {
+            return new HttpClient(new HttpClientHandler() {
+                AllowAutoRedirect = true,
+                MaxConnectionsPerServer = 50,
+                AutomaticDecompression = DecompressionMethods.All
+            }, false) {
+                Timeout = TimeSpan.FromSeconds(30)
+            };
         }
 
         public static async Task<HttpResponseMessage> GetAsync(Uri uri,
@@ -35,18 +46,10 @@ namespace ELOR.Laney.Core.Network {
         private static async Task<HttpResponseMessage> InternalSendRequestAsync(Uri uri, Dictionary<string, string> parameters, CancellationTokenSource cts, Dictionary<string, string> headers = null, HttpMethod httpMethod = null) {
             if (httpMethod == null) httpMethod = HttpMethod.Get;
 
-            bool isZstdResponse = headers?.ContainsKey("Content-Encoding") == true && headers["Content-Encoding"] == "zstd";
-            if (isZstdResponse) {
-                headers.Remove("Content-Encoding");
-            }
+            bool isZstdRequest = headers?.ContainsKey("Accept-Encoding") == true && headers["Accept-Encoding"].Contains("zstd");
 
             Uri fixedUri = uri;
             string host = string.Empty;
-            var handler = new HttpClientHandler() {
-                AutomaticDecompression = !isZstdResponse ? DecompressionMethods.GZip | DecompressionMethods.Deflate : DecompressionMethods.None,
-                AllowAutoRedirect = true,
-                MaxConnectionsPerServer = 50
-            };
 
             HttpRequestMessage hrm = new HttpRequestMessage(httpMethod, fixedUri) {
                 Version = new Version(2, 0)
@@ -57,13 +60,18 @@ namespace ELOR.Laney.Core.Network {
                 }
             if (parameters != null) hrm.Content = new FormUrlEncodedContent(parameters);
 
-            TimeoutHandler thandler = new TimeoutHandler {
-                DefaultTimeout = TimeSpan.FromSeconds(2),
-                InnerHandler = handler
-            };
+            HttpClient client = null;
+            if (isZstdRequest) {
+                if (zstdClient == null) zstdClient = GetConfiguredHttpClient();
+                zstdClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("zstd"));
+                client = zstdClient;
+            } else {
+                if (defaultClient == null) defaultClient = GetConfiguredHttpClient();
+                defaultClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                defaultClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+                client = defaultClient;
+            }
 
-            if (client == null) client = new HttpClient(handler, false) { Timeout = TimeSpan.FromSeconds(30) };
-            if (isZstdResponse) client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Encoding", "zstd");
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             if (!client.DefaultRequestHeaders.Contains("User-Agent")) client.DefaultRequestHeaders.Add("User-Agent", App.UserAgent);
 
