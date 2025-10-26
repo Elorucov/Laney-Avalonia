@@ -101,6 +101,8 @@ public partial class APIConsoleWindow : Window {
                         parameters.Add(p.Item1, p.Item2);
                     }
                 }
+                parameters.Add("v", Version.Text);
+                parameters.Add("lang", Lang.Text);
 
                 if (API == null) {
                     VKUIDialog dialog = new VKUIDialog("Access token not set!", "Without token you cannot call API methods");

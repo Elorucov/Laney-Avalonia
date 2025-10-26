@@ -130,9 +130,14 @@
     <AvaloniaResource Include="Assets/Audio/**" />
     <AvaloniaResource Include="Assets/Logo/**" />
     <AvaloniaResource Include="Assets/ExecuteScripts/**" />
+    <AvaloniaResource Remove="DevTools\DataModels\**" />
+    <AvaloniaXaml Remove="DevTools\DataModels\**" />
     <AvaloniaXaml Remove="Helpers\Hash\**" />
+    <Compile Remove="DevTools\DataModels\**" />
     <Compile Remove="Helpers\Hash\**" />
+    <EmbeddedResource Remove="DevTools\DataModels\**" />
     <EmbeddedResource Remove="Helpers\Hash\**" />
+    <None Remove="DevTools\DataModels\**" />
     <None Remove="Helpers\Hash\**" />
     <AvaloniaResource Remove="Assets\i18n\Resources.Designer.cs" />
     <AvaloniaResource Remove="Assets\i18n\Resources.resx" />
@@ -307,9 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Modals\StandaloneMessageViewer.axaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DevTools\DataModels\" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Modals\WhoReadMessage.axaml" />

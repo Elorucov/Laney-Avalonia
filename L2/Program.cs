@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney {
-    enum LaunchMode { Default, APIConsole }
+    enum LaunchMode { Default, FieldTest, APIConsole }
 
     class Program {
         static Stopwatch stopwatch;
@@ -29,6 +29,7 @@ namespace ELOR.Laney {
             Mode = LaunchMode.Default;
 
             if (App.HasCmdLineValue("apiconsole")) Mode = LaunchMode.APIConsole;
+            if (App.HasCmdLineValue("ft")) Mode = LaunchMode.FieldTest;
 
             // Создаём локальную папку для хранения настроек и данных.
             string localDataPath = App.LocalDataPath;

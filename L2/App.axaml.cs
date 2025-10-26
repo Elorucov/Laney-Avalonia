@@ -92,6 +92,8 @@ namespace ELOR.Laney {
                         }
                     }
                     PlatformSettings.ColorValuesChanged += (a, b) => UpdateTrayIcon();
+                } else if (Program.Mode == LaunchMode.FieldTest) {
+                    desktop.MainWindow = new FieldTestWindow();
                 } else if (Program.Mode == LaunchMode.APIConsole) {
                     desktop.MainWindow = new APIConsoleWindow();
                 }

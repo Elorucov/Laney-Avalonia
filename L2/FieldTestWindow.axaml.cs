@@ -65,6 +65,10 @@ namespace ELOR.Laney {
             }
 
             new System.Action(async () => {
+                if (VKSession.Main == null) {
+                    await new VKUIDialog("Sorry", "Main session is not available!").ShowDialog(this);
+                    return;
+                }
                 var result = await Router.LaunchLink(VKSession.Main, url);
                 routerResult.Text = $"Type: {result.Item1}";
             })();
