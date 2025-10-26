@@ -62,7 +62,6 @@ namespace ELOR.Laney.Controls {
         const string BACKGROUND_INCOMING = "IncomingMessageBackground";
         const string BACKGROUND_OUTGOING = "OutgoingMessageBackground";
         const string BACKGROUND_GIFT = "GiftMessageBackground";
-        const string BACKGROUND_BORDER = "BorderMessageBackground";
         const string BACKGROUND_TRANSPARENT = "TransparentMessageBackground";
 
         const string MSG_INCOMING = "Incoming";
@@ -70,6 +69,7 @@ namespace ELOR.Laney.Controls {
 
         const string INDICATOR_DEFAULT = "DefaultIndicator";
         const string INDICATOR_IMAGE = "ImageIndicator";
+        const string INDICATOR_GIFT = "GiftIndicator";
         const string INDICATOR_COMPLEX_IMAGE = "ComplexImageIndicator";
 
         const int MAX_DISPLAYED_FORWARDED_MESSAGES = 3;
@@ -554,8 +554,10 @@ namespace ELOR.Laney.Controls {
         }
 
         private void UpdateIndicatorsUI(MessageUIType uiType, bool hasReply) {
-            IndicatorContainer.Classes.RemoveAll([INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE]);
-            if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
+            IndicatorContainer.Classes.RemoveAll([INDICATOR_DEFAULT, INDICATOR_IMAGE, INDICATOR_COMPLEX_IMAGE, INDICATOR_GIFT]);
+            if (uiType == MessageUIType.Gift) {
+                IndicatorContainer.Classes.Add(INDICATOR_GIFT);
+            } else if (uiType == MessageUIType.StoryWithSticker || uiType == MessageUIType.SingleImage || uiType == MessageUIType.Story) {
                 IndicatorContainer.Classes.Add(INDICATOR_IMAGE);
             } else if (uiType == MessageUIType.Sticker || uiType == MessageUIType.Graffiti) {
                 if (hasReply) {
