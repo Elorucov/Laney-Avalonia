@@ -40,7 +40,7 @@ namespace ELOR.Laney.Core {
 #endif
         }
 
-        private static async Task<Bitmap> TryGetCachedBitmapAsync(Uri uri, double decodeWidth = 0, double decodeHeight = 0) {
+        private static async Task<Bitmap> TryGetCachedBitmapOrDownloadAsync(Uri uri, double decodeWidth = 0, double decodeHeight = 0) {
             if (uri == null) return null;
 
             string url = uri.AbsoluteUri;
@@ -71,7 +71,7 @@ namespace ELOR.Laney.Core {
                     bool isAdded = nowLoading.TryAdd(key, mres);
                     if (!isAdded) Log.Warning($"TryGetCachedBitmapAsync: cannot add MRES \"{key}\"!");
 
-                    using var response = await LNet.GetAsync(uri);
+                    using var response = Settings.LoadImagesSequential ? await LNet.GetSequentialAsync(uri) : await LNet.GetAsync(uri);
                     response.EnsureSuccessStatusCode();
                     var bytes = await response.Content.ReadAsByteArrayAsync();
                     using Stream stream = new MemoryStream(bytes);
@@ -132,7 +132,7 @@ namespace ELOR.Laney.Core {
             string key = source.AbsoluteUri;
 
             try {
-                return await TryGetCachedBitmapAsync(source, decodeWidth, decodeHeight);
+                return await TryGetCachedBitmapOrDownloadAsync(source, decodeWidth, decodeHeight);
             } catch (Exception ex) {
                 if (nowLoading.ContainsKey(key)) {
                     nowLoading[key].Set();

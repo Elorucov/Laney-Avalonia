@@ -233,11 +233,18 @@
       </StackPanel>
 
       <StackPanel Margin="0,8,0,0">
+        <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="Sequential request test"/>
+        <TextBlock Margin="8" TextWrapping="Wrap" Text="Ensure that dbg_load_images_sequential parameter is enabled, otherwhise images loaded parallel."/>
+        <TextBlock Margin="8" TextWrapping="Wrap" Text="Also, images are cached after first test."/>
+        <Button x:Name="sr1" Margin="8" Content="Test"/>
+        <StackPanel x:Name="srt1"/>
+      </StackPanel>
+
+      <StackPanel Margin="0,8,0,0">
         <TextBlock Margin="8" Classes="Title2" FontWeight="Bold" Text="WEBP Test"/>
         <Border x:Name="droptest" Width="256" Height="256" HorizontalAlignment="Left" Background="Transparent" DragDrop.AllowDrop="True">
           <Image x:Name="webptest" IsHitTestVisible="False" Width="256" Height="256" ctrls:ImageLoader.Source="https://sun1-30.userapi.com/8u2UmktysriV0Q-ILL7_A7vV5GLjKECwDVplTw/McWSoC2aIF0.webp"/>
         </Border>
-        <TextBlock Margin="8,0" TextWrapping="Wrap" Text="You can drop file to image for testing Drag'n'Drop API"/>
       </StackPanel>
       
       <StackPanel Margin="0,8,0,0">

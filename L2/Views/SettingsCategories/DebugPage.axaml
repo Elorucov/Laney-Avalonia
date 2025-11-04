@@ -43,10 +43,23 @@
           </Button>
         </StackPanel>
       </Border>
-      
+
+      <Border Classes="Group" VerticalAlignment="Top">
+        <StackPanel x:Name="NetworkCells">
+          <Grid Classes="GroupHeader">
+            <TextBlock Text="NETWORK"/>
+          </Grid>
+          <vkui:Cell Header="Загружать изображения последовательно" Subtitle="Это может исправить проблемы с загрузкой картинки из-за rate limit">
+            <vkui:Cell.After>
+              <ToggleSwitch x:Name="n01"/>
+            </vkui:Cell.After>
+          </vkui:Cell>
+        </StackPanel>
+      </Border>
+
       <Border Classes="Group" VerticalAlignment="Top">
         <StackPanel x:Name="ToolsCells">
-		  <Grid Classes="GroupHeader">
+          <Grid Classes="GroupHeader">
             <TextBlock Text="TOOLS"/>
           </Grid>
           <vkui:Cell x:Name="c01" Header="Show Avalonia's FPS counter">
