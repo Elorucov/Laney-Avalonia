@@ -3,10 +3,14 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
+using ELOR.Laney.Controls;
 using ELOR.Laney.Core;
+using ELOR.Laney.Core.Network;
 using ELOR.Laney.Helpers;
 using ELOR.Laney.Views.Modals;
 using System;
+using System.Threading.Tasks;
 using VKUI.Controls;
 using VKUI.Popups;
 
@@ -24,6 +28,8 @@ namespace ELOR.Laney {
             w1.Click += w1_Click;
             w2.Click += w2_Click;
             w3.Click += w3_Click;
+
+            sr1.Click += sr1_Click;
 
             buildInfo.Text = $"The infos listed below is changed when building on CI/CD\nBuild tag: {App.BuildInfoFull}\nRepository: {App.RepoInfo}\nBuilder username and hostname: {App.BuildHost}";
             setResult.Text += $"\n\nSettings file location:\n{Settings.FilePath}";
@@ -93,6 +99,36 @@ namespace ELOR.Laney {
 
         private void w3_Click(object? sender, RoutedEventArgs e) {
             LMediaPlayer.SFX?.PlayURL("https://elor.top/res/audios/sunrise_spring.mp3");
+        }
+
+        private void sr1_Click(object sender, RoutedEventArgs e) {
+            srt1.Children.Clear();
+            new Action(async () => {
+                foreach (var url in new string[] { "https://example.com", "https://elor.top", "https://vk.ru/terms" }) {
+                    await TestNetworkAsync(url);
+                }
+                foreach (var url in new string[] { "https://elor.top/res/images/sample_test/sample_3x4_01.jpg", "https://elor.top/res/images/sample_test/sample_1920x1200_01.jpg", "https://elor.top/res/images/sample_test/sample_16x9_02.jpg" }) {
+                    TestNetwork2(url);
+                }
+            })();
+        }
+
+        private async Task TestNetworkAsync(string url) {
+            var response = await LNet.GetSequentialAsync(new Uri(url));
+            var type = response.Content.Headers.ContentType;
+            await Dispatcher.UIThread.InvokeAsync(() => {
+                srt1.Children.Add(new TextBlock { Text = $"{url}: {type}" });
+            });
+        }
+
+        private void TestNetwork2(string url) {
+            Avalonia.Controls.Image img = new Image() {
+                Width = 256,
+                Height = 144,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left
+            };
+            ImageLoader.SetSource(img, new Uri(url));
+            srt1.Children.Add(img);
         }
 
         private void OnDragEnter(object sender, DragEventArgs e) {

@@ -32,6 +32,9 @@ namespace ELOR.Laney.Views.SettingsCategories {
             l03.IsChecked = Settings.BitmapManagerLogs;
             l03.Click += (a, b) => Settings.BitmapManagerLogs = (bool)(a as ToggleSwitch).IsChecked;
 
+            n01.IsChecked = Settings.LoadImagesSequential;
+            n01.Click += (a, b) => Settings.LoadImagesSequential = (bool)(a as ToggleSwitch).IsChecked;
+
 #if !RELEASE
 
             l04.IsChecked = Settings.LNetLogs;

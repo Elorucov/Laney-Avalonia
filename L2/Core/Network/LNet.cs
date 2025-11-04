@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core.Network {
     public class LNet {
-        static HttpClient defaultClient;
-        static HttpClient zstdClient;
+        static HttpClient _defaultClient;
+        static HttpClient _zstdClient;
+        static Queue<Task<HttpResponseMessage>> _getRequests = new Queue<Task<HttpResponseMessage>>();
+        static Queue<Task<HttpResponseMessage>> _postRequests = new Queue<Task<HttpResponseMessage>>();
 
         public static event EventHandler<string> DebugLog;
         private static void Log(string text) {
@@ -33,28 +35,58 @@ namespace ELOR.Laney.Core.Network {
             Dictionary<string, string> parameters = null,
             Dictionary<string, string> headers = null,
             CancellationTokenSource cts = null) {
-            return await InternalSendRequestAsync(uri, parameters, cts, headers, HttpMethod.Get);
+            return await InternalSendRequestAsync(uri, parameters, cts, headers, HttpMethod.Get, true);
         }
 
         public static async Task<HttpResponseMessage> PostAsync(Uri uri,
             Dictionary<string, string> parameters = null,
             Dictionary<string, string> headers = null,
             CancellationTokenSource cts = null) {
-            return await InternalSendRequestAsync(uri, parameters, cts, headers, HttpMethod.Post);
+            return await InternalSendRequestAsync(uri, parameters, cts, headers, HttpMethod.Post, true);
         }
 
-        private static async Task<HttpResponseMessage> InternalSendRequestAsync(Uri uri, Dictionary<string, string> parameters, CancellationTokenSource cts, Dictionary<string, string> headers = null, HttpMethod httpMethod = null) {
+        public static async Task<HttpResponseMessage> GetSequentialAsync(Uri uri,
+            Dictionary<string, string> parameters = null,
+            Dictionary<string, string> headers = null,
+            CancellationTokenSource cts = null) {
+
+            if (_getRequests.Count > 0) {
+                var last = _getRequests.Peek();
+                await last.WaitAsync(new CancellationTokenSource().Token);
+            }
+
+            var task = InternalSendRequestAsync(uri, parameters, cts, headers, HttpMethod.Get);
+            _getRequests.Enqueue(task);
+            var response = await task;
+            var _ = _getRequests.Dequeue();
+            return response;
+        }
+
+        public static async Task<HttpResponseMessage> PostSequentialAsync(Uri uri,
+            Dictionary<string, string> parameters = null,
+            Dictionary<string, string> headers = null,
+            CancellationTokenSource cts = null) {
+
+            if (_postRequests.Count > 0) {
+                var last = _postRequests.Peek();
+                await last.WaitAsync(new CancellationTokenSource().Token);
+            }
+
+            var task = InternalSendRequestAsync(uri, parameters, cts, headers, HttpMethod.Post);
+            _postRequests.Enqueue(task);
+            var response = await task;
+            var _ = _postRequests.Dequeue();
+            return response;
+        }
+
+        private static async Task<HttpResponseMessage> InternalSendRequestAsync(Uri uri, Dictionary<string, string> parameters, CancellationTokenSource cts, Dictionary<string, string> headers = null, HttpMethod httpMethod = null, bool returnAfterHeaderReads = false) {
             if (httpMethod == null) httpMethod = HttpMethod.Get;
 
             bool isZstdRequest = headers?.ContainsKey("Accept-Encoding") == true && headers["Accept-Encoding"].Contains("zstd");
 
-            Uri fixedUri = uri;
-            string host = string.Empty;
-
-            HttpRequestMessage hrm = new HttpRequestMessage(httpMethod, fixedUri) {
+            HttpRequestMessage hrm = new HttpRequestMessage(httpMethod, uri) {
                 Version = new Version(2, 0)
             };
-            if (!String.IsNullOrEmpty(host)) hrm.Headers.Host = host;
             if (headers != null) foreach (var header in headers) {
                     hrm.Headers.Add(header.Key, header.Value);
                 }
@@ -62,14 +94,14 @@ namespace ELOR.Laney.Core.Network {
 
             HttpClient client = null;
             if (isZstdRequest) {
-                if (zstdClient == null) zstdClient = GetConfiguredHttpClient();
-                zstdClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("zstd"));
-                client = zstdClient;
+                if (_zstdClient == null) _zstdClient = GetConfiguredHttpClient();
+                _zstdClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("zstd"));
+                client = _zstdClient;
             } else {
-                if (defaultClient == null) defaultClient = GetConfiguredHttpClient();
-                defaultClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-                defaultClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
-                client = defaultClient;
+                if (_defaultClient == null) _defaultClient = GetConfiguredHttpClient();
+                _defaultClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                _defaultClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+                client = _defaultClient;
             }
 
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
@@ -89,17 +121,17 @@ namespace ELOR.Laney.Core.Network {
             }
 #endif
 #if !RELEASE
-            if (Settings.LNetLogs) Log($"=> {fixedUri.AbsoluteUri} | {httpMethod.Method}{paramstr}");
+            if (Settings.LNetLogs) Log($"=> {uri.AbsoluteUri} | {httpMethod.Method}{paramstr}");
 #endif
+            var completionOption = returnAfterHeaderReads ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead;
             var stopwatch = Stopwatch.StartNew();
-            var result = cts == null ? await client.SendAsync(hrm, HttpCompletionOption.ResponseHeadersRead)
-                : await client.SendAsync(hrm, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+            var result = cts == null ? await client.SendAsync(hrm, completionOption)
+                : await client.SendAsync(hrm, completionOption, cts.Token);
             stopwatch.Stop();
 
 #if !RELEASE
-            if (Settings.LNetLogs) Log($"<= {fixedUri.AbsoluteUri} | Code: {result.StatusCode} | {stopwatch.ElapsedMilliseconds} ms.");
+            if (Settings.LNetLogs) Log($"<= {uri.AbsoluteUri} | Code: {result.StatusCode} | {stopwatch.ElapsedMilliseconds} ms.");
 #endif
-
             return result;
         }
     }
