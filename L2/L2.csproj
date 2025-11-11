@@ -2,15 +2,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>disable</Nullable>
     <AssemblyName>laney</AssemblyName>
     <RootNamespace>ELOR.Laney</RootNamespace>
-    <AssemblyVersion>2.0.667</AssemblyVersion>
-    <FileVersion>2.0.667</FileVersion>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.667-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-251030-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.667-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-251030-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
-    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.667-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-251030-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <AssemblyVersion>2.0.668</AssemblyVersion>
+    <FileVersion>2.0.668</FileVersion>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Windows'))">2.0.668-win-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-251030-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('Linux'))">2.0.668-linux-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-251030-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
+    <Version Condition="$([MSBuild]::IsOSPlatform('OSX'))">2.0.668-macos-anycpu-ZGV2dXNlci5kZXZwYw.4444.4444-251030-1255-RWxvcnVjb3YvTGFuZXktQXZhbG9uaWE.4444</Version>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Windows'))">WIN</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('Linux'))">LINUX</DefineConstants>
     <DefineConstants Condition="$([MSBuild]::IsOSPlatform('OSX'))">MAC</DefineConstants>
@@ -210,7 +210,6 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.6.2" />
-    <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('OSX'))" Include="VideoLAN.LibVLC.Mac" Version="3.1.3.1" />
     <PackageReference Condition="$([MSBuild]::IsOSPlatform('Windows'))" Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />

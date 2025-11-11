@@ -23,7 +23,7 @@
 > **macOS:** приложение не подписано. Для запуска введите в терминале `xattr -r -d com.apple.quarantine /Applications/Laney.app`<br><br>**Linux:** установите **libvlc**. Без него Laney не сможет воспроизводить звуки уведомлений и проигрывать музыку и голосовые сообщения.<br>APT (Ubuntu, etc.): `sudo apt install libvlc-dev`<br>DNF (Fedora, etc.): `sudo dnf install vlc-devel`.<br>Если не сработает, попробуйте установить и сам **VLC**.
 
 ## Перед началом работы
-Сначала установите [.NET SDK 9](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) и [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell).
+Сначала установите [.NET SDK 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) и [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell).
 
 Для проверки корректности установки: `dotnet --version` и `pwsh -v`.
 
