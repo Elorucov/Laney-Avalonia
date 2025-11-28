@@ -592,6 +592,24 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service messages in chat.
+        /// </summary>
+        public static string chat_editor_service_messages {
+            get {
+                return ResourceManager.GetString("chat_editor_service_messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When members join, leave, get invited and kicked out.
+        /// </summary>
+        public static string chat_editor_service_messages_desc {
+            get {
+                return ResourceManager.GetString("chat_editor_service_messages_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You were removed from the chat.
         /// </summary>
         public static string chat_kicked {

@@ -277,6 +277,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("writing_disabled")]
         public WritingDisabledInfo WritingDisabled { get; set; }
+
+        [JsonPropertyName("disable_service_messages")]
+        public bool DisableServiceMessages { get; set; }
     }
 
     public class SortId {

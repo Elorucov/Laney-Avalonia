@@ -78,5 +78,8 @@ namespace ELOR.Laney.Execute.Objects {
 
         [JsonPropertyName("pinned_message")]
         public Message PinnedMessage { get; set; }
+
+        [JsonPropertyName("disable_service_messages")]
+        public bool DisableServiceMessages { get; set; }
     }
 }

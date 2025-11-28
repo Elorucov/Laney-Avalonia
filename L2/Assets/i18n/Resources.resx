@@ -1397,4 +1397,10 @@ to attach them as files</value>
   <data name="chat_editor_messages_forwarding_disabled_desc" xml:space="preserve">
     <value>Chat members won't be able to forward messages or save them</value>
   </data>
+  <data name="chat_editor_service_messages" xml:space="preserve">
+    <value>Service messages in chat</value>
+  </data>
+  <data name="chat_editor_service_messages_desc" xml:space="preserve">
+    <value>When members join, leave, get invited and kicked out</value>
+  </data>
 </root>

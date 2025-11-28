@@ -1,62 +1,65 @@
-<vkw:DialogWindow xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i18n="using:ELOR.Laney.Assets.i18n"
-        xmlns:vkw="using:VKUI.Windows"
-        xmlns:vkui="using:VKUI.Controls"
-        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="640"
-        x:Class="ELOR.Laney.Views.Modals.ChatEditor"
-        Width="420" SizeToContent="Height"
-        Title="{x:Static i18n:Resources.chat_editor}">
-  <Grid RowDefinitions="Auto Auto *">
-    <vkui:WindowTitleBar x:Name="TitleBar" CanMove="False"/>
-    <StackPanel Grid.Row="2" Margin="0,0,0,12" Spacing="12">
-      <StackPanel x:Name="ChatMainInfos" Margin="12,0" Spacing="12" IsVisible="False">
-        <Grid ColumnDefinitions="Auto *">
-          <vkui:Avatar x:Name="ChatAvatar" Width="64" Height="64"/>
-          <Button Padding="0" Width="64" Height="64" CornerRadius="32" Background="#67000000" Click="OnAvatarClick">
-            <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28CameraAddOutline}" Foreground="White"/>
-          </Button>
-
-          <StackPanel Margin="12,0,0,0" Grid.Column="1" VerticalAlignment="Center">
-            <TextBlock Margin="0,0,0,6" Classes="Caption1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{x:Static i18n:Resources.name}"/>
-            <TextBox x:Name="ChatName"/>
-          </StackPanel>
-        </Grid>
-
-        <StackPanel>
-          <TextBlock Margin="0,0,0,6" Classes="Caption1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{x:Static i18n:Resources.description}"/>
-          <TextBox x:Name="ChatDescription" TextWrapping="Wrap" Height="54"/>
+<vkw:DialogWindow
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i18n="using:ELOR.Laney.Assets.i18n"
+    xmlns:vkw="using:VKUI.Windows"
+    xmlns:vkui="using:VKUI.Controls"
+    mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="640"
+    x:Class="ELOR.Laney.Views.Modals.ChatEditor"
+    Width="420" SizeToContent="Height"
+    Title="{x:Static i18n:Resources.chat_editor}">
+    <Grid RowDefinitions="Auto Auto *">
+        <vkui:WindowTitleBar x:Name="TitleBar" CanMove="False"/>
+        <StackPanel Grid.Row="2" Margin="0,0,0,12" Spacing="12">
+            <StackPanel x:Name="ChatMainInfos" Margin="12,0" Spacing="12" IsVisible="False">
+                <Grid ColumnDefinitions="Auto *">
+                    <vkui:Avatar x:Name="ChatAvatar" Width="64" Height="64"/>
+                    <Button Padding="0" Width="64" Height="64" CornerRadius="32" Background="#67000000" Click="OnAvatarClick">
+                        <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28CameraAddOutline}" Foreground="White"/>
+                    </Button>
+                    <StackPanel Margin="12,0,0,0" Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Margin="0,0,0,6" Classes="Caption1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{x:Static i18n:Resources.name}"/>
+                        <TextBox x:Name="ChatName"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,6" Classes="Caption1" Foreground="{DynamicResource VKTextSubheadBrush}" Text="{x:Static i18n:Resources.description}"/>
+                    <TextBox x:Name="ChatDescription" TextWrapping="Wrap" Height="54"/>
+                </StackPanel>
+            </StackPanel>
+            <ScrollViewer x:Name="ChatSettingsList" IsVisible="False">
+                <StackPanel>
+                    <StackPanel x:Name="PermissionsListStack">
+                        <StackPanel.Styles>
+                            <Style Selector="Button.Tertiary">
+                                <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
+                                <Setter Property="FontWeight" Value="Regular"/>
+                                <Setter Property="Padding" Value="0,0,0,0"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                            <Style Selector="vkui|Cell vkui|VKIcon">
+                                <Setter Property="Foreground" Value="{DynamicResource VKIconTertiaryBrush}"/>
+                            </Style>
+                        </StackPanel.Styles>
+                    </StackPanel>
+                    <StackPanel x:Name="ToggleableParameters">
+                        <vkui:Cell x:Name="ForwardTC" IsVisible="False" Header="{x:Static i18n:Resources.chat_editor_messages_forwarding_disabled}" Subtitle="{x:Static i18n:Resources.chat_editor_messages_forwarding_disabled_desc}">
+                            <vkui:Cell.After>
+                                <ToggleSwitch x:Name="ForwardTS"/>
+                            </vkui:Cell.After>
+                        </vkui:Cell>
+                        <vkui:Cell x:Name="ServiceMsgsTC" IsVisible="False" Header="{x:Static i18n:Resources.chat_editor_service_messages}" Subtitle="{x:Static i18n:Resources.chat_editor_service_messages_desc}">
+                            <vkui:Cell.After>
+                                <ToggleSwitch x:Name="ServiceMsgsTS"/>
+                            </vkui:Cell.After>
+                        </vkui:Cell>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+            <Button Margin="12,0" HorizontalAlignment="Right" Classes="Medium Primary" Content="{x:Static i18n:Resources.save}" Click="OnSaveClick"/>
         </StackPanel>
-      </StackPanel>
-
-      <ScrollViewer x:Name="PermissionsList" IsVisible="False">
-        <StackPanel x:Name="PermissionsListStack">
-          <StackPanel.Styles>
-            <Style Selector="Button.Tertiary">
-              <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
-              <Setter Property="FontWeight" Value="Regular"/>
-              <Setter Property="Padding" Value="0,0,0,0"/>
-              <Setter Property="HorizontalAlignment" Value="Stretch"/>
-              <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            </Style>
-            <Style Selector="vkui|Cell vkui|VKIcon">
-              <Setter Property="Foreground" Value="{DynamicResource VKIconTertiaryBrush}"/>
-            </Style>
-          </StackPanel.Styles>
-        </StackPanel>
-      </ScrollViewer>
-      
-      <StackPanel x:Name="ToggleableParameters">
-		  <vkui:Cell x:Name="ForwardTC" IsVisible="False" Header="{x:Static i18n:Resources.chat_editor_messages_forwarding_disabled}" Subtitle="{x:Static i18n:Resources.chat_editor_messages_forwarding_disabled_desc}">
-			  <vkui:Cell.After>
-				  <ToggleSwitch x:Name="ForwardTS"/>
-              </vkui:Cell.After>
-          </vkui:Cell>
-      </StackPanel>
-
-      <Button Margin="12,0" HorizontalAlignment="Right" Classes="Medium Primary" Content="{x:Static i18n:Resources.save}" Click="OnSaveClick"/>
-    </StackPanel>
-  </Grid>
+    </Grid>
 </vkw:DialogWindow>
