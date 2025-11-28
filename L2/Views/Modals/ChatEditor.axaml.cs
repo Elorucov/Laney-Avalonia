@@ -279,12 +279,12 @@ public partial class ChatEditor : DialogWindow {
                 bool msgForwardChanged = _acl != null && _acl.CanDisableForwardMessages && (_acl.CanForwardMessages == ForwardTS.IsChecked.Value);
                 bool serviceMsgsChanged = _acl != null && _acl.CanDisableServiceMessages && (_serviceMessagesDisabled == ServiceMsgsTS.IsChecked.Value);
 
-                Log.Information("{0}: mode={1}, nameChanged={2}, descChanged={3}, permissions={4}, disableForwarding={5}", 
+                Log.Information("{0}: mode={1}, nameChanged={2}, descChanged={3}, permissions={4}, disableForwarding={5}",
                     nameof(ChatEditor), _mode, nameChanged, descChanged, permissions, ForwardTS.IsChecked);
 
                 try {
                     button.IsEnabled = false;
-                    var response = await _session.API.Messages.EditChatAsync(_chatId, nameChanged ? newName : null, descChanged ? newDesc : null, 
+                    var response = await _session.API.Messages.EditChatAsync(_chatId, nameChanged ? newName : null, descChanged ? newDesc : null,
                         permissions, msgForwardChanged ? ForwardTS.IsChecked : null, serviceMsgsChanged ? !ServiceMsgsTS.IsChecked : null);
 
                     if (msgForwardChanged) _acl.CanForwardMessages = !ForwardTS.IsChecked.Value;
