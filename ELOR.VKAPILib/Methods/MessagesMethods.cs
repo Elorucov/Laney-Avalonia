@@ -240,13 +240,17 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="title">New title of the chat.</param>
         /// <param name="description">New description of the chat.</param>
         /// <param name="permissions">Permissions.</param>
-        public async Task<bool> EditChatAsync(int chatId, string title = null, string description = null, string permissions = null) {
+        /// <param name="disableForwarding">Disable messages forwarding.</param>
+        /// <param name="disableServiceMessages">Disable service messages.</param>
+        public async Task<bool> EditChatAsync(int chatId, string title = null, string description = null, string permissions = null, bool? disableForwarding = null, bool? disableServiceMessages = null) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "chat_id", chatId.ToString() }
             };
             if (!String.IsNullOrEmpty(title)) parameters.Add("title", title);
             if (!String.IsNullOrEmpty(description)) parameters.Add("description", description);
             if (!String.IsNullOrEmpty(permissions)) parameters.Add("permissions", permissions);
+            if (disableForwarding.HasValue) parameters.Add("disable_forwarding", disableForwarding.Value ? "1" : "0");
+            if (disableServiceMessages.HasValue) parameters.Add("disable_service_messages", disableServiceMessages.Value ? "1" : "0");
             return await API.CallMethodAsync<int>("messages.editChat", parameters) == 1;
         }
 

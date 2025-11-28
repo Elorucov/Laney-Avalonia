@@ -1388,4 +1388,16 @@
   <data name="lp_act_choosing_template_single" xml:space="preserve">
     <value>вибирає шаблон</value>
   </data>
+  <data name="chat_editor_messages_forwarding_disabled" xml:space="preserve">
+    <value>Заборона на пересилання з чату</value>
+  </data>
+  <data name="chat_editor_messages_forwarding_disabled_desc" xml:space="preserve">
+    <value>Учасники не зможуть надсилати і зберігати повідомлення</value>
+  </data>
+  <data name="chat_editor_service_messages" xml:space="preserve">
+    <value>Системні повідомлення у чаті</value>
+  </data>
+  <data name="chat_editor_service_messages_desc" xml:space="preserve">
+    <value>Коли учасники приєднуються, виходять, когось запрошують та виключають</value>
+  </data>
 </root>

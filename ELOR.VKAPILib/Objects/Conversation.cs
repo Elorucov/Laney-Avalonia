@@ -175,6 +175,18 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("can_send_reactions")]
         public bool CanSendReactions { get; set; }
+
+        [JsonPropertyName("can_disable_forward_messages")]
+        public bool CanDisableForwardMessages { get; set; }
+
+        [JsonPropertyName("can_forward_messages")]
+        public bool CanForwardMessages { get; set; }
+
+        [JsonPropertyName("can_disable_service_messages")]
+        public bool CanDisableServiceMessages { get; set; }
+
+        [JsonPropertyName("can_change_owner")]
+        public bool CanChangeOwner { get; set; }
     }
 
     //public class ChatPermissions {
@@ -265,6 +277,9 @@ namespace ELOR.VKAPILib.Objects {
 
         [JsonPropertyName("writing_disabled")]
         public WritingDisabledInfo WritingDisabled { get; set; }
+
+        [JsonPropertyName("disable_service_messages")]
+        public bool DisableServiceMessages { get; set; }
     }
 
     public class SortId {

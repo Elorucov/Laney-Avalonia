@@ -1,7 +1,6 @@
 ﻿using ELOR.VKAPILib.Methods;
 using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.HandlerDatas;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -168,7 +167,7 @@ namespace ELOR.VKAPILib {
             } else {
                 resp = await JsonNode.ParseAsync(responseStream);
             }
-            
+
             if (resp["error"] != null) {
                 APIException apiex = (APIException)resp["error"].Deserialize(typeof(APIException), BuildInJsonContext.Default);
                 switch (apiex.Code) {

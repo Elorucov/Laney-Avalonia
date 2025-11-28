@@ -51,6 +51,7 @@ resp.acl = msgr.items[0].chat_settings.acl;
 resp.state = msgr.items[0].chat_settings.state;
 resp.permissions = msgr.items[0].chat_settings.permissions;
 resp.writing_disabled = msgr.items[0].chat_settings.writing_disabled;
+resp.disable_service_messages = msgr.items[0].chat_settings.disable_service_messages;
 
 resp.members_count = msgr.items[0].chat_settings.members_count;
 if (resp.members_count == null) resp.members_count = 0;

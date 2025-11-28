@@ -286,6 +286,7 @@ namespace ELOR.Laney.Helpers {
                 ? chat.PinnedMessage.ConversationMessageId == message.ConversationMessageId : false;
 
             bool canEdit = message.CanEdit(session.Id);
+            bool canForward = chat.ChatSettings == null ? true : chat.ChatSettings.ACL.CanForwardMessages;
 
             bool canDeleteWithoutConfirmation = message.SenderId != session.Id || chat.PeerId == session.Id;
             bool canDeleteForAll = message.SenderId == session.Id && message.PeerId != message.SenderId
@@ -374,7 +375,7 @@ namespace ELOR.Laney.Helpers {
                 if (canShowReaders || canShowReactions) ash.Items.Add(new ActionSheetItem());
                 if (chat.CanWrite.Allowed) ash.Items.Add(reply);
                 if (canReplyPrivately && chat.PeerType == PeerType.Chat) ash.Items.Add(repriv);
-                ash.Items.Add(forward);
+                if (canForward) ash.Items.Add(forward);
                 // if (chat.CanWrite.Allowed) ash.Items.Add(forwardHere);
                 if (!session.IsGroup && !message.IsImportant) ash.Items.Add(mark);
                 if (!session.IsGroup && message.IsImportant) ash.Items.Add(unmark);

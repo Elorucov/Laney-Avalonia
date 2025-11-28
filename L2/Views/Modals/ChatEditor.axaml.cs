@@ -8,6 +8,7 @@ using ELOR.Laney.DataModels;
 using ELOR.Laney.Extensions;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
+using ELOR.VKAPILib.Objects;
 using ELOR.VKAPILib.Objects.Messages;
 using Serilog;
 using System;
@@ -39,6 +40,8 @@ public partial class ChatEditor : DialogWindow {
     private readonly string _description;
     private string _photo;
     private readonly Dictionary<string, string> _permissions;
+    private readonly ChatACL _acl;
+    private readonly bool _serviceMessagesDisabled;
 
     private Exception _uploaderException;
 
@@ -46,7 +49,7 @@ public partial class ChatEditor : DialogWindow {
     // а тот кто открыл это окно должен узнать актуальное фото, даже если юзер сменил фото и закрыл окно нажатием на крестик
     public string Photo => _photo;
 
-    public ChatEditor(VKSession session, int chatId, string name, string description, string photo, Dictionary<string, string> permissions) {
+    public ChatEditor(VKSession session, int chatId, string name, string description, string photo, Dictionary<string, string> permissions, ChatACL acl, bool serviceMessagesDisabled) {
         InitializeComponent();
         _mode = ChatEditorMode.ChatEditor;
         _session = session;
@@ -55,7 +58,10 @@ public partial class ChatEditor : DialogWindow {
         _description = description;
         _photo = photo;
         _permissions = permissions;
+        _acl = acl;
+        _serviceMessagesDisabled = serviceMessagesDisabled;
 
+        ChatSettingsList.MaxHeight = 236;
         Setup();
     }
 
@@ -83,12 +89,23 @@ public partial class ChatEditor : DialogWindow {
 
     private void SetupPermissions(Dictionary<string, string> permissions) {
         if (permissions == null) return;
-        PermissionsList.IsVisible = true;
+        ChatSettingsList.IsVisible = true;
 
         foreach (var permission in permissions) {
             List<string> availableValues = ["owner", "owner_and_admins"];
             if (permission.Key != "change_admins") availableValues.Add("all");
-            PermissionsList.Children.Add(CreatePermissionButton(permission.Key, availableValues));
+            PermissionsListStack.Children.Add(CreatePermissionButton(permission.Key, availableValues));
+        }
+
+        if (_acl != null) {
+            if (_acl.CanDisableForwardMessages) {
+                ForwardTC.IsVisible = true;
+                ForwardTS.IsChecked = !_acl.CanForwardMessages;
+            }
+            if (_acl.CanDisableServiceMessages) {
+                ServiceMsgsTC.IsVisible = true;
+                ServiceMsgsTS.IsChecked = !_serviceMessagesDisabled;
+            }
         }
     }
 
@@ -259,20 +276,26 @@ public partial class ChatEditor : DialogWindow {
             if (_mode == ChatEditorMode.ChatEditor) {
                 bool nameChanged = _name != ChatName.Text;
                 bool descChanged = _description != ChatDescription.Text;
+                bool msgForwardChanged = _acl != null && _acl.CanDisableForwardMessages && (_acl.CanForwardMessages == ForwardTS.IsChecked.Value);
+                bool serviceMsgsChanged = _acl != null && _acl.CanDisableServiceMessages && (_serviceMessagesDisabled == ServiceMsgsTS.IsChecked.Value);
 
-                Log.Information("{0}: mode={1}, nameChanged={2}, descChanged={3}, permissions={4}", nameof(ChatEditor), _mode, nameChanged, descChanged, permissions);
+                Log.Information("{0}: mode={1}, nameChanged={2}, descChanged={3}, permissions={4}, disableForwarding={5}",
+                    nameof(ChatEditor), _mode, nameChanged, descChanged, permissions, ForwardTS.IsChecked);
 
                 try {
                     button.IsEnabled = false;
-                    var response = await _session.API.Messages.EditChatAsync(_chatId, nameChanged ? newName : null, descChanged ? newDesc : null, permissions);
-                    Close(new ChatEditorResult(_chatId, ChatName.Text, ChatDescription.Text, _permissions));
+                    var response = await _session.API.Messages.EditChatAsync(_chatId, nameChanged ? newName : null, descChanged ? newDesc : null,
+                        permissions, msgForwardChanged ? ForwardTS.IsChecked : null, serviceMsgsChanged ? !ServiceMsgsTS.IsChecked : null);
+
+                    if (msgForwardChanged) _acl.CanForwardMessages = !ForwardTS.IsChecked.Value;
+                    Close(new ChatEditorResult(_chatId, ChatName.Text, ChatDescription.Text, _permissions, _acl, !ServiceMsgsTS.IsChecked.Value));
                 } catch (Exception ex) {
                     button.IsEnabled = true;
                     if (await ExceptionHelper.ShowErrorDialogAsync(this, ex)) OnSaveClick(sender, e);
                 }
             } else {
                 Log.Information("{0}: mode={1}, permissions={2}", nameof(ChatEditor), _mode, permissions);
-                Close(new ChatEditorResult(_chatId, null, null, _permissions));
+                Close(new ChatEditorResult(_chatId, null, null, _permissions, _acl, false));
             }
         })();
     }
