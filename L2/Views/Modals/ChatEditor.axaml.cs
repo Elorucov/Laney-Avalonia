@@ -88,13 +88,13 @@ public partial class ChatEditor : DialogWindow {
     }
 
     private void SetupPermissions(Dictionary<string, string> permissions) {
-        if (permissions == null) return;
-        ChatSettingsList.IsVisible = true;
-
-        foreach (var permission in permissions) {
-            List<string> availableValues = ["owner", "owner_and_admins"];
-            if (permission.Key != "change_admins") availableValues.Add("all");
-            PermissionsListStack.Children.Add(CreatePermissionButton(permission.Key, availableValues));
+        if (permissions != null) {
+            foreach (var permission in permissions) {
+                List<string> availableValues = ["owner", "owner_and_admins"];
+                if (permission.Key != "change_admins") availableValues.Add("all");
+                PermissionsListStack.Children.Add(CreatePermissionButton(permission.Key, availableValues));
+            }
+            PermissionsListStack.IsVisible = true;
         }
 
         if (_acl != null) {
@@ -269,7 +269,7 @@ public partial class ChatEditor : DialogWindow {
             string newName = ChatName.Text;
             string newDesc = ChatDescription.Text;
 
-            string permissions = JsonSerializer.Serialize(_permissions, new JsonSerializerOptions {
+            string permissions = _permissions == null ? null : JsonSerializer.Serialize(_permissions, new JsonSerializerOptions {
                 TypeInfoResolver = BuildInJsonContext.Default
             });
 
