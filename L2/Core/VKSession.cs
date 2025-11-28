@@ -247,9 +247,6 @@ namespace ELOR.Laney.Core {
                         Title = "Emoji & stickers"
                     };
                     stemwnd.Show();
-#if DEBUG
-                    stemwnd.AttachDevTools();
-#endif
                 };
                 devmenu.Add(stemw);
             }

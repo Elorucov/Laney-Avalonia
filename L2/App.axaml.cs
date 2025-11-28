@@ -30,6 +30,9 @@ namespace ELOR.Laney {
             _current = this;
 
             AvaloniaXamlLoader.Load(this);
+#if DEBUG
+            this.AttachDeveloperTools();
+#endif
 
             ActualThemeVariantChanged += App_ActualThemeVariantChanged;
             ChangeTheme(Settings.AppTheme);
