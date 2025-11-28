@@ -29,9 +29,9 @@
                     <TextBox x:Name="ChatDescription" TextWrapping="Wrap" Height="54"/>
                 </StackPanel>
             </StackPanel>
-            <ScrollViewer x:Name="ChatSettingsList" IsVisible="False">
+            <ScrollViewer x:Name="ChatSettingsList" >
                 <StackPanel>
-                    <StackPanel x:Name="PermissionsListStack">
+                    <StackPanel x:Name="PermissionsListStack" IsVisible="False">
                         <StackPanel.Styles>
                             <Style Selector="Button.Tertiary">
                                 <Setter Property="Foreground" Value="{DynamicResource VKTextPrimaryBrush}"/>
