@@ -621,7 +621,7 @@ namespace ELOR.Laney.ViewModels.Modals {
             // Edit
             if (chat.ACL.CanChangeInfo) {
                 var act = new Action<object>(async (o) => {
-                    ChatEditor modal = new ChatEditor(session, chat.ChatId, chat.Name, chat.Description, chat.Photo, chat.Permissions);
+                    ChatEditor modal = new ChatEditor(session, chat.ChatId, chat.Name, chat.Description, chat.Photo, chat.Permissions, chat.ACL);
                     var result = await modal.ShowDialog<ChatEditorResult>(session.ModalWindow);
 
                     // фото меняется сразу, а не при нажатии на кнопку "save" в ChatEditor, 
@@ -633,6 +633,7 @@ namespace ELOR.Laney.ViewModels.Modals {
                         chat.Name = result.Name;
                         chat.Description = result.Description;
                         chat.Permissions = result.Permissions;
+                        chat.ACL = result.ACL;
 
                         Header = chat.Name;
                         Avatar = chat.PhotoUri != null ? chat.PhotoUri : null;

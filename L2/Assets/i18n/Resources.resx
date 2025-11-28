@@ -1391,4 +1391,10 @@ to attach them as files</value>
   <data name="lp_act_choosing_template_single" xml:space="preserve">
     <value>is choosing a template</value>
   </data>
+  <data name="chat_editor_messages_forwarding_disabled" xml:space="preserve">
+    <value>Message forwarding restricted</value>
+  </data>
+  <data name="chat_editor_messages_forwarding_disabled_desc" xml:space="preserve">
+    <value>Chat members won't be able to forward messages or save them</value>
+  </data>
 </root>
