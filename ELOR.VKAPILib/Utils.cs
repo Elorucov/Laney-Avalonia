@@ -30,15 +30,15 @@ namespace ELOR.VKAPILib {
         }
 
         internal static string Combine(this List<int> items, char sym = ',') {
-            return String.Join(sym.ToString(), items);
+            return String.Join(sym, items);
         }
 
         internal static string Combine(this List<long> items, char sym = ',') {
-            return String.Join(sym.ToString(), items);
+            return String.Join(sym, items);
         }
 
         internal static string Combine(this List<string> items, char sym = ',') {
-            return String.Join(sym.ToString(), items);
+            return String.Join(sym, items);
         }
 
         internal static string Combine<TKey, TValue>(this List<KeyValuePair<TKey, TValue>> items, char sym = ',') {

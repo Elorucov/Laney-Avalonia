@@ -371,6 +371,31 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<ChatMembersList>("messages.getConversationMembers", parameters);
         }
 
+        /// <summary>This method is undocumented! Get new messages, counters and updates between versionsю</summary>
+        /// <param name="groupId">Group ID (for community messages with a user access token).</param>
+        /// <param name="fromVersion">Version from which you want to get updates.</param>
+        /// <param name="toVersion">Version to which you want to get updates.</param>
+        /// <param name="lpVersion">LongPoll version.</param>
+        /// <param name="extendedFilters">Return additional fields: changed_objects, counters, credentials, folders, folders_with_peers, groups, profiles, server_time, server_version.</param>
+        /// <param name="fields">List of additional fields for users and communities.</param>
+        /// <param name="counterFilters">if extendedFilters contains "counters", return additional fields in "counters" object: all.</param>
+        /// <param name="nestedLimit">Maximum depth of nested forwarded messages.</param>
+        /// <param name="conversationsLimit">Number of conversations to return.</param>
+        public async Task<ChatOnlineResponse> GetDiffAsync(long groupId, long? fromVersion, long? toVersion, int? lpVersion, List<string> extendedFilters, List<string> fields, List<string> counterFilters, int? nestedLimit, int? conversationsLimit) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            if (groupId > 0) parameters.Add("group_id", groupId.ToString());
+            if (fromVersion.HasValue) parameters.Add("from_version", fromVersion.Value.ToString());
+            if (toVersion.HasValue) parameters.Add("from_version", toVersion.Value.ToString());
+            if (lpVersion.HasValue) parameters.Add("lp_version", lpVersion.Value.ToString());
+            if (extendedFilters != null && extendedFilters.Count > 0) parameters.Add("extended_filters", extendedFilters.Combine());
+            if (fields != null && fields.Count > 0) parameters.Add("fields", fields.Combine());
+            if (counterFilters != null && counterFilters.Count > 0) parameters.Add("counter_filters", counterFilters.Combine());
+            if (nestedLimit.HasValue) parameters.Add("nested_limit", nestedLimit.Value.ToString());
+            if (conversationsLimit.HasValue) parameters.Add("conversations_limit", conversationsLimit.Value.ToString());
+
+            return await API.CallMethodAsync<ChatOnlineResponse>("messages.getDiff", parameters);
+        }
+
         /// <summary>Returns message history for the specified user or group chat.</summary>
         /// <param name="groupId">Group ID (for community messages with a user access token).</param>
         /// <param name="peerId">Peer ID.</param>

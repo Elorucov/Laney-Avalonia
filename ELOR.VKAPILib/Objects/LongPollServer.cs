@@ -7,14 +7,23 @@ namespace ELOR.VKAPILib.Objects {
         [JsonPropertyName("key")]
         public string Key { get; set; }
 
+        [JsonPropertyName("lp_server_unavailable")]
+        public int LongPollServerUnavailable { get; set; }
+
         [JsonPropertyName("server")]
         public string Server { get; set; }
 
-        [JsonPropertyName("ts")]
-        public int TS { get; set; }
+        [JsonPropertyName("server_lp")] // only on messages.getDiff method
+        public string ServerLongPoll { get; set; }
 
-        [JsonPropertyName("pts")]
-        public int PTS { get; set; }
+        [JsonPropertyName("server_sse")] // only on messages.getDiff method
+        public string ServerSSE { get; set; }
+
+        [JsonPropertyName("ts")]
+        public long TS { get; set; }
+
+        [JsonPropertyName("pts")] // only on messages.getLongPollServer/getLongPollHistory method
+        public long PTS { get; set; }
     }
 
     public class LongPollFail {
