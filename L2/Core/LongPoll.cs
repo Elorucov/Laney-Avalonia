@@ -29,8 +29,8 @@ namespace ELOR.Laney.Core {
 
         private string _server;
         private string _key;
-        private int _timeStamp;
-        private int _pts;
+        private long _timeStamp;
+        private long _pts;
         private bool _isRunning = false;
         private CancellationTokenSource _cts;
 
@@ -63,7 +63,8 @@ namespace ELOR.Laney.Core {
         }
 
         public void SetUp(LongPollServerInfo info) {
-            _server = info.Server;
+            _server = info.ServerLongPoll ?? info.Server;
+
             _key = info.Key;
             _timeStamp = info.TS;
             _pts = info.PTS;

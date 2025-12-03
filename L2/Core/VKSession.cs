@@ -413,7 +413,7 @@ namespace ELOR.Laney.Core {
                             Avatar = new Uri(group.Photo100),
                             API = new VKAPI(API.AccessToken, Assets.i18n.Resources.lang, App.UserAgent)
                         };
-                        gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId, IsVKM);
+                        if (!Settings.UseDiffSync) gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId, IsVKM);
                         gs.ImViewModel = new ImViewModel(gs);
                         sessions.Add(gs);
 
@@ -496,6 +496,7 @@ namespace ELOR.Laney.Core {
         }
 
         private void SetUpLongPoll(LongPollInfoForSession lp) {
+            if (Settings.UseDiffSync) return;
             if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId, IsVKM);
             LongPoll.SetUp(lp.LongPoll);
             LongPoll.StateChanged += LongPoll_StateChanged;
@@ -642,6 +643,14 @@ namespace ELOR.Laney.Core {
         #region Public
 
         byte gcCollectTriggerCounter = 0;
+
+        public void SetUpLongPollFromCredential(LongPollServerInfo lp) {
+            if (!Settings.UseDiffSync) return;
+            if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId, IsVKM);
+            LongPoll.SetUp(lp);
+            LongPoll.StateChanged += LongPoll_StateChanged;
+            LongPoll.Run();
+        }
 
         public void GoToMessage(Message message) {
             if (message.IsUnavailable) {

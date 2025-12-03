@@ -175,6 +175,7 @@ namespace ELOR.Laney.Core {
         public const string DEBUG_MSGESSAGES_LIST_VIRTUALIZATION = "dbg_msgl_virtualization";
         public const string DEBUG_GALLERY = "dbg_gallery";
         public const string DEBUG_LOAD_IMAGES_SEQUENTIAL = "dbg_load_images_sequential";
+        public const string DEBUG_DIFF_SYNC = "dbg_diff_sync";
 
         #endregion
 
@@ -309,6 +310,11 @@ namespace ELOR.Laney.Core {
         public static bool LoadImagesSequential {
             get => Get(DEBUG_LOAD_IMAGES_SEQUENTIAL, true);
             set => Set(DEBUG_LOAD_IMAGES_SEQUENTIAL, value);
+        }
+
+        public static bool UseDiffSync {
+            get => Get(DEBUG_DIFF_SYNC, false);
+            set => Set(DEBUG_DIFF_SYNC, value);
         }
 
         #endregion

@@ -381,7 +381,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="counterFilters">if extendedFilters contains "counters", return additional fields in "counters" object: all.</param>
         /// <param name="nestedLimit">Maximum depth of nested forwarded messages.</param>
         /// <param name="conversationsLimit">Number of conversations to return.</param>
-        public async Task<ChatOnlineResponse> GetDiffAsync(long groupId, long? fromVersion, long? toVersion, int? lpVersion, List<string> extendedFilters, List<string> fields, List<string> counterFilters, int? nestedLimit, int? conversationsLimit) {
+        public async Task<GetDiffResponse> GetDiffAsync(long groupId, long? fromVersion, long? toVersion, int? lpVersion, List<string> extendedFilters, List<string> fields, List<string> counterFilters, int? nestedLimit, int? conversationsLimit) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             if (fromVersion.HasValue) parameters.Add("from_version", fromVersion.Value.ToString());
@@ -393,7 +393,7 @@ namespace ELOR.VKAPILib.Methods {
             if (nestedLimit.HasValue) parameters.Add("nested_limit", nestedLimit.Value.ToString());
             if (conversationsLimit.HasValue) parameters.Add("conversations_limit", conversationsLimit.Value.ToString());
 
-            return await API.CallMethodAsync<ChatOnlineResponse>("messages.getDiff", parameters);
+            return await API.CallMethodAsync<GetDiffResponse>("messages.getDiff", parameters);
         }
 
         /// <summary>Returns message history for the specified user or group chat.</summary>
@@ -500,7 +500,7 @@ namespace ELOR.VKAPILib.Methods {
         /// <param name="eventsLimit">Maximum number of events to return. (minimum 1000)</param>
         /// <param name="msgsLimit">Maximum number of messages to return. (minimum 200)</param>
         /// <param name="maxMsgId">Maximum ID of the message among existing ones in the local copy.</param>
-        public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(long groupId, int version, int ts, int pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null, int nestedLimit = 0) {
+        public async Task<LongPollHistoryResponse> GetLongPollHistoryAsync(long groupId, int version, long ts, long pts, int previewLength, bool onlines, int eventsLimit = 1000, int msgsLimit = 200, int maxMsgId = 0, List<string> fields = null, int nestedLimit = 0) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             if (groupId > 0) parameters.Add("group_id", groupId.ToString());
             parameters.Add("lp_version", version.ToString());

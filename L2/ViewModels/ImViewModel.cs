@@ -86,17 +86,37 @@ namespace ELOR.Laney.ViewModels {
             IsLoading = true;
             Placeholder = null;
             try {
-                var response = await session.API.Messages.GetConversationsAsync(session.GroupId, VKAPIHelper.Fields, ConversationsFilter.All, true, 60, _chats.Count, Constants.NestedMessagesLimit);
-                CacheManager.Add(response.Profiles);
-                CacheManager.Add(response.Groups);
+                if (Settings.UseDiffSync && _chats.Count == 0) {
+                    // TODO: folders
+                    List<string> extendedFilters = new List<string> { "changed_objects", "counters", "credentials", "folders", "groups", "profiles", "server_time", "server_version" };
+                    var response = await session.API.Messages.GetDiffAsync(session.GroupId, null, null, LongPoll.VERSION, 
+                        extendedFilters, VKAPIHelper.Fields, new List<string> { "all" }, Constants.NestedMessagesLimit, Constants.ConversationsCount);
+                    CacheManager.Add(response.Profiles);
+                    CacheManager.Add(response.Groups);
 
-                foreach (var conv in response.Items) {
-                    ChatViewModel chat = CacheManager.GetChat(session.Id, conv.Conversation.Peer.Id);
-                    if (chat == null) {
-                        chat = new ChatViewModel(session, conv.Conversation, conv.LastMessage);
-                        CacheManager.Add(session.Id, chat);
+                    foreach (var info in response.ConversationsInfo) {
+                        ChatViewModel chat = CacheManager.GetChat(session.Id, info.Conversation.Peer.Id);
+                        if (chat == null) {
+                            chat = new ChatViewModel(session, info.Conversation, info.Messages.FirstOrDefault());
+                            CacheManager.Add(session.Id, chat);
+                        }
+                        _chats.AddOrUpdate(chat);
                     }
-                    _chats.AddOrUpdate(chat);
+
+                    session.SetUpLongPollFromCredential(response.Credentials);
+                } else {
+                    var response = await session.API.Messages.GetConversationsAsync(session.GroupId, VKAPIHelper.Fields, ConversationsFilter.All, true, Constants.ConversationsCount, _chats.Count, Constants.NestedMessagesLimit);
+                    CacheManager.Add(response.Profiles);
+                    CacheManager.Add(response.Groups);
+
+                    foreach (var conv in response.Items) {
+                        ChatViewModel chat = CacheManager.GetChat(session.Id, conv.Conversation.Peer.Id);
+                        if (chat == null) {
+                            chat = new ChatViewModel(session, conv.Conversation, conv.LastMessage);
+                            CacheManager.Add(session.Id, chat);
+                        }
+                        _chats.AddOrUpdate(chat);
+                    }
                 }
             } catch (Exception ex) {
                 if (_chats.Count > 0) {
