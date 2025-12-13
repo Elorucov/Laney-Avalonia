@@ -88,9 +88,8 @@ namespace ELOR.Laney.ViewModels {
             try {
                 if (Settings.UseDiffSync && _chats.Count == 0) {
                     // TODO: folders
-                    List<string> extendedFilters = new List<string> { "changed_objects", "counters", "credentials", "folders", "groups", "profiles", "server_time", "server_version" };
                     var response = await session.API.Messages.GetDiffAsync(session.GroupId, null, null, LongPoll.VERSION, 
-                        extendedFilters, VKAPIHelper.Fields, new List<string> { "all" }, Constants.NestedMessagesLimit, Constants.ConversationsCount);
+                        VKAPIHelper.DiffExtendedFilters, VKAPIHelper.Fields, new List<string> { "all" }, Constants.NestedMessagesLimit, Constants.ConversationsCount);
                     CacheManager.Add(response.Profiles);
                     CacheManager.Add(response.Groups);
 

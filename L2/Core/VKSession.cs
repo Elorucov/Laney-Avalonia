@@ -644,10 +644,10 @@ namespace ELOR.Laney.Core {
 
         byte gcCollectTriggerCounter = 0;
 
-        public void SetUpLongPollFromCredential(LongPollServerInfo lp) {
+        public void SetUpLongPollFromCredential(LongPollServerInfo lp, long serverVersion) {
             if (!Settings.UseDiffSync) return;
             if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId, IsVKM);
-            LongPoll.SetUp(lp);
+            LongPoll.SetUp(lp, serverVersion);
             LongPoll.StateChanged += LongPoll_StateChanged;
             LongPoll.Run();
         }

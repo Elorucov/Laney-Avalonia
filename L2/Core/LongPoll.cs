@@ -4,6 +4,7 @@ using ELOR.Laney.Execute.Objects;
 using ELOR.Laney.Helpers;
 using ELOR.VKAPILib;
 using ELOR.VKAPILib.Objects;
+using ELOR.VKAPILib.Objects.Messages;
 using Serilog;
 using Serilog.Core;
 using System;
@@ -62,12 +63,12 @@ namespace ELOR.Laney.Core {
             State = LongPollState.Connecting;
         }
 
-        public void SetUp(LongPollServerInfo info) {
+        public void SetUp(LongPollServerInfo info, long pts = 0) {
             _server = info.ServerLongPoll ?? info.Server;
 
             _key = info.Key;
             _timeStamp = info.TS;
-            _pts = info.PTS;
+            _pts = pts == 0 ? info.PTS : pts;
         }
 
         #region Events
@@ -179,18 +180,35 @@ namespace ELOR.Laney.Core {
                 while (trying) {
                     try {
                         State = LongPollState.Updating;
-                        _log.Information($"Getting LongPoll history... PTS: {_pts}, isOfficialClient={_isOfficialClient}");
-                        var response = await _api.Messages.GetLongPollHistoryAsync(_groupId, VERSION, _timeStamp, _pts, 0, false, 1000, 1000, 0, VKAPIHelper.Fields, Constants.NestedMessagesLimit).ConfigureAwait(false);
-                        CacheManager.Add(response.Profiles);
-                        CacheManager.Add(response.Groups);
+                        if (Settings.UseDiffSync) {
+                            _log.Information($"Getting diff from version {_pts}, isOfficialClient={_isOfficialClient}");
+                            var response = await _api.Messages.GetDiffAsync(_groupId, _pts, null, VERSION,
+                                VKAPIHelper.DiffExtendedFilters, VKAPIHelper.Fields, new List<string> { "all" }, Constants.NestedMessagesLimit, 200);
+                            CacheManager.Add(response.Profiles);
+                            CacheManager.Add(response.Groups);
 
-                        SetUp(response.Credentials);
+                            SetUp(response.Credentials, response.ServerVersion);
 
-                        // TODO: кешировать беседы.
-                        await ParseUpdatesAsync(response.History, response.Messages.Items, response.Conversations);
+                            if (response.InvalidateAll) {
+                                _log.Warning($"getDiff: required invalidation. Has credentials: {_server != null}");
+                                NeedFullResync?.Invoke(this, null);
+                            } else {
+                                await CheckDiffAsync(response);
+                            }
+                        } else {
+                            _log.Information($"Getting LongPoll history... PTS: {_pts}, isOfficialClient={_isOfficialClient}");
+                            var response = await _api.Messages.GetLongPollHistoryAsync(_groupId, VERSION, _timeStamp, _pts, 0, false, 1000, 1000, 0, VKAPIHelper.Fields, Constants.NestedMessagesLimit).ConfigureAwait(false);
+                            CacheManager.Add(response.Profiles);
+                            CacheManager.Add(response.Groups);
 
-                        if (response.More) _pts = response.NewPTS;
-                        trying = response.More;
+                            SetUp(response.Credentials);
+
+                            // TODO: кешировать беседы.
+                            await ParseUpdatesAsync(response.History, response.Messages.Items, response.Conversations);
+
+                            if (response.More) _pts = response.NewPTS;
+                            trying = response.More;
+                        }
                     } catch (Exception ex) {
                         bool isConnectionLost = ExceptionHelper.IsExceptionAboutNetworkIssue(ex);
                         State = isConnectionLost ? LongPollState.NoInternet : LongPollState.Failed;
@@ -206,6 +224,10 @@ namespace ELOR.Laney.Core {
                 }
                 if (_server != null) Run();
             }))();
+        }
+
+        private async Task CheckDiffAsync(GetDiffResponse response) {
+            
         }
 
         // messages и convos — признак того, что метод вызывается после метода getLongPollHistory (если не null)

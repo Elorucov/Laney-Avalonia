@@ -37,6 +37,8 @@ namespace ELOR.Laney.Helpers {
             "status", "verified", "site", "photo_200", "photo_100", "photo_50", "ban_info", "can_message", "is_messages_blocked", "domain"
         };
 
+        public static readonly List<string> DiffExtendedFilters = new List<string> { "changed_objects", "counters", "credentials", "folders", "groups", "profiles", "server_time", "server_version" };
+
         #region Errors
 
         public static string GetUnderstandableErrorMessage(int code) {
