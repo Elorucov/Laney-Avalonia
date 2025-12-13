@@ -19,7 +19,8 @@
       
       <ContentPresenter x:Name="Logo" ContentTemplate="{StaticResource LogoFull}" Margin="0,0,0,64" />
       
-      <Button x:Name="SignInBtnDirect" Classes="Large Primary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Margin="0,0,0,12" Click="GoToDirectAuthPage">
+      <TextBlock Classes="Title2" TextAlignment="Center" Text="{x:Static i18n:Resources.welcome}"/>
+      <Button x:Name="SignInBtnDirect" Classes="Large Primary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Margin="0,12" Click="GoToDirectAuthPage">
         <Grid ColumnDefinitions="44 * 44">
           <vkui:VKIcon Id="{x:Static vkui:VKIconNames.Icon28QrCodeOutline}" Foreground="{DynamicResource VKButtonPrimaryForegroundBrush}" Margin="8"/>
           <TextBlock Grid.Column="1" Classes="Headline" FontWeight="Medium" TextAlignment="Center" VerticalAlignment="Center" Text="{x:Static i18n:Resources.sign_in_qr}"/>

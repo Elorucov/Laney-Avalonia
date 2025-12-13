@@ -118,7 +118,7 @@ namespace ELOR.VKAPILib {
         internal async Task<HttpContent> SendRequestAsync(Uri uri, Dictionary<string, string> parameters = null) {
             if (WebRequestCallback != null) {
                 Dictionary<string, string> headers = new Dictionary<string, string> {
-                    { "Accept-Encoding", "gzip,deflate" }
+                    { "Accept-Encoding", "zstd,gzip,deflate" }
                 };
                 if (!String.IsNullOrEmpty(UserAgent)) headers.Add("User-Agent", UserAgent);
                 if (uri.AbsoluteUri.Contains("auth.getAuthCode") || uri.AbsoluteUri.Contains("auth.checkAuthCode")) {
