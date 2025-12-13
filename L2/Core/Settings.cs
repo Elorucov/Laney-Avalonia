@@ -134,7 +134,6 @@ namespace ELOR.Laney.Core {
 
         public const string VK_USER_ID = "user_id";
         public const string VK_TOKEN = "access_token";
-        public const string IS_VKM_MODE = "is_vkm_mode";
         public const string GROUPS = "groups";
 
         public const string WIN_SIZE_W = "winw";

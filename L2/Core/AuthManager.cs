@@ -11,39 +11,14 @@ using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
     public static class AuthManager {
-        // Client credentials for 3rd party app (by default, Laney)
-        public const int CLIENT_ID = 6614620;
-        public const string CLIENT_SECRET = "KdOeDEb0swoCpKLRTfKb";
-
         // Client credentials for VK's own apps (by default, VK Messenger). Обратите внимание, что:
         // 1. в этих полях должны быть креды (ID и secret) ТОЛЬКО официальных приложений ВК (ибо для них доступны все методы API messages),
         // 2. использование кредов мобильных приложений (в частности, официальные мобильные приложения) может привести к блокировке аккаунта, если не поменять User-Agent...
         // ...а ещё для них необходимо реализовать обновление токенов, чего L2 не поддерживает из-за ненадобности.
-        public const int OFFICIAL_CLIENT_ID = 51453752;
-        public const string OFFICIAL_CLIENT_SECRET = "4UyuCUsdK8pVCNoeQuGi";
+        public const int CLIENT_ID = 51453752;
+        public const string CLIENT_SECRET = "4UyuCUsdK8pVCNoeQuGi";
 
         public const int SCOPE = 995414;
-        static Uri authUri = new Uri($"https://oauth.vk.ru/authorize?client_id={CLIENT_ID}&redirect_uri=https://oauth.vk.ru/blank.html&scope={SCOPE}&response_type=token&revoke=1");
-
-        public static async Task<string> GetOauthHashAsync() {
-            Dictionary<string, string> headers = new Dictionary<string, string> {
-                { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0" }
-            };
-
-            try {
-                using var resp = await LNet.GetAsync(authUri, headers: headers);
-                var q = resp.RequestMessage.RequestUri.Query.Substring(1).ParseQuery();
-                if (q.ContainsKey("return_auth_hash")) {
-                    Log.Information($"GetOauthHashAsync: successfully fetch a return_auth_hash: {q["return_auth_hash"]}.");
-                    return q["return_auth_hash"];
-                }
-                Log.Error($"GetOauthHashAsync: return_auth_hash is not found in url!");
-                return null;
-            } catch (Exception ex) {
-                Log.Information($"GetOauthHashAsync: failed to fetch a return_auth_hash! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}");
-                return null;
-            }
-        }
 
         public static async Task<OauthResponse> DoConnectCodeAuthAsync(string superAppToken, int appId, int oauthScope, string returnAuthHash) {
             var hr = await LNet.PostAsync(new Uri($"https://login.vk.ru"), new Dictionary<string, string> {

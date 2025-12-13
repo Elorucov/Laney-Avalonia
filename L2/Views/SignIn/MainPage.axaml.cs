@@ -35,11 +35,6 @@ namespace ELOR.Laney.Views.SignIn {
         }
 
         private async void GoToDirectAuthPage(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            if (App.HasCmdLineValue("vkm")) {
-                Window window = TopLevel.GetTopLevel(this) as Window;
-                VKUIDialog dlg = new VKUIDialog(Assets.i18n.Resources.note_warn, Assets.i18n.Resources.offclient_auth_notice);
-                await dlg.ShowDialog(window);
-            }
             await NavigationRouter.NavigateToAsync(new QRAuthPage());
         }
 
