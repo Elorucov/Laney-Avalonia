@@ -1400,4 +1400,7 @@
   <data name="chat_editor_service_messages_desc" xml:space="preserve">
     <value>Когда участники присоединяются, выходят, кого-то приглашают и исключают</value>
   </data>
+  <data name="welcome" xml:space="preserve">
+    <value>Добро пожаловать!</value>
+  </data>
 </root>

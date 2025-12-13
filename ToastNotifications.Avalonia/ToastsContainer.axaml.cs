@@ -9,18 +9,12 @@ namespace ToastNotifications.Avalonia {
     internal partial class ToastsContainer : Window {
         internal ToastsContainer() {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
             SetPosition();
         }
 
         internal ToastsContainer(Action<string> log = null) {
             InitializeComponent();
             Log = log;
-#if DEBUG
-            this.AttachDevTools();
-#endif
             SetPosition();
         }
 

@@ -47,7 +47,6 @@ namespace ELOR.Laney.Core {
         public ChatViewModel CurrentOpenedChat { get { return _currentOpenedChat; } set { _currentOpenedChat = value; OnPropertyChanged(); } }
 
         public bool IsGroup => GroupId > 0;
-        public bool IsVKM => Settings.Get<bool>(Settings.IS_VKM_MODE);
         public VKAPI API { get; private set; }
         public LongPoll LongPoll { get; private set; }
         public MainWindow Window { get; private set; }
@@ -247,9 +246,6 @@ namespace ELOR.Laney.Core {
                         Title = "Emoji & stickers"
                     };
                     stemwnd.Show();
-#if DEBUG
-                    stemwnd.AttachDevTools();
-#endif
                 };
                 devmenu.Add(stemw);
             }
@@ -416,7 +412,7 @@ namespace ELOR.Laney.Core {
                             Avatar = new Uri(group.Photo100),
                             API = new VKAPI(API.AccessToken, Assets.i18n.Resources.lang, App.UserAgent)
                         };
-                        gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId, IsVKM);
+                        gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
                         gs.ImViewModel = new ImViewModel(gs);
                         sessions.Add(gs);
 
@@ -499,7 +495,7 @@ namespace ELOR.Laney.Core {
         }
 
         private void SetUpLongPoll(LongPollInfoForSession lp) {
-            if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId, IsVKM);
+            if (LongPoll == null) LongPoll = new LongPoll(API, Id, GroupId);
             LongPoll.SetUp(lp.LongPoll);
             LongPoll.StateChanged += LongPoll_StateChanged;
             LongPoll.Run();
@@ -596,7 +592,7 @@ namespace ELOR.Laney.Core {
                             API = new VKAPI(API.AccessToken, Assets.i18n.Resources.lang, App.UserAgent),
                         };
                         gs.ImViewModel = new ImViewModel(gs);
-                        gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId, IsVKM);
+                        gs.LongPoll = new LongPoll(gs.API, gs.Id, gs.GroupId);
                         sessions.Add(gs);
 
                         var tmp = response.Templates.Where(tmps => tmps.GroupId == group.Id).FirstOrDefault();
@@ -742,7 +738,7 @@ namespace ELOR.Laney.Core {
                 API = new VKAPI(accessToken, Assets.i18n.Resources.lang, App.UserAgent),
                 Window = new MainWindow()
             };
-            session.LongPoll = new LongPoll(session.API, session.Id, session.GroupId, session.IsVKM);
+            session.LongPoll = new LongPoll(session.API, session.Id, session.GroupId);
             _sessions.Add(session);
             session.Window.DataContext = session;
             session.ImViewModel = new ImViewModel(session);

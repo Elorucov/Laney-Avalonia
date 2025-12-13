@@ -1403,4 +1403,7 @@ to attach them as files</value>
   <data name="chat_editor_service_messages_desc" xml:space="preserve">
     <value>When members join, leave, get invited and kicked out</value>
   </data>
+  <data name="welcome" xml:space="preserve">
+    <value>Welcome!</value>
+  </data>
 </root>

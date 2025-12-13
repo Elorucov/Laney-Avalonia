@@ -89,7 +89,7 @@ namespace ELOR.Laney.Views {
         }
 
         private void SetSessionNameInWindowTitle(string name) {
-            string appName = GetAppName();
+            string appName = "Laney";
 #if RELEASE
             Title = $"{name} - {appName}";
             if (DemoMode.IsEnabled) {
@@ -103,10 +103,6 @@ namespace ELOR.Laney.Views {
 #else
             Title = $"{name} - {appName} dev";
 #endif
-        }
-
-        private string GetAppName() {
-            return Session.IsVKM ? "Laney+" : "Laney";
         }
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e) {

@@ -34,7 +34,6 @@ namespace ELOR.Laney.Core {
         private bool _isRunning = false;
         private CancellationTokenSource _cts;
 
-        private readonly bool _isOfficialClient = false;
         private readonly long _sessionId = 0;
         private readonly long _groupId = 0;
         private readonly VKAPI _api;
@@ -43,11 +42,10 @@ namespace ELOR.Laney.Core {
         private LongPollState _state;
         public LongPollState State { get { return _state; } private set { _state = value; StateChanged?.Invoke(this, value); } }
 
-        public LongPoll(VKAPI api, long sessionId, long groupId, bool isOfficialClient = false) {
+        public LongPoll(VKAPI api, long sessionId, long groupId) {
             _api = api;
             _sessionId = sessionId;
             _groupId = groupId;
-            _isOfficialClient = isOfficialClient;
 
             var loggerConfig = new LoggerConfiguration()
                 .MinimumLevel.Information();
@@ -178,7 +176,7 @@ namespace ELOR.Laney.Core {
                 while (trying) {
                     try {
                         State = LongPollState.Updating;
-                        _log.Information($"Getting LongPoll history... PTS: {_pts}, isOfficialClient={_isOfficialClient}");
+                        _log.Information($"Getting LongPoll history... PTS: {_pts}");
                         var response = await _api.Messages.GetLongPollHistoryAsync(_groupId, VERSION, _timeStamp, _pts, 0, false, 1000, 1000, 0, VKAPIHelper.Fields, Constants.NestedMessagesLimit).ConfigureAwait(false);
                         CacheManager.Add(response.Profiles);
                         CacheManager.Add(response.Groups);
@@ -239,14 +237,14 @@ namespace ELOR.Laney.Core {
                         }
                         break;
                     case 10004:
-                        int fieldsCountForDeleted = _isOfficialClient ? 5 : 4;
+                        int fieldsCountForDeleted = 5; // for non-official clients, value is 4.
                         bool isDeletedBeforeEvent = u.Count == fieldsCountForDeleted && messages == null;
                         int receivedMsgId = (int)u[1];
                         int minor = 0;
                         long peerId4 = 0;
                         bool gLPH = messages != null;
                         if (gLPH) {
-                            peerId4 = _isOfficialClient ? (long)u[4] : (long)u[3];
+                            peerId4 = (long)u[4]; // for non-official clients, index is 3.
                         } else {
                             peerId4 = isDeletedBeforeEvent ? 0 : (long)u[4];
                             minor = (int)u[3];

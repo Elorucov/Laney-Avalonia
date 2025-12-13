@@ -12,11 +12,8 @@ using VKUI.Controls;
 
 namespace ELOR.Laney.Views.SignIn {
     public partial class QRAuthPage : Page {
-        bool _useOfficialClient;
-
         public QRAuthPage() {
             InitializeComponent();
-            _useOfficialClient = App.HasCmdLineValue("vkm");
         }
 
         VKAPI api;
@@ -28,20 +25,12 @@ namespace ELOR.Laney.Views.SignIn {
         private async void Page_Loaded(object? sender, RoutedEventArgs e) {
             try {
                 // Get VKAPI instance with anonym token
-                if (_useOfficialClient) {
-                    api = await DirectAuth.GetVKAPIWithAnonymTokenAsync(AuthManager.OFFICIAL_CLIENT_ID, AuthManager.OFFICIAL_CLIENT_SECRET, App.UserAgent, LNetExtensions.SendRequestToAPIViaLNetAsync);
-                } else {
-                    api = await DirectAuth.GetVKAPIWithAnonymTokenAsync(AuthManager.CLIENT_ID, AuthManager.CLIENT_SECRET, App.UserAgent, LNetExtensions.SendRequestToAPIViaLNetAsync);
-                }
+                api = await DirectAuth.GetVKAPIWithAnonymTokenAsync(AuthManager.CLIENT_ID, AuthManager.CLIENT_SECRET, App.UserAgent, LNetExtensions.SendRequestToAPIViaLNetAsync);
 
                 // Get auth code
                 GetAuthCodeResponse codeResp = null;
 
-                if (_useOfficialClient) {
-                    codeResp = await api.Auth.GetAuthCodeAsync(Assets.i18n.Resources.lang, $"Laney {App.BuildInfo} (VKM mode) on {App.Platform}", AuthManager.OFFICIAL_CLIENT_ID);
-                } else {
-                    codeResp = await api.Auth.GetAuthCodeAsync(Assets.i18n.Resources.lang, $"Laney {App.BuildInfo} on {App.Platform}", AuthManager.CLIENT_ID);
-                }
+                codeResp = await api.Auth.GetAuthCodeAsync(Assets.i18n.Resources.lang, $"Laney {App.BuildInfo} on {App.Platform}", AuthManager.CLIENT_ID);
 
                 QrCodeControl.Data = codeResp.AuthUrl;
 
@@ -62,8 +51,8 @@ namespace ELOR.Laney.Views.SignIn {
                     await Task.Delay(1500).ConfigureAwait(false);
                     try {
                         var response = await api.Auth.CheckAuthCodeAsync(Assets.i18n.Resources.lang,
-                            _useOfficialClient ? AuthManager.CLIENT_ID : AuthManager.OFFICIAL_CLIENT_ID,
-                            authHash, !_useOfficialClient);
+                            AuthManager.CLIENT_ID,
+                            authHash, false);
 
                         if (response.Status >= 2) isWorking = false;
                         await Dispatcher.UIThread.InvokeAsync(async () => {
@@ -75,11 +64,7 @@ namespace ELOR.Laney.Views.SignIn {
                                     PageDesc.Text = Assets.i18n.Resources.qr_signin_p2_desc;
                                     break;
                                 case 2:
-                                    if (_useOfficialClient) {
-                                        await NavigationRouter.NavigateToAsync(new PostDirectAuthPage(response.UserId, response.AccessToken));
-                                    } else {
-                                        await NavigationRouter.NavigateToAsync(new PostDirectAuthPage(response.SuperAppToken));
-                                    }
+                                    await NavigationRouter.NavigateToAsync(new PostDirectAuthPage(response.UserId, response.AccessToken));
                                     break;
                                 case 3:
                                     await NavigationRouter.BackAsync();
