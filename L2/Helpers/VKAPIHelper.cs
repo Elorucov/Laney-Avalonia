@@ -9,6 +9,7 @@ using ELOR.Laney.ViewModels.Controls;
 using ELOR.VKAPILib.Objects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 using VKUI.Controls;
@@ -119,10 +120,12 @@ namespace ELOR.Laney.Helpers {
             }
         }
 
+        // User https://vk.com/id1756935 have non-standart birthdate, so do NOT convert to DateTime!
         public static string GetNormalizedBirthDate(string bdate) {
             string[] a = bdate.Split('.');
-            DateTime dt = a.Length == 3 ? new DateTime(Int32.Parse(a[2]), Int32.Parse(a[1]), Int32.Parse(a[0])) : new DateTime(1604, Int32.Parse(a[1]), Int32.Parse(a[0]));
-            return a.Length == 3 ? $"{dt.ToString("M")} {dt.Year}" : dt.ToString("M");
+            var formatInfo = new DateTimeFormatInfo();
+            var monthName = formatInfo.GetMonthName(Int32.Parse(a[1]));
+            return a.Length == 3 ? $"{a[0]} {monthName} {a[2]}" : $"{a[0]} {monthName}";
         }
 
         public static string GetNameOrDefaultString(long ownerId, string defaultStr = null) {
