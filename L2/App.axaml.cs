@@ -265,7 +265,7 @@ namespace ELOR.Laney {
             return $"LaneyMessenger (2; {sections[0]}; {sections[1]}; {sections[2]})";
         }
 
-        public static List<string> UsedLibs { get; } = new List<string> {
+        public static List<string> UsedLibs { get; } = new List<string>(10) {
             "Avalonia.Labs.Panels",
             "Avalonia.Labs.Lottie",
             "Avalonia.Labs.Qr",

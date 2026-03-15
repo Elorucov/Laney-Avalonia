@@ -18,10 +18,13 @@ public partial class GroupMessageTemplates : UserControl {
         this.session = session;
 
         List<MessageTemplate> templates = new List<MessageTemplate>();
-        foreach (MessageTemplate template in CollectionsMarshal.AsSpan(session.MessageTemplates)) {
-            MessageTemplate t = (MessageTemplate)(template.Clone());
-            t.Text = NormalizeTemplate(template.Text, user, admin, groupName);
-            templates.Add(t);
+
+        if (session.MessageTemplates != null) {
+            foreach (MessageTemplate template in CollectionsMarshal.AsSpan(session.MessageTemplates)) {
+                MessageTemplate t = (MessageTemplate)(template.Clone());
+                t.Text = NormalizeTemplate(template.Text, user, admin, groupName);
+                templates.Add(t);
+            }
         }
 
         TemplatesList.ItemsSource = templates;

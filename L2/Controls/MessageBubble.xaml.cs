@@ -322,7 +322,7 @@ namespace ELOR.Laney.Controls {
                 Margin = new Thickness(0, 0, 0, -4),
                 Height = 16
             });
-            foreach (var message in Message.ForwardedMessages) {
+            foreach (var message in CollectionsMarshal.AsSpan(Message.ForwardedMessages)) {
                 ForwardedMessagesStack.Children.Add(new ForwardedMessage {
                     Width = BubbleRoot.Width - fmwidth,
                     Message = message,

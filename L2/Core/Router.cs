@@ -1,7 +1,7 @@
-﻿using ELOR.Laney.Views.Modals;
+﻿using ELOR.Laney.Helpers;
+using ELOR.Laney.Views.Modals;
 using Serilog;
 using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ELOR.Laney.Core {
@@ -12,30 +12,16 @@ namespace ELOR.Laney.Core {
     public static class Router {
         #region Regex and parsing VK links
 
-        private static readonly Regex userReg = new Regex("(http(s)?://)?(m.)?vk.(com|ru)/id[0-9]+", RegexOptions.Compiled);
-        private static readonly Regex groupReg = new Regex("(http(s)?://)?(m.)?vk.(com|ru)/(club|public|event)[0-9]+", RegexOptions.Compiled);
-        private static readonly Regex wallReg = new Regex("(http(s)?://)?(m.)?vk.(com|ru)/wall[-0-9]+_[0-9]+", RegexOptions.Compiled);
-        private static readonly Regex pollReg = new Regex("(http(s)?://)?(m.)?vk.(com|ru)/poll[-0-9]+_[0-9]+", RegexOptions.Compiled);
-        private static readonly Regex convInvReg = new Regex(@"(http(s)?://)?vk.me/join/[a-zA-Z0-9_\s\-]+", RegexOptions.Compiled);
-        private static readonly Regex vkmeReg = new Regex(@"(http(s)?://)?vk.me/(?!app$)[a-zA-Z0-9._\-]+", RegexOptions.Compiled);
-        private static readonly Regex writeReg = new Regex("(http(s)?://)?vk.(com|ru)/write[-0-9]+", RegexOptions.Compiled);
-        private static readonly Regex stickersReg = new Regex(@"(http(s)?://)?vk.(com|ru)/stickers/([a-zA-Z0-9_\-]+)", RegexOptions.Compiled);
-        private static readonly Regex vkReg = new Regex(@"(http(s)?://)?vk.(com|ru)/[a-zA-Z0-9_\-]+", RegexOptions.Compiled);
-
-        private static readonly Regex idsReg = new Regex(@"(?![A-Za-z]\S)[-0-9]+", RegexOptions.Compiled);
-        private static readonly Regex screenNameReg = new Regex(@"(?<=(http(s)?://)?vk.(com|ru|me)/)([A-Za-z0-9._/-]+)", RegexOptions.Compiled);
-        private static readonly Regex writeIdReg = new Regex(@"(?!(http(s)?://)?vk.(com|ru)/write)[-0-9]+", RegexOptions.Compiled);
-
         public static VKLinkType GetLinkType(string url) {
-            if (userReg.IsMatch(url)) return VKLinkType.User;
-            if (groupReg.IsMatch(url)) return VKLinkType.Group;
-            if (wallReg.IsMatch(url)) return VKLinkType.Wall;
-            if (pollReg.IsMatch(url)) return VKLinkType.Poll;
-            if (convInvReg.IsMatch(url)) return VKLinkType.ConversationInvite;
-            if (vkmeReg.IsMatch(url)) return VKLinkType.WriteVkMe;
-            if (writeReg.IsMatch(url)) return VKLinkType.Write;
-            if (stickersReg.IsMatch(url)) return VKLinkType.StickerPack;
-            if (vkReg.IsMatch(url)) return VKLinkType.ScreenName;
+            if (CompiledRegularExpressions.User().IsMatch(url)) return VKLinkType.User;
+            if (CompiledRegularExpressions.Group().IsMatch(url)) return VKLinkType.Group;
+            if (CompiledRegularExpressions.Wall().IsMatch(url)) return VKLinkType.Wall;
+            if (CompiledRegularExpressions.Poll().IsMatch(url)) return VKLinkType.Poll;
+            if (CompiledRegularExpressions.ConvoInvite().IsMatch(url)) return VKLinkType.ConversationInvite;
+            if (CompiledRegularExpressions.VKME().IsMatch(url)) return VKLinkType.WriteVkMe;
+            if (CompiledRegularExpressions.Write().IsMatch(url)) return VKLinkType.Write;
+            if (CompiledRegularExpressions.Stickers().IsMatch(url)) return VKLinkType.StickerPack;
+            if (CompiledRegularExpressions.VK().IsMatch(url)) return VKLinkType.ScreenName;
             return VKLinkType.Unknown;
         }
 
@@ -47,9 +33,9 @@ namespace ELOR.Laney.Core {
             VKLinkType type = GetLinkType(url);
             string id = null;
 
-            var ids = idsReg.Matches(url);
-            var snm = screenNameReg.Matches(url);
-            var spm = stickersReg.Matches(url);
+            var ids = CompiledRegularExpressions.IDs().Matches(url);
+            var snm = CompiledRegularExpressions.ScreenName().Matches(url);
+            var spm = CompiledRegularExpressions.Stickers().Matches(url);
 
             Log.Information($"Trying to launch VK link. Type: {type}, link: {url}, ids: {String.Join(',', ids)}, snm: {String.Join(',', snm)}, ");
 
@@ -82,7 +68,7 @@ namespace ELOR.Laney.Core {
                     await Launcher.LaunchUrl(url); // Remove after implementation
                     break;
                 case VKLinkType.Write:
-                    var wr = writeIdReg.Match(url);
+                    var wr = CompiledRegularExpressions.Write().Match(url);
                     id = wr.Value;
                     session.GoToChat(Int64.Parse(id));
                     break;

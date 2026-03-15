@@ -57,7 +57,7 @@ namespace ELOR.Laney.Core {
         private WindowNotificationManager _notificationManager;
         private static ToastNotificationsManager _systemNotificationManager;
 
-        public List<MessageTemplate> MessageTemplates { get; private set; } = new List<MessageTemplate>();
+        public List<MessageTemplate> MessageTemplates { get; private set; }
 
         #region Binded from UI and tray menu
 
@@ -831,18 +831,19 @@ namespace ELOR.Laney.Core {
         }
 
         public static List<long> GetAddedGroupIds() {
-            List<long> ids = new List<long>();
             try {
                 string str = Settings.Get(Settings.GROUPS, "");
                 var split = str.Split(',');
+                List<long> ids = new List<long>(split.Length);
                 foreach (string sid in split) {
                     long gid = 0;
                     if (Int64.TryParse(sid, out gid)) ids.Add(gid);
                 }
+                return ids;
             } catch (Exception ex) {
                 Log.Error(ex, "VKSession: cannot get added groups!");
             }
-            return ids;
+            return new List<long>(0);
         }
 
         private void CloseAllSMVWindows() {

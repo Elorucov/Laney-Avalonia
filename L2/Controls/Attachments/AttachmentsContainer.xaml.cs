@@ -86,22 +86,22 @@ namespace ELOR.Laney.Controls.Attachments {
             UGCSticker ugcs = null;
             Gift gift = null;
             Graffiti graffiti = null;
-            List<IPreview> previews = new List<IPreview>();
+            List<IPreview> previews = new List<IPreview>(10);
             WallPost wp = null;
             WallReply wr = null;
-            List<Link> links = new List<Link>();
+            List<Link> links = new List<Link>(1);
             Market market = null;
             Poll poll = null;
             Call call = null;
             GroupCallInProgress gcall = null;
             Event evt = null;
-            List<Story> stories = new List<Story>();
+            List<Story> stories = new List<Story>(1);
             Narrative nr = null;
             Curator cur = null;
-            List<Document> docs = new List<Document>();
-            List<Audio> audios = new List<Audio>();
-            List<Podcast> podcasts = new List<Podcast>();
-            List<AudioMessage> ams = new List<AudioMessage>();
+            List<Document> docs = new List<Document>(10);
+            List<Audio> audios = new List<Audio>(10);
+            List<Podcast> podcasts = new List<Podcast>(1);
+            List<AudioMessage> ams = new List<AudioMessage>(1);
             // WikiPage page = null;
             // Note note = null;
             // Album album = null;
@@ -172,7 +172,7 @@ namespace ELOR.Laney.Controls.Attachments {
                 imgBtn.Click += ImgBtn_Click;
                 StandartAttachments.Children.Add(imgBtn);
             } else if (previews.Count > 1) {
-                List<Size> sizes = new List<Size>();
+                List<Size> sizes = new List<Size>(previews.Count);
                 foreach (IPreview preview in CollectionsMarshal.AsSpan(previews)) {
                     var prevsize = preview.GetOriginalSize();
                     sizes.Add(new Size(prevsize.Width, prevsize.Height));

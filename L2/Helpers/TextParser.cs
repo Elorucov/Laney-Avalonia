@@ -25,12 +25,6 @@ namespace ELOR.Laney.Helpers {
     }
 
     public class TextParser {
-        static Regex urlRegex = new Regex(@"(?:(?:http|https):\/\/)?([a-z0-9.\-]*\.)?([-a-zA-Z0-9а-яА-Я]{1,256})\.([-a-zA-Z0-9а-яА-Я]{2,8})\b(?:\/[-a-zA-Z0-9а-яА-Я@:%_\+.~#?&\/=]*)?", RegexOptions.Compiled);
-        static Regex mailRegex = new Regex(@"([\w\d.]+)@([a-zA-Z0-9а-яА-Я.]{2,256}\.[a-zа-я]{2,8})", RegexOptions.Compiled);
-        static Regex userRegex = new Regex(@"\[(id)(\d+)\|(.*?)\]", RegexOptions.Compiled);
-        static Regex groupRegex = new Regex(@"\[(club|public|event)(\d+)\|(.*?)\]", RegexOptions.Compiled);
-        static Regex linkInTextRegex = new Regex(@"\[((?:http|https):\/\/vk.(com|ru)\/[\w\d\W.]*?)\|((.*?)+?)\]", RegexOptions.Compiled);
-
         #region Internal parsing methods
 
         private static Tuple<string, string> ParseBracketWord(Match match) {
@@ -46,11 +40,22 @@ namespace ELOR.Laney.Helpers {
             List<Tuple<string, string>> raw = new List<Tuple<string, string>>();
             List<MatchInfo> allMatches = new List<MatchInfo>();
 
-            userRegex.Matches(plain).Cast<Match>().ToList().ForEach(m => allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.User, m)));
-            groupRegex.Matches(plain).Cast<Match>().ToList().ForEach(m => allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.Group, m)));
-            linkInTextRegex.Matches(plain).Cast<Match>().ToList().ForEach(m => allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.LinkInText, m)));
-            if (!dontParseUrls) mailRegex.Matches(plain).Cast<Match>().ToList().ForEach(m => allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.Mail, m)));
-            if (!dontParseUrls) urlRegex.Matches(plain).Cast<Match>().ToList().ForEach(m => allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.Url, m)));
+            var userMatches = CompiledRegularExpressions.UserMention().Matches(plain).Cast<Match>().ToList();
+            foreach (var m in CollectionsMarshal.AsSpan(userMatches)) allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.User, m));
+
+            var groupMatches = CompiledRegularExpressions.GroupMention().Matches(plain).Cast<Match>().ToList();
+            foreach (var m in CollectionsMarshal.AsSpan(groupMatches)) allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.Group, m));
+
+            var linkMatches = CompiledRegularExpressions.LinkInText().Matches(plain).Cast<Match>().ToList();
+            foreach (var m in CollectionsMarshal.AsSpan(linkMatches)) allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.LinkInText, m));
+
+            if (!dontParseUrls) {
+                var emailMatches = CompiledRegularExpressions.Email().Matches(plain).Cast<Match>().ToList();
+                foreach (var m in CollectionsMarshal.AsSpan(emailMatches)) allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.Mail, m));
+
+                var urlMatches = CompiledRegularExpressions.URL().Matches(plain).Cast<Match>().ToList();
+                foreach (var m in CollectionsMarshal.AsSpan(urlMatches)) allMatches.Add(new MatchInfo(m.Index, m.Length, MatchType.Url, m));
+            }
 
             allMatches = allMatches.OrderBy(m => m.Start).ToList();
 
@@ -133,11 +138,11 @@ namespace ELOR.Laney.Helpers {
         }
 
         public static long GetMentionId(string plain) {
-            var u = userRegex.Match(plain);
+            var u = CompiledRegularExpressions.UserMention().Match(plain);
             if (u.Success) {
                 return long.Parse(u.Groups[2].Value);
             } else {
-                var g = groupRegex.Match(plain);
+                var g = CompiledRegularExpressions.GroupMention().Match(plain);
                 if (g.Success) return -long.Parse(g.Groups[2].Value);
             }
             return 0;
