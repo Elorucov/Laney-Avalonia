@@ -42,7 +42,7 @@
     <Setter Property="TextElement.FontFamily" Value="{StaticResource VKSansText}"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <StackPanel>
+        <StackPanel x:Name="DismissArea" Background="Transparent">
           <ContentPresenter x:Name="AboveContentRoot" HorizontalAlignment="Left" Content="{TemplateBinding Above}"/>
           <Border x:Name="FlyoutPresenterRoot" HorizontalAlignment="Left" Cursor="Arrow" BorderThickness="0" BorderBrush="{DynamicResource VKSeparatorCommonBrush}" Margin="12,6,12,14" VerticalAlignment="Center" CornerRadius="8" Background="{DynamicResource VKBackgroundContentBrush}" BoxShadow="{StaticResource VKElevation3}">
             <ContentPresenter x:Name="FlyoutContent" Content="{TemplateBinding Content}"/>

@@ -28,7 +28,7 @@ namespace ELOR.Laney.Helpers {
             listBox.Unloaded += (a, b) => Dispose();
         }
 
-        private void Scroll_GotFocus(object sender, GotFocusEventArgs e) {
+        private void Scroll_GotFocus(object sender, FocusChangedEventArgs e) {
             Debug.WriteLine($"Focused to ListBox's ScrollViewer");
             if (ScrollToLastItemAfterTabFocus) {
                 var element = TopLevel.GetTopLevel(listBox).FocusManager.GetFocusedElement();

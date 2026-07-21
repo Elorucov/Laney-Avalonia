@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Views.SignIn {
-    public partial class PostDirectAuthPage : Page {
+    public partial class PostDirectAuthPage : VKUI.Controls.Page {
 
         public PostDirectAuthPage() {
             InitializeComponent();

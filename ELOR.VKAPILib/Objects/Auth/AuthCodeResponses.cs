@@ -37,4 +37,9 @@ namespace ELOR.VKAPILib.Objects.Auth {
         [JsonPropertyName("is_partial")]
         public bool IsPartial { get; set; }
     }
+
+    public class ValidateAuthCodeResponse {
+        [JsonPropertyName("status")]
+        public byte Status { get; private set; } // 0 — success.
+    }
 }

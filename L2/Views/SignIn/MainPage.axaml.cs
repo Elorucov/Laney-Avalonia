@@ -8,7 +8,7 @@ using System.Linq;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Views.SignIn {
-    public partial class MainPage : Page {
+    public partial class MainPage : VKUI.Controls.Page {
         public MainPage() {
             InitializeComponent();
 

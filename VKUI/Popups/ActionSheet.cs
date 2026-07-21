@@ -46,7 +46,8 @@ namespace VKUI.Popups {
 
             VKUIFlyoutPresenter presenter = new VKUIFlyoutPresenter {
                 Above = Above,
-                Content = itemsPanel
+                Content = itemsPanel,
+                ParentFlyout = this
             };
             presenter.Classes.Add("ActionSheet");
             return presenter;

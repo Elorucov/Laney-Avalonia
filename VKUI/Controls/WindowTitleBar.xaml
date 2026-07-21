@@ -1,9 +1,14 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:chr="using:Avalonia.Controls.Chrome"
         xmlns:vkui="using:VKUI.Controls">
   <Design.PreviewWith>
     <vkui:WindowTitleBar Width="360"/>
   </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type chr:WindowDrawnDecorations}" TargetType="chr:WindowDrawnDecorations">
+	<Setter Property="DefaultTitleBarHeight" Value="0"/>
+  </ControlTheme>
 
   <ControlTheme x:Key="{x:Type vkui:WindowTitleBar}" TargetType="vkui:WindowTitleBar">
     <Setter Property="CanShowTitle" Value="True"/>

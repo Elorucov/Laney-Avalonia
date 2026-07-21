@@ -40,14 +40,15 @@
     </ResourceDictionary>
   </Styles.Resources>
 
-  <OnPlatform>
+<!--  <OnPlatform>
     <OnPlatform.Default>
       <StyleInclude Source="/TypographyCustomFont.xaml"/>
     </OnPlatform.Default>
     <OnPlatform.macOS>
       <StyleInclude Source="/TypographyCustomFont.xaml"/>
     </OnPlatform.macOS>
-  </OnPlatform>
+  </OnPlatform>-->
+  <StyleInclude Source="/TypographyCustomFont.xaml"/>
   <StyleInclude Source="/Styles/CommonStyles.xaml"/>
   <StyleInclude Source="/Styles/ButtonStyles.xaml"/>
   <StyleInclude Source="/Styles/ComboBoxStyles.xaml"/>

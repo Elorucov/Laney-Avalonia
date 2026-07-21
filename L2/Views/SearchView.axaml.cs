@@ -8,7 +8,7 @@ using ELOR.Laney.ViewModels;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Views {
-    public partial class SearchView : Page {
+    public partial class SearchView : VKUI.Controls.Page {
         private SearchViewModel ViewModel { get { return DataContext as SearchViewModel; } }
 
         public SearchView() {

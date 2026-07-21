@@ -26,7 +26,8 @@ namespace VKUI.Popups {
         protected override Control CreatePresenter() {
             return new VKUIFlyoutPresenter {
                 [!ContentControl.ContentProperty] = this[!ContentProperty],
-                [!PaddingProperty] = this[!PaddingProperty]
+                [!PaddingProperty] = this[!PaddingProperty],
+                ParentFlyout = this
             };
         }
     }

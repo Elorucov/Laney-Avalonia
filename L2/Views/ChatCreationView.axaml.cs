@@ -6,7 +6,7 @@ using ELOR.VKAPILib.Objects;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Views {
-    public partial class ChatCreationView : Page {
+    public partial class ChatCreationView : VKUI.Controls.Page {
         private ChatCreationViewModel ViewModel { get { return DataContext as ChatCreationViewModel; } }
 
         public ChatCreationView() {

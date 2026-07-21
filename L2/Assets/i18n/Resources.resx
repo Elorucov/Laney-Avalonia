@@ -1406,4 +1406,10 @@ to attach them as files</value>
   <data name="welcome" xml:space="preserve">
     <value>Welcome!</value>
   </data>
+  <data name="qr_auth_otp" xml:space="preserve">
+    <value>Enter the code from the device</value>
+  </data>
+  <data name="qr_auth_otp_desc" xml:space="preserve">
+    <value>It will appear on the screen</value>
+  </data>
 </root>

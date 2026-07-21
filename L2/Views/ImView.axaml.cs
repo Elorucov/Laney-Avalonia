@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using VKUI.Controls;
 
 namespace ELOR.Laney.Views {
-    public sealed partial class ImView : Page {
+    public sealed partial class ImView : VKUI.Controls.Page {
         private VKSession Session { get { return VKSession.GetByDataContext(this); } }
 
         public ImView() {

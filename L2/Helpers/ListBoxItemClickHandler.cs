@@ -28,7 +28,7 @@ namespace ELOR.Laney.Helpers {
             if (obj != null) onItemClickEvent?.Invoke(obj);
         }
 
-        private void ListBox_GotFocus(object sender, GotFocusEventArgs e) {
+        private void ListBox_GotFocus(object sender, FocusChangedEventArgs e) {
             listBox.KeyUp += ListBox_KeyUp;
         }
 

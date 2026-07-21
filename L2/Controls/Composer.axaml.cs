@@ -53,8 +53,8 @@ namespace ELOR.Laney.Controls {
                 var window = VKSession.GetByDataContext(this).ModalWindow;
 
                 new Action(async () => {
-                    var formats = await window.Clipboard.GetFormatsAsync();
-                    await new VKUIDialog("Clipboard", String.Join(", ", formats)).ShowDialog<int>(window);
+                    
+                    await new VKUIDialog("Clipboard", "Pasting from clipboard is under major reconstruction due to Avalonia v12 update.").ShowDialog<int>(window);
                 })();
                 e.Handled = true;
             }

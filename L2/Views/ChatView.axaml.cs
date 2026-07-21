@@ -316,7 +316,7 @@ namespace ELOR.Laney.Views {
             DropArea.IsVisible = true;
 
             try {
-                var files = e.Data.GetFiles();
+                var files = e.DataTransfer.TryGetFiles();
                 var type = files.GetFilesType();
                 BottomDropArea.Tag = type;
                 switch (type) {
@@ -369,7 +369,7 @@ namespace ELOR.Laney.Views {
             Border border = sender as Border;
             border.Classes.Remove("DropTargetHover");
 
-            var files = e.Data.GetFiles().Take(10);
+            var files = e.DataTransfer.TryGetFiles().Take(10);
             if (border.Name == "TopDropArea") {
                 new System.Action(async () => {
                     foreach (IStorageFile file in files) {
