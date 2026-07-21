@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Rendering.Composition;
 using ELOR.Laney.Core;
 using ELOR.Laney.Core.Network;
 using Serilog;
@@ -130,5 +131,14 @@ namespace ELOR.Laney {
             }).With(new X11PlatformOptions {
                 RenderingMode = new List<X11RenderingMode> { X11RenderingMode.Vulkan, X11RenderingMode.Glx, X11RenderingMode.Software }
             });
+
+        // ProGPU test https://github.com/wieslawsoltes/ProGPU.Avalonia
+        //public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>()
+        //    .UseSilkNet()
+        //    .UseProGpu()
+        //    .With(new CompositionOptions {
+        //        UseRegionDirtyRectClipping = false
+        //    })
+        //    .UseHarfBuzz();
     }
 }

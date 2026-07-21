@@ -3009,6 +3009,24 @@ namespace ELOR.Laney.Assets.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the code from the device.
+        /// </summary>
+        public static string qr_auth_otp {
+            get {
+                return ResourceManager.GetString("qr_auth_otp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It will appear on the screen.
+        /// </summary>
+        public static string qr_auth_otp_desc {
+            get {
+                return ResourceManager.GetString("qr_auth_otp_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan the QR code with the VK app or your device&apos;s camera.
         /// </summary>
         public static string qr_signin_p1_desc {

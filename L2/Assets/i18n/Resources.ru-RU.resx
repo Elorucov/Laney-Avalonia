@@ -1403,4 +1403,10 @@
   <data name="welcome" xml:space="preserve">
     <value>Добро пожаловать!</value>
   </data>
+  <data name="qr_auth_otp" xml:space="preserve">
+    <value>Введите код с устройства</value>
+  </data>
+  <data name="qr_auth_otp_desc" xml:space="preserve">
+    <value>Он отобразится на экране</value>
+  </data>
 </root>

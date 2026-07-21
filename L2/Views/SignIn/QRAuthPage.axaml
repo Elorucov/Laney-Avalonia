@@ -22,6 +22,11 @@
       <TextBlock x:Name="PageTitle" Classes="Title2" FontWeight="Medium" TextAlignment="Center" Text="{x:Static i18n:Resources.qr_signin_p1_title}"/>
       <TextBlock x:Name="PageDesc" Classes="Headline" Foreground="{DynamicResource VKTextSecondaryBrush}" TextWrapping="Wrap" Margin="0,8,0,24" TextAlignment="Center" Text="{x:Static i18n:Resources.qr_signin_p1_desc}"/>
       <qr:QrCode x:Name="QrCodeControl" IsVisible="False" Width="256" Height="256" Background="White" Foreground="Black"/>
+      <StackPanel x:Name="OTPValidationArea" IsVisible="False" Margin="0,12" Spacing="12" Width="128">
+        <TextBox x:Name="OTPCodeTB" TextAlignment="Center" HorizontalAlignment="Stretch" MaxLength="8"/>
+        <Button x:Name="OTPButton" Classes="Primary" Content="{x:Static i18n:Resources._continue}" HorizontalAlignment="Stretch" Click="ValidateOTP"/>
+        <TextBlock x:Name="OTPErrorText" Foreground="{DynamicResource VKTextErrorBrush}" TextWrapping="Wrap" TextAlignment="Center"/>
+      </StackPanel>
       <vkui:Spinner x:Name="Loading" Width="44" Height="44" Margin="106"/>
     </StackPanel>
   </Grid>

@@ -27,6 +27,15 @@ namespace ELOR.VKAPILib.Methods {
             return await API.CallMethodAsync<CheckAuthCodeResponse>("auth.checkAuthCode", parameters);
         }
 
+        public async Task<ValidateAuthCodeResponse> ValidateAuthCodeAsync(string hash, string validationCode) {
+            var parameters = new Dictionary<string, string> {
+                { "auth_hash", hash },
+                { "validation_code", validationCode }
+            };
+
+            return await API.CallMethodAsync<ValidateAuthCodeResponse>("auth.validateAuthCode", parameters);
+        }
+
         public async Task<OauthResponse> GetOauthTokenAsync(int appId, int scope, string hash, string authUserHash) {
             Dictionary<string, string> parameters = new Dictionary<string, string> {
                 { "app_id", appId.ToString() },

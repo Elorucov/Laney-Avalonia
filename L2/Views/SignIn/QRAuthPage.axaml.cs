@@ -16,7 +16,8 @@ namespace ELOR.Laney.Views.SignIn {
             InitializeComponent();
         }
 
-        VKAPI api;
+        VKAPI _api;
+        string _authHash;
 
         private async void BackButton_Click(object sender, RoutedEventArgs e) {
             await NavigationRouter.BackAsync();
@@ -25,14 +26,15 @@ namespace ELOR.Laney.Views.SignIn {
         private async void Page_Loaded(object? sender, RoutedEventArgs e) {
             try {
                 // Get VKAPI instance with anonym token
-                api = await DirectAuth.GetVKAPIWithAnonymTokenAsync(AuthManager.CLIENT_ID, AuthManager.CLIENT_SECRET, App.UserAgent, LNetExtensions.SendRequestToAPIViaLNetAsync);
+                _api = await DirectAuth.GetVKAPIWithAnonymTokenAsync(AuthManager.CLIENT_ID, AuthManager.CLIENT_SECRET, App.UserAgent, LNetExtensions.SendRequestToAPIViaLNetAsync);
 
                 // Get auth code
                 GetAuthCodeResponse codeResp = null;
 
-                codeResp = await api.Auth.GetAuthCodeAsync(Assets.i18n.Resources.lang, $"Laney {App.BuildInfo} on {App.Platform}", AuthManager.CLIENT_ID);
+                codeResp = await _api.Auth.GetAuthCodeAsync(Assets.i18n.Resources.lang, $"Laney {App.BuildInfo} on {App.Platform}", AuthManager.CLIENT_ID);
 
                 QrCodeControl.Data = codeResp.AuthUrl;
+                _authHash = codeResp.AuthHash;
 
                 Loading.IsVisible = false;
                 QrCodeControl.IsVisible = true;
@@ -50,16 +52,17 @@ namespace ELOR.Laney.Views.SignIn {
                 while (isWorking) {
                     await Task.Delay(1500).ConfigureAwait(false);
                     try {
-                        var response = await api.Auth.CheckAuthCodeAsync(Assets.i18n.Resources.lang,
+                        var response = await _api.Auth.CheckAuthCodeAsync(Assets.i18n.Resources.lang,
                             AuthManager.CLIENT_ID,
                             authHash, false);
 
-                        if (response.Status >= 2) isWorking = false;
+                        if (response.Status == 2 || response.Status == 3) isWorking = false;
                         await Dispatcher.UIThread.InvokeAsync(async () => {
                             switch (response.Status) {
                                 case 1:
                                     Loading.IsVisible = true;
                                     QrCodeControl.IsVisible = false;
+                                    OTPValidationArea.IsVisible = false;
                                     PageTitle.Text = Assets.i18n.Resources.qr_signin_p2_title;
                                     PageDesc.Text = Assets.i18n.Resources.qr_signin_p2_desc;
                                     break;
@@ -69,8 +72,18 @@ namespace ELOR.Laney.Views.SignIn {
                                 case 3:
                                     await NavigationRouter.BackAsync();
                                     break;
+                                case 5:
+                                    Loading.IsVisible = false;
+                                    QrCodeControl.IsVisible = false;
+                                    OTPValidationArea.IsVisible = true;
+                                    PageTitle.Text = Assets.i18n.Resources.qr_auth_otp;
+                                    PageDesc.Text = Assets.i18n.Resources.qr_auth_otp_desc;
+                                    break;
                                 default:
-                                    if (response.Status != 0) PageDesc.Text = $"Status: {response.Status}";
+                                    if (response.Status != 0) {
+                                        PageDesc.Text = $"Status: {response.Status}";
+                                        OTPValidationArea.IsVisible = false;
+                                    }
                                     break;
                             }
                         });
@@ -84,6 +97,28 @@ namespace ELOR.Laney.Views.SignIn {
                     }
                 }
             });
+        }
+
+        private void ValidateOTP(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            new Action(async () => {
+                try {
+                    OTPErrorText.Text = string.Empty;
+                    OTPButton.IsEnabled = false;
+                    var response = await _api.Auth.ValidateAuthCodeAsync(_authHash, OTPCodeTB.Text);
+                    if (response.Status == 0) {
+                        OTPValidationArea.IsVisible = false;
+                        Loading.IsVisible = true;
+                    } else {
+                        OTPErrorText.Text = $"Invalid status: {response.Status}";
+                    }
+                } catch (Exception ex) {
+                    (string t, string d) = ExceptionHelper.GetDefaultErrorInfo(ex);
+                    OTPErrorText.Text = $"{t}\n{d}";
+                } finally {
+                    OTPButton.IsEnabled = true;
+                }
+            })();
         }
     }
 }
